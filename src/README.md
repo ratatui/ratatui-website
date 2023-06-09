@@ -6,6 +6,6 @@
 was forked from [TUI-rs](https://github.com/fdehau/tui-rs/) to continue the maintenance of the
 project.
 
-This documentation is a work in progress and will be very incomplete. Come help us out at
+This documentation is a work in progress and is currently very incomplete. Come help us out at
 <https://github.com/tui-rs-revival/ratatui-book/> by contributing to the discussions and issues.
 We want to hear your feedback and suggestions.
