@@ -4,7 +4,8 @@
 
 # Getting Started
 
-- [Getting Started](./getting-started.md)
+- [Getting Started](./ch01-00-getting-started.md)
+  
 
 # Tutorial
 
