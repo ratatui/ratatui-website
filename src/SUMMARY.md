@@ -5,7 +5,8 @@
 # Getting Started
 
 - [Getting Started](./ch01-00-getting-started.md)
-  
+  - [Installation](./ch01-01-installation.md)
+  - [Choosing a Backend](./ch01-02-choosing-a-backend.md)
 
 # Tutorial
 
