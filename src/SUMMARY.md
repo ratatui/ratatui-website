@@ -4,7 +4,9 @@
 
 # Getting Started
 
-- [Getting Started](./getting-started.md)
+- [Getting Started](./getting-started/getting-started.md)
+  - [Installation](./getting-started/installation.md)
+  - [Choosing a Backend](./getting-started/choosing-a-backend.md)
 
 # Tutorial
 
