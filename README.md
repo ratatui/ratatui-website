@@ -13,7 +13,7 @@ structs, enums, traits, methods, etc., please visit our [crates.io documentation
 
 ## Viewing the Book
 
-To read the book in your browser, visit [this link](https://tui-rs-revival.github.io/ratatui-book/).
+To read the book in your browser, visit [this GitHub page](https://tui-rs-revival.github.io/ratatui-book/).
 
 If you would instead prefer to read this book locally, install Rust and mdBook:
 
