@@ -3,10 +3,11 @@
 <img align="left" src="https://avatars.githubusercontent.com/u/125200832?s=128&v=4" alt="ratatui logo">
 
 This is the documentation project for [Ratatui](https://github.com/tui-rs-revival/ratatui), a Rust
-library to build rich terminal user interfaces and dashboards. Note that this documentation is supplementary
-to the technical documentation, and we also maintain crate documentation. This is more of a guide book
-to help our users understand how to build a TUI with Ratatui. If you are looking for documentation on
-structs, enums, traits, methods, etc., please visit our [crates.io documentation](https://docs.rs/ratatui/0.21.0/ratatui/).
+library to build rich terminal user interfaces and dashboards. Note that this book is supplementary
+to the technical documentation, and not a substitute for it. This is more of a guide book to help our
+users understand how to build a TUI with Ratatui. If you are looking for documentation on specific
+structs, enums, traits, methods, etc., please visit our [technical documentation](https://docs.rs/ratatui/0.21.0/ratatui/)
+on docs.rs.
 
 [![License](https://img.shields.io/crates/l/ratatui?style=for-the-badge)](./LICENSE)
 [![Discord](https://img.shields.io/discord/1070692720437383208?label=discord&logo=discord&style=for-the-badge)](https://discord.gg/pMCEU9hNEj)
