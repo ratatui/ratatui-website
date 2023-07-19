@@ -11,8 +11,7 @@
 # Tutorial
 
 - [Tutorial](./tutorial/README.md)
-  - [Create the project]()
-  - [Add the main loop]()
+  - [Holding application state](./tutorial/app.md)
   - [Handle events]()
   - [Add layout and widgets]()
 
