@@ -7,7 +7,7 @@ use ratatui::{
     Frame,
 };
 
-use crate::app::{App, CurrentlyEditing, CurrentScreen};
+use crate::app::{App, CurrentScreen, CurrentlyEditing};
 
 pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     // Create the layout sections.
@@ -54,7 +54,9 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     let current_navigation_text = vec![
         match app.current_screen {
             CurrentScreen::Normal => Span::styled("Normal Mode", Style::default().fg(Color::Green)),
-            CurrentScreen::Editing => Span::styled("Editing Mode", Style::default().fg(Color::Yellow)),
+            CurrentScreen::Editing => {
+                Span::styled("Editing Mode", Style::default().fg(Color::Yellow))
+            }
             CurrentScreen::Exiting => Span::styled("Exiting", Style::default().fg(Color::LightRed)),
         }
         .to_owned(),

@@ -1,3 +1,4 @@
+// ANCHOR: all
 use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
     execute,
@@ -14,18 +15,24 @@ mod ui;
 use crate::app::{App, CurrentlyEditing, CurrentScreen};
 use crate::ui::ui;
 
+// ANCHOR: main_all
 fn main() -> Result<(), Box<dyn Error>> {
+    // ANCHOR: setup_boilerplate
     // setup terminal
     enable_raw_mode()?;
     let mut stderr = io::stderr();
     execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
+    // ANCHOR_END: setup_boilerplate
+    // ANCHOR: application_startup
     let backend = CrosstermBackend::new(stderr);
     let mut terminal = Terminal::new(backend)?;
 
     // create app and run it
     let app = App::new();
     let res = run_app(&mut terminal, app);
+    // ANCHOR_END: application_startup
 
+    // ANCHOR: ending_boilerplate
     // restore terminal
     disable_raw_mode()?;
     execute!(
@@ -40,11 +47,18 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     Ok(())
+    // ANCHOR_END: ending_boilerplate
 }
+// ANCHOR_END: main_all
 
+// ANCHOR: run_app_all
+// ANCHOR: run_method_signature
 fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<()> {
+// ANCHOR_END: run_method_signature
+// ANCHOR: ui_loop
     loop {
         terminal.draw(|f| ui(f, &app))?;
+// ANCHOR_END: ui_loop
 
         if let Event::Key(key) = event::read()? {
             match app.current_screen {
@@ -121,3 +135,6 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
         }
     }
 }
+// ANCHOR: run_app_all
+
+// ANCHOR_END: all

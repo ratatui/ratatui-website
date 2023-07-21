@@ -27,3 +27,5 @@ src
 | - app.rs
 ```
 
+This follows a common approach to small applications in ratatui, where we have an application state file, a ui functions file, and the main file to tie it all together.
+
