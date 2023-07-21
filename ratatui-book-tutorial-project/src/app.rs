@@ -7,7 +7,7 @@ use serde_json::Result;
 
 // ANCHOR: screen_modes
 pub enum CurrentScreen {
-    Normal,
+    Main,
     Editing,
     Exiting,
 }
@@ -36,7 +36,7 @@ impl App {
             key_input: String::new(),
             value_input: String::new(),
             pairs: Vec::new(),
-            current_screen: CurrentScreen::Normal,
+            current_screen: CurrentScreen::Main,
             currently_editing: None,
         }
     }
@@ -49,7 +49,7 @@ impl App {
         self.key_input = String::new();
         self.value_input = String::new();
         self.currently_editing = None;
-        self.current_screen = CurrentScreen::Normal;
+        self.current_screen = CurrentScreen::Main;
     }
 
     pub fn toggle_editing(&mut self) {

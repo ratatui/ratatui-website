@@ -53,7 +53,7 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     // Create the navigation bar at the bottom of the screen
     let current_navigation_text = vec![
         match app.current_screen {
-            CurrentScreen::Normal => Span::styled("Normal Mode", Style::default().fg(Color::Green)),
+            CurrentScreen::Main => Span::styled("Normal Mode", Style::default().fg(Color::Green)),
             CurrentScreen::Editing => {
                 Span::styled("Editing Mode", Style::default().fg(Color::Yellow))
             }
@@ -79,7 +79,7 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
 
     let current_keys_hint = {
         match app.current_screen {
-            CurrentScreen::Normal => Span::styled(
+            CurrentScreen::Main => Span::styled(
                 "(q) to quit / (e) to make new pair",
                 Style::default().fg(Color::Red),
             ),

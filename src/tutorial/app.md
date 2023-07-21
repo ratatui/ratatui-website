@@ -7,9 +7,10 @@ An often used model for smaller `ratatui` applications, is to have one, large ap
 Often it is beneficial to imagine that there are seval 'modes' the application can be in. This thinking carries true all the way from input pattern (e.g. Vim vs Nano keybindings, vim's many modes) to supporting several windows in one application (e.g. summary, edit, history, etc) to display different information and preset the user the many options your application has. 
 
 In this tutorial application, we will have three "screens":
-- "Normal": the main summary screen showing all past key-value pairs entered
+- "Main": the main summary screen showing all past key-value pairs entered
 - "Editing": the screen shown when the user wishes to create a new key-value pair
-- "Exiting": displays a prompt asking if the user is sure they wish to exit, and asks if they want to output the key-value pairs they have entered.
+- "Exi
+ting": displays a prompt asking if the user is sure they wish to exit, and asks if they want to output the key-value pairs they have entered.
 
 We represent these possible modes with a simple enum:
 
@@ -43,4 +44,6 @@ Now that we have enums to help us track where the user is, it is time to create 
 ```rust,no_run,noplayground
 {{#include ../../ratatui-book-tutorial-project/src/app.rs:app_fields}}
 ```
+
+# TODO: the rest of the application helper functions
 

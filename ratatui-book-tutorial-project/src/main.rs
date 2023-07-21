@@ -60,19 +60,22 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
         terminal.draw(|f| ui(f, &app))?;
 // ANCHOR_END: ui_loop
 
+        // ANCHOR: event_poll
         if let Event::Key(key) = event::read()? {
+        // ANCHOR: main_screen
             match app.current_screen {
-                CurrentScreen::Normal => match key.code {
+                CurrentScreen::Main => match key.code {
                     KeyCode::Char('e') => {
                         app.current_screen = CurrentScreen::Editing;
                         app.currently_editing = Some(CurrentlyEditing::Key);
                     }
                     KeyCode::Char('q') => {
-                        //return Ok(());
                         app.current_screen = CurrentScreen::Exiting;
                     }
                     _ => {}
                 },
+        // ANCHOR_END: main_screen
+        // ANCHOR: exiting_screen
                 CurrentScreen::Exiting => match key.code {
                     KeyCode::Char('y') => {
                         app.print_json()?;
@@ -83,6 +86,8 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                     }
                     _ => {}
                 },
+        // ANCHOR_END: exiting_screen
+        // ANCHOR: editing_enter
                 CurrentScreen::Editing if key.kind == KeyEventKind::Press => match key.code {
                     KeyCode::Enter => {
                         if let Some(editing) = &app.currently_editing {
@@ -95,8 +100,9 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                                 }
                             }
                         }
-                        //app.messages.push(app.input.drain(..).collect());
                     }
+        // ANCHOR_END: editing_enter
+        // ANCHOR: backspace_editing
                     KeyCode::Backspace => {
                         if let Some(editing) = &app.currently_editing {
                             match editing {
@@ -109,13 +115,19 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                             }
                         }
                     }
+        // ANCHOR_END: backspace_editing
+        // ANCHOR: escape_editing
                     KeyCode::Esc => {
-                        app.current_screen = CurrentScreen::Normal;
+                        app.current_screen = CurrentScreen::Main;
                         app.currently_editing = None;
                     }
+        // ANCHOR_END: escape_editing
+        // ANCHOR: tab_editing
                     KeyCode::Tab => {
                         app.toggle_editing();
                     }
+        // ANCHOR_END: tab_editing
+                    // ANCHOR: character_editing
                     KeyCode::Char(value) => {
                         if let Some(editing) = &app.currently_editing {
                             match editing {
@@ -128,11 +140,13 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                             }
                         }
                     }
+                    // ANCHOR_END: character_editing
                     _ => {}
                 },
                 _ => {}
             }
         }
+        // ANCHOR_END: event_poll
     }
 }
 // ANCHOR: run_app_all
