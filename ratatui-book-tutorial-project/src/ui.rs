@@ -3,14 +3,17 @@ use ratatui::{
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Style},
     text::{Line, Span, Text},
-    widgets::{Block, Borders, Clear, Paragraph, Wrap},
+    widgets::{Block, Borders, Clear, Paragraph, Wrap, ListItem, List},
     Frame,
 };
 
 use crate::app::{App, CurrentScreen, CurrentlyEditing};
 
+// ANCHOR: method_sig
 pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
+// ANCHOR_END: method_sig
     // Create the layout sections.
+    // ANCHOR: ui_layout
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -22,8 +25,9 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
             .as_ref(),
         )
         .split(f.size());
+    // ANCHOR_END: ui_layout
 
-    // Create the title bar
+    //ANCHOR: title_paragraph
     let title_block = Block::default()
         .borders(Borders::ALL)
         .style(Style::default());
@@ -35,20 +39,27 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     .block(title_block);
 
     f.render_widget(title, chunks[0]);
-
-    let mut kv_text = Vec::<Line>::new();
+    //ANCHOR_END: title_paragraph
+    // ANCHOR: key_value_list
+    let mut list_items = Vec::<ListItem>::new();
 
     for i in 0..app.pairs.len() {
-        kv_text.push(Line::from(Span::styled(
-            format!("{: <25} : {}", app.pairs[i].key, app.pairs[i].value),
-            Style::default().fg(Color::Yellow),
-        )));
+        list_items.push(
+            ListItem::new(
+                Line::from(
+                    Span::styled(
+                        format!("{: <25} : {}", app.pairs[i].key, app.pairs[i].value),
+                        Style::default().fg(Color::Yellow),
+                    )
+                )
+            )
+        );
     }
 
-    let key_value_pairs =
-        Paragraph::new(kv_text.clone()).block(Block::default().borders(Borders::ALL));
+    let list = List::new(list_items);
 
-    f.render_widget(key_value_pairs, chunks[1]);
+    f.render_widget(list, chunks[1]);
+    // ANCHOR_END: key_value_list
 
     // Create the navigation bar at the bottom of the screen
     let current_navigation_text = vec![
