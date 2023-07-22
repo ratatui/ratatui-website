@@ -20,7 +20,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // ANCHOR: setup_boilerplate
     // setup terminal
     enable_raw_mode()?;
-    let mut stderr = io::stderr();
+    let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
     execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
     // ANCHOR_END: setup_boilerplate
     // ANCHOR: application_startup
@@ -96,7 +96,8 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                                     app.currently_editing = Some(CurrentlyEditing::Value);
                                 }
                                 CurrentlyEditing::Value => {
-                                    app.add_key_value();
+                                    app.save_key_value();
+                                    app.current_screen = CurrentScreen::Main;
                                 }
                             }
                         }

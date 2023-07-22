@@ -21,6 +21,8 @@ use std::io;
 {{#include ../../ratatui-book-tutorial-project/src/main.rs:setup_boilerplate}}
 ```
 
+You might notice that we are using `stderr` for our output. This is because we want to allow the user to pipe their completed json to other programs like `ratatui-tutorial > output.json`. To do this, we are utilizing the fact that `stderr` is piped differently than `stdout`, and rendering out project in `stderr`, and printout our completed json in `stdout`
+
 For more information, please read the crossterm documentation:
 **NOTE: ACTUALLY PUT LINKS HERE**
 
@@ -108,6 +110,7 @@ In this case, `KeyCode::Char('e')` changes the current screen to `CurrentScreen:
 
 #### Exiting
 The next handler we will prepare, will handle events while the application is on the `CurrentScreen::Exiting`. The job of this screen is to ask if the user wants to exit without outputing the json. It is simply a `y/n` question, so that is all we listen for. We also add an alternate exit key with `q`.
+If the user chooses to output the json, we call `app.print_json()` to perform the serialization and printing for us.
 
 ```rust,no_run,noplayground
 {{#include ../../ratatui-book-tutorial-project/src/main.rs:exiting_screen}}
