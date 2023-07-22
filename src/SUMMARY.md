@@ -13,7 +13,7 @@
 - [Tutorial](./tutorial/README.md)
   - [Holding application state](./tutorial/app.md)
   - [UI loop and event handling](./tutorial/main.md)
-  - [Add layout and widgets]()
+  - [Layouts, widgets, frames, oh my!](./tutorial/ui.md)
 
 # How To
 
