@@ -1,5 +1,4 @@
 // ANCHOR: all
-//
 // ANCHOR: imports
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
@@ -20,6 +19,14 @@ pub enum CurrentlyEditing {
 }
 // ANCHOR_END: currently_editing
 
+// ANCHOR: key_value_pair
+#[derive(Serialize, Deserialize)]
+pub struct KeyValuePair {
+    pub key: String,
+    pub value: String,
+}
+// ANCHOR_END: key_value_pair
+
 // ANCHOR: app_fields
 pub struct App {
     pub key_input: String, // the currently being edited json key.
@@ -30,6 +37,7 @@ pub struct App {
 }
 // ANCHOR_END: app_fields
 
+// ANCHOR: impl_new
 impl App {
     pub fn new() -> App {
         App {
@@ -40,8 +48,10 @@ impl App {
             currently_editing: None,
         }
     }
+// ANCHOR_END: impl_new
 
-    pub fn add_key_value(&mut self) {
+    // ANCHOR: save_key_value
+    pub fn save_key_value(&mut self) {
         self.pairs.push(KeyValuePair {
             key: self.key_input.clone(),
             value: self.value_input.clone(),
@@ -49,9 +59,10 @@ impl App {
         self.key_input = String::new();
         self.value_input = String::new();
         self.currently_editing = None;
-        self.current_screen = CurrentScreen::Main;
     }
+    // ANCHOR_END: save_key_value
 
+    // ANCHOR: toggle_editing
     pub fn toggle_editing(&mut self) {
         if let Some(edit_mode) = &self.currently_editing {
             match edit_mode {
@@ -62,20 +73,14 @@ impl App {
             self.currently_editing = Some(CurrentlyEditing::Key);
         }
     }
+    // ANCHOR_END: toggle_editing
 
+    // ANCHOR: print_json
     pub fn print_json(&self) -> Result<()> {
         let output = serde_json::to_string(&self.pairs)?;
         println!("{}", output);
         Ok(())
     }
+    // ANCHOR_END: print_json
 }
-
-// ANCHOR: key_value_pair
-#[derive(Serialize, Deserialize)]
-pub struct KeyValuePair {
-    pub key: String,
-    pub value: String,
-}
-// ANCHOR_END: key_value_pair
-
 // ANCHOR_END: all

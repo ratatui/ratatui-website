@@ -39,11 +39,54 @@ We also need to keep track of the key-value pairs the user has already entered. 
 
 
 ## The full application state
-Now that we have enums to help us track where the user is, it is time to create the struct that actually stores this data, and will be passed around where it is needed.
+Now that we have enums to help us track where the user is, we will create the struct that actually stores this data which can be passed around where it is needed.
 
 ```rust,no_run,noplayground
 {{#include ../../ratatui-book-tutorial-project/src/app.rs:app_fields}}
 ```
 
-# TODO: the rest of the application helper functions
+## Helper functions
+While we could simply keep our application state as only a holder of values, we can also create a few helper functions which will make our life easier elsewhere. Of course, these functions should only affect the application state itself, and nothing outside of it.
 
+#### new()
+We will be adding this function simply to make creating the state easier. While this could be avoided by specifying it all in the instantiation of the variable, doing it here allows for easy to change, universal default states.
+
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/app.rs:impl_new}}
+    ...
+```
+
+#### save_key\_value()
+This function will be called when the user saves a key-value pair in the editor. It adds the two stored variables to the key-value pairs vector, and resets the status of all of the editing variables.
+
+```rust,no_run,noplayground
+    ...
+{{#include ../../ratatui-book-tutorial-project/src/app.rs:save_key_value}}
+    ...
+```
+
+#### toggle_editing()
+Sometimes it is easier to put simple logic into a convenience function so we don't have to worry about it in the main code block. `toggle_editing` is one of those cases. 
+All we are doing, is checking if something is currently being edited, and if it is, swapping between editing the Key and Value fields.
+
+```rust,no_run,noplayground
+    ...
+{{#include ../../ratatui-book-tutorial-project/src/app.rs:toggle_editing}}
+    ...
+```
+
+#### print_json()
+Finally, is another convenience function to print out the serialized json from all of our key-value pairs.
+
+```rust,no_run,noplayground
+    ...
+{{#include ../../ratatui-book-tutorial-project/src/app.rs:print_json}}
+    ...
+```
+
+
+## The finished file
+The finished `app.rs` file should look something like this:
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/app.rs:all}}
+```
