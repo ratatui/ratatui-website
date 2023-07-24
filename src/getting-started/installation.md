@@ -10,7 +10,7 @@ However, there are a few features that are worth a look.
 
 ## Optional Features
 
-As ratatui grows and evolves, this list may change, so make sure to check the [main repo](./https://github.com/tui-rs-revival/ratatui) if you are unsure.
+As ratatui grows and evolves, this list may change, so make sure to check the [main repo](./https://github.com/ratatui-org/ratatui) if you are unsure.
 
 ### Feature: Backend Selection
 

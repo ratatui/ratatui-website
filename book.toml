@@ -6,6 +6,6 @@ src = "src"
 title = "Ratatui Documentation"
 
 [output.html]
-git-repository-url = "https://github.com/tui-rs-revival/ratatui-book"
+git-repository-url = "https://github.com/ratatui-org/ratatui-book"
 git-repository-icon = "fa-github"
-edit-url-template = "https://github.com/tui-rs-revival/ratatui-book/edit/main/{path}"
+edit-url-template = "https://github.com/ratatui-org/ratatui-book/edit/main/{path}"
