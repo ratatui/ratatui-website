@@ -14,6 +14,7 @@
   - [Holding application state](./tutorial/app.md)
   - [UI loop and event handling](./tutorial/main.md)
   - [Layouts, widgets, frames, oh my!](./tutorial/ui.md)
+  - [Conclusion](./tutorial/closing_thoughts.md)
 
 # How To
 

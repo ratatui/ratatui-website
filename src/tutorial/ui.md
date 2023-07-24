@@ -45,6 +45,9 @@ Our ui function needs two things to successfully create our UI elements. The `Fr
 {{#include ../../ratatui-book-tutorial-project/src/ui.rs:method_sig}}
 ```
 
+# The Main screen
+Because we want the `Main` screen to be rendered behind the editing popup, we will draw it first, and then have additional logic about our popups
+
 ## Our layout 
 Now that we have our `Frame`, we can actually begin drawing widgets onto it. 
 We will begin by creating out layout.
@@ -67,7 +70,7 @@ In this code, the first thing we do, is create a `Block` with all borders enable
 Next, we created a paragraph widget with the text "Create New Json" styled green. (See [TODO] for more information about creating paragraphs and [TODO] for styling text)
 Finally, we call `render_widget` on our `Frame`, and give it the widget we want to render it, and the `Rect` representing where it needs to go and what size it should be. (this is the way all widgets are drawn)
 
-## The list of exist pairs.
+## The list of existing pairs.
 We would also like the user to be able to see any key-value pairs that they have already entered. For this, we will be using another widget, the `List`. The list is what it sounds like - it creates a new line of text for each `ListItem`, and it supports passing in a state so you can implement selecting items on the list. We will not be implementing selection, as we simply want the user to be able to see what they have already entered.
 
 ```rust,no_run,noplayground
@@ -75,3 +78,89 @@ We would also like the user to be able to see any key-value pairs that they have
 ```
 For more information on Line, Span, and Style see [TODO]
 In this piece of the function, we create a vector of `ListItem`s, and populate it with styled and formatted key-value pairs. Finally, we create the `List` widget, and render it. 
+
+## The bottom navigational bar
+It can help new users of your application, to see hints about what keys they can press. For this, we are going to implement two bars, and another layout. 
+These two bars will contain information on 1) The current screen (`Main`, `Editing`, and `Exiting`), and 2) what keybinds are available. 
+
+Here, we will create a `Vec` of `Span` which will be converted later into a single line by the `Paragraph`. (A `Span` is different from a `Line`, because a `Span` indicates a section of `Text` with a style applied, and doesn't end with a newline)
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:lower_navigation_current_screen}}
+```
+
+Next, we are also going to make a hint in the navigation bar with available keys. This one does not have several sections of text with different styles, and is thus less code.
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:lower_navigation_key_hint}}
+```
+
+Finally, we are going to create our first nested layout. Because the `Layout.split` function requires a `Rect`, and not a `Frame`, we can pass one of our chunks from the previous layout as the space for the new layout. 
+If you remember the bottom most section from the above graphic:
+```
+------------------------------------ Constraint::Length(3)
+|       This section should        |
+|     always be 3 lines tall       |
+|                                  |
+|----------------------------------|
+```
+
+We will create a new layout in this space by passing it (`chunks[2]`) as the parameter for `split`. 
+
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:lower_navigation_layout}}
+```
+
+This code is the visual equivalent of this:
+```
+----------------------------------- Constraint::Length(3)
+|                |                |
+| Percentage(50) | Percentage(50) |
+|                |                |
+|---------------------------------|
+```
+
+And now we can render our footer paragraphs in the appropriate spaces.
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:lower_navigation_rendering}}
+```
+
+# The Editing Popup
+Now that the `Main` screen is rendered, we now need to check if the `Editing` popup needs to be rendered. Since the `ratatui` renderer simply writes over the cells within a `Rect` on a `render_widget`, we simply need to give `render_widget` an area on top of our `Main` screen to create the appearance of a popup.
+
+## Popup area and title
+The first thing we will do, is draw the `Block` that will contain the popup. We will give this `Block` a title to display as well to explain to the user what it is. (We will cover `centered_rect` below)
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:editing_popup}}
+```
+
+## Popup contents
+Now that we have where our popup is going to go, we can create the layout for the popup, and create and draw the widgets inside of it.
+
+First, we will create split the `Rect` given to us by `centered_rect`, and create a layout from it. Note the use of `margin(1)`, which gives a 1 space margin around any layout block, meaning our new blocks and widgets don't overwrite anything from the first popup block. 
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:popup_layout}}
+```
+
+Now that we have the layout for where we want to display the keys and values, we will actually create the blocks and paragraphs to show what the user has already entered.
+
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:key_value_blocks}}
+```
+Note that we are declaring the blocks as variables, and then adding extra styling to the block the user is currently editing. Then we create the `Paragraph` widgets, and assign the blocks with those variables.
+Also note how we used the `popup_chunks` layout instead of the `popup_block` layout to render these widgets into.
+
+# The Exit Popup
+We have a way for the user to view their already entered key-value pairs, and we have a way for the user to enter new ones. The last screen we need to create, is the exit/confirmation screen.
+
+In this screen, we are asking the user if they want to output the key-value pairs they have entered in the `stdout` pipe, or close without outputing anything. 
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:exit_screen}}
+```
+The only thing in this part that we havn't done before, is use the `Clear` widget. This is a special widget that does what the name suggests - it clears everything in the space it is rendered. In this case, it clears all of the menu that was pre-rendered behind it. 
+
+
+# Helper Functions
+Finally, we will implement the `centered_rect` helper function that is referenced above. This code is adapted from the [popup example](https://github.com/ratatui-org/ratatui/blob/main/examples/popup.rs) found in the official repo.
+
+```rust,no_run,noplayground
+{{#include ../../ratatui-book-tutorial-project/src/ui.rs:centered_rect}}
+```

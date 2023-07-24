@@ -83,10 +83,3 @@ Finally, is another convenience function to print out the serialized json from a
 {{#include ../../ratatui-book-tutorial-project/src/app.rs:print_json}}
     ...
 ```
-
-
-## The finished file
-The finished `app.rs` file should look something like this:
-```rust,no_run,noplayground
-{{#include ../../ratatui-book-tutorial-project/src/app.rs:all}}
-```
