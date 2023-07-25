@@ -1,6 +1,6 @@
 # Main.rs
 The `main` file in many ratatui applications is simply a place to store the startup loop, and occasionally event handling. 
-(See more ways this can be handled in [Concepts]())
+(See more ways to handle events in [Event Handling](./../concepts/event_handling.md))
 
 In this application, we will be using our `main` function to run the startup steps, and start the main loop. We will also put our main loop logic and event handling in this file.
 
@@ -8,7 +8,7 @@ In this application, we will be using our `main` function to run the startup ste
 In our main function, we will set up the terminal, create an application state and run our application, and finally reset the terminal to the state we found it in.
 
 ### Application pre-run steps
-Because a `ratatui` application take the whole screen, and capture all of the keyboard input, we need to run some boilerplate at the beginning of our `main` function. 
+Because a `ratatui` application takes the whole screen, and captures all of the keyboard input, we need some boilerplate at the beginning of our `main` function. 
 
 ```rust,no_run,noplayground 
 use crossterm::event::EnableMouseCapture;
@@ -23,8 +23,7 @@ use std::io;
 
 You might notice that we are using `stderr` for our output. This is because we want to allow the user to pipe their completed json to other programs like `ratatui-tutorial > output.json`. To do this, we are utilizing the fact that `stderr` is piped differently than `stdout`, and rendering out project in `stderr`, and printout our completed json in `stdout`
 
-For more information, please read the crossterm documentation:
-**NOTE: ACTUALLY PUT LINKS HERE**
+For more information, please read the [crossterm documentation](https://docs.rs/crossterm/latest/crossterm/)
 
 ### State creation, and loop starting
 Now that we have prepared the terminal for our application to run, it is time to actually run it.
@@ -37,7 +36,7 @@ First, we need to create an instance of our `ApplicationState` or `app`, to hold
 
 
 ### Application post-run steps
-Since our `ratatui` has changed the state of the terminal with our [pre-run boilerplate](#Application pre-run steps) (A/N: CHECK THIS WORKS), we need to undo what have did, and put the terminal back to the way we found it.
+Since our `ratatui` has changed the state of the terminal with our [pre-run boilerplate](#application-pre-run-steps), we need to undo what have did, and put the terminal back to the way we found it.
 
 Most of these functions will simply be the inverse of what we have done above.
 

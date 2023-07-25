@@ -12,7 +12,7 @@ The TLDR is, that we create a widget, and pass it to a `Frame` along with a size
 ```
 
 You can this as an small instruction manual for cutting up a rectangle into smaller rectangles, because that is what is actually happening. 
-(Find more information on the different types of constraints [Here TODO AFTER HOW-TOS])
+(Find more information on the different types of constraints, read [How-To: Constraints](./../how-to/layout-constraints.md))
 In the example above, you can read the instructions aloud like this: "Take the area f.size (which is a rectangle), and cut it into three vertical pieces (making horizontal cuts). The first section should always be 3 lines tall. The second section should never be smaller than one line tall, but can take extra space if there is any. The final section should also be 3 lines tall".
 
 For those visual learners, I have the following graphic:
@@ -60,14 +60,14 @@ The variable `chunks` now contains a length 3 array of `Rect` objects that conta
 
 ## The title
 The title is an important piece for any application. It helps the user understand what they can do and where they are.
-To create our title, we are going to use a `Paragraph` widget (which is used to display only text), and we are going to tell that `Paragraph` we want a border all around it by giving it a `Block` with borders enabled. (See [TODO] and [TODO] for more information about `Block` and `Paragraph`).
+To create our title, we are going to use a `Paragraph` widget (which is used to display only text), and we are going to tell that `Paragraph` we want a border all around it by giving it a `Block` with borders enabled. (See [How-To: Block](./../how-to/block.md) and [How-To: Paragraph](./../how-to/paragraph.md) for more information about `Block` and `Paragraph`).
 
 ```rust,no_run,noplayground
 {{#include ../../ratatui-book-tutorial-project/src/ui.rs:title_paragraph}}
 ```
 
 In this code, the first thing we do, is create a `Block` with all borders enabled, and the default style.
-Next, we created a paragraph widget with the text "Create New Json" styled green. (See [TODO] for more information about creating paragraphs and [TODO] for styling text)
+Next, we created a paragraph widget with the text "Create New Json" styled green. (See [How-To: Paragraphs](./../how-to/paragraph.md) for more information about creating paragraphs and [How-To: Styling-Text](./../how-to/styling-text.md) for styling text)
 Finally, we call `render_widget` on our `Frame`, and give it the widget we want to render it, and the `Rect` representing where it needs to go and what size it should be. (this is the way all widgets are drawn)
 
 ## The list of existing pairs.
@@ -76,7 +76,7 @@ We would also like the user to be able to see any key-value pairs that they have
 ```rust,no_run,noplayground
 {{#include ../../ratatui-book-tutorial-project/src/ui.rs:key_value_list}}
 ```
-For more information on Line, Span, and Style see [TODO]
+For more information on Line, Span, and Style see [How-To: Displaying Text](./../how-to/displaying-text.md)
 In this piece of the function, we create a vector of `ListItem`s, and populate it with styled and formatted key-value pairs. Finally, we create the `List` widget, and render it. 
 
 ## The bottom navigational bar

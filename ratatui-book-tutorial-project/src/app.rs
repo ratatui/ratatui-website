@@ -1,8 +1,8 @@
 // ANCHOR: all
 // ANCHOR: imports
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
 // ANCHOR_END: imports
+use serde_json::Result;
 
 // ANCHOR: screen_modes
 pub enum CurrentScreen {

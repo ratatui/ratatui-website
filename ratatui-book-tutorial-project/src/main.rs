@@ -16,8 +16,8 @@ use crate::app::{App, CurrentlyEditing, CurrentScreen};
 use crate::ui::ui;
 
 // ANCHOR: main_all
+// ANCHOR: setup_boilerplate
 fn main() -> Result<(), Box<dyn Error>> {
-    // ANCHOR: setup_boilerplate
     // setup terminal
     enable_raw_mode()?;
     let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
@@ -30,6 +30,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // create app and run it
     let app = App::new();
     let res = run_app(&mut terminal, app);
+
     // ANCHOR_END: application_startup
 
     // ANCHOR: ending_boilerplate

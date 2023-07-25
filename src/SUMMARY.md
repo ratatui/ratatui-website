@@ -11,16 +11,20 @@
 # Tutorial
 
 - [Tutorial](./tutorial/README.md)
-  - [Holding application state](./tutorial/app.md)
-  - [UI loop and event handling](./tutorial/main.md)
-  - [Layouts, widgets, frames, oh my!](./tutorial/ui.md)
+  - [App.rs - Holding application state](./tutorial/app.md)
+  - [Main.rs - UI loop and event handling](./tutorial/main.md)
+  - [Ui.rs - Layouts, widgets, frames, oh my!](./tutorial/ui.md)
   - [Conclusion](./tutorial/closing_thoughts.md)
 
 # How To
 
 - [How To]()
-  - [Configure terminals]()
-  - [Handle Keyboard Events]()
+  - [Blocks](./how-to/block.md)
+  - [Displaying Text](./how-to/displaying-text.md)
+    - [Styling-Text](./how-to/styling-text.md)
+    - [Paragraphs](./how-to/paragraph.md)
+  - [Layouts]()
+    - [Layout Constraints](./how-to/layout-constraints.md)
   - [Layout Widgets]()
   - [Create a Widget]()
   - [Handle Panics]()
@@ -33,6 +37,8 @@
 
 # Concepts
 
+- [Rendering](./concepts/rendering.md)
+- [Event Handling](./concepts/event_handling.md)
 - [Best Practices]()
   - [Project Structure]()
 - [Application Patterns]()
