@@ -16,6 +16,7 @@ pkgs.mkShell {
     rust-analyzer
     bacon
     commitizen
+    mdbook
     #pkg-config
   ];
 }
