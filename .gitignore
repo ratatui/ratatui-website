@@ -1,1 +1,11 @@
+target
 book
+.direnv
+.envrc
+ratatui-book-tutorial-project/.direnv
+ratatui-book-tutorial-project/.envrc
+Cargo.lock
+*.log
+*.rs.rustfmt
+.gdb_history
+.idea/
