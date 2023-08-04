@@ -69,7 +69,7 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
             CurrentScreen::Editing => Span::styled("Editing Mode", Style::default().fg(Color::Yellow)),
             CurrentScreen::Exiting => Span::styled("Exiting", Style::default().fg(Color::LightRed)),
         }.to_owned(),
-        // A white divider bar to seperate the two sections
+        // A white divider bar to separate the two sections
         Span::styled(" | ", Style::default().fg(Color::White)),
         // The final section of the text, with hints on what the user is editing
         {

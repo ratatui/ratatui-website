@@ -10,12 +10,12 @@ Pros:
 This has the advantage of requiring no message passing, and allows the programmer to edit all of the possible keyboard events in one place.
 
 Cons:
-However, this paticular way of handling events simply does not scale well. Because *all* events are handled in one place, you will be unable to split different groups of keybinds out into seperate locations. 
+However, this particular way of handling events simply does not scale well. Because *all* events are handled in one place, you will be unable to split different groups of keybinds out into separate locations. 
 
 ### Centralized catching, message passing
 This way of handling events involves polling for events in one place, and then sending messages/calling sub functions with the event that was caught. 
 Pros:
-This has a similar appeal to the first method in its simplicity. With this paradigm, you can easily split extensive pattern matching into sub functions that can go in seperate files. 
+This has a similar appeal to the first method in its simplicity. With this paradigm, you can easily split extensive pattern matching into sub functions that can go in separate files. 
 This way is also the idea often used in basic multi-threaded applications because message channels are used to pass multi-threaded safe messages. 
 
 Cons:

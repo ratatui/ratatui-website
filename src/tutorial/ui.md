@@ -151,7 +151,7 @@ Also note how we used the `popup_chunks` layout instead of the `popup_block` lay
 # The Exit Popup
 We have a way for the user to view their already entered key-value pairs, and we have a way for the user to enter new ones. The last screen we need to create, is the exit/confirmation screen.
 
-In this screen, we are asking the user if they want to output the key-value pairs they have entered in the `stdout` pipe, or close without outputing anything. 
+In this screen, we are asking the user if they want to output the key-value pairs they have entered in the `stdout` pipe, or close without outputting anything. 
 ```rust,no_run,noplayground
 {{#include ../../ratatui-book-tutorial-project/src/ui.rs:exit_screen}}
 ```

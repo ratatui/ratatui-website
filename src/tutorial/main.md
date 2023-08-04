@@ -101,14 +101,14 @@ We will start with the keybinds and event handling for the `CurrentScreen::Main`
 {{#include ../../ratatui-book-tutorial-project/src/main.rs:main_screen}}
 ```
 
-After matching to the `Main` enum varient, we match the event. When the user is in the main screen, there are only two keybinds, and the rest are ignored. 
+After matching to the `Main` enum variant, we match the event. When the user is in the main screen, there are only two keybinds, and the rest are ignored. 
 
 In this case, `KeyCode::Char('e')` changes the current screen to `CurrentScreen::Editing` and set the `CurrentlyEditing` to a `Some` and notes that the user should be editing the `Key` value field, as opposed to the `Value` field.
 
 `KeyCode::Char('q')` is straightforward, as it simply switches the application to the `Exiting` screen, and allows the ui and future event handling runs to do the rest.
 
 #### Exiting
-The next handler we will prepare, will handle events while the application is on the `CurrentScreen::Exiting`. The job of this screen is to ask if the user wants to exit without outputing the json. It is simply a `y/n` question, so that is all we listen for. We also add an alternate exit key with `q`.
+The next handler we will prepare, will handle events while the application is on the `CurrentScreen::Exiting`. The job of this screen is to ask if the user wants to exit without outputting the json. It is simply a `y/n` question, so that is all we listen for. We also add an alternate exit key with `q`.
 If the user chooses to output the json, we call `app.print_json()` to perform the serialization and printing for us.
 
 ```rust,no_run,noplayground
