@@ -4,10 +4,10 @@ A common model for smaller `ratatui` applications, is to have one large applicat
 
 This struct will contain all of our "persistent" data and will be passed to any function that needs to know the current state of the application.
 
-(~~Read [Concepts]() to explore some other models.~~ [Work in progress])
+(Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models)
 
 ## Application modes
-Often it is beneficial to imagine that there are several 'modes' the application can be in. Thinking this way will make it easier to segregate everything from what window is getting drawn, to what keybinds to listen for. We will be using the application's state and enums to track two things. The first thing we are going to track is what screen the user should be seeing, and the second will be an optional enum that only applies while the user is editing a key-value pair, that tracks which (key or value) should be highlighted for the user.
+Often it is beneficial to imagine that there are several 'modes' the application can be in. Thinking this way will make it easier to segregate everything from what window is getting drawn, to what keybinds to listen for. We will be using the application's state and enums to track two things. The first thing we are going to track is what screen the user should be seeing, and the second will be an optional enum that only applies while the user is editing a key-value pair that tracks which (key or value) should be highlighted for the user.
 
 
 In this tutorial application, we will have three "screens":
@@ -22,7 +22,7 @@ We represent these possible modes with a simple enum:
 ```
 
 ## Other state enums
-Because `ratatui` redraws the entire screen every frame (See [Rendering](./../concepts/rendering.md) for more information), the programmer is responsible for handling all state. In this case, we will allow the user to input two strings in the `Editing` mode - a key and a value. The programmer is responsible for knowing which the user is trying to edit. 
+`Ratatui` does not automatically redraw the screen (See [Rendering](./../concepts/rendering.md) for more information), and it does not remember anything about what it drew last frame. This means that the programmer is responsible for handling all state and updating widgets to reflect changes. In this case, we will allow the user to input two strings in the `Editing` mode - a key and a value. The programmer is responsible for knowing which the user is trying to edit. 
 
 For this purpose, we will create another enum for our application state called `CurrentlyEditing` to keep track of which field the user is currently entering:
 
