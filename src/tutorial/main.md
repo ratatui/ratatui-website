@@ -21,7 +21,7 @@ use std::io;
 {{#include ../../ratatui-book-tutorial-project/src/main.rs:setup_boilerplate}}
 ```
 
-You might notice that we are using `stderr` for our output. This is because we want to allow the user to pipe their completed json to other programs like `ratatui-tutorial > output.json`. To do this, we are utilizing the fact that `stderr` is piped differently than `stdout`, and rendering out project in `stderr`, and printout our completed json in `stdout`
+You might notice that we are using `stderr` for our output. This is because we want to allow the user to pipe their completed json to other programs like `ratatui-tutorial > output.json`. To do this, we are utilizing the fact that `stderr` is piped differently than `stdout`, and rendering out project in `stderr`, and printout our completed json in `stdout`.
 
 For more information, please read the [crossterm documentation](https://docs.rs/crossterm/latest/crossterm/)
 
@@ -36,7 +36,7 @@ First, we need to create an instance of our `ApplicationState` or `app`, to hold
 
 
 ### Application post-run steps
-Since our `ratatui` has changed the state of the terminal with our [pre-run boilerplate](#application-pre-run-steps), we need to undo what have did, and put the terminal back to the way we found it.
+Since our `ratatui` application has changed the state of the user's terminal with our [pre-run boilerplate](#application-pre-run-steps), we need to undo what have did, and put the terminal back to the way we found it.
 
 Most of these functions will simply be the inverse of what we have done above.
 
@@ -69,7 +69,7 @@ Let's start with the method signature:
 ...
 ```
 
-This method accepts an object of type `Terminal` which implements the `ratatui::backed::Backend` trait. This included the three (four counting the `TestBackend`) officially supported backends included in `ratatui`, but allows for 3rd party backends to be implemented. `run_app` also requires mutable ownership (A/N: MAKE SURE THIS IS THE CORRECT TERMINOLOGY) to an application state object, as defined in this project.
+This method accepts an object of type `Terminal` which implements the `ratatui::backed::Backend` trait. This included the three (four counting the `TestBackend`) officially supported backends included in `ratatui`, but allows for 3rd party backends to be implemented. `run_app` also requires mutable ownership to an application state object, as defined in this project.
 
 ### UI Loop
 Because `ratatui` requires us to implement our own event/ui loop, we will simply use the following code to update our main loop.
@@ -79,7 +79,7 @@ Because `ratatui` requires us to implement our own event/ui loop, we will simply
 ```
 
 Let's unpack that `draw` call really quick.
-`terminal` is the `Terminal<Backend>` that we take as an arguement, `draw` is the `ratatui` command to draw widgets to the frame. `|f| ui(f, &app)` tells `draw` that we want to take `f: <Frame>` and pass it to our function `ui`, and ui will return a drawable frame. Notice that we also pass a immutable borrow of our application state to the `ui` function. This will be important later.
+`terminal` is the `Terminal<Backend>` that we take as an arguement, `draw` is the `ratatui` command to draw a `Frame` to the terminal (technically to the `Terminal<Backend>`, but that only matters on the `TestBackend`). `|f| ui(f, &app)` tells `draw` that we want to take `f: <Frame>` and pass it to our function `ui`, and `ui` will return a drawable frame. Notice that we also pass a immutable borrow of our application state to the `ui` function. This will be important later.
 
 ### Event handling
 Now that we have started our app, and have set up the ui rendering, we will implement the event handling.
