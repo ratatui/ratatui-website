@@ -15,6 +15,7 @@ pkgs.mkShell {
     ruststable
     rust-analyzer
     bacon
+    typos
     commitizen
     mdbook
     #pkg-config
