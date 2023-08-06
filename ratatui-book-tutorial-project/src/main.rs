@@ -28,8 +28,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut terminal = Terminal::new(backend)?;
 
     // create app and run it
-    let app = App::new();
-    let res = run_app(&mut terminal, app);
+    let mut app = App::new();
+    let res = run_app(&mut terminal, &mut app);
 
     // ANCHOR_END: application_startup
 
@@ -42,19 +42,25 @@ fn main() -> Result<(), Box<dyn Error>> {
         DisableMouseCapture
     )?;
     terminal.show_cursor()?;
+    // ANCHOR_END: ending_boilerplate
 
-    if let Err(err) = res {
+    // ANCHOR: final_print
+    if let Ok(do_print) = res {
+        if do_print {
+            app.print_json()?;
+        }
+    } else if let Err(err) = res {
         println!("{err:?}");
     }
 
     Ok(())
-    // ANCHOR_END: ending_boilerplate
+    // ANCHOR_END: final_print
 }
 // ANCHOR_END: main_all
 
 // ANCHOR: run_app_all
 // ANCHOR: run_method_signature
-fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<()> {
+fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<bool> {
 // ANCHOR_END: run_method_signature
 // ANCHOR: ui_loop
     loop {
@@ -79,11 +85,10 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
         // ANCHOR: exiting_screen
                 CurrentScreen::Exiting => match key.code {
                     KeyCode::Char('y') => {
-                        app.print_json()?;
-                        return Ok(());
+                        return Ok(true);
                     }
                     KeyCode::Char('n') | KeyCode::Char('q') => {
-                        return Ok(());
+                        return Ok(false);
                     }
                     _ => {}
                 },
