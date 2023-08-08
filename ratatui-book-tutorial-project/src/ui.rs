@@ -44,12 +44,12 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     // ANCHOR: key_value_list
     let mut list_items = Vec::<ListItem>::new();
 
-    for i in app.pairs.keys() {
+    for key in app.pairs.keys() {
         list_items.push(
             ListItem::new(
                 Line::from(
                     Span::styled(
-                        format!("{: <25} : {}", i, app.pairs.get(i).unwrap()),
+                        format!("{: <25} : {}", key, app.pairs.get(key).unwrap()),
                         Style::default().fg(Color::Yellow),
                     )
                 )
