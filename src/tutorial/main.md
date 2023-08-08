@@ -58,7 +58,7 @@ that we handle our error in such a way that we can call this last piece.
 The if statement at the end of boilerplate checks if the `run_app` function errored. If `run_app`
 returned an `Ok` state. If it returned an `Ok` state, we need to check if we should print the json. 
 
-If we don't call our print function before we call `execute!(LeaveAlternateScreen)`, our print calls
+If we don't call our print function before we call `execute!(LeaveAlternateScreen)`, our prints
 will be rendered on an old screen and lost when we leave the alternate screen. (For more information
 on how this works, read the [Crossterm
 documentation](https://docs.rs/crossterm/latest/crossterm/terminal/struct.LeaveAlternateScreen.html))

@@ -54,8 +54,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     Ok(())
-    // ANCHOR_END: final_print
 }
+// ANCHOR_END: final_print
 // ANCHOR_END: main_all
 
 // ANCHOR: run_app_all
@@ -64,7 +64,7 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<
 // ANCHOR_END: run_method_signature
 // ANCHOR: ui_loop
     loop {
-        terminal.draw(|f| ui(f, &app))?;
+        terminal.draw(|f| ui(f, app))?;
 // ANCHOR_END: ui_loop
 
         // ANCHOR: event_poll
