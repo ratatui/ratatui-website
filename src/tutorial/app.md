@@ -30,16 +30,6 @@ For this purpose, we will create another enum for our application state called `
 {{#include ../../ratatui-book-tutorial-project/src/app.rs:currently_editing}}
 ```
 
-We also need to keep track of the key-value pairs the user has already entered. To do this, we will create a serde serializable data struct, and store a `Vec` of them in our application state struct.
-
-```rust,no_run,noplayground
-{{#include ../../ratatui-book-tutorial-project/src/app.rs:imports}}
-```
-```rust,no_run,noplayground
-{{#include ../../ratatui-book-tutorial-project/src/app.rs:key_value_pair}}
-```
-
-
 
 ## The full application state
 Now that we have enums to help us track where the user is, we will create the struct that actually stores this data which can be passed around where it is needed.
@@ -60,7 +50,8 @@ We will be adding this function simply to make creating the state easier. While 
 ```
 
 #### save_key\_value()
-This function will be called when the user saves a key-value pair in the editor. It adds the two stored variables to the key-value pairs vector, and resets the status of all of the editing variables.
+This function will be called when the user saves a key-value pair in the editor.
+It adds the two stored variables to the key-value pairs `HashMap`, and resets the status of all of the editing variables.
 
 ```rust,no_run,noplayground
     ...

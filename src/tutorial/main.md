@@ -45,11 +45,23 @@ use crossterm::event::DisableMouseCapture;
 use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};
 ```
 ```rust,no_run,noplayground 
-{{#include ../../ratatui-book-tutorial-project/src/main.rs:setup_boilerplate}}
+{{#include ../../ratatui-book-tutorial-project/src/main.rs:ending_boilerplate}}
 ```
 
-The last three lines are there to catch any errors and print them before closing. This is important because we do not want our application erroring out without running this releasing boilerplate. 
-When an application exits without running this closing boilerplate, the terminal will act very strange, and the user will usually have to end the terminal session and start a new on. Thus it is important that we handle our error in such a way that we can call this last piece.
+When an application exits without running this closing boilerplate, the terminal will act very strange,
+and the user will usually have to end the terminal session and start a new on. Thus it is important
+that we handle our error in such a way that we can call this last piece.
+
+```rust,no_run,noplayground 
+{{#include ../../ratatui-book-tutorial-project/src/main.rs:final_print}}
+```
+The if statement at the end of boilerplate checks if the `run_app` function errored. If `run_app`
+returned an `Ok` state. If it returned an `Ok` state, we need to check if we should print the json. 
+
+If we don't call our print function before we call `execute!(LeaveAlternateScreen)`, our prints
+will be rendered on an old screen and lost when we leave the alternate screen. (For more information
+on how this works, read the [Crossterm
+documentation](https://docs.rs/crossterm/latest/crossterm/terminal/struct.LeaveAlternateScreen.html))
 
 So, altogether, our finished function should looks like this:
 
@@ -69,7 +81,10 @@ Let's start with the method signature:
 ...
 ```
 
-This method accepts an object of type `Terminal` which implements the `ratatui::backed::Backend` trait. This included the three (four counting the `TestBackend`) officially supported backends included in `ratatui`, but allows for 3rd party backends to be implemented. `run_app` also requires mutable ownership to an application state object, as defined in this project.
+This method accepts an object of type `Terminal` which implements the `ratatui::backed::Backend` trait. This included the three (four counting the `TestBackend`) officially supported backends included in `ratatui`, but allows for 3rd party backends to be implemented. `run_app` also requires a mutable borrow to an application state object, as defined in this project.
+Finally, the `run_app` returns an `io::Result<bool>` that indicates if there was an io error with
+the `Err` state, and an `Ok(true)` or `Ok(false)` that indicates if the program should print out the
+finished json.
 
 ### UI Loop
 Because `ratatui` requires us to implement our own event/ui loop, we will simply use the following code to update our main loop.
@@ -109,7 +124,7 @@ In this case, `KeyCode::Char('e')` changes the current screen to `CurrentScreen:
 
 #### Exiting
 The next handler we will prepare, will handle events while the application is on the `CurrentScreen::Exiting`. The job of this screen is to ask if the user wants to exit without outputting the json. It is simply a `y/n` question, so that is all we listen for. We also add an alternate exit key with `q`.
-If the user chooses to output the json, we call `app.print_json()` to perform the serialization and printing for us.
+If the user chooses to output the json, we return an `Ok(true)` that indicates that our `main` function should call `app.print_json()` to perform the serialization and printing for us after resetting the terminal to normal
 
 ```rust,no_run,noplayground
 {{#include ../../ratatui-book-tutorial-project/src/main.rs:exiting_screen}}

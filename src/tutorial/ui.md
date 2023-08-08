@@ -71,12 +71,18 @@ Next, we created a paragraph widget with the text "Create New Json" styled green
 Finally, we call `render_widget` on our `Frame`, and give it the widget we want to render it, and the `Rect` representing where it needs to go and what size it should be. (this is the way all widgets are drawn)
 
 ## The list of existing pairs.
-We would also like the user to be able to see any key-value pairs that they have already entered. For this, we will be using another widget, the `List`. The list is what it sounds like - it creates a new line of text for each `ListItem`, and it supports passing in a state so you can implement selecting items on the list. We will not be implementing selection, as we simply want the user to be able to see what they have already entered.
+We would also like the user to be able to see any key-value pairs that they have already entered.
+For this, we will be using another widget, the `List`. The list is what it sounds like - it creates 
+a new line of text for each `ListItem`, and it supports passing in a state so you can implement selecting
+items on the list with little extra work. We will not be implementing selection, as we simply want the user
+to be able to see what they have already entered.
 
 ```rust,no_run,noplayground
 {{#include ../../ratatui-book-tutorial-project/src/ui.rs:key_value_list}}
 ```
+
 For more information on Line, Span, and Style see [How-To: Displaying Text](./../how-to/displaying-text.md)
+
 In this piece of the function, we create a vector of `ListItem`s, and populate it with styled and formatted key-value pairs. Finally, we create the `List` widget, and render it. 
 
 ## The bottom navigational bar
