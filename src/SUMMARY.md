@@ -1,56 +1,62 @@
 # Summary
 
-[Introduction](./README.md)
+[Home](./README.md)
 
-# Getting Started
+- [Introduction](./ch00-00-introduction.md)
 
 - [Getting Started](./getting-started/getting-started.md)
-  - [Installation](./getting-started/installation.md)
-  - [Choosing a Backend](./getting-started/choosing-a-backend.md)
 
-# Tutorial
+  - [Installation](./getting-started/installation.md)
+  - [Features](./getting-started/features.md)
+  - [Choosing a Backend]()
 
 - [Tutorial](./tutorial/README.md)
+
   - [App.rs - Holding application state](./tutorial/app.md)
   - [Main.rs - UI loop and event handling](./tutorial/main.md)
   - [Ui.rs - Layouts, widgets, frames, oh my!](./tutorial/ui.md)
   - [Conclusion](./tutorial/closing_thoughts.md)
 
-# How To
-
 - [How To]()
-  - [Blocks](./how-to/block.md)
-  - [Displaying Text](./how-to/displaying-text.md)
-    - [Styling-Text](./how-to/styling-text.md)
-    - [Paragraphs](./how-to/paragraph.md)
+
+  - [Blocks]()
+  - [Displaying Text]()
+    - [Styling-Text]()
+    - [Paragraphs]()
   - [Layouts]()
-    - [Layout Constraints](./how-to/layout-constraints.md)
+    - [Layout Constraints]()
   - [Layout Widgets]()
   - [Create a Widget]()
   - [Handle Panics]()
 
-# References
+- [FAQ](./faq.md)
 
-- [Crate Docs]()
-- [Starter Template]()
-- [Third Party Crates]()
+- [References]()
 
-# Concepts
+  - [Crate Docs]()
+  - [Starter Template]()
+  - [Third Party Crates]()
 
-- [Rendering](./concepts/rendering.md)
-- [Event Handling](./concepts/event_handling.md)
-- [Best Practices]()
+- [Concepts]()
+
+  - [Rendering]()
+  - [Event Handling](./concepts/event_handling.md)
+  - [Best Practices]()
   - [Project Structure]()
-- [Application Patterns]()
+  - [Application Patterns]()
   - [Design Patterns]()
   - [Application State]()
   - [Event Handling]()
   - [Key Binding]()
-- [Threading]()
-- [Logging]()
-- [Configuration]()
-- [Backend Choice]()
-- [Other stuff]()
+  - [Threading]()
+  - [Logging]()
+  - [Configuration]()
+  - [Backend Choice]()
+
+- [Developer Guide]()
+
+  - [Ratatui]()
+  - [Ratatui Book](./developer-guide/book.md)
 
 ---
 

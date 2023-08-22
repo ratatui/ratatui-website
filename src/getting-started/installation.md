@@ -1,45 +1,90 @@
 # Installation
 
-Installing ratatui is as simple as
+Installing ratatui is as simple as running the following:
+
 ```console
 cargo add ratatui
 ```
-and you can start programming TUIs.
 
-However, there are a few features that are worth a look.
+And you can start programming TUIs.
 
-## Optional Features
+`ratatui` is a library (i.e. a Rust crate).
+Running the above command in your console will add the latest version of `ratatui` to your project.
 
-As ratatui grows and evolves, this list may change, so make sure to check the [main repo](./https://github.com/ratatui-org/ratatui) if you are unsure.
-
-### Feature: Backend Selection
-
-See [Choosing a Backend](./ch01-02-choosing-a-backend.md) for more information. However, for most cases, the default `crossterm` backend is enough.
+If you are interested in adding a specific version, you can run the following:
 
 ```console
-# Defaults to crossterm
-cargo add ratatui
-# Unset the default crossterm feature and select one of the other backends
-cargo add ratatui --no-default-features --features=terminon 
-cargo add ratatui --no-default-features --features=termwiz
+cargo add ratatui --version 0.19.0
 ```
 
-### Feature: All-Widgets
+## Hello World
 
-This feature enables some extra widgets that are not in `default` to save on compile time. As of v0.21, the only widget in this feature group is the `calendar` widget, which can be enabled with the `widget-calendar` feature.
-```console
-cargo add ratatui --features all-widgets
-```
-
-### Feature: Widget-Calendar
-This feature enables the calendar widget, which requires the `time` crate. 
+To start with a new project, you can run the following:
 
 ```console
-cargo add ratatui --features widget-calendar
+cargo new project
+cd project
+cargo add ratatui crossterm
 ```
 
-### Feature: Serde
-
-```console
-cargo add ratatui --features serde
+```admonish note
+`ratatui` has to be combined with a terminal backend.
+You can learn more about the different terminal backends in [section on choosing a backend](./choosing-a-backend.md).
+For the examples in this book, we are going to use `crossterm`.
 ```
+
+Modify `src/main.rs` to the following:
+
+```rust,no_run,noplayground
+use ratatui::{
+  prelude::{CrosstermBackend, Terminal},
+  widgets::Paragraph,
+};
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+  crossterm::terminal::enable_raw_mode()?;
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+
+  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+
+  loop {
+    terminal.draw(|f| {
+      f.render_widget(Paragraph::new("Hello World! (press 'q' to quit)"), f.size());
+    })?;
+
+    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        if key.code == crossterm::event::KeyCode::Char('q') {
+          break;
+        }
+      }
+    }
+  }
+
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?;
+
+  Ok(())
+}
+```
+
+The above code does 3 things:
+
+1. Sets up (and tears down) the terminal in raw mode and the alternate screen buffer.
+1. Renders a `Paragraph` widget using the `CrosstermBackend` in a loop.
+1. Polls for a key press event for 250ms and if the key is the letter "q" breaks out of the loop.
+
+We can run our program with:
+
+```
+cargo run
+```
+
+You can press `q` to exit and go back to your terminal as it was before.
+
+![](https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif)
+
+Congratulations! :tada:
+
+You have written a "hello world" terminal user interface.
+We will cover more real world and complex applications in the following sections.

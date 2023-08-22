@@ -2,3 +2,7 @@
 
 [default.extend-words]
 ratatui = "ratatui"
+
+[files]
+extend-exclude = ["*.css", "*.js"]
+
