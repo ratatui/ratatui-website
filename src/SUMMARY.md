@@ -2,7 +2,9 @@
 
 [Home](./README.md)
 
-- [Introduction](./ch00-00-introduction.md)
+---
+
+- [Introduction](./introduction.md)
 
 - [Getting Started](./getting-started/getting-started.md)
 
@@ -37,7 +39,7 @@
   - [Starter Template]()
   - [Third Party Crates]()
 
-- [Concepts]()
+- [Concepts](./concepts/README.md)
 
   - [Rendering]()
   - [Event Handling](./concepts/event_handling.md)

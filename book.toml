@@ -11,6 +11,7 @@ git-repository-icon = "fa-github"
 edit-url-template = "https://github.com/ratatui-org/ratatui-book/edit/main/{path}"
 additional-css = ["./mdbook-admonish.css", "./theme/catppuccin.css", "./theme/catppuccin-highlight.css"]
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
+site-url = "/ratatui-book/"
 
 [preprocessor.svgbob2]
 
