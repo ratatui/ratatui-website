@@ -1,13 +1,9 @@
-# Ratatui Book
-
-<img align="right" style="padding-left:10px" src="https://avatars.githubusercontent.com/u/125200832?s=128&v=4" alt="ratatui logo">
-
-[`ratatui`](https://github.com/ratatui-org/ratatui) is a Rust library to build rich terminal user interfaces (TUIs) and dashboards.
-
-It is a community fork of the original [`tui-rs`](https://github.com/fdehau/tui-rs) created to maintain and improve the project.
+{{#include ../README.md}}
 
 ```admonish note
-This documentation is a work in progress.
-Come help us out at <https://github.com/ratatui-org/ratatui-book/> by contributing to the discussions and issues.
 We want to hear your feedback and suggestions.
+
+Feel free to give some suggestions on improving the book or documentation via
+[GitHub Discussions](https://github.com/ratatui-org/ratatui-book/discussions) or chat with us on
+[Discord](https://discord.com/channels/1070692720437383208/1115053951000268832).
 ```
