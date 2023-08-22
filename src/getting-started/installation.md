@@ -21,10 +21,9 @@ cargo add ratatui --version 0.19.0
 
 To start with a new project, you can run the following:
 
-```
-mkdir project
+```console
+cargo new project
 cd project
-cargo init
 cargo add ratatui crossterm
 ```
 
@@ -53,9 +52,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
       f.render_widget(Paragraph::new("Hello World! (press 'q' to quit)"), f.size());
     })?;
 
-    if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-      if key.code == crossterm::event::KeyCode::Char('q') {
-        break;
+    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        if key.code == crossterm::event::KeyCode::Char('q') {
+          break;
+        }
       }
     }
   }
@@ -75,6 +76,6 @@ cargo run
 
 Press `q` to exit.
 
-![](https://user-images.githubusercontent.com/1813121/262239086-9c483c12-75ba-409a-b97b-8faed4e9e468.gif)
+![](https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif)
 
 We will cover more real world applications and how to organize your code in the following sections.

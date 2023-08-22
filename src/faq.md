@@ -1,6 +1,6 @@
 # FAQ
 
-### Why am I getting duplicate key events on Windows?
+## Why am I getting duplicate key events on Windows?
 
 A lot of examples out there in the wild might use the following code for sending key presses:
 
@@ -21,7 +21,7 @@ To make the code work as expected across all platforms, you can do this instead:
   },
 ```
 
-### When should I use `tokio` or `async`/`await`?
+## When should I use `tokio` or `async`/`await`?
 
 `ratatui` isn't a native `async` library.
 So is it beneficial to use `tokio` or `async`/`await`?

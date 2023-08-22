@@ -29,6 +29,8 @@
   - [Create a Widget]()
   - [Handle Panics]()
 
+- [FAQ](./faq.md)
+
 - [References]()
 
   - [Crate Docs]()
@@ -50,7 +52,6 @@
   - [Logging]()
   - [Configuration]()
   - [Backend Choice]()
-  - [FAQ](./concepts/faq.md)
 
 - [Developer Guide]()
 
