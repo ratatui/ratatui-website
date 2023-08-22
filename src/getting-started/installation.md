@@ -17,7 +17,7 @@ If you are interested in adding a specific version, you can run the following:
 cargo add ratatui --version 0.19.0
 ```
 
-## Quickstart
+## Hello World
 
 To start with a new project, you can run the following:
 
@@ -68,14 +68,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-Then you can run it with:
+The above code does 3 things:
+
+1. Sets up (and tears down) the terminal in raw mode and the alternate screen buffer.
+1. Renders a `Paragraph` widget using the `CrosstermBackend` in a loop.
+1. Polls for a key press event for 250ms and if the key is the letter "q" breaks out of the loop.
+
+We can run our program with:
 
 ```
 cargo run
 ```
 
-Press `q` to exit.
+You can press `q` to exit and go back to your terminal as it was before.
 
 ![](https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif)
 
-We will cover more real world applications and how to organize your code in the following sections.
+Congratulations! :tada:
+
+You have written a "hello world" terminal user interface.
+We will cover more real world and complex applications in the following sections.

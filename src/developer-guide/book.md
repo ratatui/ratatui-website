@@ -16,6 +16,7 @@ cargo install mdbook-admonish --version 1.9.0
 cargo install mdbook-svgbob2 --version 0.3.0
 cargo install mdbook-linkcheck --version 0.7.7
 cargo install mdbook-mermaid --version 0.12.6
+cargo install mdbook-emojicodes --version 0.2.2
 ```
 
 These plugins allow additional features.
@@ -111,3 +112,15 @@ will render as the following:
       \ /
        '
 ```
+
+### `mdbook-emojicodes`
+
+The following raw markdown:
+
+```markdown
+I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon :raccoon:, and the other one is black, like the night :night_with_stars:.
+```
+
+will render as the following:
+
+I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon :raccoon:, and the other one is black, like the night :night_with_stars:.
