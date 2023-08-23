@@ -1,29 +1,32 @@
-# Installation
+# Getting Started
 
-Installing ratatui is as simple as running the following:
+Getting started with `ratatui` is straightforward --- Add it to the project, and you are ready to start creating beautiful TUIs!
 
-```console
-cargo add ratatui
-```
+### Install `Rust`
 
-And you can start programming TUIs.
+The first step is to install Rust.
+Most people use `rustup` to manage their installation.
 
-`ratatui` is a library (i.e. a Rust crate).
-Running the above command in your console will add the latest version of `ratatui` to your project.
+Check [Installation section of the official Rust Book](https://doc.rust-lang.org/book/ch01-01-installation.html) for more information.
 
-If you are interested in adding a specific version, you can run the following:
+`rustup` will set you up with the latest stable version of `rust` as well as `cargo`.
+`cargo` is Rust's package manager, and it is what we will use to create a new project and add
+`ratatui` as a dependency.
 
-```console
-cargo add ratatui --version 0.19.0
-```
-
-## Hello World
+### Create a "hello world" project
 
 To start with a new project, you can run the following:
 
 ```console
-cargo new project
-cd project
+cargo new hello-world-tui
+cd hello-world-tui
+```
+
+### Install `ratatui`
+
+Installing `ratatui` is as easy as running the following:
+
+```console
 cargo add ratatui crossterm
 ```
 
@@ -32,6 +35,18 @@ cargo add ratatui crossterm
 You can learn more about the different terminal backends in [section on choosing a backend](./choosing-a-backend.md).
 For the examples in this book, we are going to use `crossterm`.
 ```
+
+Running the above command in your console will add the latest version of `ratatui` and `crossterm` to your project.
+
+````admonish tip
+If you are interested in adding a specific version, you can run the following:
+
+```console
+cargo add ratatui --version 0.19.0
+```
+````
+
+### Modifying `src/main.rs`
 
 Modify `src/main.rs` to the following:
 
@@ -68,11 +83,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-The above code does 3 things:
+Make sure you save and exit the file!
+Now we are ready to run the TUI.
 
-1. Sets up (and tears down) the terminal in raw mode and the alternate screen buffer.
-1. Renders a `Paragraph` widget using the `CrosstermBackend` in a loop.
-1. Polls for a key press event for 250ms and if the key is the letter "q" breaks out of the loop.
+### Running the TUI
 
 We can run our program with:
 
@@ -86,5 +100,5 @@ You can press `q` to exit and go back to your terminal as it was before.
 
 Congratulations! :tada:
 
-You have written a "hello world" terminal user interface.
-We will cover more real world and complex applications in the following sections.
+You have written a "hello world" terminal user interface with `ratatui`.
+We will learn more about how `ratatui` works in the next sections.
