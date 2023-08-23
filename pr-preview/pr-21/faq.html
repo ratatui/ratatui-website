@@ -157,14 +157,12 @@
                     <main>
                         <h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
 <h2 id="why-am-i-getting-duplicate-key-events-on-windows"><a class="header" href="#why-am-i-getting-duplicate-key-events-on-windows">Why am I getting duplicate key events on Windows?</a></h2>
-<p>A lot of examples out there in the wild might use the following code for sending
-key presses:</p>
+<p>A lot of examples out there in the wild might use the following code for sending key presses:</p>
 <pre><code class="language-rust">  CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),</code></pre>
-<p>However, on Windows, when using <code>Crossterm</code>, this will send the same
-<code>Event::Key(e)</code> twice; one for when you press the key, i.e.
-<code>KeyEventKind::Press</code> and one for when you release the key, i.e.
-<code>KeyEventKind::Release</code>. On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds
-of <code>key</code> event is generated.</p>
+<p>However, on Windows, when using <code>Crossterm</code>, this will send the same <code>Event::Key(e)</code> twice; one for
+when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when you release the key, i.e.
+<code>KeyEventKind::Release</code>. On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds of <code>key</code> event is
+generated.</p>
 <p>To make the code work as expected across all platforms, you can do this instead:</p>
 <pre><code class="language-rust">  CrosstermEvent::Key(key) =&gt; {
     if key.kind == KeyEventKind::Press {
@@ -172,25 +170,19 @@ of <code>key</code> event is generated.</p>
     }
   },</code></pre>
 <h2 id="when-should-i-use-tokio-or-asyncawait"><a class="header" href="#when-should-i-use-tokio-or-asyncawait">When should I use <code>tokio</code> or <code>async</code>/<code>await</code>?</a></h2>
-<p><code>ratatui</code> isn’t a native <code>async</code> library. So is it beneficial to use <code>tokio</code> or
-<code>async</code>/<code>await</code>?</p>
-<p>And as a user, there really is only one point of interface with the <code>ratatui</code>
-library and that’s the <code>terminal.draw(|f| ui(f))</code> functionality, because the
-rendering of widgets happens in <code>ui(f)</code>. Everything else in your code is your
-own to do as you wish.</p>
-<p>Should <code>terminal.draw(|f| ui(f))</code> be <code>async</code>? Possibly. Rendering to the
-terminal buffer is relatively fast, especially using the double buffer technique
-that only renders diffs that <code>ratatui</code> uses.</p>
-<p>Can we make it <code>async</code> ourselves? Yes, we can. That’s covered in the material in
-this documentation.</p>
-<p>The only other part related to <code>ratatui</code> that is beneficial to being <code>async</code> is
-reading the key event inputs from <code>stdin</code>, and that can be made <code>async</code> with
-<code>crossterm</code>’s event-stream.</p>
-<p>So the real question is what other parts of your app require <code>async</code> or benefit
-from being <code>async</code>? If the answer is not much, maybe it is simpler to not use
-<code>async</code> and avoiding <code>tokio</code>.</p>
-<p>Another way to think about it is, do you think your app would work better with 1
-thread like this?</p>
+<p><code>ratatui</code> isn’t a native <code>async</code> library. So is it beneficial to use <code>tokio</code> or <code>async</code>/<code>await</code>?</p>
+<p>And as a user, there really is only one point of interface with the <code>ratatui</code> library and that’s the
+<code>terminal.draw(|f| ui(f))</code> functionality, because the rendering of widgets happens in <code>ui(f)</code>.
+Everything else in your code is your own to do as you wish.</p>
+<p>Should <code>terminal.draw(|f| ui(f))</code> be <code>async</code>? Possibly. Rendering to the terminal buffer is
+relatively fast, especially using the double buffer technique that only renders diffs that <code>ratatui</code>
+uses.</p>
+<p>Can we make it <code>async</code> ourselves? Yes, we can. That’s covered in the material in this documentation.</p>
+<p>The only other part related to <code>ratatui</code> that is beneficial to being <code>async</code> is reading the key
+event inputs from <code>stdin</code>, and that can be made <code>async</code> with <code>crossterm</code>’s event-stream.</p>
+<p>So the real question is what other parts of your app require <code>async</code> or benefit from being <code>async</code>?
+If the answer is not much, maybe it is simpler to not use <code>async</code> and avoiding <code>tokio</code>.</p>
+<p>Another way to think about it is, do you think your app would work better with 1 thread like this?</p>
 <pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="136" height="224">
   <style>
     line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
@@ -424,8 +416,8 @@ thread like this?</p>
     <path d="M 652,324 A 4,4 0,0,1 648,328" class="nofill"></path>
   </g>
 </svg></pre>
-<p>The former be done without <code>async</code> and the latter is the approach described in
-this documentation with <code>tokio</code>.</p>
+<p>The former be done without <code>async</code> and the latter is the approach described in this documentation
+with <code>tokio</code>.</p>
 
                     </main>
 
