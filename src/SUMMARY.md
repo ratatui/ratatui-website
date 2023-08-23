@@ -10,6 +10,8 @@
 
 - [Tutorial](./tutorial/README.md)
 
+  - [Counter App](./tutorial/counter-app/README.md)
+    - [Version 1](./tutorial/counter-app/version1.md)
   - [JSON Editor](./tutorial/json-editor/README.md)
     - [App.rs - Holding application state](./tutorial/json-editor/app.md)
     - [Main.rs - UI loop and event handling](./tutorial/json-editor/main.md)

@@ -1,8 +1,9 @@
 # Tutorial
 
-## Tutorial 1
+## [Counter App](./counter-app/README.md)
 
-This tutorial will set up the basics of a `ratatui` project.
+This tutorial will set up the basics of a `ratatui` project by building a app that displays a
+counter.
 
 ## [JSON Editor](./json-editor/README.md)
 
