@@ -78,6 +78,7 @@ jobs:
           PR_NUM=${{ github.event.number }}
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
+          git stash
           git fetch origin gh-pages:gh-pages
           git checkout gh-pages
 
@@ -86,6 +87,7 @@ jobs:
           git push origin gh-pages
 
           git checkout "$CURRENT_BRANCH"
+          git stash pop
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
