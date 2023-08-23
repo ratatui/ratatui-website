@@ -1,0 +1,2255 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Ratatui Book</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./mdbook-admonish.css">
+        <link rel="stylesheet" href="./theme/catppuccin.css">
+        <link rel="stylesheet" href="./theme/catppuccin-highlight.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Home</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting-started/index.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="tutorial/index.html"><strong aria-hidden="true">3.</strong> Tutorial</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tutorial/counter-app/index.html"><strong aria-hidden="true">3.1.</strong> Counter App</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tutorial/counter-app/single-function.html"><strong aria-hidden="true">3.1.1.</strong> Single Function</a></li><li class="chapter-item expanded "><a href="tutorial/counter-app/refactor.html"><strong aria-hidden="true">3.1.2.</strong> Refactor</a></li></ol></li><li class="chapter-item expanded "><a href="tutorial/json-editor/index.html"><strong aria-hidden="true">3.2.</strong> JSON Editor</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tutorial/json-editor/app.html"><strong aria-hidden="true">3.2.1.</strong> App.rs - Holding application state</a></li><li class="chapter-item expanded "><a href="tutorial/json-editor/main.html"><strong aria-hidden="true">3.2.2.</strong> Main.rs - UI loop and event handling</a></li><li class="chapter-item expanded "><a href="tutorial/json-editor/ui.html"><strong aria-hidden="true">3.2.3.</strong> Ui.rs - Layouts, widgets, frames, oh my!</a></li><li class="chapter-item expanded "><a href="tutorial/json-editor/closing_thoughts.html"><strong aria-hidden="true">3.2.4.</strong> Conclusion</a></li></ol></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> How To</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="how-to/features.html"><strong aria-hidden="true">4.1.</strong> Enable Features</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Choose a Backend</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.3.</strong> Blocks</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.4.</strong> Displaying Text</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.4.1.</strong> Styling-Text</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.4.2.</strong> Paragraphs</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.5.</strong> Layouts</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.5.1.</strong> Layout Constraints</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.6.</strong> Layout Widgets</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.7.</strong> Create a Widget</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.8.</strong> Handle Panics</div></li></ol></li><li class="chapter-item expanded "><a href="faq.html"><strong aria-hidden="true">5.</strong> FAQ</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> References</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.1.</strong> Crate Docs</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Starter Template</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.3.</strong> Third Party Crates</div></li></ol></li><li class="chapter-item expanded "><a href="concepts/index.html"><strong aria-hidden="true">7.</strong> Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">7.1.</strong> Rendering</div></li><li class="chapter-item expanded "><a href="concepts/event_handling.html"><strong aria-hidden="true">7.2.</strong> Event Handling</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.3.</strong> Best Practices</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.4.</strong> Project Structure</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.5.</strong> Application Patterns</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.6.</strong> Design Patterns</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.7.</strong> Application State</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.8.</strong> Event Handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.9.</strong> Key Binding</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.10.</strong> Threading</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.11.</strong> Logging</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.12.</strong> Configuration</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.13.</strong> Backend Choice</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> Developer Guide</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">8.1.</strong> Ratatui</div></li><li class="chapter-item expanded "><a href="developer-guide/book.html"><strong aria-hidden="true">8.2.</strong> Ratatui Book</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="contributors.html">Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappé</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Ratatui Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="ratatui-book"><a class="header" href="#ratatui-book">Ratatui Book</a></h1>
+<img align="right" src="https://avatars.githubusercontent.com/u/125200832?s=128&v=4" alt="ratatui logo">
+<p>This is the documentation project for <a href="https://github.com/ratatui-org/ratatui"><code>ratatui</code></a>, a Rust
+library to build rich terminal user interfaces and dashboards.</p>
+<p><a href="./LICENSE"><img src="https://img.shields.io/crates/l/ratatui?style=for-the-badge" alt="License" /></a>
+<a href="https://github.com/ratatui-org/ratatui-book/actions/workflows/mdbook.yml"><img src="https://img.shields.io/github/actions/workflow/status/ratatui-org/ratatui-book/mdbook.yml?label=Github%20Pages&amp;logo=github&amp;style=for-the-badge" alt="GitHub Workflow Status" /></a>
+<a href="https://ratatui-org.github.io/ratatui-book/"><img src="https://img.shields.io/badge/Read-Documentation-blue?style=for-the-badge" alt="Read the documentation" /></a>
+<a href="https://discord.gg/pMCEU9hNEj"><img src="https://img.shields.io/discord/1070692720437383208?label=discord&amp;logo=discord&amp;style=for-the-badge" alt="Discord" /></a></p>
+<p>To read the book online, visit:</p>
+<p><a href="https://ratatui-org.github.io/ratatui-book/">https://ratatui-org.github.io/ratatui-book/</a>.</p>
+<p>To read this book locally, run the following:</p>
+<pre><code class="language-shell">git clone -b gh-pages https://github.com/ratatui-org/ratatui-book
+cd ratatui-book
+python -m http.server # or your favorite way to serve local files
+</code></pre>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="index.html#admonition-note"></a></p>
+</div>
+<div>
+<p>We want to hear your feedback and suggestions.</p>
+<p>Feel free to give some suggestions on improving the book or documentation via
+<a href="https://github.com/ratatui-org/ratatui-book/discussions">GitHub Discussions</a> or chat with us on
+<a href="https://discord.com/channels/1070692720437383208/1115053951000268832">Discord</a>.</p>
+</div>
+</div>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p><img src="https://user-images.githubusercontent.com/24392180/244943746-93ab0e38-93e0-4ae0-a31b-91ae6c393185.gif" alt="" /></p>
+<p><code>ratatui</code> is based on the principle of immediate rendering with intermediate
+buffers. This means that at each new frame you have to build all widgets that
+are supposed to be part of the UI. In short, the <code>ratatui</code> library handles
+drawing to the terminal.</p>
+<p>It is important to note that <code>ratatui</code>:</p>
+<ul>
+<li>does <strong>NOT</strong> handle keyboard input events</li>
+<li>does <strong>NOT</strong> modify the state of your application</li>
+<li>does <strong>NOT</strong> dicate how you want to structure your application</li>
+</ul>
+<p>The <code>ratatui</code> crate is a library and not a framework. And the <code>ratatui</code> library
+provides widgets that allows a developer to imperatively declare what the view
+of your application should look like, and then allows a developer to draw those
+widgets efficiently to the terminal.</p>
+<p>For these reasons, <code>ratatui</code> can be highly flexible and customizable. And while
+this can be empowering, it also does put the onus on developers using <code>ratatui</code>
+to understand how to best architect their applications, to tailor the experience
+for users as they see fit.</p>
+<h2 id="who-is-ratatui-for"><a class="header" href="#who-is-ratatui-for">Who is ratatui for?</a></h2>
+<p><code>ratatui</code> is designed for developers and enthusiasts who:</p>
+<ul>
+<li>appreciate the retro aesthetic of the terminal,</li>
+<li>want a lightweight alternative to graphical user interfaces (GUIs),</li>
+<li>need applications that are to be deployed in constrained environments, like on
+servers with limited resources, and</li>
+<li>prefer to have full control over input and events, allowing for a more
+customized and tailored user experience.</li>
+</ul>
+<h2 id="who-is-this-book-for"><a class="header" href="#who-is-this-book-for">Who is this book for?</a></h2>
+<p>In this book, we will cover beginner guides to advanced patterns for developing
+terminal user interfaces.</p>
+<p>Those new to the world of TUIs will find this book a comprehensive guide,
+introducing the foundational concepts and walking through common patterns of
+using <code>ratatui</code>. Additionally, developers who have worked with TUIs will
+understand the nuances and benefits of using <code>ratatui</code>.</p>
+<p>We hope that this book can be a journey into creating beautiful and functional
+terminal-based applications.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p>Getting started with <code>ratatui</code> is straightforward — Add it to the project, and
+you are ready to start creating beautiful TUIs!</p>
+<h3 id="install-rust"><a class="header" href="#install-rust">Install <code>Rust</code></a></h3>
+<p>The first step is to install Rust. Most people use <code>rustup</code> to manage their
+installation.</p>
+<p>Check
+<a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation section of the official Rust Book</a>
+for more information.</p>
+<p><code>rustup</code> will set you up with the latest stable version of <code>rust</code> as well as
+<code>cargo</code>. <code>cargo</code> is Rust’s package manager, and it is what we will use to create
+a new project and add <code>ratatui</code> as a dependency.</p>
+<h3 id="create-a-hello-world-project"><a class="header" href="#create-a-hello-world-project">Create a “hello world” project</a></h3>
+<p>To start with a new project, you can run the following:</p>
+<pre><code class="language-console">cargo new hello-world-tui
+cd hello-world-tui
+</code></pre>
+<h3 id="install-ratatui"><a class="header" href="#install-ratatui">Install <code>ratatui</code></a></h3>
+<p>Installing <code>ratatui</code> is as easy as running the following:</p>
+<pre><code class="language-console">cargo add ratatui crossterm
+</code></pre>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="getting-started/index.html#admonition-note"></a></p>
+</div>
+<div>
+<p><code>ratatui</code> has to be combined with a terminal backend.
+You can learn more about the different terminal backends in <a href="getting-started/./choosing-a-backend.html">section on choosing a backend</a>.
+For the examples in this book, we are going to use <code>crossterm</code>.</p>
+</div>
+</div>
+<p>Running the above command in your console will add the latest version of
+<code>ratatui</code> and <code>crossterm</code> to your project.</p>
+<div id="admonition-tip" class="admonition tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="getting-started/index.html#admonition-tip"></a></p>
+</div>
+<div>
+<p>If you are interested in adding a specific version, you can run the following:</p>
+<pre><code class="language-console">cargo add ratatui --version 0.19.0
+</code></pre>
+</div>
+</div>
+<h3 id="modifying-srcmainrs"><a class="header" href="#modifying-srcmainrs">Modifying <code>src/main.rs</code></a></h3>
+<p>Modify <code>src/main.rs</code> to the following:</p>
+<pre><code class="language-rust no_run noplayground">use ratatui::{
+  prelude::{CrosstermBackend, Terminal},
+  widgets::Paragraph,
+};
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+  crossterm::terminal::enable_raw_mode()?;
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+
+  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+
+  loop {
+    terminal.draw(|f| {
+      f.render_widget(Paragraph::new(&quot;Hello World! (press 'q' to quit)&quot;), f.size());
+    })?;
+
+    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        if key.code == crossterm::event::KeyCode::Char('q') {
+          break;
+        }
+      }
+    }
+  }
+
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?;
+
+  Ok(())
+}</code></pre>
+<p>Make sure you save and exit the file! Now we are ready to run the TUI.</p>
+<h3 id="running-the-tui"><a class="header" href="#running-the-tui">Running the TUI</a></h3>
+<p>We can run our program with:</p>
+<pre><code>cargo run
+</code></pre>
+<p>You can press <code>q</code> to exit and go back to your terminal as it was before.</p>
+<p><img src="https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif" alt="" /></p>
+<p>Congratulations! 🎉</p>
+<p>You have written a “hello world” terminal user interface with <code>ratatui</code>. We will
+learn more about how <code>ratatui</code> works in the next sections.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tutorial"><a class="header" href="#tutorial">Tutorial</a></h1>
+<h2 id="counter-app"><a class="header" href="#counter-app"><a href="tutorial/./counter-app/README.html">Counter App</a></a></h2>
+<p>This tutorial will set up the basics of a <code>ratatui</code> project by building a app
+that displays a counter.</p>
+<h2 id="json-editor"><a class="header" href="#json-editor"><a href="tutorial/./json-editor/README.html">JSON Editor</a></a></h2>
+<p>This tutorial will guide you through setting up a Rust project and organizing
+its structure for a <code>ratatui</code>-based application to edit json key value pairs.
+JSON Editor TUI will provide an interface for users to input key-value pairs,
+which are then converted into correct JSON format and printed to stdout.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="counter-app-1"><a class="header" href="#counter-app-1">Counter App</a></h1>
+<p>In the previous section, we built a “hello world” TUI. In this tutorial, we’ll
+develop a simple counter application.</p>
+<p>For the app, we’ll need a <code>Paragraph</code> to display the counter. We’ll also want to
+increment or decrement the counter when a key is pressed. Let’s increment and
+decrement the counter with <code>j</code> and <code>k</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="single-function"><a class="header" href="#single-function">Single Function</a></h1>
+<p>Here’s a first pass at a counter application in Rust using <code>ratatui</code></p>
+<pre><code class="language-rust">use ratatui::{
+  prelude::{CrosstermBackend, Terminal},
+  widgets::Paragraph,
+};
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+  crossterm::terminal::enable_raw_mode()?;
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+
+  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+
+  let mut counter = 0;
+
+  loop {
+    terminal.draw(|f| {
+      f.render_widget(Paragraph::new(format!(&quot;Counter: {counter}&quot;)), f.size());
+    })?;
+
+    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        match key.code {
+          crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
+          crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
+          crossterm::event::KeyCode::Char('q') =&gt; break,
+          _ =&gt; (),
+        }
+      }
+    }
+  }
+
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?;
+
+  Ok(())
+}</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="refactor"><a class="header" href="#refactor">Refactor</a></h1>
+<p>Let’s refactor the app:</p>
+<pre><code class="language-rust">use crossterm::{
+  event::{self, Event::Key, KeyCode::Char},
+  execute,
+  terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+};
+use ratatui::{
+  prelude::{CrosstermBackend, Terminal},
+  widgets::Paragraph,
+};
+
+pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+type Err = Box&lt;dyn std::error::Error&gt;;
+type TuiResult&lt;T&gt; = std::result::Result&lt;T, Err&gt;;
+
+fn startup() -&gt; TuiResult&lt;()&gt; {
+  enable_raw_mode()?;
+  execute!(std::io::stderr(), EnterAlternateScreen)?;
+  Ok(())
+}
+
+fn shutdown() -&gt; TuiResult&lt;()&gt; {
+  execute!(std::io::stderr(), LeaveAlternateScreen)?;
+  disable_raw_mode()?;
+  Ok(())
+}
+
+// App state
+struct App {
+  counter: i64,
+  should_quit: bool,
+}
+
+// App ui render function
+fn ui(f: &amp;mut Frame&lt;'_&gt;, app: &amp;App) {
+  f.render_widget(Paragraph::new(format!(&quot;Counter: {}&quot;, app.counter)), f.size());
+}
+
+// App update function
+fn update(app: &amp;mut App) -&gt; TuiResult&lt;()&gt; {
+  if event::poll(std::time::Duration::from_millis(250))? {
+    if let Key(key) = event::read()? {
+      match key.code {
+        Char('j') =&gt; app.counter += 1,
+        Char('k') =&gt; app.counter -= 1,
+        Char('q') =&gt; app.should_quit = true,
+        _ =&gt; (),
+      }
+    }
+  }
+  Ok(())
+}
+
+fn run() -&gt; TuiResult&lt;()&gt; {
+  // ratatui terminal
+  let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+
+  // application state
+  let mut app = App { counter: 0, should_quit: false };
+
+  loop {
+    // application render
+    t.draw(|f| {
+      ui(f, &amp;app);
+    })?;
+
+    // application update
+    update(&amp;mut app)?;
+
+    // application exit
+    if app.should_quit {
+      break;
+    }
+  }
+
+  Ok(())
+}
+
+fn main() -&gt; TuiResult&lt;()&gt; {
+  // setup terminal
+  startup()?;
+
+  let status = run();
+
+  // teardown terminal before unwrapping Result of app run
+  shutdown()?;
+
+  status?;
+
+  Ok(())
+}</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="json-editor-1"><a class="header" href="#json-editor-1">JSON Editor</a></h1>
+<p>In this tutorial, we will be creating an application that gives the user a
+simple interface to enter key-value pairs, which will be converted and printed
+to <code>stdout</code> in json.</p>
+<p>The purpose of this application will be to give the user an interface to create
+correct json, instead of having to worry about commas and brackets themselves.</p>
+<h2 id="initialization"><a class="header" href="#initialization">Initialization</a></h2>
+<p>Go ahead and set up a new rust project with</p>
+<pre><code class="language-sh">cargo init ratatui-example-project
+</code></pre>
+<p>and put the following in the <code>Cargo.toml</code>:</p>
+<pre><code>[dependencies]
+crossterm = &quot;0.26.1&quot;
+ratatui = &quot;0.22.0&quot;
+serde = { version = &quot;1.0.181&quot;, features = [&quot;derive&quot;] }
+serde_json = &quot;1.0.104&quot;
+</code></pre>
+<p>or the latest version of these libraries</p>
+<h2 id="filestructure"><a class="header" href="#filestructure">Filestructure</a></h2>
+<p>Now create two files inside of <code>src/</code> so it looks like this:</p>
+<pre><code>src
+├── main.rs
+├── ui.rs
+└── app.rs
+</code></pre>
+<p>This follows a common approach to small applications in <code>ratatui</code>, where we have
+a state file, a UI file, and the main file to tie it all together.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="apprs"><a class="header" href="#apprs">App.rs</a></h1>
+<p>A common model for smaller <code>ratatui</code> applications, is to have one large
+application state struct called <code>App</code> or some variant of that name. We will be
+using this paradigm in this application.</p>
+<p>This struct will contain all of our “persistent” data and will be passed to any
+function that needs to know the current state of the application.</p>
+<p>(Read <a href="tutorial/json-editor/../concepts/storing_state.html">Application Pattern Concepts</a> to explore
+some other models)</p>
+<h2 id="application-modes"><a class="header" href="#application-modes">Application modes</a></h2>
+<p>Often it is beneficial to imagine that there are several ‘modes’ the application
+can be in. Thinking this way will make it easier to segregate everything from
+what window is getting drawn, to what keybinds to listen for. We will be using
+the application’s state and enums to track two things. The first thing we are
+going to track is what screen the user should be seeing, and the second will be
+an optional enum that only applies while the user is editing a key-value pair
+that tracks which (key or value) should be highlighted for the user.</p>
+<p>In this tutorial application, we will have three “screens”:</p>
+<ul>
+<li><code>Main</code>: the main summary screen showing all past key-value pairs entered</li>
+<li><code>Editing</code>: the screen shown when the user wishes to create a new key-value
+pair</li>
+<li><code>Exiting</code>: displays a prompt asking if the user wants to output the key-value
+pairs they have entered.</li>
+</ul>
+<p>We represent these possible modes with a simple enum:</p>
+<pre><code class="language-rust no_run noplayground">pub enum CurrentScreen {
+    Main,
+    Editing,
+    Exiting,
+}</code></pre>
+<h2 id="other-state-enums"><a class="header" href="#other-state-enums">Other state enums</a></h2>
+<p><code>Ratatui</code> does not automatically redraw the screen (See
+<a href="tutorial/json-editor/./../concepts/rendering.html">Rendering</a> for more information), and it does not
+remember anything about what it drew last frame. This means that the programmer
+is responsible for handling all state and updating widgets to reflect changes.
+In this case, we will allow the user to input two strings in the <code>Editing</code>
+mode - a key and a value. The programmer is responsible for knowing which the
+user is trying to edit.</p>
+<p>For this purpose, we will create another enum for our application state called
+<code>CurrentlyEditing</code> to keep track of which field the user is currently entering:</p>
+<pre><code class="language-rust no_run noplayground">pub enum CurrentlyEditing {
+    Key,
+    Value,
+}</code></pre>
+<h2 id="the-full-application-state"><a class="header" href="#the-full-application-state">The full application state</a></h2>
+<p>Now that we have enums to help us track where the user is, we will create the
+struct that actually stores this data which can be passed around where it is
+needed.</p>
+<pre><code class="language-rust no_run noplayground">pub struct App {
+    pub key_input: String, // the currently being edited json key.
+    pub value_input: String, // the currently being edited json value.
+    pub pairs: HashMap&lt;String, String&gt;, // The representation of our key and value pairs with serde Serialize support
+    pub current_screen: CurrentScreen, // the current screen the user is looking at, and will later determine what is rendered.
+    pub currently_editing: Option&lt;CurrentlyEditing&gt;, // the optional state containing which of the key or value pair the user is editing. It is an option, because when the user is not directly editing a key-value pair, this will be set to `None`.
+}</code></pre>
+<h2 id="helper-functions"><a class="header" href="#helper-functions">Helper functions</a></h2>
+<p>While we could simply keep our application state as simply a holder of values,
+we can also create a few helper functions which will make our life easier
+elsewhere. Of course, these functions should only affect the application state
+itself, and nothing outside of it.</p>
+<h4 id="new"><a class="header" href="#new">new()</a></h4>
+<p>We will be adding this function simply to make creating the state easier. While
+this could be avoided by specifying it all in the instantiation of the variable,
+doing it here allows for easy to change universal defaults for the state.</p>
+<pre><code class="language-rust no_run noplayground">impl App {
+    pub fn new() -&gt; App {
+        App {
+            key_input: String::new(),
+            value_input: String::new(),
+            pairs: HashMap::new(),
+            current_screen: CurrentScreen::Main,
+            currently_editing: None,
+        }
+    }
+    ...</code></pre>
+<h4 id="save_key_value"><a class="header" href="#save_key_value">save_key_value()</a></h4>
+<p>This function will be called when the user saves a key-value pair in the editor.
+It adds the two stored variables to the key-value pairs <code>HashMap</code>, and resets
+the status of all of the editing variables.</p>
+<pre><code class="language-rust no_run noplayground">    ...
+    pub fn save_key_value(&amp;mut self) {
+
+        self.pairs.insert(self.key_input.clone(), self.value_input.clone());
+
+        self.key_input = String::new();
+        self.value_input = String::new();
+        self.currently_editing = None;
+    }
+    ...</code></pre>
+<h4 id="toggle_editing"><a class="header" href="#toggle_editing">toggle_editing()</a></h4>
+<p>Sometimes it is easier to put simple logic into a convenience function so we
+don’t have to worry about it in the main code block. <code>toggle_editing</code> is one of
+those cases. All we are doing, is checking if something is currently being
+edited, and if it is, swapping between editing the Key and Value fields.</p>
+<pre><code class="language-rust no_run noplayground">    ...
+    pub fn toggle_editing(&amp;mut self) {
+        if let Some(edit_mode) = &amp;self.currently_editing {
+            match edit_mode {
+                CurrentlyEditing::Key =&gt; self.currently_editing = Some(CurrentlyEditing::Value),
+                CurrentlyEditing::Value =&gt; self.currently_editing = Some(CurrentlyEditing::Key),
+            };
+        } else {
+            self.currently_editing = Some(CurrentlyEditing::Key);
+        }
+    }
+    ...</code></pre>
+<h4 id="print_json"><a class="header" href="#print_json">print_json()</a></h4>
+<p>Finally, is another convenience function to print out the serialized json from
+all of our key-value pairs.</p>
+<pre><code class="language-rust no_run noplayground">    ...
+    pub fn print_json(&amp;self) -&gt; Result&lt;()&gt; {
+        let output = serde_json::to_string(&amp;self.pairs)?;
+        println!(&quot;{}&quot;, output);
+        Ok(())
+    }
+    ...</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mainrs"><a class="header" href="#mainrs">Main.rs</a></h1>
+<p>The <code>main</code> file in many ratatui applications is simply a place to store the
+startup loop, and occasionally event handling. (See more ways to handle events
+in <a href="tutorial/json-editor/./../concepts/event_handling.html">Event Handling</a>)</p>
+<p>In this application, we will be using our <code>main</code> function to run the startup
+steps, and start the main loop. We will also put our main loop logic and event
+handling in this file.</p>
+<h2 id="main"><a class="header" href="#main">Main</a></h2>
+<p>In our main function, we will set up the terminal, create an application state
+and run our application, and finally reset the terminal to the state we found it
+in.</p>
+<h3 id="application-pre-run-steps"><a class="header" href="#application-pre-run-steps">Application pre-run steps</a></h3>
+<p>Because a <code>ratatui</code> application takes the whole screen, and captures all of the
+keyboard input, we need some boilerplate at the beginning of our <code>main</code>
+function.</p>
+<pre><code class="language-rust no_run noplayground">use crossterm::event::EnableMouseCapture;
+use crossterm::execute;
+use crossterm::terminal::{enable_raw_mode, EnterAlternateScreen};
+use std::io;</code></pre>
+<pre><code class="language-rust no_run noplayground">fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+    // setup terminal
+    enable_raw_mode()?;
+    let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
+    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;</code></pre>
+<p>You might notice that we are using <code>stderr</code> for our output. This is because we
+want to allow the user to pipe their completed json to other programs like
+<code>ratatui-tutorial &gt; output.json</code>. To do this, we are utilizing the fact that
+<code>stderr</code> is piped differently than <code>stdout</code>, and rendering out project in
+<code>stderr</code>, and printout our completed json in <code>stdout</code>.</p>
+<p>For more information, please read the
+<a href="https://docs.rs/crossterm/latest/crossterm/">crossterm documentation</a></p>
+<h3 id="state-creation-and-loop-starting"><a class="header" href="#state-creation-and-loop-starting">State creation, and loop starting</a></h3>
+<p>Now that we have prepared the terminal for our application to run, it is time to
+actually run it.</p>
+<p>First, we need to create an instance of our <code>ApplicationState</code> or <code>app</code>, to hold
+all of the program’s state, and then we will call our function which handles the
+event and draw loop.</p>
+<pre><code class="language-rust no_run noplayground">    let backend = CrosstermBackend::new(stderr);
+    let mut terminal = Terminal::new(backend)?;
+
+    // create app and run it
+    let mut app = App::new();
+    let res = run_app(&amp;mut terminal, &amp;mut app);
+</code></pre>
+<h3 id="application-post-run-steps"><a class="header" href="#application-post-run-steps">Application post-run steps</a></h3>
+<p>Since our <code>ratatui</code> application has changed the state of the user’s terminal
+with our <a href="tutorial/json-editor/main.html#application-pre-run-steps">pre-run boilerplate</a>, we need to undo what
+have did, and put the terminal back to the way we found it.</p>
+<p>Most of these functions will simply be the inverse of what we have done above.</p>
+<pre><code class="language-rust no_run noplayground">use crossterm::event::DisableMouseCapture;
+use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};</code></pre>
+<pre><code class="language-rust no_run noplayground">    // restore terminal
+    disable_raw_mode()?;
+    execute!(
+        terminal.backend_mut(),
+        LeaveAlternateScreen,
+        DisableMouseCapture
+    )?;
+    terminal.show_cursor()?;</code></pre>
+<p>When an application exits without running this closing boilerplate, the terminal
+will act very strange, and the user will usually have to end the terminal
+session and start a new on. Thus it is important that we handle our error in
+such a way that we can call this last piece.</p>
+<pre><code class="language-rust no_run noplayground">    if let Ok(do_print) = res {
+        if do_print {
+            app.print_json()?;
+        }
+    } else if let Err(err) = res {
+        println!(&quot;{err:?}&quot;);
+    }
+
+    Ok(())
+}</code></pre>
+<p>The if statement at the end of boilerplate checks if the <code>run_app</code> function
+errored. If <code>run_app</code> returned an <code>Ok</code> state. If it returned an <code>Ok</code> state, we
+need to check if we should print the json.</p>
+<p>If we don’t call our print function before we call
+<code>execute!(LeaveAlternateScreen)</code>, our prints will be rendered on an old screen
+and lost when we leave the alternate screen. (For more information on how this
+works, read the
+<a href="https://docs.rs/crossterm/latest/crossterm/terminal/struct.LeaveAlternateScreen.html">Crossterm documentation</a>)</p>
+<p>So, altogether, our finished function should looks like this:</p>
+<pre><code class="language-rust no_run noplayground">fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+    // setup terminal
+    enable_raw_mode()?;
+    let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
+    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
+    let backend = CrosstermBackend::new(stderr);
+    let mut terminal = Terminal::new(backend)?;
+
+    // create app and run it
+    let mut app = App::new();
+    let res = run_app(&amp;mut terminal, &amp;mut app);
+
+
+    // restore terminal
+    disable_raw_mode()?;
+    execute!(
+        terminal.backend_mut(),
+        LeaveAlternateScreen,
+        DisableMouseCapture
+    )?;
+    terminal.show_cursor()?;
+
+    if let Ok(do_print) = res {
+        if do_print {
+            app.print_json()?;
+        }
+    } else if let Err(err) = res {
+        println!(&quot;{err:?}&quot;);
+    }
+
+    Ok(())
+}</code></pre>
+<h2 id="run_app"><a class="header" href="#run_app">run_app</a></h2>
+<p>In this function, we will start to do some actual logic.</p>
+<h3 id="method-signature"><a class="header" href="#method-signature">Method signature</a></h3>
+<p>Let’s start with the method signature:</p>
+<pre><code class="language-rust no_run noplayground">fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut App) -&gt; io::Result&lt;bool&gt; {
+...</code></pre>
+<p>This method accepts an object of type <code>Terminal</code> which implements the
+<code>ratatui::backed::Backend</code> trait. This included the three (four counting the
+<code>TestBackend</code>) officially supported backends included in <code>ratatui</code>, but allows
+for 3rd party backends to be implemented. <code>run_app</code> also requires a mutable
+borrow to an application state object, as defined in this project. Finally, the
+<code>run_app</code> returns an <code>io::Result&lt;bool&gt;</code> that indicates if there was an io error
+with the <code>Err</code> state, and an <code>Ok(true)</code> or <code>Ok(false)</code> that indicates if the
+program should print out the finished json.</p>
+<h3 id="ui-loop"><a class="header" href="#ui-loop">UI Loop</a></h3>
+<p>Because <code>ratatui</code> requires us to implement our own event/ui loop, we will simply
+use the following code to update our main loop.</p>
+<pre><code class="language-rust no_run noplayground">    loop {
+        terminal.draw(|f| ui(f, app))?;</code></pre>
+<p>Let’s unpack that <code>draw</code> call really quick. <code>terminal</code> is the
+<code>Terminal&lt;Backend&gt;</code> that we take as an arguement, <code>draw</code> is the <code>ratatui</code>
+command to draw a <code>Frame</code> to the terminal (technically to the
+<code>Terminal&lt;Backend&gt;</code>, but that only matters on the <code>TestBackend</code>).
+<code>|f| ui(f, &amp;app)</code> tells <code>draw</code> that we want to take <code>f: &lt;Frame&gt;</code> and pass it to
+our function <code>ui</code>, and <code>ui</code> will return a drawable frame. Notice that we also
+pass a immutable borrow of our application state to the <code>ui</code> function. This will
+be important later.</p>
+<h3 id="event-handling"><a class="header" href="#event-handling">Event handling</a></h3>
+<p>Now that we have started our app, and have set up the ui rendering, we will
+implement the event handling.</p>
+<h4 id="polling"><a class="header" href="#polling">Polling</a></h4>
+<p>Because we are using crossterm, we simply poll for keyboard events with</p>
+<pre><code class="language-rust no_run noplayground">        if let Event::Key(key) = event::read()? {
+            match app.current_screen {
+                CurrentScreen::Main =&gt; match key.code {
+                    KeyCode::Char('e') =&gt; {
+                        app.current_screen = CurrentScreen::Editing;
+                        app.currently_editing = Some(CurrentlyEditing::Key);
+                    }
+                    KeyCode::Char('q') =&gt; {
+                        app.current_screen = CurrentScreen::Exiting;
+                    }
+                    _ =&gt; {}
+                },
+                CurrentScreen::Exiting =&gt; match key.code {
+                    KeyCode::Char('y') =&gt; {
+                        return Ok(true);
+                    }
+                    KeyCode::Char('n') | KeyCode::Char('q') =&gt; {
+                        return Ok(false);
+                    }
+                    _ =&gt; {}
+                },
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
+                    KeyCode::Enter =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.currently_editing = Some(CurrentlyEditing::Value);
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.save_key_value();
+                                    app.current_screen = CurrentScreen::Main;
+                                }
+                            }
+                        }
+                    }
+                    KeyCode::Backspace =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.key_input.pop();
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.value_input.pop();
+                                }
+                            }
+                        }
+                    }
+                    KeyCode::Esc =&gt; {
+                        app.current_screen = CurrentScreen::Main;
+                        app.currently_editing = None;
+                    }
+                    KeyCode::Tab =&gt; {
+                        app.toggle_editing();
+                    }
+                    KeyCode::Char(value) =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.key_input.push(value);
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.value_input.push(value);
+                                }
+                            }
+                        }
+                    }
+                    _ =&gt; {}
+                },
+                _ =&gt; {}
+            }
+        }</code></pre>
+<p>and then match the results. Please note that the process for polling events will
+vary on the backend you are utilizing, and you will need to refer to the
+documentation of that backend for more information.</p>
+<h4 id="main-screen"><a class="header" href="#main-screen">Main Screen</a></h4>
+<p>We will start with the keybinds and event handling for the
+<code>CurrentScreen::Main</code>.</p>
+<pre><code class="language-rust no_run noplayground">            match app.current_screen {
+                CurrentScreen::Main =&gt; match key.code {
+                    KeyCode::Char('e') =&gt; {
+                        app.current_screen = CurrentScreen::Editing;
+                        app.currently_editing = Some(CurrentlyEditing::Key);
+                    }
+                    KeyCode::Char('q') =&gt; {
+                        app.current_screen = CurrentScreen::Exiting;
+                    }
+                    _ =&gt; {}
+                },</code></pre>
+<p>After matching to the <code>Main</code> enum variant, we match the event. When the user is
+in the main screen, there are only two keybinds, and the rest are ignored.</p>
+<p>In this case, <code>KeyCode::Char('e')</code> changes the current screen to
+<code>CurrentScreen::Editing</code> and set the <code>CurrentlyEditing</code> to a <code>Some</code> and notes
+that the user should be editing the <code>Key</code> value field, as opposed to the <code>Value</code>
+field.</p>
+<p><code>KeyCode::Char('q')</code> is straightforward, as it simply switches the application
+to the <code>Exiting</code> screen, and allows the ui and future event handling runs to do
+the rest.</p>
+<h4 id="exiting"><a class="header" href="#exiting">Exiting</a></h4>
+<p>The next handler we will prepare, will handle events while the application is on
+the <code>CurrentScreen::Exiting</code>. The job of this screen is to ask if the user wants
+to exit without outputting the json. It is simply a <code>y/n</code> question, so that is
+all we listen for. We also add an alternate exit key with <code>q</code>. If the user
+chooses to output the json, we return an <code>Ok(true)</code> that indicates that our
+<code>main</code> function should call <code>app.print_json()</code> to perform the serialization and
+printing for us after resetting the terminal to normal</p>
+<pre><code class="language-rust no_run noplayground">                CurrentScreen::Exiting =&gt; match key.code {
+                    KeyCode::Char('y') =&gt; {
+                        return Ok(true);
+                    }
+                    KeyCode::Char('n') | KeyCode::Char('q') =&gt; {
+                        return Ok(false);
+                    }
+                    _ =&gt; {}
+                },</code></pre>
+<h4 id="editing"><a class="header" href="#editing">Editing</a></h4>
+<p>Our final handler will be a bit more involved, as we will be changing the state
+of internal variables.</p>
+<p>We would like the <code>Enter</code> key to serve two purposes. When the user is editing
+the <code>Key</code>, we want the enter key to switch the focus to editing the <code>Value</code>.
+However, if the <code>Value</code> is what is being currently edited, <code>Enter</code> will save the
+key-value pair, and return to the <code>Main</code> screen.</p>
+<pre><code class="language-rust no_run noplayground">                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
+                    KeyCode::Enter =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.currently_editing = Some(CurrentlyEditing::Value);
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.save_key_value();
+                                    app.current_screen = CurrentScreen::Main;
+                                }
+                            }
+                        }
+                    }</code></pre>
+<p>When <code>Backspace</code> is pressed, we need to first determine if the user is editing a
+<code>Key</code> or a <code>Value</code>, then <code>pop()</code> the endings of those strings accordingly.</p>
+<pre><code class="language-rust no_run noplayground">                    KeyCode::Backspace =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.key_input.pop();
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.value_input.pop();
+                                }
+                            }
+                        }
+                    }</code></pre>
+<p>When <code>Escape</code> is pressed, we want to quit editing.</p>
+<pre><code class="language-rust no_run noplayground">                    KeyCode::Esc =&gt; {
+                        app.current_screen = CurrentScreen::Main;
+                        app.currently_editing = None;
+                    }</code></pre>
+<p>When <code>Tab</code> is pressed, we want the currently editing selection to switch.</p>
+<pre><code class="language-rust no_run noplayground">                    KeyCode::Tab =&gt; {
+                        app.toggle_editing();
+                    }</code></pre>
+<p>And finally, if the user types a valid character, we want to capture that, and
+add it to the string that is the final key or value.</p>
+<pre><code class="language-rust no_run noplayground">                    KeyCode::Char(value) =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.key_input.push(value);
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.value_input.push(value);
+                                }
+                            }
+                        }
+                    }</code></pre>
+<p>Altogether, the event loop should look like this:</p>
+<pre><code class="language-rust no_run noplayground">        if let Event::Key(key) = event::read()? {
+            match app.current_screen {
+                CurrentScreen::Main =&gt; match key.code {
+                    KeyCode::Char('e') =&gt; {
+                        app.current_screen = CurrentScreen::Editing;
+                        app.currently_editing = Some(CurrentlyEditing::Key);
+                    }
+                    KeyCode::Char('q') =&gt; {
+                        app.current_screen = CurrentScreen::Exiting;
+                    }
+                    _ =&gt; {}
+                },
+                CurrentScreen::Exiting =&gt; match key.code {
+                    KeyCode::Char('y') =&gt; {
+                        return Ok(true);
+                    }
+                    KeyCode::Char('n') | KeyCode::Char('q') =&gt; {
+                        return Ok(false);
+                    }
+                    _ =&gt; {}
+                },
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
+                    KeyCode::Enter =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.currently_editing = Some(CurrentlyEditing::Value);
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.save_key_value();
+                                    app.current_screen = CurrentScreen::Main;
+                                }
+                            }
+                        }
+                    }
+                    KeyCode::Backspace =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.key_input.pop();
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.value_input.pop();
+                                }
+                            }
+                        }
+                    }
+                    KeyCode::Esc =&gt; {
+                        app.current_screen = CurrentScreen::Main;
+                        app.currently_editing = None;
+                    }
+                    KeyCode::Tab =&gt; {
+                        app.toggle_editing();
+                    }
+                    KeyCode::Char(value) =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.key_input.push(value);
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.value_input.push(value);
+                                }
+                            }
+                        }
+                    }
+                    _ =&gt; {}
+                },
+                _ =&gt; {}
+            }
+        }</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="uirs"><a class="header" href="#uirs">UI.rs</a></h1>
+<p>Finally we come to the last piece of the puzzle, and also the hardest part when
+you are just starting out creating <code>ratatui</code> TUIs. The actual UI. If you have
+created a UI before, you should know that the UI code can take up much more
+space than you think it should, and this is not exception. We will only briefly
+cover layouts and how this core of <code>ratatui</code> design works, but there will be
+links to more resources where they are covered in depth.</p>
+<h2 id="some-basics"><a class="header" href="#some-basics">Some basics</a></h2>
+<p>First, we need to understand how we draw widgets onto the screen in the first
+place. The TLDR is, that we create a widget, and pass it to a <code>Frame</code> along with
+a size. How we get that size, is where layouts come in.</p>
+<pre><code class="language-rust no_run noplayground">    let chunks = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints(
+            [
+                Constraint::Length(3),
+                Constraint::Min(1),
+                Constraint::Length(3),
+            ]
+            .as_ref(),
+        )
+        .split(f.size());</code></pre>
+<p>You can this as an small instruction manual for cutting up a rectangle into
+smaller rectangles, because that is what is actually happening. (Find more
+information on the different types of constraints, read
+<a href="tutorial/json-editor/./../how-to/layout-constraints.html">How-To: Constraints</a>) In the example above,
+you can read the instructions aloud like this: “Take the area f.size (which is a
+rectangle), and cut it into three vertical pieces (making horizontal cuts). The
+first section should always be 3 lines tall. The second section should never be
+smaller than one line tall, but can take extra space if there is any. The final
+section should also be 3 lines tall”.</p>
+<p>For those visual learners, I have the following graphic:</p>
+<pre><code>This outer box is the original Frame,
+which we get with frame.size()
+------------------------------------ Constraint::Length(3)
+|       This section should        |
+|     always be 3 lines tall       |
+|                                  |
+|----------------------------------| Constraint::Min(1)
+|      This section should         |
+|     never be less than 1         |
+|      line tall, but can be       |
+|     longer if space is available |
+|                                  |
+------------------------------------ Constraint::Length(3)
+|       This section should        |
+|     always be 3 lines tall       |
+|                                  |
+|----------------------------------|
+</code></pre>
+<p>Now that we have that out of the way, let us create the TUI for our application.</p>
+<h2 id="the-function-signature"><a class="header" href="#the-function-signature">The function signature</a></h2>
+<p>Our ui function needs two things to successfully create our UI elements. The
+<code>Frame</code> which contains the size of the terminal at render time (this is
+important, because it allows us to take resizeable terminals into account), and
+the application state.</p>
+<pre><code class="language-rust no_run noplayground">pub fn ui&lt;B: Backend&gt;(f: &amp;mut Frame&lt;B&gt;, app: &amp;App) {</code></pre>
+<h1 id="the-main-screen"><a class="header" href="#the-main-screen">The Main screen</a></h1>
+<p>Because we want the <code>Main</code> screen to be rendered behind the editing popup, we
+will draw it first, and then have additional logic about our popups</p>
+<h2 id="our-layout"><a class="header" href="#our-layout">Our layout</a></h2>
+<p>Now that we have our <code>Frame</code>, we can actually begin drawing widgets onto it. We
+will begin by creating out layout.</p>
+<pre><code class="language-rust no_run noplayground">    let chunks = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints(
+            [
+                Constraint::Length(3),
+                Constraint::Min(1),
+                Constraint::Length(3),
+            ]
+            .as_ref(),
+        )
+        .split(f.size());</code></pre>
+<p>The variable <code>chunks</code> now contains a length 3 array of <code>Rect</code> objects that
+contain the top left corner of their space, and their size. We will use these
+later, after we prepare our widgets.</p>
+<h2 id="the-title"><a class="header" href="#the-title">The title</a></h2>
+<p>The title is an important piece for any application. It helps the user
+understand what they can do and where they are. To create our title, we are
+going to use a <code>Paragraph</code> widget (which is used to display only text), and we
+are going to tell that <code>Paragraph</code> we want a border all around it by giving it a
+<code>Block</code> with borders enabled. (See <a href="tutorial/json-editor/./../how-to/block.html">How-To: Block</a> and
+<a href="tutorial/json-editor/./../how-to/paragraph.html">How-To: Paragraph</a> for more information about <code>Block</code>
+and <code>Paragraph</code>).</p>
+<pre><code class="language-rust no_run noplayground">    let title_block = Block::default()
+        .borders(Borders::ALL)
+        .style(Style::default());
+
+    let title = Paragraph::new(Text::styled(
+        &quot;Create New Json&quot;,
+        Style::default().fg(Color::Green),
+    ))
+    .block(title_block);
+
+    f.render_widget(title, chunks[0]);</code></pre>
+<p>In this code, the first thing we do, is create a <code>Block</code> with all borders
+enabled, and the default style. Next, we created a paragraph widget with the
+text “Create New Json” styled green. (See
+<a href="tutorial/json-editor/./../how-to/paragraph.html">How-To: Paragraphs</a> for more information about
+creating paragraphs and <a href="tutorial/json-editor/./../how-to/styling-text.html">How-To: Styling-Text</a> for
+styling text) Finally, we call <code>render_widget</code> on our <code>Frame</code>, and give it the
+widget we want to render it, and the <code>Rect</code> representing where it needs to go
+and what size it should be. (this is the way all widgets are drawn)</p>
+<h2 id="the-list-of-existing-pairs"><a class="header" href="#the-list-of-existing-pairs">The list of existing pairs.</a></h2>
+<p>We would also like the user to be able to see any key-value pairs that they have
+already entered. For this, we will be using another widget, the <code>List</code>. The list
+is what it sounds like - it creates a new line of text for each <code>ListItem</code>, and
+it supports passing in a state so you can implement selecting items on the list
+with little extra work. We will not be implementing selection, as we simply want
+the user to be able to see what they have already entered.</p>
+<pre><code class="language-rust no_run noplayground">    let mut list_items = Vec::&lt;ListItem&gt;::new();
+
+    for key in app.pairs.keys() {
+        list_items.push(
+            ListItem::new(
+                Line::from(
+                    Span::styled(
+                        format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
+                        Style::default().fg(Color::Yellow),
+                    )
+                )
+            )
+        );
+    }
+
+    let list = List::new(list_items);
+
+    f.render_widget(list, chunks[1]);</code></pre>
+<p>For more information on Line, Span, and Style see
+<a href="tutorial/json-editor/./../how-to/displaying-text.html">How-To: Displaying Text</a></p>
+<p>In this piece of the function, we create a vector of <code>ListItem</code>s, and populate
+it with styled and formatted key-value pairs. Finally, we create the <code>List</code>
+widget, and render it.</p>
+<h2 id="the-bottom-navigational-bar"><a class="header" href="#the-bottom-navigational-bar">The bottom navigational bar</a></h2>
+<p>It can help new users of your application, to see hints about what keys they can
+press. For this, we are going to implement two bars, and another layout. These
+two bars will contain information on 1) The current screen (<code>Main</code>, <code>Editing</code>,
+and <code>Exiting</code>), and 2) what keybinds are available.</p>
+<p>Here, we will create a <code>Vec</code> of <code>Span</code> which will be converted later into a
+single line by the <code>Paragraph</code>. (A <code>Span</code> is different from a <code>Line</code>, because a
+<code>Span</code> indicates a section of <code>Text</code> with a style applied, and doesn’t end with
+a newline)</p>
+<pre><code class="language-rust no_run noplayground">    let current_navigation_text = vec![
+        // The first half of the text
+        match app.current_screen {
+            CurrentScreen::Main    =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
+            CurrentScreen::Editing =&gt; Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow)),
+            CurrentScreen::Exiting =&gt; Span::styled(&quot;Exiting&quot;, Style::default().fg(Color::LightRed)),
+        }.to_owned(),
+        // A white divider bar to separate the two sections
+        Span::styled(&quot; | &quot;, Style::default().fg(Color::White)),
+        // The final section of the text, with hints on what the user is editing
+        {
+            if let Some(editing) = &amp;app.currently_editing {
+                match editing {
+                    CurrentlyEditing::Key =&gt; Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green)),
+                    CurrentlyEditing::Value =&gt; Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen)),
+                }
+            } else {
+                Span::styled(&quot;Not Editing Anything&quot;, Style::default().fg(Color::DarkGray))
+            }
+        },
+    ];
+
+    let mode_footer = Paragraph::new(Line::from(current_navigation_text))
+        .block(Block::default().borders(Borders::ALL));</code></pre>
+<p>Next, we are also going to make a hint in the navigation bar with available
+keys. This one does not have several sections of text with different styles, and
+is thus less code.</p>
+<pre><code class="language-rust no_run noplayground">    let current_keys_hint = {
+        match app.current_screen {
+            CurrentScreen::Main =&gt; Span::styled(
+                &quot;(q) to quit / (e) to make new pair&quot;,
+                Style::default().fg(Color::Red),
+            ),
+            CurrentScreen::Editing =&gt; Span::styled(
+                &quot;(ESC) to cancel/(Tab) to switch boxes/enter to complete&quot;,
+                Style::default().fg(Color::Red),
+            ),
+            CurrentScreen::Exiting =&gt; Span::styled(
+                &quot;(q) to quit / (e) to make new pair&quot;,
+                Style::default().fg(Color::Red),
+            ),
+        }
+    };
+
+    let key_notes_footer =
+        Paragraph::new(Line::from(current_keys_hint)).block(Block::default().borders(Borders::ALL));</code></pre>
+<p>Finally, we are going to create our first nested layout. Because the
+<code>Layout.split</code> function requires a <code>Rect</code>, and not a <code>Frame</code>, we can pass one of
+our chunks from the previous layout as the space for the new layout. If you
+remember the bottom most section from the above graphic:</p>
+<pre><code>------------------------------------ Constraint::Length(3)
+|       This section should        |
+|     always be 3 lines tall       |
+|                                  |
+|----------------------------------|
+</code></pre>
+<p>We will create a new layout in this space by passing it (<code>chunks[2]</code>) as the
+parameter for <code>split</code>.</p>
+<pre><code class="language-rust no_run noplayground">    let footer_chunks = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)].as_ref())
+        .split(chunks[2]);</code></pre>
+<p>This code is the visual equivalent of this:</p>
+<pre><code>----------------------------------- Constraint::Length(3)
+|                |                |
+| Percentage(50) | Percentage(50) |
+|                |                |
+|---------------------------------|
+</code></pre>
+<p>And now we can render our footer paragraphs in the appropriate spaces.</p>
+<pre><code class="language-rust no_run noplayground">    f.render_widget(mode_footer, footer_chunks[0]);
+    f.render_widget(key_notes_footer, footer_chunks[1]);</code></pre>
+<h1 id="the-editing-popup"><a class="header" href="#the-editing-popup">The Editing Popup</a></h1>
+<p>Now that the <code>Main</code> screen is rendered, we now need to check if the <code>Editing</code>
+popup needs to be rendered. Since the <code>ratatui</code> renderer simply writes over the
+cells within a <code>Rect</code> on a <code>render_widget</code>, we simply need to give
+<code>render_widget</code> an area on top of our <code>Main</code> screen to create the appearance of
+a popup.</p>
+<h2 id="popup-area-and-title"><a class="header" href="#popup-area-and-title">Popup area and title</a></h2>
+<p>The first thing we will do, is draw the <code>Block</code> that will contain the popup. We
+will give this <code>Block</code> a title to display as well to explain to the user what it
+is. (We will cover <code>centered_rect</code> below)</p>
+<pre><code class="language-rust no_run noplayground">    if let Some(editing) = &amp;app.currently_editing {
+        let popup_block = Block::default()
+            .title(&quot;Enter a new key-value pair&quot;)
+            .borders(Borders::NONE)
+            .style(Style::default().bg(Color::DarkGray));
+
+        let area = centered_rect(60, 25, f.size());
+        f.render_widget(popup_block, area);</code></pre>
+<h2 id="popup-contents"><a class="header" href="#popup-contents">Popup contents</a></h2>
+<p>Now that we have where our popup is going to go, we can create the layout for
+the popup, and create and draw the widgets inside of it.</p>
+<p>First, we will create split the <code>Rect</code> given to us by <code>centered_rect</code>, and
+create a layout from it. Note the use of <code>margin(1)</code>, which gives a 1 space
+margin around any layout block, meaning our new blocks and widgets don’t
+overwrite anything from the first popup block.</p>
+<pre><code class="language-rust no_run noplayground">        let popup_chunks = Layout::default()
+            .direction(Direction::Horizontal)
+            .margin(1)
+            .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+            .split(area);</code></pre>
+<p>Now that we have the layout for where we want to display the keys and values, we
+will actually create the blocks and paragraphs to show what the user has already
+entered.</p>
+<pre><code class="language-rust no_run noplayground">        let mut key_block = Block::default().title(&quot;Key&quot;).borders(Borders::ALL);
+        let mut value_block = Block::default().title(&quot;Value&quot;).borders(Borders::ALL);
+
+        let active_style = Style::default().bg(Color::LightYellow).fg(Color::Black);
+
+        match editing {
+            CurrentlyEditing::Key =&gt; key_block = key_block.style(active_style),
+            CurrentlyEditing::Value =&gt; value_block = value_block.style(active_style),
+        };
+
+        let key_text = Paragraph::new(app.key_input.clone()).block(key_block);
+        f.render_widget(key_text, popup_chunks[0]);
+
+        let value_text = Paragraph::new(app.value_input.clone()).block(value_block);
+        f.render_widget(value_text, popup_chunks[1]);</code></pre>
+<p>Note that we are declaring the blocks as variables, and then adding extra
+styling to the block the user is currently editing. Then we create the
+<code>Paragraph</code> widgets, and assign the blocks with those variables. Also note how
+we used the <code>popup_chunks</code> layout instead of the <code>popup_block</code> layout to render
+these widgets into.</p>
+<h1 id="the-exit-popup"><a class="header" href="#the-exit-popup">The Exit Popup</a></h1>
+<p>We have a way for the user to view their already entered key-value pairs, and we
+have a way for the user to enter new ones. The last screen we need to create, is
+the exit/confirmation screen.</p>
+<p>In this screen, we are asking the user if they want to output the key-value
+pairs they have entered in the <code>stdout</code> pipe, or close without outputting
+anything.</p>
+<pre><code class="language-rust no_run noplayground">    if let CurrentScreen::Exiting = app.current_screen {
+        f.render_widget(Clear, f.size()); //this clears the entire screen and anything already drawn
+        let popup_block = Block::default()
+            .title(&quot;Y/N&quot;)
+            .borders(Borders::NONE)
+            .style(Style::default().bg(Color::DarkGray));
+
+        let exit_text = Text::styled(
+            &quot;Would you like to output the buffer as json? (y/n)&quot;,
+            Style::default().fg(Color::Red),
+        );
+        // the `trim: false` will stop the text from being cut off when over the edge of the block
+        let exit_paragraph = Paragraph::new(exit_text)
+            .block(popup_block)
+            .wrap(Wrap { trim: false });
+
+        let area = centered_rect(60, 25, f.size());
+        f.render_widget(exit_paragraph, area);
+    }</code></pre>
+<p>The only thing in this part that we havn’t done before, is use the <code>Clear</code>
+widget. This is a special widget that does what the name suggests - it clears
+everything in the space it is rendered. In this case, it clears all of the menu
+that was pre-rendered behind it.</p>
+<h1 id="helper-functions-1"><a class="header" href="#helper-functions-1">Helper Functions</a></h1>
+<p>Finally, we will implement the <code>centered_rect</code> helper function that is
+referenced above. This code is adapted from the
+<a href="https://github.com/ratatui-org/ratatui/blob/main/examples/popup.rs">popup example</a>
+found in the official repo.</p>
+<pre><code class="language-rust no_run noplayground">/// helper function to create a centered rect using up certain percentage of the available rect `r`
+fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -&gt; Rect {
+    // Cut the given rectangle into three vertical pieces
+    let popup_layout = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints(
+            [
+                Constraint::Percentage((100 - percent_y) / 2),
+                Constraint::Percentage(percent_y),
+                Constraint::Percentage((100 - percent_y) / 2),
+            ]
+            .as_ref(),
+        )
+        .split(r);
+
+    // Then cut the middle vertical piece into three width-wise pieces
+    Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints(
+            [
+                Constraint::Percentage((100 - percent_x) / 2),
+                Constraint::Percentage(percent_x),
+                Constraint::Percentage((100 - percent_x) / 2),
+            ]
+            .as_ref(),
+        )
+        .split(popup_layout[1])
+        [1] // Return the middle chunk
+}</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="closing-thoughts"><a class="header" href="#closing-thoughts">Closing Thoughts</a></h1>
+<p>This tutorial should get you started with a basic understanding of the flow of a
+<code>ratatui</code> program. However, this is only <em>one</em> way to create a <code>ratatui</code>
+application. Because <code>ratatui</code> is relatively low level compared to other UI
+frameworks, almost any application model can be implemented. You can explore
+more of these in
+<a href="tutorial/json-editor/./../concepts/application-patterns.html">Concepts: Application Patterns</a> and get
+some inspiration for what model will work best for your application.</p>
+<h2 id="finished-files"><a class="header" href="#finished-files">Finished Files</a></h2>
+<p>Here you can find the finished project used for the tutorial. You can test this
+application by yourself, but running</p>
+<pre><code>cargo run &gt; test.json
+</code></pre>
+<p>and double checking the output.</p>
+<h4 id="mainrs-1"><a class="header" href="#mainrs-1">Main.rs</a></h4>
+<pre><code class="language-rust no_run noplayground">use crossterm::{
+    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
+    execute,
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+};
+use ratatui::{
+    backend::{Backend, CrosstermBackend},
+    Terminal,
+};
+use std::{error::Error, io};
+
+mod app;
+mod ui;
+use crate::app::{App, CurrentlyEditing, CurrentScreen};
+use crate::ui::ui;
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+    // setup terminal
+    enable_raw_mode()?;
+    let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
+    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
+    let backend = CrosstermBackend::new(stderr);
+    let mut terminal = Terminal::new(backend)?;
+
+    // create app and run it
+    let mut app = App::new();
+    let res = run_app(&amp;mut terminal, &amp;mut app);
+
+
+    // restore terminal
+    disable_raw_mode()?;
+    execute!(
+        terminal.backend_mut(),
+        LeaveAlternateScreen,
+        DisableMouseCapture
+    )?;
+    terminal.show_cursor()?;
+
+    if let Ok(do_print) = res {
+        if do_print {
+            app.print_json()?;
+        }
+    } else if let Err(err) = res {
+        println!(&quot;{err:?}&quot;);
+    }
+
+    Ok(())
+}
+
+fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut App) -&gt; io::Result&lt;bool&gt; {
+    loop {
+        terminal.draw(|f| ui(f, app))?;
+
+        if let Event::Key(key) = event::read()? {
+            match app.current_screen {
+                CurrentScreen::Main =&gt; match key.code {
+                    KeyCode::Char('e') =&gt; {
+                        app.current_screen = CurrentScreen::Editing;
+                        app.currently_editing = Some(CurrentlyEditing::Key);
+                    }
+                    KeyCode::Char('q') =&gt; {
+                        app.current_screen = CurrentScreen::Exiting;
+                    }
+                    _ =&gt; {}
+                },
+                CurrentScreen::Exiting =&gt; match key.code {
+                    KeyCode::Char('y') =&gt; {
+                        return Ok(true);
+                    }
+                    KeyCode::Char('n') | KeyCode::Char('q') =&gt; {
+                        return Ok(false);
+                    }
+                    _ =&gt; {}
+                },
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
+                    KeyCode::Enter =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.currently_editing = Some(CurrentlyEditing::Value);
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.save_key_value();
+                                    app.current_screen = CurrentScreen::Main;
+                                }
+                            }
+                        }
+                    }
+                    KeyCode::Backspace =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.key_input.pop();
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.value_input.pop();
+                                }
+                            }
+                        }
+                    }
+                    KeyCode::Esc =&gt; {
+                        app.current_screen = CurrentScreen::Main;
+                        app.currently_editing = None;
+                    }
+                    KeyCode::Tab =&gt; {
+                        app.toggle_editing();
+                    }
+                    KeyCode::Char(value) =&gt; {
+                        if let Some(editing) = &amp;app.currently_editing {
+                            match editing {
+                                CurrentlyEditing::Key =&gt; {
+                                    app.key_input.push(value);
+                                }
+                                CurrentlyEditing::Value =&gt; {
+                                    app.value_input.push(value);
+                                }
+                            }
+                        }
+                    }
+                    _ =&gt; {}
+                },
+                _ =&gt; {}
+            }
+        }
+    }
+}
+</code></pre>
+<h4 id="apprs-1"><a class="header" href="#apprs-1">App.rs</a></h4>
+<pre><code class="language-rust no_run noplayground">use serde_json::Result;
+
+pub enum CurrentScreen {
+    Main,
+    Editing,
+    Exiting,
+}
+
+pub enum CurrentlyEditing {
+    Key,
+    Value,
+}
+
+pub struct App {
+    pub key_input: String, // the currently being edited json key.
+    pub value_input: String, // the currently being edited json value.
+    pub pairs: HashMap&lt;String, String&gt;, // The representation of our key and value pairs with serde Serialize support
+    pub current_screen: CurrentScreen, // the current screen the user is looking at, and will later determine what is rendered.
+    pub currently_editing: Option&lt;CurrentlyEditing&gt;, // the optional state containing which of the key or value pair the user is editing. It is an option, because when the user is not directly editing a key-value pair, this will be set to `None`.
+}
+
+impl App {
+    pub fn new() -&gt; App {
+        App {
+            key_input: String::new(),
+            value_input: String::new(),
+            pairs: HashMap::new(),
+            current_screen: CurrentScreen::Main,
+            currently_editing: None,
+        }
+    }
+
+    pub fn save_key_value(&amp;mut self) {
+
+        self.pairs.insert(self.key_input.clone(), self.value_input.clone());
+
+        self.key_input = String::new();
+        self.value_input = String::new();
+        self.currently_editing = None;
+    }
+
+    pub fn toggle_editing(&amp;mut self) {
+        if let Some(edit_mode) = &amp;self.currently_editing {
+            match edit_mode {
+                CurrentlyEditing::Key =&gt; self.currently_editing = Some(CurrentlyEditing::Value),
+                CurrentlyEditing::Value =&gt; self.currently_editing = Some(CurrentlyEditing::Key),
+            };
+        } else {
+            self.currently_editing = Some(CurrentlyEditing::Key);
+        }
+    }
+
+    pub fn print_json(&amp;self) -&gt; Result&lt;()&gt; {
+        let output = serde_json::to_string(&amp;self.pairs)?;
+        println!(&quot;{}&quot;, output);
+        Ok(())
+    }
+}</code></pre>
+<h4 id="uirs-1"><a class="header" href="#uirs-1">UI.rs</a></h4>
+<pre><code class="language-rust no_run noplayground">use ratatui::{
+    backend::Backend,
+    layout::{Constraint, Direction, Layout, Rect},
+    style::{Color, Style},
+    text::{Line, Span, Text},
+    widgets::{Block, Borders, Clear, Paragraph, Wrap, ListItem, List},
+    Frame,
+};
+
+use crate::app::{App, CurrentScreen, CurrentlyEditing};
+
+pub fn ui&lt;B: Backend&gt;(f: &amp;mut Frame&lt;B&gt;, app: &amp;App) {
+    // Create the layout sections.
+    let chunks = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints(
+            [
+                Constraint::Length(3),
+                Constraint::Min(1),
+                Constraint::Length(3),
+            ]
+            .as_ref(),
+        )
+        .split(f.size());
+
+    let title_block = Block::default()
+        .borders(Borders::ALL)
+        .style(Style::default());
+
+    let title = Paragraph::new(Text::styled(
+        &quot;Create New Json&quot;,
+        Style::default().fg(Color::Green),
+    ))
+    .block(title_block);
+
+    f.render_widget(title, chunks[0]);
+    let mut list_items = Vec::&lt;ListItem&gt;::new();
+
+    for key in app.pairs.keys() {
+        list_items.push(
+            ListItem::new(
+                Line::from(
+                    Span::styled(
+                        format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
+                        Style::default().fg(Color::Yellow),
+                    )
+                )
+            )
+        );
+    }
+
+    let list = List::new(list_items);
+
+    f.render_widget(list, chunks[1]);
+    let current_navigation_text = vec![
+        // The first half of the text
+        match app.current_screen {
+            CurrentScreen::Main    =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
+            CurrentScreen::Editing =&gt; Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow)),
+            CurrentScreen::Exiting =&gt; Span::styled(&quot;Exiting&quot;, Style::default().fg(Color::LightRed)),
+        }.to_owned(),
+        // A white divider bar to separate the two sections
+        Span::styled(&quot; | &quot;, Style::default().fg(Color::White)),
+        // The final section of the text, with hints on what the user is editing
+        {
+            if let Some(editing) = &amp;app.currently_editing {
+                match editing {
+                    CurrentlyEditing::Key =&gt; Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green)),
+                    CurrentlyEditing::Value =&gt; Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen)),
+                }
+            } else {
+                Span::styled(&quot;Not Editing Anything&quot;, Style::default().fg(Color::DarkGray))
+            }
+        },
+    ];
+
+    let mode_footer = Paragraph::new(Line::from(current_navigation_text))
+        .block(Block::default().borders(Borders::ALL));
+
+    let current_keys_hint = {
+        match app.current_screen {
+            CurrentScreen::Main =&gt; Span::styled(
+                &quot;(q) to quit / (e) to make new pair&quot;,
+                Style::default().fg(Color::Red),
+            ),
+            CurrentScreen::Editing =&gt; Span::styled(
+                &quot;(ESC) to cancel/(Tab) to switch boxes/enter to complete&quot;,
+                Style::default().fg(Color::Red),
+            ),
+            CurrentScreen::Exiting =&gt; Span::styled(
+                &quot;(q) to quit / (e) to make new pair&quot;,
+                Style::default().fg(Color::Red),
+            ),
+        }
+    };
+
+    let key_notes_footer =
+        Paragraph::new(Line::from(current_keys_hint)).block(Block::default().borders(Borders::ALL));
+
+    let footer_chunks = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)].as_ref())
+        .split(chunks[2]);
+
+    f.render_widget(mode_footer, footer_chunks[0]);
+    f.render_widget(key_notes_footer, footer_chunks[1]);
+
+    if let Some(editing) = &amp;app.currently_editing {
+        let popup_block = Block::default()
+            .title(&quot;Enter a new key-value pair&quot;)
+            .borders(Borders::NONE)
+            .style(Style::default().bg(Color::DarkGray));
+
+        let area = centered_rect(60, 25, f.size());
+        f.render_widget(popup_block, area);
+
+        let popup_chunks = Layout::default()
+            .direction(Direction::Horizontal)
+            .margin(1)
+            .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+            .split(area);
+
+        let mut key_block = Block::default().title(&quot;Key&quot;).borders(Borders::ALL);
+        let mut value_block = Block::default().title(&quot;Value&quot;).borders(Borders::ALL);
+
+        let active_style = Style::default().bg(Color::LightYellow).fg(Color::Black);
+
+        match editing {
+            CurrentlyEditing::Key =&gt; key_block = key_block.style(active_style),
+            CurrentlyEditing::Value =&gt; value_block = value_block.style(active_style),
+        };
+
+        let key_text = Paragraph::new(app.key_input.clone()).block(key_block);
+        f.render_widget(key_text, popup_chunks[0]);
+
+        let value_text = Paragraph::new(app.value_input.clone()).block(value_block);
+        f.render_widget(value_text, popup_chunks[1]);
+    }
+
+    if let CurrentScreen::Exiting = app.current_screen {
+        f.render_widget(Clear, f.size()); //this clears the entire screen and anything already drawn
+        let popup_block = Block::default()
+            .title(&quot;Y/N&quot;)
+            .borders(Borders::NONE)
+            .style(Style::default().bg(Color::DarkGray));
+
+        let exit_text = Text::styled(
+            &quot;Would you like to output the buffer as json? (y/n)&quot;,
+            Style::default().fg(Color::Red),
+        );
+        // the `trim: false` will stop the text from being cut off when over the edge of the block
+        let exit_paragraph = Paragraph::new(exit_text)
+            .block(popup_block)
+            .wrap(Wrap { trim: false });
+
+        let area = centered_rect(60, 25, f.size());
+        f.render_widget(exit_paragraph, area);
+    }
+}
+
+/// helper function to create a centered rect using up certain percentage of the available rect `r`
+fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -&gt; Rect {
+    // Cut the given rectangle into three vertical pieces
+    let popup_layout = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints(
+            [
+                Constraint::Percentage((100 - percent_y) / 2),
+                Constraint::Percentage(percent_y),
+                Constraint::Percentage((100 - percent_y) / 2),
+            ]
+            .as_ref(),
+        )
+        .split(r);
+
+    // Then cut the middle vertical piece into three width-wise pieces
+    Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints(
+            [
+                Constraint::Percentage((100 - percent_x) / 2),
+                Constraint::Percentage(percent_x),
+                Constraint::Percentage((100 - percent_x) / 2),
+            ]
+            .as_ref(),
+        )
+        .split(popup_layout[1])
+        [1] // Return the middle chunk
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="features"><a class="header" href="#features">Features</a></h1>
+<p>As ratatui grows and evolves, this list may change, so make sure to check the
+<a href="how-to/./https://github.com/ratatui-org/ratatui">main repo</a> if you are unsure.</p>
+<h3 id="backend-selection"><a class="header" href="#backend-selection">Backend Selection</a></h3>
+<p>See <a href="how-to/./ch01-02-choosing-a-backend.html">Choosing a Backend</a> for more information.
+However, for most cases, the default <code>crossterm</code> backend is enough.</p>
+<pre><code class="language-console"># Defaults to crossterm
+cargo add ratatui
+# Unset the default crossterm feature and select one of the other backends
+cargo add ratatui --no-default-features --features=terminon
+cargo add ratatui --no-default-features --features=termwiz
+</code></pre>
+<h3 id="all-widgets"><a class="header" href="#all-widgets">All-Widgets</a></h3>
+<p>This feature enables some extra widgets that are not in <code>default</code> to save on
+compile time. As of v0.21, the only widget in this feature group is the
+<code>calendar</code> widget, which can be enabled with the <code>widget-calendar</code> feature.</p>
+<pre><code class="language-console">cargo add ratatui --features all-widgets
+</code></pre>
+<h3 id="widget-calendar"><a class="header" href="#widget-calendar">Widget-Calendar</a></h3>
+<p>This feature enables the calendar widget, which requires the <code>time</code> crate.</p>
+<pre><code class="language-console">cargo add ratatui --features widget-calendar
+</code></pre>
+<h3 id="serde"><a class="header" href="#serde">Serde</a></h3>
+<pre><code class="language-console">cargo add ratatui --features serde
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
+<h2 id="why-am-i-getting-duplicate-key-events-on-windows"><a class="header" href="#why-am-i-getting-duplicate-key-events-on-windows">Why am I getting duplicate key events on Windows?</a></h2>
+<p>A lot of examples out there in the wild might use the following code for sending
+key presses:</p>
+<pre><code class="language-rust">  CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),</code></pre>
+<p>However, on Windows, when using <code>Crossterm</code>, this will send the same
+<code>Event::Key(e)</code> twice; one for when you press the key, i.e.
+<code>KeyEventKind::Press</code> and one for when you release the key, i.e.
+<code>KeyEventKind::Release</code>. On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds
+of <code>key</code> event is generated.</p>
+<p>To make the code work as expected across all platforms, you can do this instead:</p>
+<pre><code class="language-rust">  CrosstermEvent::Key(key) =&gt; {
+    if key.kind == KeyEventKind::Press {
+      event_tx.send(Event::Key(key)).unwrap();
+    }
+  },</code></pre>
+<h2 id="when-should-i-use-tokio-or-asyncawait"><a class="header" href="#when-should-i-use-tokio-or-asyncawait">When should I use <code>tokio</code> or <code>async</code>/<code>await</code>?</a></h2>
+<p><code>ratatui</code> isn’t a native <code>async</code> library. So is it beneficial to use <code>tokio</code> or
+<code>async</code>/<code>await</code>?</p>
+<p>And as a user, there really is only one point of interface with the <code>ratatui</code>
+library and that’s the <code>terminal.draw(|f| ui(f))</code> functionality, because the
+rendering of widgets happens in <code>ui(f)</code>. Everything else in your code is your
+own to do as you wish.</p>
+<p>Should <code>terminal.draw(|f| ui(f))</code> be <code>async</code>? Possibly. Rendering to the
+terminal buffer is relatively fast, especially using the double buffer technique
+that only renders diffs that <code>ratatui</code> uses.</p>
+<p>Can we make it <code>async</code> ourselves? Yes, we can. That’s covered in the material in
+this documentation.</p>
+<p>The only other part related to <code>ratatui</code> that is beneficial to being <code>async</code> is
+reading the key event inputs from <code>stdin</code>, and that can be made <code>async</code> with
+<code>crossterm</code>’s event-stream.</p>
+<p>So the real question is what other parts of your app require <code>async</code> or benefit
+from being <code>async</code>? If the answer is not much, maybe it is simpler to not use
+<code>async</code> and avoiding <code>tokio</code>.</p>
+<p>Another way to think about it is, do you think your app would work better with 1
+thread like this?</p>
+<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="136" height="224">
+  <style>
+    line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
+    <!--separator-->
+    
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="136" height="224"></rect>
+  <text x="18" y="28" >Get</text>
+  <text x="50" y="28" >Key</text>
+  <text x="82" y="28" >Event</text>
+  <text x="18" y="108" >Update</text>
+  <text x="74" y="108" >State</text>
+  <text x="42" y="188" >Render</text>
+  <g>
+    <path d="M 16,8 A 4,4 0,0,0 12,12" class="nofill"></path>
+    <line x1="12" y1="12" x2="12" y2="36" class="solid"></line>
+    <line x1="16" y1="8" x2="120" y2="8" class="solid"></line>
+    <path d="M 120,8 A 4,4 0,0,1 124,12" class="nofill"></path>
+    <line x1="124" y1="12" x2="124" y2="36" class="solid"></line>
+    <path d="M 12,36 A 4,4 0,0,0 16,40" class="nofill"></path>
+    <line x1="16" y1="40" x2="120" y2="40" class="solid"></line>
+    <line x1="60" y1="40" x2="60" y2="84" class="solid"></line>
+    <path d="M 124,36 A 4,4 0,0,1 120,40" class="nofill"></path>
+    <polygon points="56,84 64,84 60,96" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 16,88 A 4,4 0,0,0 12,92" class="nofill"></path>
+    <line x1="12" y1="92" x2="12" y2="116" class="solid"></line>
+    <line x1="16" y1="88" x2="56" y2="88" class="solid"></line>
+    <path d="M 12,116 A 4,4 0,0,0 16,120" class="nofill"></path>
+    <line x1="16" y1="120" x2="112" y2="120" class="solid"></line>
+    <line x1="60" y1="120" x2="60" y2="164" class="solid"></line>
+    <polygon points="56,164 64,164 60,176" class="filled"></polygon>
+    <line x1="64" y1="88" x2="112" y2="88" class="solid"></line>
+    <path d="M 112,88 A 4,4 0,0,1 116,92" class="nofill"></path>
+    <line x1="116" y1="92" x2="116" y2="116" class="solid"></line>
+    <path d="M 116,116 A 4,4 0,0,1 112,120" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 32,168 A 4,4 0,0,0 28,172" class="nofill"></path>
+    <line x1="28" y1="172" x2="28" y2="196" class="solid"></line>
+    <line x1="32" y1="168" x2="56" y2="168" class="solid"></line>
+    <path d="M 28,196 A 4,4 0,0,0 32,200" class="nofill"></path>
+    <line x1="32" y1="200" x2="96" y2="200" class="solid"></line>
+    <line x1="64" y1="168" x2="96" y2="168" class="solid"></line>
+    <path d="M 96,168 A 4,4 0,0,1 100,172" class="nofill"></path>
+    <line x1="100" y1="172" x2="100" y2="196" class="solid"></line>
+    <path d="M 100,196 A 4,4 0,0,1 96,200" class="nofill"></path>
+  </g>
+</svg></pre>
+<p>Or would it work with 3 threads / <code>tokio</code> tasks like this:</p>
+<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="664" height="352">
+  <style>
+    line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
+    <!--separator-->
+    
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="664" height="352"></rect>
+  <text x="34" y="12" >Render</text>
+  <text x="90" y="12" >Thread</text>
+  <line x1="196" y1="0" x2="196" y2="336" class="broken"></line>
+  <line x1="476" y1="0" x2="476" y2="336" class="broken"></line>
+  <text x="274" y="60" >Get</text>
+  <text x="306" y="60" >Key</text>
+  <text x="338" y="60" >Event</text>
+  <text x="258" y="124" >Map</text>
+  <text x="290" y="124" >Event</text>
+  <text x="338" y="124" >to</text>
+  <text x="362" y="124" >Action</text>
+  <text x="234" y="188" >Send</text>
+  <text x="274" y="188" >Action</text>
+  <text x="330" y="188" >on</text>
+  <text x="354" y="188" >action</text>
+  <line x1="400" y1="192" x2="408" y2="192" class="solid"></line>
+  <text x="410" y="188" >tx</text>
+  <text x="538" y="188" >Recv</text>
+  <text x="578" y="188" >Action</text>
+  <text x="18" y="252" >Recv</text>
+  <text x="58" y="252" >on</text>
+  <text x="82" y="252" >render</text>
+  <line x1="128" y1="256" x2="136" y2="256" class="solid"></line>
+  <text x="138" y="252" >rx</text>
+  <line x1="200" y1="248" x2="472" y2="248" class="solid"></line>
+  <text x="514" y="252" >Dispatch</text>
+  <text x="586" y="252" >Action</text>
+  <text x="18" y="316" >Render</text>
+  <text x="74" y="316" >Component</text>
+  <text x="530" y="316" >Update</text>
+  <text x="586" y="316" >State</text>
+  <text x="274" y="12" >Event</text>
+  <text x="322" y="12" >Thread</text>
+  <text x="522" y="12" >Main</text>
+  <text x="562" y="12" >Thread</text>
+  <g>
+    <path d="M 256,40 A 4,4 0,0,0 252,44" class="nofill"></path>
+    <line x1="252" y1="44" x2="252" y2="68" class="solid"></line>
+    <line x1="256" y1="40" x2="400" y2="40" class="solid"></line>
+    <path d="M 400,40 A 4,4 0,0,1 404,44" class="nofill"></path>
+    <line x1="404" y1="44" x2="404" y2="68" class="solid"></line>
+    <path d="M 252,68 A 4,4 0,0,0 256,72" class="nofill"></path>
+    <line x1="256" y1="72" x2="400" y2="72" class="solid"></line>
+    <line x1="324" y1="72" x2="324" y2="100" class="solid"></line>
+    <path d="M 404,68 A 4,4 0,0,1 400,72" class="nofill"></path>
+    <polygon points="320,100 328,100 324,112" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 248,104 A 4,4 0,0,0 244,108" class="nofill"></path>
+    <line x1="244" y1="108" x2="244" y2="132" class="solid"></line>
+    <line x1="248" y1="104" x2="320" y2="104" class="solid"></line>
+    <path d="M 244,132 A 4,4 0,0,0 248,136" class="nofill"></path>
+    <line x1="248" y1="136" x2="416" y2="136" class="solid"></line>
+    <line x1="324" y1="136" x2="324" y2="164" class="solid"></line>
+    <polygon points="320,164 328,164 324,176" class="filled"></polygon>
+    <line x1="328" y1="104" x2="416" y2="104" class="solid"></line>
+    <path d="M 416,104 A 4,4 0,0,1 420,108" class="nofill"></path>
+    <line x1="420" y1="108" x2="420" y2="132" class="solid"></line>
+    <path d="M 420,132 A 4,4 0,0,1 416,136" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 224,168 A 4,4 0,0,0 220,172" class="nofill"></path>
+    <line x1="220" y1="172" x2="220" y2="196" class="solid"></line>
+    <line x1="224" y1="168" x2="320" y2="168" class="solid"></line>
+    <path d="M 220,196 A 4,4 0,0,0 224,200" class="nofill"></path>
+    <line x1="224" y1="200" x2="440" y2="200" class="solid"></line>
+    <line x1="328" y1="168" x2="440" y2="168" class="solid"></line>
+    <path d="M 440,168 A 4,4 0,0,1 444,172" class="nofill"></path>
+    <line x1="444" y1="172" x2="444" y2="196" class="solid"></line>
+    <line x1="444" y1="184" x2="472" y2="184" class="solid"></line>
+    <path d="M 444,196 A 4,4 0,0,1 440,200" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 528,168 A 4,4 0,0,0 524,172" class="nofill"></path>
+    <line x1="524" y1="172" x2="524" y2="196" class="solid"></line>
+    <line x1="528" y1="168" x2="632" y2="168" class="solid"></line>
+    <path d="M 632,168 A 4,4 0,0,1 636,172" class="nofill"></path>
+    <line x1="636" y1="172" x2="636" y2="196" class="solid"></line>
+    <path d="M 524,196 A 4,4 0,0,0 528,200" class="nofill"></path>
+    <line x1="528" y1="200" x2="632" y2="200" class="solid"></line>
+    <line x1="572" y1="200" x2="572" y2="228" class="solid"></line>
+    <path d="M 636,196 A 4,4 0,0,1 632,200" class="nofill"></path>
+    <polygon points="568,228 576,228 572,240" class="filled"></polygon>
+  </g>
+  <g>
+    <line x1="480" y1="184" x2="512" y2="184" class="solid"></line>
+    <polygon points="512,180 520,184 512,188" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 8,232 A 4,4 0,0,0 4,236" class="nofill"></path>
+    <line x1="4" y1="236" x2="4" y2="260" class="solid"></line>
+    <line x1="8" y1="232" x2="160" y2="232" class="solid"></line>
+    <path d="M 160,232 A 4,4 0,0,1 164,236" class="nofill"></path>
+    <line x1="164" y1="236" x2="164" y2="260" class="solid"></line>
+    <path d="M 4,260 A 4,4 0,0,0 8,264" class="nofill"></path>
+    <line x1="8" y1="264" x2="160" y2="264" class="solid"></line>
+    <line x1="76" y1="264" x2="76" y2="292" class="solid"></line>
+    <path d="M 164,260 A 4,4 0,0,1 160,264" class="nofill"></path>
+    <polygon points="72,292 80,292 76,304" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 504,232 A 4,4 0,0,0 500,236" class="nofill"></path>
+    <line x1="500" y1="236" x2="500" y2="260" class="solid"></line>
+    <line x1="504" y1="232" x2="568" y2="232" class="solid"></line>
+    <line x1="480" y1="248" x2="500" y2="248" class="solid"></line>
+    <path d="M 500,260 A 4,4 0,0,0 504,264" class="nofill"></path>
+    <line x1="504" y1="264" x2="640" y2="264" class="solid"></line>
+    <line x1="572" y1="264" x2="572" y2="292" class="solid"></line>
+    <polygon points="568,292 576,292 572,304" class="filled"></polygon>
+    <line x1="576" y1="232" x2="640" y2="232" class="solid"></line>
+    <path d="M 640,232 A 4,4 0,0,1 644,236" class="nofill"></path>
+    <line x1="644" y1="236" x2="644" y2="260" class="solid"></line>
+    <path d="M 644,260 A 4,4 0,0,1 640,264" class="nofill"></path>
+  </g>
+  <g>
+    <polygon points="176,244 168,248 176,252" class="filled"></polygon>
+    <line x1="176" y1="248" x2="192" y2="248" class="solid"></line>
+  </g>
+  <g>
+    <path d="M 8,296 A 4,4 0,0,0 4,300" class="nofill"></path>
+    <line x1="4" y1="300" x2="4" y2="324" class="solid"></line>
+    <line x1="8" y1="296" x2="72" y2="296" class="solid"></line>
+    <path d="M 4,324 A 4,4 0,0,0 8,328" class="nofill"></path>
+    <line x1="8" y1="328" x2="152" y2="328" class="solid"></line>
+    <line x1="80" y1="296" x2="152" y2="296" class="solid"></line>
+    <path d="M 152,296 A 4,4 0,0,1 156,300" class="nofill"></path>
+    <line x1="156" y1="300" x2="156" y2="324" class="solid"></line>
+    <path d="M 156,324 A 4,4 0,0,1 152,328" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 504,296 A 4,4 0,0,0 500,300" class="nofill"></path>
+    <line x1="500" y1="300" x2="500" y2="324" class="solid"></line>
+    <line x1="504" y1="296" x2="568" y2="296" class="solid"></line>
+    <path d="M 500,324 A 4,4 0,0,0 504,328" class="nofill"></path>
+    <line x1="504" y1="328" x2="648" y2="328" class="solid"></line>
+    <line x1="576" y1="296" x2="648" y2="296" class="solid"></line>
+    <path d="M 648,296 A 4,4 0,0,1 652,300" class="nofill"></path>
+    <line x1="652" y1="300" x2="652" y2="324" class="solid"></line>
+    <path d="M 652,324 A 4,4 0,0,1 648,328" class="nofill"></path>
+  </g>
+</svg></pre>
+<p>The former be done without <code>async</code> and the latter is the approach described in
+this documentation with <code>tokio</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="concepts"><a class="header" href="#concepts">Concepts</a></h1>
+<p>In this section, we will cover various concepts associated with terminal user
+interfaces, such as:</p>
+<ul>
+<li>Application patterns</li>
+<li>Event handling</li>
+<li>Storing state</li>
+<li>Rendering</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="event-handling-1"><a class="header" href="#event-handling-1">Event Handling</a></h1>
+<p>There are many ways to handle events with the <code>ratatui</code> library. Mostly becuase
+<code>ratatui</code> does not directly expose any event catching; the programmer will
+depend on the chosen backend’s library.</p>
+<p>However, there are a few ways to think about event handling that may help you.
+While this is not an exhaustive list, it covers a few of the more common
+implementations. But remember, the correct way, is the one that works for you
+and your current application.</p>
+<h3 id="centralized-event-handling"><a class="header" href="#centralized-event-handling">Centralized event handling</a></h3>
+<p>This is the simplest way to handle events because it handles all of the events
+as they appear. It is often simply a match on the results of <code>event::read()?</code>
+(in crossterm) on the different supported keys. Pros: This has the advantage of
+requiring no message passing, and allows the programmer to edit all of the
+possible keyboard events in one place.</p>
+<p>Cons: However, this particular way of handling events simply does not scale
+well. Because <em>all</em> events are handled in one place, you will be unable to split
+different groups of keybinds out into separate locations.</p>
+<h3 id="centralized-catching-message-passing"><a class="header" href="#centralized-catching-message-passing">Centralized catching, message passing</a></h3>
+<p>This way of handling events involves polling for events in one place, and then
+sending messages/calling sub functions with the event that was caught. Pros:
+This has a similar appeal to the first method in its simplicity. With this
+paradigm, you can easily split extensive pattern matching into sub functions
+that can go in separate files. This way is also the idea often used in basic
+multi-threaded applications because message channels are used to pass
+multi-threaded safe messages.</p>
+<p>Cons: This method requires a main loop to be running to consistently poll for
+events in a centralized place.</p>
+<h3 id="distributed-event-loopssegmented-applications"><a class="header" href="#distributed-event-loopssegmented-applications">Distributed event loops/segmented applications</a></h3>
+<p>In this style, control of the <code>Terminal</code> and the main loop to a sub-module. In
+this case, the entire rendering and event handling responsibilities can be
+safely passed to the sub-module. In theory, an application built like this
+doesn’t need a centralized event listener. Pros: There is no centralized event
+loop that you need to update whenever a new sub-module is created.</p>
+<p>Cons: However, if several sub-modules in your application have similar event
+handling loops, this way could lead to a lot of duplicated code.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ratatui-book-1"><a class="header" href="#ratatui-book-1">Ratatui Book</a></h1>
+<p>The <a href="https://github.com/ratatui-org/ratatui-book">ratatui-book</a> is written in
+<a href="https://rust-lang.github.io/mdBook/"><code>mdbook</code></a>.</p>
+<p>The book is built as HTML pages as part of a
+<a href="https://github.com/ratatui-org/ratatui-book/blob/main/.github/workflows/mdbook.yml">GitHub Action</a>
+and is available to view at <a href="https://ratatui-org.github.io/ratatui-book/">https://ratatui-org.github.io/ratatui-book/</a>.</p>
+<p>Feel free to make contributions if you’d like to improve the documentation.</p>
+<p>If you want to set up your local environment, you can run the following:</p>
+<pre><code class="language-bash">cargo install mdbook --version 0.4.30
+cargo install mdbook-admonish --version 1.9.0
+cargo install mdbook-svgbob2 --version 0.3.0
+cargo install mdbook-linkcheck --version 0.7.7
+cargo install mdbook-mermaid --version 0.12.6
+cargo install mdbook-emojicodes --version 0.2.2
+</code></pre>
+<p>These plugins allow additional features.</p>
+<h3 id="mdbook-admonish"><a class="header" href="#mdbook-admonish"><code>mdbook-admonish</code></a></h3>
+<p>The following raw markdown:</p>
+<pre><code class="language-markdown">```admonish note
+This is a note
+```
+
+```admonish tip
+This is a tip
+```
+
+```admonish warning
+This is a warning
+```
+
+```admonish info
+This is a info
+```
+</code></pre>
+<p>will render as the following:</p>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="developer-guide/book.html#admonition-note"></a></p>
+</div>
+<div>
+<p>This is a note</p>
+</div>
+</div>
+<div id="admonition-tip" class="admonition tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="developer-guide/book.html#admonition-tip"></a></p>
+</div>
+<div>
+<p>This is a tip</p>
+</div>
+</div>
+<div id="admonition-warning" class="admonition warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="developer-guide/book.html#admonition-warning"></a></p>
+</div>
+<div>
+<p>This is a warning</p>
+</div>
+</div>
+<div id="admonition-info" class="admonition info">
+<div class="admonition-title">
+<p>Info</p>
+<p><a class="admonition-anchor-link" href="developer-guide/book.html#admonition-info"></a></p>
+</div>
+<div>
+<p>This is a info</p>
+</div>
+</div>
+<h3 id="mdbook-mermaid"><a class="header" href="#mdbook-mermaid"><code>mdbook-mermaid</code></a></h3>
+<p>The following raw markdown:</p>
+<pre><code class="language-markdown">```mermaid
+graph TD;
+    A--&gt;B;
+    A--&gt;C;
+    B--&gt;D;
+    C--&gt;D;
+```
+</code></pre>
+<p>will render as the following:</p>
+<pre class="mermaid">graph TD;
+    A--&gt;B;
+    A--&gt;C;
+    B--&gt;D;
+    C--&gt;D;
+</pre>
+<h3 id="mdbook-svgbob2"><a class="header" href="#mdbook-svgbob2"><code>mdbook-svgbob2</code></a></h3>
+<p>The following raw markdown:</p>
+<pre><code class="language-markdown">```svgbob
+       .---.
+      /-o-/--
+   .-/ / /-&gt;
+  ( *  \/
+   '-.  \
+      \ /
+       '
+```
+</code></pre>
+<p>will render as the following:</p>
+<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="112" height="128">
+  <style>
+    line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
+    <!--separator-->
+    
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="112" height="128"></rect>
+  <circle cx="68" cy="24" r="3" class="nofill"></circle>
+  <line x1="72" y1="24" x2="104" y2="24" class="solid"></line>
+  <circle cx="36" cy="56" r="3" class="filled"></circle>
+  <g>
+    <path d="M 64,8 A 8,8 0,0,0 58,12" class="nofill"></path>
+    <line x1="58" y1="12" x2="38" y2="52" class="solid"></line>
+    <line x1="64" y1="8" x2="88" y2="8" class="solid"></line>
+    <path d="M 88,8 A 3,3 0,0,1 90,12" class="nofill"></path>
+    <line x1="90" y1="12" x2="64" y2="64" class="solid"></line>
+    <line x1="52" y1="24" x2="64" y2="24" class="solid"></line>
+    <line x1="76" y1="40" x2="88" y2="40" class="solid"></line>
+    <polygon points="88,36 96,40 88,44" class="filled"></polygon>
+    <line x1="66" y1="28" x2="56" y2="48" class="solid"></line>
+    <line x1="56" y1="48" x2="72" y2="80" class="solid"></line>
+    <path d="M 32,40 A 8,8 0,0,0 26,44" class="nofill"></path>
+    <line x1="26" y1="44" x2="24" y2="48" class="solid"></line>
+    <line x1="32" y1="40" x2="44" y2="40" class="solid"></line>
+    <path d="M 24,48 A 16,16 0,0,0 24,64" class="nofill"></path>
+    <line x1="24" y1="64" x2="26" y2="68" class="solid"></line>
+    <path d="M 26,68 A 8,8 0,0,0 32,72" class="nofill"></path>
+    <line x1="32" y1="72" x2="40" y2="72" class="solid"></line>
+    <path d="M 40,72 A 8,8 0,0,1 46,76" class="nofill"></path>
+    <line x1="46" y1="76" x2="60" y2="104" class="solid"></line>
+    <line x1="72" y1="80" x2="60" y2="104" class="solid"></line>
+  </g>
+</svg></pre>
+<h3 id="mdbook-emojicodes"><a class="header" href="#mdbook-emojicodes"><code>mdbook-emojicodes</code></a></h3>
+<p>The following raw markdown:</p>
+<pre><code class="language-markdown">I love cats 🐱 and dogs 🐶, I have two, one's gray, like a raccoon
+🦝, and the other one is black, like the night 🌃.
+</code></pre>
+<p>will render as the following:</p>
+<p>I love cats 🐱 and dogs 🐶, I have two, one’s gray, like a raccoon
+🦝, and the other one is black, like the night 🌃.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contributors"><a class="header" href="#contributors">Contributors</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="mermaid.min.js"></script>
+        <script type="text/javascript" src="mermaid-init.js"></script>
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>
