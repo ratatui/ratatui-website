@@ -1,10 +1,11 @@
 # JSON Editor
 
-In this tutorial, we will be creating an application that gives the user a simple interface to enter
-key-value pairs, which will be converted and printed to `stdout` in json.
+In this tutorial, we will be creating an application that gives the user a
+simple interface to enter key-value pairs, which will be converted and printed
+to `stdout` in json.
 
-The purpose of this application will be to give the user an interface to create correct json,
-instead of having to worry about commas and brackets themselves.
+The purpose of this application will be to give the user an interface to create
+correct json, instead of having to worry about commas and brackets themselves.
 
 ## Initialization
 
@@ -33,5 +34,5 @@ src
 └── app.rs
 ```
 
-This follows a common approach to small applications in `ratatui`, where we have a state file, a UI
-file, and the main file to tie it all together.
+This follows a common approach to small applications in `ratatui`, where we have
+a state file, a UI file, and the main file to tie it all together.

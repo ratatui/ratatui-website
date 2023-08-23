@@ -1,19 +1,20 @@
 # Getting Started
 
-Getting started with `ratatui` is straightforward --- Add it to the project, and you are ready to
-start creating beautiful TUIs!
+Getting started with `ratatui` is straightforward --- Add it to the project, and
+you are ready to start creating beautiful TUIs!
 
 ### Install `Rust`
 
-The first step is to install Rust. Most people use `rustup` to manage their installation.
+The first step is to install Rust. Most people use `rustup` to manage their
+installation.
 
 Check
 [Installation section of the official Rust Book](https://doc.rust-lang.org/book/ch01-01-installation.html)
 for more information.
 
-`rustup` will set you up with the latest stable version of `rust` as well as `cargo`. `cargo` is
-Rust's package manager, and it is what we will use to create a new project and add `ratatui` as a
-dependency.
+`rustup` will set you up with the latest stable version of `rust` as well as
+`cargo`. `cargo` is Rust's package manager, and it is what we will use to create
+a new project and add `ratatui` as a dependency.
 
 ### Create a "hello world" project
 
@@ -38,8 +39,8 @@ You can learn more about the different terminal backends in [section on choosing
 For the examples in this book, we are going to use `crossterm`.
 ```
 
-Running the above command in your console will add the latest version of `ratatui` and `crossterm`
-to your project.
+Running the above command in your console will add the latest version of
+`ratatui` and `crossterm` to your project.
 
 ````admonish tip
 If you are interested in adding a specific version, you can run the following:
@@ -102,5 +103,5 @@ You can press `q` to exit and go back to your terminal as it was before.
 
 Congratulations! :tada:
 
-You have written a "hello world" terminal user interface with `ratatui`. We will learn more about
-how `ratatui` works in the next sections.
+You have written a "hello world" terminal user interface with `ratatui`. We will
+learn more about how `ratatui` works in the next sections.

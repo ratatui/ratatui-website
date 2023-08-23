@@ -119,11 +119,11 @@ will render as the following:
 The following raw markdown:
 
 ```markdown
-I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon :raccoon:, and the other
-one is black, like the night :night_with_stars:.
+I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon
+:raccoon:, and the other one is black, like the night :night_with_stars:.
 ```
 
 will render as the following:
 
-I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon :raccoon:, and the other
-one is black, like the night :night_with_stars:.
+I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon
+:raccoon:, and the other one is black, like the night :night_with_stars:.
