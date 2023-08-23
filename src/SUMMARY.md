@@ -10,6 +10,9 @@
 
 - [Tutorial](./tutorial/README.md)
 
+  - [Counter App](./tutorial/counter-app/README.md)
+    - [Single Function](./tutorial/counter-app/single-function.md)
+    - [Refactor](./tutorial/counter-app/refactor.md)
   - [JSON Editor](./tutorial/json-editor/README.md)
     - [App.rs - Holding application state](./tutorial/json-editor/app.md)
     - [Main.rs - UI loop and event handling](./tutorial/json-editor/main.md)

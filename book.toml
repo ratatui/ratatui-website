@@ -13,6 +13,9 @@ additional-css = ["./mdbook-admonish.css", "./theme/catppuccin.css", "./theme/ca
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 site-url = "/ratatui-book/"
 
+[output.html.playground]
+runnable = false
+
 [preprocessor.svgbob2]
 
 [preprocessor.admonish]
