@@ -1,7 +1,5 @@
-# Sample workflow for building and deploying a mdBook site to GitHub Pages
-#
-# To get started with mdBook see: https://rust-lang.github.io/mdBook/index.html
-#
+# workflow for building and deploying a mdBook site to GitHub Pages
+
 name: Deploy mdBook site to Pages
 
 on:
@@ -73,6 +71,21 @@ jobs:
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: ./book/
+
+      - name: Remove preview
+        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+        run: |
+          PR_NUM=${{ github.event.number }}
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+
+          git rm -rf pr-preview/pr-$PR_NUM
+          git commit -m "Remove pr-preview folder for PR #$PR_NUM"
+          git push origin gh-pages
+
+          git checkout "$CURRENT_BRANCH"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
