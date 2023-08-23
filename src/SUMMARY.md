@@ -6,21 +6,20 @@
 
 - [Introduction](./introduction.md)
 
-- [Getting Started](./getting-started/getting-started.md)
-
-  - [Installation](./getting-started/installation.md)
-  - [Features](./getting-started/features.md)
-  - [Choosing a Backend]()
+- [Getting Started](./getting-started/README.md)
 
 - [Tutorial](./tutorial/README.md)
 
-  - [App.rs - Holding application state](./tutorial/app.md)
-  - [Main.rs - UI loop and event handling](./tutorial/main.md)
-  - [Ui.rs - Layouts, widgets, frames, oh my!](./tutorial/ui.md)
-  - [Conclusion](./tutorial/closing_thoughts.md)
+  - [JSON Editor](./tutorial/json-editor/README.md)
+    - [App.rs - Holding application state](./tutorial/json-editor/app.md)
+    - [Main.rs - UI loop and event handling](./tutorial/json-editor/main.md)
+    - [Ui.rs - Layouts, widgets, frames, oh my!](./tutorial/json-editor/ui.md)
+    - [Conclusion](./tutorial/json-editor/closing_thoughts.md)
 
 - [How To]()
 
+  - [Enable Features](./how-to/features.md)
+  - [Choose a Backend]()
   - [Blocks]()
   - [Displaying Text]()
     - [Styling-Text]()

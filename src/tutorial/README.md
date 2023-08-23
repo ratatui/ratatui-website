@@ -1,28 +1,10 @@
 # Tutorial
-In this tutorial, we will be creating an application that gives the user a simple interface to enter key-value pairs, which will be converted and printed to `stdout` in json.
 
-The purpose of this application will be to give the user an interface to create correct json,
-instead of having to worry about commas and brackets themselves.
+## Tutorial 1
 
-## Initialization
-Go ahead and set up a new rust project with
+This tutorial will set up the basics of a `ratatui` project.
 
-```sh
-cargo init ratatui-example-project
-```
-and put the following in the `Cargo.toml`:
-```
-{{#include ../../ratatui-book-tutorial-project/Cargo.toml:7:}}
-```
-or the latest version of these libraries
+## [JSON Editor](./json-editor/README.md)
 
-
-## Filestructure
-Now create two files inside of `src/` so it looks like this:
-```
-src/
-| - main.rs
-| - ui.rs
-| - app.rs
-```
-This follows a common approach to small applications in `ratatui`, where we have a state file, a UI file, and the main file to tie it all together.
+This tutorial will guide you through setting up a Rust project and organizing its structure for a `ratatui`-based application to edit json key value pairs.
+JSON Editor TUI will provide an interface for users to input key-value pairs, which are then converted into correct JSON format and printed to stdout.

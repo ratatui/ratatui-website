@@ -1,14 +1,22 @@
 # Introduction
 
+![](https://user-images.githubusercontent.com/24392180/244943746-93ab0e38-93e0-4ae0-a31b-91ae6c393185.gif)
+
 `ratatui` is based on the principle of immediate rendering with intermediate buffers.
 This means that at each new frame you have to build all widgets that are supposed to be part of the UI.
 In short, the `ratatui` library handles drawing to the terminal.
 
-![](https://user-images.githubusercontent.com/24392180/244943746-93ab0e38-93e0-4ae0-a31b-91ae6c393185.gif)
+It is important to note that `ratatui`:
 
-`ratatui` does not provide any input handling nor any event system out of the box.
-Getting keyboard input events, modifying the state of your application based on those events and figuring out which widgets best reflect the view of the state of your application are the reasons that `ratatui` is highly flexible and customizable.
-While this can be empowering, it does put onus on developers using `ratatui` to understand how to best architect their applications to tailor the experience for users as they see fit.
+- does **NOT** handle keyboard input events
+- does **NOT** modify the state of your application
+- does **NOT** dicate how you want to structure your application
+
+The `ratatui` crate is a library and not a framework.
+And the `ratatui` library provides widgets that allows a developer to imperatively declare what the view of your application should look like, and then allows a developer to draw those widgets efficiently to the terminal.
+
+For these reasons, `ratatui` can be highly flexible and customizable.
+And while this can be empowering, it also does put the onus on developers using `ratatui` to understand how to best architect their applications, to tailor the experience for users as they see fit.
 
 ## Who is ratatui for?
 
