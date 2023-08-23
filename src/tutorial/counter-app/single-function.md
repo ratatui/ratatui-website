@@ -1,3 +1,8 @@
+# Single Function
+
+Here's a first pass at a counter application in Rust using `ratatui`
+
+```rust
 use ratatui::{
   prelude::{CrosstermBackend, Terminal},
   widgets::Paragraph,
@@ -33,3 +38,4 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   Ok(())
 }
+```
