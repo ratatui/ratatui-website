@@ -1,10 +1,11 @@
 # Ratatui Book
 
-The [ratatui-book](https://github.com/ratatui-org/ratatui-book) is written in [`mdbook`](https://rust-lang.github.io/mdBook/).
+The [ratatui-book](https://github.com/ratatui-org/ratatui-book) is written in
+[`mdbook`](https://rust-lang.github.io/mdBook/).
 
-The book is built as HTML pages as part of a [GitHub
-Action](https://github.com/ratatui-org/ratatui-book/blob/main/.github/workflows/mdbook.yml) and is
-available to view at <https://ratatui-org.github.io/ratatui-book/>.
+The book is built as HTML pages as part of a
+[GitHub Action](https://github.com/ratatui-org/ratatui-book/blob/main/.github/workflows/mdbook.yml)
+and is available to view at <https://ratatui-org.github.io/ratatui-book/>.
 
 Feel free to make contributions if you'd like to improve the documentation.
 
@@ -118,9 +119,11 @@ will render as the following:
 The following raw markdown:
 
 ```markdown
-I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon :raccoon:, and the other one is black, like the night :night_with_stars:.
+I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon :raccoon:, and the other
+one is black, like the night :night_with_stars:.
 ```
 
 will render as the following:
 
-I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon :raccoon:, and the other one is black, like the night :night_with_stars:.
+I love cats :cat: and dogs :dog:, I have two, one's gray, like a raccoon :raccoon:, and the other
+one is black, like the night :night_with_stars:.
