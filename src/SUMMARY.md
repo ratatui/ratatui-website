@@ -10,14 +10,22 @@
 
 - [Tutorial](./tutorial/README.md)
 
-  - [Counter App](./tutorial/counter-app/README.md)
-    - [Single Function](./tutorial/counter-app/single-function.md)
-    - [Refactor](./tutorial/counter-app/refactor.md)
-  - [JSON Editor](./tutorial/json-editor/README.md)
-    - [App.rs - Holding application state](./tutorial/json-editor/app.md)
-    - [Main.rs - UI loop and event handling](./tutorial/json-editor/main.md)
-    - [Ui.rs - Layouts, widgets, frames, oh my!](./tutorial/json-editor/ui.md)
-    - [Conclusion](./tutorial/json-editor/closing_thoughts.md)
+- [Counter App](./tutorial/counter-app/README.md)
+
+  - [Single Function](./tutorial/counter-app/single-function.md)
+  - [Refactor](./tutorial/counter-app/refactor.md)
+
+- [Concepts](./concepts/README.md)
+
+  - [Rendering]()
+  - [Event Handling](./concepts/event_handling.md)
+
+- [JSON Editor](./tutorial/json-editor/README.md)
+
+  - [App.rs - Holding application state](./tutorial/json-editor/app.md)
+  - [Main.rs - UI loop and event handling](./tutorial/json-editor/main.md)
+  - [Ui.rs - Layouts, widgets, frames, oh my!](./tutorial/json-editor/ui.md)
+  - [Conclusion](./tutorial/json-editor/closing_thoughts.md)
 
 - [How To]()
 
