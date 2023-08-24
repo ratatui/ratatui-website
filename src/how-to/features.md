@@ -5,8 +5,8 @@ As ratatui grows and evolves, this list may change, so make sure to check the
 
 ### Backend Selection
 
-See [Choosing a Backend](./ch01-02-choosing-a-backend.md) for more information. However, for most
-cases, the default `crossterm` backend is enough.
+See [Choosing a Backend](./choosing-a-backend.md) for more information. However, for most cases, the
+default `crossterm` backend is enough.
 
 ```console
 # Defaults to crossterm
