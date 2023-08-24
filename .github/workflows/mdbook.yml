@@ -83,7 +83,7 @@ jobs:
           git checkout gh-pages
 
           git rm -rf pr-preview/pr-$PR_NUM
-          git commit -m "Remove pr-preview folder for PR #$PR_NUM"
+          git commit -m "Remove pr-preview folder (#$PR_NUM)"
           git push origin gh-pages
 
           git checkout "$CURRENT_BRANCH"
