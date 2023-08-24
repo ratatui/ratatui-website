@@ -8,19 +8,17 @@
 
 - [Getting Started](./getting-started/README.md)
 
-- [Tutorial](./tutorial/README.md)
-
-- [Counter App](./tutorial/counter-app/README.md)
+- [Counter App - Tutorial](./tutorial/counter-app/README.md)
 
   - [Single Function](./tutorial/counter-app/single-function.md)
   - [Refactor](./tutorial/counter-app/refactor.md)
 
 - [Concepts](./concepts/README.md)
 
-  - [Rendering]()
+  - [Rendering](./concepts/rendering.md)
   - [Event Handling](./concepts/event_handling.md)
 
-- [JSON Editor](./tutorial/json-editor/README.md)
+- [JSON Editor - Tutorial](./tutorial/json-editor/README.md)
 
   - [App.rs - Holding application state](./tutorial/json-editor/app.md)
   - [Main.rs - UI loop and event handling](./tutorial/json-editor/main.md)
