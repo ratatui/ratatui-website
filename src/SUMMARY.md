@@ -51,8 +51,6 @@
 
 - [Concepts](./concepts/README.md)
 
-  - [Rendering]()
-  - [Event Handling](./concepts/event_handling.md)
   - [Best Practices]()
   - [Project Structure]()
   - [Application Patterns]()
