@@ -57,9 +57,9 @@ the screen. What it means is _you_, the programmer, are responsible for keeping 
 If you accidentally block the thread that updates the UI, it will not update until the thread
 unblocks.
 
-`ratatui` in particular only handles how widget would be rendered. If you have to use a supported
-third party library, e.g. `crossterm` to actually draw to the terminal. In addition, you also have
-to use `crossterm` to read key inputs.
+`ratatui` in particular only handles how widget would be rendered. You have to use a supported third
+party library, e.g. `crossterm` to actually draw to the terminal. In addition, you also have to use
+`crossterm` to read key inputs.
 
 Out of the box, there's little to no help in organizing large applications. The onus is on the
 developer using `ratatui` to be principled (or not).
