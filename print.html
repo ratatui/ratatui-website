@@ -605,9 +605,9 @@ to hide a widget conditionally? Just don’t draw it based on some condition.</l
 the screen. What it means is <em>you</em>, the programmer, are responsible for keeping the TUI responsive.
 If you accidentally block the thread that updates the UI, it will not update until the thread
 unblocks.</p>
-<p><code>ratatui</code> in particular only handles how widget would be rendered. If you have to use a supported
-third party library, e.g. <code>crossterm</code> to actually draw to the terminal. In addition, you also have
-to use <code>crossterm</code> to read key inputs.</p>
+<p><code>ratatui</code> in particular only handles how widget would be rendered. You have to use a supported third
+party library, e.g. <code>crossterm</code> to actually draw to the terminal. In addition, you also have to use
+<code>crossterm</code> to read key inputs.</p>
 <p>Out of the box, there’s little to no help in organizing large applications. The onus is on the
 developer using <code>ratatui</code> to be principled (or not).</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="event-handling"><a class="header" href="#event-handling">Event Handling</a></h1>
