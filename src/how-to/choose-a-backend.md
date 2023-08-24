@@ -1,4 +1,8 @@
-# Choosing a Backend
+# How to Choose a Backend
+
+```admonish info
+TL;DR: Choose [Crossterm](https://crates.io/crates/crossterm) for most tasks.
+```
 
 Ratatui supports three "backends" - that is to say, the libraries that enable Ratatui (and you) to
 interact with the terminal emulator program. These backends provide functionality for registering

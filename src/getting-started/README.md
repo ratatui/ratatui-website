@@ -34,8 +34,9 @@ cargo add ratatui crossterm
 
 ```admonish note
 `ratatui` has to be combined with a terminal backend.
-You can learn more about the different terminal backends in [section on choosing a backend](./choosing-a-backend.md).
-For the examples in this book, we are going to use `crossterm`.
+You can learn more about the different terminal backends in the [how to choose a
+backend](./choose-a-backend.md) section. For the examples in this book, we are going to use
+`crossterm`.
 ```
 
 Running the above command in your console will add the latest version of `ratatui` and `crossterm`
