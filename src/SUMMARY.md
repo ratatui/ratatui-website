@@ -30,7 +30,7 @@
 - [How To]()
 
   - [Enable Features](./how-to/features.md)
-  - [Choose a Backend]()
+  - [Choose a Backend](./how-to/choosing-a-backend.md)
   - [Blocks]()
   - [Displaying Text]()
     - [Styling-Text]()
