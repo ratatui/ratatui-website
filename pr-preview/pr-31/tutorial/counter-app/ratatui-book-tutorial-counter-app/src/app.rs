@@ -1,19 +1,13 @@
 ///// ANCHOR: application
 /// Application.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct App {
-  /// Is the application running?
+  /// should the application exit?
   pub should_quit: bool,
   /// counter
   pub counter: u8,
 }
 ///// ANCHOR_END: application
-
-impl Default for App {
-  fn default() -> Self {
-    Self { should_quit: false, counter: 0 }
-  }
-}
 
 ///// ANCHOR: application_impl
 impl App {

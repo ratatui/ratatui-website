@@ -156,17 +156,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="eventrs"><a class="header" href="#eventrs">event.rs</a></h1>
-<pre><code class="language-rust">use std::{
-  sync::mpsc,
-  thread,
-  time::{Duration, Instant},
-};
-
-use anyhow::Result;
-use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
-
-///// ANCHOR: event
-/// Terminal events.
+<p>We are going to introduce a new concept right now. The concept of an <code>EventHandler</code>.</p>
+<p>Previously, we were polling for key inputs every 250 ms using crossterm as part of the <code>main</code> loop.
+Instead, now we are going to start a thread in the background that does the same thing.</p>
+<p>First, let’s create an <code>Event</code> enum to handle the different kinds of events that can occur:</p>
+<pre><code class="language-rust">/// Terminal events.
 #[derive(Clone, Copy, Debug)]
 pub enum Event {
   /// Terminal tick.
@@ -177,12 +171,11 @@ pub enum Event {
   Mouse(MouseEvent),
   /// Terminal resize.
   Resize(u16, u16),
-}
-///// ANCHOR_END: event
+}</code></pre>
+<p>Next, let’s create an <code>EventHandler</code> struct:</p>
+<pre><code class="language-rust">use std::{sync::mpsc, thread};
 
-///// ANCHOR: eventhandler
 /// Terminal event handler.
-#[allow(dead_code)]
 #[derive(Debug)]
 pub struct EventHandler {
   /// Event sender channel.
@@ -191,11 +184,37 @@ pub struct EventHandler {
   receiver: mpsc::Receiver&lt;Event&gt;,
   /// Event handler thread.
   handler: thread::JoinHandle&lt;()&gt;,
-}
-///// ANCHOR_END: eventhandler
-
-///// ANCHOR: eventhandler_impl
-impl EventHandler {
+}</code></pre>
+<p>We are using <a href="https://doc.rust-lang.org/std/sync/mpsc/"><code>std::sync::mpsc</code></a> which is a “Multiple
+Producer Single Consumer” channel.</p>
+<div id="admonition-tip" class="admonition tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="#admonition-tip"></a></p>
+</div>
+<div>
+<p>A channel is a thread-safe communication mechanism that allows data to be transmitted between
+threads. Essentially, it’s a conduit where one or more threads (the producers) can send data, and
+another thread (the consumer) can receive this data.</p>
+</div>
+</div>
+<p>In Rust, channels are particularly useful for sending data between threads without the need for
+locks or other synchronization mechanisms. The “Multiple Producer, Single Consumer” aspect of
+<code>std::sync::mpsc</code> means that while multiple threads can send data into the channel, only a single
+thread can retrieve and process this data, ensuring a clear and orderly flow of information.</p>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+</div>
+<div>
+<p>In the code in this section, we only need a “Single Producer, Single Consumer” but we are going to
+use <code>mpsc</code> to set us up for the future.</p>
+</div>
+</div>
+<p>Finally, here’s the code that starts a thread that polls for events from <code>crossterm</code> and maps it to
+our <code>Event</code> enum.</p>
+<pre><code class="language-rust">impl EventHandler {
   /// Constructs a new instance of [`EventHandler`].
   pub fn new(tick_rate: u64) -&gt; Self {
     let tick_rate = Duration::from_millis(tick_rate);
@@ -234,8 +253,24 @@ impl EventHandler {
   pub fn next(&amp;self) -&gt; Result&lt;Event&gt; {
     Ok(self.receiver.recv()?)
   }
-}
-///// ANCHOR_END: eventhandler_impl</code></pre>
+}</code></pre>
+<p>At the beginning of our <code>EventHandler</code> <code>new</code> method, we create a channel using <code>mpsc::channel()</code>.</p>
+<pre><code class="language-rust">let (sender, receiver) = mpsc::channel();</code></pre>
+<p>This gives us a <code>sender</code> and <code>receiver</code> pair. The <code>sender</code> can be used to send events, while the
+<code>receiver</code> can be used to receive them.</p>
+<p>A new thread is spawned to handle events. This thread runs in the background and is responsible for
+polling and sending events to our main application through the channel.</p>
+<p>Within our background thread, we continuously poll for events with <code>event::poll(timeout)</code>. If an
+event is available, it’s read and sent through the sender channel. The types of events we handle
+include keypresses, mouse movements, screen resizing, and regular time ticks.</p>
+<p>Finally, we update the <code>last_tick</code> value based on the time elapsed since the previous <code>Tick</code>. We
+also send a <code>Event::Tick</code> on the channel during this.</p>
+<pre><code class="language-rust">if last_tick.elapsed() &gt;= tick_rate {
+    sender.send(Event::Tick).expect(&quot;failed to send tick event&quot;);
+    last_tick = Instant::now();
+}</code></pre>
+<p>In summary, our <code>EventHandler</code> abstracts away the complexity of event polling and handling into a
+dedicated background thread.</p>
 
                     </main>
 

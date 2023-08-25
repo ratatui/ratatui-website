@@ -158,9 +158,9 @@
                         <h1 id="apprs"><a class="header" href="#apprs">app.rs</a></h1>
 <p>Let’s start with the same <code>struct</code> as we had before:</p>
 <pre><code class="language-rust">/// Application.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct App {
-  /// Is the application running?
+  /// should the application exit?
   pub should_quit: bool,
   /// counter
   pub counter: u8,
@@ -207,8 +207,8 @@ instance, it may seem like overkill but it is good practice nonetheless.</p>
     #[test]
     fn test_app_decrement_counter() {
         let mut app = App::default();
-        app.increment_counter();
-        assert_eq!(app.counter, 1);
+        app.decrement_counter();
+        assert_eq!(app.counter, 0);
     }
 }</code></pre>
 <div id="admonition-tip" class="admonition tip">

@@ -24,7 +24,6 @@ pub enum Event {
 
 ///// ANCHOR: eventhandler
 /// Terminal event handler.
-#[allow(dead_code)]
 #[derive(Debug)]
 pub struct EventHandler {
   /// Event sender channel.
