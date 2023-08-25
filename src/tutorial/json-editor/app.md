@@ -1,12 +1,13 @@
 # App.rs
 
-A common model for smaller `ratatui` applications, is to have one large application state struct
-called `App` or some variant of that name. We will be using this paradigm in this application.
+As we saw in the previous section, a common model for smaller `ratatui` applications, is to have one
+large application state struct called `App` or some variant of that name. We will be using this
+paradigm in this application.
 
 This struct will contain all of our "persistent" data and will be passed to any function that needs
 to know the current state of the application.
 
-(Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models)
+<!-- (Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models) -->
 
 ## Application modes
 
