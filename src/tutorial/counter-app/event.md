@@ -61,6 +61,28 @@ Within our background thread, we continuously poll for events with `event::poll(
 event is available, it's read and sent through the sender channel. The types of events we handle
 include keypresses, mouse movements, screen resizing, and regular time ticks.
 
+```rust
+if event::poll(timeout)? {
+  match event::read()? {
+    CrosstermEvent::Key(e) => sender.send(Event::Key(e))?,
+    CrosstermEvent::Mouse(e) => sender.send(Event::Mouse(e))?,
+    CrosstermEvent::Resize(w, h) => sender.send(Event::Resize(w, h))?,
+    _ => unimplemented!(),
+  }
+}
+```
+
+We expose the `receiver` channel as part of a `next()` method.
+
+```rust
+  pub fn next(&self) -> Result<Event> {
+    Ok(self.receiver.recv()?)
+  }
+```
+
+Calling `event_handler.next()` method will call `receiver.recv()` which will cause the thread to
+block until the `receiver` gets a new event.
+
 Finally, we update the `last_tick` value based on the time elapsed since the previous `Tick`. We
 also send a `Event::Tick` on the channel during this.
 

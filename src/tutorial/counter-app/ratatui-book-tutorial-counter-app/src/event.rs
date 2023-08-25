@@ -48,6 +48,7 @@ impl EventHandler {
         loop {
           let timeout = tick_rate.checked_sub(last_tick.elapsed()).unwrap_or(tick_rate);
 
+          ///// ANCHOR: eventhandler_poll
           if event::poll(timeout).expect("no events available") {
             match event::read().expect("unable to read event") {
               CrosstermEvent::Key(e) => sender.send(Event::Key(e)),
@@ -57,6 +58,7 @@ impl EventHandler {
             }
             .expect("failed to send terminal event")
           }
+          ///// ANCHOR_END: eventhandler_poll
 
           if last_tick.elapsed() >= tick_rate {
             sender.send(Event::Tick).expect("failed to send tick event");
