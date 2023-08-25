@@ -5,28 +5,32 @@ use crossterm::{
   event::{DisableMouseCapture, EnableMouseCapture},
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use tui::{backend::Backend, Terminal};
+
+pub type Frame<'a> = tui::Frame<'a, tui::backend::CrosstermBackend<std::io::Stderr>>;
+pub type CrosstermTerminal = tui::Terminal<tui::backend::CrosstermBackend<std::io::Stderr>>;
 
 use crate::{app::App, event::EventHandler, ui};
 
+///// ANCHOR: tui
 /// Representation of a terminal user interface.
 ///
 /// It is responsible for setting up the terminal,
 /// initializing the interface and handling the draw events.
-#[derive(Debug)]
-pub struct Tui<B: Backend> {
+pub struct Tui {
   /// Interface to the Terminal.
-  terminal: Terminal<B>,
+  terminal: CrosstermTerminal,
   /// Terminal event handler.
   pub events: EventHandler,
 }
+///// ANCHOR_END: tui
 
-impl<B: Backend> Tui<B> {
+impl Tui {
   /// Constructs a new instance of [`Tui`].
-  pub fn new(terminal: Terminal<B>, events: EventHandler) -> Self {
+  pub fn new(terminal: CrosstermTerminal, events: EventHandler) -> Self {
     Self { terminal, events }
   }
 
+  ///// ANCHOR: tui_init
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
@@ -47,6 +51,9 @@ impl<B: Backend> Tui<B> {
     Ok(())
   }
 
+  ///// ANCHOR_END: tui_init
+
+  ///// ANCHOR: tui_draw
   /// [`Draw`] the terminal interface by [`rendering`] the widgets.
   ///
   /// [`Draw`]: tui::Terminal::draw
@@ -56,13 +63,16 @@ impl<B: Backend> Tui<B> {
     Ok(())
   }
 
+  ///// ANCHOR_END: tui_draw
+
+  ///// ANCHOR: tui_exit
   /// Resets the terminal interface.
   ///
   /// This function is also used for the panic hook to revert
   /// the terminal properties if unexpected errors occur.
   fn reset() -> Result<()> {
     terminal::disable_raw_mode()?;
-    crossterm::execute!(io::stdout(), LeaveAlternateScreen, DisableMouseCapture)?;
+    crossterm::execute!(io::stderr(), LeaveAlternateScreen, DisableMouseCapture)?;
     Ok(())
   }
 
@@ -74,4 +84,5 @@ impl<B: Backend> Tui<B> {
     self.terminal.show_cursor()?;
     Ok(())
   }
+  ///// ANCHOR_END: tui_exit
 }

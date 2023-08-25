@@ -1,14 +1,12 @@
 use tui::{
-  backend::Backend,
   layout::Alignment,
   style::Style,
   widgets::{Block, BorderType, Borders, Paragraph},
-  Frame,
 };
 
-use crate::app::App;
+use crate::{app::App, tui::Frame};
 
-pub fn render<B: Backend>(app: &mut App, frame: &mut Frame<'_, B>) {
+pub fn render(app: &mut App, frame: &mut Frame) {
   frame.render_widget(
     Paragraph::new(format!(
       "

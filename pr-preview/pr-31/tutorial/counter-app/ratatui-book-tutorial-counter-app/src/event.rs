@@ -7,6 +7,7 @@ use std::{
 use anyhow::Result;
 use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
 
+///// ANCHOR: event
 /// Terminal events.
 #[derive(Clone, Copy, Debug)]
 pub enum Event {
@@ -19,7 +20,9 @@ pub enum Event {
   /// Terminal resize.
   Resize(u16, u16),
 }
+///// ANCHOR_END: event
 
+///// ANCHOR: eventhandler
 /// Terminal event handler.
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -31,7 +34,9 @@ pub struct EventHandler {
   /// Event handler thread.
   handler: thread::JoinHandle<()>,
 }
+///// ANCHOR_END: eventhandler
 
+///// ANCHOR: eventhandler_impl
 impl EventHandler {
   /// Constructs a new instance of [`EventHandler`].
   pub fn new(tick_rate: u64) -> Self {
@@ -72,3 +77,4 @@ impl EventHandler {
     Ok(self.receiver.recv()?)
   }
 }
+///// ANCHOR_END: eventhandler_impl

@@ -157,16 +157,14 @@
                     <main>
                         <h1 id="uirs"><a class="header" href="#uirs">ui.rs</a></h1>
 <pre><code class="language-rust">use tui::{
-  backend::Backend,
   layout::Alignment,
   style::Style,
   widgets::{Block, BorderType, Borders, Paragraph},
-  Frame,
 };
 
-use crate::app::App;
+use crate::{app::App, tui::Frame};
 
-pub fn render&lt;B: Backend&gt;(app: &amp;mut App, frame: &amp;mut Frame&lt;'_, B&gt;) {
+pub fn render(app: &amp;mut App, frame: &amp;mut Frame) {
   frame.render_widget(
     Paragraph::new(format!(
       &quot;

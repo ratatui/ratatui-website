@@ -718,16 +718,14 @@ pub struct App {
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="uirs"><a class="header" href="#uirs">ui.rs</a></h1>
 <pre><code class="language-rust">use tui::{
-  backend::Backend,
   layout::Alignment,
   style::Style,
   widgets::{Block, BorderType, Borders, Paragraph},
-  Frame,
 };
 
-use crate::app::App;
+use crate::{app::App, tui::Frame};
 
-pub fn render&lt;B: Backend&gt;(app: &amp;mut App, frame: &amp;mut Frame&lt;'_, B&gt;) {
+pub fn render(app: &amp;mut App, frame: &amp;mut Frame) {
   frame.render_widget(
     Paragraph::new(format!(
       &quot;
@@ -759,6 +757,7 @@ pub fn render&lt;B: Backend&gt;(app: &amp;mut App, frame: &amp;mut Frame&lt;'_, 
 use anyhow::Result;
 use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
 
+///// ANCHOR: event
 /// Terminal events.
 #[derive(Clone, Copy, Debug)]
 pub enum Event {
@@ -771,7 +770,9 @@ pub enum Event {
   /// Terminal resize.
   Resize(u16, u16),
 }
+///// ANCHOR_END: event
 
+///// ANCHOR: eventhandler
 /// Terminal event handler.
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -783,7 +784,9 @@ pub struct EventHandler {
   /// Event handler thread.
   handler: thread::JoinHandle&lt;()&gt;,
 }
+///// ANCHOR_END: eventhandler
 
+///// ANCHOR: eventhandler_impl
 impl EventHandler {
   /// Constructs a new instance of [`EventHandler`].
   pub fn new(tick_rate: u64) -&gt; Self {
@@ -823,7 +826,8 @@ impl EventHandler {
   pub fn next(&amp;self) -&gt; Result&lt;Event&gt; {
     Ok(self.receiver.recv()?)
   }
-}</code></pre>
+}
+///// ANCHOR_END: eventhandler_impl</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="tuirs"><a class="header" href="#tuirs">tui.rs</a></h1>
 <pre><code class="language-rust">use std::{io, panic};
 
@@ -832,28 +836,32 @@ use crossterm::{
   event::{DisableMouseCapture, EnableMouseCapture},
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use tui::{backend::Backend, Terminal};
+
+pub type Frame&lt;'a&gt; = tui::Frame&lt;'a, tui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+pub type CrosstermTerminal = tui::Terminal&lt;tui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 use crate::{app::App, event::EventHandler, ui};
 
+///// ANCHOR: tui
 /// Representation of a terminal user interface.
 ///
 /// It is responsible for setting up the terminal,
 /// initializing the interface and handling the draw events.
-#[derive(Debug)]
-pub struct Tui&lt;B: Backend&gt; {
+pub struct Tui {
   /// Interface to the Terminal.
-  terminal: Terminal&lt;B&gt;,
+  terminal: CrosstermTerminal,
   /// Terminal event handler.
   pub events: EventHandler,
 }
+///// ANCHOR_END: tui
 
-impl&lt;B: Backend&gt; Tui&lt;B&gt; {
+impl Tui {
   /// Constructs a new instance of [`Tui`].
-  pub fn new(terminal: Terminal&lt;B&gt;, events: EventHandler) -&gt; Self {
+  pub fn new(terminal: CrosstermTerminal, events: EventHandler) -&gt; Self {
     Self { terminal, events }
   }
 
+  ///// ANCHOR: tui_init
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
@@ -874,6 +882,9 @@ impl&lt;B: Backend&gt; Tui&lt;B&gt; {
     Ok(())
   }
 
+  ///// ANCHOR_END: tui_init
+
+  ///// ANCHOR: tui_draw
   /// [`Draw`] the terminal interface by [`rendering`] the widgets.
   ///
   /// [`Draw`]: tui::Terminal::draw
@@ -883,13 +894,16 @@ impl&lt;B: Backend&gt; Tui&lt;B&gt; {
     Ok(())
   }
 
+  ///// ANCHOR_END: tui_draw
+
+  ///// ANCHOR: tui_exit
   /// Resets the terminal interface.
   ///
   /// This function is also used for the panic hook to revert
   /// the terminal properties if unexpected errors occur.
   fn reset() -&gt; Result&lt;()&gt; {
     terminal::disable_raw_mode()?;
-    crossterm::execute!(io::stdout(), LeaveAlternateScreen, DisableMouseCapture)?;
+    crossterm::execute!(io::stderr(), LeaveAlternateScreen, DisableMouseCapture)?;
     Ok(())
   }
 
@@ -901,6 +915,7 @@ impl&lt;B: Backend&gt; Tui&lt;B&gt; {
     self.terminal.show_cursor()?;
     Ok(())
   }
+  ///// ANCHOR_END: tui_exit
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="handlerrs"><a class="header" href="#handlerrs">handler.rs</a></h1>
 <pre><code class="language-rust">use anyhow::Result;

@@ -165,6 +165,7 @@
 use anyhow::Result;
 use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
 
+///// ANCHOR: event
 /// Terminal events.
 #[derive(Clone, Copy, Debug)]
 pub enum Event {
@@ -177,7 +178,9 @@ pub enum Event {
   /// Terminal resize.
   Resize(u16, u16),
 }
+///// ANCHOR_END: event
 
+///// ANCHOR: eventhandler
 /// Terminal event handler.
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -189,7 +192,9 @@ pub struct EventHandler {
   /// Event handler thread.
   handler: thread::JoinHandle&lt;()&gt;,
 }
+///// ANCHOR_END: eventhandler
 
+///// ANCHOR: eventhandler_impl
 impl EventHandler {
   /// Constructs a new instance of [`EventHandler`].
   pub fn new(tick_rate: u64) -&gt; Self {
@@ -229,7 +234,8 @@ impl EventHandler {
   pub fn next(&amp;self) -&gt; Result&lt;Event&gt; {
     Ok(self.receiver.recv()?)
   }
-}</code></pre>
+}
+///// ANCHOR_END: eventhandler_impl</code></pre>
 
                     </main>
 
