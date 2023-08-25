@@ -226,9 +226,9 @@ macro_rules! trace_dbg {
 <p>The log level is decided by the <code>RUST_LOG</code> environment variable (default =
 <code>log::LevelFilter::Info</code>). In addition, the location of the log files are decided by your
 environment variables (default = <code>XDG_DATA_HOME (local)</code>).</p>
-<p>In addition to add a log file to the <code>.data</code> folder, <code>initialize_logging()</code> also sets up
-<code>tui-logger</code> with <code>tracing</code>, so that you can add a <code>tui-logger</code> widget to show the logs to your
-users on a key press.</p>
+<p>In addition to add a log file to the <code>data</code> folder, <code>initialize_logging()</code> also sets up <code>tui-logger</code>
+with <code>tracing</code>, so that you can add a <code>tui-logger</code> widget to show the logs to your users on a key
+press.</p>
 <p><img src="https://user-images.githubusercontent.com/1813121/254093932-46d8c6fd-c572-4675-bcaf-45a36eed51ff.png" alt="Top half is a Iterm2 terminal with the TUI showing a Vertical split with tui-logger widget. Bottom half is a ITerm2 terminal showing the output of running tail -f on the log file." /></p>
 
                     </main>
