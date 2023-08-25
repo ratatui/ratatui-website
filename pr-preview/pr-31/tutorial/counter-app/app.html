@@ -193,6 +193,40 @@ pub struct App {
     }
   }
 }</code></pre>
+<p>We use the principle of encapsulation to expose an interface to modify the state. In this particular
+instance, it may seem like overkill but it is good practice nonetheless.</p>
+<p>The practical advantage of this is that it makes the state changes easy to test.</p>
+<pre><code class="language-rust">mod tests {
+    #[test]
+    fn test_app_increment_counter() {
+        let mut app = App::default();
+        app.increment_counter();
+        assert_eq!(app.counter, 1);
+    }
+
+    #[test]
+    fn test_app_decrement_counter() {
+        let mut app = App::default();
+        app.increment_counter();
+        assert_eq!(app.counter, 1);
+    }
+}</code></pre>
+<div id="admonition-tip" class="admonition tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="#admonition-tip"></a></p>
+</div>
+<div>
+<p>You can test a single function by writing out fully qualified module path
+to the test function, like so:</p>
+<pre><code class="language-bash">cargo test -- app::tests::test_app_increment_counter --nocapture
+</code></pre>
+<p>Or even test all functions that start with <code>test_app_</code> by doing this:</p>
+<pre><code class="language-bash">cargo test -- app::tests::test_app_ --nocapture
+</code></pre>
+<p>The <code>--nocapture</code> flag prints stdout stderr to the console, which can help debugging tests.</p>
+</div>
+</div>
 
                     </main>
 
