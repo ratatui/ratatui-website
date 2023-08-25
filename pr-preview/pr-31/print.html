@@ -309,26 +309,37 @@ counter application.</p>
 decrement the counter when a key is pressed. Let’s increment and decrement the counter with <code>j</code> and
 <code>k</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="single-function"><a class="header" href="#single-function">Single Function</a></h1>
-<p>Here’s a first pass at a counter application in Rust using <code>ratatui</code></p>
+<p>In this section, we’ll walk through building a simple counter application, allowing users to
+increase or decrease a displayed number using keyboard input.</p>
+<p>Here’s a first pass at a counter application in Rust using <code>ratatui</code> where all the code is in one
+<code>main</code> function:</p>
 <pre><code class="language-rust">use ratatui::{
   prelude::{CrosstermBackend, Terminal},
   widgets::Paragraph,
 };
 
 fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+  // startup: Enable raw mode for the terminal, giving us fine control over user input
   crossterm::terminal::enable_raw_mode()?;
   crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
 
+  // Initialize the terminal backend using crossterm
   let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
 
+  // Define our counter variable
+  // This is the state of our application
   let mut counter = 0;
 
+  // Main application loop
   loop {
+    // Render the UI
     terminal.draw(|f| {
       f.render_widget(Paragraph::new(format!(&quot;Counter: {counter}&quot;)), f.size());
     })?;
 
+    // Check for user input every 250 milliseconds
     if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      // If a key event occurs, handle it
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
         match key.code {
           crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
@@ -340,11 +351,54 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
     }
   }
 
+  // shutdown down: reset terminal back to original state
   crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
   crossterm::terminal::disable_raw_mode()?;
 
   Ok(())
 }</code></pre>
+<p>In the code above, it is useful to think about various parts of the code as separate pieces of the
+puzzle. This is useful to help refactor and reorganize your code for larger applications.</p>
+<ul>
+<li>
+<p><strong>Imports</strong>: We start by importing necessary components from the ratatui library, which provides
+widgets and utilities for crafting TUIs.</p>
+</li>
+<li>
+<p><strong>Terminal Management</strong>: It is useful to look at terminal related code in three categories:</p>
+<ul>
+<li><strong>Start up</strong>: Terminal set to raw mode and enter an alternate screen</li>
+<li><strong>Initialize</strong>: Create an instance of terminal backend</li>
+<li><strong>Shut Down</strong>: Terminal disables raw mode and exits the alternate screen for a clean exit,
+ensuring the terminal returns to its original state</li>
+</ul>
+</li>
+<li>
+<p><strong>App state</strong>: Our application has just one variable that tracks the “state”, i.e. the counter
+value.</p>
+</li>
+<li>
+<p><strong>Run Loop</strong>: Our application runs in a continuous loop, constantly checking for user input and
+updating the display.</p>
+<ul>
+<li>
+<p><strong>UI</strong>: The <code>counter</code> is displayed using the <code>Paragraph</code> widget.</p>
+</li>
+<li>
+<p><strong>User Input</strong>: Every 250 milliseconds, the application checks if the user has pressed a key:</p>
+<ul>
+<li>‘j’ increases the counter</li>
+<li>‘k’ decreases the counter</li>
+<li>‘q’ exits the application</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>By understanding the structure and components used in this simple counter application, you are set
+up to explore crafting more intricate terminal-based interfaces using <code>ratatui</code>.</p>
+<p>In the next section, we will explore a refactor of the above code to separate the various parts into
+individual functions.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="refactor"><a class="header" href="#refactor">Refactor</a></h1>
 <p>In this section, we will walk through the process of refactoring the application to set ourselves up
 better for bigger projects. Not all of these changes are <code>ratatui</code> specific, and are generally good
@@ -454,7 +508,7 @@ how each input is processed.</p>
 }</code></pre>
 <p>Each function now has a specific task, making our main application logic more organized and easier
 to follow.</p>
-<pre><code class="language-rust">fn main() -&gt; TuiResult&lt;()&gt; {
+<pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
   startup()?;
   let status = run();
   shutdown()?;

@@ -264,7 +264,7 @@ how each input is processed.</p>
 }</code></pre>
 <p>Each function now has a specific task, making our main application logic more organized and easier
 to follow.</p>
-<pre><code class="language-rust">fn main() -&gt; TuiResult&lt;()&gt; {
+<pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
   startup()?;
   let status = run();
   shutdown()?;
