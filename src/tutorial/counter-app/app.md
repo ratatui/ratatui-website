@@ -3,13 +3,13 @@
 Let's start with the same `struct` as we had before:
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/app.rs:application}}
+{{#include ./ratatui-counter-app/src/app.rs:application}}
 ```
 
 We can add additional methods to this `Application` struct:
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/app.rs:application_impl}}
+{{#include ./ratatui-counter-app/src/app.rs:application_impl}}
 ```
 
 We use the principle of encapsulation to expose an interface to modify the state. In this particular

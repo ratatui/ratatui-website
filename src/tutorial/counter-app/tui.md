@@ -9,7 +9,7 @@ This introductory section includes the same imports and type definitions as befo
 additional type alias for `CrosstermTerminal`.
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/tui.rs:tui_imports}}
+{{#include ./ratatui-counter-app/src/tui.rs:tui_imports}}
 ```
 
 The `Tui` struct can be defined with two primary fields:
@@ -20,21 +20,21 @@ The `Tui` struct can be defined with two primary fields:
   terminal events like keystrokes, mouse movements, and other input events.
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/tui.rs:tui}}
+{{#include ./ratatui-counter-app/src/tui.rs:tui}}
 ```
 
 With this `Tui` struct, we can add helper methods to handle modifying the terminal state. For
 example, here's the `init` method:
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/tui.rs:tui_init}}
+{{#include ./ratatui-counter-app/src/tui.rs:tui_init}}
 ```
 
 This is essentially the same as the `startup` function from before. One important thing to note that
 this function can be used to set a panic hook that calls the `reset()` method.
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/tui.rs:tui_exit}}
+{{#include ./ratatui-counter-app/src/tui.rs:tui_exit}}
 ```
 
 With this panic hook, in the event of an unexpected error or panic, the terminal properties will be
@@ -43,7 +43,7 @@ reset, ensuring that the terminal doesn't remain in a disrupted state.
 Finally, we can set up the draw method:
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/tui.rs:tui_draw}}
+{{#include ./ratatui-counter-app/src/tui.rs:tui_draw}}
 ```
 
 This draw method leverages the `ui::render` function from earlier in this section to transform the
@@ -52,5 +52,5 @@ state of our application into widgets that are then displayed on the terminal.
 Here's the full `tui.rs` file for your reference:
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/tui.rs:all}}
+{{#include ./ratatui-counter-app/src/tui.rs:all}}
 ```

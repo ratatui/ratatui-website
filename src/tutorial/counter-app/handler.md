@@ -8,5 +8,5 @@ arguments:
 - `app`: A mutable reference to our application's state, represented by the `App` struct.
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/handler.rs}}
+{{#include ./ratatui-counter-app/src/handler.rs}}
 ```

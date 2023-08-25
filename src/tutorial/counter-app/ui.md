@@ -10,7 +10,7 @@ Let's make some improvements:
 This is what our code will now look like:
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/ui.rs}}
+{{#include ./ratatui-counter-app/src/ui.rs}}
 ```
 
 When rendered, this is what the UI will look like:
