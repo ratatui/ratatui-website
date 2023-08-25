@@ -20,17 +20,17 @@ and double checking the output.
 #### Main.rs
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:all}}
+{{#include ./ratatui-json-editor-app/src/main.rs:all}}
 ```
 
 #### App.rs
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/app.rs:all}}
+{{#include ./ratatui-json-editor-app/src/app.rs:all}}
 ```
 
 #### UI.rs
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:all}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:all}}
 ```

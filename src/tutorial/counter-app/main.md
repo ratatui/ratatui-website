@@ -3,7 +3,7 @@
 Putting it all together, we have the `main.rs` function:
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/main.rs}}
+{{#include ./ratatui-counter-app/src/main.rs}}
 ```
 
 Because we call `tui.events.next()` in a loop, it blocks until there's an event generated. If

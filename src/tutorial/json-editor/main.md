@@ -25,7 +25,8 @@ use std::io;
 ```
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:setup_boilerplate}}
+{{#include ./ratatui-json-editor-app/src/main.rs:setup_boilerplate}}
+    ...
 ```
 
 You might notice that we are using `stderr` for our output. This is because we want to allow the
@@ -44,7 +45,9 @@ First, we need to create an instance of our `ApplicationState` or `app`, to hold
 program's state, and then we will call our function which handles the event and draw loop.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:application_startup}}
+    ...
+{{#include ./ratatui-json-editor-app/src/main.rs:application_startup}}
+    ...
 ```
 
 ### Application post-run steps
@@ -61,7 +64,9 @@ use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};
 ```
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:ending_boilerplate}}
+    ...
+{{#include ./ratatui-json-editor-app/src/main.rs:ending_boilerplate}}
+    ...
 ```
 
 When an application exits without running this closing boilerplate, the terminal will act very
@@ -69,7 +74,8 @@ strange, and the user will usually have to end the terminal session and start a 
 important that we handle our error in such a way that we can call this last piece.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:final_print}}
+    ...
+{{#include ./ratatui-json-editor-app/src/main.rs:final_print}}
 ```
 
 The if statement at the end of boilerplate checks if the `run_app` function errored. If `run_app`
@@ -83,28 +89,35 @@ how this works, read the
 So, altogether, our finished function should looks like this:
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:main_all}}
+{{#include ./ratatui-json-editor-app/src/main.rs:main_all}}
 ```
 
-## run_app
+## `run_app`
 
-In this function, we will start to do some actual logic.
+In this function, we will start to do the actual logic.
 
 ### Method signature
 
 Let's start with the method signature:
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:run_method_signature}}
+{{#include ./ratatui-json-editor-app/src/main.rs:run_method_signature}}
 ...
 ```
 
-This method accepts an object of type `Terminal` which implements the `ratatui::backed::Backend`
-trait. This included the three (four counting the `TestBackend`) officially supported backends
-included in `ratatui`, but allows for 3rd party backends to be implemented. `run_app` also requires
-a mutable borrow to an application state object, as defined in this project. Finally, the `run_app`
-returns an `io::Result<bool>` that indicates if there was an io error with the `Err` state, and an
-`Ok(true)` or `Ok(false)` that indicates if the program should print out the finished json.
+You'll notice that we make this function generic across the `ratatui::backend::Backend`. In previous
+sections we hardcoded the `CrosstermBackend`. This this trait approach allows us to make our code
+backend agnostic.
+
+This method accepts an object of type `Terminal` which implements the `ratatui::backend::Backend`
+trait. This trait includes the three (four counting the `TestBackend`) officially supported backends
+included in `ratatui`. It allows for 3rd party backends to be implemented.
+
+`run_app` also requires a mutable borrow to an application state object, as defined in this project.
+
+Finally, the `run_app` returns an `io::Result<bool>` that indicates if there was an io error with
+the `Err` state, and an `Ok(true)` or `Ok(false)` that indicates if the program should print out the
+finished json.
 
 ### UI Loop
 
@@ -112,39 +125,54 @@ Because `ratatui` requires us to implement our own event/ui loop, we will simply
 code to update our main loop.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:ui_loop}}
+    ...
+{{#include ./ratatui-json-editor-app/src/main.rs:ui_loop}}
+        ...
 ```
 
-Let's unpack that `draw` call really quick. `terminal` is the `Terminal<Backend>` that we take as an
-arguement, `draw` is the `ratatui` command to draw a `Frame` to the terminal (technically to the
-`Terminal<Backend>`, but that only matters on the `TestBackend`). `|f| ui(f, &app)` tells `draw`
-that we want to take `f: <Frame>` and pass it to our function `ui`, and `ui` will return a drawable
-frame. Notice that we also pass a immutable borrow of our application state to the `ui` function.
-This will be important later.
+Let's unpack that `draw` call really quick.
+
+- `terminal` is the `Terminal<Backend>` that we take as an argument,
+- `draw` is the `ratatui` command to draw a `Frame` to the terminal[^note].
+- `|f| ui(f, &app)` tells `draw` that we want to take `f: <Frame>` and pass it to our function `ui`,
+  and `ui` will draw to that `Frame`.
+
+Notice that we also pass a immutable borrow of our application state to the `ui` function. This will
+be important later.
+
+[^note]: Technically to the `Terminal<Backend>`, but that only matters on the `TestBackend`.
 
 ### Event handling
 
-Now that we have started our app, and have set up the ui rendering, we will implement the event
+Now that we have started our app, and have set up the UI rendering, we will implement the event
 handling.
 
 #### Polling
 
-Because we are using crossterm, we simply poll for keyboard events with
+Because we are using `crossterm`, we can simply poll for keyboard events with
 
-```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:event_poll}}
+```rust
+if let Event::Key(key) = event::read()? {
+    dbg!(key.code)
+}
 ```
 
-and then match the results. Please note that the process for polling events will vary on the backend
-you are utilizing, and you will need to refer to the documentation of that backend for more
-information.
+and then match the results.
+
+Alternatively, we can set up a thread to run in the background to poll and send `Event`s (as we did
+in the "counter" tutorial). Let's keep things simple here for the sake of illustration.
+
+Note that the process for polling events will vary on the backend you are utilizing, and you will
+need to refer to the documentation of that backend for more information.
 
 #### Main Screen
 
 We will start with the keybinds and event handling for the `CurrentScreen::Main`.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:main_screen}}
+        ...
+{{#include ./ratatui-json-editor-app/src/main.rs:main_screen}}
+                ...
 ```
 
 After matching to the `Main` enum variant, we match the event. When the user is in the main screen,
@@ -167,7 +195,9 @@ indicates that our `main` function should call `app.print_json()` to perform the
 printing for us after resetting the terminal to normal
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:exiting_screen}}
+                ...
+{{#include ./ratatui-json-editor-app/src/main.rs:exiting_screen}}
+                ...
 ```
 
 #### Editing
@@ -180,37 +210,47 @@ enter key to switch the focus to editing the `Value`. However, if the `Value` is
 currently edited, `Enter` will save the key-value pair, and return to the `Main` screen.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:editing_enter}}
+                ...
+{{#include ./ratatui-json-editor-app/src/main.rs:editing_enter}}
+                        ...
 ```
 
 When `Backspace` is pressed, we need to first determine if the user is editing a `Key` or a `Value`,
 then `pop()` the endings of those strings accordingly.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:backspace_editing}}
+                        ...
+{{#include ./ratatui-json-editor-app/src/main.rs:backspace_editing}}
+                        ...
 ```
 
 When `Escape` is pressed, we want to quit editing.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:escape_editing}}
+                        ...
+{{#include ./ratatui-json-editor-app/src/main.rs:escape_editing}}
+                        ...
 ```
 
 When `Tab` is pressed, we want the currently editing selection to switch.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:tab_editing}}
+                        ...
+{{#include ./ratatui-json-editor-app/src/main.rs:tab_editing}}
+                        ...
 ```
 
 And finally, if the user types a valid character, we want to capture that, and add it to the string
 that is the final key or value.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:character_editing}}
+                        ...
+{{#include ./ratatui-json-editor-app/src/main.rs:character_editing}}
+                        ...
 ```
 
 Altogether, the event loop should look like this:
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/main.rs:event_poll}}
+{{#include ./ratatui-json-editor-app/src/main.rs:event_poll}}
 ```

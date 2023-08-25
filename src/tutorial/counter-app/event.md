@@ -8,7 +8,7 @@ Instead, now we are going to start a thread in the background that does the same
 First, let's create an `Event` enum to handle the different kinds of events that can occur:
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/event.rs:event}}
+{{#include ./ratatui-counter-app/src/event.rs:event}}
 ```
 
 Next, let's create an `EventHandler` struct:
@@ -16,7 +16,7 @@ Next, let's create an `EventHandler` struct:
 ```rust
 use std::{sync::mpsc, thread};
 
-{{#include ./ratatui-book-tutorial-counter-app/src/event.rs:eventhandler}}
+{{#include ./ratatui-counter-app/src/event.rs:eventhandler}}
 ```
 
 We are using [`std::sync::mpsc`](https://doc.rust-lang.org/std/sync/mpsc/) which is a "Multiple
@@ -42,7 +42,7 @@ Finally, here's the code that starts a thread that polls for events from `crosst
 our `Event` enum.
 
 ```rust
-{{#include ./ratatui-book-tutorial-counter-app/src/event.rs:eventhandler_impl}}
+{{#include ./ratatui-counter-app/src/event.rs:eventhandler_impl}}
 ```
 
 At the beginning of our `EventHandler` `new` method, we create a channel using `mpsc::channel()`.

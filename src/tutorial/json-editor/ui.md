@@ -13,7 +13,7 @@ that we create a widget, and pass it to a `Frame` along with a size. How we get 
 layouts come in.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:ui_layout}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:ui_layout}}
 ```
 
 You can this as an small instruction manual for cutting up a rectangle into smaller rectangles,
@@ -55,7 +55,7 @@ the size of the terminal at render time (this is important, because it allows us
 terminals into account), and the application state.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:method_sig}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:method_sig}}
 ```
 
 # The Main screen
@@ -69,7 +69,7 @@ Now that we have our `Frame`, we can actually begin drawing widgets onto it. We 
 creating out layout.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:ui_layout}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:ui_layout}}
 ```
 
 The variable `chunks` now contains a length 3 array of `Rect` objects that contain the top left
@@ -84,7 +84,7 @@ giving it a `Block` with borders enabled. (See [How-To: Block](./../how-to/block
 [How-To: Paragraph](./../how-to/paragraph.md) for more information about `Block` and `Paragraph`).
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:title_paragraph}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:title_paragraph}}
 ```
 
 In this code, the first thing we do, is create a `Block` with all borders enabled, and the default
@@ -104,7 +104,7 @@ selecting items on the list with little extra work. We will not be implementing 
 simply want the user to be able to see what they have already entered.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:key_value_list}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:key_value_list}}
 ```
 
 For more information on Line, Span, and Style see
@@ -124,14 +124,14 @@ Here, we will create a `Vec` of `Span` which will be converted later into a sing
 with a style applied, and doesn't end with a newline)
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:lower_navigation_current_screen}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:lower_navigation_current_screen}}
 ```
 
 Next, we are also going to make a hint in the navigation bar with available keys. This one does not
 have several sections of text with different styles, and is thus less code.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:lower_navigation_key_hint}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:lower_navigation_key_hint}}
 ```
 
 Finally, we are going to create our first nested layout. Because the `Layout.split` function
@@ -149,7 +149,7 @@ space for the new layout. If you remember the bottom most section from the above
 We will create a new layout in this space by passing it (`chunks[2]`) as the parameter for `split`.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:lower_navigation_layout}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:lower_navigation_layout}}
 ```
 
 This code is the visual equivalent of this:
@@ -165,7 +165,7 @@ This code is the visual equivalent of this:
 And now we can render our footer paragraphs in the appropriate spaces.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:lower_navigation_rendering}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:lower_navigation_rendering}}
 ```
 
 # The Editing Popup
@@ -182,7 +182,7 @@ The first thing we will do, is draw the `Block` that will contain the popup. We 
 below)
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:editing_popup}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:editing_popup}}
 ```
 
 ## Popup contents
@@ -195,14 +195,14 @@ Note the use of `margin(1)`, which gives a 1 space margin around any layout bloc
 blocks and widgets don't overwrite anything from the first popup block.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:popup_layout}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:popup_layout}}
 ```
 
 Now that we have the layout for where we want to display the keys and values, we will actually
 create the blocks and paragraphs to show what the user has already entered.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:key_value_blocks}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:key_value_blocks}}
 ```
 
 Note that we are declaring the blocks as variables, and then adding extra styling to the block the
@@ -219,7 +219,7 @@ In this screen, we are asking the user if they want to output the key-value pair
 in the `stdout` pipe, or close without outputting anything.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:exit_screen}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:exit_screen}}
 ```
 
 The only thing in this part that we havn't done before, is use the `Clear` widget. This is a special
@@ -234,5 +234,5 @@ is adapted from the
 official repo.
 
 ```rust,no_run,noplayground
-{{#include ../../../ratatui-book-tutorial-project/src/ui.rs:centered_rect}}
+{{#include ./ratatui-json-editor-app/src/ui.rs:centered_rect}}
 ```
