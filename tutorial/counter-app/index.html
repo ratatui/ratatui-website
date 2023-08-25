@@ -161,6 +161,36 @@ counter application.</p>
 <p>For the app, we’ll need a <code>Paragraph</code> to display the counter. We’ll also want to increment or
 decrement the counter when a key is pressed. Let’s increment and decrement the counter with <code>j</code> and
 <code>k</code>.</p>
+<h2 id="initialization"><a class="header" href="#initialization">Initialization</a></h2>
+<p>Go ahead and set up a new rust project with</p>
+<pre><code class="language-sh">cargo init ratatui-counter-app
+cd ratatui-counter-app
+</code></pre>
+<p>We are only going to use 3 dependencies in this tutorial:</p>
+<pre><code class="language-sh">cargo add ratatui crossterm anyhow
+</code></pre>
+<p><code>anyhow</code> for easier error handling and is optional.</p>
+<h2 id="filestructure"><a class="header" href="#filestructure">Filestructure</a></h2>
+<p>We are going to start off with one file like so:</p>
+<pre><code class="language-sh">tree .
+├── Cargo.toml
+├── LICENSE
+└── src
+   └── main.rs
+</code></pre>
+<p>and expand it out to multiple files like so:</p>
+<pre><code class="language-sh">tree .
+├── Cargo.toml
+├── LICENSE
+└── src
+   ├── app.rs
+   ├── event.rs
+   ├── handler.rs
+   ├── lib.rs
+   ├── main.rs
+   ├── tui.rs
+   └── ui.rs
+</code></pre>
 
                     </main>
 

@@ -308,6 +308,36 @@ counter application.</p>
 <p>For the app, we’ll need a <code>Paragraph</code> to display the counter. We’ll also want to increment or
 decrement the counter when a key is pressed. Let’s increment and decrement the counter with <code>j</code> and
 <code>k</code>.</p>
+<h2 id="initialization"><a class="header" href="#initialization">Initialization</a></h2>
+<p>Go ahead and set up a new rust project with</p>
+<pre><code class="language-sh">cargo init ratatui-counter-app
+cd ratatui-counter-app
+</code></pre>
+<p>We are only going to use 3 dependencies in this tutorial:</p>
+<pre><code class="language-sh">cargo add ratatui crossterm anyhow
+</code></pre>
+<p><code>anyhow</code> for easier error handling and is optional.</p>
+<h2 id="filestructure"><a class="header" href="#filestructure">Filestructure</a></h2>
+<p>We are going to start off with one file like so:</p>
+<pre><code class="language-sh">tree .
+├── Cargo.toml
+├── LICENSE
+└── src
+   └── main.rs
+</code></pre>
+<p>and expand it out to multiple files like so:</p>
+<pre><code class="language-sh">tree .
+├── Cargo.toml
+├── LICENSE
+└── src
+   ├── app.rs
+   ├── event.rs
+   ├── handler.rs
+   ├── lib.rs
+   ├── main.rs
+   ├── tui.rs
+   └── ui.rs
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="single-function"><a class="header" href="#single-function">Single Function</a></h1>
 <p>In this section, we’ll walk through building a simple counter application, allowing users to
 increase or decrease a displayed number using keyboard input.</p>
@@ -898,6 +928,20 @@ polling and sending events to our main application through the channel.</p>
 <p>Within our background thread, we continuously poll for events with <code>event::poll(timeout)</code>. If an
 event is available, it’s read and sent through the sender channel. The types of events we handle
 include keypresses, mouse movements, screen resizing, and regular time ticks.</p>
+<pre><code class="language-rust">if event::poll(timeout)? {
+  match event::read()? {
+    CrosstermEvent::Key(e) =&gt; sender.send(Event::Key(e))?,
+    CrosstermEvent::Mouse(e) =&gt; sender.send(Event::Mouse(e))?,
+    CrosstermEvent::Resize(w, h) =&gt; sender.send(Event::Resize(w, h))?,
+    _ =&gt; unimplemented!(),
+  }
+}</code></pre>
+<p>We expose the <code>receiver</code> channel as part of a <code>next()</code> method.</p>
+<pre><code class="language-rust">  pub fn next(&amp;self) -&gt; Result&lt;Event&gt; {
+    Ok(self.receiver.recv()?)
+  }</code></pre>
+<p>Calling <code>event_handler.next()</code> method will call <code>receiver.recv()</code> which will cause the thread to
+block until the <code>receiver</code> gets a new event.</p>
 <p>Finally, we update the <code>last_tick</code> value based on the time elapsed since the previous <code>Tick</code>. We
 also send a <code>Event::Tick</code> on the channel during this.</p>
 <pre><code class="language-rust">if last_tick.elapsed() &gt;= tick_rate {
@@ -1158,6 +1202,19 @@ fn main() -&gt; Result&lt;()&gt; {
   tui.exit()?;
   Ok(())
 }</code></pre>
+<p>Because we call <code>tui.events.next()</code> in a loop, it blocks until there’s an event generated. If
+there’s a key press, the state updates and the UI is refreshed. If there’s no key press, a <code>Tick</code>
+event is generated every 250 milliseconds, which causes the UI to be refreshed.</p>
+<p>This is what it looks like in practice to:</p>
+<ul>
+<li>Run the TUI</li>
+<li>Wait 2.5 seconds</li>
+<li>Press <code>j</code> 5 times</li>
+<li>Wait 2.5 seconds</li>
+<li>Press <code>k</code> 5 times</li>
+<li>Wait 2.5 seconds</li>
+<li>Press <code>q</code></li>
+</ul>
 <!--
 
 ```
@@ -1168,22 +1225,24 @@ Enter
 Sleep 5s
 Type "jjjjj"
 Sleep 500ms
-Type "kkkkkkk"
+Type "kkkkk"
 Sleep 5s
 Type "q"
 Sleep 2.5s
 ```
 
 -->
-<p><img src="https://user-images.githubusercontent.com/1813121/263161583-40d0c4c8-9b02-4e68-a61b-347f382d93d3.gif" alt="" /></p>
+<p><img src="https://user-images.githubusercontent.com/1813121/263404720-41bd81a0-4eec-479c-9333-44363a183613.gif" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-editor"><a class="header" href="#json-editor">JSON Editor</a></h1>
+<p>Now that we have covered some of the basics of a “hello world” and “counter” app, we are ready to
+build and manage something more involved.</p>
 <p>In this tutorial, we will be creating an application that gives the user a simple interface to enter
-key-value pairs, which will be converted and printed to <code>stdout</code> in json.</p>
-<p>The purpose of this application will be to give the user an interface to create correct json,
-instead of having to worry about commas and brackets themselves.</p>
-<h2 id="initialization"><a class="header" href="#initialization">Initialization</a></h2>
+key-value pairs, which will be converted and printed to <code>stdout</code> in json. The purpose of this
+application will be to give the user an interface to create correct json, instead of having to worry
+about commas and brackets themselves.</p>
+<h2 id="initialization-1"><a class="header" href="#initialization-1">Initialization</a></h2>
 <p>Go ahead and set up a new rust project with</p>
-<pre><code class="language-sh">cargo init ratatui-example-project
+<pre><code class="language-sh">cargo init ratatui-json-editor
 </code></pre>
 <p>and put the following in the <code>Cargo.toml</code>:</p>
 <pre><code>[dependencies]
@@ -1192,8 +1251,8 @@ ratatui = &quot;0.22.0&quot;
 serde = { version = &quot;1.0.181&quot;, features = [&quot;derive&quot;] }
 serde_json = &quot;1.0.104&quot;
 </code></pre>
-<p>or the latest version of these libraries</p>
-<h2 id="filestructure"><a class="header" href="#filestructure">Filestructure</a></h2>
+<p>or the latest version of these libraries.</p>
+<h2 id="filestructure-1"><a class="header" href="#filestructure-1">Filestructure</a></h2>
 <p>Now create two files inside of <code>src/</code> so it looks like this:</p>
 <pre><code>src
 ├── main.rs
@@ -1203,19 +1262,23 @@ serde_json = &quot;1.0.104&quot;
 <p>This follows a common approach to small applications in <code>ratatui</code>, where we have a state file, a UI
 file, and the main file to tie it all together.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="apprs-1"><a class="header" href="#apprs-1">App.rs</a></h1>
-<p>As we saw in the previous section, a common model for smaller <code>ratatui</code> applications, is to have one
-large application state struct called <code>App</code> or some variant of that name. We will be using this
-paradigm in this application.</p>
+<p>As we saw in the previous section, a common model for smaller <code>ratatui</code> applications is to have one
+application state struct called <code>App</code> or some variant of that name. We will be using this paradigm
+in this application as well.</p>
 <p>This struct will contain all of our “persistent” data and will be passed to any function that needs
 to know the current state of the application.</p>
 <!-- (Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models) -->
 <h2 id="application-modes"><a class="header" href="#application-modes">Application modes</a></h2>
-<p>Often it is beneficial to imagine that there are several ‘modes’ the application can be in. Thinking
-this way will make it easier to segregate everything from what window is getting drawn, to what
-keybinds to listen for. We will be using the application’s state and enums to track two things. The
-first thing we are going to track is what screen the user should be seeing, and the second will be
-an optional enum that only applies while the user is editing a key-value pair that tracks which (key
-or value) should be highlighted for the user.</p>
+<p>It is useful to think about the several “modes” that your application can be in. Thinking in “modes”
+will make it easier to segregate everything from what window is getting drawn, to what keybinds to
+listen for.</p>
+<p>We will be using the application’s state to track two things:</p>
+<ol>
+<li>what screen the user is seeing,</li>
+<li>which box should be highlighted, the “key” or “value” (this only applies when the user is editing
+a key-value pair).</li>
+</ol>
+<h3 id="current-screen-enum"><a class="header" href="#current-screen-enum">Current Screen Enum</a></h3>
 <p>In this tutorial application, we will have three “screens”:</p>
 <ul>
 <li><code>Main</code>: the main summary screen showing all past key-value pairs entered</li>
@@ -1229,12 +1292,12 @@ entered.</li>
     Editing,
     Exiting,
 }</code></pre>
-<h2 id="other-state-enums"><a class="header" href="#other-state-enums">Other state enums</a></h2>
-<p><code>Ratatui</code> does not automatically redraw the screen (See <a href="tutorial/json-editor/./../concepts/rendering.html">Rendering</a> for
-more information), and it does not remember anything about what it drew last frame. This means that
-the programmer is responsible for handling all state and updating widgets to reflect changes. In
-this case, we will allow the user to input two strings in the <code>Editing</code> mode - a key and a value.
-The programmer is responsible for knowing which the user is trying to edit.</p>
+<h3 id="currently-editing-enum"><a class="header" href="#currently-editing-enum">Currently Editing Enum</a></h3>
+<p>As you may already know, <code>ratatui</code> does not automatically redraw the screen<sup class="footnote-reference"><a href="#note">1</a></sup>. <code>ratatui</code> also
+does not remember anything about what it drew last frame.</p>
+<p>This means that the programmer is responsible for handling all state and updating widgets to reflect
+changes. In this case, we will allow the user to input two strings in the <code>Editing</code> mode - a key and
+a value. The programmer is responsible for knowing which the user is trying to edit.</p>
 <p>For this purpose, we will create another enum for our application state called <code>CurrentlyEditing</code> to
 keep track of which field the user is currently entering:</p>
 <pre><code class="language-rust no_run noplayground">pub enum CurrentlyEditing {
@@ -1245,8 +1308,8 @@ keep track of which field the user is currently entering:</p>
 <p>Now that we have enums to help us track where the user is, we will create the struct that actually
 stores this data which can be passed around where it is needed.</p>
 <pre><code class="language-rust no_run noplayground">pub struct App {
-    pub key_input: String, // the currently being edited json key.
-    pub value_input: String, // the currently being edited json value.
+    pub key_input: String,              // the currently being edited json key.
+    pub value_input: String,            // the currently being edited json value.
     pub pairs: HashMap&lt;String, String&gt;, // The representation of our key and value pairs with serde Serialize support
     pub current_screen: CurrentScreen, // the current screen the user is looking at, and will later determine what is rendered.
     pub currently_editing: Option&lt;CurrentlyEditing&gt;, // the optional state containing which of the key or value pair the user is editing. It is an option, because when the user is not directly editing a key-value pair, this will be set to `None`.
@@ -1255,7 +1318,7 @@ stores this data which can be passed around where it is needed.</p>
 <p>While we could simply keep our application state as simply a holder of values, we can also create a
 few helper functions which will make our life easier elsewhere. Of course, these functions should
 only affect the application state itself, and nothing outside of it.</p>
-<h4 id="new"><a class="header" href="#new">new()</a></h4>
+<h4 id="new"><a class="header" href="#new"><code>new()</code></a></h4>
 <p>We will be adding this function simply to make creating the state easier. While this could be
 avoided by specifying it all in the instantiation of the variable, doing it here allows for easy to
 change universal defaults for the state.</p>
@@ -1270,21 +1333,21 @@ change universal defaults for the state.</p>
         }
     }
     ...</code></pre>
-<h4 id="save_key_value"><a class="header" href="#save_key_value">save_key_value()</a></h4>
+<h4 id="save_key_value"><a class="header" href="#save_key_value"><code>save_key_value()</code></a></h4>
 <p>This function will be called when the user saves a key-value pair in the editor. It adds the two
 stored variables to the key-value pairs <code>HashMap</code>, and resets the status of all of the editing
 variables.</p>
 <pre><code class="language-rust no_run noplayground">    ...
     pub fn save_key_value(&amp;mut self) {
-
-        self.pairs.insert(self.key_input.clone(), self.value_input.clone());
+        self.pairs
+            .insert(self.key_input.clone(), self.value_input.clone());
 
         self.key_input = String::new();
         self.value_input = String::new();
         self.currently_editing = None;
     }
     ...</code></pre>
-<h4 id="toggle_editing"><a class="header" href="#toggle_editing">toggle_editing()</a></h4>
+<h4 id="toggle_editing"><a class="header" href="#toggle_editing"><code>toggle_editing()</code></a></h4>
 <p>Sometimes it is easier to put simple logic into a convenience function so we don’t have to worry
 about it in the main code block. <code>toggle_editing</code> is one of those cases. All we are doing, is
 checking if something is currently being edited, and if it is, swapping between editing the Key and
@@ -1301,7 +1364,7 @@ Value fields.</p>
         }
     }
     ...</code></pre>
-<h4 id="print_json"><a class="header" href="#print_json">print_json()</a></h4>
+<h4 id="print_json"><a class="header" href="#print_json"><code>print_json()</code></a></h4>
 <p>Finally, is another convenience function to print out the serialized json from all of our key-value
 pairs.</p>
 <pre><code class="language-rust no_run noplayground">    ...
@@ -1311,6 +1374,10 @@ pairs.</p>
         Ok(())
     }
     ...</code></pre>
+<!-- prettier-ignore -->
+<div class="footnote-definition" id="note"><sup class="footnote-definition-label">1</sup>
+<p>In ratatui, every frame draws the UI anew. See the <a href="tutorial/json-editor/./../../concepts/rendering.html">Rendering section</a> for more information.</p>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mainrs-1"><a class="header" href="#mainrs-1">Main.rs</a></h1>
 <p>The <code>main</code> file in many ratatui applications is simply a place to store the startup loop, and
 occasionally event handling. (See more ways to handle events in
@@ -1331,7 +1398,8 @@ use std::io;</code></pre>
     // setup terminal
     enable_raw_mode()?;
     let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
-    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;</code></pre>
+    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
+    ...</code></pre>
 <p>You might notice that we are using <code>stderr</code> for our output. This is because we want to allow the
 user to pipe their completed json to other programs like <code>ratatui-tutorial &gt; output.json</code>. To do
 this, we are utilizing the fact that <code>stderr</code> is piped differently than <code>stdout</code>, and rendering out
@@ -1342,13 +1410,15 @@ project in <code>stderr</code>, and printout our completed json in <code>stdout<
 <p>Now that we have prepared the terminal for our application to run, it is time to actually run it.</p>
 <p>First, we need to create an instance of our <code>ApplicationState</code> or <code>app</code>, to hold all of the
 program’s state, and then we will call our function which handles the event and draw loop.</p>
-<pre><code class="language-rust no_run noplayground">    let backend = CrosstermBackend::new(stderr);
+<pre><code class="language-rust no_run noplayground">    ...
+    let backend = CrosstermBackend::new(stderr);
     let mut terminal = Terminal::new(backend)?;
 
     // create app and run it
     let mut app = App::new();
     let res = run_app(&amp;mut terminal, &amp;mut app);
-</code></pre>
+
+    ...</code></pre>
 <h3 id="application-post-run-steps"><a class="header" href="#application-post-run-steps">Application post-run steps</a></h3>
 <p>Since our <code>ratatui</code> application has changed the state of the user’s terminal with our
 <a href="tutorial/json-editor/main.html#application-pre-run-steps">pre-run boilerplate</a>, we need to undo what have did, and put the
@@ -1356,18 +1426,21 @@ terminal back to the way we found it.</p>
 <p>Most of these functions will simply be the inverse of what we have done above.</p>
 <pre><code class="language-rust no_run noplayground">use crossterm::event::DisableMouseCapture;
 use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};</code></pre>
-<pre><code class="language-rust no_run noplayground">    // restore terminal
+<pre><code class="language-rust no_run noplayground">    ...
+    // restore terminal
     disable_raw_mode()?;
     execute!(
         terminal.backend_mut(),
         LeaveAlternateScreen,
         DisableMouseCapture
     )?;
-    terminal.show_cursor()?;</code></pre>
+    terminal.show_cursor()?;
+    ...</code></pre>
 <p>When an application exits without running this closing boilerplate, the terminal will act very
 strange, and the user will usually have to end the terminal session and start a new on. Thus it is
 important that we handle our error in such a way that we can call this last piece.</p>
-<pre><code class="language-rust no_run noplayground">    if let Ok(do_print) = res {
+<pre><code class="language-rust no_run noplayground">    ...
+    if let Ok(do_print) = res {
         if do_print {
             app.print_json()?;
         }
@@ -1416,35 +1489,58 @@ how this works, read the
 
     Ok(())
 }</code></pre>
-<h2 id="run_app"><a class="header" href="#run_app">run_app</a></h2>
-<p>In this function, we will start to do some actual logic.</p>
+<h2 id="run_app"><a class="header" href="#run_app"><code>run_app</code></a></h2>
+<p>In this function, we will start to do the actual logic.</p>
 <h3 id="method-signature"><a class="header" href="#method-signature">Method signature</a></h3>
 <p>Let’s start with the method signature:</p>
 <pre><code class="language-rust no_run noplayground">fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut App) -&gt; io::Result&lt;bool&gt; {
 ...</code></pre>
-<p>This method accepts an object of type <code>Terminal</code> which implements the <code>ratatui::backed::Backend</code>
-trait. This included the three (four counting the <code>TestBackend</code>) officially supported backends
-included in <code>ratatui</code>, but allows for 3rd party backends to be implemented. <code>run_app</code> also requires
-a mutable borrow to an application state object, as defined in this project. Finally, the <code>run_app</code>
-returns an <code>io::Result&lt;bool&gt;</code> that indicates if there was an io error with the <code>Err</code> state, and an
-<code>Ok(true)</code> or <code>Ok(false)</code> that indicates if the program should print out the finished json.</p>
+<p>You’ll notice that we make this function generic across the <code>ratatui::backend::Backend</code>. In previous
+sections we hardcoded the <code>CrosstermBackend</code>. This this trait approach allows us to make our code
+backend agnostic.</p>
+<p>This method accepts an object of type <code>Terminal</code> which implements the <code>ratatui::backend::Backend</code>
+trait. This trait includes the three (four counting the <code>TestBackend</code>) officially supported backends
+included in <code>ratatui</code>. It allows for 3rd party backends to be implemented.</p>
+<p><code>run_app</code> also requires a mutable borrow to an application state object, as defined in this project.</p>
+<p>Finally, the <code>run_app</code> returns an <code>io::Result&lt;bool&gt;</code> that indicates if there was an io error with
+the <code>Err</code> state, and an <code>Ok(true)</code> or <code>Ok(false)</code> that indicates if the program should print out the
+finished json.</p>
 <h3 id="ui-loop"><a class="header" href="#ui-loop">UI Loop</a></h3>
 <p>Because <code>ratatui</code> requires us to implement our own event/ui loop, we will simply use the following
 code to update our main loop.</p>
-<pre><code class="language-rust no_run noplayground">    loop {
-        terminal.draw(|f| ui(f, app))?;</code></pre>
-<p>Let’s unpack that <code>draw</code> call really quick. <code>terminal</code> is the <code>Terminal&lt;Backend&gt;</code> that we take as an
-arguement, <code>draw</code> is the <code>ratatui</code> command to draw a <code>Frame</code> to the terminal (technically to the
-<code>Terminal&lt;Backend&gt;</code>, but that only matters on the <code>TestBackend</code>). <code>|f| ui(f, &amp;app)</code> tells <code>draw</code>
-that we want to take <code>f: &lt;Frame&gt;</code> and pass it to our function <code>ui</code>, and <code>ui</code> will return a drawable
-frame. Notice that we also pass a immutable borrow of our application state to the <code>ui</code> function.
-This will be important later.</p>
+<pre><code class="language-rust no_run noplayground">    ...
+    loop {
+        terminal.draw(|f| ui(f, app))?;
+        ...</code></pre>
+<p>Let’s unpack that <code>draw</code> call really quick.</p>
+<ul>
+<li><code>terminal</code> is the <code>Terminal&lt;Backend&gt;</code> that we take as an argument,</li>
+<li><code>draw</code> is the <code>ratatui</code> command to draw a <code>Frame</code> to the terminal<sup class="footnote-reference"><a href="#note">1</a></sup>.</li>
+<li><code>|f| ui(f, &amp;app)</code> tells <code>draw</code> that we want to take <code>f: &lt;Frame&gt;</code> and pass it to our function <code>ui</code>,
+and <code>ui</code> will draw to that <code>Frame</code>.</li>
+</ul>
+<p>Notice that we also pass a immutable borrow of our application state to the <code>ui</code> function. This will
+be important later.</p>
+<div class="footnote-definition" id="note"><sup class="footnote-definition-label">1</sup>
+<p>Technically to the <code>Terminal&lt;Backend&gt;</code>, but that only matters on the <code>TestBackend</code>.</p>
+</div>
 <h3 id="event-handling"><a class="header" href="#event-handling">Event handling</a></h3>
-<p>Now that we have started our app, and have set up the ui rendering, we will implement the event
+<p>Now that we have started our app, and have set up the UI rendering, we will implement the event
 handling.</p>
 <h4 id="polling"><a class="header" href="#polling">Polling</a></h4>
-<p>Because we are using crossterm, we simply poll for keyboard events with</p>
-<pre><code class="language-rust no_run noplayground">        if let Event::Key(key) = event::read()? {
+<p>Because we are using <code>crossterm</code>, we can simply poll for keyboard events with</p>
+<pre><code class="language-rust">if let Event::Key(key) = event::read()? {
+    dbg!(key.code)
+}</code></pre>
+<p>and then match the results.</p>
+<p>Alternatively, we can set up a thread to run in the background to poll and send <code>Event</code>s (as we did
+in the “counter” tutorial). Let’s keep things simple here for the sake of illustration.</p>
+<p>Note that the process for polling events will vary on the backend you are utilizing, and you will
+need to refer to the documentation of that backend for more information.</p>
+<h4 id="main-screen"><a class="header" href="#main-screen">Main Screen</a></h4>
+<p>We will start with the keybinds and event handling for the <code>CurrentScreen::Main</code>.</p>
+<pre><code class="language-rust no_run noplayground">        ...
+        if let Event::Key(key) = event::read()? {
             match app.current_screen {
                 CurrentScreen::Main =&gt; match key.code {
                     KeyCode::Char('e') =&gt; {
@@ -1456,81 +1552,7 @@ handling.</p>
                     }
                     _ =&gt; {}
                 },
-                CurrentScreen::Exiting =&gt; match key.code {
-                    KeyCode::Char('y') =&gt; {
-                        return Ok(true);
-                    }
-                    KeyCode::Char('n') | KeyCode::Char('q') =&gt; {
-                        return Ok(false);
-                    }
-                    _ =&gt; {}
-                },
-                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
-                    KeyCode::Enter =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.currently_editing = Some(CurrentlyEditing::Value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.save_key_value();
-                                    app.current_screen = CurrentScreen::Main;
-                                }
-                            }
-                        }
-                    }
-                    KeyCode::Backspace =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.pop();
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.pop();
-                                }
-                            }
-                        }
-                    }
-                    KeyCode::Esc =&gt; {
-                        app.current_screen = CurrentScreen::Main;
-                        app.currently_editing = None;
-                    }
-                    KeyCode::Tab =&gt; {
-                        app.toggle_editing();
-                    }
-                    KeyCode::Char(value) =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.push(value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.push(value);
-                                }
-                            }
-                        }
-                    }
-                    _ =&gt; {}
-                },
-                _ =&gt; {}
-            }
-        }</code></pre>
-<p>and then match the results. Please note that the process for polling events will vary on the backend
-you are utilizing, and you will need to refer to the documentation of that backend for more
-information.</p>
-<h4 id="main-screen"><a class="header" href="#main-screen">Main Screen</a></h4>
-<p>We will start with the keybinds and event handling for the <code>CurrentScreen::Main</code>.</p>
-<pre><code class="language-rust no_run noplayground">            match app.current_screen {
-                CurrentScreen::Main =&gt; match key.code {
-                    KeyCode::Char('e') =&gt; {
-                        app.current_screen = CurrentScreen::Editing;
-                        app.currently_editing = Some(CurrentlyEditing::Key);
-                    }
-                    KeyCode::Char('q') =&gt; {
-                        app.current_screen = CurrentScreen::Exiting;
-                    }
-                    _ =&gt; {}
-                },</code></pre>
+                ...</code></pre>
 <p>After matching to the <code>Main</code> enum variant, we match the event. When the user is in the main screen,
 there are only two keybinds, and the rest are ignored.</p>
 <p>In this case, <code>KeyCode::Char('e')</code> changes the current screen to <code>CurrentScreen::Editing</code> and set
@@ -1545,7 +1567,8 @@ outputting the json. It is simply a <code>y/n</code> question, so that is all we
 alternate exit key with <code>q</code>. If the user chooses to output the json, we return an <code>Ok(true)</code> that
 indicates that our <code>main</code> function should call <code>app.print_json()</code> to perform the serialization and
 printing for us after resetting the terminal to normal</p>
-<pre><code class="language-rust no_run noplayground">                CurrentScreen::Exiting =&gt; match key.code {
+<pre><code class="language-rust no_run noplayground">                ...
+                CurrentScreen::Exiting =&gt; match key.code {
                     KeyCode::Char('y') =&gt; {
                         return Ok(true);
                     }
@@ -1553,64 +1576,76 @@ printing for us after resetting the terminal to normal</p>
                         return Ok(false);
                     }
                     _ =&gt; {}
-                },</code></pre>
+                },
+                ...</code></pre>
 <h4 id="editing"><a class="header" href="#editing">Editing</a></h4>
 <p>Our final handler will be a bit more involved, as we will be changing the state of internal
 variables.</p>
 <p>We would like the <code>Enter</code> key to serve two purposes. When the user is editing the <code>Key</code>, we want the
 enter key to switch the focus to editing the <code>Value</code>. However, if the <code>Value</code> is what is being
 currently edited, <code>Enter</code> will save the key-value pair, and return to the <code>Main</code> screen.</p>
-<pre><code class="language-rust no_run noplayground">                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
-                    KeyCode::Enter =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.currently_editing = Some(CurrentlyEditing::Value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.save_key_value();
-                                    app.current_screen = CurrentScreen::Main;
+<pre><code class="language-rust no_run noplayground">                ...
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; {
+                    match key.code {
+                        KeyCode::Enter =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.save_key_value();
+                                        app.current_screen = CurrentScreen::Main;
+                                    }
                                 }
                             }
                         }
-                    }</code></pre>
+                        ...</code></pre>
 <p>When <code>Backspace</code> is pressed, we need to first determine if the user is editing a <code>Key</code> or a <code>Value</code>,
 then <code>pop()</code> the endings of those strings accordingly.</p>
-<pre><code class="language-rust no_run noplayground">                    KeyCode::Backspace =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.pop();
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.pop();
+<pre><code class="language-rust no_run noplayground">                        ...
+                        KeyCode::Backspace =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.pop();
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.pop();
+                                    }
                                 }
                             }
                         }
-                    }</code></pre>
+                        ...</code></pre>
 <p>When <code>Escape</code> is pressed, we want to quit editing.</p>
-<pre><code class="language-rust no_run noplayground">                    KeyCode::Esc =&gt; {
-                        app.current_screen = CurrentScreen::Main;
-                        app.currently_editing = None;
-                    }</code></pre>
+<pre><code class="language-rust no_run noplayground">                        ...
+                        KeyCode::Esc =&gt; {
+                            app.current_screen = CurrentScreen::Main;
+                            app.currently_editing = None;
+                        }
+                        ...</code></pre>
 <p>When <code>Tab</code> is pressed, we want the currently editing selection to switch.</p>
-<pre><code class="language-rust no_run noplayground">                    KeyCode::Tab =&gt; {
-                        app.toggle_editing();
-                    }</code></pre>
+<pre><code class="language-rust no_run noplayground">                        ...
+                        KeyCode::Tab =&gt; {
+                            app.toggle_editing();
+                        }
+                        ...</code></pre>
 <p>And finally, if the user types a valid character, we want to capture that, and add it to the string
 that is the final key or value.</p>
-<pre><code class="language-rust no_run noplayground">                    KeyCode::Char(value) =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.push(value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.push(value);
+<pre><code class="language-rust no_run noplayground">                        ...
+                        KeyCode::Char(value) =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.push(value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.push(value);
+                                    }
                                 }
                             }
                         }
-                    }</code></pre>
+                        ...</code></pre>
 <p>Altogether, the event loop should look like this:</p>
 <pre><code class="language-rust no_run noplayground">        if let Event::Key(key) = event::read()? {
             match app.current_screen {
@@ -1633,53 +1668,55 @@ that is the final key or value.</p>
                     }
                     _ =&gt; {}
                 },
-                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
-                    KeyCode::Enter =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.currently_editing = Some(CurrentlyEditing::Value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.save_key_value();
-                                    app.current_screen = CurrentScreen::Main;
-                                }
-                            }
-                        }
-                    }
-                    KeyCode::Backspace =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.pop();
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.pop();
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; {
+                    match key.code {
+                        KeyCode::Enter =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.save_key_value();
+                                        app.current_screen = CurrentScreen::Main;
+                                    }
                                 }
                             }
                         }
-                    }
-                    KeyCode::Esc =&gt; {
-                        app.current_screen = CurrentScreen::Main;
-                        app.currently_editing = None;
-                    }
-                    KeyCode::Tab =&gt; {
-                        app.toggle_editing();
-                    }
-                    KeyCode::Char(value) =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.push(value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.push(value);
+                        KeyCode::Backspace =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.pop();
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.pop();
+                                    }
                                 }
                             }
                         }
+                        KeyCode::Esc =&gt; {
+                            app.current_screen = CurrentScreen::Main;
+                            app.currently_editing = None;
+                        }
+                        KeyCode::Tab =&gt; {
+                            app.toggle_editing();
+                        }
+                        KeyCode::Char(value) =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.push(value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.push(value);
+                                    }
+                                }
+                            }
+                        }
+                        _ =&gt; {}
                     }
-                    _ =&gt; {}
-                },
+                }
                 _ =&gt; {}
             }
         }</code></pre>
@@ -1788,16 +1825,10 @@ simply want the user to be able to see what they have already entered.</p>
 <pre><code class="language-rust no_run noplayground">    let mut list_items = Vec::&lt;ListItem&gt;::new();
 
     for key in app.pairs.keys() {
-        list_items.push(
-            ListItem::new(
-                Line::from(
-                    Span::styled(
-                        format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
-                        Style::default().fg(Color::Yellow),
-                    )
-                )
-            )
-        );
+        list_items.push(ListItem::new(Line::from(Span::styled(
+            format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
+            Style::default().fg(Color::Yellow),
+        ))));
     }
 
     let list = List::new(list_items);
@@ -1817,18 +1848,25 @@ with a style applied, and doesn’t end with a newline)</p>
 <pre><code class="language-rust no_run noplayground">    let current_navigation_text = vec![
         // The first half of the text
         match app.current_screen {
-            CurrentScreen::Main    =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
-            CurrentScreen::Editing =&gt; Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow)),
+            CurrentScreen::Main =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
+            CurrentScreen::Editing =&gt; {
+                Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow))
+            }
             CurrentScreen::Exiting =&gt; Span::styled(&quot;Exiting&quot;, Style::default().fg(Color::LightRed)),
-        }.to_owned(),
+        }
+        .to_owned(),
         // A white divider bar to separate the two sections
         Span::styled(&quot; | &quot;, Style::default().fg(Color::White)),
         // The final section of the text, with hints on what the user is editing
         {
             if let Some(editing) = &amp;app.currently_editing {
                 match editing {
-                    CurrentlyEditing::Key =&gt; Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green)),
-                    CurrentlyEditing::Value =&gt; Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen)),
+                    CurrentlyEditing::Key =&gt; {
+                        Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green))
+                    }
+                    CurrentlyEditing::Value =&gt; {
+                        Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen))
+                    }
                 }
             } else {
                 Span::styled(&quot;Not Editing Anything&quot;, Style::default().fg(Color::DarkGray))
@@ -1990,8 +2028,7 @@ fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -&gt; Rect {
             ]
             .as_ref(),
         )
-        .split(popup_layout[1])
-        [1] // Return the middle chunk
+        .split(popup_layout[1])[1] // Return the middle chunk
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="closing-thoughts"><a class="header" href="#closing-thoughts">Closing Thoughts</a></h1>
 <p>This tutorial should get you started with a basic understanding of the flow of a <code>ratatui</code> program.
@@ -2006,7 +2043,9 @@ yourself, but running</p>
 </code></pre>
 <p>and double checking the output.</p>
 <h4 id="mainrs-2"><a class="header" href="#mainrs-2">Main.rs</a></h4>
-<pre><code class="language-rust no_run noplayground">use crossterm::{
+<pre><code class="language-rust no_run noplayground">use std::{error::Error, io};
+
+use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -2015,12 +2054,13 @@ use ratatui::{
     backend::{Backend, CrosstermBackend},
     Terminal,
 };
-use std::{error::Error, io};
 
 mod app;
 mod ui;
-use crate::app::{App, CurrentlyEditing, CurrentScreen};
-use crate::ui::ui;
+use crate::{
+    app::{App, CurrentScreen, CurrentlyEditing},
+    ui::ui,
+};
 
 fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
     // setup terminal
@@ -2080,53 +2120,55 @@ fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut
                     }
                     _ =&gt; {}
                 },
-                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
-                    KeyCode::Enter =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.currently_editing = Some(CurrentlyEditing::Value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.save_key_value();
-                                    app.current_screen = CurrentScreen::Main;
-                                }
-                            }
-                        }
-                    }
-                    KeyCode::Backspace =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.pop();
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.pop();
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; {
+                    match key.code {
+                        KeyCode::Enter =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.save_key_value();
+                                        app.current_screen = CurrentScreen::Main;
+                                    }
                                 }
                             }
                         }
-                    }
-                    KeyCode::Esc =&gt; {
-                        app.current_screen = CurrentScreen::Main;
-                        app.currently_editing = None;
-                    }
-                    KeyCode::Tab =&gt; {
-                        app.toggle_editing();
-                    }
-                    KeyCode::Char(value) =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.push(value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.push(value);
+                        KeyCode::Backspace =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.pop();
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.pop();
+                                    }
                                 }
                             }
                         }
+                        KeyCode::Esc =&gt; {
+                            app.current_screen = CurrentScreen::Main;
+                            app.currently_editing = None;
+                        }
+                        KeyCode::Tab =&gt; {
+                            app.toggle_editing();
+                        }
+                        KeyCode::Char(value) =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.push(value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.push(value);
+                                    }
+                                }
+                            }
+                        }
+                        _ =&gt; {}
                     }
-                    _ =&gt; {}
-                },
+                }
                 _ =&gt; {}
             }
         }
@@ -2148,8 +2190,8 @@ pub enum CurrentlyEditing {
 }
 
 pub struct App {
-    pub key_input: String, // the currently being edited json key.
-    pub value_input: String, // the currently being edited json value.
+    pub key_input: String,              // the currently being edited json key.
+    pub value_input: String,            // the currently being edited json value.
     pub pairs: HashMap&lt;String, String&gt;, // The representation of our key and value pairs with serde Serialize support
     pub current_screen: CurrentScreen, // the current screen the user is looking at, and will later determine what is rendered.
     pub currently_editing: Option&lt;CurrentlyEditing&gt;, // the optional state containing which of the key or value pair the user is editing. It is an option, because when the user is not directly editing a key-value pair, this will be set to `None`.
@@ -2167,8 +2209,8 @@ impl App {
     }
 
     pub fn save_key_value(&amp;mut self) {
-
-        self.pairs.insert(self.key_input.clone(), self.value_input.clone());
+        self.pairs
+            .insert(self.key_input.clone(), self.value_input.clone());
 
         self.key_input = String::new();
         self.value_input = String::new();
@@ -2198,7 +2240,7 @@ impl App {
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Style},
     text::{Line, Span, Text},
-    widgets::{Block, Borders, Clear, Paragraph, Wrap, ListItem, List},
+    widgets::{Block, Borders, Clear, List, ListItem, Paragraph, Wrap},
     Frame,
 };
 
@@ -2232,16 +2274,10 @@ pub fn ui&lt;B: Backend&gt;(f: &amp;mut Frame&lt;B&gt;, app: &amp;App) {
     let mut list_items = Vec::&lt;ListItem&gt;::new();
 
     for key in app.pairs.keys() {
-        list_items.push(
-            ListItem::new(
-                Line::from(
-                    Span::styled(
-                        format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
-                        Style::default().fg(Color::Yellow),
-                    )
-                )
-            )
-        );
+        list_items.push(ListItem::new(Line::from(Span::styled(
+            format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
+            Style::default().fg(Color::Yellow),
+        ))));
     }
 
     let list = List::new(list_items);
@@ -2250,18 +2286,25 @@ pub fn ui&lt;B: Backend&gt;(f: &amp;mut Frame&lt;B&gt;, app: &amp;App) {
     let current_navigation_text = vec![
         // The first half of the text
         match app.current_screen {
-            CurrentScreen::Main    =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
-            CurrentScreen::Editing =&gt; Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow)),
+            CurrentScreen::Main =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
+            CurrentScreen::Editing =&gt; {
+                Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow))
+            }
             CurrentScreen::Exiting =&gt; Span::styled(&quot;Exiting&quot;, Style::default().fg(Color::LightRed)),
-        }.to_owned(),
+        }
+        .to_owned(),
         // A white divider bar to separate the two sections
         Span::styled(&quot; | &quot;, Style::default().fg(Color::White)),
         // The final section of the text, with hints on what the user is editing
         {
             if let Some(editing) = &amp;app.currently_editing {
                 match editing {
-                    CurrentlyEditing::Key =&gt; Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green)),
-                    CurrentlyEditing::Value =&gt; Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen)),
+                    CurrentlyEditing::Key =&gt; {
+                        Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green))
+                    }
+                    CurrentlyEditing::Value =&gt; {
+                        Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen))
+                    }
                 }
             } else {
                 Span::styled(&quot;Not Editing Anything&quot;, Style::default().fg(Color::DarkGray))
@@ -2379,8 +2422,7 @@ fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -&gt; Rect {
             ]
             .as_ref(),
         )
-        .split(popup_layout[1])
-        [1] // Return the middle chunk
+        .split(popup_layout[1])[1] // Return the middle chunk
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="concepts"><a class="header" href="#concepts">Concepts</a></h1>

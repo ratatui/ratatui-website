@@ -260,16 +260,10 @@ simply want the user to be able to see what they have already entered.</p>
 <pre><code class="language-rust no_run noplayground">    let mut list_items = Vec::&lt;ListItem&gt;::new();
 
     for key in app.pairs.keys() {
-        list_items.push(
-            ListItem::new(
-                Line::from(
-                    Span::styled(
-                        format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
-                        Style::default().fg(Color::Yellow),
-                    )
-                )
-            )
-        );
+        list_items.push(ListItem::new(Line::from(Span::styled(
+            format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
+            Style::default().fg(Color::Yellow),
+        ))));
     }
 
     let list = List::new(list_items);
@@ -289,18 +283,25 @@ with a style applied, and doesn’t end with a newline)</p>
 <pre><code class="language-rust no_run noplayground">    let current_navigation_text = vec![
         // The first half of the text
         match app.current_screen {
-            CurrentScreen::Main    =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
-            CurrentScreen::Editing =&gt; Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow)),
+            CurrentScreen::Main =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
+            CurrentScreen::Editing =&gt; {
+                Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow))
+            }
             CurrentScreen::Exiting =&gt; Span::styled(&quot;Exiting&quot;, Style::default().fg(Color::LightRed)),
-        }.to_owned(),
+        }
+        .to_owned(),
         // A white divider bar to separate the two sections
         Span::styled(&quot; | &quot;, Style::default().fg(Color::White)),
         // The final section of the text, with hints on what the user is editing
         {
             if let Some(editing) = &amp;app.currently_editing {
                 match editing {
-                    CurrentlyEditing::Key =&gt; Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green)),
-                    CurrentlyEditing::Value =&gt; Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen)),
+                    CurrentlyEditing::Key =&gt; {
+                        Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green))
+                    }
+                    CurrentlyEditing::Value =&gt; {
+                        Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen))
+                    }
                 }
             } else {
                 Span::styled(&quot;Not Editing Anything&quot;, Style::default().fg(Color::DarkGray))
@@ -462,8 +463,7 @@ fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -&gt; Rect {
             ]
             .as_ref(),
         )
-        .split(popup_layout[1])
-        [1] // Return the middle chunk
+        .split(popup_layout[1])[1] // Return the middle chunk
 }</code></pre>
 
                     </main>

@@ -168,7 +168,9 @@ yourself, but running</p>
 </code></pre>
 <p>and double checking the output.</p>
 <h4 id="mainrs"><a class="header" href="#mainrs">Main.rs</a></h4>
-<pre><code class="language-rust no_run noplayground">use crossterm::{
+<pre><code class="language-rust no_run noplayground">use std::{error::Error, io};
+
+use crossterm::{
     event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -177,12 +179,13 @@ use ratatui::{
     backend::{Backend, CrosstermBackend},
     Terminal,
 };
-use std::{error::Error, io};
 
 mod app;
 mod ui;
-use crate::app::{App, CurrentlyEditing, CurrentScreen};
-use crate::ui::ui;
+use crate::{
+    app::{App, CurrentScreen, CurrentlyEditing},
+    ui::ui,
+};
 
 fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
     // setup terminal
@@ -242,53 +245,55 @@ fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut
                     }
                     _ =&gt; {}
                 },
-                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
-                    KeyCode::Enter =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.currently_editing = Some(CurrentlyEditing::Value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.save_key_value();
-                                    app.current_screen = CurrentScreen::Main;
-                                }
-                            }
-                        }
-                    }
-                    KeyCode::Backspace =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.pop();
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.pop();
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; {
+                    match key.code {
+                        KeyCode::Enter =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.save_key_value();
+                                        app.current_screen = CurrentScreen::Main;
+                                    }
                                 }
                             }
                         }
-                    }
-                    KeyCode::Esc =&gt; {
-                        app.current_screen = CurrentScreen::Main;
-                        app.currently_editing = None;
-                    }
-                    KeyCode::Tab =&gt; {
-                        app.toggle_editing();
-                    }
-                    KeyCode::Char(value) =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.push(value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.push(value);
+                        KeyCode::Backspace =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.pop();
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.pop();
+                                    }
                                 }
                             }
                         }
+                        KeyCode::Esc =&gt; {
+                            app.current_screen = CurrentScreen::Main;
+                            app.currently_editing = None;
+                        }
+                        KeyCode::Tab =&gt; {
+                            app.toggle_editing();
+                        }
+                        KeyCode::Char(value) =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.push(value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.push(value);
+                                    }
+                                }
+                            }
+                        }
+                        _ =&gt; {}
                     }
-                    _ =&gt; {}
-                },
+                }
                 _ =&gt; {}
             }
         }
@@ -310,8 +315,8 @@ pub enum CurrentlyEditing {
 }
 
 pub struct App {
-    pub key_input: String, // the currently being edited json key.
-    pub value_input: String, // the currently being edited json value.
+    pub key_input: String,              // the currently being edited json key.
+    pub value_input: String,            // the currently being edited json value.
     pub pairs: HashMap&lt;String, String&gt;, // The representation of our key and value pairs with serde Serialize support
     pub current_screen: CurrentScreen, // the current screen the user is looking at, and will later determine what is rendered.
     pub currently_editing: Option&lt;CurrentlyEditing&gt;, // the optional state containing which of the key or value pair the user is editing. It is an option, because when the user is not directly editing a key-value pair, this will be set to `None`.
@@ -329,8 +334,8 @@ impl App {
     }
 
     pub fn save_key_value(&amp;mut self) {
-
-        self.pairs.insert(self.key_input.clone(), self.value_input.clone());
+        self.pairs
+            .insert(self.key_input.clone(), self.value_input.clone());
 
         self.key_input = String::new();
         self.value_input = String::new();
@@ -360,7 +365,7 @@ impl App {
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Style},
     text::{Line, Span, Text},
-    widgets::{Block, Borders, Clear, Paragraph, Wrap, ListItem, List},
+    widgets::{Block, Borders, Clear, List, ListItem, Paragraph, Wrap},
     Frame,
 };
 
@@ -394,16 +399,10 @@ pub fn ui&lt;B: Backend&gt;(f: &amp;mut Frame&lt;B&gt;, app: &amp;App) {
     let mut list_items = Vec::&lt;ListItem&gt;::new();
 
     for key in app.pairs.keys() {
-        list_items.push(
-            ListItem::new(
-                Line::from(
-                    Span::styled(
-                        format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
-                        Style::default().fg(Color::Yellow),
-                    )
-                )
-            )
-        );
+        list_items.push(ListItem::new(Line::from(Span::styled(
+            format!(&quot;{: &lt;25} : {}&quot;, key, app.pairs.get(key).unwrap()),
+            Style::default().fg(Color::Yellow),
+        ))));
     }
 
     let list = List::new(list_items);
@@ -412,18 +411,25 @@ pub fn ui&lt;B: Backend&gt;(f: &amp;mut Frame&lt;B&gt;, app: &amp;App) {
     let current_navigation_text = vec![
         // The first half of the text
         match app.current_screen {
-            CurrentScreen::Main    =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
-            CurrentScreen::Editing =&gt; Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow)),
+            CurrentScreen::Main =&gt; Span::styled(&quot;Normal Mode&quot;, Style::default().fg(Color::Green)),
+            CurrentScreen::Editing =&gt; {
+                Span::styled(&quot;Editing Mode&quot;, Style::default().fg(Color::Yellow))
+            }
             CurrentScreen::Exiting =&gt; Span::styled(&quot;Exiting&quot;, Style::default().fg(Color::LightRed)),
-        }.to_owned(),
+        }
+        .to_owned(),
         // A white divider bar to separate the two sections
         Span::styled(&quot; | &quot;, Style::default().fg(Color::White)),
         // The final section of the text, with hints on what the user is editing
         {
             if let Some(editing) = &amp;app.currently_editing {
                 match editing {
-                    CurrentlyEditing::Key =&gt; Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green)),
-                    CurrentlyEditing::Value =&gt; Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen)),
+                    CurrentlyEditing::Key =&gt; {
+                        Span::styled(&quot;Editing Json Key&quot;, Style::default().fg(Color::Green))
+                    }
+                    CurrentlyEditing::Value =&gt; {
+                        Span::styled(&quot;Editing Json Value&quot;, Style::default().fg(Color::LightGreen))
+                    }
                 }
             } else {
                 Span::styled(&quot;Not Editing Anything&quot;, Style::default().fg(Color::DarkGray))
@@ -541,8 +547,7 @@ fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -&gt; Rect {
             ]
             .as_ref(),
         )
-        .split(popup_layout[1])
-        [1] // Return the middle chunk
+        .split(popup_layout[1])[1] // Return the middle chunk
 }
 </code></pre>
 

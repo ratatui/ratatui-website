@@ -196,6 +196,19 @@ fn main() -&gt; Result&lt;()&gt; {
   tui.exit()?;
   Ok(())
 }</code></pre>
+<p>Because we call <code>tui.events.next()</code> in a loop, it blocks until there’s an event generated. If
+there’s a key press, the state updates and the UI is refreshed. If there’s no key press, a <code>Tick</code>
+event is generated every 250 milliseconds, which causes the UI to be refreshed.</p>
+<p>This is what it looks like in practice to:</p>
+<ul>
+<li>Run the TUI</li>
+<li>Wait 2.5 seconds</li>
+<li>Press <code>j</code> 5 times</li>
+<li>Wait 2.5 seconds</li>
+<li>Press <code>k</code> 5 times</li>
+<li>Wait 2.5 seconds</li>
+<li>Press <code>q</code></li>
+</ul>
 <!--
 
 ```
@@ -206,14 +219,14 @@ Enter
 Sleep 5s
 Type "jjjjj"
 Sleep 500ms
-Type "kkkkkkk"
+Type "kkkkk"
 Sleep 5s
 Type "q"
 Sleep 2.5s
 ```
 
 -->
-<p><img src="https://user-images.githubusercontent.com/1813121/263161583-40d0c4c8-9b02-4e68-a61b-347f382d93d3.gif" alt="" /></p>
+<p><img src="https://user-images.githubusercontent.com/1813121/263404720-41bd81a0-4eec-479c-9333-44363a183613.gif" alt="" /></p>
 
                     </main>
 

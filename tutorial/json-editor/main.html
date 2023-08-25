@@ -175,7 +175,8 @@ use std::io;</code></pre>
     // setup terminal
     enable_raw_mode()?;
     let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
-    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;</code></pre>
+    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
+    ...</code></pre>
 <p>You might notice that we are using <code>stderr</code> for our output. This is because we want to allow the
 user to pipe their completed json to other programs like <code>ratatui-tutorial &gt; output.json</code>. To do
 this, we are utilizing the fact that <code>stderr</code> is piped differently than <code>stdout</code>, and rendering out
@@ -186,13 +187,15 @@ project in <code>stderr</code>, and printout our completed json in <code>stdout<
 <p>Now that we have prepared the terminal for our application to run, it is time to actually run it.</p>
 <p>First, we need to create an instance of our <code>ApplicationState</code> or <code>app</code>, to hold all of the
 program’s state, and then we will call our function which handles the event and draw loop.</p>
-<pre><code class="language-rust no_run noplayground">    let backend = CrosstermBackend::new(stderr);
+<pre><code class="language-rust no_run noplayground">    ...
+    let backend = CrosstermBackend::new(stderr);
     let mut terminal = Terminal::new(backend)?;
 
     // create app and run it
     let mut app = App::new();
     let res = run_app(&amp;mut terminal, &amp;mut app);
-</code></pre>
+
+    ...</code></pre>
 <h3 id="application-post-run-steps"><a class="header" href="#application-post-run-steps">Application post-run steps</a></h3>
 <p>Since our <code>ratatui</code> application has changed the state of the user’s terminal with our
 <a href="#application-pre-run-steps">pre-run boilerplate</a>, we need to undo what have did, and put the
@@ -200,18 +203,21 @@ terminal back to the way we found it.</p>
 <p>Most of these functions will simply be the inverse of what we have done above.</p>
 <pre><code class="language-rust no_run noplayground">use crossterm::event::DisableMouseCapture;
 use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};</code></pre>
-<pre><code class="language-rust no_run noplayground">    // restore terminal
+<pre><code class="language-rust no_run noplayground">    ...
+    // restore terminal
     disable_raw_mode()?;
     execute!(
         terminal.backend_mut(),
         LeaveAlternateScreen,
         DisableMouseCapture
     )?;
-    terminal.show_cursor()?;</code></pre>
+    terminal.show_cursor()?;
+    ...</code></pre>
 <p>When an application exits without running this closing boilerplate, the terminal will act very
 strange, and the user will usually have to end the terminal session and start a new on. Thus it is
 important that we handle our error in such a way that we can call this last piece.</p>
-<pre><code class="language-rust no_run noplayground">    if let Ok(do_print) = res {
+<pre><code class="language-rust no_run noplayground">    ...
+    if let Ok(do_print) = res {
         if do_print {
             app.print_json()?;
         }
@@ -260,35 +266,58 @@ how this works, read the
 
     Ok(())
 }</code></pre>
-<h2 id="run_app"><a class="header" href="#run_app">run_app</a></h2>
-<p>In this function, we will start to do some actual logic.</p>
+<h2 id="run_app"><a class="header" href="#run_app"><code>run_app</code></a></h2>
+<p>In this function, we will start to do the actual logic.</p>
 <h3 id="method-signature"><a class="header" href="#method-signature">Method signature</a></h3>
 <p>Let’s start with the method signature:</p>
 <pre><code class="language-rust no_run noplayground">fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut App) -&gt; io::Result&lt;bool&gt; {
 ...</code></pre>
-<p>This method accepts an object of type <code>Terminal</code> which implements the <code>ratatui::backed::Backend</code>
-trait. This included the three (four counting the <code>TestBackend</code>) officially supported backends
-included in <code>ratatui</code>, but allows for 3rd party backends to be implemented. <code>run_app</code> also requires
-a mutable borrow to an application state object, as defined in this project. Finally, the <code>run_app</code>
-returns an <code>io::Result&lt;bool&gt;</code> that indicates if there was an io error with the <code>Err</code> state, and an
-<code>Ok(true)</code> or <code>Ok(false)</code> that indicates if the program should print out the finished json.</p>
+<p>You’ll notice that we make this function generic across the <code>ratatui::backend::Backend</code>. In previous
+sections we hardcoded the <code>CrosstermBackend</code>. This this trait approach allows us to make our code
+backend agnostic.</p>
+<p>This method accepts an object of type <code>Terminal</code> which implements the <code>ratatui::backend::Backend</code>
+trait. This trait includes the three (four counting the <code>TestBackend</code>) officially supported backends
+included in <code>ratatui</code>. It allows for 3rd party backends to be implemented.</p>
+<p><code>run_app</code> also requires a mutable borrow to an application state object, as defined in this project.</p>
+<p>Finally, the <code>run_app</code> returns an <code>io::Result&lt;bool&gt;</code> that indicates if there was an io error with
+the <code>Err</code> state, and an <code>Ok(true)</code> or <code>Ok(false)</code> that indicates if the program should print out the
+finished json.</p>
 <h3 id="ui-loop"><a class="header" href="#ui-loop">UI Loop</a></h3>
 <p>Because <code>ratatui</code> requires us to implement our own event/ui loop, we will simply use the following
 code to update our main loop.</p>
-<pre><code class="language-rust no_run noplayground">    loop {
-        terminal.draw(|f| ui(f, app))?;</code></pre>
-<p>Let’s unpack that <code>draw</code> call really quick. <code>terminal</code> is the <code>Terminal&lt;Backend&gt;</code> that we take as an
-arguement, <code>draw</code> is the <code>ratatui</code> command to draw a <code>Frame</code> to the terminal (technically to the
-<code>Terminal&lt;Backend&gt;</code>, but that only matters on the <code>TestBackend</code>). <code>|f| ui(f, &amp;app)</code> tells <code>draw</code>
-that we want to take <code>f: &lt;Frame&gt;</code> and pass it to our function <code>ui</code>, and <code>ui</code> will return a drawable
-frame. Notice that we also pass a immutable borrow of our application state to the <code>ui</code> function.
-This will be important later.</p>
+<pre><code class="language-rust no_run noplayground">    ...
+    loop {
+        terminal.draw(|f| ui(f, app))?;
+        ...</code></pre>
+<p>Let’s unpack that <code>draw</code> call really quick.</p>
+<ul>
+<li><code>terminal</code> is the <code>Terminal&lt;Backend&gt;</code> that we take as an argument,</li>
+<li><code>draw</code> is the <code>ratatui</code> command to draw a <code>Frame</code> to the terminal<sup class="footnote-reference"><a href="#note">1</a></sup>.</li>
+<li><code>|f| ui(f, &amp;app)</code> tells <code>draw</code> that we want to take <code>f: &lt;Frame&gt;</code> and pass it to our function <code>ui</code>,
+and <code>ui</code> will draw to that <code>Frame</code>.</li>
+</ul>
+<p>Notice that we also pass a immutable borrow of our application state to the <code>ui</code> function. This will
+be important later.</p>
+<div class="footnote-definition" id="note"><sup class="footnote-definition-label">1</sup>
+<p>Technically to the <code>Terminal&lt;Backend&gt;</code>, but that only matters on the <code>TestBackend</code>.</p>
+</div>
 <h3 id="event-handling"><a class="header" href="#event-handling">Event handling</a></h3>
-<p>Now that we have started our app, and have set up the ui rendering, we will implement the event
+<p>Now that we have started our app, and have set up the UI rendering, we will implement the event
 handling.</p>
 <h4 id="polling"><a class="header" href="#polling">Polling</a></h4>
-<p>Because we are using crossterm, we simply poll for keyboard events with</p>
-<pre><code class="language-rust no_run noplayground">        if let Event::Key(key) = event::read()? {
+<p>Because we are using <code>crossterm</code>, we can simply poll for keyboard events with</p>
+<pre><code class="language-rust">if let Event::Key(key) = event::read()? {
+    dbg!(key.code)
+}</code></pre>
+<p>and then match the results.</p>
+<p>Alternatively, we can set up a thread to run in the background to poll and send <code>Event</code>s (as we did
+in the “counter” tutorial). Let’s keep things simple here for the sake of illustration.</p>
+<p>Note that the process for polling events will vary on the backend you are utilizing, and you will
+need to refer to the documentation of that backend for more information.</p>
+<h4 id="main-screen"><a class="header" href="#main-screen">Main Screen</a></h4>
+<p>We will start with the keybinds and event handling for the <code>CurrentScreen::Main</code>.</p>
+<pre><code class="language-rust no_run noplayground">        ...
+        if let Event::Key(key) = event::read()? {
             match app.current_screen {
                 CurrentScreen::Main =&gt; match key.code {
                     KeyCode::Char('e') =&gt; {
@@ -300,81 +329,7 @@ handling.</p>
                     }
                     _ =&gt; {}
                 },
-                CurrentScreen::Exiting =&gt; match key.code {
-                    KeyCode::Char('y') =&gt; {
-                        return Ok(true);
-                    }
-                    KeyCode::Char('n') | KeyCode::Char('q') =&gt; {
-                        return Ok(false);
-                    }
-                    _ =&gt; {}
-                },
-                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
-                    KeyCode::Enter =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.currently_editing = Some(CurrentlyEditing::Value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.save_key_value();
-                                    app.current_screen = CurrentScreen::Main;
-                                }
-                            }
-                        }
-                    }
-                    KeyCode::Backspace =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.pop();
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.pop();
-                                }
-                            }
-                        }
-                    }
-                    KeyCode::Esc =&gt; {
-                        app.current_screen = CurrentScreen::Main;
-                        app.currently_editing = None;
-                    }
-                    KeyCode::Tab =&gt; {
-                        app.toggle_editing();
-                    }
-                    KeyCode::Char(value) =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.push(value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.push(value);
-                                }
-                            }
-                        }
-                    }
-                    _ =&gt; {}
-                },
-                _ =&gt; {}
-            }
-        }</code></pre>
-<p>and then match the results. Please note that the process for polling events will vary on the backend
-you are utilizing, and you will need to refer to the documentation of that backend for more
-information.</p>
-<h4 id="main-screen"><a class="header" href="#main-screen">Main Screen</a></h4>
-<p>We will start with the keybinds and event handling for the <code>CurrentScreen::Main</code>.</p>
-<pre><code class="language-rust no_run noplayground">            match app.current_screen {
-                CurrentScreen::Main =&gt; match key.code {
-                    KeyCode::Char('e') =&gt; {
-                        app.current_screen = CurrentScreen::Editing;
-                        app.currently_editing = Some(CurrentlyEditing::Key);
-                    }
-                    KeyCode::Char('q') =&gt; {
-                        app.current_screen = CurrentScreen::Exiting;
-                    }
-                    _ =&gt; {}
-                },</code></pre>
+                ...</code></pre>
 <p>After matching to the <code>Main</code> enum variant, we match the event. When the user is in the main screen,
 there are only two keybinds, and the rest are ignored.</p>
 <p>In this case, <code>KeyCode::Char('e')</code> changes the current screen to <code>CurrentScreen::Editing</code> and set
@@ -389,7 +344,8 @@ outputting the json. It is simply a <code>y/n</code> question, so that is all we
 alternate exit key with <code>q</code>. If the user chooses to output the json, we return an <code>Ok(true)</code> that
 indicates that our <code>main</code> function should call <code>app.print_json()</code> to perform the serialization and
 printing for us after resetting the terminal to normal</p>
-<pre><code class="language-rust no_run noplayground">                CurrentScreen::Exiting =&gt; match key.code {
+<pre><code class="language-rust no_run noplayground">                ...
+                CurrentScreen::Exiting =&gt; match key.code {
                     KeyCode::Char('y') =&gt; {
                         return Ok(true);
                     }
@@ -397,64 +353,76 @@ printing for us after resetting the terminal to normal</p>
                         return Ok(false);
                     }
                     _ =&gt; {}
-                },</code></pre>
+                },
+                ...</code></pre>
 <h4 id="editing"><a class="header" href="#editing">Editing</a></h4>
 <p>Our final handler will be a bit more involved, as we will be changing the state of internal
 variables.</p>
 <p>We would like the <code>Enter</code> key to serve two purposes. When the user is editing the <code>Key</code>, we want the
 enter key to switch the focus to editing the <code>Value</code>. However, if the <code>Value</code> is what is being
 currently edited, <code>Enter</code> will save the key-value pair, and return to the <code>Main</code> screen.</p>
-<pre><code class="language-rust no_run noplayground">                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
-                    KeyCode::Enter =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.currently_editing = Some(CurrentlyEditing::Value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.save_key_value();
-                                    app.current_screen = CurrentScreen::Main;
+<pre><code class="language-rust no_run noplayground">                ...
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; {
+                    match key.code {
+                        KeyCode::Enter =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.save_key_value();
+                                        app.current_screen = CurrentScreen::Main;
+                                    }
                                 }
                             }
                         }
-                    }</code></pre>
+                        ...</code></pre>
 <p>When <code>Backspace</code> is pressed, we need to first determine if the user is editing a <code>Key</code> or a <code>Value</code>,
 then <code>pop()</code> the endings of those strings accordingly.</p>
-<pre><code class="language-rust no_run noplayground">                    KeyCode::Backspace =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.pop();
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.pop();
+<pre><code class="language-rust no_run noplayground">                        ...
+                        KeyCode::Backspace =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.pop();
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.pop();
+                                    }
                                 }
                             }
                         }
-                    }</code></pre>
+                        ...</code></pre>
 <p>When <code>Escape</code> is pressed, we want to quit editing.</p>
-<pre><code class="language-rust no_run noplayground">                    KeyCode::Esc =&gt; {
-                        app.current_screen = CurrentScreen::Main;
-                        app.currently_editing = None;
-                    }</code></pre>
+<pre><code class="language-rust no_run noplayground">                        ...
+                        KeyCode::Esc =&gt; {
+                            app.current_screen = CurrentScreen::Main;
+                            app.currently_editing = None;
+                        }
+                        ...</code></pre>
 <p>When <code>Tab</code> is pressed, we want the currently editing selection to switch.</p>
-<pre><code class="language-rust no_run noplayground">                    KeyCode::Tab =&gt; {
-                        app.toggle_editing();
-                    }</code></pre>
+<pre><code class="language-rust no_run noplayground">                        ...
+                        KeyCode::Tab =&gt; {
+                            app.toggle_editing();
+                        }
+                        ...</code></pre>
 <p>And finally, if the user types a valid character, we want to capture that, and add it to the string
 that is the final key or value.</p>
-<pre><code class="language-rust no_run noplayground">                    KeyCode::Char(value) =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.push(value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.push(value);
+<pre><code class="language-rust no_run noplayground">                        ...
+                        KeyCode::Char(value) =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.push(value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.push(value);
+                                    }
                                 }
                             }
                         }
-                    }</code></pre>
+                        ...</code></pre>
 <p>Altogether, the event loop should look like this:</p>
 <pre><code class="language-rust no_run noplayground">        if let Event::Key(key) = event::read()? {
             match app.current_screen {
@@ -477,53 +445,55 @@ that is the final key or value.</p>
                     }
                     _ =&gt; {}
                 },
-                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; match key.code {
-                    KeyCode::Enter =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.currently_editing = Some(CurrentlyEditing::Value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.save_key_value();
-                                    app.current_screen = CurrentScreen::Main;
-                                }
-                            }
-                        }
-                    }
-                    KeyCode::Backspace =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.pop();
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.pop();
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; {
+                    match key.code {
+                        KeyCode::Enter =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.save_key_value();
+                                        app.current_screen = CurrentScreen::Main;
+                                    }
                                 }
                             }
                         }
-                    }
-                    KeyCode::Esc =&gt; {
-                        app.current_screen = CurrentScreen::Main;
-                        app.currently_editing = None;
-                    }
-                    KeyCode::Tab =&gt; {
-                        app.toggle_editing();
-                    }
-                    KeyCode::Char(value) =&gt; {
-                        if let Some(editing) = &amp;app.currently_editing {
-                            match editing {
-                                CurrentlyEditing::Key =&gt; {
-                                    app.key_input.push(value);
-                                }
-                                CurrentlyEditing::Value =&gt; {
-                                    app.value_input.push(value);
+                        KeyCode::Backspace =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.pop();
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.pop();
+                                    }
                                 }
                             }
                         }
+                        KeyCode::Esc =&gt; {
+                            app.current_screen = CurrentScreen::Main;
+                            app.currently_editing = None;
+                        }
+                        KeyCode::Tab =&gt; {
+                            app.toggle_editing();
+                        }
+                        KeyCode::Char(value) =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.push(value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.push(value);
+                                    }
+                                }
+                            }
+                        }
+                        _ =&gt; {}
                     }
-                    _ =&gt; {}
-                },
+                }
                 _ =&gt; {}
             }
         }</code></pre>
