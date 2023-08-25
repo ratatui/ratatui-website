@@ -645,7 +645,7 @@ fn main() -&gt; Result&lt;()&gt; {
   Ok(())
 }</code></pre>
 <p>While this works file during the happy path of a program, if your <code>run()</code> function returns
-an error, it will not call <code>shutdown()</code>. And this can leave your terminal in a messed up
+an error, the program will not call <code>shutdown()</code>. And this can leave your terminal in a messed up
 state for your users.</p>
 <p>Instead, we can do this:</p>
 <pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
