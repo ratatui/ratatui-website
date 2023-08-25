@@ -206,42 +206,65 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
 }</code></pre>
 <p>In the code above, it is useful to think about various parts of the code as separate pieces of the
 puzzle. This is useful to help refactor and reorganize your code for larger applications.</p>
+<h2 id="imports"><a class="header" href="#imports">Imports</a></h2>
+<p>We start by importing necessary components from the <code>ratatui</code> library, which provides a number of
+different widgets and utilities.</p>
+<pre><code class="language-rust">use ratatui::{
+  prelude::{CrosstermBackend, Terminal},
+  widgets::Paragraph,
+};</code></pre>
+<h2 id="start-up"><a class="header" href="#start-up">Start up</a></h2>
+<p>Using <code>crossterm</code>, we can set the terminal to raw mode and enter an alternate screen.</p>
+<pre><code class="language-rust">crossterm::terminal::enable_raw_mode()?;
+crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;</code></pre>
+<h2 id="initialize"><a class="header" href="#initialize">Initialize</a></h2>
+<p>Again using <code>crossterm</code>, we can create an instance of terminal backend</p>
+<pre><code class="language-rust">let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;</code></pre>
+<h2 id="shut-down"><a class="header" href="#shut-down">Shut Down</a></h2>
+<p>Terminal disables raw mode and exits the alternate screen for a clean exit, ensuring the terminal
+returns to its original state</p>
+<pre><code class="language-rust">crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+crossterm::terminal::disable_raw_mode()?;</code></pre>
+<h2 id="app-state"><a class="header" href="#app-state">App state</a></h2>
+<p>Our application has just one variable that tracks the “state”, i.e. the counter value.</p>
+<pre><code class="language-rust">let mut counter = 0;</code></pre>
+<h2 id="run-loop"><a class="header" href="#run-loop">Run loop</a></h2>
+<p>Our application runs in a continuous loop, constantly checking for user input and updating the
+state, which in turn updates the display on the next loop.</p>
+<pre><code class="language-rust">  // Main application loop
+  loop {
+    // draw UI based on state
+    // ...
+    // Update state based on user input
+    // ...
+    // Break from loop based on user input and/or state
+  }</code></pre>
+<p>Every TUI with <code>ratatui</code> is bound to have (at least) one main application run loop like this.</p>
+<h2 id="ui"><a class="header" href="#ui">UI</a></h2>
+<p>The UI part of our code takes the state of the application, i.e. the value of <code>counter</code> and uses it
+to render a widget, i.e. a <code>Paragraph</code> widget.</p>
+<pre><code class="language-rust">    terminal.draw(|f| {
+      f.render_widget(Paragraph::new(format!(&quot;Counter: {counter}&quot;)), f.size());
+    })?;</code></pre>
+<h2 id="user-input"><a class="header" href="#user-input">User Input</a></h2>
+<p>Every 250 milliseconds, the application checks if the user has pressed a key:</p>
 <ul>
-<li>
-<p><strong>Imports</strong>: We start by importing necessary components from the ratatui library, which provides
-widgets and utilities for crafting TUIs.</p>
-</li>
-<li>
-<p><strong>Terminal Management</strong>: It is useful to look at terminal related code in three categories:</p>
-<ul>
-<li><strong>Start up</strong>: Terminal set to raw mode and enter an alternate screen</li>
-<li><strong>Initialize</strong>: Create an instance of terminal backend</li>
-<li><strong>Shut Down</strong>: Terminal disables raw mode and exits the alternate screen for a clean exit,
-ensuring the terminal returns to its original state</li>
+<li><code>j</code> increases the counter</li>
+<li><code>k</code> decreases the counter</li>
+<li><code>q</code> exits the application</li>
 </ul>
-</li>
-<li>
-<p><strong>App state</strong>: Our application has just one variable that tracks the “state”, i.e. the counter
-value.</p>
-</li>
-<li>
-<p><strong>Run Loop</strong>: Our application runs in a continuous loop, constantly checking for user input and
-updating the display.</p>
-<ul>
-<li>
-<p><strong>UI</strong>: The <code>counter</code> is displayed using the <code>Paragraph</code> widget.</p>
-</li>
-<li>
-<p><strong>User Input</strong>: Every 250 milliseconds, the application checks if the user has pressed a key:</p>
-<ul>
-<li>‘j’ increases the counter</li>
-<li>‘k’ decreases the counter</li>
-<li>‘q’ exits the application</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      // If a key event occurs, handle it
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        match key.code {
+          crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
+          crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
+          crossterm::event::KeyCode::Char('q') =&gt; break,
+          _ =&gt; (),
+        }
+      }
+    }</code></pre>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
 <p>By understanding the structure and components used in this simple counter application, you are set
 up to explore crafting more intricate terminal-based interfaces using <code>ratatui</code>.</p>
 <p>In the next section, we will explore a refactor of the above code to separate the various parts into

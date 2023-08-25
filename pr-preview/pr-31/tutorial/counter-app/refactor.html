@@ -181,13 +181,13 @@ pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::St
 <p><a class="admonition-anchor-link" href="#admonition-tip"></a></p>
 </div>
 <div>
-<p>If you use the lovely crate <a href="https://docs.rs/anyhow/latest/anyhow/"><code>anyhow</code></a>,
+<p>If you use the popular <a href="https://docs.rs/anyhow/latest/anyhow/"><code>anyhow</code></a> crate,
 then instead of these two lines:</p>
 <pre><code class="language-rust">type Err = Box&lt;dyn std::error::Error&gt;;
 type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;</code></pre>
 <p>you can simply import <code>anyhow::Result</code>:</p>
 <pre><code class="language-rust">use anyhow::Result;</code></pre>
-<p>You will need to <code>cargo add anyhow</code> for this to work.</p>
+<p>You will need to run <code>cargo add anyhow</code> for this to work.</p>
 </div>
 </div>
 <p><code>Frame</code> is a shorthand type to represent the frame we draw to when we render our application.</p>
@@ -355,15 +355,44 @@ fn main() -&gt; Result&lt;()&gt; {
   // setup terminal
   startup()?;
 
-  let status = run();
+  let result = run();
 
   // teardown terminal before unwrapping Result of app run
   shutdown()?;
 
-  status?;
+  result?;
 
   Ok(())
 }</code></pre>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+</div>
+<div>
+<p>You’ll notice that we could have written the <code>main</code> function like so:</p>
+<pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
+  startup()?;
+  run()?;
+  shutdown()?;
+  Ok(())
+}</code></pre>
+<p>While this works file during the happy path of a program, if your <code>run()</code> function returns
+an error, it will not call <code>shutdown()</code>. And this can leave your terminal in a messed up
+state for your users.</p>
+<p>Instead, we can do this:</p>
+<pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
+  startup()?;
+  let result = run();
+  shutdown()?;
+  result?;
+  Ok(())
+}</code></pre>
+<p>We can get the result of <code>run()</code>, and call <code>shutdown()</code> first and then <code>unwrap()</code> on the result.
+This will be a much better experience for users.</p>
+<p>We will discuss in future sections how to handle the situation when your code unexpectedly panics.</p>
+</div>
+</div>
 
                     </main>
 
