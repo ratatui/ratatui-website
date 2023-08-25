@@ -52,14 +52,21 @@ This 4 minute talk about `IMGUI` is also tangentially relevant.
 
 ## Disadvantages of Immediate Mode Rendering
 
-It is important to understand that only calling `Backend.draw()` will actually output anything to
-the screen. What it means is _you_, the programmer, are responsible for keeping the TUI responsive.
-If you accidentally block the thread that updates the UI, it will not update until the thread
-unblocks.
+- **Render loop management**: In Immediate mode rendering, the onus of rendering lies solely on the
+  programmer. Every visual update necessitates a call to `Backend.draw()`. Hence, if the rendering
+  thread is inadvertently blocked, the UI will not update until the thread resumes.
 
-`ratatui` in particular only handles how widget would be rendered. You have to use a supported third
-party library, e.g. `crossterm` to actually draw to the terminal. In addition, you also have to use
-`crossterm` to read key inputs.
+  ```admonish note
+  The `ratatui` library in particular only handles how widget would be rendered to a "Backend", e.g.
+  `crossterm`. The `Backend` in question would use an external crate e.g. `crossterm` for actually drawing to the terminal.
+  ```
 
-Out of the box, there's little to no help in organizing large applications. The onus is on the
-developer using `ratatui` to be principled (or not).
+- **Event loop orchestration**: Along with managing "the render loop", developers are also
+  responsible for handling "the event loop". This involves deciding on a third-party library for the
+  job. `crossterm` is a popular crate to handle key inputs and you'll find plenty of examples in the
+  repository and online for how to use it. `crossterm` also supports a `async` event stream, if you
+  are interested in using `tokio`.
+
+- **Architecture design considerations**: With `ratatui`, out of the box, there's little to no help
+  in organizing large applications. Ultimately, the decision on structure and discipline rests with
+  the developer to be principled.

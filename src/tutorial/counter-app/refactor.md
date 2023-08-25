@@ -31,7 +31,7 @@ pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
 ```
 
 ````admonish tip
-If you use the lovely crate [`anyhow`](https://docs.rs/anyhow/latest/anyhow/),
+If you use the popular [`anyhow`](https://docs.rs/anyhow/latest/anyhow/) crate,
 then instead of these two lines:
 
 ```rust
@@ -45,7 +45,7 @@ you can simply import `anyhow::Result`:
 use anyhow::Result;
 ```
 
-You will need to `cargo add anyhow` for this to work.
+You will need to run `cargo add anyhow` for this to work.
 
 ````
 
@@ -153,7 +153,7 @@ Each function now has a specific task, making our main application logic more or
 to follow.
 
 ```rust
-fn main() -> TuiResult<()> {
+fn main() -> Result<()> {
   startup()?;
   let status = run();
   shutdown()?;
@@ -161,6 +161,43 @@ fn main() -> TuiResult<()> {
   Ok(())
 }
 ```
+
+````admonish note
+
+You may be wondering if we could have written the `main` function like so:
+
+```rust
+fn main() -> Result<()> {
+  startup()?;
+  run()?;
+  shutdown()?;
+  Ok(())
+}
+```
+
+This works fine during the happy path of a program.
+
+However, if your `run()` function returns an error, the program will not call `shutdown()`.
+And this can leave your terminal in a messed up
+state for your users.
+
+Instead, we should ensure that `shutdown()` is _always_ called before the program exits.
+
+```rust
+fn main() -> Result<()> {
+  startup()?;
+  let result = run();
+  shutdown()?;
+  result?;
+  Ok(())
+}
+```
+
+Here, we can get the result of `run()`, and call `shutdown()` first and then `unwrap()` on the result.
+This will be a much better experience for users.
+
+We will discuss in future sections how to handle the situation when your code unexpectedly panics.
+````
 
 ## Conclusion
 
@@ -250,12 +287,12 @@ fn main() -> Result<()> {
   // setup terminal
   startup()?;
 
-  let status = run();
+  let result = run();
 
   // teardown terminal before unwrapping Result of app run
   shutdown()?;
 
-  status?;
+  result?;
 
   Ok(())
 }
