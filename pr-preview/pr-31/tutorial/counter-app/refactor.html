@@ -271,6 +271,36 @@ to follow.</p>
   status?;
   Ok(())
 }</code></pre>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+</div>
+<div>
+<p>You may be wondering if we could have written the <code>main</code> function like so:</p>
+<pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
+  startup()?;
+  run()?;
+  shutdown()?;
+  Ok(())
+}</code></pre>
+<p>This works fine during the happy path of a program.</p>
+<p>However, if your <code>run()</code> function returns an error, the program will not call <code>shutdown()</code>.
+And this can leave your terminal in a messed up
+state for your users.</p>
+<p>Instead, we can do this:</p>
+<pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
+  startup()?;
+  let result = run();
+  shutdown()?;
+  result?;
+  Ok(())
+}</code></pre>
+<p>We can get the result of <code>run()</code>, and call <code>shutdown()</code> first and then <code>unwrap()</code> on the result.
+This will be a much better experience for users.</p>
+<p>We will discuss in future sections how to handle the situation when your code unexpectedly panics.</p>
+</div>
+</div>
 <h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
 <p>By making our code more organized, modular, and readable, we not only make it easier for others to
 understand and work with but also set the stage for future enhancements and extensions.</p>
@@ -364,35 +394,6 @@ fn main() -&gt; Result&lt;()&gt; {
 
   Ok(())
 }</code></pre>
-<div id="admonition-note" class="admonition note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
-</div>
-<div>
-<p>You’ll notice that we could have written the <code>main</code> function like so:</p>
-<pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
-  startup()?;
-  run()?;
-  shutdown()?;
-  Ok(())
-}</code></pre>
-<p>While this works file during the happy path of a program, if your <code>run()</code> function returns
-an error, the program will not call <code>shutdown()</code>. And this can leave your terminal in a messed up
-state for your users.</p>
-<p>Instead, we can do this:</p>
-<pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
-  startup()?;
-  let result = run();
-  shutdown()?;
-  result?;
-  Ok(())
-}</code></pre>
-<p>We can get the result of <code>run()</code>, and call <code>shutdown()</code> first and then <code>unwrap()</code> on the result.
-This will be a much better experience for users.</p>
-<p>We will discuss in future sections how to handle the situation when your code unexpectedly panics.</p>
-</div>
-</div>
 
                     </main>
 
