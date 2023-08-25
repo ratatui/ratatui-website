@@ -156,7 +156,99 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="tuirs"><a class="header" href="#tuirs">tui.rs</a></h1>
+<p>Next, we can further abstract the terminal functionality from earlier into a <code>Tui</code> struct.</p>
+<p>It provides a concise and efficient way to manage the terminal, handle events, and render content.
+Let’s dive into its composition and functionality.</p>
+<p>This introductory section includes the same imports and type definitions as before. We add an
+additional type alias for <code>CrosstermTerminal</code>.</p>
 <pre><code class="language-rust">use std::{io, panic};
+
+use anyhow::Result;
+use crossterm::{
+  event::{DisableMouseCapture, EnableMouseCapture},
+  terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
+};
+
+pub type Frame&lt;'a&gt; = tui::Frame&lt;'a, tui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+pub type CrosstermTerminal = tui::Terminal&lt;tui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+
+use crate::{app::App, event::EventHandler, ui};</code></pre>
+<p>The <code>Tui</code> struct can be defined with two primary fields:</p>
+<ul>
+<li><code>terminal</code>: This provides a direct interface to the terminal, allowing operations like drawing,
+clearing the screen, and more.</li>
+<li><code>events</code>: An event handler that we defined in the previous section, which would help in managing
+terminal events like keystrokes, mouse movements, and other input events.</li>
+</ul>
+<pre><code class="language-rust">/// Representation of a terminal user interface.
+///
+/// It is responsible for setting up the terminal,
+/// initializing the interface and handling the draw events.
+pub struct Tui {
+  /// Interface to the Terminal.
+  terminal: CrosstermTerminal,
+  /// Terminal event handler.
+  pub events: EventHandler,
+}</code></pre>
+<p>With this <code>Tui</code> struct, we can add helper methods to handle modifying the terminal state. For
+example, here’s the <code>init</code> method:</p>
+<pre><code class="language-rust">  /// Initializes the terminal interface.
+  ///
+  /// It enables the raw mode and sets terminal properties.
+  pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
+    terminal::enable_raw_mode()?;
+    crossterm::execute!(io::stderr(), EnterAlternateScreen, EnableMouseCapture)?;
+
+    // Define a custom panic hook to reset the terminal properties.
+    // This way, you won't have your terminal messed up if an unexpected error happens.
+    let panic_hook = panic::take_hook();
+    panic::set_hook(Box::new(move |panic| {
+      Self::reset().expect(&quot;failed to reset the terminal&quot;);
+      panic_hook(panic);
+    }));
+
+    self.terminal.hide_cursor()?;
+    self.terminal.clear()?;
+    Ok(())
+  }
+</code></pre>
+<p>This is essentially the same as the <code>startup</code> function from before. One important thing to note that
+this function can be used to set a panic hook that calls the <code>reset()</code> method.</p>
+<pre><code class="language-rust">  /// Resets the terminal interface.
+  ///
+  /// This function is also used for the panic hook to revert
+  /// the terminal properties if unexpected errors occur.
+  fn reset() -&gt; Result&lt;()&gt; {
+    terminal::disable_raw_mode()?;
+    crossterm::execute!(io::stderr(), LeaveAlternateScreen, DisableMouseCapture)?;
+    Ok(())
+  }
+
+  /// Exits the terminal interface.
+  ///
+  /// It disables the raw mode and reverts back the terminal properties.
+  pub fn exit(&amp;mut self) -&gt; Result&lt;()&gt; {
+    Self::reset()?;
+    self.terminal.show_cursor()?;
+    Ok(())
+  }</code></pre>
+<p>With this panic hook, in the event of an unexpected error or panic, the terminal properties will be
+reset, ensuring that the terminal doesn’t remain in a disrupted state.</p>
+<p>Finally, we can set up the draw method:</p>
+<pre><code class="language-rust">  /// [`Draw`] the terminal interface by [`rendering`] the widgets.
+  ///
+  /// [`Draw`]: tui::Terminal::draw
+  /// [`rendering`]: crate::ui:render
+  pub fn draw(&amp;mut self, app: &amp;mut App) -&gt; Result&lt;()&gt; {
+    self.terminal.draw(|frame| ui::render(app, frame))?;
+    Ok(())
+  }
+</code></pre>
+<p>This draw method leverages the <code>ui::render</code> function from earlier in this section to transform the
+state of our application into widgets that are then displayed on the terminal.</p>
+<p>Here’s the full <code>tui.rs</code> file for your reference:</p>
+<pre><code class="language-rust">
+use std::{io, panic};
 
 use anyhow::Result;
 use crossterm::{
@@ -169,7 +261,6 @@ pub type CrosstermTerminal = tui::Terminal&lt;tui::backend::CrosstermBackend&lt;
 
 use crate::{app::App, event::EventHandler, ui};
 
-///// ANCHOR: tui
 /// Representation of a terminal user interface.
 ///
 /// It is responsible for setting up the terminal,
@@ -180,7 +271,6 @@ pub struct Tui {
   /// Terminal event handler.
   pub events: EventHandler,
 }
-///// ANCHOR_END: tui
 
 impl Tui {
   /// Constructs a new instance of [`Tui`].
@@ -188,7 +278,6 @@ impl Tui {
     Self { terminal, events }
   }
 
-  ///// ANCHOR: tui_init
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
@@ -209,9 +298,7 @@ impl Tui {
     Ok(())
   }
 
-  ///// ANCHOR_END: tui_init
 
-  ///// ANCHOR: tui_draw
   /// [`Draw`] the terminal interface by [`rendering`] the widgets.
   ///
   /// [`Draw`]: tui::Terminal::draw
@@ -221,9 +308,7 @@ impl Tui {
     Ok(())
   }
 
-  ///// ANCHOR_END: tui_draw
 
-  ///// ANCHOR: tui_exit
   /// Resets the terminal interface.
   ///
   /// This function is also used for the panic hook to revert
@@ -242,8 +327,8 @@ impl Tui {
     self.terminal.show_cursor()?;
     Ok(())
   }
-  ///// ANCHOR_END: tui_exit
-}</code></pre>
+}
+</code></pre>
 
                     </main>
 

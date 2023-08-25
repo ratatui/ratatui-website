@@ -156,6 +156,13 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="handlerrs"><a class="header" href="#handlerrs">handler.rs</a></h1>
+<p>Finally we have the <code>handler.rs</code> file. Here, the <code>handle_key_events</code> function takes in two
+arguments:</p>
+<ul>
+<li><code>key_event</code>: This is an event provided by the <code>crossterm</code> crate, representing a key press from the
+user.</li>
+<li><code>app</code>: A mutable reference to our application’s state, represented by the <code>App</code> struct.</li>
+</ul>
 <pre><code class="language-rust">use anyhow::Result;
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 

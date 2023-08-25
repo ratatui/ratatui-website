@@ -1,3 +1,6 @@
+// ANCHOR: all
+
+///// ANCHOR: tui_imports
 use std::{io, panic};
 
 use anyhow::Result;
@@ -10,6 +13,7 @@ pub type Frame<'a> = tui::Frame<'a, tui::backend::CrosstermBackend<std::io::Stde
 pub type CrosstermTerminal = tui::Terminal<tui::backend::CrosstermBackend<std::io::Stderr>>;
 
 use crate::{app::App, event::EventHandler, ui};
+///// ANCHOR_END: tui_imports
 
 ///// ANCHOR: tui
 /// Representation of a terminal user interface.
@@ -86,3 +90,5 @@ impl Tui {
   }
   ///// ANCHOR_END: tui_exit
 }
+
+// ANCHOR_END: all
