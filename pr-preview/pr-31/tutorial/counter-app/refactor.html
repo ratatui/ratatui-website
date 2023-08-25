@@ -288,7 +288,7 @@ to follow.</p>
 <p>However, if your <code>run()</code> function returns an error, the program will not call <code>shutdown()</code>.
 And this can leave your terminal in a messed up
 state for your users.</p>
-<p>Instead, we can do this:</p>
+<p>Instead, we should ensure that <code>shutdown()</code> is <em>always</em> called before the program exits.</p>
 <pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
   startup()?;
   let result = run();
@@ -296,7 +296,7 @@ state for your users.</p>
   result?;
   Ok(())
 }</code></pre>
-<p>We can get the result of <code>run()</code>, and call <code>shutdown()</code> first and then <code>unwrap()</code> on the result.
+<p>Here, we can get the result of <code>run()</code>, and call <code>shutdown()</code> first and then <code>unwrap()</code> on the result.
 This will be a much better experience for users.</p>
 <p>We will discuss in future sections how to handle the situation when your code unexpectedly panics.</p>
 </div>
