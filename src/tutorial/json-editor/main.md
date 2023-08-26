@@ -137,14 +137,15 @@ Let's unpack that `draw` call really quick.
 - `|f| ui(f, &app)` tells `draw` that we want to take `f: <Frame>` and pass it to our function `ui`,
   and `ui` will draw to that `Frame`.
 
+<!-- prettier-ignore -->
+[^note]: Technically this is the command to to the `Terminal<Backend>`, but that only matters on the `TestBackend`.
+
 Notice that we also pass a immutable borrow of our application state to the `ui` function. This will
 be important later.
 
-[^note]: Technically to the `Terminal<Backend>`, but that only matters on the `TestBackend`.
-
 ### Event handling
 
-Now that we have started our app, and have set up the UI rendering, we will implement the event
+Now that we have started our app , and have set up the UI rendering, we will implement the event
 handling.
 
 #### Polling

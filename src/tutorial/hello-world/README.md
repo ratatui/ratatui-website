@@ -14,9 +14,8 @@ Check
 for more information. Most people tend to use `rustup` to manage their installation.
 
 ```admonish tip
-`rustup` lets you manage which version of the rust compiler you want to use for each project.
-If you are interested, you can explore nightly features in one project and use an older version
-of rustc, all managed from the command line with `rustup`.
+`rustup` installs The Rust Programming Language from the official release channels,
+enabling you to easily switch between stable, beta, and nightly compilers and keep them updated.
 ```
 
 `rustup` will set you up with the latest stable version of `rust` as well as `cargo`. `cargo` is
@@ -85,7 +84,7 @@ cargo add ratatui crossterm
 ```admonish note
 `ratatui` has to be combined with a terminal backend.
 You can learn more about the different terminal backends in the [how to choose a
-backend](./choose-a-backend.md) section. For the examples in this book, we are going to use
+backend](./../../how-to/choose-a-backend.md) section. For the examples in this book, we are going to use
 `crossterm`.
 ```
 
@@ -100,9 +99,9 @@ cargo add ratatui --version 0.19.0
 ```
 ````
 
-### Modifying `src/main.rs`
+### `src/main.rs`
 
-Modify `src/main.rs` to the following:
+Open `src/main.rs` in your favorite editor, and copy paste the following code to it:
 
 ```rust,no_run,noplayground
 use ratatui::{
@@ -147,11 +146,18 @@ We can run our program with:
 cargo run
 ```
 
-You can press `q` to exit and go back to your terminal as it was before.
+You should see a TUI app with `Hello World! (press 'q' to quit)` show up in your terminal as a TUI
+app.
 
 ![](https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif)
+
+You can press `q` to exit and go back to your terminal as it was before.
 
 Congratulations! :tada:
 
 You have written a "hello world" terminal user interface with `ratatui`. We will learn more about
 how `ratatui` works in the next sections.
+
+```admonish question
+Can you modify the example above to exit when pressing `q` and when pressing `Q`?
+```

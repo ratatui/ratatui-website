@@ -61,7 +61,10 @@
   - [Create a Widget]()
   - [Handle Panics]()
 
-- [FAQ](./faq.md)
+- [FAQ](./faq/README.md)
+
+  - [Duplicate key events on Windows](./faq/duplicate-key-events-windows.md)
+  - [`tokio` / `async`](./faq/tokio-async.md)
 
 - [References]()
 
