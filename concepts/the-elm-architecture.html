@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Elm Architecture - Ratatui Book</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././theme/catppuccin.css">
+        <link rel="stylesheet" href=".././theme/catppuccin-highlight.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Home</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../tutorial/hello-world/index.html"><strong aria-hidden="true">2.</strong> Hello World - Tutorial</a></li><li class="chapter-item expanded "><a href="../tutorial/counter-app/index.html"><strong aria-hidden="true">3.</strong> Counter App - Tutorial</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/counter-app/single-function.html"><strong aria-hidden="true">3.1.</strong> Single Function</a></li><li class="chapter-item expanded "><a href="../tutorial/counter-app/refactor.html"><strong aria-hidden="true">3.2.</strong> Multiple Functions</a></li><li class="chapter-item expanded "><a href="../tutorial/counter-app/multiple-files.html"><strong aria-hidden="true">3.3.</strong> Multiple Files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/counter-app/app.html"><strong aria-hidden="true">3.3.1.</strong> app.rs</a></li><li class="chapter-item expanded "><a href="../tutorial/counter-app/ui.html"><strong aria-hidden="true">3.3.2.</strong> ui.rs</a></li><li class="chapter-item expanded "><a href="../tutorial/counter-app/event.html"><strong aria-hidden="true">3.3.3.</strong> event.rs</a></li><li class="chapter-item expanded "><a href="../tutorial/counter-app/tui.html"><strong aria-hidden="true">3.3.4.</strong> tui.rs</a></li><li class="chapter-item expanded "><a href="../tutorial/counter-app/handler.html"><strong aria-hidden="true">3.3.5.</strong> handler.rs</a></li><li class="chapter-item expanded "><a href="../tutorial/counter-app/main.html"><strong aria-hidden="true">3.3.6.</strong> main.rs</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../tutorial/json-editor/index.html"><strong aria-hidden="true">4.</strong> JSON Editor - Tutorial</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/json-editor/app.html"><strong aria-hidden="true">4.1.</strong> App.rs - Holding application state</a></li><li class="chapter-item expanded "><a href="../tutorial/json-editor/main.html"><strong aria-hidden="true">4.2.</strong> Main.rs - UI loop and event handling</a></li><li class="chapter-item expanded "><a href="../tutorial/json-editor/ui.html"><strong aria-hidden="true">4.3.</strong> Ui.rs - Layouts, widgets, frames, oh my!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/json-editor/ui-main.html"><strong aria-hidden="true">4.3.1.</strong> Ui.rs - Main</a></li><li class="chapter-item expanded "><a href="../tutorial/json-editor/ui-editing.html"><strong aria-hidden="true">4.3.2.</strong> Ui.rs - Editing</a></li><li class="chapter-item expanded "><a href="../tutorial/json-editor/ui-exit.html"><strong aria-hidden="true">4.3.3.</strong> Ui.rs - Exit</a></li></ol></li><li class="chapter-item expanded "><a href="../tutorial/json-editor/closing_thoughts.html"><strong aria-hidden="true">4.4.</strong> Conclusion</a></li></ol></li><li class="chapter-item expanded "><a href="../concepts/index.html"><strong aria-hidden="true">5.</strong> Concepts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../concepts/rendering.html"><strong aria-hidden="true">5.1.</strong> Rendering</a></li><li class="chapter-item expanded "><a href="../concepts/event_handling.html"><strong aria-hidden="true">5.2.</strong> Event Handling</a></li><li class="chapter-item expanded "><a href="../concepts/the-elm-architecture.html" class="active"><strong aria-hidden="true">5.3.</strong> The Elm Architecture</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.4.</strong> Project Structure</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.5.</strong> Application Patterns</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.</strong> Design Patterns</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.7.</strong> Application State</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.8.</strong> Event Handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.9.</strong> Key Binding</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.10.</strong> Threading</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.11.</strong> Logging</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.12.</strong> Configuration</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.13.</strong> Backend Choice</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> How To</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../how-to/features.html"><strong aria-hidden="true">6.1.</strong> Enable Features</a></li><li class="chapter-item expanded "><a href="../how-to/choose-a-backend.html"><strong aria-hidden="true">6.2.</strong> Choose a Backend</a></li><li class="chapter-item expanded "><a href="../how-to/setup-panic-hooks.html"><strong aria-hidden="true">6.3.</strong> Setup Panic Hooks</a></li><li class="chapter-item expanded "><a href="../how-to/setup-logging-tracing.html"><strong aria-hidden="true">6.4.</strong> Setup Logging with tracing</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.5.</strong> Blocks</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.6.</strong> Displaying Text</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">6.6.1.</strong> Styling-Text</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.6.2.</strong> Paragraphs</div></li></ol></li><li class="chapter-item expanded "><a href="../how-to/layout-constraints-basics.html"><strong aria-hidden="true">6.7.</strong> Layouts Constraints Basics</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.8.</strong> Layout Widgets</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.9.</strong> Create a Widget</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.10.</strong> Handle Panics</div></li></ol></li><li class="chapter-item expanded "><a href="../faq/index.html"><strong aria-hidden="true">7.</strong> FAQ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../faq/duplicate-key-events-windows.html"><strong aria-hidden="true">7.1.</strong> Duplicate key events on Windows</a></li><li class="chapter-item expanded "><a href="../faq/tokio-async.html"><strong aria-hidden="true">7.2.</strong> tokio / async</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> References</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">8.1.</strong> Crate Docs</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.2.</strong> Starter Template</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.3.</strong> Third Party Crates</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> Developer Guide</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">9.1.</strong> Ratatui</div></li><li class="chapter-item expanded "><a href="../developer-guide/book.html"><strong aria-hidden="true">9.2.</strong> Ratatui Book</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../contributors.html">Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappé</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Ratatui Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book/edit/main/src/concepts/the-elm-architecture.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="using-the-elm-architecture-tea-with-ratatui"><a class="header" href="#using-the-elm-architecture-tea-with-ratatui">Using The Elm Architecture (TEA) with <code>ratatui</code></a></h1>
+<p>When building terminal user interfaces (TUI) with Rust, it’s essential to have a solid structure for
+organizing your application. One proven architecture comes from the Elm language, known simply as
+The Elm Architecture (TEA).</p>
+<p>In this post, we’ll explore how to apply The Elm Architecture to <code>ratatui</code> TUI apps.</p>
+<h2 id="the-elm-architecture-a-quick-overview"><a class="header" href="#the-elm-architecture-a-quick-overview">The Elm Architecture: A Quick Overview</a></h2>
+<p>At its core, the Elm Architecture is split into three main components:</p>
+<ul>
+<li><strong>Model</strong>: This is your application’s state. It contains all the data your application works with.</li>
+<li><strong>Update</strong>: When there’s a change (like user input), the update function takes the current model
+and the input, and produces a new model.</li>
+<li><strong>View</strong>: This function is responsible for displaying your model to the user. In Elm, it produces
+HTML. In our case, it’ll produce terminal UI elements.</li>
+</ul>
+<pre class="mermaid">sequenceDiagram
+participant User
+participant TUI Application
+
+User-&gt;&gt;TUI Application: Input/Event
+TUI Application-&gt;&gt;TUI Application: Update (based on Model and Message)
+TUI Application-&gt;&gt;TUI Application: Render View (from Model)
+TUI Application--&gt;&gt;User: Display UI
+</pre>
+<h2 id="applying-tea-to-ratatui"><a class="header" href="#applying-tea-to-ratatui">Applying TEA to <code>ratatui</code></a></h2>
+<ol>
+<li>Define Your Model</li>
+</ol>
+<p>In <code>ratatui</code>, you’ll typically use a <code>struct</code> to represent your model:</p>
+<pre><code class="language-rust">struct Model {
+    //... your application's data goes here
+}</code></pre>
+<ol start="2">
+<li>Handling Updates</li>
+</ol>
+<p>For our TUI app, an update happens when there’s user input or some event we care about. With
+<code>ratatui</code>, you’ll handle keyboard or mouse input, and based on that, produce a new model.</p>
+<pre><code class="language-rust">enum Message {
+    //... various inputs or actions that your app cares about
+}
+
+fn update(model: &amp;Model, msg: Message) -&gt; Model {
+    match msg {
+        //... handle each possible message
+    }
+}</code></pre>
+<ol start="3">
+<li>Rendering the View</li>
+</ol>
+<pre><code class="language-rust">fn view(model: &amp;Model) {
+    //... use `ratatui` functions to draw your UI based on the model's state
+}</code></pre>
+<h2 id="putting-it-all-together"><a class="header" href="#putting-it-all-together">Putting it all together</a></h2>
+<p>When you put it all together, your main application loop might look something like:</p>
+<ul>
+<li>Listen for user input.</li>
+<li>Pass that input to the update function.</li>
+<li>Draw the UI with the view function.</li>
+</ul>
+<p>This cycle repeats, ensuring your TUI is always up-to-date with user interactions.</p>
+<p>As an illustrative example, here’s the <a href="./../tutorial/counter-app/single-function.html">Counter App</a>
+refactored using TEA.</p>
+<p>The notable difference from before is that we have an <code>Model</code> struct that captures the app state,
+and a <code>Message</code> enum that captures the various actions your app can take.</p>
+<pre><code class="language-rust">use ratatui::{
+    prelude::{CrosstermBackend, Terminal},
+    widgets::Paragraph,
+};
+
+// MODEL
+struct Model {
+    counter: i32,
+    should_quit: bool,
+}
+
+// MESSAGES
+enum Message {
+    Increment,
+    Decrement,
+    Quit,
+    None,
+}
+
+// UPDATE
+fn update(model: &amp;mut Model, msg: Message) {
+    match msg {
+        Message::Increment =&gt; model.counter += 1,
+        Message::Decrement =&gt; model.counter -= 1,
+        Message::Quit =&gt; model.should_quit = true,  // You can handle cleanup and exit here
+        Message::None =&gt; (),
+    }
+}
+
+// VIEW
+fn view(model: &amp;Model, terminal: &amp;mut Terminal&lt;CrosstermBackend&lt;std::io::Stderr&gt;&gt;) {
+    terminal.draw(|f| {
+        f.render_widget(Paragraph::new(format!(&quot;Counter: {}&quot;, model.counter)), f.size());
+    }).unwrap(); // You can handle the error more gracefully
+}
+
+// Convert Event to Message
+fn handle_event(model: &amp;Model) -&gt; Message {
+    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+        if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+            let msg = match key.code {
+                crossterm::event::KeyCode::Char('j') =&gt; Message::Increment,
+                crossterm::event::KeyCode::Char('k') =&gt; Message::Decrement,
+                crossterm::event::KeyCode::Char('q') =&gt; Message::Quit,
+                _ =&gt; Messsage::None,
+            };
+        }
+    }
+}
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Startup
+    crossterm::terminal::enable_raw_mode()?;
+    crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+
+    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+    let mut model = Model { counter: 0, should_quit: false };
+
+    loop {
+        view(&amp;model, &amp;mut terminal);
+
+        let msg = handle_event(&amp;model);
+
+        update(&amp;mut model, msg);
+
+        if model.should_quit {
+            break
+        }
+    }
+
+    // Shutdown
+    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+    crossterm::terminal::disable_raw_mode()?;
+    Ok(())
+}</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../concepts/event_handling.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../how-to/features.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../concepts/event_handling.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../how-to/features.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../mermaid.min.js"></script>
+        <script type="text/javascript" src="../mermaid-init.js"></script>
+
+
+    </body>
+</html>
