@@ -51,6 +51,7 @@
   - [Enable Features](./how-to/features.md)
   - [Choose a Backend](./how-to/choose-a-backend.md)
   - [Setup Panic Hooks](./how-to/setup-panic-hooks.md)
+  - [Setup Panic Hooks with `better-panic`](./how-to/setup-panic-hooks-better-panic.md)
   - [Setup Logging with tracing](./how-to/setup-logging-tracing.md)
   - [Blocks]()
   - [Displaying Text]()
