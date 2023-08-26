@@ -2812,7 +2812,8 @@ fn update(model: &amp;Model, msg: Message) -&gt; Model {
 <p>When you put it all together, your main application loop might look something like:</p>
 <ul>
 <li>Listen for user input.</li>
-<li>Pass that input to the update function.</li>
+<li>Map input to a <code>Message</code></li>
+<li>Pass that message to the update function.</li>
 <li>Draw the UI with the view function.</li>
 </ul>
 <p>This cycle repeats, ensuring your TUI is always up-to-date with user interactions.</p>
