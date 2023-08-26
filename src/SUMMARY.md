@@ -34,7 +34,7 @@
 
   - [Rendering](./concepts/rendering.md)
   - [Event Handling](./concepts/event_handling.md)
-  - [The Elm Architecture](./concepts/the-elm-architecture.md)
+  - [Best Practices]()
   - [Project Structure]()
   - [Application Patterns]()
   - [Design Patterns]()
