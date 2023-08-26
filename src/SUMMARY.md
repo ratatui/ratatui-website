@@ -6,7 +6,7 @@
 
 - [Introduction](./introduction.md)
 
-- [Getting Started](./getting-started/README.md)
+- [Hello World - Tutorial](./tutorial/hello-world/README.md)
 
 - [Counter App - Tutorial](./tutorial/counter-app/README.md)
 
@@ -61,7 +61,10 @@
   - [Create a Widget]()
   - [Handle Panics]()
 
-- [FAQ](./faq.md)
+- [FAQ](./faq/README.md)
+
+  - [Duplicate key events on Windows](./faq/duplicate-key-events-windows.md)
+  - [`tokio` / `async`](./faq/tokio-async.md)
 
 - [References]()
 

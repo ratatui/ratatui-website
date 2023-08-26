@@ -1,15 +1,22 @@
-# Getting Started
+# Hello World
 
 Getting started with `ratatui` is straightforward --- Add it to the project, and you are ready to
-start creating beautiful TUIs!
+start creating beautiful TUIs.
+
+In this section, we will build a "hello world" TUI application.
 
 ### Install `Rust`
 
-The first step is to install Rust. Most people use `rustup` to manage their installation.
+The first step is to install Rust.
 
 Check
 [Installation section of the official Rust Book](https://doc.rust-lang.org/book/ch01-01-installation.html)
-for more information.
+for more information. Most people tend to use `rustup` to manage their installation.
+
+```admonish tip
+`rustup` installs The Rust Programming Language from the official release channels,
+enabling you to easily switch between stable, beta, and nightly compilers and keep them updated.
+```
 
 `rustup` will set you up with the latest stable version of `rust` as well as `cargo`. `cargo` is
 Rust's package manager, and it is what we will use to create a new project and add `ratatui` as a
@@ -24,6 +31,48 @@ cargo new hello-world-tui
 cd hello-world-tui
 ```
 
+This creates a new folder called `hello-world-tui` and changes the directory to that folder.
+
+`cargo new` will instantiate a "binary" project by default.
+
+```sh
+$ tree .
+.
+├── Cargo.toml
+└── src
+   └── main.rs
+```
+
+```admonish tip
+It is always good idea to add a `LICENSE` and a `README.md` for your projects.
+```
+
+You can compile and execute a "binary" project by running `cargo run`:
+
+```sh
+$ cargo run
+   Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/hello-world-tui`
+Hello, world!
+```
+
+````admonish warning
+By default `cargo run` compiles your program with no optimizations and with debug information.
+If you want to run it in with more optimizations, you can run `cargo run --release`.
+
+```sh
+cargo run --release
+   Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
+    Finished release [optimized] target(s) in 0.08s
+     Running `target/release/hello-world-tui`
+Hello, world!
+```
+
+For more information, check out [the `cargo` section in the official rust
+book](https://doc.rust-lang.org/book/ch01-03-hello-cargo.html).
+````
+
 ### Install `ratatui`
 
 Installing `ratatui` is as easy as running the following:
@@ -35,7 +84,7 @@ cargo add ratatui crossterm
 ```admonish note
 `ratatui` has to be combined with a terminal backend.
 You can learn more about the different terminal backends in the [how to choose a
-backend](./choose-a-backend.md) section. For the examples in this book, we are going to use
+backend](./../../how-to/choose-a-backend.md) section. For the examples in this book, we are going to use
 `crossterm`.
 ```
 
@@ -50,9 +99,9 @@ cargo add ratatui --version 0.19.0
 ```
 ````
 
-### Modifying `src/main.rs`
+### `src/main.rs`
 
-Modify `src/main.rs` to the following:
+Open `src/main.rs` in your favorite editor, and copy paste the following code to it:
 
 ```rust,no_run,noplayground
 use ratatui::{
@@ -97,11 +146,18 @@ We can run our program with:
 cargo run
 ```
 
-You can press `q` to exit and go back to your terminal as it was before.
+You should see a TUI app with `Hello World! (press 'q' to quit)` show up in your terminal as a TUI
+app.
 
 ![](https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif)
+
+You can press `q` to exit and go back to your terminal as it was before.
 
 Congratulations! :tada:
 
 You have written a "hello world" terminal user interface with `ratatui`. We will learn more about
 how `ratatui` works in the next sections.
+
+```admonish question
+Can you modify the example above to exit when pressing `q` and when pressing `Q`?
+```

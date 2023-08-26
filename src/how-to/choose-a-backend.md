@@ -1,7 +1,7 @@
 # How to Choose a Backend
 
-```admonish info
-TL;DR: Choose [Crossterm](https://crates.io/crates/crossterm) for most tasks.
+```admonish tldr
+Choose [Crossterm](https://crates.io/crates/crossterm) for most tasks.
 ```
 
 Ratatui interfaces with the terminal emulator through its "backends". These are powerful libraries

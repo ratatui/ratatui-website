@@ -1,5 +1,18 @@
 # Setup Logging with tracing
 
+You can paste the following in any module in your project. Call `initialize_logging()?` in your
+`main()` function.
+
+```admonish note
+You will want to replace `kdheepak` with your user name or company name (or any unique name for that
+matter); and `ratatui-app` with the
+name of your CLI.
+
+I own <https://kdheepak.com> so I tend to use `com.kdheepak.ratatui-app` for my project directories.
+That way it is unlikely that any other program will mess with the configuration files for the app I
+plan on distributing.
+```
+
 ```rust
 use std::path::PathBuf;
 
@@ -17,7 +30,7 @@ pub fn initialize_logging() -> Result<()> {
     PathBuf::from(".")
   };
   std::fs::create_dir_all(directory.clone()).context(format!("{directory:?} could not be created"))?;
-  let log_path = directory.join("ratatui-template.log");
+  let log_path = directory.join("ratatui-app.log");
   let log_file = std::fs::File::create(log_path)?;
   let file_subscriber = tracing_subscriber::fmt::layer()
     .with_file(true)

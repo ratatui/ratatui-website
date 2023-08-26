@@ -297,3 +297,12 @@ fn main() -> Result<()> {
   Ok(())
 }
 ```
+
+```admonish question
+What do you think happens if you modify the example above to change the polling to `0` milliseconds?
+
+What would happen if you change the example to poll every 10 seconds?
+
+Experiment with different "tick rates" and see how that affects the user experience.
+Also, monitor your CPU usage when you do this experiment.
+```
