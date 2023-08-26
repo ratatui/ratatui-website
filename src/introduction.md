@@ -8,9 +8,9 @@ short, the `ratatui` library handles drawing to the terminal.
 
 It is important to note that `ratatui`:
 
-- does **NOT** handle keyboard input events
-- does **NOT** modify the state of your application
-- does **NOT** dicate how you want to structure your application
+- does _not_ handle keyboard input events
+- does _not_ modify the state of your application
+- does _not_ dicate how you want to structure your application
 
 The `ratatui` crate is a library and not a framework. And the `ratatui` library provides widgets
 that allows a developer to imperatively declare what the view of your application should look like,

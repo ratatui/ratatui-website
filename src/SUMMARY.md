@@ -6,7 +6,7 @@
 
 - [Introduction](./introduction.md)
 
-- [Getting Started](./getting-started/README.md)
+- [Hello World - Tutorial](./tutorial/hello-world/README.md)
 
 - [Counter App - Tutorial](./tutorial/counter-app/README.md)
 
