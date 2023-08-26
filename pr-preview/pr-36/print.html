@@ -2864,7 +2864,7 @@ fn handle_event(model: &amp;Model) -&gt; Message {
                 crossterm::event::KeyCode::Char('j') =&gt; Message::Increment,
                 crossterm::event::KeyCode::Char('k') =&gt; Message::Decrement,
                 crossterm::event::KeyCode::Char('q') =&gt; Message::Quit,
-                _ =&gt; Messsage::None,
+                _ =&gt; Message::None,
             };
         }
     }
