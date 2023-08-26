@@ -2820,80 +2820,90 @@ fn update(model: &amp;Model, msg: Message) -&gt; Model {
 refactored using TEA.</p>
 <p>The notable difference from before is that we have an <code>Model</code> struct that captures the app state,
 and a <code>Message</code> enum that captures the various actions your app can take.</p>
-<pre><code class="language-rust">use ratatui::{
-    prelude::{CrosstermBackend, Terminal},
-    widgets::Paragraph,
+<pre><code class="language-rust">use anyhow::Result;
+use ratatui::{
+  prelude::{CrosstermBackend, Terminal},
+  widgets::Paragraph,
 };
 
 // MODEL
 struct Model {
-    counter: i32,
-    should_quit: bool,
+  counter: i32,
+  should_quit: bool,
 }
 
 // MESSAGES
 enum Message {
-    Increment,
-    Decrement,
-    Quit,
-    None,
+  Increment,
+  Decrement,
+  Quit,
+  None,
 }
 
 // UPDATE
 fn update(model: &amp;mut Model, msg: Message) {
-    match msg {
-        Message::Increment =&gt; model.counter += 1,
-        Message::Decrement =&gt; model.counter -= 1,
-        Message::Quit =&gt; model.should_quit = true,  // You can handle cleanup and exit here
-        Message::None =&gt; (),
-    }
+  match msg {
+    Message::Increment =&gt; model.counter += 1,
+    Message::Decrement =&gt; model.counter -= 1,
+    Message::Quit =&gt; model.should_quit = true, // You can handle cleanup and exit here
+    Message::None =&gt; (),
+  }
 }
 
 // VIEW
 fn view(model: &amp;Model, terminal: &amp;mut Terminal&lt;CrosstermBackend&lt;std::io::Stderr&gt;&gt;) {
-    terminal.draw(|f| {
-        f.render_widget(Paragraph::new(format!(&quot;Counter: {}&quot;, model.counter)), f.size());
-    }).unwrap(); // You can handle the error more gracefully
+  terminal
+    .draw(|f| {
+      f.render_widget(Paragraph::new(format!(&quot;Counter: {}&quot;, model.counter)), f.size());
+    })
+    .unwrap(); // You can handle the error more gracefully
 }
 
 // Convert Event to Message
-fn handle_event(model: &amp;Model) -&gt; Message {
-    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
-        if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-            let msg = match key.code {
-                crossterm::event::KeyCode::Char('j') =&gt; Message::Increment,
-                crossterm::event::KeyCode::Char('k') =&gt; Message::Decrement,
-                crossterm::event::KeyCode::Char('q') =&gt; Message::Quit,
-                _ =&gt; Message::None,
-            };
-        }
+// We don't need to pass in a `model` to this function in this example
+// but you might need it as your project evolves
+fn handle_event(_: &amp;Model) -&gt; Result&lt;Message&gt; {
+  let message = if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+    if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+      match key.code {
+        crossterm::event::KeyCode::Char('j') =&gt; Message::Increment,
+        crossterm::event::KeyCode::Char('k') =&gt; Message::Decrement,
+        crossterm::event::KeyCode::Char('q') =&gt; Message::Quit,
+        _ =&gt; Message::None,
+      }
+    } else {
+      Message::None
     }
+  } else {
+    Message::None
+  };
+  Ok(message)
 }
 
-fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    // Startup
-    crossterm::terminal::enable_raw_mode()?;
-    crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+fn main() -&gt; Result&lt;()&gt; {
+  // Startup
+  crossterm::terminal::enable_raw_mode()?;
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
 
-    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-    let mut model = Model { counter: 0, should_quit: false };
+  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+  let mut model = Model { counter: 0, should_quit: false };
 
-    loop {
-        view(&amp;model, &amp;mut terminal);
+  loop {
+    view(&amp;model, &amp;mut terminal);
 
-        let msg = handle_event(&amp;model);
+    let msg = handle_event(&amp;model);
 
-        update(&amp;mut model, msg);
+    update(&amp;mut model, msg?);
 
-        if model.should_quit {
-            break
-        }
+    if model.should_quit {
+      break;
     }
+  }
 
-    // Shutdown
-    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
-    crossterm::terminal::disable_raw_mode()?;
-    Ok(())
+  // Shutdown
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?;
+  Ok(())
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="features"><a class="header" href="#features">Features</a></h1>
 <p>As ratatui grows and evolves, this list may change, so make sure to check the
