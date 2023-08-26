@@ -1,8 +1,8 @@
 # Using The Elm Architecture (TEA) with `ratatui`
 
-When building terminal user interfaces (TUI) with Rust, it's essential to have a solid structure for
-organizing your application. One proven architecture comes from the Elm language, known simply as
-The Elm Architecture (TEA).
+When building terminal user interfaces (TUI) with `ratatui`, it's helpful to have a solid structure
+for organizing your application. One proven architecture comes from the Elm language, known simply
+as The Elm Architecture (TEA).
 
 In this post, we'll explore how to apply The Elm Architecture to `ratatui` TUI apps.
 
