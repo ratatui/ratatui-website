@@ -278,7 +278,17 @@ fn handle_event(_: &amp;Model) -&gt; Result&lt;Message&gt; {
   Ok(message)
 }
 
+pub fn initialize_panic_handler() {
+  std::panic::set_hook(Box::new(|panic_info| {
+    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen).unwrap();
+    crossterm::terminal::disable_raw_mode().unwrap();
+    std::process::exit(libc::EXIT_FAILURE);
+  }));
+}
+
 fn main() -&gt; Result&lt;()&gt; {
+  initialize_panic_handler();
+
   // Startup
   crossterm::terminal::enable_raw_mode()?;
   crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
