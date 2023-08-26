@@ -249,12 +249,12 @@ fn update(model: &amp;mut Model, msg: Message) {
 }
 
 // VIEW
-fn view(model: &amp;Model, terminal: &amp;mut Terminal&lt;CrosstermBackend&lt;std::io::Stderr&gt;&gt;) {
+fn view(model: &amp;Model, terminal: &amp;mut Terminal&lt;CrosstermBackend&lt;std::io::Stderr&gt;&gt;) -&gt; Result&lt;()&gt; {
   terminal
     .draw(|f| {
       f.render_widget(Paragraph::new(format!(&quot;Counter: {}&quot;, model.counter)), f.size());
-    })
-    .unwrap(); // You can handle the error more gracefully
+    })?;
+  Ok(())
 }
 
 // Convert Event to Message
@@ -287,11 +287,11 @@ fn main() -&gt; Result&lt;()&gt; {
   let mut model = Model { counter: 0, should_quit: false };
 
   loop {
-    view(&amp;model, &amp;mut terminal);
+    view(&amp;model, &amp;mut terminal)?;
 
-    let msg = handle_event(&amp;model);
+    let msg = handle_event(&amp;model)?;
 
-    update(&amp;mut model, msg?);
+    update(&amp;mut model, msg);
 
     if model.should_quit {
       break;
