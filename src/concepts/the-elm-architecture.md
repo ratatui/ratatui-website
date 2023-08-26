@@ -21,7 +21,7 @@ sequenceDiagram
 participant User
 participant TUI Application
 
-User->>TUI Application: Input/Event
+User->>TUI Application: Input/Event/Message
 TUI Application->>TUI Application: Update (based on Model and Message)
 TUI Application->>TUI Application: Render View (from Model)
 TUI Application-->>User: Display UI
