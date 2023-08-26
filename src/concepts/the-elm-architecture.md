@@ -69,7 +69,8 @@ fn view(model: &Model) {
 When you put it all together, your main application loop might look something like:
 
 - Listen for user input.
-- Pass that input to the update function.
+- Map input to a `Message`
+- Pass that message to the update function.
 - Draw the UI with the view function.
 
 This cycle repeats, ensuring your TUI is always up-to-date with user interactions.
