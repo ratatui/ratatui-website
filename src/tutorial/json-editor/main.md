@@ -252,5 +252,7 @@ that is the final key or value.
 Altogether, the event loop should look like this:
 
 ```rust,no_run,noplayground
+        ...
 {{#include ./ratatui-json-editor-app/src/main.rs:event_poll}}
+        ...
 ```
