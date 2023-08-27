@@ -10,7 +10,6 @@ In this snippet, we utilize the `clap` library to define an `Args` struct, which
 capture and structure the arguments passed to the application:
 
 ```rust
-// ANCHOR: all
 use clap::Parser;
 
 #[derive(Parser, Debug)]
