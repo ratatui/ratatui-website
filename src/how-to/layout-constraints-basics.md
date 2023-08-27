@@ -22,7 +22,7 @@ pub fn size(&self) -> Rect
 Frame size, guaranteed not to change when rendering.
 ```
 
-A `Rect` has the following `struct` definition:
+`f.size()` returns a `Rect` struct. A `Rect` has the following `struct` definition:
 
 ```rust
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq, Default)]
