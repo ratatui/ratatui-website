@@ -35,6 +35,7 @@
   - [Rendering](./concepts/rendering.md)
   - [Event Handling](./concepts/event_handling.md)
   - [The Elm Architecture](./concepts/the-elm-architecture.md)
+  - [Component Architecture](./concepts/component-architecture.md)
   - [Project Structure]()
   - [Application Patterns]()
   - [Design Patterns]()
@@ -44,7 +45,6 @@
   - [Threading]()
   - [Logging]()
   - [Configuration]()
-  - [Backend Choice]()
 
 - [How To]()
 
@@ -62,22 +62,18 @@
   - [Layouts Constraints Basics](./how-to/layout-constraints-basics.md)
   - [Layout Widgets]()
   - [Create a Widget]()
-  - [Handle Panics]()
 
 - [FAQ](./faq/README.md)
 
   - [Duplicate key events on Windows](./faq/duplicate-key-events-windows.md)
   - [`tokio` / `async`](./faq/tokio-async.md)
+  - [`tui.rs` history](./faq/tui-rs-history.md)
 
-- [References]()
-
-  - [Crate Docs]()
-  - [Starter Template]()
-  - [Third Party Crates]()
+- [References](./references/README.md)
 
 - [Developer Guide]()
 
-  - [Ratatui]()
+  - [Ratatui](./developer-guide/ratatui.md)
   - [Ratatui Book](./developer-guide/book.md)
 
 ---
