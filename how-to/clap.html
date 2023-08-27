@@ -162,8 +162,7 @@ library that facilitates the parsing of these arguments in an intuitive manner.<
 <h2 id="defining-command-line-arguments"><a class="header" href="#defining-command-line-arguments">Defining Command Line Arguments</a></h2>
 <p>In this snippet, we utilize the <code>clap</code> library to define an <code>Args</code> struct, which will be used to
 capture and structure the arguments passed to the application:</p>
-<pre><code class="language-rust">// ANCHOR: all
-use clap::Parser;
+<pre><code class="language-rust">use clap::Parser;
 
 #[derive(Parser, Debug)]
 #[command(version = version(), about = &quot;ratatui template with crossterm and tokio&quot;)]
