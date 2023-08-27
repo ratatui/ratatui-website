@@ -3,16 +3,6 @@
 You can paste the following in any module in your project. Call `initialize_logging()?` in your
 `main()` function.
 
-```admonish note
-You will want to replace `kdheepak` with your user name or company name (or any unique name for that
-matter); and `ratatui-app` with the
-name of your CLI.
-
-I own <https://kdheepak.com> so I tend to use `com.kdheepak.ratatui-app` for my project directories.
-That way it is unlikely that any other program will mess with the configuration files for the app I
-plan on distributing.
-```
-
 ```rust
 use std::path::PathBuf;
 
@@ -24,11 +14,7 @@ use tracing_subscriber::{
 };
 
 pub fn initialize_logging() -> Result<()> {
-  let directory = if let Some(proj_dirs) = ProjectDirs::from("com", "kdheepak", "ratatui-app") {
-    proj_dirs.data_local_dir().to_path_buf()
-  } else {
-    PathBuf::from(".")
-  };
+  let directory = PathBuf::from("./log/");
   std::fs::create_dir_all(directory.clone()).context(format!("{directory:?} could not be created"))?;
   let log_path = directory.join("ratatui-app.log");
   let log_file = std::fs::File::create(log_path)?;
@@ -84,8 +70,10 @@ macro_rules! trace_dbg {
 ```
 
 The log level is decided by the `RUST_LOG` environment variable (default =
-`log::LevelFilter::Info`). In addition, the location of the log files are decided by your
-environment variables (default = `XDG_DATA_HOME (local)`).
+`log::LevelFilter::Info`).
+
+Ideally, the location of the log files are decided by your environment variables. See
+[the section on XDG directories](./handle-xdg-directories.md) for how to handle that.
 
 In addition to add a log file to the `data` folder, `initialize_logging()` also sets up `tui-logger`
 with `tracing`, so that you can add a `tui-logger` widget to show the logs to your users on a key

@@ -41,28 +41,123 @@ struct Model {
 
 2. Handling Updates
 
-For our TUI app, an update happens when there's user input or some event we care about. With
-`ratatui`, you'll handle keyboard or mouse input, and based on that, produce a new model.
+Updates in TEA are actions triggered by events, such as user inputs. The core idea is to map each of
+these actions or events to a message. This can be achieved by creating an enum to keep track of
+messages. Based on the received message, the current state of the model is used to determine the
+next state.
+
+**Defining a `Message` enum**
 
 ```rust
 enum Message {
     //... various inputs or actions that your app cares about
+    // e.g., ButtonPressed, TextEntered, etc.
 }
+```
 
+**`update()` function**
+
+The update function is at the heart of this process. It takes the current model and a message, and
+decides how the model should change in response to that message.
+
+A key feature of TEA is immutability. Hence, the update function should avoid direct mutation of the
+model. Instead, it should produce a new instance of the model reflecting the desired changes.
+
+```rust
 fn update(model: &Model, msg: Message) -> Model {
     match msg {
-        //... handle each possible message
+        // Match each possible message and decide how the model should change
+        // Return a new model reflecting those changes
     }
 }
 ```
 
+In TEA, it's crucial to maintain a clear separation between the data (model) and the logic that
+alters it (update). This immutability principle ensures predictability and makes the application
+easier to reason about.
+
+````admonish note
+Hence, while immutability is emphasized in TEA, Rust developers can choose the most
+suitable approach based on performance and their application's needs.
+
+For example, it would be perfectly valid to do the following:
+
+```rust
+fn update(model: &mut Model, msg: Message) {
+    match msg {
+        // Match each possible message and decide how the model should change
+        // Modify existing mode reflecting those changes
+    };
+}
+```
+````
+
 3. Rendering the View
+
+The view function in the Elm Architecture is tasked with taking the current model and producing a
+visual representation for the user. In the case of ratatui, it translates the model into terminal UI
+elements. It's essential that the view function remains a pure function: for a given state of the
+model, it should always produce the same UI representation.
 
 ```rust
 fn view(model: &Model) {
     //... use `ratatui` functions to draw your UI based on the model's state
 }
 ```
+
+Every time the model is updated, the view function should be capable of reflecting those changes
+accurately in the terminal UI.
+
+In TEA, you are expected to ensure that your view function is side-effect free. The `view()`
+function shouldn't modify global state or perform any other actions. Its sole job is to map the
+model to a visual representation.
+
+For a given state of the model, the view function should always produce the same visual output. This
+predictability makes your TUI application easier to reason about and debug.
+
+````admonish note
+With immediate mode rendering you may run into an issue: the `view` function is only aware of the
+area available to draw in at render time.
+
+For example, there's not really a good way to choose how many columns you want to draw based on
+width of the drawable area.
+
+```rust
+fn view(model: &Model) -> Table {
+  Table::new(vec!["col1", "col2", "col3"])
+}
+
+fn main() {
+  loop {
+    ...
+    terminal
+      .draw(|f| {
+        f.render_widget(view(&model), f.size());
+      })?;
+    ...
+  }
+}
+```
+
+This limitation is a recognized constraint of immediate mode GUIs. Overcoming it often involves
+trade-offs. One common solution is to store the drawable size and reference it in the subsequent
+frame, although this can introduce a frame delay in layout adjustments, leading to potential
+flickering during the initial rendering when changes in screen size occur.
+
+For this reason, you may choose to violate the `view` immutability principle and write a function
+with a signature like so:
+
+```rust
+fn view(model: &mut Model) {
+    //... use `ratatui` functions to draw your UI based on the model's state
+    // Store size of drawing area if you have to in the model for next frame
+}
+```
+
+An alternative is to use the `Resize` event from `crossterm` and to clear the UI and force
+redraw everything during that event.
+
+````
 
 ## Putting it all together
 
@@ -113,12 +208,8 @@ fn update(model: &mut Model, msg: Message) {
 }
 
 // VIEW
-fn view(model: &Model, terminal: &mut Terminal<CrosstermBackend<std::io::Stderr>>) -> Result<()> {
-  terminal
-    .draw(|f| {
-      f.render_widget(Paragraph::new(format!("Counter: {}", model.counter)), f.size());
-    })?;
-  Ok(())
+fn view(model: &Model) -> Paragraph {
+  Paragraph::new(format!("Counter: {}", model.counter))
 }
 
 // Convert Event to Message
@@ -143,10 +234,11 @@ fn handle_event(_: &Model) -> Result<Message> {
 }
 
 pub fn initialize_panic_handler() {
-  std::panic::set_hook(Box::new(|panic_info| {
+  let original_hook = std::panic::take_hook();
+  std::panic::set_hook(Box::new(move |panic_info| {
     crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen).unwrap();
     crossterm::terminal::disable_raw_mode().unwrap();
-    std::process::exit(libc::EXIT_FAILURE);
+    original_hook(panic_info);
   }));
 }
 
@@ -161,7 +253,9 @@ fn main() -> Result<()> {
   let mut model = Model { counter: 0, should_quit: false };
 
   loop {
-    view(&model, &mut terminal)?;
+    terminal.draw(|f| {
+      f.render_widget(view(&model), f.size());
+    })?;
 
     let msg = handle_event(&model)?;
 

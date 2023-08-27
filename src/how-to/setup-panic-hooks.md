@@ -1,107 +1,36 @@
-# Panic Hook with `better-panic`
+# Setup Panic Hooks
 
-Your application may panic for a number of reasons (e.g. when you call `.unwrap()` on a `None`). And
-when this happens, you want to be a good citizen and:
+When building TUIs with `ratatui`, it's vital to ensure that if your application encounters a panic,
+it gracefully returns to the original terminal state. This prevents the terminal from getting stuck
+in a modified state, which can be quite disruptive for users.
 
-1. provide a useful stacktrace so that they can report errors back to you.
-2. not leave the users terminal state in a botched condition, resetting it back to the way it was.
-
-Let's assume you have a `tui.rs` file like so:
-
-```rust
-use std::{io, panic};
-
-use anyhow::Result;
-use crossterm::{
-  event::{DisableMouseCapture, EnableMouseCapture},
-  terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
-};
-
-pub type Frame<'a> = tui::Frame<'a, tui::backend::CrosstermBackend<std::io::Stderr>>;
-pub type CrosstermTerminal = tui::Terminal<tui::backend::CrosstermBackend<std::io::Stderr>>;
-
-use crate::{app::App, event::EventHandler, ui};
-pub struct Tui {
-  terminal: CrosstermTerminal,
-  pub events: EventHandler,
-}
-
-impl Tui {
-  pub fn new(terminal: CrosstermTerminal, events: EventHandler) -> Self {
-    Self { terminal, events }
-  }
-
-  pub fn init(&mut self) -> Result<()> {
-    terminal::enable_raw_mode()?;
-    crossterm::execute!(io::stderr(), EnterAlternateScreen, EnableMouseCapture)?;
-    self.terminal.hide_cursor()?;
-    self.terminal.clear()?;
-    Ok(())
-  }
-
-  fn reset() -> Result<()> {
-    terminal::disable_raw_mode()?;
-    crossterm::execute!(io::stderr(), LeaveAlternateScreen, DisableMouseCapture)?;
-    Ok(())
-  }
-
-  pub fn exit(&mut self) -> Result<()> {
-    Self::reset()?;
-    self.terminal.show_cursor()?;
-    Ok(())
-  }
-}
-```
-
-At the bare minimum, you probably want to define a function like the one below and call it during
-`Tui::init()`.
+Here's an example `initialize_panic_handler` that works with `crossterm` and with the Rust standard
+library functionality and no external dependencies.
 
 ```rust
-use better_panic::Settings;
-
-use crate::tui::Tui;
-
 pub fn initialize_panic_handler() {
-  std::panic::set_hook(Box::new(|panic_info| {
-    match Tui::new() {
-      Ok(t) => {
-        if let Err(r) = t.exit() {
-          error!("Unable to exit Terminal: {r:?}");
-        }
-      },
-      Err(r) => error!("Unable to exit Terminal: {r:?}"),
-    }
-    std::process::exit(libc::EXIT_FAILURE);
+  let original_hook = std::panic::take_hook();
+  std::panic::set_hook(Box::new(move |panic_info| {
+    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen).unwrap();
+    crossterm::terminal::disable_raw_mode().unwrap();
+    original_hook(panic_info);
   }));
 }
-```
 
-Here's an example of `initialize_panic_handler()` using
-[`better_panic`](https://docs.rs/better-panic/latest/better_panic/) to provide a prettier backtrace
-by default.
+fn main() -> Result<()> {
+  initialize_panic_handler();
 
-```rust
-use better_panic::Settings;
+  // Startup
+  crossterm::terminal::enable_raw_mode()?;
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
 
-use crate::tui::Tui;
+  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
 
-pub fn initialize_panic_handler() {
-  std::panic::set_hook(Box::new(|panic_info| {
-    match Tui::new() {
-      Ok(t) => {
-        if let Err(r) = t.exit() {
-          error!("Unable to exit Terminal: {r:?}");
-        }
-      },
-      Err(r) => error!("Unable to exit Terminal: {r:?}"),
-    }
-    Settings::auto().most_recent_first(false).lineno_suffix(true).create_panic_handler()(panic_info);
-    std::process::exit(libc::EXIT_FAILURE);
-  }));
+  // ...
+
+  // Shutdown
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?;
+  Ok(())
 }
 ```
-
-In the screenshot below, I added a `None.unwrap()` into a function that is called on a keypress, so
-that you can see what a prettier backtrace looks like:
-
-![](https://user-images.githubusercontent.com/1813121/252723080-18c15640-c75f-42b3-8aeb-d4e6ce323430.png)
