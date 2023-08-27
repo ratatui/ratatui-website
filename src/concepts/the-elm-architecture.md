@@ -122,9 +122,16 @@ area available to draw in at render time.
 For example, there's not really a good way to choose how many columns you want to draw based on
 width of the drawable area.
 
+You _could_ do something like this:
+
 ```rust
 fn view(model: &Model) -> Table {
-  Table::new(vec!["col1", "col2", "col3"])
+  let columns = if get_width_of_drawable_area() > 10 {
+    vec!["col1", "col2", "col3"]
+  } else {
+    vec!["col1", "col2"]
+  }
+  Table::new(columns)
 }
 
 fn main() {
@@ -144,18 +151,40 @@ trade-offs. One common solution is to store the drawable size and reference it i
 frame, although this can introduce a frame delay in layout adjustments, leading to potential
 flickering during the initial rendering when changes in screen size occur.
 
-For this reason, you may choose to violate the `view` immutability principle and write a function
+For this reason, you may choose to forego the `view` immutability principle and write a function
 with a signature like so:
 
 ```rust
-fn view(model: &mut Model) {
-    //... use `ratatui` functions to draw your UI based on the model's state
-    // Store size of drawing area if you have to in the model for next frame
+fn view(model: &mut Model, f: &mut Frame) {
+  model.area = f.size();
+  let columns = if model.area.width() > 10 {
+    vec!["col1", "col2", "col3"]
+  } else {
+    vec!["col1", "col2"]
+  }
+  f.render_widget(Table::new(columns), f.size());
+}
+
+fn main() {
+  loop {
+    ...
+    terminal
+      .draw(|f| {
+        view(&mut model, f);
+      })?;
+    ...
+  }
 }
 ```
 
-An alternative is to use the `Resize` event from `crossterm` and to clear the UI and force
+An alternative would be using the `Resize` event from `crossterm` and to clear the UI and force
 redraw everything during that event.
+
+Another advantage of having access to the `Terminal` in the `view()` function is that you have access to setting the cursor position, which is useful for displaying text fields:
+
+```rust
+  f.set_cursor(x, y)
+```
 
 ````
 
@@ -183,6 +212,8 @@ use ratatui::{
   widgets::Paragraph,
 };
 
+pub type Frame<'a> = ratatui::Frame<'a, ratatui::backend::CrosstermBackend<std::io::Stderr>>;
+
 // MODEL
 struct Model {
   counter: i32,
@@ -208,8 +239,8 @@ fn update(model: &mut Model, msg: Message) {
 }
 
 // VIEW
-fn view(model: &Model) -> Paragraph {
-  Paragraph::new(format!("Counter: {}", model.counter))
+fn view(model: &mut Model, f: &mut Frame) {
+  f.render_widget(Paragraph::new(format!("Counter: {}", model.counter)), f.size());
 }
 
 // Convert Event to Message
@@ -254,7 +285,7 @@ fn main() -> Result<()> {
 
   loop {
     terminal.draw(|f| {
-      f.render_widget(view(&model), f.size());
+      view(&mut model, f);
     })?;
 
     let msg = handle_event(&model)?;
