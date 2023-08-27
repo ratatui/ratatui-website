@@ -53,6 +53,8 @@
   - [Setup Panic Hooks](./how-to/setup-panic-hooks.md)
   - [Setup Panic Hooks with `better-panic`](./how-to/setup-panic-hooks-better-panic.md)
   - [Setup Logging with tracing](./how-to/setup-logging-tracing.md)
+  - [Handle XDG Directories](./how-to/handle-xdg-directories.md)
+  - [Handle CLI arguments](./how-to/clap.md)
   - [Blocks]()
   - [Displaying Text]()
     - [Styling-Text]()
