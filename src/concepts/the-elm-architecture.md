@@ -121,11 +121,12 @@ area available to draw in at render time.
 
 For example, there's not really a good way to choose how many columns you want to draw based on
 width of the drawable area.
-You might want to do something like this:
+
+You _could_ do something like this:
 
 ```rust
 fn view(model: &Model) -> Table {
-  let columns = if model.area.width() > 10 {
+  let columns = if get_width_of_drawable_area() > 10 {
     vec!["col1", "col2", "col3"]
   } else {
     vec!["col1", "col2"]
@@ -169,7 +170,7 @@ fn main() {
     ...
     terminal
       .draw(|f| {
-        view(&model, f);
+        view(&mut model, f);
       })?;
     ...
   }
@@ -211,6 +212,8 @@ use ratatui::{
   widgets::Paragraph,
 };
 
+pub type Frame<'a> = ratatui::Frame<'a, ratatui::backend::CrosstermBackend<std::io::Stderr>>;
+
 // MODEL
 struct Model {
   counter: i32,
@@ -236,8 +239,8 @@ fn update(model: &mut Model, msg: Message) {
 }
 
 // VIEW
-fn view(model: &Model) -> Paragraph {
-  Paragraph::new(format!("Counter: {}", model.counter))
+fn view(model: &mut Model, f: &mut Frame) {
+  f.render_widget(Paragraph::new(format!("Counter: {}", model.counter)), f.size());
 }
 
 // Convert Event to Message
@@ -282,7 +285,7 @@ fn main() -> Result<()> {
 
   loop {
     terminal.draw(|f| {
-      f.render_widget(view(&model), f.size());
+      view(&mut model, f);
     })?;
 
     let msg = handle_event(&model)?;
