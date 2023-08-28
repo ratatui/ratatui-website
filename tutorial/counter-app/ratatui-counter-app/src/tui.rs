@@ -9,8 +9,8 @@ use crossterm::{
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-pub type Frame<'a> = tui::Frame<'a, tui::backend::CrosstermBackend<std::io::Stderr>>;
-pub type CrosstermTerminal = tui::Terminal<tui::backend::CrosstermBackend<std::io::Stderr>>;
+pub type Frame<'a> = ratatui::Frame<'a, ratatui::backend::CrosstermBackend<std::io::Stderr>>;
+pub type CrosstermTerminal = ratatui::Terminal<ratatui::backend::CrosstermBackend<std::io::Stderr>>;
 
 use crate::{app::App, event::EventHandler, ui};
 ///// ANCHOR_END: tui_imports

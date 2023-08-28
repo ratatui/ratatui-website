@@ -1,13 +1,13 @@
 use std::io;
 
 use anyhow::Result;
+use ratatui::{backend::CrosstermBackend, Terminal};
 use ratatui_book_tutorial_counter_app::{
   app::App,
   event::{Event, EventHandler},
   handler::handle_key_events,
   tui::Tui,
 };
-use tui::{backend::CrosstermBackend, Terminal};
 
 fn main() -> Result<()> {
   // Create an application.
