@@ -3022,23 +3022,54 @@ fn main() -&gt; Result&lt;()&gt; {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="component-architecture"><a class="header" href="#component-architecture">Component Architecture</a></h1>
 <p>If you are interested in a more object oriented approach to organizing TUIs, you can use a
 <code>Component</code> based approach.</p>
+<p>A couple of projects in the wild use this approach</p>
+<ul>
+<li><a href="https://github.com/TaKO8Ki/gobang">https://github.com/TaKO8Ki/gobang</a></li>
+<li><a href="https://github.com/nomadiz/edma">https://github.com/nomadiz/edma</a></li>
+</ul>
+<p>We also have a <code>ratatui-async-template</code> that has an example of this <code>Component</code> based approach:</p>
+<ul>
+<li><a href="https://github.com/ratatui-org/ratatui-async-template">https://github.com/ratatui-org/ratatui-async-template</a></li>
+</ul>
+<p>We already covered <a href="concepts/./the-elm-architecture.html">TEA</a> in the previous section. The <code>Component</code>
+architecture takes a slightly more object oriented trait based approach.</p>
+<p>Each component encapsulates its own state, event handlers, and rendering logic.</p>
+<ol>
+<li>
+<p>Component Initialization (<code>init</code>) - This is where a component can set up any initial state or
+resources it needs. It’s a separate process from handling events or rendering.</p>
+</li>
+<li>
+<p>Event Handling (<code>handle_events</code>, <code>handle_key_events</code>, <code>handle_mouse_events</code>) - Each component has
+its own event handlers. This allows for a finer-grained approach to event handling, with each
+component only dealing with the events it’s interested in. This contrasts with Elm’s single
+update function that handles messages for the entire application.</p>
+</li>
+<li>
+<p>State Update (<code>update</code>) - Components can have their own local state and can update it in response
+to actions. This state is private to the component, which differs from Elm’s global model.</p>
+</li>
+<li>
+<p>Rendering (<code>render</code>) - Each component defines its own rendering logic. It knows how to draw
+itself, given a rendering context. This is similar to Elm’s view function but on a
+component-by-component basis.</p>
+</li>
+</ol>
+<p>Here’s an example of the <code>Component</code> trait implementation you might use:</p>
 <pre><code class="language-rust">use anyhow::Result;
 use crossterm::event::{KeyEvent, MouseEvent};
 use ratatui::layout::Rect;
-use tokio::sync::mpsc::UnboundedSender;
 
 use crate::{action::Action, event::Event, terminal::Frame};
 
 pub trait Component {
-  #[allow(unused_variables)]
-  fn init(&amp;mut self, tx: UnboundedSender&lt;Action&gt;) -&gt; Result&lt;()&gt; {
+  fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
     Ok(())
   }
   fn handle_events(&amp;mut self, event: Option&lt;Event&gt;) -&gt; Action {
     match event {
       Some(Event::Quit) =&gt; Action::Quit,
-      Some(Event::AppTick) =&gt; Action::Tick,
-      Some(Event::RenderTick) =&gt; Action::RenderTick,
+      Some(Event::Tick) =&gt; Action::Tick,
       Some(Event::Key(key_event)) =&gt; self.handle_key_events(key_event),
       Some(Event::Mouse(mouse_event)) =&gt; self.handle_mouse_events(mouse_event),
       Some(Event::Resize(x, y)) =&gt; Action::Resize(x, y),
@@ -3046,20 +3077,19 @@ pub trait Component {
       None =&gt; Action::Noop,
     }
   }
-  #[allow(unused_variables)]
   fn handle_key_events(&amp;mut self, key: KeyEvent) -&gt; Action {
     Action::Noop
   }
-  #[allow(unused_variables)]
   fn handle_mouse_events(&amp;mut self, mouse: MouseEvent) -&gt; Action {
     Action::Noop
   }
-  #[allow(unused_variables)]
-  fn update(&amp;mut self, action: Action) -&gt; Option&lt;Action&gt; {
-    None
+  fn update(&amp;mut self, action: Action) -&gt; Action {
+    Action::Noop
   }
   fn render(&amp;mut self, f: &amp;mut Frame&lt;'_&gt;, rect: Rect);
 }</code></pre>
+<p>One advantage of this approach is that it incentivizes co-locating the <code>handle_events</code>, <code>update</code> and
+<code>render</code> functions on a component level.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="features"><a class="header" href="#features">Features</a></h1>
 <p>As ratatui grows and evolves, this list may change, so make sure to check the
 <a href="how-to/./https://github.com/ratatui-org/ratatui">main repo</a> if you are unsure.</p>
