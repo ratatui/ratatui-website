@@ -6,6 +6,26 @@ when this happens, you want to be a good citizen and:
 1. provide a useful stacktrace so that they can report errors back to you.
 2. not leave the users terminal state in a botched condition, resetting it back to the way it was.
 
+Here's an example of `initialize_panic_handler()` using
+[`better_panic`](https://docs.rs/better-panic/latest/better_panic/) to provide a prettier backtrace
+by default.
+
+```rust
+use better_panic::Settings;
+
+pub fn initialize_panic_handler() {
+  std::panic::set_hook(Box::new(|panic_info| {
+    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen).unwrap();
+    crossterm::terminal::disable_raw_mode().unwrap();
+    Settings::auto().most_recent_first(false).lineno_suffix(true).create_panic_handler()(panic_info);
+  }));
+}
+```
+
+I personally like to reuse the `Tui` struct in the panic handler. That way, if I ever decide to move
+from `crossterm` to `termion` in the future, there's one less place in the project that I have to
+worry about refactoring.
+
 Let's assume you have a `tui.rs` file like so:
 
 ```rust
@@ -17,18 +37,15 @@ use crossterm::{
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-pub type Frame<'a> = tui::Frame<'a, tui::backend::CrosstermBackend<std::io::Stderr>>;
 pub type CrosstermTerminal = tui::Terminal<tui::backend::CrosstermBackend<std::io::Stderr>>;
 
-use crate::{app::App, event::EventHandler, ui};
 pub struct Tui {
   terminal: CrosstermTerminal,
-  pub events: EventHandler,
 }
 
 impl Tui {
-  pub fn new(terminal: CrosstermTerminal, events: EventHandler) -> Self {
-    Self { terminal, events }
+  pub fn new(terminal: CrosstermTerminal) -> Self {
+    Self { terminal }
   }
 
   pub fn init(&mut self) -> Result<()> {
