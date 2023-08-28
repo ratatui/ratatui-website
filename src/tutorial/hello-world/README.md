@@ -57,7 +57,7 @@ $ cargo run
 Hello, world!
 ```
 
-````admonish warning
+````admonish attention
 By default `cargo run` compiles your program with no optimizations and with debug information.
 If you want to run it in with more optimizations, you can run `cargo run --release`.
 
@@ -159,5 +159,5 @@ You have written a "hello world" terminal user interface with `ratatui`. We will
 how `ratatui` works in the next sections.
 
 ```admonish question
-Can you modify the example above to exit when pressing `q` and when pressing `Q`?
+Can you modify the example above to exit when pressing `q` _or_ when pressing `Q`?
 ```
