@@ -22,7 +22,9 @@ We are only going to use 3 dependencies in this tutorial:
 cargo add ratatui crossterm anyhow
 ```
 
-`anyhow` for easier error handling and is optional.
+```admonish tip
+We opt to use the `anyhow` crate for easier error handling; it is not necessary to build apps with `ratatui`.
+```
 
 ## Filestructure
 
