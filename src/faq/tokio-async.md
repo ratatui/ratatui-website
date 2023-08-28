@@ -63,5 +63,5 @@ Or would it work with 3 threads / `tokio` tasks like this:
 `------------------'    ┊                                  ┊  `------------------'
 ```
 
-The former be done without `async` and the latter is the approach described in this documentation
-with `tokio`.
+The former can be done without any `async` code and the latter is the approach showcased in
+[`ratatui-async-template`](https://github.com/ratatui-org/ratatui-async-template) with `tokio`.
