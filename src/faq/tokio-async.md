@@ -10,7 +10,8 @@ Should `terminal.draw(|f| ui(f))` be `async`? Possibly. Rendering to the termina
 relatively fast, especially using the double buffer technique that only renders diffs that `ratatui`
 uses.
 
-Can we make it `async` ourselves? Yes, we can. That's covered in the material in this documentation.
+Can we make it `async` ourselves? Yes, we can. Check out
+<https://github.com/ratatui-org/ratatui-async-template> for an example.
 
 The only other part related to `ratatui` that is beneficial to being `async` is reading the key
 event inputs from `stdin`, and that can be made `async` with `crossterm`'s event-stream.
