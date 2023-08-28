@@ -3202,6 +3202,21 @@ when this happens, you want to be a good citizen and:</p>
 <li>provide a useful stacktrace so that they can report errors back to you.</li>
 <li>not leave the users terminal state in a botched condition, resetting it back to the way it was.</li>
 </ol>
+<p>Here’s an example of <code>initialize_panic_handler()</code> using
+<a href="https://docs.rs/better-panic/latest/better_panic/"><code>better_panic</code></a> to provide a prettier backtrace
+by default.</p>
+<pre><code class="language-rust">use better_panic::Settings;
+
+pub fn initialize_panic_handler() {
+  std::panic::set_hook(Box::new(|panic_info| {
+    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen).unwrap();
+    crossterm::terminal::disable_raw_mode().unwrap();
+    Settings::auto().most_recent_first(false).lineno_suffix(true).create_panic_handler()(panic_info);
+  }));
+}</code></pre>
+<p>I personally like to reuse the <code>Tui</code> struct in the panic handler. That way, if I ever decide to move
+from <code>crossterm</code> to <code>termion</code> in the future, there’s one less place in the project that I have to
+worry about refactoring.</p>
 <p>Let’s assume you have a <code>tui.rs</code> file like so:</p>
 <pre><code class="language-rust">use std::{io, panic};
 
@@ -3211,18 +3226,15 @@ use crossterm::{
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-pub type Frame&lt;'a&gt; = tui::Frame&lt;'a, tui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 pub type CrosstermTerminal = tui::Terminal&lt;tui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
-use crate::{app::App, event::EventHandler, ui};
 pub struct Tui {
   terminal: CrosstermTerminal,
-  pub events: EventHandler,
 }
 
 impl Tui {
-  pub fn new(terminal: CrosstermTerminal, events: EventHandler) -&gt; Self {
-    Self { terminal, events }
+  pub fn new(terminal: CrosstermTerminal) -&gt; Self {
+    Self { terminal }
   }
 
   pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
