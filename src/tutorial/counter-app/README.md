@@ -28,7 +28,7 @@ We opt to use the `anyhow` crate for easier error handling; it is not necessary 
 
 ## Filestructure
 
-We are going to start off with one file like so:
+We are going to start off like in the previous "hello world" tutorial with one file like so:
 
 ```sh
 tree .
@@ -38,7 +38,7 @@ tree .
    └── main.rs
 ```
 
-and expand it out to multiple files like so:
+but this time for the counter example, we will expand it out to multiple files like so:
 
 ```sh
 tree .
