@@ -163,7 +163,8 @@ Everything else in your code is your own to do as you wish.</p>
 <p>Should <code>terminal.draw(|f| ui(f))</code> be <code>async</code>? Possibly. Rendering to the terminal buffer is
 relatively fast, especially using the double buffer technique that only renders diffs that <code>ratatui</code>
 uses.</p>
-<p>Can we make it <code>async</code> ourselves? Yes, we can. That’s covered in the material in this documentation.</p>
+<p>Can we make it <code>async</code> ourselves? Yes, we can. Check out
+<a href="https://github.com/ratatui-org/ratatui-async-template">https://github.com/ratatui-org/ratatui-async-template</a> for an example.</p>
 <p>The only other part related to <code>ratatui</code> that is beneficial to being <code>async</code> is reading the key
 event inputs from <code>stdin</code>, and that can be made <code>async</code> with <code>crossterm</code>’s event-stream.</p>
 <p>So the real question is what other parts of your app require <code>async</code> or benefit from being <code>async</code>?
