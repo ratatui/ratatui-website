@@ -1,5 +1,5 @@
 [package]
-name = "ratatui-book-tutorial-counter-app"
+name = "ratatui-counter-app"
 version = "0.1.0"
 authors = ["Dheepak Krishnamurthy <me@kdheepak.com>"]
 license = "MIT"
