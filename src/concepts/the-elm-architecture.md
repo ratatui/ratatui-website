@@ -161,12 +161,37 @@ Returning a `Message` from the `update()` function allows a developer to reason 
 a "Finite State Machine". Finite State Machines operate on defined states and transitions, where an
 initial state and an event (in our case, a `Message`) lead to a subsequent state. This cascading
 approach ensures that the system remains in a consistent and predictable state after handling a
-series of interconnected events. It allows developers to break down intricate state transitions into
-smaller, more manageable steps.
+series of interconnected events.
+
+Here's a state transition diagram of the counter example from above:
+
+```mermaid
+stateDiagram-v2
+    state Model {
+        counter : counter = 0
+        should_quit : should_quit = false
+    }
+
+    Model --> Increment
+    Model --> Decrement
+    Model --> Reset
+    Model --> Quit
+
+    Increment --> Model: counter += 1
+    Increment --> Reset: if > 50
+
+    Decrement --> Model: counter -= 1
+    Decrement --> Reset: if < -50
+
+    Reset --> Model: counter = 0
+
+    Quit --> break: should_quit = true
+```
 
 While TEA doesn't use the Finite State Machine terminology or strictly enforce that paradigm,
-thinking of your application's state as a state machine can sometimes make designing the
-application's logic clearer and can improve code maintainability.
+thinking of your application's state as a state machine can allow developers to break down intricate
+state transitions into smaller, more manageable steps. This can make designing the application's
+logic clearer and improve code maintainability.
 
 ### 3. Rendering the View
 
@@ -307,7 +332,6 @@ fn update(model: &mut Model, msg: Message) -> Message {
         return Message::Reset;
       }
     },
-    Message::Decrement => model.counter -= 1,
     Message::Reset => model.counter = 0,
     Message::Quit => model.should_quit = true, // You can handle cleanup and exit here
     Message::None => panic!("`update() should never be called with `Message::None`"),
