@@ -2896,11 +2896,33 @@ returned message, calling <code>update()</code> again based on that returned mes
 a “Finite State Machine”. Finite State Machines operate on defined states and transitions, where an
 initial state and an event (in our case, a <code>Message</code>) lead to a subsequent state. This cascading
 approach ensures that the system remains in a consistent and predictable state after handling a
-series of interconnected events. It allows developers to break down intricate state transitions into
-smaller, more manageable steps.</p>
+series of interconnected events.</p>
+<p>Here’s a state transition diagram of the counter example from above:</p>
+<pre class="mermaid">stateDiagram-v2
+    state Model {
+        counter : counter = 0
+        should_quit : should_quit = false
+    }
+
+    Model --&gt; Increment
+    Model --&gt; Decrement
+    Model --&gt; Reset
+    Model --&gt; Quit
+
+    Increment --&gt; Model: counter += 1
+    Increment --&gt; Reset: if &gt; 50
+
+    Decrement --&gt; Model: counter -= 1
+    Decrement --&gt; Reset: if &lt; -50
+
+    Reset --&gt; Model: counter = 0
+
+    Quit --&gt; break: should_quit = true
+</pre>
 <p>While TEA doesn’t use the Finite State Machine terminology or strictly enforce that paradigm,
-thinking of your application’s state as a state machine can sometimes make designing the
-application’s logic clearer and can improve code maintainability.</p>
+thinking of your application’s state as a state machine can allow developers to break down intricate
+state transitions into smaller, more manageable steps. This can make designing the application’s
+logic clearer and improve code maintainability.</p>
 <h3 id="3-rendering-the-view"><a class="header" href="#3-rendering-the-view">3. Rendering the View</a></h3>
 <p>The view function in the Elm Architecture is tasked with taking the current model and producing a
 visual representation for the user. In the case of ratatui, it translates the model into terminal UI
@@ -3021,7 +3043,6 @@ fn update(model: &amp;mut Model, msg: Message) -&gt; Message {
         return Message::Reset;
       }
     },
-    Message::Decrement =&gt; model.counter -= 1,
     Message::Reset =&gt; model.counter = 0,
     Message::Quit =&gt; model.should_quit = true, // You can handle cleanup and exit here
     Message::None =&gt; panic!(&quot;`update() should never be called with `Message::None`&quot;),
