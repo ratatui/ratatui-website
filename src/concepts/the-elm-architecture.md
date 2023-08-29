@@ -115,54 +115,30 @@ model to a visual representation.
 For a given state of the model, the view function should always produce the same visual output. This
 predictability makes your TUI application easier to reason about and debug.
 
-````admonish note
+```admonish note
 With immediate mode rendering you may run into an issue: the `view` function is only aware of the
 area available to draw in at render time.
-
-For example, there's not really a good way to choose how many columns you want to draw based on
-width of the drawable area.
-
-You _could_ do something like this:
-
-```rust
-fn view(model: &Model) -> Table {
-  let columns = if get_width_of_drawable_area() > 10 {
-    vec!["col1", "col2", "col3"]
-  } else {
-    vec!["col1", "col2"]
-  }
-  Table::new(columns)
-}
-
-fn main() {
-  loop {
-    ...
-    terminal
-      .draw(|f| {
-        f.render_widget(view(&model), f.size());
-      })?;
-    ...
-  }
-}
-```
 
 This limitation is a recognized constraint of immediate mode GUIs. Overcoming it often involves
 trade-offs. One common solution is to store the drawable size and reference it in the subsequent
 frame, although this can introduce a frame delay in layout adjustments, leading to potential
 flickering during the initial rendering when changes in screen size occur.
 
-For this reason, you may choose to forego the `view` immutability principle and write a function
-with a signature like so:
+An alternative would be using the `Resize` event from `crossterm` and to clear the UI and force
+redraw everything during that event.
+```
+
+In `ratatui`, there are
+[`StatefulWidget`s](https://docs.rs/ratatui/latest/ratatui/widgets/trait.StatefulWidget.html) which
+require a mutable reference to state during render.
+
+For this reason, you may choose to forego the `view` immutability principle. For example, if you
+were interested in rendering a `List`, your `view` function may look like this:
 
 ```rust
 fn view(model: &mut Model, f: &mut Frame) {
-  model.area = f.size();
-  let columns = if model.area.width() > 10 {
-    vec!["col1", "col2", "col3"]
-  } else {
-    vec!["col1", "col2"]
-  }
-  f.render_widget(Table::new(columns), f.size());
+  let items = app.items.items.iter().map(|element| ListItem::new(element)).collect();
+  f.render_stateful_widget(List::new(items), f.size(), &mut app.items.state);
 }
 
 fn main() {
@@ -170,23 +146,31 @@ fn main() {
     ...
     terminal
       .draw(|f| {
-        view(&mut model, f);
+        view(&mut model, &mut f);
       })?;
     ...
   }
 }
 ```
 
-An alternative would be using the `Resize` event from `crossterm` and to clear the UI and force
-redraw everything during that event.
-
-Another advantage of having access to the `Terminal` in the `view()` function is that you have access to setting the cursor position, which is useful for displaying text fields:
+Another advantage of having access to the `Frame` in the `view()` function is that you have access
+to setting the cursor position, which is useful for displaying text fields. For example, if you
+wanted to draw an input field using [`tui-input`](https://github.com/sayanarijit/tui-input), you
+might have a `view` that looks like this:
 
 ```rust
-  f.set_cursor(x, y)
+fn view(model: &mut Model, f: &mut Frame) {
+  let area = f.size();
+  let input = Paragraph::new(app.input.value());
+  f.render_widget(input, area);
+  if app.mode == Mode::Insert {
+    f.set_cursor(
+      (area.x + 1 + self.input.cursor() as u16).min(area.x + area.width - 2),
+      area.y + 1
+    )
+  }
+}
 ```
-
-````
 
 ## Putting it all together
 
