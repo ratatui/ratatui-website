@@ -4,10 +4,10 @@ use std::io;
 use anyhow::Result;
 use ratatui::{backend::CrosstermBackend, Terminal};
 use ratatui_counter_app::{
-  app::{Action, App},
+  app::App,
   event::{Event, EventHandler},
-  handler::{handle_key_events, update},
   tui::Tui,
+  update::update,
 };
 ///// ANCHOR_END: imports_main
 
@@ -28,13 +28,12 @@ fn main() -> Result<()> {
     // Render the user interface.
     tui.draw(&mut app)?;
     // Handle events.
-    let action = match tui.events.next()? {
-      Event::Tick => Action::Tick,
-      Event::Key(key_event) => handle_key_events(&mut app, key_event),
-      Event::Mouse(_) => Action::None,
-      Event::Resize(_, _) => Action::None,
+    match tui.events.next()? {
+      Event::Tick => {},
+      Event::Key(key_event) => update(&mut app, key_event),
+      Event::Mouse(_) => {},
+      Event::Resize(_, _) => {},
     };
-    update(&mut app, action);
   }
 
   // Exit the user interface.

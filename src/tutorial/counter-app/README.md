@@ -47,9 +47,9 @@ tree .
 └── src
    ├── app.rs
    ├── event.rs
-   ├── handler.rs
    ├── lib.rs
    ├── main.rs
    ├── tui.rs
-   └── ui.rs
+   ├── ui.rs
+   └── update.rs
 ```
