@@ -4,7 +4,13 @@ When building terminal user interfaces (TUI) with `ratatui`, it's helpful to hav
 for organizing your application. One proven architecture comes from the Elm language, known simply
 as The Elm Architecture (TEA).
 
-In this post, we'll explore how to apply The Elm Architecture to `ratatui` TUI apps.
+```admonish attention
+If you are interested in a framework that uses `ratatui` that is based on The Elm Architecture,
+you should check out <https://github.com/veeso/tui-realm/>.
+The documentation on this page is for theorectical understanding and pedagogical purposes only.
+```
+
+In this section, we'll explore how to apply The Elm Architecture principles to `ratatui` TUI apps.
 
 ## The Elm Architecture: A Quick Overview
 

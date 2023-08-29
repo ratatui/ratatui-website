@@ -28,8 +28,10 @@
       - [Ui.rs - Exit](./tutorial/json-editor/ui-exit.md)
     - [Conclusion](./tutorial/json-editor/closing_thoughts.md)
   - [Async Counter App](./tutorial/counter-async-app/README.md)
+    - [Actions](./tutorial/counter-async-app/actions.md)
     - [Sync Increment & Decrement](./tutorial/counter-async-app/sync-increment-decrement.md)
     - [Async Increment & Decrement](./tutorial/counter-async-app/async-increment-decrement.md)
+    - [Async Event Stream](./tutorial/counter-async-app/async-event-stream.md)
 
 - [Concepts](./concepts/README.md)
 

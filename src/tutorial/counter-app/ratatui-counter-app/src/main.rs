@@ -1,14 +1,17 @@
+///// ANCHOR: imports_main
 use std::io;
 
 use anyhow::Result;
 use ratatui::{backend::CrosstermBackend, Terminal};
 use ratatui_counter_app::{
-  app::App,
+  app::{Action, App},
   event::{Event, EventHandler},
-  handler::handle_key_events,
+  handler::{handle_key_events, update},
   tui::Tui,
 };
+///// ANCHOR_END: imports_main
 
+///// ANCHOR: main
 fn main() -> Result<()> {
   // Create an application.
   let mut app = App::new();
@@ -25,15 +28,17 @@ fn main() -> Result<()> {
     // Render the user interface.
     tui.draw(&mut app)?;
     // Handle events.
-    match tui.events.next()? {
-      Event::Tick => app.tick(),
-      Event::Key(key_event) => handle_key_events(key_event, &mut app)?,
-      Event::Mouse(_) => {},
-      Event::Resize(_, _) => {},
-    }
+    let action = match tui.events.next()? {
+      Event::Tick => Action::Tick,
+      Event::Key(key_event) => handle_key_events(&mut app, key_event),
+      Event::Mouse(_) => Action::None,
+      Event::Resize(_, _) => Action::None,
+    };
+    update(&mut app, action);
   }
 
   // Exit the user interface.
   tui.exit()?;
   Ok(())
 }
+///// ANCHOR_END: main

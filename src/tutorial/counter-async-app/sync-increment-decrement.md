@@ -1,44 +1,5 @@
 # Sync Increment & Decrement
 
-This is the current version of the app that we have:
-
-```mermaid
-graph TD
-    MainRun[Main: Run];
-    CheckEvent[Main: Poll KeyPress];
-    UpdateTicker[Main: Update Ticker];
-    UpdateApp[Main: Update App with Action];
-    KeyPressToAction[Main: Convert KeyPress to Action];
-    ShouldQuit[Main: Check should_quit?];
-    BreakLoop[Main: Break Loop];
-    MainStart[Main: Start];
-    MainEnd[Main: End];
-    MainStart --> MainRun;
-    MainRun --> CheckEvent;
-    CheckEvent -->|No KeyPress| UpdateTicker;
-    UpdateTicker --> ShouldQuit;
-    CheckEvent --> |KeyPress Received| KeyPressToAction;
-    KeyPressToAction --> |Action| UpdateApp;
-    UpdateApp --> ShouldQuit;
-    ShouldQuit -->|Yes| BreakLoop;
-    BreakLoop --> MainEnd;
-    ShouldQuit -->|No| CheckEvent;
-```
-
-One of the first steps to building a `async` applications is to use the `Command`, `Action`, or
-`Message` pattern.
-
-```admonish tip
-The `Command` pattern is the concept of "reified method calls".
-You can learn a lot more about this pattern from the excellent [http://gameprogrammingpatterns.com](http://gameprogrammingpatterns.com/command.html).
-```
-
-You can learn more about this concept in
-[The Elm Architecture section](./../../concepts/the-elm-architecture.md) of the documentation.
-
-The key idea is that we have an `Action` enum that tracks all the actions that can be carried out by
-the `App`.
-
 In order to set up an `async` application, it is important to make the generation of `Action`s
 "asynchronous".
 
