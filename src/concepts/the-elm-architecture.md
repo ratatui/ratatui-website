@@ -247,7 +247,7 @@ fn main() {
     ...
     terminal
       .draw(|f| {
-        view(&mut model, &mut f);
+        view(&mut model, f);
       })?;
     ...
   }
