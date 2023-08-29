@@ -14,7 +14,6 @@ additional-css = [
     "./theme/catppuccin.css",
     "./theme/catppuccin-highlight.css",
 ]
-additional-js = ["mermaid.min.js", "mermaid-init.js"]
 site-url = "/ratatui-book/"
 
 [output.html.fold]
