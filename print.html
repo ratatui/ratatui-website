@@ -2771,7 +2771,7 @@ for organizing your application. One proven architecture comes from the Elm lang
 as The Elm Architecture (TEA).</p>
 <p>In this post, we’ll explore how to apply The Elm Architecture to <code>ratatui</code> TUI apps.</p>
 <h2 id="the-elm-architecture-a-quick-overview"><a class="header" href="#the-elm-architecture-a-quick-overview">The Elm Architecture: A Quick Overview</a></h2>
-<p>At its core, the Elm Architecture is split into three main components:</p>
+<p>At its core, TEA is split into three main components:</p>
 <ul>
 <li><strong>Model</strong>: This is your application’s state. It contains all the data your application works with.</li>
 <li><strong>Update</strong>: When there’s a change (like user input), the update function takes the current model
@@ -2788,17 +2788,24 @@ TUI Application-&gt;&gt;TUI Application: Update (based on Model and Message)
 TUI Application-&gt;&gt;TUI Application: Render View (from Model)
 TUI Application--&gt;&gt;User: Display UI
 </pre>
-<h2 id="applying-tea-to-ratatui"><a class="header" href="#applying-tea-to-ratatui">Applying TEA to <code>ratatui</code></a></h2>
+<h2 id="applying-the-elm-architecture-to-ratatui"><a class="header" href="#applying-the-elm-architecture-to-ratatui">Applying The Elm Architecture to <code>ratatui</code></a></h2>
+<p>Following TEA principles typically involves ensuring that you do the following things:</p>
 <ol>
 <li>Define Your Model</li>
+<li>Handling Updates</li>
+<li>Rendering the View</li>
 </ol>
+<h3 id="1-define-your-model"><a class="header" href="#1-define-your-model">1. Define Your Model</a></h3>
 <p>In <code>ratatui</code>, you’ll typically use a <code>struct</code> to represent your model:</p>
 <pre><code class="language-rust">struct Model {
     //... your application's data goes here
 }</code></pre>
-<ol start="2">
-<li>Handling Updates</li>
-</ol>
+<p>For a counter app, our model may look like this:</p>
+<pre><code class="language-rust">struct Model {
+  counter: i32,
+  should_quit: bool,
+}</code></pre>
+<h3 id="2-handling-updates"><a class="header" href="#2-handling-updates">2. Handling Updates</a></h3>
 <p>Updates in TEA are actions triggered by events, such as user inputs. The core idea is to map each of
 these actions or events to a message. This can be achieved by creating an enum to keep track of
 messages. Based on the received message, the current state of the model is used to determine the
@@ -2807,6 +2814,14 @@ next state.</p>
 <pre><code class="language-rust">enum Message {
     //... various inputs or actions that your app cares about
     // e.g., ButtonPressed, TextEntered, etc.
+}</code></pre>
+<p>For a counter app, our <code>Message</code> enum may look like this:</p>
+<pre><code class="language-rust">enum Message {
+  Increment,
+  Decrement,
+  Reset,
+  Quit,
+  None,
 }</code></pre>
 <p><strong><code>update()</code> function</strong></p>
 <p>The update function is at the heart of this process. It takes the current model and a message, and
@@ -2839,9 +2854,54 @@ suitable approach based on performance and their application’s needs.</p>
 }</code></pre>
 </div>
 </div>
-<ol start="3">
-<li>Rendering the View</li>
-</ol>
+<p>In TEA, the <code>update()</code> function can not only modify the model based on the <code>Message</code>, but it can
+also return another <code>Message</code>. This design can be particularly useful if you want to chain messages
+or have an update lead to another update.</p>
+<p>For example, this is what the <code>update()</code> function may look like for a counter app:</p>
+<pre><code class="language-rust">fn update(model: &amp;mut Model, msg: Message) -&gt; Message {
+  match msg {
+    Message::Increment =&gt; {
+      model.counter += 1;
+      if model.counter &gt; 50 {
+        return Message::Reset;
+      }
+    },
+    Message::Decrement =&gt; {
+      model.counter -= 1;
+      if model.counter &lt; -50 {
+        return Message::Reset;
+      }
+    },
+    Message::Reset =&gt; {
+      model.counter = 0;
+    },
+    Message::Quit =&gt; {
+      model.should_quit = true;
+    },
+    _ =&gt; {},
+  }
+  Message::None // Default return value if no specific message is to be returned
+}</code></pre>
+<div id="admonition-attention" class="admonition warning">
+<div class="admonition-title">
+<p>Attention</p>
+<p><a class="admonition-anchor-link" href="concepts/the-elm-architecture.html#admonition-attention"></a></p>
+</div>
+<div>
+<p>Remember that this design choice means that the <code>main</code> loop will need to handle the
+returned message, calling <code>update()</code> again based on that returned message.</p>
+</div>
+</div>
+<p>Returning a <code>Message</code> from the <code>update()</code> function allows a developer to reason about their code as
+a “Finite State Machine”. Finite State Machines operate on defined states and transitions, where an
+initial state and an event (in our case, a <code>Message</code>) lead to a subsequent state. This cascading
+approach ensures that the system remains in a consistent and predictable state after handling a
+series of interconnected events. It allows developers to break down intricate state transitions into
+smaller, more manageable steps.</p>
+<p>While TEA doesn’t use the Finite State Machine terminology or strictly enforce that paradigm,
+thinking of your application’s state as a state machine can sometimes make designing the
+application’s logic clearer and can improve code maintainability.</p>
+<h3 id="3-rendering-the-view"><a class="header" href="#3-rendering-the-view">3. Rendering the View</a></h3>
 <p>The view function in the Elm Architecture is tasked with taking the current model and producing a
 visual representation for the user. In the case of ratatui, it translates the model into terminal UI
 elements. It’s essential that the view function remains a pure function: for a given state of the
@@ -2920,11 +2980,13 @@ might have a <code>view</code> that looks like this:</p>
 refactored using TEA.</p>
 <p>The notable difference from before is that we have an <code>Model</code> struct that captures the app state,
 and a <code>Message</code> enum that captures the various actions your app can take.</p>
-<pre><code class="language-rust">use anyhow::Result;
+<pre><code class="language-rust">// cargo add anyhow ratatui crossterm
+use anyhow::Result;
 use ratatui::{
   prelude::{CrosstermBackend, Terminal},
   widgets::Paragraph,
 };
+use log;
 
 pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
@@ -2935,21 +2997,36 @@ struct Model {
 }
 
 // MESSAGES
+#[derive(PartialEq)]
 enum Message {
   Increment,
   Decrement,
+  Reset,
   Quit,
   None,
 }
 
 // UPDATE
-fn update(model: &amp;mut Model, msg: Message) {
+fn update(model: &amp;mut Model, msg: Message) -&gt; Message {
   match msg {
-    Message::Increment =&gt; model.counter += 1,
+    Message::Increment =&gt; {
+      model.counter += 1;
+      if model.counter &gt; 50 {
+        return Message::Reset;
+      }
+    },
+    Message::Decrement =&gt; {
+      model.counter -= 1;
+      if model.counter &lt; -50 {
+        return Message::Reset;
+      }
+    },
     Message::Decrement =&gt; model.counter -= 1,
+    Message::Reset =&gt; model.counter = 0,
     Message::Quit =&gt; model.should_quit = true, // You can handle cleanup and exit here
-    Message::None =&gt; (),
-  }
+    Message::None =&gt; panic!(&quot;`update() should never be called with `Message::None`&quot;),
+  };
+  Message::None
 }
 
 // VIEW
@@ -2998,14 +3075,20 @@ fn main() -&gt; Result&lt;()&gt; {
   let mut model = Model { counter: 0, should_quit: false };
 
   loop {
+    // Render the current view
     terminal.draw(|f| {
       view(&amp;mut model, f);
     })?;
 
-    let msg = handle_event(&amp;model)?;
+    // Handle events and map to a Message
+    let mut current_msg = handle_event(&amp;model)?;
 
-    update(&amp;mut model, msg);
+    // Process updates as long as they return a non-None message
+    while current_msg != Message::None {
+      current_msg = update(&amp;mut model, current_msg);
+    }
 
+    // Exit loop if quit flag is set
     if model.should_quit {
       break;
     }
