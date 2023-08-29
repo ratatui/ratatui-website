@@ -7,6 +7,7 @@
 - [Introduction](./introduction.md)
 
 - [Tutorials]()
+
   - [Hello World](./tutorial/hello-world/README.md)
   - [Counter App](./tutorial/counter-app/README.md)
     - [Single Function](./tutorial/counter-app/single-function.md)
@@ -28,6 +29,7 @@
     - [Conclusion](./tutorial/json-editor/closing_thoughts.md)
 
 - [Concepts](./concepts/README.md)
+
   - [Rendering](./concepts/rendering.md)
   - [Event Handling](./concepts/event_handling.md)
   - [The Elm Architecture](./concepts/the-elm-architecture.md)
@@ -43,6 +45,7 @@
   - [Configuration]()
 
 - [How To]()
+
   - [Enable Features](./how-to/features.md)
   - [Choose a Backend](./how-to/choose-a-backend.md)
   - [Setup Panic Hooks](./how-to/setup-panic-hooks.md)
@@ -58,7 +61,8 @@
   - [Layout Widgets]()
   - [Create a Widget]()
 
-- [FAQ](./faq/README.md)
+- [FAQ]()
+
   - [Duplicate key events on Windows](./faq/duplicate-key-events-windows.md)
   - [`tokio` / `async`](./faq/tokio-async.md)
   - [`tui.rs` history](./faq/tui-rs-history.md)
