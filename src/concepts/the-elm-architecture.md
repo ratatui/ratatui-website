@@ -297,7 +297,6 @@ use ratatui::{
   prelude::{CrosstermBackend, Terminal},
   widgets::Paragraph,
 };
-use log;
 
 pub type Frame<'a> = ratatui::Frame<'a, ratatui::backend::CrosstermBackend<std::io::Stderr>>;
 
