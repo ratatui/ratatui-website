@@ -266,13 +266,13 @@ fn run() -> Result<()> {
   let mut app = App { counter: 0, should_quit: false };
 
   loop {
+    // application update
+    update(&mut app)?;
+
     // application render
     t.draw(|f| {
       ui(f, &app);
     })?;
-
-    // application update
-    update(&mut app)?;
 
     // application exit
     if app.should_quit {
@@ -296,6 +296,28 @@ fn main() -> Result<()> {
 
   Ok(())
 }
+```
+
+Here's a flow chart representation of the various steps in the program:
+
+```mermaid
+graph TD
+    MainRun[Main: Run];
+    CheckEvent[Main: Poll KeyPress];
+    UpdateApp[Main: Update App];
+    ShouldQuit[Main: Check should_quit?];
+    BreakLoop[Main: Break Loop];
+    MainStart[Main: Start];
+    MainEnd[Main: End];
+    MainStart --> MainRun;
+    MainRun --> CheckEvent;
+    CheckEvent -->|No KeyPress| Draw;
+    CheckEvent --> |KeyPress Received| UpdateApp;
+    Draw --> ShouldQuit;
+    UpdateApp --> Draw;
+    ShouldQuit -->|Yes| BreakLoop;
+    BreakLoop --> MainEnd;
+    ShouldQuit -->|No| CheckEvent;
 ```
 
 ```admonish question

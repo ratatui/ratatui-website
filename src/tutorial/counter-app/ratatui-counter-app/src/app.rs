@@ -1,3 +1,13 @@
+///// ANCHOR: action
+pub enum Action {
+  Tick,
+  Increment,
+  Decrement,
+  Quit,
+  None,
+}
+///// ANCHOR_END: action
+
 ///// ANCHOR: application
 /// Application.
 #[derive(Debug, Default)]

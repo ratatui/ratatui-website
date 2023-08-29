@@ -1,29 +1,31 @@
-use anyhow::Result;
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 
-use crate::app::App;
+use crate::app::{Action, App};
 
-/// Handles the key events and updates the state of [`App`].
-pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> Result<()> {
-  match key_event.code {
-    // Exit application on `ESC` or `q`
-    KeyCode::Esc | KeyCode::Char('q') => {
-      app.quit();
-    },
-    // Exit application on `Ctrl-C`
+/// Generate Action based on key event and state of [`App`].
+pub fn handle_key_events(_app: &mut App, key_event: KeyEvent) -> Action {
+  let action = match key_event.code {
+    KeyCode::Esc | KeyCode::Char('q') => Action::Quit,
     KeyCode::Char('c') | KeyCode::Char('C') => {
       if key_event.modifiers == KeyModifiers::CONTROL {
-        app.quit();
+        Action::Quit
+      } else {
+        Action::None
       }
     },
-    // Counter handlers
-    KeyCode::Right | KeyCode::Char('j') => {
-      app.increment_counter();
-    },
-    KeyCode::Left | KeyCode::Char('k') => {
-      app.decrement_counter();
-    },
+    KeyCode::Right | KeyCode::Char('j') => Action::Increment,
+    KeyCode::Left | KeyCode::Char('k') => Action::Decrement,
+    _ => Action::None,
+  };
+  action
+}
+
+pub fn update(app: &mut App, action: Action) {
+  match action {
+    Action::Quit => app.quit(),
+    Action::Increment => app.increment_counter(),
+    Action::Decrement => app.decrement_counter(),
+    Action::Tick => app.tick(),
     _ => {},
-  }
-  Ok(())
+  };
 }
