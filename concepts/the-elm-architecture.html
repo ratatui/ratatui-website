@@ -254,42 +254,22 @@ predictability makes your TUI application easier to reason about and debug.</p>
 <div>
 <p>With immediate mode rendering you may run into an issue: the <code>view</code> function is only aware of the
 area available to draw in at render time.</p>
-<p>For example, there’s not really a good way to choose how many columns you want to draw based on
-width of the drawable area.</p>
-<p>You <em>could</em> do something like this:</p>
-<pre><code class="language-rust">fn view(model: &amp;Model) -&gt; Table {
-  let columns = if get_width_of_drawable_area() &gt; 10 {
-    vec![&quot;col1&quot;, &quot;col2&quot;, &quot;col3&quot;]
-  } else {
-    vec![&quot;col1&quot;, &quot;col2&quot;]
-  }
-  Table::new(columns)
-}
-
-fn main() {
-  loop {
-    ...
-    terminal
-      .draw(|f| {
-        f.render_widget(view(&amp;model), f.size());
-      })?;
-    ...
-  }
-}</code></pre>
 <p>This limitation is a recognized constraint of immediate mode GUIs. Overcoming it often involves
 trade-offs. One common solution is to store the drawable size and reference it in the subsequent
 frame, although this can introduce a frame delay in layout adjustments, leading to potential
 flickering during the initial rendering when changes in screen size occur.</p>
-<p>For this reason, you may choose to forego the <code>view</code> immutability principle and write a function
-with a signature like so:</p>
+<p>An alternative would be using the <code>Resize</code> event from <code>crossterm</code> and to clear the UI and force
+redraw everything during that event.</p>
+</div>
+</div>
+<p>In <code>ratatui</code>, there are
+<a href="https://docs.rs/ratatui/latest/ratatui/widgets/trait.StatefulWidget.html"><code>StatefulWidget</code>s</a> which
+require a mutable reference to state during render.</p>
+<p>For this reason, you may choose to forego the <code>view</code> immutability principle. For example, if you
+were interested in rendering a <code>List</code>, your <code>view</code> function may look like this:</p>
 <pre><code class="language-rust">fn view(model: &amp;mut Model, f: &amp;mut Frame) {
-  model.area = f.size();
-  let columns = if model.area.width() &gt; 10 {
-    vec![&quot;col1&quot;, &quot;col2&quot;, &quot;col3&quot;]
-  } else {
-    vec![&quot;col1&quot;, &quot;col2&quot;]
-  }
-  f.render_widget(Table::new(columns), f.size());
+  let items = app.items.items.iter().map(|element| ListItem::new(element)).collect();
+  f.render_stateful_widget(List::new(items), f.size(), &amp;mut app.items.state);
 }
 
 fn main() {
@@ -297,17 +277,26 @@ fn main() {
     ...
     terminal
       .draw(|f| {
-        view(&amp;mut model, f);
+        view(&amp;mut model, &amp;mut f);
       })?;
     ...
   }
 }</code></pre>
-<p>An alternative would be using the <code>Resize</code> event from <code>crossterm</code> and to clear the UI and force
-redraw everything during that event.</p>
-<p>Another advantage of having access to the <code>Terminal</code> in the <code>view()</code> function is that you have access to setting the cursor position, which is useful for displaying text fields:</p>
-<pre><code class="language-rust">  f.set_cursor(x, y)</code></pre>
-</div>
-</div>
+<p>Another advantage of having access to the <code>Frame</code> in the <code>view()</code> function is that you have access
+to setting the cursor position, which is useful for displaying text fields. For example, if you
+wanted to draw an input field using <a href="https://github.com/sayanarijit/tui-input"><code>tui-input</code></a>, you
+might have a <code>view</code> that looks like this:</p>
+<pre><code class="language-rust">fn view(model: &amp;mut Model, f: &amp;mut Frame) {
+  let area = f.size();
+  let input = Paragraph::new(app.input.value());
+  f.render_widget(input, area);
+  if app.mode == Mode::Insert {
+    f.set_cursor(
+      (area.x + 1 + self.input.cursor() as u16).min(area.x + area.width - 2),
+      area.y + 1
+    )
+  }
+}</code></pre>
 <h2 id="putting-it-all-together"><a class="header" href="#putting-it-all-together">Putting it all together</a></h2>
 <p>When you put it all together, your main application loop might look something like:</p>
 <ul>
