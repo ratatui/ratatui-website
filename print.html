@@ -8,7 +8,11 @@
 
 
         <!-- Custom HTML head -->
-        
+        <script type="module">
+          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+          mermaid.initialize({ startOnLoad: true });
+        </script>
+
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Home</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Tutorials</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/hello-world/index.html"><strong aria-hidden="true">2.1.</strong> Hello World</a></li><li class="chapter-item "><a href="tutorial/counter-app/index.html"><strong aria-hidden="true">2.2.</strong> Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/counter-app/single-function.html"><strong aria-hidden="true">2.2.1.</strong> Single Function</a></li><li class="chapter-item "><a href="tutorial/counter-app/refactor.html"><strong aria-hidden="true">2.2.2.</strong> Multiple Functions</a></li><li class="chapter-item "><a href="tutorial/counter-app/multiple-files.html"><strong aria-hidden="true">2.2.3.</strong> Multiple Files</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/counter-app/app.html"><strong aria-hidden="true">2.2.3.1.</strong> app.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/ui.html"><strong aria-hidden="true">2.2.3.2.</strong> ui.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/event.html"><strong aria-hidden="true">2.2.3.3.</strong> event.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/tui.html"><strong aria-hidden="true">2.2.3.4.</strong> tui.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/handler.html"><strong aria-hidden="true">2.2.3.5.</strong> handler.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/main.html"><strong aria-hidden="true">2.2.3.6.</strong> main.rs</a></li></ol></li></ol></li><li class="chapter-item "><a href="tutorial/json-editor/index.html"><strong aria-hidden="true">2.3.</strong> JSON Editor</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/json-editor/app.html"><strong aria-hidden="true">2.3.1.</strong> App.rs - Holding application state</a></li><li class="chapter-item "><a href="tutorial/json-editor/main.html"><strong aria-hidden="true">2.3.2.</strong> Main.rs - UI loop and event handling</a></li><li class="chapter-item "><a href="tutorial/json-editor/ui.html"><strong aria-hidden="true">2.3.3.</strong> Ui.rs - Layouts, widgets, frames, oh my!</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/json-editor/ui-main.html"><strong aria-hidden="true">2.3.3.1.</strong> Ui.rs - Main</a></li><li class="chapter-item "><a href="tutorial/json-editor/ui-editing.html"><strong aria-hidden="true">2.3.3.2.</strong> Ui.rs - Editing</a></li><li class="chapter-item "><a href="tutorial/json-editor/ui-exit.html"><strong aria-hidden="true">2.3.3.3.</strong> Ui.rs - Exit</a></li></ol></li><li class="chapter-item "><a href="tutorial/json-editor/closing_thoughts.html"><strong aria-hidden="true">2.3.4.</strong> Conclusion</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="concepts/index.html"><strong aria-hidden="true">3.</strong> Concepts</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="concepts/rendering.html"><strong aria-hidden="true">3.1.</strong> Rendering</a></li><li class="chapter-item "><a href="concepts/event_handling.html"><strong aria-hidden="true">3.2.</strong> Event Handling</a></li><li class="chapter-item "><a href="concepts/the-elm-architecture.html"><strong aria-hidden="true">3.3.</strong> The Elm Architecture</a></li><li class="chapter-item "><a href="concepts/component-architecture.html"><strong aria-hidden="true">3.4.</strong> Component Architecture</a></li><li class="chapter-item "><div><strong aria-hidden="true">3.5.</strong> Project Structure</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.6.</strong> Application Patterns</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.7.</strong> Design Patterns</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.8.</strong> Application State</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.9.</strong> Event Handling</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.10.</strong> Key Binding</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.11.</strong> Threading</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.12.</strong> Logging</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.13.</strong> Configuration</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> How To</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="how-to/features.html"><strong aria-hidden="true">4.1.</strong> Enable Features</a></li><li class="chapter-item "><a href="how-to/choose-a-backend.html"><strong aria-hidden="true">4.2.</strong> Choose a Backend</a></li><li class="chapter-item "><a href="how-to/setup-panic-hooks.html"><strong aria-hidden="true">4.3.</strong> Setup Panic Hooks</a></li><li class="chapter-item "><a href="how-to/setup-panic-hooks-better-panic.html"><strong aria-hidden="true">4.4.</strong> Setup Panic Hooks with better-panic</a></li><li class="chapter-item "><a href="how-to/setup-logging-tracing.html"><strong aria-hidden="true">4.5.</strong> Setup Logging with tracing</a></li><li class="chapter-item "><a href="how-to/handle-xdg-directories.html"><strong aria-hidden="true">4.6.</strong> Handle XDG Directories</a></li><li class="chapter-item "><a href="how-to/clap.html"><strong aria-hidden="true">4.7.</strong> Handle CLI arguments</a></li><li class="chapter-item "><div><strong aria-hidden="true">4.8.</strong> Blocks</div></li><li class="chapter-item "><div><strong aria-hidden="true">4.9.</strong> Displaying Text</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div><strong aria-hidden="true">4.9.1.</strong> Styling-Text</div></li><li class="chapter-item "><div><strong aria-hidden="true">4.9.2.</strong> Paragraphs</div></li></ol></li><li class="chapter-item "><a href="how-to/layout-constraints-basics.html"><strong aria-hidden="true">4.10.</strong> Layouts Constraints Basics</a></li><li class="chapter-item "><div><strong aria-hidden="true">4.11.</strong> Layout Widgets</div></li><li class="chapter-item "><div><strong aria-hidden="true">4.12.</strong> Create a Widget</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> FAQ</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="faq/duplicate-key-events-windows.html"><strong aria-hidden="true">5.1.</strong> Duplicate key events on Windows</a></li><li class="chapter-item "><a href="faq/tokio-async.html"><strong aria-hidden="true">5.2.</strong> tokio / async</a></li><li class="chapter-item "><a href="faq/tui-rs-history.html"><strong aria-hidden="true">5.3.</strong> tui.rs history</a></li></ol></li><li class="chapter-item expanded "><a href="references/index.html"><strong aria-hidden="true">6.</strong> References</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> Developer Guide</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="developer-guide/ratatui.html"><strong aria-hidden="true">7.1.</strong> Ratatui</a></li><li class="chapter-item "><a href="developer-guide/book.html"><strong aria-hidden="true">7.2.</strong> Ratatui Book</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="contributors.html">Contributors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Home</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Tutorials</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/hello-world/index.html"><strong aria-hidden="true">2.1.</strong> Hello World</a></li><li class="chapter-item "><a href="tutorial/counter-app/index.html"><strong aria-hidden="true">2.2.</strong> Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/counter-app/single-function.html"><strong aria-hidden="true">2.2.1.</strong> Single Function</a></li><li class="chapter-item "><a href="tutorial/counter-app/refactor.html"><strong aria-hidden="true">2.2.2.</strong> Multiple Functions</a></li><li class="chapter-item "><a href="tutorial/counter-app/multiple-files.html"><strong aria-hidden="true">2.2.3.</strong> Multiple Files</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/counter-app/app.html"><strong aria-hidden="true">2.2.3.1.</strong> app.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/ui.html"><strong aria-hidden="true">2.2.3.2.</strong> ui.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/event.html"><strong aria-hidden="true">2.2.3.3.</strong> event.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/tui.html"><strong aria-hidden="true">2.2.3.4.</strong> tui.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/handler.html"><strong aria-hidden="true">2.2.3.5.</strong> handler.rs</a></li><li class="chapter-item "><a href="tutorial/counter-app/main.html"><strong aria-hidden="true">2.2.3.6.</strong> main.rs</a></li></ol></li></ol></li><li class="chapter-item "><a href="tutorial/json-editor/index.html"><strong aria-hidden="true">2.3.</strong> JSON Editor</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/json-editor/app.html"><strong aria-hidden="true">2.3.1.</strong> App.rs - Holding application state</a></li><li class="chapter-item "><a href="tutorial/json-editor/main.html"><strong aria-hidden="true">2.3.2.</strong> Main.rs - UI loop and event handling</a></li><li class="chapter-item "><a href="tutorial/json-editor/ui.html"><strong aria-hidden="true">2.3.3.</strong> Ui.rs - Layouts, widgets, frames, oh my!</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/json-editor/ui-main.html"><strong aria-hidden="true">2.3.3.1.</strong> Ui.rs - Main</a></li><li class="chapter-item "><a href="tutorial/json-editor/ui-editing.html"><strong aria-hidden="true">2.3.3.2.</strong> Ui.rs - Editing</a></li><li class="chapter-item "><a href="tutorial/json-editor/ui-exit.html"><strong aria-hidden="true">2.3.3.3.</strong> Ui.rs - Exit</a></li></ol></li><li class="chapter-item "><a href="tutorial/json-editor/closing_thoughts.html"><strong aria-hidden="true">2.3.4.</strong> Conclusion</a></li></ol></li><li class="chapter-item "><a href="tutorial/counter-async-app/index.html"><strong aria-hidden="true">2.4.</strong> Async Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="tutorial/counter-async-app/sync-increment-decrement.html"><strong aria-hidden="true">2.4.1.</strong> Sync Increment & Decrement</a></li><li class="chapter-item "><a href="tutorial/counter-async-app/async-increment-decrement.html"><strong aria-hidden="true">2.4.2.</strong> Async Increment & Decrement</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="concepts/index.html"><strong aria-hidden="true">3.</strong> Concepts</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="concepts/rendering.html"><strong aria-hidden="true">3.1.</strong> Rendering</a></li><li class="chapter-item "><a href="concepts/event_handling.html"><strong aria-hidden="true">3.2.</strong> Event Handling</a></li><li class="chapter-item "><a href="concepts/the-elm-architecture.html"><strong aria-hidden="true">3.3.</strong> The Elm Architecture</a></li><li class="chapter-item "><a href="concepts/component-architecture.html"><strong aria-hidden="true">3.4.</strong> Component Architecture</a></li><li class="chapter-item "><div><strong aria-hidden="true">3.5.</strong> Project Structure</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.6.</strong> Application Patterns</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.7.</strong> Design Patterns</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.8.</strong> Application State</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.9.</strong> Event Handling</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.10.</strong> Key Binding</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.11.</strong> Threading</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.12.</strong> Logging</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.13.</strong> Configuration</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> How To</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="how-to/features.html"><strong aria-hidden="true">4.1.</strong> Enable Features</a></li><li class="chapter-item "><a href="how-to/choose-a-backend.html"><strong aria-hidden="true">4.2.</strong> Choose a Backend</a></li><li class="chapter-item "><a href="how-to/setup-panic-hooks.html"><strong aria-hidden="true">4.3.</strong> Setup Panic Hooks</a></li><li class="chapter-item "><a href="how-to/setup-panic-hooks-better-panic.html"><strong aria-hidden="true">4.4.</strong> Setup Panic Hooks with better-panic</a></li><li class="chapter-item "><a href="how-to/setup-logging-tracing.html"><strong aria-hidden="true">4.5.</strong> Setup Logging with tracing</a></li><li class="chapter-item "><a href="how-to/handle-xdg-directories.html"><strong aria-hidden="true">4.6.</strong> Handle XDG Directories</a></li><li class="chapter-item "><a href="how-to/clap.html"><strong aria-hidden="true">4.7.</strong> Handle CLI arguments</a></li><li class="chapter-item "><div><strong aria-hidden="true">4.8.</strong> Blocks</div></li><li class="chapter-item "><div><strong aria-hidden="true">4.9.</strong> Displaying Text</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div><strong aria-hidden="true">4.9.1.</strong> Styling-Text</div></li><li class="chapter-item "><div><strong aria-hidden="true">4.9.2.</strong> Paragraphs</div></li></ol></li><li class="chapter-item "><a href="how-to/layout-constraints-basics.html"><strong aria-hidden="true">4.10.</strong> Layouts Constraints Basics</a></li><li class="chapter-item "><div><strong aria-hidden="true">4.11.</strong> Layout Widgets</div></li><li class="chapter-item "><div><strong aria-hidden="true">4.12.</strong> Create a Widget</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> FAQ</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="faq/duplicate-key-events-windows.html"><strong aria-hidden="true">5.1.</strong> Duplicate key events on Windows</a></li><li class="chapter-item "><a href="faq/tokio-async.html"><strong aria-hidden="true">5.2.</strong> tokio / async</a></li><li class="chapter-item "><a href="faq/tui-rs-history.html"><strong aria-hidden="true">5.3.</strong> tui.rs history</a></li></ol></li><li class="chapter-item expanded "><a href="references/index.html"><strong aria-hidden="true">6.</strong> References</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> Developer Guide</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="developer-guide/ratatui.html"><strong aria-hidden="true">7.1.</strong> Ratatui</a></li><li class="chapter-item "><a href="developer-guide/book.html"><strong aria-hidden="true">7.2.</strong> Ratatui Book</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="contributors.html">Contributors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -2658,6 +2662,422 @@ fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -&gt; Rect {
         .split(popup_layout[1])[1] // Return the middle chunk
 }
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="counter-app-1"><a class="header" href="#counter-app-1">Counter App</a></h1>
+<p>In the previous counter app, we had a purely sequential blocking application. There are times when
+you may be interested in running IO operations or compute asynchronously.</p>
+<p>For this tutorial, we will build a single file version of an async TUI using
+<a href="https://tokio.rs/">tokio</a>.</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p>Here’s an example of the <code>Cargo.toml</code> file required for this tutorial:</p>
+<pre><code class="language-toml">[package]
+name = &quot;ratatui-counter-async-app&quot;
+version = &quot;0.1.0&quot;
+edition = &quot;2021&quot;
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = &quot;1.0.75&quot;
+crossterm = { version = &quot;0.27.0&quot;, features = [&quot;event-stream&quot;] }
+ratatui = &quot;0.23.0&quot;
+tokio = { version = &quot;1.32.0&quot;, features = [&quot;full&quot;] }
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sync-increment--decrement"><a class="header" href="#sync-increment--decrement">Sync Increment &amp; Decrement</a></h1>
+<p>This is the current version of the app that we have:</p>
+<pre class="mermaid">graph TD
+    MainRun[Main: Run];
+    CheckEvent[Main: Poll KeyPress];
+    UpdateTicker[Main: Update Ticker];
+    UpdateApp[Main: Update App with Action];
+    KeyPressToAction[Main: Convert KeyPress to Action];
+    ShouldQuit[Main: Check should_quit?];
+    BreakLoop[Main: Break Loop];
+    MainStart[Main: Start];
+    MainEnd[Main: End];
+    MainStart --&gt; MainRun;
+    MainRun --&gt; CheckEvent;
+    CheckEvent --&gt;|No KeyPress| UpdateTicker;
+    UpdateTicker --&gt; ShouldQuit;
+    CheckEvent --&gt; |KeyPress Received| KeyPressToAction;
+    KeyPressToAction --&gt; |Action| UpdateApp;
+    UpdateApp --&gt; ShouldQuit;
+    ShouldQuit --&gt;|Yes| BreakLoop;
+    BreakLoop --&gt; MainEnd;
+    ShouldQuit --&gt;|No| CheckEvent;
+</pre>
+<p>One of the first steps to building a <code>async</code> applications is to use the <code>Command</code>, <code>Action</code>, or
+<code>Message</code> pattern.</p>
+<div id="admonition-tip" class="admonition tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-async-app/sync-increment-decrement.html#admonition-tip"></a></p>
+</div>
+<div>
+<p>The <code>Command</code> pattern is the concept of “reified method calls”.
+You can learn a lot more about this pattern from the excellent <a href="http://gameprogrammingpatterns.com/command.html">http://gameprogrammingpatterns.com</a>.</p>
+</div>
+</div>
+<p>You can learn more about this concept in
+<a href="tutorial/counter-async-app/./../../concepts/the-elm-architecture.html">The Elm Architecture section</a> of the documentation.</p>
+<p>The key idea is that we have an <code>Action</code> enum that tracks all the actions that can be carried out by
+the <code>App</code>.</p>
+<p>In order to set up an <code>async</code> application, it is important to make the generation of <code>Action</code>s
+“asynchronous”.</p>
+<p>We can do this by spawning a tokio task like so:</p>
+<pre><code class="language-rust">fn handle_event(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -&gt; tokio::task::JoinHandle&lt;()&gt; {
+  let tick_rate = std::time::Duration::from_millis(250);
+  tokio::spawn(async move {
+    loop {
+      let action = if crossterm::event::poll(tick_rate).unwrap() {
+        if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
+            crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
+            crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
+            _ =&gt; Action::None,
+          }
+        } else {
+          Action::None
+        }
+      } else {
+        Action::None
+      };
+      if let Err(_) = tx.send(action) {
+        break;
+      }
+    }
+  })
+}</code></pre>
+<p>Here’s the architecture of the application when using a separate <code>tokio</code> task to manage the
+generation of <code>Action</code> events.</p>
+<pre class="mermaid">graph TD
+    MainRun[Main: Run];
+    CheckAction[Main: Check action_rx];
+    UpdateTicker[Main: Update Ticker];
+    UpdateApp[Main: Update App with Action];
+    ShouldQuit[Main: Check should_quit?];
+    BreakLoop[Main: Break Loop];
+    MainStart[Main: Start];
+    MainEnd[Main: End];
+    MainStart --&gt; MainRun;
+    MainRun --&gt; CheckAction;
+    CheckAction --&gt;|No Action| UpdateTicker;
+    UpdateTicker --&gt; ShouldQuit;
+    CheckAction --&gt;|Action Received| UpdateApp;
+    UpdateApp --&gt; ShouldQuit;
+    ShouldQuit --&gt;|Yes| BreakLoop;
+    BreakLoop --&gt; MainEnd;
+    ShouldQuit --&gt;|No| CheckAction;
+    EventStart[Event: Start handle_event];
+    PollEvent[Event: Poll];
+    ProcessKeyPress[Event: Process Key Press];
+    SendAction[Event: Send Action];
+    ContinueLoop[Event: Continue Loop];
+    EventStart --&gt; PollEvent;
+    PollEvent --&gt;|Event Detected| ProcessKeyPress;
+    ProcessKeyPress --&gt; SendAction;
+    SendAction --&gt; ContinueLoop;
+    ContinueLoop --&gt; PollEvent;
+    PollEvent --&gt;|No Event| ContinueLoop;
+    SendAction -.-&gt; CheckAction;
+</pre>
+<p>Here’s the full code for your reference:</p>
+<pre><code class="language-rust">use std::time::Duration;
+
+use anyhow::Result;
+use ratatui::{prelude::*, widgets::*};
+use tokio::sync::mpsc;
+
+pub fn initialize_panic_handler() {
+  let original_hook = std::panic::take_hook();
+  std::panic::set_hook(Box::new(move |panic_info| {
+    shutdown().unwrap();
+    original_hook(panic_info);
+  }));
+}
+
+pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+
+fn startup() -&gt; Result&lt;()&gt; {
+  crossterm::terminal::enable_raw_mode()?;
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+  Ok(())
+}
+
+fn shutdown() -&gt; Result&lt;()&gt; {
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?;
+  Ok(())
+}
+
+struct App {
+  action_tx: mpsc::UnboundedSender&lt;Action&gt;,
+  counter: i64,
+  should_quit: bool,
+  ticker: i64,
+}
+
+fn ui(f: &amp;mut Frame&lt;'_&gt;, app: &amp;mut App) {
+  let area = f.size();
+  f.render_widget(
+    Paragraph::new(format!(
+      &quot;Press j or k to increment or decrement.\n\nCounter: {}\n\nTicker: {}&quot;,
+      app.counter, app.ticker
+    ))
+    .block(
+      Block::default()
+        .title(&quot;ratatui async counter app&quot;)
+        .title_alignment(Alignment::Center)
+        .borders(Borders::ALL)
+        .border_type(BorderType::Rounded),
+    )
+    .style(Style::default().fg(Color::Cyan))
+    .alignment(Alignment::Center),
+    area,
+  );
+}
+
+#[derive(PartialEq)]
+enum Action {
+  Increment,
+  Decrement,
+  Quit,
+  None,
+}
+
+fn update(app: &amp;mut App, msg: Action) -&gt; Action {
+  match msg {
+    Action::Increment =&gt; {
+      app.counter += 1;
+    },
+    Action::Decrement =&gt; {
+      app.counter -= 1;
+    },
+    Action::Quit =&gt; app.should_quit = true, // You can handle cleanup and exit here
+    _ =&gt; {},
+  };
+  Action::None
+}
+
+fn handle_event(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -&gt; tokio::task::JoinHandle&lt;()&gt; {
+  let tick_rate = std::time::Duration::from_millis(250);
+  tokio::spawn(async move {
+    loop {
+      let action = if crossterm::event::poll(tick_rate).unwrap() {
+        if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
+            crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
+            crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
+            _ =&gt; Action::None,
+          }
+        } else {
+          Action::None
+        }
+      } else {
+        Action::None
+      };
+      if let Err(_) = tx.send(action) {
+        break;
+      }
+    }
+  })
+}
+
+async fn run() -&gt; Result&lt;()&gt; {
+  let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+
+  let (action_tx, mut action_rx) = mpsc::unbounded_channel();
+
+  let mut app = App { counter: 0, should_quit: false, action_tx, ticker: 0 };
+
+  let task = handle_event(&amp;app, app.action_tx.clone());
+
+  loop {
+    t.draw(|f| {
+      ui(f, &amp;mut app);
+    })?;
+
+    if let Some(action) = action_rx.recv().await {
+      update(&amp;mut app, action);
+    }
+
+    if app.should_quit {
+      break;
+    }
+    app.ticker += 1;
+  }
+
+  task.abort();
+
+  Ok(())
+}
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;()&gt; {
+  initialize_panic_handler();
+  startup()?;
+  run().await?;
+  shutdown()?;
+  Ok(())
+}</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="async-increment--decrement"><a class="header" href="#async-increment--decrement">Async Increment &amp; Decrement</a></h1>
+<pre><code class="language-rust">use std::time::Duration;
+
+use anyhow::Result;
+use ratatui::{prelude::*, widgets::*};
+use tokio::sync::mpsc;
+
+pub fn initialize_panic_handler() {
+  let original_hook = std::panic::take_hook();
+  std::panic::set_hook(Box::new(move |panic_info| {
+    shutdown().unwrap();
+    original_hook(panic_info);
+  }));
+}
+
+pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+
+fn startup() -&gt; Result&lt;()&gt; {
+  crossterm::terminal::enable_raw_mode()?;
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+  Ok(())
+}
+
+fn shutdown() -&gt; Result&lt;()&gt; {
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?;
+  Ok(())
+}
+
+struct App {
+  action_tx: mpsc::UnboundedSender&lt;Action&gt;,
+  counter: i64,
+  should_quit: bool,
+  ticker: i64,
+}
+
+fn ui(f: &amp;mut Frame&lt;'_&gt;, app: &amp;mut App) {
+  let area = f.size();
+  f.render_widget(
+    Paragraph::new(format!(
+      &quot;Press j or k to increment or decrement.\n\nCounter: {}\n\nTicker: {}&quot;,
+      app.counter, app.ticker
+    ))
+    .block(
+      Block::default()
+        .title(&quot;ratatui async counter app&quot;)
+        .title_alignment(Alignment::Center)
+        .borders(Borders::ALL)
+        .border_type(BorderType::Rounded),
+    )
+    .style(Style::default().fg(Color::Cyan))
+    .alignment(Alignment::Center),
+    area,
+  );
+}
+
+#[derive(PartialEq)]
+enum Action {
+  ScheduleIncrement,
+  ScheduleDecrement,
+  Increment,
+  Decrement,
+  Quit,
+  None,
+}
+
+fn update(app: &amp;mut App, msg: Action) -&gt; Action {
+  match msg {
+    Action::Increment =&gt; {
+      app.counter += 1;
+    },
+    Action::Decrement =&gt; {
+      app.counter -= 1;
+    },
+    Action::ScheduleIncrement =&gt; {
+      let tx = app.action_tx.clone();
+      tokio::spawn(async move {
+        tokio::time::sleep(Duration::from_secs(5)).await;
+        tx.send(Action::Increment).unwrap();
+      });
+    },
+    Action::ScheduleDecrement =&gt; {
+      let tx = app.action_tx.clone();
+      tokio::spawn(async move {
+        tokio::time::sleep(Duration::from_secs(5)).await;
+        tx.send(Action::Decrement).unwrap();
+      });
+    },
+    Action::Quit =&gt; app.should_quit = true, // You can handle cleanup and exit here
+    _ =&gt; {},
+  };
+  Action::None
+}
+
+fn handle_event(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -&gt; tokio::task::JoinHandle&lt;()&gt; {
+  let tick_rate = std::time::Duration::from_millis(250);
+  tokio::spawn(async move {
+    loop {
+      let action = if crossterm::event::poll(tick_rate).unwrap() {
+        if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') =&gt; Action::ScheduleIncrement,
+            crossterm::event::KeyCode::Char('k') =&gt; Action::ScheduleDecrement,
+            crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
+            _ =&gt; Action::None,
+          }
+        } else {
+          Action::None
+        }
+      } else {
+        Action::None
+      };
+      if let Err(_) = tx.send(action) {
+        break;
+      }
+    }
+  })
+}
+
+async fn run() -&gt; Result&lt;()&gt; {
+  let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+
+  let (action_tx, mut action_rx) = mpsc::unbounded_channel();
+
+  let mut app = App { counter: 0, should_quit: false, action_tx, ticker: 0 };
+
+  let task = handle_event(&amp;app, app.action_tx.clone());
+
+  loop {
+    t.draw(|f| {
+      ui(f, &amp;mut app);
+    })?;
+
+    if let Some(action) = action_rx.recv().await {
+      update(&amp;mut app, action);
+    }
+
+    if app.should_quit {
+      break;
+    }
+    app.ticker += 1;
+  }
+
+  task.abort();
+
+  Ok(())
+}
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;()&gt; {
+  initialize_panic_handler();
+  startup()?;
+  run().await?;
+  shutdown()?;
+  Ok(())
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="concepts"><a class="header" href="#concepts">Concepts</a></h1>
 <p>In this section, we will cover various concepts associated with terminal user interfaces, such as:</p>
 <ul>
@@ -4307,8 +4727,6 @@ for more up to date information.</p>
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
-        <script type="text/javascript" src="mermaid.min.js"></script>
-        <script type="text/javascript" src="mermaid-init.js"></script>
 
         <script type="text/javascript">
         window.addEventListener('load', function() {
