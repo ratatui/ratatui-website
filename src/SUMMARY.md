@@ -17,7 +17,7 @@
       - [ui.rs](./tutorial/counter-app/ui.md)
       - [event.rs](./tutorial/counter-app/event.md)
       - [tui.rs](./tutorial/counter-app/tui.md)
-      - [handler.rs](./tutorial/counter-app/handler.md)
+      - [update.rs](./tutorial/counter-app/update.md)
       - [main.rs](./tutorial/counter-app/main.md)
   - [JSON Editor](./tutorial/json-editor/README.md)
     - [App.rs - Holding application state](./tutorial/json-editor/app.md)
