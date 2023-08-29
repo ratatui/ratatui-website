@@ -8,7 +8,7 @@ In this post, we'll explore how to apply The Elm Architecture to `ratatui` TUI a
 
 ## The Elm Architecture: A Quick Overview
 
-At its core, the Elm Architecture is split into three main components:
+At its core, TEA is split into three main components:
 
 - **Model**: This is your application's state. It contains all the data your application works with.
 - **Update**: When there's a change (like user input), the update function takes the current model
@@ -27,9 +27,15 @@ TUI Application->>TUI Application: Render View (from Model)
 TUI Application-->>User: Display UI
 ```
 
-## Applying TEA to `ratatui`
+## Applying The Elm Architecture to `ratatui`
+
+Following TEA principles typically involves ensuring that you do the following things:
 
 1. Define Your Model
+2. Handling Updates
+3. Rendering the View
+
+### 1. Define Your Model
 
 In `ratatui`, you'll typically use a `struct` to represent your model:
 
@@ -39,7 +45,16 @@ struct Model {
 }
 ```
 
-2. Handling Updates
+For a counter app, our model may look like this:
+
+```rust
+struct Model {
+  counter: i32,
+  should_quit: bool,
+}
+```
+
+### 2. Handling Updates
 
 Updates in TEA are actions triggered by events, such as user inputs. The core idea is to map each of
 these actions or events to a message. This can be achieved by creating an enum to keep track of
@@ -52,6 +67,18 @@ next state.
 enum Message {
     //... various inputs or actions that your app cares about
     // e.g., ButtonPressed, TextEntered, etc.
+}
+```
+
+For a counter app, our `Message` enum may look like this:
+
+```rust
+enum Message {
+  Increment,
+  Decrement,
+  Reset,
+  Quit,
+  None,
 }
 ```
 
@@ -92,7 +119,56 @@ fn update(model: &mut Model, msg: Message) {
 ```
 ````
 
-3. Rendering the View
+In TEA, the `update()` function can not only modify the model based on the `Message`, but it can
+also return another `Message`. This design can be particularly useful if you want to chain messages
+or have an update lead to another update.
+
+For example, this is what the `update()` function may look like for a counter app:
+
+```rust
+fn update(model: &mut Model, msg: Message) -> Message {
+  match msg {
+    Message::Increment => {
+      model.counter += 1;
+      if model.counter > 50 {
+        return Message::Reset;
+      }
+    },
+    Message::Decrement => {
+      model.counter -= 1;
+      if model.counter < -50 {
+        return Message::Reset;
+      }
+    },
+    Message::Reset => {
+      model.counter = 0;
+    },
+    Message::Quit => {
+      model.should_quit = true;
+    },
+    _ => {},
+  }
+  Message::None // Default return value if no specific message is to be returned
+}
+```
+
+```admonish attention
+Remember that this design choice means that the `main` loop will need to handle the
+returned message, calling `update()` again based on that returned message.
+```
+
+Returning a `Message` from the `update()` function allows a developer to reason about their code as
+a "Finite State Machine". Finite State Machines operate on defined states and transitions, where an
+initial state and an event (in our case, a `Message`) lead to a subsequent state. This cascading
+approach ensures that the system remains in a consistent and predictable state after handling a
+series of interconnected events. It allows developers to break down intricate state transitions into
+smaller, more manageable steps.
+
+While TEA doesn't use the Finite State Machine terminology or strictly enforce that paradigm,
+thinking of your application's state as a state machine can sometimes make designing the
+application's logic clearer and can improve code maintainability.
+
+### 3. Rendering the View
 
 The view function in the Elm Architecture is tasked with taking the current model and producing a
 visual representation for the user. In the case of ratatui, it translates the model into terminal UI
@@ -190,11 +266,13 @@ The notable difference from before is that we have an `Model` struct that captur
 and a `Message` enum that captures the various actions your app can take.
 
 ```rust
+// cargo add anyhow ratatui crossterm
 use anyhow::Result;
 use ratatui::{
   prelude::{CrosstermBackend, Terminal},
   widgets::Paragraph,
 };
+use log;
 
 pub type Frame<'a> = ratatui::Frame<'a, ratatui::backend::CrosstermBackend<std::io::Stderr>>;
 
@@ -205,21 +283,36 @@ struct Model {
 }
 
 // MESSAGES
+#[derive(PartialEq)]
 enum Message {
   Increment,
   Decrement,
+  Reset,
   Quit,
   None,
 }
 
 // UPDATE
-fn update(model: &mut Model, msg: Message) {
+fn update(model: &mut Model, msg: Message) -> Message {
   match msg {
-    Message::Increment => model.counter += 1,
+    Message::Increment => {
+      model.counter += 1;
+      if model.counter > 50 {
+        return Message::Reset;
+      }
+    },
+    Message::Decrement => {
+      model.counter -= 1;
+      if model.counter < -50 {
+        return Message::Reset;
+      }
+    },
     Message::Decrement => model.counter -= 1,
+    Message::Reset => model.counter = 0,
     Message::Quit => model.should_quit = true, // You can handle cleanup and exit here
-    Message::None => (),
-  }
+    Message::None => panic!("`update() should never be called with `Message::None`"),
+  };
+  Message::None
 }
 
 // VIEW
@@ -268,14 +361,20 @@ fn main() -> Result<()> {
   let mut model = Model { counter: 0, should_quit: false };
 
   loop {
+    // Render the current view
     terminal.draw(|f| {
       view(&mut model, f);
     })?;
 
-    let msg = handle_event(&model)?;
+    // Handle events and map to a Message
+    let mut current_msg = handle_event(&model)?;
 
-    update(&mut model, msg);
+    // Process updates as long as they return a non-None message
+    while current_msg != Message::None {
+      current_msg = update(&mut model, current_msg);
+    }
 
+    // Exit loop if quit flag is set
     if model.should_quit {
       break;
     }
