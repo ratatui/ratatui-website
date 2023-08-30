@@ -7,7 +7,7 @@ as The Elm Architecture (TEA).
 ```admonish attention
 If you are interested in a framework that uses `ratatui` that is based on The Elm Architecture,
 you should check out <https://github.com/veeso/tui-realm/>.
-The documentation on this page is for theorectical understanding and pedagogical purposes only.
+The documentation on this page is for theoretical understanding and pedagogical purposes only.
 ```
 
 In this section, we'll explore how to apply The Elm Architecture principles to `ratatui` TUI apps.
