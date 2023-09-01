@@ -88,6 +88,13 @@ enum Message {
 }
 ```
 
+```admonish note
+In Elm, you always have to return a `Message`, so developers tend to have a `Message:Noop`
+or `Message::None` as part of the enum. But in Rust we can remove the `None` variant from
+the `Message` and use an `Option<Message>` instead, and that would work just the same.
+Choose whatever suits your preferences best.
+```
+
 **`update()` function**
 
 The update function is at the heart of this process. It takes the current model and a message, and
