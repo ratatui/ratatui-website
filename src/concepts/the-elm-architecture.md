@@ -84,15 +84,7 @@ enum Message {
   Decrement,
   Reset,
   Quit,
-  None,
 }
-```
-
-```admonish note
-In Elm, you always have to return a `Message`, so developers tend to have a `Message:Noop`
-or `Message::None` as part of the enum. But in Rust we can remove the `None` variant from
-the `Message` and use an `Option<Message>` instead, and that would work just the same.
-Choose whatever suits your preferences best.
 ```
 
 **`update()` function**
@@ -139,18 +131,18 @@ or have an update lead to another update.
 For example, this is what the `update()` function may look like for a counter app:
 
 ```rust
-fn update(model: &mut Model, msg: Message) -> Message {
+fn update(model: &mut Model, msg: Message) -> Option<Message> {
   match msg {
     Message::Increment => {
       model.counter += 1;
       if model.counter > 50 {
-        return Message::Reset;
+        return Some(Message::Reset);
       }
     },
     Message::Decrement => {
       model.counter -= 1;
       if model.counter < -50 {
-        return Message::Reset;
+        return Some(Message::Reset);
       }
     },
     Message::Reset => {
@@ -161,7 +153,7 @@ fn update(model: &mut Model, msg: Message) -> Message {
     },
     _ => {},
   }
-  Message::None // Default return value if no specific message is to be returned
+  None // Default return value if no specific message is to be returned
 }
 ```
 
@@ -326,29 +318,27 @@ enum Message {
   Decrement,
   Reset,
   Quit,
-  None,
 }
 
 // UPDATE
-fn update(model: &mut Model, msg: Message) -> Message {
+fn update(model: &mut Model, msg: Message) -> Option<Message> {
   match msg {
     Message::Increment => {
       model.counter += 1;
       if model.counter > 50 {
-        return Message::Reset;
+        return Some(Message::Reset);
       }
     },
     Message::Decrement => {
       model.counter -= 1;
       if model.counter < -50 {
-        return Message::Reset;
+        return Some(Message::Reset);
       }
     },
     Message::Reset => model.counter = 0,
     Message::Quit => model.should_quit = true, // You can handle cleanup and exit here
-    Message::None => panic!("`update() should never be called with `Message::None`"),
   };
-  Message::None
+  None
 }
 
 // VIEW
@@ -359,22 +349,22 @@ fn view(model: &mut Model, f: &mut Frame) {
 // Convert Event to Message
 // We don't need to pass in a `model` to this function in this example
 // but you might need it as your project evolves
-fn handle_event(_: &Model) -> Result<Message> {
+fn handle_event(_: &Model) -> Result<Option<Message>> {
   let message = if crossterm::event::poll(std::time::Duration::from_millis(250))? {
     if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
       match key.code {
         crossterm::event::KeyCode::Char('j') => Message::Increment,
         crossterm::event::KeyCode::Char('k') => Message::Decrement,
         crossterm::event::KeyCode::Char('q') => Message::Quit,
-        _ => Message::None,
+        _ => return Ok(None),
       }
     } else {
-      Message::None
+      return Ok(None);
     }
   } else {
-    Message::None
+    return Ok(None);
   };
-  Ok(message)
+  Ok(Some(message))
 }
 
 pub fn initialize_panic_handler() {
@@ -406,8 +396,8 @@ fn main() -> Result<()> {
     let mut current_msg = handle_event(&model)?;
 
     // Process updates as long as they return a non-None message
-    while current_msg != Message::None {
-      current_msg = update(&mut model, current_msg);
+    while current_msg != None {
+      current_msg = update(&mut model, current_msg.unwrap());
     }
 
     // Exit loop if quit flag is set
