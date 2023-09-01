@@ -228,6 +228,18 @@ next state.</p>
   Quit,
   None,
 }</code></pre>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+</div>
+<div>
+<p>In Elm, you always have to return a <code>Message</code>, so developers tend to have a <code>Message:Noop</code>
+or <code>Message::None</code> as part of the enum. But in Rust we can remove the <code>None</code> variant from
+the <code>Message</code> and use an <code>Option&lt;Message&gt;</code> instead, and that would work just the same.
+Choose whatever suits your preferences best.</p>
+</div>
+</div>
 <p><strong><code>update()</code> function</strong></p>
 <p>The update function is at the heart of this process. It takes the current model and a message, and
 decides how the model should change in response to that message.</p>
@@ -242,10 +254,10 @@ model. Instead, it should produce a new instance of the model reflecting the des
 <p>In TEA, it’s crucial to maintain a clear separation between the data (model) and the logic that
 alters it (update). This immutability principle ensures predictability and makes the application
 easier to reason about.</p>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note-1" class="admonition note">
 <div class="admonition-title">
 <p>Note</p>
-<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+<p><a class="admonition-anchor-link" href="#admonition-note-1"></a></p>
 </div>
 <div>
 <p>Hence, while immutability is emphasized in TEA, Rust developers can choose the most
@@ -343,10 +355,10 @@ function shouldn’t modify global state or perform any other actions. Its sole 
 model to a visual representation.</p>
 <p>For a given state of the model, the view function should always produce the same visual output. This
 predictability makes your TUI application easier to reason about and debug.</p>
-<div id="admonition-note-1" class="admonition note">
+<div id="admonition-note-2" class="admonition note">
 <div class="admonition-title">
 <p>Note</p>
-<p><a class="admonition-anchor-link" href="#admonition-note-1"></a></p>
+<p><a class="admonition-anchor-link" href="#admonition-note-2"></a></p>
 </div>
 <div>
 <p>With immediate mode rendering you may run into an issue: the <code>view</code> function is only aware of the
