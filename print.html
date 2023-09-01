@@ -3759,20 +3759,7 @@ next state.</p>
   Decrement,
   Reset,
   Quit,
-  None,
 }</code></pre>
-<div id="admonition-note" class="admonition note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="concepts/the-elm-architecture.html#admonition-note"></a></p>
-</div>
-<div>
-<p>In Elm, you always have to return a <code>Message</code>, so developers tend to have a <code>Message:Noop</code>
-or <code>Message::None</code> as part of the enum. But in Rust we can remove the <code>None</code> variant from
-the <code>Message</code> and use an <code>Option&lt;Message&gt;</code> instead, and that would work just the same.
-Choose whatever suits your preferences best.</p>
-</div>
-</div>
 <p><strong><code>update()</code> function</strong></p>
 <p>The update function is at the heart of this process. It takes the current model and a message, and
 decides how the model should change in response to that message.</p>
@@ -3787,10 +3774,10 @@ model. Instead, it should produce a new instance of the model reflecting the des
 <p>In TEA, it’s crucial to maintain a clear separation between the data (model) and the logic that
 alters it (update). This immutability principle ensures predictability and makes the application
 easier to reason about.</p>
-<div id="admonition-note-1" class="admonition note">
+<div id="admonition-note" class="admonition note">
 <div class="admonition-title">
 <p>Note</p>
-<p><a class="admonition-anchor-link" href="concepts/the-elm-architecture.html#admonition-note-1"></a></p>
+<p><a class="admonition-anchor-link" href="concepts/the-elm-architecture.html#admonition-note"></a></p>
 </div>
 <div>
 <p>Hence, while immutability is emphasized in TEA, Rust developers can choose the most
@@ -3808,18 +3795,18 @@ suitable approach based on performance and their application’s needs.</p>
 also return another <code>Message</code>. This design can be particularly useful if you want to chain messages
 or have an update lead to another update.</p>
 <p>For example, this is what the <code>update()</code> function may look like for a counter app:</p>
-<pre><code class="language-rust">fn update(model: &amp;mut Model, msg: Message) -&gt; Message {
+<pre><code class="language-rust">fn update(model: &amp;mut Model, msg: Message) -&gt; Option&lt;Message&gt; {
   match msg {
     Message::Increment =&gt; {
       model.counter += 1;
       if model.counter &gt; 50 {
-        return Message::Reset;
+        return Some(Message::Reset);
       }
     },
     Message::Decrement =&gt; {
       model.counter -= 1;
       if model.counter &lt; -50 {
-        return Message::Reset;
+        return Some(Message::Reset);
       }
     },
     Message::Reset =&gt; {
@@ -3830,7 +3817,7 @@ or have an update lead to another update.</p>
     },
     _ =&gt; {},
   }
-  Message::None // Default return value if no specific message is to be returned
+  None // Default return value if no specific message is to be returned
 }</code></pre>
 <div id="admonition-attention-1" class="admonition warning">
 <div class="admonition-title">
@@ -3888,10 +3875,10 @@ function shouldn’t modify global state or perform any other actions. Its sole 
 model to a visual representation.</p>
 <p>For a given state of the model, the view function should always produce the same visual output. This
 predictability makes your TUI application easier to reason about and debug.</p>
-<div id="admonition-note-2" class="admonition note">
+<div id="admonition-note-1" class="admonition note">
 <div class="admonition-title">
 <p>Note</p>
-<p><a class="admonition-anchor-link" href="concepts/the-elm-architecture.html#admonition-note-2"></a></p>
+<p><a class="admonition-anchor-link" href="concepts/the-elm-architecture.html#admonition-note-1"></a></p>
 </div>
 <div>
 <p>With immediate mode rendering you may run into an issue: the <code>view</code> function is only aware of the
@@ -3974,29 +3961,27 @@ enum Message {
   Decrement,
   Reset,
   Quit,
-  None,
 }
 
 // UPDATE
-fn update(model: &amp;mut Model, msg: Message) -&gt; Message {
+fn update(model: &amp;mut Model, msg: Message) -&gt; Option&lt;Message&gt; {
   match msg {
     Message::Increment =&gt; {
       model.counter += 1;
       if model.counter &gt; 50 {
-        return Message::Reset;
+        return Some(Message::Reset);
       }
     },
     Message::Decrement =&gt; {
       model.counter -= 1;
       if model.counter &lt; -50 {
-        return Message::Reset;
+        return Some(Message::Reset);
       }
     },
     Message::Reset =&gt; model.counter = 0,
     Message::Quit =&gt; model.should_quit = true, // You can handle cleanup and exit here
-    Message::None =&gt; panic!(&quot;`update() should never be called with `Message::None`&quot;),
   };
-  Message::None
+  None
 }
 
 // VIEW
@@ -4007,22 +3992,22 @@ fn view(model: &amp;mut Model, f: &amp;mut Frame) {
 // Convert Event to Message
 // We don't need to pass in a `model` to this function in this example
 // but you might need it as your project evolves
-fn handle_event(_: &amp;Model) -&gt; Result&lt;Message&gt; {
+fn handle_event(_: &amp;Model) -&gt; Result&lt;Option&lt;Message&gt;&gt; {
   let message = if crossterm::event::poll(std::time::Duration::from_millis(250))? {
     if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
       match key.code {
         crossterm::event::KeyCode::Char('j') =&gt; Message::Increment,
         crossterm::event::KeyCode::Char('k') =&gt; Message::Decrement,
         crossterm::event::KeyCode::Char('q') =&gt; Message::Quit,
-        _ =&gt; Message::None,
+        _ =&gt; return Ok(None),
       }
     } else {
-      Message::None
+      return Ok(None);
     }
   } else {
-    Message::None
+    return Ok(None);
   };
-  Ok(message)
+  Ok(Some(message))
 }
 
 pub fn initialize_panic_handler() {
@@ -4054,8 +4039,8 @@ fn main() -&gt; Result&lt;()&gt; {
     let mut current_msg = handle_event(&amp;model)?;
 
     // Process updates as long as they return a non-None message
-    while current_msg != Message::None {
-      current_msg = update(&amp;mut model, current_msg);
+    while current_msg != None {
+      current_msg = update(&amp;mut model, current_msg.unwrap());
     }
 
     // Exit loop if quit flag is set
