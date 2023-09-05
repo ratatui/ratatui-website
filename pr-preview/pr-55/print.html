@@ -814,6 +814,31 @@ the previous section:</p>
    ├── ui.rs
    └── update.rs
 </code></pre>
+<p>We are going to use <code>anyhow</code> in this section of the tutorial.</p>
+<pre><code class="language-bash">cargo add anyhow
+</code></pre>
+<div id="admonition-tip" class="admonition tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-app/multiple-files.html#admonition-tip"></a></p>
+</div>
+<div>
+<p>Instead of <code>anyhow</code> you can also use <a href="https://github.com/eyre-rs/eyre"><code>eyre</code></a> or <a href="https://github.com/eyre-rs/color-eyre"><code>color-eyre</code></a>.</p>
+<pre><code class="language-diff">- use anyhow::Result;
++ use color_eyre::eyre::Result;
+</code></pre>
+<p>If you are using <code>color_eyre</code>, you’ll also want to add <code>color_eyre::install()?</code> to the beginning of
+your <code>main()</code> function:</p>
+<pre><code class="language-rust">use color_eyre::eyre::Result;
+
+fn main() -&gt; Result&lt;()&gt; {
+    color_eyre::install()?;
+    // ...
+    Ok(())
+}</code></pre>
+<p><code>color_eyre</code> is an error report handler for colorful, consistent, and well formatted error reports for all kinds of errors.</p>
+</div>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="apprs"><a class="header" href="#apprs">app.rs</a></h1>
 <p>Let’s start with the same <code>struct</code> as we had before:</p>
 <pre><code class="language-rust">/// Application.
@@ -1056,6 +1081,80 @@ also send a <code>Event::Tick</code> on the channel during this.</p>
 }</code></pre>
 <p>In summary, our <code>EventHandler</code> abstracts away the complexity of event polling and handling into a
 dedicated background thread.</p>
+<p>Here’s the full code for your reference:</p>
+<pre><code class="language-rust">use std::{
+  sync::mpsc,
+  thread,
+  time::{Duration, Instant},
+};
+
+use anyhow::Result;
+use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+
+/// Terminal events.
+#[derive(Clone, Copy, Debug)]
+pub enum Event {
+  /// Terminal tick.
+  Tick,
+  /// Key press.
+  Key(KeyEvent),
+  /// Mouse click/scroll.
+  Mouse(MouseEvent),
+  /// Terminal resize.
+  Resize(u16, u16),
+}
+
+/// Terminal event handler.
+#[derive(Debug)]
+pub struct EventHandler {
+  /// Event sender channel.
+  sender: mpsc::Sender&lt;Event&gt;,
+  /// Event receiver channel.
+  receiver: mpsc::Receiver&lt;Event&gt;,
+  /// Event handler thread.
+  handler: thread::JoinHandle&lt;()&gt;,
+}
+
+impl EventHandler {
+  /// Constructs a new instance of [`EventHandler`].
+  pub fn new(tick_rate: u64) -&gt; Self {
+    let tick_rate = Duration::from_millis(tick_rate);
+    let (sender, receiver) = mpsc::channel();
+    let handler = {
+      let sender = sender.clone();
+      thread::spawn(move || {
+        let mut last_tick = Instant::now();
+        loop {
+          let timeout = tick_rate.checked_sub(last_tick.elapsed()).unwrap_or(tick_rate);
+
+          if event::poll(timeout).expect(&quot;no events available&quot;) {
+            match event::read().expect(&quot;unable to read event&quot;) {
+              CrosstermEvent::Key(e) =&gt; sender.send(Event::Key(e)),
+              CrosstermEvent::Mouse(e) =&gt; sender.send(Event::Mouse(e)),
+              CrosstermEvent::Resize(w, h) =&gt; sender.send(Event::Resize(w, h)),
+              _ =&gt; unimplemented!(),
+            }
+            .expect(&quot;failed to send terminal event&quot;)
+          }
+
+          if last_tick.elapsed() &gt;= tick_rate {
+            sender.send(Event::Tick).expect(&quot;failed to send tick event&quot;);
+            last_tick = Instant::now();
+          }
+        }
+      })
+    };
+    Self { sender, receiver, handler }
+  }
+
+  /// Receive the next event from the handler thread.
+  ///
+  /// This function will always block the current thread if
+  /// there is no data available and it's possible for more data to be sent.
+  pub fn next(&amp;self) -&gt; Result&lt;Event&gt; {
+    Ok(self.receiver.recv()?)
+  }
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="tuirs"><a class="header" href="#tuirs">tui.rs</a></h1>
 <p>Next, we can further abstract the terminal functionality from earlier into a <code>Tui</code> struct.</p>
 <p>It provides a concise and efficient way to manage the terminal, handle events, and render content.
@@ -1254,6 +1353,16 @@ pub fn update(app: &amp;mut App, key_event: KeyEvent) {
     _ =&gt; {},
   };
 }</code></pre>
+<div id="admonition-question" class="admonition question">
+<div class="admonition-title">
+<p>Question</p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-app/update.html#admonition-question"></a></p>
+</div>
+<div>
+<p>As an exercise, can you refactor this app to use “The Elm Architecture” principles?</p>
+<p>Check out <a href="tutorial/counter-app/./../../concepts/the-elm-architecture.html">the concepts page on The Elm Architecture</a> for reference.</p>
+</div>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mainrs"><a class="header" href="#mainrs">main.rs</a></h1>
 <p>Putting it all together, we have the <code>main.rs</code> function:</p>
 <pre><code class="language-rust">use std::io;
@@ -1339,6 +1448,15 @@ Sleep 2.5s
 
 -->
 <p><img src="https://user-images.githubusercontent.com/1813121/263404720-41bd81a0-4eec-479c-9333-44363a183613.gif" alt="" /></p>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-app/main.html#admonition-note"></a></p>
+</div>
+<div>
+<p>Check out the concepts pages, e.g. <a href="tutorial/counter-app/./../../concepts/the-elm-architecture.html">The Elm Architecture</a> for more information on how to structure your applications.</p>
+</div>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-editor"><a class="header" href="#json-editor">JSON Editor</a></h1>
 <p>Now that we have covered some of the basics of a “hello world” and “counter” app, we are ready to
 build and manage something more involved.</p>
