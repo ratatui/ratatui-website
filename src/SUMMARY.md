@@ -49,6 +49,8 @@
   - [Logging]()
   - [Configuration]()
 
+- [Integrations](./integrations/README.md)
+
 - [How To]()
 
   - [Enable Features](./how-to/features.md)
