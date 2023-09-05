@@ -1,3 +1,4 @@
+///// ANCHOR: eventall
 use std::{
   sync::mpsc,
   thread,
@@ -79,3 +80,4 @@ impl EventHandler {
   }
 }
 ///// ANCHOR_END: eventhandler_impl
+///// ANCHOR_END: eventall

@@ -170,12 +170,36 @@ the previous section:</p>
 └── src
    ├── app.rs
    ├── event.rs
-   ├── lib.rs
    ├── main.rs
    ├── tui.rs
    ├── ui.rs
    └── update.rs
 </code></pre>
+<p>We are going to use <code>anyhow</code> in this section of the tutorial.</p>
+<pre><code class="language-bash">cargo add anyhow
+</code></pre>
+<div id="admonition-tip" class="admonition tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="#admonition-tip"></a></p>
+</div>
+<div>
+<p>Instead of <code>anyhow</code> you can also use <a href="https://github.com/eyre-rs/eyre"><code>eyre</code></a> or <a href="https://github.com/eyre-rs/color-eyre"><code>color-eyre</code></a>.</p>
+<pre><code class="language-diff">- use anyhow::Result;
++ use color_eyre::eyre::Result;
+</code></pre>
+<p>If you are using <code>color_eyre</code>, you’ll also want to add <code>color_eyre::install()?</code> to the beginning of
+your <code>main()</code> function:</p>
+<pre><code class="language-rust">use color_eyre::eyre::Result;
+
+fn main() -&gt; Result&lt;()&gt; {
+    color_eyre::install()?;
+    // ...
+    Ok(())
+}</code></pre>
+<p><code>color_eyre</code> is an error report handler for colorful, consistent, and well formatted error reports for all kinds of errors.</p>
+</div>
+</div>
 
                     </main>
 
