@@ -39,6 +39,7 @@
   - [Event Handling](./concepts/event_handling.md)
   - [The Elm Architecture](./concepts/the-elm-architecture.md)
   - [Component Architecture](./concepts/component-architecture.md)
+  - [Flux Architecture](./concepts/flux-architecture.md)
   - [Project Structure]()
   - [Application Patterns]()
   - [Design Patterns]()
