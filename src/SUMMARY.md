@@ -58,6 +58,7 @@
   - [Setup Logging with tracing](./how-to/setup-logging-tracing.md)
   - [Handle XDG Directories](./how-to/handle-xdg-directories.md)
   - [Handle CLI arguments](./how-to/clap.md)
+  - [Center a Rect](./how-to/center-a-rect.md)
   - [Blocks]()
   - [Displaying Text]()
     - [Styling-Text]()
