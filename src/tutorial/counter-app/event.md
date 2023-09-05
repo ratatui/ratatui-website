@@ -95,3 +95,9 @@ if last_tick.elapsed() >= tick_rate {
 
 In summary, our `EventHandler` abstracts away the complexity of event polling and handling into a
 dedicated background thread.
+
+Here's the full code for your reference:
+
+```rust
+{{#include ./ratatui-counter-app/src/event.rs:eventall}}
+```

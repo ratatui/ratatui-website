@@ -9,3 +9,9 @@ Finally we have the `update.rs` file. Here, the `update()` function takes in two
 ```rust
 {{#include ./ratatui-counter-app/src/update.rs}}
 ```
+
+```admonish question
+As an exercise, can you refactor this app to use "The Elm Architecture" principles?
+
+Check out [the concepts page on The Elm Architecture](./../../concepts/the-elm-architecture.md) for reference.
+```

@@ -13,9 +13,38 @@ $ tree .
 └── src
    ├── app.rs
    ├── event.rs
-   ├── lib.rs
    ├── main.rs
    ├── tui.rs
    ├── ui.rs
    └── update.rs
 ```
+
+We are going to use `anyhow` in this section of the tutorial.
+
+```bash
+cargo add anyhow
+```
+
+````admonish tip
+Instead of `anyhow` you can also use [`eyre`](https://github.com/eyre-rs/eyre) or [`color-eyre`](https://github.com/eyre-rs/color-eyre).
+
+```diff
+- use anyhow::Result;
++ use color_eyre::eyre::Result;
+```
+
+If you are using `color_eyre`, you'll also want to add `color_eyre::install()?` to the beginning of
+your `main()` function:
+
+```rust
+use color_eyre::eyre::Result;
+
+fn main() -> Result<()> {
+    color_eyre::install()?;
+    // ...
+    Ok(())
+}
+```
+
+`color_eyre` is an error report handler for colorful, consistent, and well formatted error reports for all kinds of errors.
+````
