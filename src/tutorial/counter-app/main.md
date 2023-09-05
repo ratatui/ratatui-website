@@ -41,3 +41,7 @@ Sleep 2.5s
 -->
 
 ![](https://user-images.githubusercontent.com/1813121/263404720-41bd81a0-4eec-479c-9333-44363a183613.gif)
+
+```admonish note
+Check out the concepts pages, e.g. [The Elm Architecture](./../../concepts/the-elm-architecture.md) for more information on how to structure your applications.
+```
