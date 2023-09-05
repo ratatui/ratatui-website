@@ -61,6 +61,7 @@
   - [Handle XDG Directories](./how-to/handle-xdg-directories.md)
   - [Handle CLI arguments](./how-to/clap.md)
   - [Center a Rect](./how-to/center-a-rect.md)
+  - [Combine Terminal and EventHandler](./how-to/combine-terminal-and-eventhandler.md)
   - [Blocks]()
   - [Displaying Text]()
     - [Styling-Text]()
