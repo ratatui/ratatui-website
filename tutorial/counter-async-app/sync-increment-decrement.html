@@ -163,7 +163,7 @@
 <p>In order to set up an <code>async</code> application, it is important to make the generation of <code>Action</code>s
 “asynchronous”.</p>
 <p>We can do this by spawning a tokio task like so:</p>
-<pre><code class="language-rust">fn handle_event(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -&gt; tokio::task::JoinHandle&lt;()&gt; {
+<pre><code class="language-rust">fn start_event_handler(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -&gt; tokio::task::JoinHandle&lt;()&gt; {
   let tick_rate = std::time::Duration::from_millis(250);
   tokio::spawn(async move {
     loop {
@@ -207,7 +207,7 @@ generation of <code>Action</code> events.</p>
     ShouldQuit --&gt;|Yes| BreakLoop;
     BreakLoop --&gt; MainEnd;
     ShouldQuit --&gt;|No| CheckAction;
-    EventStart[Event: Start handle_event];
+    EventStart[Event: start_event_handler];
     PollEvent[Event: Poll];
     ProcessKeyPress[Event: Process Key Press];
     SendAction[Event: Send Action];
@@ -298,7 +298,7 @@ fn update(app: &amp;mut App, msg: Action) -&gt; Action {
   Action::None
 }
 
-fn handle_event(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -&gt; tokio::task::JoinHandle&lt;()&gt; {
+fn start_event_handler(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -&gt; tokio::task::JoinHandle&lt;()&gt; {
   let tick_rate = std::time::Duration::from_millis(250);
   tokio::spawn(async move {
     loop {
@@ -330,7 +330,7 @@ async fn run() -&gt; Result&lt;()&gt; {
 
   let mut app = App { counter: 0, should_quit: false, action_tx, ticker: 0 };
 
-  let task = handle_event(&amp;app, app.action_tx.clone());
+  let task = start_event_handler(&amp;app, app.action_tx.clone());
 
   loop {
     t.draw(|f| {
