@@ -6,7 +6,7 @@ In order to set up an `async` application, it is important to make the generatio
 We can do this by spawning a tokio task like so:
 
 ```rust
-fn handle_event(app: &App, tx: mpsc::UnboundedSender<Action>) -> tokio::task::JoinHandle<()> {
+fn start_event_handler(app: &App, tx: mpsc::UnboundedSender<Action>) -> tokio::task::JoinHandle<()> {
   let tick_rate = std::time::Duration::from_millis(250);
   tokio::spawn(async move {
     loop {
@@ -54,7 +54,7 @@ graph TD
     ShouldQuit -->|Yes| BreakLoop;
     BreakLoop --> MainEnd;
     ShouldQuit -->|No| CheckAction;
-    EventStart[Event: Start handle_event];
+    EventStart[Event: start_event_handler];
     PollEvent[Event: Poll];
     ProcessKeyPress[Event: Process Key Press];
     SendAction[Event: Send Action];
@@ -148,7 +148,7 @@ fn update(app: &mut App, msg: Action) -> Action {
   Action::None
 }
 
-fn handle_event(app: &App, tx: mpsc::UnboundedSender<Action>) -> tokio::task::JoinHandle<()> {
+fn start_event_handler(app: &App, tx: mpsc::UnboundedSender<Action>) -> tokio::task::JoinHandle<()> {
   let tick_rate = std::time::Duration::from_millis(250);
   tokio::spawn(async move {
     loop {
@@ -180,7 +180,7 @@ async fn run() -> Result<()> {
 
   let mut app = App { counter: 0, should_quit: false, action_tx, ticker: 0 };
 
-  let task = handle_event(&app, app.action_tx.clone());
+  let task = start_event_handler(&app, app.action_tx.clone());
 
   loop {
     t.draw(|f| {

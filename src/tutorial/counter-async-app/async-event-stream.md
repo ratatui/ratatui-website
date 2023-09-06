@@ -405,6 +405,3 @@ crossterm = { version = "0.27.0", features = ["event-stream"] }
 
 With this `EventHandler` implemented, we can use `tokio` to create a separate "task" that handles
 any key asynchronously in our `main` loop.
-
-In the next section, we will introduce a `Command` pattern to bridge handling the effect of an
-event.
