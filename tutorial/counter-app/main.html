@@ -161,9 +161,7 @@
                     <main>
                         <h1 id="mainrs"><a class="header" href="#mainrs">main.rs</a></h1>
 <p>Putting it all together, we have the <code>main.rs</code> function:</p>
-<pre><code class="language-rust">use std::io;
-
-/// Application.
+<pre><code class="language-rust">/// Application.
 pub mod app;
 
 /// Terminal events handler.
@@ -190,7 +188,7 @@ fn main() -&gt; Result&lt;()&gt; {
   let mut app = App::new();
 
   // Initialize the terminal user interface.
-  let backend = CrosstermBackend::new(io::stderr());
+  let backend = CrosstermBackend::new(std::io::stderr());
   let terminal = Terminal::new(backend)?;
   let events = EventHandler::new(250);
   let mut tui = Tui::new(terminal, events);

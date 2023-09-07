@@ -1,6 +1,4 @@
 ///// ANCHOR: imports_main
-use std::io;
-
 /// Application.
 pub mod app;
 
@@ -30,7 +28,7 @@ fn main() -> Result<()> {
   let mut app = App::new();
 
   // Initialize the terminal user interface.
-  let backend = CrosstermBackend::new(io::stderr());
+  let backend = CrosstermBackend::new(std::io::stderr());
   let terminal = Terminal::new(backend)?;
   let events = EventHandler::new(250);
   let mut tui = Tui::new(terminal, events);
