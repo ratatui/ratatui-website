@@ -1,19 +1,24 @@
 # Features
 
 As ratatui grows and evolves, this list may change, so make sure to check the
-[main repo](./https://github.com/ratatui-org/ratatui) if you are unsure.
+[main repo](https://github.com/ratatui-org/ratatui) if you are unsure.
 
 ## Backend Selection
 
-See [How to Choose a Backend](./choose-a-backend.md) for more information. However, for most cases, the
-default `crossterm` backend is enough.
+For most cases, the default `crossterm` backend is the correct choice. See
+[Backends](../concepts/backends) for more information. However, this can be changed to termion or termwiz
 
 ```console
 # Defaults to crossterm
 cargo add ratatui
-# Unset the default crossterm feature and select one of the other backends
+
+# For termion, unset the default crossterm feature and select the termion feature
 cargo add ratatui --no-default-features --features=terminon
+cargo add termion
+
+# For termwiz, unset the default crossterm feature and select the termwiz feature
 cargo add ratatui --no-default-features --features=termwiz
+cargo add termwiz
 ```
 
 ## All-Widgets

@@ -34,7 +34,7 @@ You can learn a lot more about this pattern from the excellent [http://gameprogr
 ```
 
 You can learn more about this concept in
-[The Elm Architecture section](./../../concepts/the-elm-architecture.md) of the documentation.
+[The Elm Architecture section](../../concepts/application-patterns/the-elm-architecture.md) of the documentation.
 
 The key idea is that we have an `Action` enum that tracks all the actions that can be carried out by
 the `App`.

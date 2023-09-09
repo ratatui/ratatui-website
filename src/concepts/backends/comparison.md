@@ -1,4 +1,4 @@
-# How to Choose a Backend
+# Comparison of Backends
 
 ```admonish tldr
 Choose [Crossterm](https://crates.io/crates/crossterm) for most tasks.
@@ -8,9 +8,9 @@ Ratatui interfaces with the terminal emulator through its "backends". These are 
 that grant `ratatui` the ability to capture keypresses, maneuver the cursor, style the text with
 colors and other features. As of now, `ratatui` supports three backends:
 
-- [Crossterm](https://github.com/crossterm-rs/crossterm)
-- [Termion](https://github.com/redox-os/termion)
-- [Termwiz](https://github.com/wez/wezterm/tree/main/termwiz)
+- [Crossterm](https://crates.io/crates/crossterm)
+- [Termion](https://crates.io/crates/termion)
+- [Termwiz](https://crates.io/crates/termwiz)
 
 Selecting a backend does influence your project's structure, but the core functionalities remain
 consistent across all options. Here's a flowchart that can help you make your decision.

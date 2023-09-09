@@ -1,12 +1,12 @@
 # Summary
 
-[Home](./README.md)
+[Introduction to Ratatui](./README.md)
 
----
+# User Guide
 
-- [Introduction](./introduction.md)
+- [Installation](./installation.md)
 
-- [Tutorials]()
+- [Tutorials](./tutorial/README.md)
 
   - [Hello World](./tutorial/hello-world/README.md)
   - [Counter App](./tutorial/counter-app/README.md)
@@ -35,57 +35,66 @@
     - [Full Async](./tutorial/counter-async-app/full-async.md)
   - [Stopwatch App](./tutorial/stopwatch-app/README.md)
 
-- [Concepts](./concepts/README.md)
+- [How To](./how-to/README.md)
 
-  - [Rendering](./concepts/rendering.md)
-  - [Event Handling](./concepts/event_handling.md)
-  - [The Elm Architecture](./concepts/the-elm-architecture.md)
-  - [Component Architecture](./concepts/component-architecture.md)
-  - [Flux Architecture](./concepts/flux-architecture.md)
-  - [Project Structure]()
-  - [Application Patterns]()
-  - [Design Patterns]()
-  - [Application State]()
-  - [Event Handling]()
-  - [Key Binding]()
-  - [Threading]()
-  - [Logging]()
-  - [Configuration]()
+  - [Layout UIs](./how-to/layout/README.md)
+    - [Layout Widgets]()
+    - [Center a Rect](./how-to/layout/center-a-rect.md)
+    - [Nest Blocks]()
+  - [Render Text](./how-to/render/README.md)
+    - [Display Text](./how-to/render/display-text.md)
+    - [Style Text](./how-to/render/style-text.md)
+  - [Use Widgets](./how-to/widgets/README.md)
+    - [Paragraph](./how-to/widgets/paragraph.md)
+    - [Block](./how-to/widgets/block.md)
+    - [Create a Widget]()
+  - [Develop Applications](./how-to/develop-apps/README.md)
+    - [CLI arguments](./how-to/develop-apps/cli-arguments.md)
+    - [Configuration Directories](./how-to/develop-apps/config-directories.md)
+    - [Tracing](./how-to/develop-apps/tracing.md)
+    - [Arrange your App Code](./how-to/develop-apps/arrange-your-app-code.md)
+    - [Setup Panic Hooks](./how-to/develop-apps/setup-panic-hooks.md)
+    - [Use `better-panic`](./how-to/develop-apps/better-panic.md)
+  
+- [FAQ](./faq/README.md)
 
-- [Integrations](./integrations/README.md)
-
-- [How To]()
-
-  - [Enable Features](./how-to/features.md)
-  - [Choose a Backend](./how-to/choose-a-backend.md)
-  - [Setup Panic Hooks](./how-to/setup-panic-hooks.md)
-  - [Setup Panic Hooks with `better-panic`](./how-to/setup-panic-hooks-better-panic.md)
-  - [Setup Logging with tracing](./how-to/setup-logging-tracing.md)
-  - [Handle XDG Directories](./how-to/handle-xdg-directories.md)
-  - [Handle CLI arguments](./how-to/clap.md)
-  - [Center a Rect](./how-to/center-a-rect.md)
-  - [Combine Terminal and EventHandler](./how-to/combine-terminal-and-eventhandler.md)
-  - [Blocks]()
-  - [Displaying Text]()
-    - [Styling-Text]()
-    - [Paragraphs]()
-  - [Layouts Constraints Basics](./how-to/layout-constraints-basics.md)
-  - [Layout Widgets]()
-  - [Create a Widget]()
-
-- [FAQ]()
-
-  - [Duplicate key events on Windows](./faq/duplicate-key-events-windows.md)
+  - [Duplicate key events](./faq/duplicate-key-events-windows.md)
   - [`tokio` / `async`](./faq/tokio-async.md)
   - [`tui.rs` history](./faq/tui-rs-history.md)
   - [`ratatui` vs `tui-realm`](./faq/ratatui-vs-tui-realm.md)
 
+# Reference
+
+- [Concepts](./concepts/README.md)
+  - [Backends](./concepts/backends/README.md)
+    - [Comparison](./concepts/backends/comparison.md)
+    - [Raw Mode](./concepts/backends/raw-mode.md)
+    - [Alternate Screen](./concepts/backends/alternate-screen.md)
+    - [Mouse Capture](./concepts/backends/mouse-capture.md)
+  - [Rendering](./concepts/rendering.md)
+  - [Event Handling](./concepts/event_handling.md)
+    - [Key Binding]()
+  - [Application Patterns](./concepts/application-patterns/README.md)
+    - [The Elm Architecture](./concepts/application-patterns/the-elm-architecture.md)
+    - [Component Architecture](./concepts/application-patterns/component-architecture.md)
+    - [Flux Architecture](./concepts/application-patterns/flux-architecture.md)
+  - [Project Structure]()
+  - [Design Patterns]()
+    - [Application State]()
+    - [Threading]()
+    - [Logging]()
+    - [Configuration]()
+
+- [Integrations](./integrations/README.md)
+
 - [References](./references/README.md)
+  - [Features](./references/features.md)
 
 - [Developer Guide]()
 
   - [Ratatui](./developer-guide/ratatui.md)
   - [Ratatui Book](./developer-guide/book.md)
+  - [License](./LICENSE.md)
 
 ---
 

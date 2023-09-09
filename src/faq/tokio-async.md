@@ -1,4 +1,4 @@
-## When should I use `tokio` and `async`/`await`?
+# When should I use `tokio` and `async`/`await`?
 
 `ratatui` isn't a native `async` library. So is it beneficial to use `tokio` or `async`/`await`?
 
