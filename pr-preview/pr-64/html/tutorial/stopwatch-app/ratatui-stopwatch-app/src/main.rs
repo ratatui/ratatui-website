@@ -44,7 +44,7 @@ struct StopwatchApp {
   splits: Vec<Instant>,
   start_time: Instant,
   frames: u32,
-  pub fps: f64,
+  fps: f64,
 }
 
 impl Default for StopwatchApp {
@@ -54,7 +54,7 @@ impl Default for StopwatchApp {
 }
 
 impl StopwatchApp {
-  pub fn new() -> Self {
+  fn new() -> Self {
     Self {
       start_time: Instant::now(),
       frames: Default::default(),
