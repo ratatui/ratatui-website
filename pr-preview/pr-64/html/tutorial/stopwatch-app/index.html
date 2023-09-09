@@ -223,14 +223,32 @@ enum Message {
   Quit,
 }
 
-#[derive(Debug, Default, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 struct StopwatchApp {
   state: AppState,
   splits: Vec&lt;Instant&gt;,
-  fps_counter: FpsCounter,
+  start_time: Instant,
+  frames: u32,
+  pub fps: f64,
+}
+
+impl Default for StopwatchApp {
+  fn default() -&gt; Self {
+    Self::new()
+  }
 }
 
 impl StopwatchApp {
+  pub fn new() -&gt; Self {
+    Self {
+      start_time: Instant::now(),
+      frames: Default::default(),
+      fps: Default::default(),
+      splits: Default::default(),
+      state: Default::default(),
+    }
+  }
+
   async fn run(&amp;mut self) -&gt; Result&lt;()&gt; {
     let mut tui = Tui::new()?;
     tui.enter()?;
@@ -285,7 +303,14 @@ impl StopwatchApp {
   }
 
   fn tick(&amp;mut self) {
-    self.fps_counter.tick()
+    self.frames += 1;
+    let now = Instant::now();
+    let elapsed = (now - self.start_time).as_secs_f64();
+    if elapsed &gt;= 1.0 {
+      self.fps = self.frames as f64 / elapsed;
+      self.start_time = now;
+      self.frames = 0;
+    }
   }
 
   fn quit(&amp;mut self) {
@@ -318,7 +343,7 @@ impl StopwatchApp {
   }
 
   fn draw(&amp;mut self, f: &amp;mut Frame) -&gt; Result&lt;()&gt; {
-    let layout = layout(f.size());
+    let layout = self.layout(f.size());
     f.render_widget(Paragraph::new(&quot;Stopwatch Example&quot;), layout[0]);
     f.render_widget(self.fps_paragraph(), layout[1]);
     f.render_widget(self.timer_paragraph(), layout[2]);
@@ -329,13 +354,14 @@ impl StopwatchApp {
   }
 
   fn fps_paragraph(&amp;mut self) -&gt; Paragraph&lt;'_&gt; {
-    let fps = format!(&quot;{:.2} fps&quot;, self.fps_counter.fps);
+    let fps = format!(&quot;{:.2} fps&quot;, self.fps);
     Paragraph::new(fps).style(Style::new().dim()).alignment(Alignment::Right)
   }
 
   fn timer_paragraph(&amp;mut self) -&gt; BigText&lt;'_&gt; {
     let style = if self.state.is_running() { Style::new().green() } else { Style::new().red() };
-    let duration = format_duration(self.elapsed());
+    let elapsed = self.elapsed();
+    let duration = self.format_duration(elapsed);
     let lines = vec![duration.into()];
     tui_big_text::BigTextBuilder::default().lines(lines).style(style).build().unwrap()
   }
@@ -354,7 +380,7 @@ impl StopwatchApp {
       .copied()
       .tuple_windows()
       .enumerate()
-      .map(|(index, (prev, current))| format_split(index, start, prev, current))
+      .map(|(index, (prev, current))| self.format_split(index, start, prev, current))
       .collect::&lt;Vec&lt;_&gt;&gt;();
     splits.reverse();
     Paragraph::new(splits)
@@ -366,73 +392,43 @@ impl StopwatchApp {
       Line::from(vec![&quot;space &quot;.into(), space_action.dim(), &quot; enter &quot;.into(), &quot;stop&quot;.dim(), &quot; q &quot;.into(), &quot;quit&quot;.dim()]);
     Paragraph::new(help_text).gray()
   }
-}
 
-fn layout(area: Rect) -&gt; Vec&lt;Rect&gt; {
-  let layout = Layout::default()
-    .direction(Direction::Vertical)
-    .constraints(vec![
-      Constraint::Length(2), // top bar
-      Constraint::Length(8), // timer
-      Constraint::Length(1), // splits header
-      Constraint::Min(0),    // splits
-      Constraint::Length(1), // help
-    ])
-    .split(area);
-  let top_layout = Layout::default()
-    .direction(Direction::Horizontal)
-    .constraints(vec![
-      Constraint::Length(20), // title
-      Constraint::Min(0),     // fps counter
-    ])
-    .split(layout[0]);
+  fn layout(&amp;self, area: Rect) -&gt; Vec&lt;Rect&gt; {
+    let layout = Layout::default()
+      .direction(Direction::Vertical)
+      .constraints(vec![
+        Constraint::Length(2), // top bar
+        Constraint::Length(8), // timer
+        Constraint::Length(1), // splits header
+        Constraint::Min(0),    // splits
+        Constraint::Length(1), // help
+      ])
+      .split(area);
+    let top_layout = Layout::default()
+      .direction(Direction::Horizontal)
+      .constraints(vec![
+        Constraint::Length(20), // title
+        Constraint::Min(0),     // fps counter
+      ])
+      .split(layout[0]);
 
-  // return a new vec with the top_layout rects and then rest of layout
-  top_layout[..].iter().chain(layout[1..].iter()).copied().collect()
-}
-
-fn format_split&lt;'a&gt;(index: usize, start: Instant, previous: Instant, current: Instant) -&gt; Line&lt;'a&gt; {
-  let split = format_duration(current - previous);
-  let elapsed = format_duration(current - start);
-  Line::from(vec![
-    format!(&quot;#{:02} -- &quot;, index + 1).into(),
-    Span::styled(split, Style::new().yellow()),
-    &quot; -- &quot;.into(),
-    Span::styled(elapsed, Style::new()),
-  ])
-}
-
-fn format_duration(duration: Duration) -&gt; String {
-  format!(&quot;{:02}:{:02}.{:03}&quot;, duration.as_secs() / 60, duration.as_secs() % 60, duration.subsec_millis())
-}
-
-#[derive(Debug, Clone, PartialEq)]
-struct FpsCounter {
-  start_time: Instant,
-  frames: u32,
-  pub fps: f64,
-}
-
-impl Default for FpsCounter {
-  fn default() -&gt; Self {
-    Self::new()
-  }
-}
-
-impl FpsCounter {
-  fn new() -&gt; Self {
-    Self { start_time: Instant::now(), frames: 0, fps: 0.0 }
+    // return a new vec with the top_layout rects and then rest of layout
+    top_layout[..].iter().chain(layout[1..].iter()).copied().collect()
   }
 
-  fn tick(&amp;mut self) {
-    self.frames += 1;
-    let now = Instant::now();
-    let elapsed = (now - self.start_time).as_secs_f64();
-    if elapsed &gt;= 1.0 {
-      self.fps = self.frames as f64 / elapsed;
-      self.start_time = now;
-      self.frames = 0;
-    }
+  fn format_split&lt;'a&gt;(&amp;self, index: usize, start: Instant, previous: Instant, current: Instant) -&gt; Line&lt;'a&gt; {
+    let split = self.format_duration(current - previous);
+    let elapsed = self.format_duration(current - start);
+    Line::from(vec![
+      format!(&quot;#{:02} -- &quot;, index + 1).into(),
+      Span::styled(split, Style::new().yellow()),
+      &quot; -- &quot;.into(),
+      Span::styled(elapsed, Style::new()),
+    ])
+  }
+
+  fn format_duration(&amp;self, duration: Duration) -&gt; String {
+    format!(&quot;{:02}:{:02}.{:03}&quot;, duration.as_secs() / 60, duration.as_secs() % 60, duration.subsec_millis())
   }
 }
 
