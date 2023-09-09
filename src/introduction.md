@@ -12,9 +12,11 @@ It is important to note that `ratatui`:
 - does _not_ modify the state of your application
 - does _not_ dicate how you want to structure your application
 
-The `ratatui` crate is a library and not a framework. And the `ratatui` library provides widgets
-that allows a developer to imperatively declare what the view of your application should look like,
-and then allows a developer to draw those widgets efficiently to the terminal.
+**The `ratatui` crate is a library and not a framework.**
+
+The `ratatui` library provides widgets that allows a developer to imperatively declare what the view
+of your application should look like, and then allows a developer to draw those widgets efficiently
+to the terminal.
 
 For these reasons, `ratatui` can be highly flexible and customizable. And while this can be
 empowering, it also does put the onus on developers using `ratatui` to understand how to best
