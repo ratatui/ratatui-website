@@ -16,7 +16,7 @@ ratatui = "0.23.0"
 
 ````admonish tip
 
-Additionally, you can use the `all-widgets` feature, which enables addition widgets:
+Additionally, you can use the `all-widgets` feature, which enables additional widgets:
 
 ```shell
 cargo add ratatui --features all-widgets
