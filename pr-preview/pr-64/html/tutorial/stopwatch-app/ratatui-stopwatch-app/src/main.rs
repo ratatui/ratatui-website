@@ -68,8 +68,8 @@ impl StopwatchApp {
     let mut tui = Tui::new()?;
     tui.enter()?;
     while !self.state.is_quitting() {
-      tui.draw(|f| self.draw(f).expect("Unexpected error during drawing"))?;
-      let event = tui.next().await.ok_or(eyre!("Unable to get event"))?;
+      tui.draw(|f| self.ui(f).expect("Unexpected error during drawing"))?;
+      let event = tui.next().await.ok_or(eyre!("Unable to get event"))?; // blocks until next event
       let message = self.handle_event(event)?;
       self.update(message)?;
     }
@@ -155,7 +155,7 @@ impl StopwatchApp {
     }
   }
 
-  fn draw(&mut self, f: &mut Frame) -> Result<()> {
+  fn ui(&mut self, f: &mut Frame) -> Result<()> {
     let layout = self.layout(f.size());
     f.render_widget(Paragraph::new("Stopwatch Example"), layout[0]);
     f.render_widget(self.fps_paragraph(), layout[1]);
