@@ -1,8 +1,11 @@
-# Refactor
+# Multiple Functions
 
 In this section, we will walk through the process of refactoring the application to set ourselves up
 better for bigger projects. Not all of these changes are `ratatui` specific, and are generally good
 coding practices to follow.
+
+We are still going to keep everything in one file for this section, but we are going to split the
+previous functionality into separate functions.
 
 ## Organizing imports
 
@@ -93,7 +96,7 @@ fn shutdown() -> Result<()> {
 `ui()` handles rendering of our application state.
 
 ```rust
-fn ui(f: &mut Frame<'_>, app: &App) {
+fn ui(app: &App, f: &mut Frame<'_>) {
   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
 }
 ```
@@ -116,9 +119,14 @@ fn update(app: &mut App) -> Result<()> {
 }
 ```
 
+```admonish tip
 You'll notice that in the `update()` function we make use of pattern matching for handling user
 input. This is a powerful feature in rust; and enhances readability and provides a clear pattern for
 how each input is processed.
+
+You can learn more about [pattern matching in the official rust
+book](https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html).
+```
 
 `run()` contains our main application loop.
 
@@ -133,7 +141,7 @@ fn run() -> Result<()> {
   loop {
     // application render
     t.draw(|f| {
-      ui(f, &app);
+      ui(&app, f);
     })?;
 
     // application update
@@ -239,7 +247,7 @@ struct App {
 }
 
 // App ui render function
-fn ui(f: &mut Frame<'_>, app: &App) {
+fn ui(app: &App, f: &mut Frame<'_>) {
   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
 }
 

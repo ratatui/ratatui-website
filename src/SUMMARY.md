@@ -11,7 +11,7 @@
   - [Hello World](./tutorial/hello-world/README.md)
   - [Counter App](./tutorial/counter-app/README.md)
     - [Single Function](./tutorial/counter-app/single-function.md)
-    - [Multiple Functions](./tutorial/counter-app/refactor.md)
+    - [Multiple Functions](./tutorial/counter-app/multiple-functions.md)
     - [Multiple Files](./tutorial/counter-app/multiple-files.md)
       - [app.rs](./tutorial/counter-app/app.md)
       - [ui.rs](./tutorial/counter-app/ui.md)
@@ -55,7 +55,7 @@
     - [Arrange your App Code](./how-to/develop-apps/arrange-your-app-code.md)
     - [Setup Panic Hooks](./how-to/develop-apps/setup-panic-hooks.md)
     - [Use `better-panic`](./how-to/develop-apps/better-panic.md)
-  
+
 - [FAQ](./faq/README.md)
 
   - [Duplicate key events](./faq/duplicate-key-events-windows.md)
@@ -66,6 +66,7 @@
 # Reference
 
 - [Concepts](./concepts/README.md)
+
   - [Backends](./concepts/backends/README.md)
     - [Comparison](./concepts/backends/comparison.md)
     - [Raw Mode](./concepts/backends/raw-mode.md)
@@ -88,6 +89,7 @@
 - [Integrations](./integrations/README.md)
 
 - [References](./references/README.md)
+
   - [Features](./references/features.md)
 
 - [Developer Guide]()

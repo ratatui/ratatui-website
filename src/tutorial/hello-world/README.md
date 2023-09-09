@@ -5,9 +5,9 @@ start creating beautiful TUIs.
 
 In this section, we will build a "hello world" TUI application.
 
-### Install `Rust`
+### Install `rust`
 
-The first step is to install Rust.
+The first step is to install `rust`.
 
 Check
 [Installation section of the official Rust Book](https://doc.rust-lang.org/book/ch01-01-installation.html)
