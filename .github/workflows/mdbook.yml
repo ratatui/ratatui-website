@@ -70,7 +70,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: ./book/
+          source-dir: ./book/html
 
       - name: Remove preview
         if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -94,6 +94,6 @@ jobs:
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./book/
+          publish_dir: ./book/html
           force_orphan: false
           keep_files: true
