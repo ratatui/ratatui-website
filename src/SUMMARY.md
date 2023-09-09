@@ -55,6 +55,7 @@
     - [Arrange your App Code](./how-to/develop-apps/arrange-your-app-code.md)
     - [Setup Panic Hooks](./how-to/develop-apps/setup-panic-hooks.md)
     - [Use `better-panic`](./how-to/develop-apps/better-panic.md)
+    - [Migrate from tui-rs](./how-to/develop-apps/migrate-from-tui-rs.md)
 
 - [FAQ](./faq/README.md)
 
@@ -87,6 +88,12 @@
     - [Configuration]()
 
 - [Integrations](./integrations/README.md)
+
+- [Highlights]()
+
+  - [v0.23](./highlights/v0.23.md)
+  - [v0.22](./highlights/v0.22.md)
+  - [v0.21](./highlights/v0.21.md)
 
 - [References](./references/README.md)
 
