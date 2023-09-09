@@ -32,6 +32,8 @@
     - [Sync Increment & Decrement](./tutorial/counter-async-app/sync-increment-decrement.md)
     - [Async Increment & Decrement](./tutorial/counter-async-app/async-increment-decrement.md)
     - [Async Event Stream](./tutorial/counter-async-app/async-event-stream.md)
+    - [Full Async](./tutorial/counter-async-app/full-async.md)
+  - [Stopwatch App](./tutorial/stopwatch-app/README.md)
 
 - [Concepts](./concepts/README.md)
 
