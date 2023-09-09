@@ -58,7 +58,7 @@ Data directory: {data_dir_path}"
 ```
 
 This function uses the `get_data_dir()` and `get_config_dir()` from
-[the section on XDG directories](./handle-xdg-directories.md).
+[the section on XDG directories](./config-directories.md).
 
 This function also makes use of an environment variable `RATATUI_TEMPLATE_GIT_INFO` to derive the
 Git commit hash. The variable can be populated during the build process by `build.rs`:

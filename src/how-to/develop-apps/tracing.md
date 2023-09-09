@@ -73,7 +73,7 @@ The log level is decided by the `RUST_LOG` environment variable (default =
 `log::LevelFilter::Info`).
 
 Ideally, the location of the log files are decided by your environment variables. See
-[the section on XDG directories](./handle-xdg-directories.md) for how to handle that.
+[the section on XDG directories](./config-directories.md) for how to handle that.
 
 In addition to add a log file to the `data` folder, `initialize_logging()` also sets up `tui-logger`
 with `tracing`, so that you can add a `tui-logger` widget to show the logs to your users on a key

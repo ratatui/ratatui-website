@@ -1,5 +1,10 @@
 # Single `Tui` struct with `Terminal` and `EventHandler`
 
+```admonish note
+This is just one way to setup your application, there are many others. See
+[Application Patterns](../../concepts/application-patterns/) for more.
+```
+
 If you want a `tui.rs` with `Terminal` with `Deref` and `DerefMut`, and an `EventHandler`, you can
 use the following code.
 

@@ -23,6 +23,8 @@ level = 1     # the depth to start folding
 [output.html.playground]
 runnable = false
 
+[output.linkcheck]
+
 [preprocessor.svgbob2]
 
 [preprocessor.admonish]

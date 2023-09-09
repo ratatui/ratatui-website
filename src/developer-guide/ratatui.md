@@ -25,8 +25,8 @@ history of the project. Please search, read, link, and summarize any relevant
 We use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) and check for them as
 a lint build step. To help adhere to the format, we recommend to install
 [Commitizen](https://commitizen-tools.github.io/commitizen/). By using this tool you automatically
-follow the configuration defined in [.cz.toml](.cz.toml). Your commit messages should have enough
-information to help someone reading the [CHANGELOG](./CHANGELOG.md) understand what is new just from
+follow the configuration defined in .cz.toml. Your commit messages should have enough
+information to help someone reading the CHANGELOG understand what is new just from
 the title. The summary helps expand on that to provide information that helps provide more context,
 describes the nature of the problem that the commit is solving and any unintuitive effects of the
 change. It's rare that code changes can easily communicate intent, so make sure this is clearly
@@ -78,7 +78,7 @@ but this can always be improved. Focus on keeping the tests simple and obvious a
 for all new or modified code. Beside the usual doc and unit tests, one of the most valuable test you
 can write for Ratatui is a test against the `TestBackend`. It allows you to assert the content of
 the output buffer that would have been flushed to the terminal after a given draw call. See
-`widgets_block_renders` in [tests/widgets_block.rs](./tests/widget_block.rs) for an example.
+`widgets_block_renders` in tests/widgets_block.rs for an example.
 
 When writing tests, generally prefer to write unit tests and doc tests directly in the code file
 being tested rather than integration tests in the `tests/` folder.

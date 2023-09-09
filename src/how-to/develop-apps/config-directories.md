@@ -32,7 +32,7 @@ cargo add directories
 4. A good practice is to notify the user about the location of the configuration and data
    directories. An example from the template is to print out these locations when the user invokes
    the `--version` command-line argument. See the section on
-   [Command line argument parsing](./clap.md)
+   [Command line argument parsing](./cli-arguments.md)
 
 Here's an example `get_data_dir()` and `get_config_dir()` functions for your reference:
 
