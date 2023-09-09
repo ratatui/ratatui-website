@@ -3,13 +3,83 @@ use std::time::{Duration, Instant};
 use color_eyre::eyre::{eyre, Result};
 use futures::{FutureExt, StreamExt};
 use itertools::Itertools;
+use lazy_static::lazy_static;
 use ratatui::{backend::CrosstermBackend as Backend, prelude::*, widgets::*};
 use strum::EnumIs;
+use tracing_subscriber::{prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
 use tui_big_text::BigText;
+
 pub type Frame<'a> = ratatui::Frame<'a, Backend<std::io::Stderr>>;
+
+lazy_static! {
+  pub static ref PROJECT_NAME: String = env!("CARGO_PKG_NAME").to_uppercase().to_string();
+  pub static ref DATA_FOLDER: Option<std::path::PathBuf> =
+    std::env::var(format!("{}_DATA", PROJECT_NAME.clone())).ok().map(std::path::PathBuf::from);
+  pub static ref LOG_FILE: String = format!("{}.log", PROJECT_NAME.to_lowercase());
+}
+
+fn project_directory() -> Option<directories::ProjectDirs> {
+  directories::ProjectDirs::from("com", "kdheepak", PROJECT_NAME.clone().to_lowercase().as_str())
+}
+
+pub fn get_data_dir() -> std::path::PathBuf {
+  let directory = if let Some(s) = DATA_FOLDER.clone() {
+    s
+  } else if let Some(proj_dirs) = project_directory() {
+    proj_dirs.data_local_dir().to_path_buf()
+  } else {
+    std::path::PathBuf::from(".").join(".data")
+  };
+  directory
+}
+
+pub fn initialize_logging() -> Result<()> {
+  let directory = get_data_dir();
+  std::fs::create_dir_all(directory.clone())?;
+  let log_path = directory.join(LOG_FILE.clone());
+  let log_file = std::fs::File::create(log_path)?;
+  let file_subscriber = tracing_subscriber::fmt::layer()
+    .with_file(true)
+    .with_line_number(true)
+    .with_writer(log_file)
+    .with_target(false)
+    .with_ansi(false)
+    .with_filter(tracing_subscriber::filter::EnvFilter::from_default_env());
+
+  tracing_subscriber::registry().with(file_subscriber).with(tracing_error::ErrorLayer::default()).init();
+
+  Ok(())
+}
+
+pub fn initialize_panic_handler() -> Result<()> {
+  let (panic_hook, eyre_hook) = color_eyre::config::HookBuilder::default().into_hooks();
+  eyre_hook.install()?;
+  std::panic::set_hook(Box::new(move |panic_info| {
+    if let Ok(t) = Tui::new() {
+      if let Err(r) = t.exit() {
+        log::error!("Unable to exit Terminal: {:?}", r);
+      }
+    }
+    let msg = format!("{}", panic_hook.panic_report(panic_info));
+    log::error!("{}", strip_ansi_escapes::strip_str(&msg));
+    use human_panic::{handle_dump, print_msg, Metadata};
+    let meta = Metadata {
+      version: env!("CARGO_PKG_VERSION").into(),
+      name: env!("CARGO_PKG_NAME").into(),
+      authors: env!("CARGO_PKG_AUTHORS").replace(':', ", ").into(),
+      homepage: env!("CARGO_PKG_HOMEPAGE").into(),
+    };
+    let file_path = handle_dump(&meta, panic_info);
+    print_msg(file_path, &meta).expect("human-panic: printing error message to console failed");
+    eprintln!("{}", msg);
+    std::process::exit(libc::EXIT_FAILURE);
+  }));
+  Ok(())
+}
 
 #[tokio::main]
 async fn main() -> Result<()> {
+  initialize_panic_handler()?;
   let mut app = StopwatchApp::default();
   app.run().await
 }
@@ -38,26 +108,42 @@ enum Message {
   Quit,
 }
 
-#[derive(Debug, Default, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 struct StopwatchApp {
   state: AppState,
   splits: Vec<Instant>,
-  fps_counter: FpsCounter,
+  start_time: Instant,
+  frames: u32,
+  fps: f64,
+}
+
+impl Default for StopwatchApp {
+  fn default() -> Self {
+    Self::new()
+  }
 }
 
 impl StopwatchApp {
+  fn new() -> Self {
+    Self {
+      start_time: Instant::now(),
+      frames: Default::default(),
+      fps: Default::default(),
+      splits: Default::default(),
+      state: Default::default(),
+    }
+  }
+
   async fn run(&mut self) -> Result<()> {
     let mut tui = Tui::new()?;
     tui.enter()?;
-    tui.start();
     while !self.state.is_quitting() {
-      tui.draw(|f| self.draw(f).expect("Unexpected error during drawing"))?;
-      let event = tui.next().await.ok_or(eyre!("Unable to get event"))?;
+      tui.draw(|f| self.ui(f).expect("Unexpected error during drawing"))?;
+      let event = tui.next().await.ok_or(eyre!("Unable to get event"))?; // blocks until next event
       let message = self.handle_event(event)?;
-      self.handle_message(message)?;
+      self.update(message)?;
     }
     tui.exit()?;
-    tui.stop()?;
     Ok(())
   }
 
@@ -76,7 +162,7 @@ impl StopwatchApp {
     Ok(msg)
   }
 
-  fn handle_message(&mut self, message: Message) -> Result<()> {
+  fn update(&mut self, message: Message) -> Result<()> {
     match message {
       Message::StartOrSplit => self.start_or_split(),
       Message::Stop => self.stop(),
@@ -100,7 +186,14 @@ impl StopwatchApp {
   }
 
   fn tick(&mut self) {
-    self.fps_counter.tick()
+    self.frames += 1;
+    let now = Instant::now();
+    let elapsed = (now - self.start_time).as_secs_f64();
+    if elapsed >= 1.0 {
+      self.fps = self.frames as f64 / elapsed;
+      self.start_time = now;
+      self.frames = 0;
+    }
   }
 
   fn quit(&mut self) {
@@ -132,8 +225,8 @@ impl StopwatchApp {
     }
   }
 
-  fn draw(&mut self, f: &mut Frame) -> Result<()> {
-    let layout = layout(f.size());
+  fn ui(&mut self, f: &mut Frame) -> Result<()> {
+    let layout = self.layout(f.size());
     f.render_widget(Paragraph::new("Stopwatch Example"), layout[0]);
     f.render_widget(self.fps_paragraph(), layout[1]);
     f.render_widget(self.timer_paragraph(), layout[2]);
@@ -144,13 +237,14 @@ impl StopwatchApp {
   }
 
   fn fps_paragraph(&mut self) -> Paragraph<'_> {
-    let fps = format!("{:.2} fps", self.fps_counter.fps);
+    let fps = format!("{:.2} fps", self.fps);
     Paragraph::new(fps).style(Style::new().dim()).alignment(Alignment::Right)
   }
 
   fn timer_paragraph(&mut self) -> BigText<'_> {
     let style = if self.state.is_running() { Style::new().green() } else { Style::new().red() };
-    let duration = format_duration(self.elapsed());
+    let elapsed = self.elapsed();
+    let duration = self.format_duration(elapsed);
     let lines = vec![duration.into()];
     tui_big_text::BigTextBuilder::default().lines(lines).style(style).build().unwrap()
   }
@@ -169,7 +263,7 @@ impl StopwatchApp {
       .copied()
       .tuple_windows()
       .enumerate()
-      .map(|(index, (prev, current))| format_split(index, start, prev, current))
+      .map(|(index, (prev, current))| self.format_split(index, start, prev, current))
       .collect::<Vec<_>>();
     splits.reverse();
     Paragraph::new(splits)
@@ -181,73 +275,43 @@ impl StopwatchApp {
       Line::from(vec!["space ".into(), space_action.dim(), " enter ".into(), "stop".dim(), " q ".into(), "quit".dim()]);
     Paragraph::new(help_text).gray()
   }
-}
 
-fn layout(area: Rect) -> Vec<Rect> {
-  let layout = Layout::default()
-    .direction(Direction::Vertical)
-    .constraints(vec![
-      Constraint::Length(2), // top bar
-      Constraint::Length(8), // timer
-      Constraint::Length(1), // splits header
-      Constraint::Min(0),    // splits
-      Constraint::Length(1), // help
-    ])
-    .split(area);
-  let top_layout = Layout::default()
-    .direction(Direction::Horizontal)
-    .constraints(vec![
-      Constraint::Length(20), // title
-      Constraint::Min(0),     // fps counter
-    ])
-    .split(layout[0]);
+  fn layout(&self, area: Rect) -> Vec<Rect> {
+    let layout = Layout::default()
+      .direction(Direction::Vertical)
+      .constraints(vec![
+        Constraint::Length(2), // top bar
+        Constraint::Length(8), // timer
+        Constraint::Length(1), // splits header
+        Constraint::Min(0),    // splits
+        Constraint::Length(1), // help
+      ])
+      .split(area);
+    let top_layout = Layout::default()
+      .direction(Direction::Horizontal)
+      .constraints(vec![
+        Constraint::Length(20), // title
+        Constraint::Min(0),     // fps counter
+      ])
+      .split(layout[0]);
 
-  // return a new vec with the top_layout rects and then rest of layout
-  top_layout[..].iter().chain(layout[1..].iter()).copied().collect()
-}
-
-fn format_split<'a>(index: usize, start: Instant, previous: Instant, current: Instant) -> Line<'a> {
-  let split = format_duration(current - previous);
-  let elapsed = format_duration(current - start);
-  Line::from(vec![
-    format!("#{:02} -- ", index + 1).into(),
-    Span::styled(split, Style::new().yellow()),
-    " -- ".into(),
-    Span::styled(elapsed, Style::new()),
-  ])
-}
-
-fn format_duration(duration: Duration) -> String {
-  format!("{:02}:{:02}.{:03}", duration.as_secs() / 60, duration.as_secs() % 60, duration.subsec_millis())
-}
-
-#[derive(Debug, Clone, PartialEq)]
-struct FpsCounter {
-  start_time: Instant,
-  frames: u32,
-  pub fps: f64,
-}
-
-impl Default for FpsCounter {
-  fn default() -> Self {
-    Self::new()
-  }
-}
-
-impl FpsCounter {
-  fn new() -> Self {
-    Self { start_time: Instant::now(), frames: 0, fps: 0.0 }
+    // return a new vec with the top_layout rects and then rest of layout
+    top_layout[..].iter().chain(layout[1..].iter()).copied().collect()
   }
 
-  fn tick(&mut self) {
-    self.frames += 1;
-    let now = Instant::now();
-    let elapsed = (now - self.start_time).as_secs_f64();
-    if elapsed >= 1.0 {
-      self.fps = self.frames as f64 / elapsed;
-      self.start_time = now;
-      self.frames = 0;
-    }
+  fn format_split<'a>(&self, index: usize, start: Instant, previous: Instant, current: Instant) -> Line<'a> {
+    let split = self.format_duration(current - previous);
+    let elapsed = self.format_duration(current - start);
+    Line::from(vec![
+      format!("#{:02} -- ", index + 1).into(),
+      Span::styled(split, Style::new().yellow()),
+      " -- ".into(),
+      Span::styled(elapsed, Style::new()),
+    ])
+  }
+
+  fn format_duration(&self, duration: Duration) -> String {
+    format!("{:02}:{:02}.{:03}", duration.as_secs() / 60, duration.as_secs() % 60, duration.subsec_millis())
   }
 }
 
@@ -280,9 +344,9 @@ impl Tui {
   }
 
   pub fn exit(&self) -> Result<()> {
+    self.stop()?;
     crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen, crossterm::cursor::Show)?;
     crossterm::terminal::disable_raw_mode()?;
-    self.cancel();
     Ok(())
   }
 
