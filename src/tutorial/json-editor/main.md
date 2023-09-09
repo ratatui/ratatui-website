@@ -70,7 +70,7 @@ use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};
 ```
 
 When an application exits without running this closing boilerplate, the terminal will act very
-strange, and the user will usually have to end the terminal session and start a new on. Thus it is
+strange, and the user will usually have to end the terminal session and start a new one. Thus it is
 important that we handle our error in such a way that we can call this last piece.
 
 ```rust,no_run,noplayground
@@ -106,7 +106,7 @@ Let's start with the method signature:
 ```
 
 You'll notice that we make this function generic across the `ratatui::backend::Backend`. In previous
-sections we hardcoded the `CrosstermBackend`. This this trait approach allows us to make our code
+sections we hardcoded the `CrosstermBackend`. This trait approach allows us to make our code
 backend agnostic.
 
 This method accepts an object of type `Terminal` which implements the `ratatui::backend::Backend`
@@ -138,9 +138,9 @@ Let's unpack that `draw` call really quick.
   and `ui` will draw to that `Frame`.
 
 <!-- prettier-ignore -->
-[^note]: Technically this is the command to to the `Terminal<Backend>`, but that only matters on the `TestBackend`.
+[^note]: Technically this is the command to the `Terminal<Backend>`, but that only matters on the `TestBackend`.
 
-Notice that we also pass a immutable borrow of our application state to the `ui` function. This will
+Notice that we also pass an immutable borrow of our application state to the `ui` function. This will
 be important later.
 
 ### Event handling
@@ -179,7 +179,7 @@ We will start with the keybinds and event handling for the `CurrentScreen::Main`
 After matching to the `Main` enum variant, we match the event. When the user is in the main screen,
 there are only two keybinds, and the rest are ignored.
 
-In this case, `KeyCode::Char('e')` changes the current screen to `CurrentScreen::Editing` and set
+In this case, `KeyCode::Char('e')` changes the current screen to `CurrentScreen::Editing` and sets
 the `CurrentlyEditing` to a `Some` and notes that the user should be editing the `Key` value field,
 as opposed to the `Value` field.
 
