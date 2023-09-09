@@ -48,3 +48,13 @@ fn main() -> Result<()> {
 
 `color_eyre` is an error report handler for colorful, consistent, and well formatted error reports for all kinds of errors.
 ````
+Let's go ahead and declare these files as modules in `src/lib.rs`
+
+
+```rust
+// lib.rs
+
+{{#include ./ratatui-counter-app/src/lib.rs:lib_mods}}
+```
+
+Now we are ready to start refactoring our app.

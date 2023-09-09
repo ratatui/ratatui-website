@@ -8,6 +8,8 @@ Instead, now we are going to start a thread in the background that does the same
 First, let's create an `Event` enum to handle the different kinds of events that can occur:
 
 ```rust
+use crossterm::event::{self, KeyEvent, MouseEvent};
+
 {{#include ./ratatui-counter-app/src/event.rs:event}}
 ```
 
@@ -39,9 +41,19 @@ use `mpsc` to set us up for the future.
 ```
 
 Finally, here's the code that starts a thread that polls for events from `crossterm` and maps it to
-our `Event` enum.
+our `Event` enum. 
 
 ```rust
+use std::{
+    sync::mpsc,
+    thread,
+    time::{Duration, Instant},
+};
+
+use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+
+// --snip--
+
 {{#include ./ratatui-counter-app/src/event.rs:eventhandler_impl}}
 ```
 
