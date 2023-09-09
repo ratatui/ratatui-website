@@ -171,13 +171,21 @@ edition = &quot;2021&quot;
 [dependencies]
 color-eyre = &quot;0.6.2&quot;
 crossterm = { version = &quot;0.27.0&quot;, features = [&quot;event-stream&quot;] }
+directories = &quot;5.0.1&quot;
 futures = &quot;0.3.28&quot;
+human-panic = &quot;1.2.0&quot;
 itertools = &quot;0.11.0&quot;
+lazy_static = &quot;1.4.0&quot;
+libc = &quot;0.2.147&quot;
 log = &quot;0.4.20&quot;
 ratatui = &quot;0.23.0&quot;
+strip-ansi-escapes = &quot;0.2.0&quot;
 strum = &quot;0.25.0&quot;
 tokio = { version = &quot;1.32.0&quot;, features = [&quot;full&quot;] }
 tokio-util = &quot;0.7.8&quot;
+tracing = &quot;0.1.37&quot;
+tracing-error = &quot;0.2.0&quot;
+tracing-subscriber = { version = &quot;0.3.17&quot;, features = [&quot;env-filter&quot;] }
 tui-big-text = &quot;0.1.4&quot;
 </code></pre>
 <p>Here’s a gif of what it will look like if you run this:</p>
@@ -188,13 +196,83 @@ tui-big-text = &quot;0.1.4&quot;
 use color_eyre::eyre::{eyre, Result};
 use futures::{FutureExt, StreamExt};
 use itertools::Itertools;
+use lazy_static::lazy_static;
 use ratatui::{backend::CrosstermBackend as Backend, prelude::*, widgets::*};
 use strum::EnumIs;
+use tracing_subscriber::{prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
 use tui_big_text::BigText;
+
 pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, Backend&lt;std::io::Stderr&gt;&gt;;
+
+lazy_static! {
+  pub static ref PROJECT_NAME: String = env!(&quot;CARGO_PKG_NAME&quot;).to_uppercase().to_string();
+  pub static ref DATA_FOLDER: Option&lt;std::path::PathBuf&gt; =
+    std::env::var(format!(&quot;{}_DATA&quot;, PROJECT_NAME.clone())).ok().map(std::path::PathBuf::from);
+  pub static ref LOG_FILE: String = format!(&quot;{}.log&quot;, PROJECT_NAME.to_lowercase());
+}
+
+fn project_directory() -&gt; Option&lt;directories::ProjectDirs&gt; {
+  directories::ProjectDirs::from(&quot;com&quot;, &quot;kdheepak&quot;, PROJECT_NAME.clone().to_lowercase().as_str())
+}
+
+pub fn get_data_dir() -&gt; std::path::PathBuf {
+  let directory = if let Some(s) = DATA_FOLDER.clone() {
+    s
+  } else if let Some(proj_dirs) = project_directory() {
+    proj_dirs.data_local_dir().to_path_buf()
+  } else {
+    std::path::PathBuf::from(&quot;.&quot;).join(&quot;.data&quot;)
+  };
+  directory
+}
+
+pub fn initialize_logging() -&gt; Result&lt;()&gt; {
+  let directory = get_data_dir();
+  std::fs::create_dir_all(directory.clone())?;
+  let log_path = directory.join(LOG_FILE.clone());
+  let log_file = std::fs::File::create(log_path)?;
+  let file_subscriber = tracing_subscriber::fmt::layer()
+    .with_file(true)
+    .with_line_number(true)
+    .with_writer(log_file)
+    .with_target(false)
+    .with_ansi(false)
+    .with_filter(tracing_subscriber::filter::EnvFilter::from_default_env());
+
+  tracing_subscriber::registry().with(file_subscriber).with(tracing_error::ErrorLayer::default()).init();
+
+  Ok(())
+}
+
+pub fn initialize_panic_handler() -&gt; Result&lt;()&gt; {
+  let (panic_hook, eyre_hook) = color_eyre::config::HookBuilder::default().into_hooks();
+  eyre_hook.install()?;
+  std::panic::set_hook(Box::new(move |panic_info| {
+    if let Ok(t) = Tui::new() {
+      if let Err(r) = t.exit() {
+        log::error!(&quot;Unable to exit Terminal: {:?}&quot;, r);
+      }
+    }
+    let msg = format!(&quot;{}&quot;, panic_hook.panic_report(panic_info));
+    log::error!(&quot;{}&quot;, strip_ansi_escapes::strip_str(&amp;msg));
+    use human_panic::{handle_dump, print_msg, Metadata};
+    let meta = Metadata {
+      version: env!(&quot;CARGO_PKG_VERSION&quot;).into(),
+      name: env!(&quot;CARGO_PKG_NAME&quot;).into(),
+      authors: env!(&quot;CARGO_PKG_AUTHORS&quot;).replace(':', &quot;, &quot;).into(),
+      homepage: env!(&quot;CARGO_PKG_HOMEPAGE&quot;).into(),
+    };
+    let file_path = handle_dump(&amp;meta, panic_info);
+    print_msg(file_path, &amp;meta).expect(&quot;human-panic: printing error message to console failed&quot;);
+    eprintln!(&quot;{}&quot;, msg);
+    std::process::exit(libc::EXIT_FAILURE);
+  }));
+  Ok(())
+}
 
 #[tokio::main]
 async fn main() -&gt; Result&lt;()&gt; {
+  initialize_panic_handler()?;
   let mut app = StopwatchApp::default();
   app.run().await
 }

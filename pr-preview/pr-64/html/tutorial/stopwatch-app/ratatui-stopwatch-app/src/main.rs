@@ -3,13 +3,83 @@ use std::time::{Duration, Instant};
 use color_eyre::eyre::{eyre, Result};
 use futures::{FutureExt, StreamExt};
 use itertools::Itertools;
+use lazy_static::lazy_static;
 use ratatui::{backend::CrosstermBackend as Backend, prelude::*, widgets::*};
 use strum::EnumIs;
+use tracing_subscriber::{prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
 use tui_big_text::BigText;
+
 pub type Frame<'a> = ratatui::Frame<'a, Backend<std::io::Stderr>>;
+
+lazy_static! {
+  pub static ref PROJECT_NAME: String = env!("CARGO_PKG_NAME").to_uppercase().to_string();
+  pub static ref DATA_FOLDER: Option<std::path::PathBuf> =
+    std::env::var(format!("{}_DATA", PROJECT_NAME.clone())).ok().map(std::path::PathBuf::from);
+  pub static ref LOG_FILE: String = format!("{}.log", PROJECT_NAME.to_lowercase());
+}
+
+fn project_directory() -> Option<directories::ProjectDirs> {
+  directories::ProjectDirs::from("com", "kdheepak", PROJECT_NAME.clone().to_lowercase().as_str())
+}
+
+pub fn get_data_dir() -> std::path::PathBuf {
+  let directory = if let Some(s) = DATA_FOLDER.clone() {
+    s
+  } else if let Some(proj_dirs) = project_directory() {
+    proj_dirs.data_local_dir().to_path_buf()
+  } else {
+    std::path::PathBuf::from(".").join(".data")
+  };
+  directory
+}
+
+pub fn initialize_logging() -> Result<()> {
+  let directory = get_data_dir();
+  std::fs::create_dir_all(directory.clone())?;
+  let log_path = directory.join(LOG_FILE.clone());
+  let log_file = std::fs::File::create(log_path)?;
+  let file_subscriber = tracing_subscriber::fmt::layer()
+    .with_file(true)
+    .with_line_number(true)
+    .with_writer(log_file)
+    .with_target(false)
+    .with_ansi(false)
+    .with_filter(tracing_subscriber::filter::EnvFilter::from_default_env());
+
+  tracing_subscriber::registry().with(file_subscriber).with(tracing_error::ErrorLayer::default()).init();
+
+  Ok(())
+}
+
+pub fn initialize_panic_handler() -> Result<()> {
+  let (panic_hook, eyre_hook) = color_eyre::config::HookBuilder::default().into_hooks();
+  eyre_hook.install()?;
+  std::panic::set_hook(Box::new(move |panic_info| {
+    if let Ok(t) = Tui::new() {
+      if let Err(r) = t.exit() {
+        log::error!("Unable to exit Terminal: {:?}", r);
+      }
+    }
+    let msg = format!("{}", panic_hook.panic_report(panic_info));
+    log::error!("{}", strip_ansi_escapes::strip_str(&msg));
+    use human_panic::{handle_dump, print_msg, Metadata};
+    let meta = Metadata {
+      version: env!("CARGO_PKG_VERSION").into(),
+      name: env!("CARGO_PKG_NAME").into(),
+      authors: env!("CARGO_PKG_AUTHORS").replace(':', ", ").into(),
+      homepage: env!("CARGO_PKG_HOMEPAGE").into(),
+    };
+    let file_path = handle_dump(&meta, panic_info);
+    print_msg(file_path, &meta).expect("human-panic: printing error message to console failed");
+    eprintln!("{}", msg);
+    std::process::exit(libc::EXIT_FAILURE);
+  }));
+  Ok(())
+}
 
 #[tokio::main]
 async fn main() -> Result<()> {
+  initialize_panic_handler()?;
   let mut app = StopwatchApp::default();
   app.run().await
 }
