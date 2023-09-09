@@ -1660,7 +1660,7 @@ use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};</code></pre>
     terminal.show_cursor()?;
     ...</code></pre>
 <p>When an application exits without running this closing boilerplate, the terminal will act very
-strange, and the user will usually have to end the terminal session and start a new on. Thus it is
+strange, and the user will usually have to end the terminal session and start a new one. Thus it is
 important that we handle our error in such a way that we can call this last piece.</p>
 <pre><code class="language-rust no_run noplayground">    ...
     if let Ok(do_print) = res {
@@ -1719,7 +1719,7 @@ how this works, read the
 <pre><code class="language-rust no_run noplayground">fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut App) -&gt; io::Result&lt;bool&gt; {
 ...</code></pre>
 <p>You’ll notice that we make this function generic across the <code>ratatui::backend::Backend</code>. In previous
-sections we hardcoded the <code>CrosstermBackend</code>. This this trait approach allows us to make our code
+sections we hardcoded the <code>CrosstermBackend</code>. This trait approach allows us to make our code
 backend agnostic.</p>
 <p>This method accepts an object of type <code>Terminal</code> which implements the <code>ratatui::backend::Backend</code>
 trait. This trait includes the three (four counting the <code>TestBackend</code>) officially supported backends
@@ -1744,9 +1744,9 @@ and <code>ui</code> will draw to that <code>Frame</code>.</li>
 </ul>
 <!-- prettier-ignore -->
 <div class="footnote-definition" id="note"><sup class="footnote-definition-label">1</sup>
-<p>Technically this is the command to to the <code>Terminal&lt;Backend&gt;</code>, but that only matters on the <code>TestBackend</code>.</p>
+<p>Technically this is the command to the <code>Terminal&lt;Backend&gt;</code>, but that only matters on the <code>TestBackend</code>.</p>
 </div>
-<p>Notice that we also pass a immutable borrow of our application state to the <code>ui</code> function. This will
+<p>Notice that we also pass an immutable borrow of our application state to the <code>ui</code> function. This will
 be important later.</p>
 <h3 id="event-handling"><a class="header" href="#event-handling">Event handling</a></h3>
 <p>Now that we have started our app , and have set up the UI rendering, we will implement the event
@@ -1779,7 +1779,7 @@ need to refer to the documentation of that backend for more information.</p>
                 ...</code></pre>
 <p>After matching to the <code>Main</code> enum variant, we match the event. When the user is in the main screen,
 there are only two keybinds, and the rest are ignored.</p>
-<p>In this case, <code>KeyCode::Char('e')</code> changes the current screen to <code>CurrentScreen::Editing</code> and set
+<p>In this case, <code>KeyCode::Char('e')</code> changes the current screen to <code>CurrentScreen::Editing</code> and sets
 the <code>CurrentlyEditing</code> to a <code>Some</code> and notes that the user should be editing the <code>Key</code> value field,
 as opposed to the <code>Value</code> field.</p>
 <p><code>KeyCode::Char('q')</code> is straightforward, as it simply switches the application to the <code>Exiting</code>
