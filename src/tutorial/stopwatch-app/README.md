@@ -8,7 +8,7 @@ Here's the dependencies:
 
 Here's a gif of what it will look like if you run this:
 
-![](https://cdn.discordapp.com/attachments/1072906183104528434/1149316633236606986/stopwatch.gif)
+![Stopwatch](https://vhs.charm.sh/vhs-3dTTtrLkyU54hNah22PAR9.gif)
 
 Here's the full application:
 
