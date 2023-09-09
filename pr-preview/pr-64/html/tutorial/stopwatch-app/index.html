@@ -252,7 +252,6 @@ impl StopwatchApp {
   async fn run(&amp;mut self) -&gt; Result&lt;()&gt; {
     let mut tui = Tui::new()?;
     tui.enter()?;
-    tui.start();
     while !self.state.is_quitting() {
       tui.draw(|f| self.draw(f).expect(&quot;Unexpected error during drawing&quot;))?;
       let event = tui.next().await.ok_or(eyre!(&quot;Unable to get event&quot;))?;
@@ -260,7 +259,6 @@ impl StopwatchApp {
       self.handle_message(message)?;
     }
     tui.exit()?;
-    tui.stop()?;
     Ok(())
   }
 
@@ -461,9 +459,9 @@ impl Tui {
   }
 
   pub fn exit(&amp;self) -&gt; Result&lt;()&gt; {
+    self.stop()?;
     crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen, crossterm::cursor::Show)?;
     crossterm::terminal::disable_raw_mode()?;
-    self.cancel();
     Ok(())
   }
 
