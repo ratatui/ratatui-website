@@ -71,7 +71,7 @@ impl StopwatchApp {
       tui.draw(|f| self.draw(f).expect("Unexpected error during drawing"))?;
       let event = tui.next().await.ok_or(eyre!("Unable to get event"))?;
       let message = self.handle_event(event)?;
-      self.handle_message(message)?;
+      self.update(message)?;
     }
     tui.exit()?;
     Ok(())
@@ -92,7 +92,7 @@ impl StopwatchApp {
     Ok(msg)
   }
 
-  fn handle_message(&mut self, message: Message) -> Result<()> {
+  fn update(&mut self, message: Message) -> Result<()> {
     match message {
       Message::StartOrSplit => self.start_or_split(),
       Message::Stop => self.stop(),
