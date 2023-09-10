@@ -44,13 +44,7 @@ Finally, here's the code that starts a thread that polls for events from `crosst
 our `Event` enum. 
 
 ```rust
-use std::{
-    sync::mpsc,
-    thread,
-    time::{Duration, Instant},
-};
-
-use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+{{#include ./ratatui-counter-app/src/event.rs:event_import}}
 
 // --snip--
 
