@@ -9,9 +9,11 @@ Let's make some improvements:
 
 This is what our code will now look like:
 
+
 ```rust
 {{#include ./ratatui-counter-app/src/ui.rs}}
 ```
+Keep in mind it won't render until we have written the code for `tui::Frame`
 
 When rendered, this is what the UI will look like:
 

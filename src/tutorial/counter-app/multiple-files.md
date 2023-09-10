@@ -19,6 +19,12 @@ $ tree .
    └── update.rs
 ```
 
+Let's go ahead and declare these files as modules in `src/main.rs`
+
+```rust
+{{#include ./ratatui-counter-app/src/main.rs:declare_mods}}
+```
+
 We are going to use `anyhow` in this section of the tutorial.
 
 ```bash
@@ -48,3 +54,5 @@ fn main() -> Result<()> {
 
 `color_eyre` is an error report handler for colorful, consistent, and well formatted error reports for all kinds of errors.
 ````
+
+Now we are ready to start refactoring our app.

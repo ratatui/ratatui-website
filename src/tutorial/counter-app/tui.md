@@ -28,13 +28,20 @@ example, here's the `init` method:
 
 ```rust
 {{#include ./ratatui-counter-app/src/tui.rs:tui_init}}
+}
 ```
 
 This is essentially the same as the `startup` function from before. One important thing to note that
 this function can be used to set a panic hook that calls the `reset()` method.
 
 ```rust
+impl tui {
+  // --snip--
+
 {{#include ./ratatui-counter-app/src/tui.rs:tui_exit}}
+  
+  // --snip--
+}
 ```
 
 With this panic hook, in the event of an unexpected error or panic, the terminal properties will be
@@ -43,7 +50,11 @@ reset, ensuring that the terminal doesn't remain in a disrupted state.
 Finally, we can set up the draw method:
 
 ```rust
+impl tui {
+    // --snip--
+
 {{#include ./ratatui-counter-app/src/tui.rs:tui_draw}}
+}
 ```
 
 This draw method leverages the `ui::render` function from earlier in this section to transform the

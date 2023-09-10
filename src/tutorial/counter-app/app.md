@@ -18,21 +18,7 @@ instance, it may seem like overkill but it is good practice nonetheless.
 The practical advantage of this is that it makes the state changes easy to test.
 
 ```rust
-mod tests {
-    #[test]
-    fn test_app_increment_counter() {
-        let mut app = App::default();
-        app.increment_counter();
-        assert_eq!(app.counter, 1);
-    }
-
-    #[test]
-    fn test_app_decrement_counter() {
-        let mut app = App::default();
-        app.decrement_counter();
-        assert_eq!(app.counter, 0);
-    }
-}
+{{#include ./ratatui-counter-app/src/app.rs:application_test}}
 ```
 
 ````admonish tip
