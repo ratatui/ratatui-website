@@ -5098,15 +5098,16 @@ use crossterm::{
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-pub type CrosstermTerminal = tui::Terminal&lt;tui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+pub type CrosstermTerminal = ratatui::Terminal&lt;ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 pub struct Tui {
   terminal: CrosstermTerminal,
 }
 
 impl Tui {
-  pub fn new(terminal: CrosstermTerminal) -&gt; Self {
-    Self { terminal }
+  pub fn new() -&gt; Result&lt;Self&gt; {
+    let terminal = ratatui::Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+    Ok(Self { terminal })
   }
 
   pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
