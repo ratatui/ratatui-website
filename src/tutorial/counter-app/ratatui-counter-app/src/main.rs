@@ -1,4 +1,5 @@
 ///// ANCHOR: imports_main
+///// ANCHOR: declare_mods
 /// Application.
 pub mod app;
 
@@ -13,6 +14,7 @@ pub mod tui;
 
 /// Application updater.
 pub mod update;
+///// ANCHOR_END: declare_mods
 
 use anyhow::Result;
 use app::App;
