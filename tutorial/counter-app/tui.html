@@ -196,7 +196,13 @@ pub struct Tui {
 }</code></pre>
 <p>With this <code>Tui</code> struct, we can add helper methods to handle modifying the terminal state. For
 example, here’s the <code>init</code> method:</p>
-<pre><code class="language-rust">  /// Initializes the terminal interface.
+<pre><code class="language-rust">impl Tui {
+  /// Constructs a new instance of [`Tui`].
+  pub fn new(terminal: CrosstermTerminal, events: EventHandler) -&gt; Self {
+    Self { terminal, events }
+  }
+
+  /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
   pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
@@ -215,10 +221,14 @@ example, here’s the <code>init</code> method:</p>
     self.terminal.clear()?;
     Ok(())
   }
-</code></pre>
+
+}</code></pre>
 <p>This is essentially the same as the <code>startup</code> function from before. One important thing to note that
 this function can be used to set a panic hook that calls the <code>reset()</code> method.</p>
-<pre><code class="language-rust">  /// Resets the terminal interface.
+<pre><code class="language-rust">impl tui {
+  // --snip--
+
+  /// Resets the terminal interface.
   ///
   /// This function is also used for the panic hook to revert
   /// the terminal properties if unexpected errors occur.
@@ -235,11 +245,17 @@ this function can be used to set a panic hook that calls the <code>reset()</code
     Self::reset()?;
     self.terminal.show_cursor()?;
     Ok(())
-  }</code></pre>
+  }
+  
+  // --snip--
+}</code></pre>
 <p>With this panic hook, in the event of an unexpected error or panic, the terminal properties will be
 reset, ensuring that the terminal doesn’t remain in a disrupted state.</p>
 <p>Finally, we can set up the draw method:</p>
-<pre><code class="language-rust">  /// [`Draw`] the terminal interface by [`rendering`] the widgets.
+<pre><code class="language-rust">impl tui {
+    // --snip--
+
+  /// [`Draw`] the terminal interface by [`rendering`] the widgets.
   ///
   /// [`Draw`]: tui::Terminal::draw
   /// [`rendering`]: crate::ui:render
@@ -247,7 +263,8 @@ reset, ensuring that the terminal doesn’t remain in a disrupted state.</p>
     self.terminal.draw(|frame| ui::render(app, frame))?;
     Ok(())
   }
-</code></pre>
+
+}</code></pre>
 <p>This draw method leverages the <code>ui::render</code> function from earlier in this section to transform the
 state of our application into widgets that are then displayed on the terminal.</p>
 <p>Here’s the full <code>tui.rs</code> file for your reference:</p>

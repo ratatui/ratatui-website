@@ -28,13 +28,13 @@ pub struct Tui {
 }
 ///// ANCHOR_END: tui
 
+///// ANCHOR: tui_init
 impl Tui {
   /// Constructs a new instance of [`Tui`].
   pub fn new(terminal: CrosstermTerminal, events: EventHandler) -> Self {
     Self { terminal, events }
   }
 
-  ///// ANCHOR: tui_init
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.

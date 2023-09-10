@@ -164,7 +164,10 @@
 <p>Previously, we were polling for key inputs every 250 ms using crossterm as part of the <code>main</code> loop.
 Instead, now we are going to start a thread in the background that does the same thing.</p>
 <p>First, let’s create an <code>Event</code> enum to handle the different kinds of events that can occur:</p>
-<pre><code class="language-rust">/// Terminal events.
+<pre><code class="language-rust">use crossterm::event::{self, KeyEvent, MouseEvent};
+
+
+/// Terminal events.
 #[derive(Clone, Copy, Debug)]
 pub enum Event {
   /// Terminal tick.
@@ -217,8 +220,19 @@ use <code>mpsc</code> to set us up for the future.</p>
 </div>
 </div>
 <p>Finally, here’s the code that starts a thread that polls for events from <code>crossterm</code> and maps it to
-our <code>Event</code> enum.</p>
-<pre><code class="language-rust">impl EventHandler {
+our <code>Event</code> enum. </p>
+<pre><code class="language-rust">use std::{
+  sync::mpsc,
+  thread,
+  time::{Duration, Instant},
+};
+
+use anyhow::Result;
+use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+
+// --snip--
+
+impl EventHandler {
   /// Constructs a new instance of [`EventHandler`].
   pub fn new(tick_rate: u64) -&gt; Self {
     let tick_rate = Duration::from_millis(tick_rate);
@@ -298,6 +312,7 @@ dedicated background thread.</p>
 
 use anyhow::Result;
 use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+
 
 /// Terminal events.
 #[derive(Clone, Copy, Debug)]

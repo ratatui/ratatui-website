@@ -177,8 +177,7 @@ pub struct App {
   }
 
   /// Handles the tick event of the terminal.
-  pub fn tick(&amp;self) {
-  }
+  pub fn tick(&amp;self) {}
 
   /// Set running to false to quit the application.
   pub fn quit(&amp;mut self) {
@@ -201,19 +200,20 @@ pub struct App {
 instance, it may seem like overkill but it is good practice nonetheless.</p>
 <p>The practical advantage of this is that it makes the state changes easy to test.</p>
 <pre><code class="language-rust">mod tests {
-    #[test]
-    fn test_app_increment_counter() {
-        let mut app = App::default();
-        app.increment_counter();
-        assert_eq!(app.counter, 1);
-    }
+  use super::*;
+  #[test]
+  fn test_app_increment_counter() {
+    let mut app = App::default();
+    app.increment_counter();
+    assert_eq!(app.counter, 1);
+  }
 
-    #[test]
-    fn test_app_decrement_counter() {
-        let mut app = App::default();
-        app.decrement_counter();
-        assert_eq!(app.counter, 0);
-    }
+  #[test]
+  fn test_app_decrement_counter() {
+    let mut app = App::default();
+    app.decrement_counter();
+    assert_eq!(app.counter, 0);
+  }
 }</code></pre>
 <div id="admonition-tip" class="admonition tip">
 <div class="admonition-title">

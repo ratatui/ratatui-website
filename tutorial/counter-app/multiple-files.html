@@ -175,6 +175,21 @@ the previous section:</p>
    ├── ui.rs
    └── update.rs
 </code></pre>
+<p>Let’s go ahead and declare these files as modules in <code>src/main.rs</code></p>
+<pre><code class="language-rust">/// Application.
+pub mod app;
+
+/// Terminal events handler.
+pub mod event;
+
+/// Widget renderer.
+pub mod ui;
+
+/// Terminal user interface.
+pub mod tui;
+
+/// Application updater.
+pub mod update;</code></pre>
 <p>We are going to use <code>anyhow</code> in this section of the tutorial.</p>
 <pre><code class="language-bash">cargo add anyhow
 </code></pre>
@@ -200,6 +215,7 @@ fn main() -&gt; Result&lt;()&gt; {
 <p><code>color_eyre</code> is an error report handler for colorful, consistent, and well formatted error reports for all kinds of errors.</p>
 </div>
 </div>
+<p>Now we are ready to start refactoring our app.</p>
 
                     </main>
 

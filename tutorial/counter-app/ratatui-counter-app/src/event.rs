@@ -1,4 +1,5 @@
 ///// ANCHOR: eventall
+///// ANCHOR: event_import
 use std::{
   sync::mpsc,
   thread,
@@ -7,8 +8,10 @@ use std::{
 
 use anyhow::Result;
 use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+///// ANCHOR_END: event_import
 
 ///// ANCHOR: event
+
 /// Terminal events.
 #[derive(Clone, Copy, Debug)]
 pub enum Event {

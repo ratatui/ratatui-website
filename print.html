@@ -876,6 +876,21 @@ the previous section:</p>
    ├── ui.rs
    └── update.rs
 </code></pre>
+<p>Let’s go ahead and declare these files as modules in <code>src/main.rs</code></p>
+<pre><code class="language-rust">/// Application.
+pub mod app;
+
+/// Terminal events handler.
+pub mod event;
+
+/// Widget renderer.
+pub mod ui;
+
+/// Terminal user interface.
+pub mod tui;
+
+/// Application updater.
+pub mod update;</code></pre>
 <p>We are going to use <code>anyhow</code> in this section of the tutorial.</p>
 <pre><code class="language-bash">cargo add anyhow
 </code></pre>
@@ -901,6 +916,7 @@ fn main() -&gt; Result&lt;()&gt; {
 <p><code>color_eyre</code> is an error report handler for colorful, consistent, and well formatted error reports for all kinds of errors.</p>
 </div>
 </div>
+<p>Now we are ready to start refactoring our app.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="apprs"><a class="header" href="#apprs">app.rs</a></h1>
 <p>Let’s start with the same <code>struct</code> as we had before:</p>
 <pre><code class="language-rust">/// Application.
@@ -919,8 +935,7 @@ pub struct App {
   }
 
   /// Handles the tick event of the terminal.
-  pub fn tick(&amp;self) {
-  }
+  pub fn tick(&amp;self) {}
 
   /// Set running to false to quit the application.
   pub fn quit(&amp;mut self) {
@@ -943,19 +958,20 @@ pub struct App {
 instance, it may seem like overkill but it is good practice nonetheless.</p>
 <p>The practical advantage of this is that it makes the state changes easy to test.</p>
 <pre><code class="language-rust">mod tests {
-    #[test]
-    fn test_app_increment_counter() {
-        let mut app = App::default();
-        app.increment_counter();
-        assert_eq!(app.counter, 1);
-    }
+  use super::*;
+  #[test]
+  fn test_app_increment_counter() {
+    let mut app = App::default();
+    app.increment_counter();
+    assert_eq!(app.counter, 1);
+  }
 
-    #[test]
-    fn test_app_decrement_counter() {
-        let mut app = App::default();
-        app.decrement_counter();
-        assert_eq!(app.counter, 0);
-    }
+  #[test]
+  fn test_app_decrement_counter() {
+    let mut app = App::default();
+    app.decrement_counter();
+    assert_eq!(app.counter, 0);
+  }
 }</code></pre>
 <div id="admonition-tip" class="admonition tip">
 <div class="admonition-title">
@@ -1011,6 +1027,7 @@ pub fn render(app: &amp;mut App, f: &amp;mut Frame) {
     f.size(),
   )
 }</code></pre>
+<p>Keep in mind it won’t render until we have written the code for <code>tui::Frame</code></p>
 <p>When rendered, this is what the UI will look like:</p>
 <p><img src="https://user-images.githubusercontent.com/1813121/263155937-d8a8b6f6-97f4-4839-b855-ffd0249c2ae0.png" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="eventrs"><a class="header" href="#eventrs">event.rs</a></h1>
@@ -1018,7 +1035,10 @@ pub fn render(app: &amp;mut App, f: &amp;mut Frame) {
 <p>Previously, we were polling for key inputs every 250 ms using crossterm as part of the <code>main</code> loop.
 Instead, now we are going to start a thread in the background that does the same thing.</p>
 <p>First, let’s create an <code>Event</code> enum to handle the different kinds of events that can occur:</p>
-<pre><code class="language-rust">/// Terminal events.
+<pre><code class="language-rust">use crossterm::event::{self, KeyEvent, MouseEvent};
+
+
+/// Terminal events.
 #[derive(Clone, Copy, Debug)]
 pub enum Event {
   /// Terminal tick.
@@ -1071,8 +1091,19 @@ use <code>mpsc</code> to set us up for the future.</p>
 </div>
 </div>
 <p>Finally, here’s the code that starts a thread that polls for events from <code>crossterm</code> and maps it to
-our <code>Event</code> enum.</p>
-<pre><code class="language-rust">impl EventHandler {
+our <code>Event</code> enum. </p>
+<pre><code class="language-rust">use std::{
+  sync::mpsc,
+  thread,
+  time::{Duration, Instant},
+};
+
+use anyhow::Result;
+use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+
+// --snip--
+
+impl EventHandler {
   /// Constructs a new instance of [`EventHandler`].
   pub fn new(tick_rate: u64) -&gt; Self {
     let tick_rate = Duration::from_millis(tick_rate);
@@ -1152,6 +1183,7 @@ dedicated background thread.</p>
 
 use anyhow::Result;
 use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+
 
 /// Terminal events.
 #[derive(Clone, Copy, Debug)]
@@ -1254,7 +1286,13 @@ pub struct Tui {
 }</code></pre>
 <p>With this <code>Tui</code> struct, we can add helper methods to handle modifying the terminal state. For
 example, here’s the <code>init</code> method:</p>
-<pre><code class="language-rust">  /// Initializes the terminal interface.
+<pre><code class="language-rust">impl Tui {
+  /// Constructs a new instance of [`Tui`].
+  pub fn new(terminal: CrosstermTerminal, events: EventHandler) -&gt; Self {
+    Self { terminal, events }
+  }
+
+  /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
   pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
@@ -1273,10 +1311,14 @@ example, here’s the <code>init</code> method:</p>
     self.terminal.clear()?;
     Ok(())
   }
-</code></pre>
+
+}</code></pre>
 <p>This is essentially the same as the <code>startup</code> function from before. One important thing to note that
 this function can be used to set a panic hook that calls the <code>reset()</code> method.</p>
-<pre><code class="language-rust">  /// Resets the terminal interface.
+<pre><code class="language-rust">impl tui {
+  // --snip--
+
+  /// Resets the terminal interface.
   ///
   /// This function is also used for the panic hook to revert
   /// the terminal properties if unexpected errors occur.
@@ -1293,11 +1335,17 @@ this function can be used to set a panic hook that calls the <code>reset()</code
     Self::reset()?;
     self.terminal.show_cursor()?;
     Ok(())
-  }</code></pre>
+  }
+  
+  // --snip--
+}</code></pre>
 <p>With this panic hook, in the event of an unexpected error or panic, the terminal properties will be
 reset, ensuring that the terminal doesn’t remain in a disrupted state.</p>
 <p>Finally, we can set up the draw method:</p>
-<pre><code class="language-rust">  /// [`Draw`] the terminal interface by [`rendering`] the widgets.
+<pre><code class="language-rust">impl tui {
+    // --snip--
+
+  /// [`Draw`] the terminal interface by [`rendering`] the widgets.
   ///
   /// [`Draw`]: tui::Terminal::draw
   /// [`rendering`]: crate::ui:render
@@ -1305,7 +1353,8 @@ reset, ensuring that the terminal doesn’t remain in a disrupted state.</p>
     self.terminal.draw(|frame| ui::render(app, frame))?;
     Ok(())
   }
-</code></pre>
+
+}</code></pre>
 <p>This draw method leverages the <code>ui::render</code> function from earlier in this section to transform the
 state of our application into widgets that are then displayed on the terminal.</p>
 <p>Here’s the full <code>tui.rs</code> file for your reference:</p>
