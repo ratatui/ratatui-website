@@ -36,9 +36,11 @@ this function can be used to set a panic hook that calls the `reset()` method.
 
 ```rust
 impl tui {
-    // --snip--
+  // --snip--
 
 {{#include ./ratatui-counter-app/src/tui.rs:tui_exit}}
+  
+  // --snip--
 }
 ```
 
