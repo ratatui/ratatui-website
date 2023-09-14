@@ -5154,6 +5154,30 @@ pub fn initialize_panic_handler() {
 <p>In the screenshot below, I added a <code>None.unwrap()</code> into a function that is called on a keypress, so
 that you can see what a prettier stacktrace looks like:</p>
 <p><img src="https://user-images.githubusercontent.com/1813121/252723080-18c15640-c75f-42b3-8aeb-d4e6ce323430.png" alt="" /></p>
+<p>So far we used <code>crossterm</code> for the <code>Tui</code> and panic handling. Similarly, if you are using <code>termion</code>
+you can do something like the following:</p>
+<pre><code class="language-rust">use std::panic;
+use std::error::Error;
+
+let panic_hook = panic::take_hook();
+panic::set_hook(Box::new(move |panic| {
+    let panic_cleanup = || -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+        let mut output = io::stderr();
+        write!(
+            output,
+            &quot;{}{}{}&quot;,
+            termion::clear::All,
+            termion::screen::ToMainScreen,
+            termion::cursor::Show
+        )?;
+        output.into_raw_mode()?.suspend_raw_mode()?;
+        io::stderr().flush()?;
+        Ok(())
+    };
+    panic_cleanup().expect(&quot;failed to clean up for panic&quot;);
+    panic_hook(panic);
+}));</code></pre>
+<p>This will take the original panic hook and execute it after cleaning up the terminal.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="migrate-from-tui-rs"><a class="header" href="#migrate-from-tui-rs">Migrate from tui-rs</a></h1>
 <p><a href="https://github.com/tui-rs-revival/ratatui">Ratatui</a> is a fork of
 <a href="https://github.com/fdehau/tui-rs/">tui-rs</a>, created to continue maintenance of the project.</p>
