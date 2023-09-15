@@ -2,25 +2,26 @@
 
 ![](https://user-images.githubusercontent.com/24392180/244943746-93ab0e38-93e0-4ae0-a31b-91ae6c393185.gif)
 
-`ratatui` is based on the principle of immediate rendering with intermediate buffers. This means
-that at each new frame you have to build all widgets that are supposed to be part of the UI. In
-short, the `ratatui` library handles drawing to the terminal.
+## What is ratatui?
 
-It is important to note that `ratatui`:
+`ratatui` is a [Rust](https://www.rust-lang.org/) crate that provides widgets allowing you to
+imperatively declare what the view of your application should be, and then draws those widgets
+efficiently to the terminal.
+
+`ratatui` is based on the principle of immediate rendering. This means that at each new frame all
+widgets that are supposed to be part of the UI are re-built.
+
+**The `ratatui` crate is a library and not a framework.**
+
+It is important because `ratatui`:
 
 - does _not_ handle keyboard input events
 - does _not_ modify the state of your application
 - does _not_ dicate how you want to structure your application
 
-**The `ratatui` crate is a library and not a framework.**
-
-The `ratatui` library provides widgets that allows a developer to imperatively declare what the view
-of your application should look like, and then allows a developer to draw those widgets efficiently
-to the terminal.
-
-For these reasons, `ratatui` can be highly flexible and customizable. And while this can be
-empowering, it also does put the onus on developers using `ratatui` to understand how to best
-architect their applications, to tailor the experience for users as they see fit.
+`ratatui` can be highly flexible and customizable. And while this can be empowering, it also puts
+the onus on developers using `ratatui` to understand how to best architect their applications, to
+tailor the experience for users as they see fit.
 
 ## Who is ratatui for?
 
