@@ -159,22 +159,22 @@
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p><img src="https://user-images.githubusercontent.com/24392180/244943746-93ab0e38-93e0-4ae0-a31b-91ae6c393185.gif" alt="" /></p>
-<p><code>ratatui</code> is based on the principle of immediate rendering with intermediate buffers. This means
-that at each new frame you have to build all widgets that are supposed to be part of the UI. In
-short, the <code>ratatui</code> library handles drawing to the terminal.</p>
-<p>It is important to note that <code>ratatui</code>:</p>
+<h2 id="what-is-ratatui"><a class="header" href="#what-is-ratatui">What is ratatui?</a></h2>
+<p><code>ratatui</code> is a <a href="https://www.rust-lang.org/">Rust</a> crate that provides widgets allowing you to
+imperatively declare what the view of your application should be, and then draws those widgets
+efficiently to the terminal.</p>
+<p><code>ratatui</code> is based on the principle of immediate rendering. This means that at each new frame all
+widgets that are supposed to be part of the UI are re-built.</p>
+<p><strong>The <code>ratatui</code> crate is a library and not a framework.</strong></p>
+<p>It is important because <code>ratatui</code>:</p>
 <ul>
 <li>does <em>not</em> handle keyboard input events</li>
 <li>does <em>not</em> modify the state of your application</li>
 <li>does <em>not</em> dicate how you want to structure your application</li>
 </ul>
-<p><strong>The <code>ratatui</code> crate is a library and not a framework.</strong></p>
-<p>The <code>ratatui</code> library provides widgets that allows a developer to imperatively declare what the view
-of your application should look like, and then allows a developer to draw those widgets efficiently
-to the terminal.</p>
-<p>For these reasons, <code>ratatui</code> can be highly flexible and customizable. And while this can be
-empowering, it also does put the onus on developers using <code>ratatui</code> to understand how to best
-architect their applications, to tailor the experience for users as they see fit.</p>
+<p><code>ratatui</code> can be highly flexible and customizable. And while this can be empowering, it also puts
+the onus on developers using <code>ratatui</code> to understand how to best architect their applications, to
+tailor the experience for users as they see fit.</p>
 <h2 id="who-is-ratatui-for"><a class="header" href="#who-is-ratatui-for">Who is ratatui for?</a></h2>
 <p><code>ratatui</code> is designed for developers and enthusiasts who:</p>
 <ul>
