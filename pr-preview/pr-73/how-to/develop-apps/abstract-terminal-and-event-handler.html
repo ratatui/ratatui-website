@@ -181,7 +181,7 @@ cargo add color_eyre serde serde_derive # optional
   async fn run(&amp;mut self) -&gt; Result&lt;()&gt; {
     let mut tui = tui::Tui::new()?;
     tui.tick_rate(4.0); // 4 ticks per second
-    tui.frame_rate(30); // 30 frames per second
+    tui.frame_rate(30.0); // 30 frames per second
     tui.enter()?; // Starts event handler
     loop {
       tui.draw(|f| { // Deref allows calling `tui.draw`
