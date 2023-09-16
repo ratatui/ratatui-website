@@ -5532,11 +5532,11 @@ backtrace = &quot;&quot;&quot;
 this:</p>
 <pre><code class="language-console">cargo add human-panic
 </code></pre>
-<p>You’ll want to manually configure <code>human-panic</code> to run after you’ve restored the terminal state.</p>
-<h2 id="initialize_panic_handler"><a class="header" href="#initialize_panic_handler"><code>initialize_panic_handler</code></a></h2>
-<p>You can mix and match different panic handlers, for example using <code>better-panic</code> for debug builds
-and <code>color-eyre</code> and <code>human-panic</code> for release builds.</p>
-<pre><code class="language-console">cargo add color-eyre human-panic libc better-panic
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<p>You can mix and match different panic handlers, using <code>better-panic</code> for debug builds and
+<code>color-eyre</code> and <code>human-panic</code> for release builds. The code below also prints the <code>color-eyre</code>
+stacktrace to <code>log::error!</code> for good measure (after striping ansi escape sequences).</p>
+<pre><code class="language-console">cargo add color-eyre human-panic libc better-panic strip-ansi-escapes
 </code></pre>
 <p>Here’s code you can copy paste into your project (if you use the
 <a href="how-to/develop-apps/./abstract-terminal-and-event-handler.html"><code>Tui</code></a> struct to handle terminal exits):</p>
