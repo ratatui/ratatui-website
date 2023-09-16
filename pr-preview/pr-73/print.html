@@ -5557,7 +5557,7 @@ stacktrace to <code>log::error!</code> for good measure (after striping ansi esc
     let msg = format!(&quot;{}&quot;, panic_hook.panic_report(panic_info));
     #[cfg(not(debug_assertions))]
     {
-      eprintln!(&quot;{}&quot;, &amp;msg);
+      eprintln!(&quot;{}&quot;, msg); // prints color-eyre stack trace to stderr
       use human_panic::{handle_dump, print_msg, Metadata};
       let meta = Metadata {
         version: env!(&quot;CARGO_PKG_VERSION&quot;).into(),
@@ -5567,13 +5567,14 @@ stacktrace to <code>log::error!</code> for good measure (after striping ansi esc
       };
 
       let file_path = handle_dump(&amp;meta, panic_info);
+      // prints human-panic message
       print_msg(file_path, &amp;meta).expect(&quot;human-panic: printing error message to console failed&quot;);
     }
     log::error!(&quot;Error: {}&quot;, strip_ansi_escapes::strip_str(msg));
 
-    // Better Panic. Only enabled *when* debugging.
     #[cfg(debug_assertions)]
     {
+      // Better Panic stacktrace that is only enabled when debugging.
       better_panic::Settings::auto()
         .most_recent_first(false)
         .lineno_suffix(true)
