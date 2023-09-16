@@ -194,10 +194,11 @@ different ways.</p>
 <p>A <code>Span</code> is the basic building block for any styled text, and can be used anywhere text is
 displayed.</p>
 <h2 id="line"><a class="header" href="#line"><code>Line</code></a></h2>
-<p>The next building block that we are going to talk about is a <code>Line</code>. A <code>Line</code> represents a single
-“line” of text. The <code>Line</code> struct is essentially a <code>Vec&lt;Span&gt;</code>.</p>
-<p>Each <code>Line</code> consists of multiple <code>Span</code> objects, which allows for varied styling within a single
-line.</p>
+<p>The next building block that we are going to talk about is a <code>Line</code>. A <code>Line</code> represents a cluster
+of graphemes, where each unit in the cluster can have its own style. You can think of an instance of
+the<code>Line</code> struct as essentially a collection of <code>Span</code> objects, i.e. <code>Vec&lt;Span&gt;</code>.</p>
+<p>Since each <code>Line</code> struct consists of multiple <code>Span</code> objects, this allows for varied styling in a
+row of words, phrases or sentences.</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let line = Line::from(vec![
         &quot;hello&quot;.red(),
@@ -206,7 +207,7 @@ line.</p>
     ]);
     // -- snip ---
 }</code></pre>
-<p>A <code>Line</code> can be constructed directly from content, where content is <code>Into&lt;Cow&lt;'a, &amp;str&gt;&gt;</code>.</p>
+<p>A <code>Line</code> can be constructed directly from content, where the content is <code>Into&lt;Cow&lt;'a, &amp;str&gt;&gt;</code>.</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let line = Line::from(&quot;hello world&quot;);
     // -- snip ---
