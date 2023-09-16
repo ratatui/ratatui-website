@@ -52,7 +52,7 @@ displayed.
 
 The next building block that we are going to talk about is a `Line`. A `Line` represents a cluster
 of graphemes, where each unit in the cluster can have its own style. You can think of an instance of
-the`Line` struct as essentially a collection of `Span` objects, i.e. `Vec<Span>`.
+the `Line` struct as essentially a collection of `Span` objects, i.e. `Vec<Span>`.
 
 Since each `Line` struct consists of multiple `Span` objects, this allows for varied styling in a
 row of words, phrases or sentences.
