@@ -196,7 +196,7 @@ displayed.</p>
 <h2 id="line"><a class="header" href="#line"><code>Line</code></a></h2>
 <p>The next building block that we are going to talk about is a <code>Line</code>. A <code>Line</code> represents a single
 “line” of text. The <code>Line</code> struct is essentially a <code>Vec&lt;Span&gt;</code>.</p>
-<p>Each <code>Line</code> consists of multiple <code>Span</code> objects, which allow for varied styling within a single
+<p>Each <code>Line</code> consists of multiple <code>Span</code> objects, which allows for varied styling within a single
 line.</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let line = Line::from(vec![
