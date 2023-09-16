@@ -385,7 +385,7 @@ fn run() -&gt; Result&lt;()&gt; {
 
     // application render
     t.draw(|f| {
-      ui(f, &amp;app);
+      ui(&amp;app, f);
     })?;
 
     // application exit

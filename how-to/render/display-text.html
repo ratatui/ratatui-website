@@ -160,9 +160,117 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="displaying-text"><a class="header" href="#displaying-text">Displaying Text</a></h1>
-<p>(Stub) This page covers how text displaying works. It will cover <code>Line</code>, <code>Span</code>, <code>Text</code>, the
-migration of <code>Spans</code> to <code>Text</code>, and how these can be created, styled, displayed, altered, and such.
-These are all interrelated topics so, they are on the same page.</p>
+<p>This page covers how text displaying works. It will cover <code>Span</code>, <code>Line</code>, and <code>Text</code>, and how these
+can be created, styled, displayed, altered, and such.</p>
+<h2 id="span"><a class="header" href="#span"><code>Span</code></a></h2>
+<p>A <code>Span</code> is a styled segment of text. You can think of it as a substring with its own unique style.
+It is the most basic unit of displaying text in <code>ratatui</code>.</p>
+<p>The examples below assume the following imports:</p>
+<pre><code class="language-rust">use ratatui::{prelude::*, widgets::*};
+pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;</code></pre>
+<p>A <code>Span</code> consists of “content” and a “style” for the content. And a <code>Span</code> can be created in a few
+different ways.</p>
+<ol>
+<li>using <code>Span::raw</code>:</li>
+</ol>
+<pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let span = Span::raw(&quot;This is text that is not styled&quot;);
+    // -- snip ---
+}</code></pre>
+<ol start="2">
+<li>using <code>Span::styled</code>:</li>
+</ol>
+<pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let span = Span::styled(&quot;This is text that will be yellow&quot;, Style::default().fg(Color::Yellow));
+    // -- snip ---
+}</code></pre>
+<ol start="3">
+<li>using the <code>Stylize</code> trait:</li>
+</ol>
+<pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let span = &quot;This is text that will be yellow&quot;.yellow();
+    // -- snip ---
+}</code></pre>
+<p>A <code>Span</code> is the basic building block for any styled text, and can be used anywhere text is
+displayed.</p>
+<h2 id="line"><a class="header" href="#line"><code>Line</code></a></h2>
+<p>The next building block that we are going to talk about is a <code>Line</code>. A <code>Line</code> represents a cluster
+of graphemes, where each unit in the cluster can have its own style. You can think of an instance of
+the <code>Line</code> struct as essentially a collection of <code>Span</code> objects, i.e. <code>Vec&lt;Span&gt;</code>.</p>
+<p>Since each <code>Line</code> struct consists of multiple <code>Span</code> objects, this allows for varied styling in a
+row of words, phrases or sentences.</p>
+<pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let line = Line::from(vec![
+        &quot;hello&quot;.red(),
+        &quot; &quot;.into(),
+        &quot;world&quot;.red().bold()
+    ]);
+    // -- snip ---
+}</code></pre>
+<p>A <code>Line</code> can be constructed directly from content, where the content is <code>Into&lt;Cow&lt;'a, &amp;str&gt;&gt;</code>.</p>
+<pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let line = Line::from(&quot;hello world&quot;);
+    // -- snip ---
+}</code></pre>
+<p>You can even style a full line directly:</p>
+<pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let line = Line::styled(&quot;hello world&quot;, Style::default().fg(Color::Yellow));
+    // -- snip ---
+}</code></pre>
+<p>And you can use the <code>Stylize</code> trait on the line directly by using <code>into()</code>:</p>
+<pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let line: Line = &quot;hello world&quot;.yellow().into();
+    // -- snip ---
+}</code></pre>
+<h2 id="text"><a class="header" href="#text"><code>Text</code></a></h2>
+<p><code>Text</code> is the final building block of outputting text. A <code>Text</code> object represents a collection of
+<code>Line</code>s.</p>
+<p>Most widgets accept content that can be converted to <code>Text</code>.</p>
+<pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let span1 = &quot;hello&quot;.red();
+    let span2 = &quot;world&quot;.red().bold();
+    let line = Line::from(vec![span1, &quot; &quot;.into(), span2]);
+    let text = Text::from(line);
+    f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.size());
+}</code></pre>
+<p>Here’s a HTML representation of what you’d get in the terminal:</p>
+<div style="border: 1px solid black; display: inline-block; padding: 5px;">
+    <span style="color: red;">hello</span> <span style="color: red; font-weight: bold;">world</span>
+</div>
+<p>Often code like the one above can be simplified:</p>
+<pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let line: Line = vec![
+        &quot;hello&quot;.red(),
+        &quot; &quot;.into(),
+        &quot;world&quot;.red().bold()
+    ].into();
+    f.render_widget(Paragraph::new(line).block(Block::default().borders(Borders::ALL)), f.size());
+}</code></pre>
+<p>This is because in this case, Rust is able to infer the types and convert them into appropriately.</p>
+<p><code>Text</code> instances can be created using the <code>raw</code> or <code>styled</code> constructors too.</p>
+<p>Something that you might find yourself doing pretty often for a <code>Paragraph</code> is wanting to have
+multiple lines styled differently. This is one way you might go about that:</p>
+<pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+    let text = vec![
+        &quot;hello world 1&quot;.into(),
+        &quot;hello world 2&quot;.blue().into(),
+        Line::from(vec![&quot;hello&quot;.green(), &quot; &quot;.into(), &quot;world&quot;.green().bold(), &quot;3&quot;.into()]),
+    ]
+    .into();
+    f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.size());
+}</code></pre>
+<div style="border: 1px solid black; display: inline-block; padding: 5px;">
+    <p>
+        hello world 1
+    </p>
+    <p>
+        <span style="color: blue;">hello world 2</span>
+    </p>
+    <p>
+        <span style="color: green;">hello</span> <span style="color: green; font-weight: bold;">world</span> 3
+    </p>
+</div>
+<p>We will talk more about styling in the next section.</p>
 
                     </main>
 

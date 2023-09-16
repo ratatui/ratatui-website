@@ -160,8 +160,102 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="styling-text"><a class="header" href="#styling-text">Styling-Text</a></h1>
-<p>(Stub) This page covers <code>ratatui::style::Style</code> and gives some examples of using it in various
-<code>Text</code>, <code>Span</code>, and <code>Line</code> creations.</p>
+<p>Styling enhances user experience by adding colors, emphasis, and other visual aids. In <code>ratatui</code>,
+the primary tool for this is the <code>ratatui::style::Style</code> struct.</p>
+<p><code>ratatui::style::Style</code> provides a set of methods to apply styling attributes to your text. These
+styles can then be applied to various text structures like <code>Text</code>, <code>Span</code>, and <code>Line</code> (as well as
+other non text structures).</p>
+<p>Common styling attributes include:</p>
+<ul>
+<li>Foreground and Background Colors (<code>fg</code> and <code>bg</code>)</li>
+<li>Modifiers (like <code>bold</code>, <code>italic</code>, and <code>underline</code>)</li>
+</ul>
+<ol>
+<li>Basic Color Styling</li>
+</ol>
+<p>Setting the foreground (text color) and background:</p>
+<pre><code class="language-rust">let styled_text = Span::styled(
+    &quot;Hello, Ratatui!&quot;,
+    Style::default().fg(Color::Red).bg(Color::Yellow)
+);</code></pre>
+<ol start="2">
+<li>Using <code>Modifiers</code></li>
+</ol>
+<p>Making text bold or italic:</p>
+<pre><code class="language-rust">let bold_text = Span::styled(
+    &quot;This is bold&quot;,
+    Style::default().modifier(Modifier::BOLD)
+);
+
+let italic_text = Span::styled(
+    &quot;This is italic&quot;,
+    Style::default().modifier(Modifier::ITALIC)
+);</code></pre>
+<p>You can also combine multiple modifiers:</p>
+<pre><code class="language-rust">let bold_italic_text = Span::styled(
+    &quot;This is bold and italic&quot;,
+    Style::default().modifier(Modifier::BOLD | Modifier::ITALIC)
+);</code></pre>
+<ol start="3">
+<li>Styling within a Line</li>
+</ol>
+<p>You can mix and match different styled spans within a single line:</p>
+<pre><code class="language-rust">let mixed_line = Line::from(vec![
+    Span::styled(&quot;This is mixed&quot;, Style::default().fg(Color::Green)),
+    Span::styled(&quot;styling&quot;, Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)),
+    Span::from(&quot;!&quot;),
+]);</code></pre>
+<p>This is what it would look like if you rendered a <code>Paragraph</code> with different styles for each line:</p>
+<pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+  let styled_text = Span::styled(&quot;Hello, Ratatui!&quot;, Style::default().fg(Color::Red).bg(Color::Yellow));
+  let bold_text = Span::styled(&quot;This is bold&quot;, Style::default().add_modifier(Modifier::BOLD));
+  let italic_text = Span::styled(&quot;This is italic&quot;, Style::default().add_modifier(Modifier::ITALIC));
+  let bold_italic_text =
+    Span::styled(&quot;This is bold and italic&quot;, Style::default().add_modifier(Modifier::BOLD | Modifier::ITALIC));
+  let mixed_line = vec![
+    Span::styled(&quot;This is mixed&quot;, Style::default().fg(Color::Green)),
+    Span::styled(&quot;styling&quot;, Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)),
+    Span::from(&quot;!&quot;),
+  ];
+  let text: Vec&lt;Line&lt;'_&gt;&gt; =
+    vec![styled_text.into(), bold_text.into(), italic_text.into(), bold_italic_text.into(), mixed_line.into()];
+  f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.size());
+}</code></pre>
+<p>Here’s the HTML representation of the above styling:</p>
+<div style="border: 1px solid black; display: inline-block; padding: 5px;">
+    <p style="color: red; background-color: yellow;">Hello, Ratatui!</p>
+    <p style="font-weight: bold;">This is bold</p>
+    <p style="font-style: italic;">This is italic</p>
+    <p style="font-weight: bold; font-style: italic;">This is bold and italic</p>
+    <p>
+        <span style="color: green;">This is mixed</span>
+        <span style="color: red; font-weight: bold;">styling</span>
+        !
+    </p>
+</div>
+<div id="admonition-tip" class="admonition tip">
+<div class="admonition-title">
+<p>Tip</p>
+<p><a class="admonition-anchor-link" href="#admonition-tip"></a></p>
+</div>
+<div>
+<p>You can also create instances of <code>Color</code> from a string:</p>
+<pre><code class="language-rust">use std::str::FromStr;
+
+let color: Color = Color::from_str(&quot;blue&quot;).unwrap();
+assert_eq!(color, Color::Blue);
+
+let color: Color = Color::from_str(&quot;#FF0000&quot;).unwrap();
+assert_eq!(color, Color::Rgb(255, 0, 0));
+
+let color: Color = Color::from_str(&quot;10&quot;).unwrap();
+assert_eq!(color, Color::Indexed(10));</code></pre>
+</div>
+</div>
+<p>You can read more about the
+<a href="https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html"><code>Color</code> enum</a> and
+<a href="https://docs.rs/ratatui/latest/ratatui/style/struct.Modifier.html"><code>Modifier</code></a> in the reference
+documentation online.</p>
 
                     </main>
 
