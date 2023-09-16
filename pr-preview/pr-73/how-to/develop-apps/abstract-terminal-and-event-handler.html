@@ -344,7 +344,7 @@ impl Tui {
         self.task.abort();
       }
       if counter &gt; 100 {
-        log::error!(&quot;Failed to abort task in 100 milliseconds for unknown reason&quot;);
+        log::error!(&quot;Failed to abort task for unknown reason&quot;);
         return Err(color_eyre::eyre::eyre!(&quot;Unable to abort task&quot;));
       }
     }
