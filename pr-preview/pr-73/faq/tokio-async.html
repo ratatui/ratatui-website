@@ -1,0 +1,462 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>tokio / async - Ratatui Book</title>
+
+
+        <!-- Custom HTML head -->
+        <script type="module">
+          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+          mermaid.initialize({ startOnLoad: true });
+        </script>
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././theme/catppuccin.css">
+        <link rel="stylesheet" href=".././theme/catppuccin-highlight.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction to Ratatui</a></li><li class="chapter-item expanded affix "><li class="part-title">User Guide</li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../tutorial/index.html"><strong aria-hidden="true">2.</strong> Tutorials</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/hello-world/index.html"><strong aria-hidden="true">2.1.</strong> Hello World</a></li><li class="chapter-item "><a href="../tutorial/counter-app/index.html"><strong aria-hidden="true">2.2.</strong> Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/counter-app/single-function.html"><strong aria-hidden="true">2.2.1.</strong> Single Function</a></li><li class="chapter-item "><a href="../tutorial/counter-app/multiple-functions.html"><strong aria-hidden="true">2.2.2.</strong> Multiple Functions</a></li><li class="chapter-item "><a href="../tutorial/counter-app/multiple-files.html"><strong aria-hidden="true">2.2.3.</strong> Multiple Files</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/counter-app/app.html"><strong aria-hidden="true">2.2.3.1.</strong> app.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/ui.html"><strong aria-hidden="true">2.2.3.2.</strong> ui.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/event.html"><strong aria-hidden="true">2.2.3.3.</strong> event.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/tui.html"><strong aria-hidden="true">2.2.3.4.</strong> tui.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/update.html"><strong aria-hidden="true">2.2.3.5.</strong> update.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/main.html"><strong aria-hidden="true">2.2.3.6.</strong> main.rs</a></li></ol></li></ol></li><li class="chapter-item "><a href="../tutorial/json-editor/index.html"><strong aria-hidden="true">2.3.</strong> JSON Editor</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/json-editor/app.html"><strong aria-hidden="true">2.3.1.</strong> App.rs - Holding application state</a></li><li class="chapter-item "><a href="../tutorial/json-editor/main.html"><strong aria-hidden="true">2.3.2.</strong> Main.rs - UI loop and event handling</a></li><li class="chapter-item "><a href="../tutorial/json-editor/ui.html"><strong aria-hidden="true">2.3.3.</strong> Ui.rs - Layouts, widgets, frames, oh my!</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/json-editor/ui-main.html"><strong aria-hidden="true">2.3.3.1.</strong> Ui.rs - Main</a></li><li class="chapter-item "><a href="../tutorial/json-editor/ui-editing.html"><strong aria-hidden="true">2.3.3.2.</strong> Ui.rs - Editing</a></li><li class="chapter-item "><a href="../tutorial/json-editor/ui-exit.html"><strong aria-hidden="true">2.3.3.3.</strong> Ui.rs - Exit</a></li></ol></li><li class="chapter-item "><a href="../tutorial/json-editor/closing_thoughts.html"><strong aria-hidden="true">2.3.4.</strong> Conclusion</a></li></ol></li><li class="chapter-item "><a href="../tutorial/counter-async-app/index.html"><strong aria-hidden="true">2.4.</strong> Async Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/counter-async-app/actions.html"><strong aria-hidden="true">2.4.1.</strong> Actions</a></li><li class="chapter-item "><a href="../tutorial/counter-async-app/sync-increment-decrement.html"><strong aria-hidden="true">2.4.2.</strong> Sync Increment & Decrement</a></li><li class="chapter-item "><a href="../tutorial/counter-async-app/async-increment-decrement.html"><strong aria-hidden="true">2.4.3.</strong> Async Increment & Decrement</a></li><li class="chapter-item "><a href="../tutorial/counter-async-app/async-event-stream.html"><strong aria-hidden="true">2.4.4.</strong> Async Event Stream</a></li><li class="chapter-item "><a href="../tutorial/counter-async-app/full-async.html"><strong aria-hidden="true">2.4.5.</strong> Full Async</a></li></ol></li><li class="chapter-item "><a href="../tutorial/stopwatch-app/index.html"><strong aria-hidden="true">2.5.</strong> Stopwatch App</a></li></ol></li><li class="chapter-item expanded "><a href="../how-to/index.html"><strong aria-hidden="true">3.</strong> How To</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/layout/index.html"><strong aria-hidden="true">3.1.</strong> Layout UIs</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div><strong aria-hidden="true">3.1.1.</strong> Layout Widgets</div></li><li class="chapter-item "><a href="../how-to/layout/center-a-rect.html"><strong aria-hidden="true">3.1.2.</strong> Center a Rect</a></li><li class="chapter-item "><div><strong aria-hidden="true">3.1.3.</strong> Nest Blocks</div></li></ol></li><li class="chapter-item "><a href="../how-to/render/index.html"><strong aria-hidden="true">3.2.</strong> Render Text</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/render/display-text.html"><strong aria-hidden="true">3.2.1.</strong> Display Text</a></li><li class="chapter-item "><a href="../how-to/render/style-text.html"><strong aria-hidden="true">3.2.2.</strong> Style Text</a></li></ol></li><li class="chapter-item "><a href="../how-to/widgets/index.html"><strong aria-hidden="true">3.3.</strong> Use Widgets</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/widgets/paragraph.html"><strong aria-hidden="true">3.3.1.</strong> Paragraph</a></li><li class="chapter-item "><a href="../how-to/widgets/block.html"><strong aria-hidden="true">3.3.2.</strong> Block</a></li><li class="chapter-item "><div><strong aria-hidden="true">3.3.3.</strong> Create a Widget</div></li></ol></li><li class="chapter-item "><a href="../how-to/develop-apps/index.html"><strong aria-hidden="true">3.4.</strong> Develop Applications</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/develop-apps/cli-arguments.html"><strong aria-hidden="true">3.4.1.</strong> CLI arguments</a></li><li class="chapter-item "><a href="../how-to/develop-apps/config-directories.html"><strong aria-hidden="true">3.4.2.</strong> Configuration Directories</a></li><li class="chapter-item "><a href="../how-to/develop-apps/tracing.html"><strong aria-hidden="true">3.4.3.</strong> Tracing</a></li><li class="chapter-item "><a href="../how-to/develop-apps/arrange-your-app-code.html"><strong aria-hidden="true">3.4.4.</strong> Arrange your App Code</a></li><li class="chapter-item "><a href="../how-to/develop-apps/setup-panic-hooks.html"><strong aria-hidden="true">3.4.5.</strong> Setup Panic Hooks</a></li><li class="chapter-item "><a href="../how-to/develop-apps/better-panic.html"><strong aria-hidden="true">3.4.6.</strong> Use better-panic</a></li><li class="chapter-item "><a href="../how-to/develop-apps/setup-panic-hooks-color-eyre.html"><strong aria-hidden="true">3.4.7.</strong> Use color-eyre and human-panic</a></li><li class="chapter-item "><a href="../how-to/develop-apps/migrate-from-tui-rs.html"><strong aria-hidden="true">3.4.8.</strong> Migrate from tui-rs</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../faq/index.html"><strong aria-hidden="true">4.</strong> FAQ</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../faq/duplicate-key-events-windows.html"><strong aria-hidden="true">4.1.</strong> Duplicate key events</a></li><li class="chapter-item expanded "><a href="../faq/tokio-async.html" class="active"><strong aria-hidden="true">4.2.</strong> tokio / async</a></li><li class="chapter-item "><a href="../faq/tui-rs-history.html"><strong aria-hidden="true">4.3.</strong> tui.rs history</a></li><li class="chapter-item "><a href="../faq/ratatui-vs-tui-realm.html"><strong aria-hidden="true">4.4.</strong> ratatui vs tui-realm</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Reference</li><li class="chapter-item expanded "><a href="../concepts/index.html"><strong aria-hidden="true">5.</strong> Concepts</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../concepts/backends/index.html"><strong aria-hidden="true">5.1.</strong> Backends</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../concepts/backends/comparison.html"><strong aria-hidden="true">5.1.1.</strong> Comparison</a></li><li class="chapter-item "><a href="../concepts/backends/raw-mode.html"><strong aria-hidden="true">5.1.2.</strong> Raw Mode</a></li><li class="chapter-item "><a href="../concepts/backends/alternate-screen.html"><strong aria-hidden="true">5.1.3.</strong> Alternate Screen</a></li><li class="chapter-item "><a href="../concepts/backends/mouse-capture.html"><strong aria-hidden="true">5.1.4.</strong> Mouse Capture</a></li></ol></li><li class="chapter-item "><a href="../concepts/rendering.html"><strong aria-hidden="true">5.2.</strong> Rendering</a></li><li class="chapter-item "><a href="../concepts/event_handling.html"><strong aria-hidden="true">5.3.</strong> Event Handling</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div><strong aria-hidden="true">5.3.1.</strong> Key Binding</div></li></ol></li><li class="chapter-item "><a href="../concepts/application-patterns/index.html"><strong aria-hidden="true">5.4.</strong> Application Patterns</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../concepts/application-patterns/the-elm-architecture.html"><strong aria-hidden="true">5.4.1.</strong> The Elm Architecture</a></li><li class="chapter-item "><a href="../concepts/application-patterns/component-architecture.html"><strong aria-hidden="true">5.4.2.</strong> Component Architecture</a></li><li class="chapter-item "><a href="../concepts/application-patterns/flux-architecture.html"><strong aria-hidden="true">5.4.3.</strong> Flux Architecture</a></li></ol></li><li class="chapter-item "><div><strong aria-hidden="true">5.5.</strong> Project Structure</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.6.</strong> Design Patterns</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div><strong aria-hidden="true">5.6.1.</strong> Application State</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.6.2.</strong> Threading</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.6.3.</strong> Logging</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.6.4.</strong> Configuration</div></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../integrations/index.html"><strong aria-hidden="true">6.</strong> Integrations</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> Highlights</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../highlights/v0.23.html"><strong aria-hidden="true">7.1.</strong> v0.23</a></li><li class="chapter-item "><a href="../highlights/v0.22.html"><strong aria-hidden="true">7.2.</strong> v0.22</a></li><li class="chapter-item "><a href="../highlights/v0.21.html"><strong aria-hidden="true">7.3.</strong> v0.21</a></li></ol></li><li class="chapter-item expanded "><a href="../references/index.html"><strong aria-hidden="true">8.</strong> References</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../references/features.html"><strong aria-hidden="true">8.1.</strong> Features</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">9.</strong> Developer Guide</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../developer-guide/ratatui.html"><strong aria-hidden="true">9.1.</strong> Ratatui</a></li><li class="chapter-item "><a href="../developer-guide/book.html"><strong aria-hidden="true">9.2.</strong> Ratatui Book</a></li><li class="chapter-item "><a href="../LICENSE.html"><strong aria-hidden="true">9.3.</strong> License</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../contributors.html">Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappé</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Ratatui Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book/edit/main/src/faq/tokio-async.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="when-should-i-use-tokio-and-asyncawait"><a class="header" href="#when-should-i-use-tokio-and-asyncawait">When should I use <code>tokio</code> and <code>async</code>/<code>await</code>?</a></h1>
+<p><code>ratatui</code> isn’t a native <code>async</code> library. So is it beneficial to use <code>tokio</code> or <code>async</code>/<code>await</code>?</p>
+<p>And as a user, there really is only one point of interface with the <code>ratatui</code> library and that’s the
+<code>terminal.draw(|f| ui(f))</code> functionality, because the rendering of widgets happens in <code>ui(f)</code>.
+Everything else in your code is your own to do as you wish.</p>
+<p>Should <code>terminal.draw(|f| ui(f))</code> be <code>async</code>? Possibly. Rendering to the terminal buffer is
+relatively fast, especially using the double buffer technique that only renders diffs that <code>ratatui</code>
+uses.</p>
+<p>Can we make it <code>async</code> ourselves? Yes, we can. Check out
+<a href="https://github.com/ratatui-org/ratatui-async-template">https://github.com/ratatui-org/ratatui-async-template</a> for an example.</p>
+<p>The only other part related to <code>ratatui</code> that is beneficial to being <code>async</code> is reading the key
+event inputs from <code>stdin</code>, and that can be made <code>async</code> with <code>crossterm</code>’s event-stream.</p>
+<p>So the real question is what other parts of your app require <code>async</code> or benefit from being <code>async</code>?
+If the answer is not much, maybe it is simpler to not use <code>async</code> and avoiding <code>tokio</code>.</p>
+<p>Another way to think about it is, do you think your app would work better with 1 thread like this?</p>
+<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="136" height="224">
+  <style>
+    line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
+    <!--separator-->
+    
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="136" height="224"></rect>
+  <text x="18" y="28" >Get</text>
+  <text x="50" y="28" >Key</text>
+  <text x="82" y="28" >Event</text>
+  <text x="18" y="108" >Update</text>
+  <text x="74" y="108" >State</text>
+  <text x="42" y="188" >Render</text>
+  <g>
+    <path d="M 16,8 A 4,4 0,0,0 12,12" class="nofill"></path>
+    <line x1="12" y1="12" x2="12" y2="36" class="solid"></line>
+    <line x1="16" y1="8" x2="120" y2="8" class="solid"></line>
+    <path d="M 120,8 A 4,4 0,0,1 124,12" class="nofill"></path>
+    <line x1="124" y1="12" x2="124" y2="36" class="solid"></line>
+    <path d="M 12,36 A 4,4 0,0,0 16,40" class="nofill"></path>
+    <line x1="16" y1="40" x2="120" y2="40" class="solid"></line>
+    <line x1="60" y1="40" x2="60" y2="84" class="solid"></line>
+    <path d="M 124,36 A 4,4 0,0,1 120,40" class="nofill"></path>
+    <polygon points="56,84 64,84 60,96" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 16,88 A 4,4 0,0,0 12,92" class="nofill"></path>
+    <line x1="12" y1="92" x2="12" y2="116" class="solid"></line>
+    <line x1="16" y1="88" x2="56" y2="88" class="solid"></line>
+    <path d="M 12,116 A 4,4 0,0,0 16,120" class="nofill"></path>
+    <line x1="16" y1="120" x2="112" y2="120" class="solid"></line>
+    <line x1="60" y1="120" x2="60" y2="164" class="solid"></line>
+    <polygon points="56,164 64,164 60,176" class="filled"></polygon>
+    <line x1="64" y1="88" x2="112" y2="88" class="solid"></line>
+    <path d="M 112,88 A 4,4 0,0,1 116,92" class="nofill"></path>
+    <line x1="116" y1="92" x2="116" y2="116" class="solid"></line>
+    <path d="M 116,116 A 4,4 0,0,1 112,120" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 32,168 A 4,4 0,0,0 28,172" class="nofill"></path>
+    <line x1="28" y1="172" x2="28" y2="196" class="solid"></line>
+    <line x1="32" y1="168" x2="56" y2="168" class="solid"></line>
+    <path d="M 28,196 A 4,4 0,0,0 32,200" class="nofill"></path>
+    <line x1="32" y1="200" x2="96" y2="200" class="solid"></line>
+    <line x1="64" y1="168" x2="96" y2="168" class="solid"></line>
+    <path d="M 96,168 A 4,4 0,0,1 100,172" class="nofill"></path>
+    <line x1="100" y1="172" x2="100" y2="196" class="solid"></line>
+    <path d="M 100,196 A 4,4 0,0,1 96,200" class="nofill"></path>
+  </g>
+</svg></pre>
+<p>Or would it work with 3 threads / <code>tokio</code> tasks like this:</p>
+<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="664" height="352">
+  <style>
+    line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
+    <!--separator-->
+    
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="664" height="352"></rect>
+  <text x="34" y="12" >Render</text>
+  <text x="90" y="12" >Thread</text>
+  <line x1="196" y1="0" x2="196" y2="336" class="broken"></line>
+  <line x1="476" y1="0" x2="476" y2="336" class="broken"></line>
+  <text x="274" y="60" >Get</text>
+  <text x="306" y="60" >Key</text>
+  <text x="338" y="60" >Event</text>
+  <text x="258" y="124" >Map</text>
+  <text x="290" y="124" >Event</text>
+  <text x="338" y="124" >to</text>
+  <text x="362" y="124" >Action</text>
+  <text x="234" y="188" >Send</text>
+  <text x="274" y="188" >Action</text>
+  <text x="330" y="188" >on</text>
+  <text x="354" y="188" >action</text>
+  <line x1="400" y1="192" x2="408" y2="192" class="solid"></line>
+  <text x="410" y="188" >tx</text>
+  <text x="538" y="188" >Recv</text>
+  <text x="578" y="188" >Action</text>
+  <text x="18" y="252" >Recv</text>
+  <text x="58" y="252" >on</text>
+  <text x="82" y="252" >render</text>
+  <line x1="128" y1="256" x2="136" y2="256" class="solid"></line>
+  <text x="138" y="252" >rx</text>
+  <line x1="200" y1="248" x2="472" y2="248" class="solid"></line>
+  <text x="514" y="252" >Dispatch</text>
+  <text x="586" y="252" >Action</text>
+  <text x="18" y="316" >Render</text>
+  <text x="74" y="316" >Component</text>
+  <text x="530" y="316" >Update</text>
+  <text x="586" y="316" >State</text>
+  <text x="274" y="12" >Event</text>
+  <text x="322" y="12" >Thread</text>
+  <text x="522" y="12" >Main</text>
+  <text x="562" y="12" >Thread</text>
+  <g>
+    <path d="M 256,40 A 4,4 0,0,0 252,44" class="nofill"></path>
+    <line x1="252" y1="44" x2="252" y2="68" class="solid"></line>
+    <line x1="256" y1="40" x2="400" y2="40" class="solid"></line>
+    <path d="M 400,40 A 4,4 0,0,1 404,44" class="nofill"></path>
+    <line x1="404" y1="44" x2="404" y2="68" class="solid"></line>
+    <path d="M 252,68 A 4,4 0,0,0 256,72" class="nofill"></path>
+    <line x1="256" y1="72" x2="400" y2="72" class="solid"></line>
+    <line x1="324" y1="72" x2="324" y2="100" class="solid"></line>
+    <path d="M 404,68 A 4,4 0,0,1 400,72" class="nofill"></path>
+    <polygon points="320,100 328,100 324,112" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 248,104 A 4,4 0,0,0 244,108" class="nofill"></path>
+    <line x1="244" y1="108" x2="244" y2="132" class="solid"></line>
+    <line x1="248" y1="104" x2="320" y2="104" class="solid"></line>
+    <path d="M 244,132 A 4,4 0,0,0 248,136" class="nofill"></path>
+    <line x1="248" y1="136" x2="416" y2="136" class="solid"></line>
+    <line x1="324" y1="136" x2="324" y2="164" class="solid"></line>
+    <polygon points="320,164 328,164 324,176" class="filled"></polygon>
+    <line x1="328" y1="104" x2="416" y2="104" class="solid"></line>
+    <path d="M 416,104 A 4,4 0,0,1 420,108" class="nofill"></path>
+    <line x1="420" y1="108" x2="420" y2="132" class="solid"></line>
+    <path d="M 420,132 A 4,4 0,0,1 416,136" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 224,168 A 4,4 0,0,0 220,172" class="nofill"></path>
+    <line x1="220" y1="172" x2="220" y2="196" class="solid"></line>
+    <line x1="224" y1="168" x2="320" y2="168" class="solid"></line>
+    <path d="M 220,196 A 4,4 0,0,0 224,200" class="nofill"></path>
+    <line x1="224" y1="200" x2="440" y2="200" class="solid"></line>
+    <line x1="328" y1="168" x2="440" y2="168" class="solid"></line>
+    <path d="M 440,168 A 4,4 0,0,1 444,172" class="nofill"></path>
+    <line x1="444" y1="172" x2="444" y2="196" class="solid"></line>
+    <line x1="444" y1="184" x2="472" y2="184" class="solid"></line>
+    <path d="M 444,196 A 4,4 0,0,1 440,200" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 528,168 A 4,4 0,0,0 524,172" class="nofill"></path>
+    <line x1="524" y1="172" x2="524" y2="196" class="solid"></line>
+    <line x1="528" y1="168" x2="632" y2="168" class="solid"></line>
+    <path d="M 632,168 A 4,4 0,0,1 636,172" class="nofill"></path>
+    <line x1="636" y1="172" x2="636" y2="196" class="solid"></line>
+    <path d="M 524,196 A 4,4 0,0,0 528,200" class="nofill"></path>
+    <line x1="528" y1="200" x2="632" y2="200" class="solid"></line>
+    <line x1="572" y1="200" x2="572" y2="228" class="solid"></line>
+    <path d="M 636,196 A 4,4 0,0,1 632,200" class="nofill"></path>
+    <polygon points="568,228 576,228 572,240" class="filled"></polygon>
+  </g>
+  <g>
+    <line x1="480" y1="184" x2="512" y2="184" class="solid"></line>
+    <polygon points="512,180 520,184 512,188" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 8,232 A 4,4 0,0,0 4,236" class="nofill"></path>
+    <line x1="4" y1="236" x2="4" y2="260" class="solid"></line>
+    <line x1="8" y1="232" x2="160" y2="232" class="solid"></line>
+    <path d="M 160,232 A 4,4 0,0,1 164,236" class="nofill"></path>
+    <line x1="164" y1="236" x2="164" y2="260" class="solid"></line>
+    <path d="M 4,260 A 4,4 0,0,0 8,264" class="nofill"></path>
+    <line x1="8" y1="264" x2="160" y2="264" class="solid"></line>
+    <line x1="76" y1="264" x2="76" y2="292" class="solid"></line>
+    <path d="M 164,260 A 4,4 0,0,1 160,264" class="nofill"></path>
+    <polygon points="72,292 80,292 76,304" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 504,232 A 4,4 0,0,0 500,236" class="nofill"></path>
+    <line x1="500" y1="236" x2="500" y2="260" class="solid"></line>
+    <line x1="504" y1="232" x2="568" y2="232" class="solid"></line>
+    <line x1="480" y1="248" x2="500" y2="248" class="solid"></line>
+    <path d="M 500,260 A 4,4 0,0,0 504,264" class="nofill"></path>
+    <line x1="504" y1="264" x2="640" y2="264" class="solid"></line>
+    <line x1="572" y1="264" x2="572" y2="292" class="solid"></line>
+    <polygon points="568,292 576,292 572,304" class="filled"></polygon>
+    <line x1="576" y1="232" x2="640" y2="232" class="solid"></line>
+    <path d="M 640,232 A 4,4 0,0,1 644,236" class="nofill"></path>
+    <line x1="644" y1="236" x2="644" y2="260" class="solid"></line>
+    <path d="M 644,260 A 4,4 0,0,1 640,264" class="nofill"></path>
+  </g>
+  <g>
+    <polygon points="176,244 168,248 176,252" class="filled"></polygon>
+    <line x1="176" y1="248" x2="192" y2="248" class="solid"></line>
+  </g>
+  <g>
+    <path d="M 8,296 A 4,4 0,0,0 4,300" class="nofill"></path>
+    <line x1="4" y1="300" x2="4" y2="324" class="solid"></line>
+    <line x1="8" y1="296" x2="72" y2="296" class="solid"></line>
+    <path d="M 4,324 A 4,4 0,0,0 8,328" class="nofill"></path>
+    <line x1="8" y1="328" x2="152" y2="328" class="solid"></line>
+    <line x1="80" y1="296" x2="152" y2="296" class="solid"></line>
+    <path d="M 152,296 A 4,4 0,0,1 156,300" class="nofill"></path>
+    <line x1="156" y1="300" x2="156" y2="324" class="solid"></line>
+    <path d="M 156,324 A 4,4 0,0,1 152,328" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 504,296 A 4,4 0,0,0 500,300" class="nofill"></path>
+    <line x1="500" y1="300" x2="500" y2="324" class="solid"></line>
+    <line x1="504" y1="296" x2="568" y2="296" class="solid"></line>
+    <path d="M 500,324 A 4,4 0,0,0 504,328" class="nofill"></path>
+    <line x1="504" y1="328" x2="648" y2="328" class="solid"></line>
+    <line x1="576" y1="296" x2="648" y2="296" class="solid"></line>
+    <path d="M 648,296 A 4,4 0,0,1 652,300" class="nofill"></path>
+    <line x1="652" y1="300" x2="652" y2="324" class="solid"></line>
+    <path d="M 652,324 A 4,4 0,0,1 648,328" class="nofill"></path>
+  </g>
+</svg></pre>
+<p>The former can be done without any <code>async</code> code and the latter is the approach showcased in
+<a href="https://github.com/ratatui-org/ratatui-async-template"><code>ratatui-async-template</code></a> with <code>tokio</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../faq/duplicate-key-events-windows.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../faq/tui-rs-history.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../faq/duplicate-key-events-windows.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../faq/tui-rs-history.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
