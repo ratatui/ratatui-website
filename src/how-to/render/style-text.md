@@ -113,6 +113,6 @@ assert_eq!(color, Color::Indexed(10));
 ````
 
 You can read more about the
-[`Color` enum](https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html) and additional
+[`Color` enum](https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html) and
 [`Modifier`](https://docs.rs/ratatui/latest/ratatui/style/struct.Modifier.html) in the reference
 documentation online.

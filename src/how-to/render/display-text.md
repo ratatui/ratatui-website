@@ -45,15 +45,17 @@ fn ui(_app: &App, f: &mut Frame<'_>) {
 }
 ```
 
-`Span`s are the building blocks to build styled content that is text that is represented
-horizontally.
+A `Span` is the basic building block for any styled text, and can be used anywhere text is
+displayed.
 
 ## `Line`
 
-The next building block that we are going to talk about is a `Line`. A `Line` represents a single
-"line" of text. The `Line` struct is essentially a `Vec<Span>`.
+The next building block that we are going to talk about is a `Line`. A `Line` represents a cluster
+of graphemes, where each unit in the cluster can have its own style. You can think of an instance of
+the`Line` struct as essentially a collection of `Span` objects, i.e. `Vec<Span>`.
 
-Each Line comprises of multiple `Span` objects which allow for varied styling within a single line.
+Since each `Line` struct consists of multiple `Span` objects, this allows for varied styling in a
+row of words, phrases or sentences.
 
 ```rust
 fn ui(_: &App, f: &mut Frame<'_>) {
@@ -66,7 +68,7 @@ fn ui(_: &App, f: &mut Frame<'_>) {
 }
 ```
 
-A `Line` can be constructed directly from content too.
+A `Line` can be constructed directly from content, where the content is `Into<Cow<'a, &str>>`.
 
 ```rust
 fn ui(_: &App, f: &mut Frame<'_>) {
@@ -75,7 +77,7 @@ fn ui(_: &App, f: &mut Frame<'_>) {
 }
 ```
 
-You can even style a line appropriately:
+You can even style a full line directly:
 
 ```rust
 fn ui(_: &App, f: &mut Frame<'_>) {
@@ -96,8 +98,7 @@ fn ui(_: &App, f: &mut Frame<'_>) {
 ## `Text`
 
 `Text` is the final building block of outputting text. A `Text` object represents a collection of
-`Line`s. This structure allows for the construction of complex text displays with varied styles
-within the same sentence or paragraph.
+`Line`s.
 
 Most widgets accept content that can be converted to `Text`.
 
