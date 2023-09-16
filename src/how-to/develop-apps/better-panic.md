@@ -100,32 +100,3 @@ In the screenshot below, I added a `None.unwrap()` into a function that is calle
 that you can see what a prettier stacktrace looks like:
 
 ![](https://user-images.githubusercontent.com/1813121/252723080-18c15640-c75f-42b3-8aeb-d4e6ce323430.png)
-
-So far we used `crossterm` for the `Tui` and panic handling. Similarly, if you are using `termion`
-you can do something like the following:
-
-```rust
-use std::panic;
-use std::error::Error;
-
-let panic_hook = panic::take_hook();
-panic::set_hook(Box::new(move |panic| {
-    let panic_cleanup = || -> Result<(), Box<dyn Error>> {
-        let mut output = io::stderr();
-        write!(
-            output,
-            "{}{}{}",
-            termion::clear::All,
-            termion::screen::ToMainScreen,
-            termion::cursor::Show
-        )?;
-        output.into_raw_mode()?.suspend_raw_mode()?;
-        io::stderr().flush()?;
-        Ok(())
-    };
-    panic_cleanup().expect("failed to clean up for panic");
-    panic_hook(panic);
-}));
-```
-
-This will take the original panic hook and execute it after cleaning up the terminal.

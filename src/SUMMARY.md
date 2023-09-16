@@ -52,9 +52,10 @@
     - [CLI arguments](./how-to/develop-apps/cli-arguments.md)
     - [Configuration Directories](./how-to/develop-apps/config-directories.md)
     - [Tracing](./how-to/develop-apps/tracing.md)
-    - [Arrange your App Code](./how-to/develop-apps/arrange-your-app-code.md)
+    - [Arrange your App Code](./how-to/develop-apps/abstract-terminal-and-event-handler.md)
     - [Setup Panic Hooks](./how-to/develop-apps/setup-panic-hooks.md)
     - [Use `better-panic`](./how-to/develop-apps/better-panic.md)
+    - [Use color-eyre and human-panic](./how-to/develop-apps/setup-panic-hooks-color-eyre.md)
     - [Migrate from tui-rs](./how-to/develop-apps/migrate-from-tui-rs.md)
 
 - [FAQ](./faq/README.md)

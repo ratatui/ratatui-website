@@ -34,7 +34,7 @@ pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
 ```
 
 ````admonish tip
-If you use the popular [`anyhow`](https://docs.rs/anyhow/latest/anyhow/) crate,
+If you use the popular [`anyhow`](https://docs.rs/anyhow/latest/anyhow/)
 then instead of these two lines:
 
 ```rust
@@ -42,7 +42,7 @@ type Err = Box<dyn std::error::Error>;
 type Result<T> = std::result::Result<T, Err>;
 ```
 
-you can simply import `anyhow::Result`:
+you can simply import `Result` from `anyhow`:
 
 ```rust
 use anyhow::Result;
@@ -334,5 +334,6 @@ What do you think happens if you modify the example above to change the polling 
 What would happen if you change the example to poll every 10 seconds?
 
 Experiment with different "tick rates" and see how that affects the user experience.
-Also, monitor your CPU usage when you do this experiment.
+Monitor your CPU usage when you do this experiment.
+What happens to your CPU usage as you change the poll frequency?
 ```
