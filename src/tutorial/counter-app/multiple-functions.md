@@ -279,7 +279,7 @@ fn run() -> Result<()> {
 
     // application render
     t.draw(|f| {
-      ui(f, &app);
+      ui(&app, f);
     })?;
 
     // application exit
