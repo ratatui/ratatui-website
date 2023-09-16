@@ -4576,12 +4576,13 @@ different ways.</p>
     let span = &quot;This is text that will be yellow&quot;.yellow();
     // -- snip ---
 }</code></pre>
-<p><code>Span</code>s are the building blocks to build styled content that is text that is represented
-horizontally.</p>
+<p>A <code>Span</code> is the basic building block for any styled text, and can be used anywhere text is
+displayed.</p>
 <h2 id="line"><a class="header" href="#line"><code>Line</code></a></h2>
 <p>The next building block that we are going to talk about is a <code>Line</code>. A <code>Line</code> represents a single
 “line” of text. The <code>Line</code> struct is essentially a <code>Vec&lt;Span&gt;</code>.</p>
-<p>Each Line comprises of multiple <code>Span</code> objects which allow for varied styling within a single line.</p>
+<p>Each <code>Line</code> consists of multiple <code>Span</code> objects, which allow for varied styling within a single
+line.</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let line = Line::from(vec![
         &quot;hello&quot;.red(),
@@ -4590,12 +4591,12 @@ horizontally.</p>
     ]);
     // -- snip ---
 }</code></pre>
-<p>A <code>Line</code> can be constructed directly from content too.</p>
+<p>A <code>Line</code> can be constructed directly from content, where content is <code>Into&lt;Cow&lt;'a, &amp;str&gt;&gt;</code>.</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let line = Line::from(&quot;hello world&quot;);
     // -- snip ---
 }</code></pre>
-<p>You can even style a line appropriately:</p>
+<p>You can even style a full line directly:</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let line = Line::styled(&quot;hello world&quot;, Style::default().fg(Color::Yellow));
     // -- snip ---
@@ -4607,8 +4608,7 @@ horizontally.</p>
 }</code></pre>
 <h2 id="text"><a class="header" href="#text"><code>Text</code></a></h2>
 <p><code>Text</code> is the final building block of outputting text. A <code>Text</code> object represents a collection of
-<code>Line</code>s. This structure allows for the construction of complex text displays with varied styles
-within the same sentence or paragraph.</p>
+<code>Line</code>s.</p>
 <p>Most widgets accept content that can be converted to <code>Text</code>.</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let span1 = &quot;hello&quot;.red();
@@ -4749,7 +4749,7 @@ assert_eq!(color, Color::Indexed(10));</code></pre>
 </div>
 </div>
 <p>You can read more about the
-<a href="https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html"><code>Color</code> enum</a> and additional
+<a href="https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html"><code>Color</code> enum</a> and
 <a href="https://docs.rs/ratatui/latest/ratatui/style/struct.Modifier.html"><code>Modifier</code></a> in the reference
 documentation online.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="use-widgets"><a class="header" href="#use-widgets">Use Widgets</a></h1>
