@@ -235,7 +235,7 @@ ratatui = { version = &quot;0.23.0&quot;, features = [&quot;all-widgets&quot;]}
 </div>
 <p>By default, <code>ratatui</code> enables the <code>crossterm</code>, but it’s possible to alternatively use <code>termion</code>, or
 <code>termwiz</code> instead by enabling the appropriate feature and disabling the default features. See
-<a href="./concepts/backends/README.html">Backend</a> for more information.</p>
+<a href="./concepts/backends/">Backend</a> for more information.</p>
 <p>For Termion:</p>
 <pre><code class="language-shell">cargo add ratatui --no-default-features --features termion
 cargo add termion
@@ -256,14 +256,14 @@ termwiz = &quot;0.20.0&quot;
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="tutorial"><a class="header" href="#tutorial">Tutorial</a></h1>
 <ul>
-<li><a href="tutorial/./hello-world/README.html">Hello World</a>: This tutorial takes you through the basics of creating a
-simple Ratatui application that displays “Hello World”.</li>
-<li><a href="tutorial/./counter-app/README.html">Counter App</a>: This tutorial will set up the basics of a <code>ratatui</code>
-project by building a app that displays a counter.</li>
-<li><a href="tutorial/./json-editor/README.html">JSON Editor</a>: This tutorial will guide you through setting up a Rust
-project and organizing its structure for a <code>ratatui</code>-based application to edit json key value
-pairs. JSON Editor TUI will provide an interface for users to input key-value pairs, which are
-then converted into correct JSON format and printed to stdout.</li>
+<li><a href="tutorial/./hello-world/">Hello World</a>: This tutorial takes you through the basics of creating a simple
+Ratatui application that displays “Hello World”.</li>
+<li><a href="tutorial/./counter-app/">Counter App</a>: This tutorial will set up the basics of a <code>ratatui</code> project by
+building a app that displays a counter.</li>
+<li><a href="tutorial/./json-editor/">JSON Editor</a>: This tutorial will guide you through setting up a Rust project and
+organizing its structure for a <code>ratatui</code>-based application to edit json key value pairs. JSON
+Editor TUI will provide an interface for users to input key-value pairs, which are then converted
+into correct JSON format and printed to stdout.</li>
 <li><a href="tutorial/./counter-async-app/">Async Counter App</a>: This tutorial, expands on the Counter app to build a an
 async TUI using <a href="https://tokio.rs/">tokio</a>.</li>
 <li><a href="tutorial/./stopwatch-app/">Stopwatch App</a>: This tutorial will build a working stopwatch application that
@@ -2525,9 +2525,8 @@ In this case, it clears all of the menu that was prerendered behind it.</p>
 <p>This tutorial should get you started with a basic understanding of the flow of a <code>ratatui</code> program.
 However, this is only <em>one</em> way to create a <code>ratatui</code> application. Because <code>ratatui</code> is relatively
 low level compared to other UI frameworks, almost any application model can be implemented. You can
-explore more of these in <a href="tutorial/json-editor/../../concepts/application-patterns/README.html">Concepts: Application
-Patterns</a> and get some inspiration for what model
-will work best for your application.</p>
+explore more of these in <a href="tutorial/json-editor/../../concepts/application-patterns/">Concepts: Application Patterns</a> and
+get some inspiration for what model will work best for your application.</p>
 <h2 id="finished-files"><a class="header" href="#finished-files">Finished Files</a></h2>
 <p>Here you can find the finished project used for the tutorial. You can test this application by
 yourself, but running</p>
@@ -4384,14 +4383,14 @@ impl Drop for Tui {
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="how-to"><a class="header" href="#how-to">How To</a></h1>
 <ul>
-<li><a href="how-to/./layout/README.html">Layout UIs</a>: Articles regarding how to layout your application’s User
-Interface including widgets and nesting blocks</li>
-<li><a href="how-to/./render/README.html">Render Text</a>: Articles related to actually rendering test and widgets to the
-screen including how to style and write to the buffer.</li>
-<li><a href="how-to/./widgets/README.html">Use Widgets</a>: Articles related to using individual widgets suchs as the
-paragraph, block, and creating your own custom widget.</li>
-<li><a href="how-to/./develop-apps/README.html">Develop Applications</a>: Articles related to developing applications.
-E.g. how to handle cli arguments, tracing, configuration, panics, etc.</li>
+<li><a href="how-to/./layout/">Layout UIs</a>: Articles regarding how to layout your application’s User Interface
+including widgets and nesting blocks</li>
+<li><a href="how-to/./render/">Render Text</a>: Articles related to actually rendering test and widgets to the screen
+including how to style and write to the buffer.</li>
+<li><a href="how-to/./widgets/">Use Widgets</a>: Articles related to using individual widgets suchs as the paragraph,
+block, and creating your own custom widget.</li>
+<li><a href="how-to/./develop-apps/">Develop Applications</a>: Articles related to developing applications. E.g. how to
+handle CLI arguments, tracing, configuration, panics, etc.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="layout-constraints-basics"><a class="header" href="#layout-constraints-basics">Layout Constraints Basics</a></h1>
 <p>Here’s the “hello world” example again:</p>
@@ -6208,8 +6207,8 @@ event loop that you need to update whenever a new sub-module is created.</p>
 <p>Cons: However, if several sub-modules in your application have similar event handling loops, this
 way could lead to a lot of duplicated code.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="application-patterns"><a class="header" href="#application-patterns">Application Patterns</a></h1>
-<p>(Stub) This page covers several patterns one can use for their application and acts as a top-level
-page for the following articles where these patterns are gone into more in-depth.</p>
+<p>This page covers several patterns one can use for their application and acts as a top-level page for
+the following articles where these patterns are gone into more in-depth.</p>
 <ul>
 <li><a href="concepts/application-patterns/./the-elm-architecture.html">The Elm Architecture</a></li>
 <li><a href="concepts/application-patterns/./component-architecture.html">Component Architecture</a></li>
