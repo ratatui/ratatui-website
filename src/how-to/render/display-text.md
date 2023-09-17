@@ -20,30 +20,30 @@ different ways.
 
 1. using `Span::raw`:
 
-```rust
-fn ui(_app: &App, f: &mut Frame<'_>) {
-    let span = Span::raw("This is text that is not styled");
-    // -- snip ---
-}
-```
+    ```rust
+    fn ui(_app: &App, f: &mut Frame<'_>) {
+        let span = Span::raw("This is text that is not styled");
+        // -- snip ---
+    }
+    ```
 
 2. using `Span::styled`:
 
-```rust
-fn ui(_app: &App, f: &mut Frame<'_>) {
-    let span = Span::styled("This is text that will be yellow", Style::default().fg(Color::Yellow));
-    // -- snip ---
-}
-```
+    ```rust
+    fn ui(_app: &App, f: &mut Frame<'_>) {
+        let span = Span::styled("This is text that will be yellow", Style::default().fg(Color::Yellow));
+        // -- snip ---
+    }
+    ```
 
 3. using the `Stylize` trait:
 
-```rust
-fn ui(_app: &App, f: &mut Frame<'_>) {
-    let span = "This is text that will be yellow".yellow();
-    // -- snip ---
-}
-```
+    ```rust
+    fn ui(_app: &App, f: &mut Frame<'_>) {
+        let span = "This is text that will be yellow".yellow();
+        // -- snip ---
+    }
+    ```
 
 A `Span` is the basic building block for any styled text, and can be used anywhere text is
 displayed.
@@ -112,10 +112,11 @@ fn ui(_: &App, f: &mut Frame<'_>) {
 }
 ```
 
-Here's a HTML representation of what you'd get in the terminal:
+Here's an HTML representation of what you'd get in the terminal:
 
 <div style="border: 1px solid black; display: inline-block; padding: 5px;">
-    <span style="color: red;">hello</span> <span style="color: red; font-weight: bold;">world</span>
+    <span style="color: red;">hello</span>
+    <span style="color: red; font-weight: bold;">world</span>
 </div>
 
 Often code like the one above can be simplified:
@@ -158,7 +159,8 @@ fn ui(_: &App, f: &mut Frame<'_>) {
         <span style="color: blue;">hello world 2</span>
     </p>
     <p>
-        <span style="color: green;">hello</span> <span style="color: green; font-weight: bold;">world</span> 3
+        <span style="color: green;">hello</span>
+        <span style="color: green; font-weight: bold;">world</span> 3
     </p>
 </div>
 

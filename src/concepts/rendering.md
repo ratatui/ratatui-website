@@ -37,11 +37,17 @@ loop {
 [This article](https://caseymuratori.com/blog_0001) and the accompanying YouTube video is worth your
 time if you are new to the immediate mode rendering paradigm.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Z1qyvQsjK5Y?si=eiBHXiXIo3Z0u2zs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z1qyvQsjK5Y?si=eiBHXiXIo3Z0u2zs"
+ title="YouTube video player" frameborder="0"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowfullscreen></iframe>
 
 This 4 minute talk about `IMGUI` is also tangentially relevant.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LSRJ1jZq90k?si=8NB5yiZ8IGS_QE_E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LSRJ1jZq90k?si=8NB5yiZ8IGS_QE_E"
+ title="YouTube video player" frameborder="0"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowfullscreen></iframe>
 
 ## Advantages of Immediate Mode Rendering
 
@@ -58,7 +64,8 @@ This 4 minute talk about `IMGUI` is also tangentially relevant.
 
   ```admonish note
   The `ratatui` library in particular only handles how widget would be rendered to a "Backend", e.g.
-  `crossterm`. The `Backend` in question would use an external crate e.g. `crossterm` for actually drawing to the terminal.
+  `crossterm`. The `Backend` in question would use an external crate e.g. `crossterm` for actually
+  drawing to the terminal.
   ```
 
 - **Event loop orchestration**: Along with managing "the render loop", developers are also

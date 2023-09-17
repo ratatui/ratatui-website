@@ -7,7 +7,9 @@ in this application as well.
 This struct will contain all of our "persistent" data and will be passed to any function that needs
 to know the current state of the application.
 
-<!-- (Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models) -->
+<!--
+    (Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models)
+-->
 
 ## Application modes
 
@@ -67,7 +69,7 @@ While we could simply keep our application state as simply a holder of values, w
 few helper functions which will make our life easier elsewhere. Of course, these functions should
 only affect the application state itself, and nothing outside of it.
 
-#### `new()`
+### `new()`
 
 We will be adding this function simply to make creating the state easier. While this could be
 avoided by specifying it all in the instantiation of the variable, doing it here allows for easy to
@@ -78,7 +80,7 @@ change universal defaults for the state.
     ...
 ```
 
-#### `save_key_value()`
+### `save_key_value()`
 
 This function will be called when the user saves a key-value pair in the editor. It adds the two
 stored variables to the key-value pairs `HashMap`, and resets the status of all of the editing
@@ -90,7 +92,7 @@ variables.
     ...
 ```
 
-#### `toggle_editing()`
+### `toggle_editing()`
 
 Sometimes it is easier to put simple logic into a convenience function so we don't have to worry
 about it in the main code block. `toggle_editing` is one of those cases. All we are doing, is
@@ -103,7 +105,7 @@ Value fields.
     ...
 ```
 
-#### `print_json()`
+### `print_json()`
 
 Finally, is another convenience function to print out the serialized json from all of our key-value
 pairs.

@@ -5,7 +5,7 @@ start creating beautiful TUIs.
 
 In this section, we will build a "hello world" TUI application.
 
-### Install `rust`
+## Install `rust`
 
 The first step is to install `rust`.
 
@@ -26,7 +26,7 @@ dependency.
 
 To start with a new project, you can run the following:
 
-```console
+```shell
 cargo new hello-world-tui
 cd hello-world-tui
 ```
@@ -35,7 +35,7 @@ This creates a new folder called `hello-world-tui` and changes the directory to 
 
 `cargo new` will instantiate a "binary" project by default.
 
-```sh
+```plain
 $ tree .
 .
 ├── Cargo.toml
@@ -49,7 +49,7 @@ It is always good idea to add a `LICENSE` and a `README.md` for your projects.
 
 You can compile and execute a "binary" project by running `cargo run`:
 
-```sh
+```shell
 $ cargo run
    Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
     Finished dev [unoptimized + debuginfo] target(s) in 0.00s
@@ -61,7 +61,7 @@ Hello, world!
 By default `cargo run` compiles your program with no optimizations and with debug information.
 If you want to run it in with more optimizations, you can run `cargo run --release`.
 
-```sh
+```shell
 cargo run --release
    Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
     Finished release [optimized] target(s) in 0.08s
@@ -77,15 +77,15 @@ book](https://doc.rust-lang.org/book/ch01-03-hello-cargo.html).
 
 Installing `ratatui` is as easy as running the following:
 
-```console
+```shell
 cargo add ratatui crossterm
 ```
 
 ```admonish note
 `ratatui` has to be combined with a terminal backend.
 You can learn more about the different terminal backends in the [how to choose a
-backend](./../../how-to/choose-a-backend.md) section. For the examples in this book, we are going to use
-`crossterm`.
+backend](./../../how-to/choose-a-backend.md) section. For the examples in this book, we are going to
+use `crossterm`.
 ```
 
 Running the above command in your console will add the latest version of `ratatui` and `crossterm`
@@ -94,7 +94,7 @@ to your project.
 ````admonish tip
 If you are interested in adding a specific version, you can run the following:
 
-```console
+```shell
 cargo add ratatui --version 0.19.0
 ```
 ````
@@ -142,14 +142,14 @@ Make sure you save and exit the file! Now we are ready to run the TUI.
 
 We can run our program with:
 
-```
+```shell
 cargo run
 ```
 
 You should see a TUI app with `Hello World! (press 'q' to quit)` show up in your terminal as a TUI
 app.
 
-![](https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif)
+![Hello World](https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif)
 
 You can press `q` to exit and go back to your terminal as it was before.
 

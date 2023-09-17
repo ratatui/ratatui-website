@@ -30,9 +30,9 @@ giving it a `Block` with borders enabled. (See [How-To: Block](../../how-to/widg
 
 In this code, the first thing we do, is create a `Block` with all borders enabled, and the default
 style. Next, we created a paragraph widget with the text "Create New Json" styled green. (See
-[How-To: Paragraphs](../../how-to/widgets/paragraph.md) for more information about creating paragraphs and
-[How-To: Styling-Text](../../how-to/render/style-text.md) for styling text) Finally, we call
-`render_widget` on our `Frame`, and give it the widget we want to render it, and the `Rect`
+[How-To: Paragraphs](../../how-to/widgets/paragraph.md) for more information about creating
+paragraphs and [How-To: Styling-Text](../../how-to/render/style-text.md) for styling text) Finally,
+we call `render_widget` on our `Frame`, and give it the widget we want to render it, and the `Rect`
 representing where it needs to go and what size it should be. (this is the way all widgets are
 drawn)
 

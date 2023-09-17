@@ -10,7 +10,7 @@ when this happens, you want to be a good citizen and:
 
 [`better-panic`](https://github.com/mitsuhiko/better-panic) gives you pretty backtraces for panics.
 
-```console
+```shell
 cargo add better-panic
 ```
 
@@ -79,7 +79,7 @@ index 289e40b..de48392 100644
 
 This is what a prettier stacktrace would look like with `better-panic`:
 
-```
+```plain
 Backtrace (most recent call last):
   File "/Users/kd/gitrepos/ratatui-async-template/src/main.rs:46", in ratatui_async_template::main
     Ok(())
@@ -121,7 +121,7 @@ inlined or truncated stacktraces.
 
 For example, here's what I get when I compile with all optimizations on:
 
-```
+```plain
 Backtrace (most recent call last):
   File "<unknown>:0", in __mh_execute_header
   File "<unknown>:0", in __mh_execute_header
@@ -151,7 +151,7 @@ to show the users of your application in the following subsections.
 Another way to manage printing of stack-traces is by using
 [`color-eyre`](https://github.com/eyre-rs/color-eyre):
 
-```console
+```shell
 cargo add color-eyre
 ```
 
@@ -168,7 +168,7 @@ repository = "https://github.com/ratatui-org/ratatui-async-template" # used by e
 When a `panic!` occurs, after the application cleanly restores the terminal, we can print out a nice
 error message created by `color-eyre` like so:
 
-```
+```plain
 The application panicked (crashed).
 Message:  At the disco
 Location: src/components/app.rs:80
@@ -184,7 +184,7 @@ This is short and clear, providing a link to the user to report the bug.
 Users can also opt to give you a more detailed stacktrace if they can reproduce the error (with a
 debug build and with `export RUST_BACKTRACE=1`):
 
-```
+```plain
 The application panicked (crashed).
 Message:  At the disco
 Location: src/components/app.rs:80
@@ -227,14 +227,14 @@ This is a bug. Consider reporting it at https://github.com/ratatui-org/ratatui-a
 To use [human-panic](https://github.com/rust-cli/human-panic), you'll have to install it as a
 dependency:
 
-```console
+```shell
 cargo add human-panic
 ```
 
 Personally, I think `human-panic` provides the most user friendly panic handling functionality out
 of the box when users experience an unexpected panic:
 
-```
+```plain
 Well, this is embarrassing.
 
 ratatui-async-template had a problem and crashed. To help us diagnose the problem you can send us a crash report.
@@ -251,7 +251,7 @@ Thank you kindly!
 It generates a report where information relevant to the crash is logged. Here's the content of the
 temporary report file that `human-panic` creates (with optimizations turned on):
 
-```
+```plain
 name = "ratatui-async-template"
 operating_system = "Mac OS 13.5.2 [64-bit]"
 crate_version = "0.1.0"
@@ -277,7 +277,7 @@ You can mix and match these different panic handlers, using `better-panic` for d
 `color-eyre` and `human-panic` for release builds. The code below also prints the `color-eyre`
 stacktrace to `log::error!` for good measure (after striping ansi escape sequences).
 
-```console
+```shell
 cargo add color-eyre human-panic libc better-panic strip-ansi-escapes
 ```
 

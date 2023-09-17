@@ -2,10 +2,10 @@
 
 You'll need to install `tracing` and a few related dependencies:
 
-```console
+```shell
 cargo add tracing-error tracing
 cargo add tracing-subscriber --features env-filter
-cargo add directories lazy-static color-eyre # (optional)
+cargo add directories lazy_static color-eyre # (optional)
 ```
 
 You can paste the following in any module in your project.
@@ -18,7 +18,7 @@ use directories::ProjectDirs;
 use lazy_static::lazy_static;
 use tracing::error;
 use tracing_error::ErrorLayer;
-use tracing_subscriber::{self, prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
+use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt, Layer};
 
 lazy_static! {
   pub static ref PROJECT_NAME: String = env!("CARGO_CRATE_NAME").to_uppercase().to_string();

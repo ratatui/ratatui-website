@@ -11,14 +11,14 @@ decrement the counter when a key is pressed. Let's increment and decrement the c
 
 Go ahead and set up a new rust project with
 
-```sh
+```shell
 cargo init ratatui-counter-app
 cd ratatui-counter-app
 ```
 
 We are only going to use 3 dependencies in this tutorial:
 
-```sh
+```shell
 cargo add ratatui crossterm anyhow
 ```
 
@@ -30,7 +30,7 @@ We opt to use the `anyhow` crate for easier error handling; it is not necessary 
 
 We are going to start off like in the previous "hello world" tutorial with one file like so:
 
-```sh
+```plain
 tree .
 ├── Cargo.toml
 ├── LICENSE
@@ -40,7 +40,7 @@ tree .
 
 but this time for the counter example, we will expand it out to multiple files like so:
 
-```sh
+```plain
 tree .
 ├── Cargo.toml
 ├── LICENSE
