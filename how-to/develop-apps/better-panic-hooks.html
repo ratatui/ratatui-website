@@ -168,7 +168,7 @@ when this happens, you want to be a good citizen and:</p>
 </ol>
 <h2 id="better-panic"><a class="header" href="#better-panic"><code>better-panic</code></a></h2>
 <p><a href="https://github.com/mitsuhiko/better-panic"><code>better-panic</code></a> gives you pretty backtraces for panics.</p>
-<pre><code class="language-console">cargo add better-panic
+<pre><code class="language-shell">cargo add better-panic
 </code></pre>
 <p>Here’s an example of <code>initialize_panic_handler()</code> using <code>better-panic</code> to provide a prettier
 backtrace by default.</p>
@@ -222,7 +222,7 @@ index 289e40b..de48392 100644
    }
 </code></pre>
 <p>This is what a prettier stacktrace would look like with <code>better-panic</code>:</p>
-<pre><code>Backtrace (most recent call last):
+<pre><code class="language-plain">Backtrace (most recent call last):
   File &quot;/Users/kd/gitrepos/ratatui-async-template/src/main.rs:46&quot;, in ratatui_async_template::main
     Ok(())
   File &quot;/Users/kd/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokio-1.28.2/src/runtime/runtime.rs:304&quot;, in tokio::runtime::runtime::Runtime::block_on
@@ -259,7 +259,7 @@ history, and iterate on your application rapidly during development.</p>
 <p>This kind of detailed stacktrace is only available in debug builds. For release builds, you may get
 inlined or truncated stacktraces.</p>
 <p>For example, here’s what I get when I compile with all optimizations on:</p>
-<pre><code>Backtrace (most recent call last):
+<pre><code class="language-plain">Backtrace (most recent call last):
   File &quot;&lt;unknown&gt;:0&quot;, in __mh_execute_header
   File &quot;&lt;unknown&gt;:0&quot;, in __mh_execute_header
   File &quot;&lt;unknown&gt;:0&quot;, in __mh_execute_header
@@ -284,7 +284,7 @@ to show the users of your application in the following subsections.</p>
 <h3 id="color-eyre-panic-hook"><a class="header" href="#color-eyre-panic-hook">color-eyre panic hook</a></h3>
 <p>Another way to manage printing of stack-traces is by using
 <a href="https://github.com/eyre-rs/color-eyre"><code>color-eyre</code></a>:</p>
-<pre><code class="language-console">cargo add color-eyre
+<pre><code class="language-shell">cargo add color-eyre
 </code></pre>
 <p><code>color-eyre</code> has a panic hook that is better suited for users in my opinion.</p>
 <div id="admonition-tip" class="admonition tip">
@@ -300,7 +300,7 @@ to show the users of your application in the following subsections.</p>
 </div>
 <p>When a <code>panic!</code> occurs, after the application cleanly restores the terminal, we can print out a nice
 error message created by <code>color-eyre</code> like so:</p>
-<pre><code>The application panicked (crashed).
+<pre><code class="language-plain">The application panicked (crashed).
 Message:  At the disco
 Location: src/components/app.rs:80
 
@@ -312,7 +312,7 @@ Run with RUST_BACKTRACE=full to include source snippets.
 <p>This is short and clear, providing a link to the user to report the bug.</p>
 <p>Users can also opt to give you a more detailed stacktrace if they can reproduce the error (with a
 debug build and with <code>export RUST_BACKTRACE=1</code>):</p>
-<pre><code>The application panicked (crashed).
+<pre><code class="language-plain">The application panicked (crashed).
 Message:  At the disco
 Location: src/components/app.rs:80
 
@@ -351,11 +351,11 @@ This is a bug. Consider reporting it at https://github.com/ratatui-org/ratatui-a
 <h2 id="human-panic"><a class="header" href="#human-panic">human-panic</a></h2>
 <p>To use <a href="https://github.com/rust-cli/human-panic">human-panic</a>, you’ll have to install it as a
 dependency:</p>
-<pre><code class="language-console">cargo add human-panic
+<pre><code class="language-shell">cargo add human-panic
 </code></pre>
 <p>Personally, I think <code>human-panic</code> provides the most user friendly panic handling functionality out
 of the box when users experience an unexpected panic:</p>
-<pre><code>Well, this is embarrassing.
+<pre><code class="language-plain">Well, this is embarrassing.
 
 ratatui-async-template had a problem and crashed. To help us diagnose the problem you can send us a crash report.
 
@@ -369,7 +369,7 @@ Thank you kindly!
 </code></pre>
 <p>It generates a report where information relevant to the crash is logged. Here’s the content of the
 temporary report file that <code>human-panic</code> creates (with optimizations turned on):</p>
-<pre><code>name = &quot;ratatui-async-template&quot;
+<pre><code class="language-plain">name = &quot;ratatui-async-template&quot;
 operating_system = &quot;Mac OS 13.5.2 [64-bit]&quot;
 crate_version = &quot;0.1.0&quot;
 explanation = &quot;&quot;&quot;
@@ -390,7 +390,7 @@ backtrace = &quot;&quot;&quot;
 <p>You can mix and match these different panic handlers, using <code>better-panic</code> for debug builds and
 <code>color-eyre</code> and <code>human-panic</code> for release builds. The code below also prints the <code>color-eyre</code>
 stacktrace to <code>log::error!</code> for good measure (after striping ansi escape sequences).</p>
-<pre><code class="language-console">cargo add color-eyre human-panic libc better-panic strip-ansi-escapes
+<pre><code class="language-shell">cargo add color-eyre human-panic libc better-panic strip-ansi-escapes
 </code></pre>
 <p>Here’s code you can copy paste into your project (if you use the
 <a href="./abstract-terminal-and-event-handler.html"><code>Tui</code></a> struct to handle terminal exits):</p>

@@ -171,26 +171,28 @@ pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::St
 <p>A <code>Span</code> consists of “content” and a “style” for the content. And a <code>Span</code> can be created in a few
 different ways.</p>
 <ol>
-<li>using <code>Span::raw</code>:</li>
-</ol>
+<li>
+<p>using <code>Span::raw</code>:</p>
 <pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let span = Span::raw(&quot;This is text that is not styled&quot;);
     // -- snip ---
 }</code></pre>
-<ol start="2">
-<li>using <code>Span::styled</code>:</li>
-</ol>
+</li>
+<li>
+<p>using <code>Span::styled</code>:</p>
 <pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let span = Span::styled(&quot;This is text that will be yellow&quot;, Style::default().fg(Color::Yellow));
     // -- snip ---
 }</code></pre>
-<ol start="3">
-<li>using the <code>Stylize</code> trait:</li>
-</ol>
+</li>
+<li>
+<p>using the <code>Stylize</code> trait:</p>
 <pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let span = &quot;This is text that will be yellow&quot;.yellow();
     // -- snip ---
 }</code></pre>
+</li>
+</ol>
 <p>A <code>Span</code> is the basic building block for any styled text, and can be used anywhere text is
 displayed.</p>
 <h2 id="line"><a class="header" href="#line"><code>Line</code></a></h2>
@@ -233,9 +235,10 @@ row of words, phrases or sentences.</p>
     let text = Text::from(line);
     f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.size());
 }</code></pre>
-<p>Here’s a HTML representation of what you’d get in the terminal:</p>
+<p>Here’s an HTML representation of what you’d get in the terminal:</p>
 <div style="border: 1px solid black; display: inline-block; padding: 5px;">
-    <span style="color: red;">hello</span> <span style="color: red; font-weight: bold;">world</span>
+    <span style="color: red;">hello</span>
+    <span style="color: red; font-weight: bold;">world</span>
 </div>
 <p>Often code like the one above can be simplified:</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
@@ -267,7 +270,8 @@ multiple lines styled differently. This is one way you might go about that:</p>
         <span style="color: blue;">hello world 2</span>
     </p>
     <p>
-        <span style="color: green;">hello</span> <span style="color: green; font-weight: bold;">world</span> 3
+        <span style="color: green;">hello</span>
+        <span style="color: green; font-weight: bold;">world</span> 3
     </p>
 </div>
 <p>We will talk more about styling in the next section.</p>

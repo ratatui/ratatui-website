@@ -169,7 +169,7 @@
 <p>reposted from <a href="https://blog.orhun.dev/ratatui-0-23-0/">https://blog.orhun.dev/ratatui-0-23-0/</a></p>
 </div>
 </div>
-<h3 id="coolify-everything-"><a class="header" href="#coolify-everything-">Coolify everything 😎</a></h3>
+<h2 id="coolify-everything-"><a class="header" href="#coolify-everything-">Coolify everything 😎</a></h2>
 <p>We already had a cool name and a logo, and now we have a cool description as well:</p>
 <pre><code class="language-diff">- ratatui: A Rust library to build rich terminal user interfaces or dashboards.
 + ratatui: A Rust library that's all about cooking up terminal user interfaces.
@@ -178,7 +178,7 @@
 <ul>
 <li><a href="https://github.com/ratatui-org/ratatui"><strong>https://github.com/ratatui-org/ratatui</strong></a></li>
 </ul>
-<h3 id="barchart-horizontal-bars"><a class="header" href="#barchart-horizontal-bars">Barchart: horizontal bars</a></h3>
+<h2 id="barchart-horizontal-bars"><a class="header" href="#barchart-horizontal-bars">Barchart: horizontal bars</a></h2>
 <p>You can now render the bars horizontally for the <code>Barchart</code> widget. This is especially useful in
 some cases to make more efficient use of the available space.</p>
 <p>Simply use the <code>Direction</code> attribute for rendering horizontal bars:</p>
@@ -193,7 +193,7 @@ some cases to make more efficient use of the available space.</p>
 horizontal bars):</p>
 <p><img src="https://user-images.githubusercontent.com/15311024/263077132-ff80b2c4-9d2d-480b-9a72-f3779688bec8.png" alt="horizontal bars" /></p>
 <hr />
-<h3 id="voluntary-skipping-capability-for-sixel"><a class="header" href="#voluntary-skipping-capability-for-sixel">Voluntary skipping capability for Sixel</a></h3>
+<h2 id="voluntary-skipping-capability-for-sixel"><a class="header" href="#voluntary-skipping-capability-for-sixel">Voluntary skipping capability for Sixel</a></h2>
 <blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Sixel">Sixel</a> is a bitmap graphics format supported by terminals.
 “Sixel mode” is entered by sending the sequence <code>ESC+Pq</code>. The “String Terminator” sequence <code>ESC+\</code>
@@ -209,7 +209,7 @@ iTerm, Kitty, etc.</p>
 <a href="https://github.com/benjajaja/ratatu-image"><em>ratatu-image</em></a></p>
 <p><img src="https://raw.githubusercontent.com/benjajaja/ratatu-image/master/assets/Recording.gif" alt="ratatu-image" /></p>
 <hr />
-<h3 id="tablelist-highlight-spacing"><a class="header" href="#tablelist-highlight-spacing">Table/List: Highlight spacing</a></h3>
+<h2 id="tablelist-highlight-spacing"><a class="header" href="#tablelist-highlight-spacing">Table/List: Highlight spacing</a></h2>
 <p>We added a new property called <code>HighlightSpacing</code> to the <code>Table</code> and <code>List</code> widgets and it can be
 optionally set via calling <code>highlight_spacing</code> function.</p>
 <p>Before this option was available, selecting a row in the table when no row was selected previously
@@ -228,7 +228,7 @@ configurable with this newly added option.</p>
 selected or not.</li>
 </ul>
 <hr />
-<h3 id="table-support-line-alignment"><a class="header" href="#table-support-line-alignment">Table: support line alignment</a></h3>
+<h2 id="table-support-line-alignment"><a class="header" href="#table-support-line-alignment">Table: support line alignment</a></h2>
 <pre><code class="language-rs">let table = Table::new(vec![
         Row::new(vec![Line::from(&quot;Left&quot;).alignment(Alignment::Left)]),
         Row::new(vec![Line::from(&quot;Center&quot;).alignment(Alignment::Center)]),
@@ -242,7 +242,7 @@ selected or not.</li>
                Right
 </code></pre>
 <hr />
-<h3 id="scrollbar-optional-track-symbol"><a class="header" href="#scrollbar-optional-track-symbol">Scrollbar: optional track symbol</a></h3>
+<h2 id="scrollbar-optional-track-symbol"><a class="header" href="#scrollbar-optional-track-symbol">Scrollbar: optional track symbol</a></h2>
 <p>The track symbol in the <code>Scrollbar</code> is now optional, simplifying composition with other widgets. It
 also makes it easier to use the <code>Scrollbar</code> in tandem with a block with special block characters.</p>
 <p>One breaking change is that <code>track_symbol</code> needs to be set in the following way now:</p>
@@ -252,13 +252,13 @@ also makes it easier to use the <code>Scrollbar</code> in tandem with a block wi
 <p>It also makes it possible to render a custom track that is composed out of multiple differing track
 symbols.</p>
 <hr />
-<h3 id="symbolsscrollbar-module"><a class="header" href="#symbolsscrollbar-module"><code>symbols::scrollbar</code> module</a></h3>
+<h2 id="symbolsscrollbar-module"><a class="header" href="#symbolsscrollbar-module"><code>symbols::scrollbar</code> module</a></h2>
 <p>The symbols and sets are moved from <code>widgets::scrollbar</code> to <code>symbols::scrollbar</code>. This makes it
 consistent with the other symbol sets. We also made the <code>scrollbar</code> module private.</p>
 <p>Since this is a breaking change, you need to update your code to add an import for
 <code>ratatui::symbols::scrollbar::*</code> (or the specific symbols you need).</p>
 <hr />
-<h3 id="alpha-releases"><a class="header" href="#alpha-releases">Alpha releases</a></h3>
+<h2 id="alpha-releases"><a class="header" href="#alpha-releases">Alpha releases</a></h2>
 <p>The alpha releases (i.e. pre-releases) are created *every Saturday* and they are automated with
 the help of
 <a href="https://github.com/ratatui-org/ratatui/blob/main/.github/workflows/cd.yml">this GitHub Actions workflow</a>.
@@ -270,7 +270,7 @@ we hit a stable release.</p>
 and documentation:
 <a href="https://github.com/ratatui-org/ratatui/issues/412">https://github.com/ratatui-org/ratatui/issues/412</a></p>
 <hr />
-<h3 id="example-gifs"><a class="header" href="#example-gifs">Example GIFs</a></h3>
+<h2 id="example-gifs"><a class="header" href="#example-gifs">Example GIFs</a></h2>
 <p>We added GIFs for each example in the <code>examples/</code> directory and added a <code>README.md</code> for preview.
 This should make it easier to see what each example does without having to run it.</p>
 <p>See:
@@ -302,29 +302,29 @@ Sleep 4s
 moving everything to GitHub. If you are interested in contributing regarding this, see
 <a href="https://github.com/ratatui-org/ratatui/issues/401">https://github.com/ratatui-org/ratatui/issues/401</a></p>
 <hr />
-<h3 id="common-traits"><a class="header" href="#common-traits">Common traits</a></h3>
+<h2 id="common-traits"><a class="header" href="#common-traits">Common traits</a></h2>
 <p>With the help of <a href="https://crates.io/crates/strum">strum</a> crate, we added <code>Display</code> and <code>FromStr</code>
 implementation to enum types.</p>
 <p>Also, we implemented common traits such as <code>Debug</code>, <code>Default</code>, <code>Clone</code>, <code>Copy</code>, <code>Eq</code>, <code>PartialEq</code>,
 <code>Ord</code>, <code>PartialOrd</code>, <code>Hash</code> to the structs/enums where possible.</p>
 <hr />
-<h3 id="test-coverage-"><a class="header" href="#test-coverage-">Test coverage 🧪</a></h3>
+<h2 id="test-coverage-"><a class="header" href="#test-coverage-">Test coverage 🧪</a></h2>
 <p><code>ratatui</code> now has <a href="https://app.codecov.io/gh/ratatui-org/ratatui">90% test coverage</a>!</p>
 <p>Shoutout to everyone who added tests/benchmarks for various widgets made this possible.</p>
 <hr />
-<h3 id="no-unsafe-"><a class="header" href="#no-unsafe-">No unsafe ⚠️</a></h3>
+<h2 id="no-unsafe-"><a class="header" href="#no-unsafe-">No unsafe ⚠️</a></h2>
 <p>We now <em>forbid</em> <a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">unsafe code</a> in <code>ratatui</code>.
 Also, see <a href="https://github.com/ratatui-org/ratatui/discussions/66">this discussion</a> we had in the
 past about using <code>unsafe</code> code for optimization purposes.</p>
 <hr />
-<h3 id="the-book-"><a class="header" href="#the-book-">The book 📕</a></h3>
+<h2 id="the-book-"><a class="header" href="#the-book-">The book 📕</a></h2>
 <p>We are working on a book for more in-depth <code>ratatui</code> documentation and usage examples, you can read
 it from here:
 <a href="https://ratatui-org.github.io/ratatui-book/">https://ratatui-org.github.io/ratatui-book/</a></p>
 <p>Repository:
 <a href="https://github.com/ratatui-org/ratatui-book"><strong>https://github.com/ratatui-org/ratatui-book</strong></a></p>
 <hr />
-<h3 id="other"><a class="header" href="#other">Other</a></h3>
+<h2 id="other"><a class="header" href="#other">Other</a></h2>
 <ul>
 <li>Expand serde attributes for <code>TestBuffer</code> for de/serializing the whole test buffer.</li>
 <li>Add weak constraints to make <code>Rect</code>s closer to each other in size.</li>

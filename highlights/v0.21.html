@@ -160,7 +160,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="v021"><a class="header" href="#v021"><a href="https://github.com/ratatui-org/ratatui/releases/tag/v0.21.0">v0.21</a></a></h1>
-<h3 id="new-backend-termwiz"><a class="header" href="#new-backend-termwiz">New backend: <code>termwiz</code></a></h3>
+<h2 id="new-backend-termwiz"><a class="header" href="#new-backend-termwiz">New backend: <code>termwiz</code></a></h2>
 <p><code>ratatui</code> supports a new backend called <code>termwiz</code> which is a “Terminal Wizardry” crate that powers
 <a href="https://github.com/wez/wezterm">wezterm</a>.</p>
 <p>To use it, enable the <code>termwiz</code> feature in <code>Cargo.toml</code>:</p>
@@ -195,7 +195,7 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
 }
 </code></pre>
 <hr />
-<h3 id="new-widget-calendar"><a class="header" href="#new-widget-calendar">New widget: Calendar</a></h3>
+<h2 id="new-widget-calendar"><a class="header" href="#new-widget-calendar">New widget: Calendar</a></h2>
 <p>A calendar widget has been added which was originally a part of the
 <a href="https://github.com/sophacles/extra-widgets">extra-widgets</a> repository.</p>
 <p>Since this new widget depends on <code>time</code> crate, we gated it behind <code>widget-calendar</code> feature to avoid
@@ -214,7 +214,7 @@ features = [&quot;widget-calendar&quot;]
 .show_surrounding(Style::default()),
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh">     January 2023
+<pre><code class="language-plain">     January 2023
  Su Mo Tu We Th Fr Sa
   1  2  3  4  5  6  7
   8  9 10 11 12 13 14
@@ -223,7 +223,7 @@ features = [&quot;widget-calendar&quot;]
  29 30 31  1  2  3  4
 </code></pre>
 <hr />
-<h3 id="new-widget-circle"><a class="header" href="#new-widget-circle">New widget: Circle</a></h3>
+<h2 id="new-widget-circle"><a class="header" href="#new-widget-circle">New widget: Circle</a></h2>
 <p><code>Circle</code> widget has been added with the use-case of showing an accuracy radius on the world map.</p>
 <p>Here is an example of how to use it with <code>Canvas</code>:</p>
 <pre><code class="language-rs">Canvas::default()
@@ -240,12 +240,12 @@ features = [&quot;widget-calendar&quot;]
     .y_bounds([-10.0, 10.0]),
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh"> ⡠⠤⢤⡀
+<pre><code class="language-plain"> ⡠⠤⢤⡀
 ⢸⡁  ⡧
  ⠑⠒⠚⠁
 </code></pre>
 <hr />
-<h3 id="inline-viewport"><a class="header" href="#inline-viewport">Inline Viewport</a></h3>
+<h2 id="inline-viewport"><a class="header" href="#inline-viewport">Inline Viewport</a></h2>
 <p>This was a highly requested feature and the original implementation was done by
 <a href="https://github.com/fdehau">@fdehau</a> himself. Folks at <a href="https://atuin.sh">Atuin</a> completed the
 implementation and we are happy to finally have this incorporated in the new release!</p>
@@ -254,7 +254,7 @@ displaying content.</p>
 <p>In the repository, there is an example that simulates downloading multiple files in parallel:
 <a href="https://github.com/ratatui-org/ratatui/blob/main/examples/inline.rs">https://github.com/ratatui-org/ratatui/blob/main/examples/inline.rs</a></p>
 <hr />
-<h3 id="block-title-on-bottom"><a class="header" href="#block-title-on-bottom">Block: title on bottom</a></h3>
+<h2 id="block-title-on-bottom"><a class="header" href="#block-title-on-bottom">Block: title on bottom</a></h2>
 <blockquote>
 <p>Before you could only put the title on the top row of a Block. Now you can put it on the bottom
 row! Revolutionary.</p>
@@ -271,13 +271,13 @@ row! Revolutionary.</p>
     )
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh">┌─────────────────────┐
+<pre><code class="language-plain">┌─────────────────────┐
 │       ratatui       │
 │                     │
 └────────Title────────┘
 </code></pre>
 <hr />
-<h3 id="block-support-adding-padding"><a class="header" href="#block-support-adding-padding">Block: support adding padding</a></h3>
+<h2 id="block-support-adding-padding"><a class="header" href="#block-support-adding-padding">Block: support adding padding</a></h2>
 <p>If we want to render a widget inside a <code>Block</code> with a certain distance from its borders, we need to
 create another <code>Layout</code> element based on the outer <code>Block</code>, add a margin and render the <code>Widget</code>
 into it. Adding a padding property on the block element skips the creation of this second Layout.</p>
@@ -304,7 +304,7 @@ f.render_widget(inner_block, inner_area);
 f.render_widget(paragraph, area);
 </code></pre>
 <hr />
-<h3 id="text-display-secure-data"><a class="header" href="#text-display-secure-data">Text: display secure data</a></h3>
+<h2 id="text-display-secure-data"><a class="header" href="#text-display-secure-data">Text: display secure data</a></h2>
 <p>A new type called <code>Masked</code> is added for text-related types for masking data with a mask character.
 The example usage is as follows:</p>
 <pre><code class="language-rs">Line::from(vec![
@@ -316,10 +316,10 @@ The example usage is as follows:</p>
 ])
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh">Masked text: ********
+<pre><code class="language-plain">Masked text: ********
 </code></pre>
 <hr />
-<h3 id="border-macro"><a class="header" href="#border-macro"><code>border!</code> macro</a></h3>
+<h2 id="border-macro"><a class="header" href="#border-macro"><code>border!</code> macro</a></h2>
 <p>A <code>border!</code> macro has been added that takes <code>TOP</code>, <code>BOTTOM</code>, <code>LEFT</code>, <code>RIGHT</code>, and <code>ALL</code> and returns
 a <code>Borders</code> object.</p>
 <p>An empty <code>border!()</code> call returns <code>NONE</code>.</p>
@@ -336,7 +336,7 @@ features = [&quot;macros&quot;]
 </code></pre>
 <p>Going forward, we will most likely put the new macros behind <code>macros</code> feature as well.</p>
 <hr />
-<h3 id="color-support-conversion-from-string"><a class="header" href="#color-support-conversion-from-string">Color: support conversion from <code>String</code></a></h3>
+<h2 id="color-support-conversion-from-string"><a class="header" href="#color-support-conversion-from-string">Color: support conversion from <code>String</code></a></h2>
 <p>Have you ever needed this conversion?</p>
 <pre><code class="language-rs">&quot;black&quot; =&gt; Color::Black,
 &quot;red&quot; =&gt; Color::Red,
@@ -349,7 +349,7 @@ Color::from_str(&quot;10&quot;)        // Color::Indexed(10)
 Color::from_str(&quot;#FF0000&quot;)   // Color::Rgb(255, 0, 0)
 </code></pre>
 <hr />
-<h3 id="spans---line"><a class="header" href="#spans---line"><code>Spans</code> -&gt; <code>Line</code></a></h3>
+<h2 id="spans---line"><a class="header" href="#spans---line"><code>Spans</code> -&gt; <code>Line</code></a></h2>
 <p><code>Line</code> is a significantly better name over <code>Spans</code> as the plural causes confusion and the type
 really is a representation of a line of text made up of spans.</p>
 <p>So, <code>Spans</code> is renamed as <code>Line</code> and a deprecation notice has been added.</p>
@@ -357,7 +357,7 @@ really is a representation of a line of text made up of spans.</p>
 <a href="https://github.com/ratatui-org/ratatui/pull/178">https://github.com/ratatui-org/ratatui/pull/178</a>
 for more discussion.</p>
 <hr />
-<h3 id="other-features"><a class="header" href="#other-features">Other features</a></h3>
+<h2 id="other-features"><a class="header" href="#other-features">Other features</a></h2>
 <ul>
 <li><code>List</code> now has a <code>len()</code> method for returning the number of items</li>
 <li><code>Sparkline</code> now has a <code>direction()</code> method for specifying the render direction (left to right /
@@ -366,7 +366,7 @@ right to left)</li>
 <li>Expose the test buffer (<code>TestBackend</code>) with <code>Display</code> implementation</li>
 </ul>
 <hr />
-<h3 id="new-apps"><a class="header" href="#new-apps">New apps</a></h3>
+<h2 id="new-apps"><a class="header" href="#new-apps">New apps</a></h2>
 <p>Here is the list of applications that has been added:</p>
 <ul>
 <li><a href="https://github.com/BrookJeynes/oxycards">oxycards</a>: quiz card application built within the
@@ -378,7 +378,7 @@ terminal.</li>
 <a href="https://github.com/ratatui-org/ratatui/wiki/Apps-using-Ratatui">Wiki</a> so check it out for more
 applications built with <code>ratatui</code>!</p>
 <hr />
-<h3 id="migration-from-tui-rs"><a class="header" href="#migration-from-tui-rs">Migration from <code>tui-rs</code></a></h3>
+<h2 id="migration-from-tui-rs"><a class="header" href="#migration-from-tui-rs">Migration from <code>tui-rs</code></a></h2>
 <p>We put together a migration guide at the Wiki:
 <a href="https://github.com/ratatui-org/ratatui/wiki/Migrating-from-TUI">Migrating from TUI</a></p>
 <p>Also, the minimum supported Rust version is <code>1.65.0</code></p>

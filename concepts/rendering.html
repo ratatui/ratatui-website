@@ -188,9 +188,15 @@ permanent widget object in memory.</li>
 }</code></pre>
 <p><a href="https://caseymuratori.com/blog_0001">This article</a> and the accompanying YouTube video is worth your
 time if you are new to the immediate mode rendering paradigm.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Z1qyvQsjK5Y?si=eiBHXiXIo3Z0u2zs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z1qyvQsjK5Y?si=eiBHXiXIo3Z0u2zs"
+ title="YouTube video player" frameborder="0"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowfullscreen></iframe>
 <p>This 4 minute talk about <code>IMGUI</code> is also tangentially relevant.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LSRJ1jZq90k?si=8NB5yiZ8IGS_QE_E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LSRJ1jZq90k?si=8NB5yiZ8IGS_QE_E"
+ title="YouTube video player" frameborder="0"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowfullscreen></iframe>
 <h2 id="advantages-of-immediate-mode-rendering"><a class="header" href="#advantages-of-immediate-mode-rendering">Advantages of Immediate Mode Rendering</a></h2>
 <ul>
 <li><strong>Simplicity</strong>: Without a persistent widget state, your UI logic becomes a direct reflection of
@@ -211,7 +217,8 @@ thread is inadvertently blocked, the UI will not update until the thread resumes
 </div>
 <div>
 <p>The <code>ratatui</code> library in particular only handles how widget would be rendered to a “Backend”, e.g.
-<code>crossterm</code>. The <code>Backend</code> in question would use an external crate e.g. <code>crossterm</code> for actually drawing to the terminal.</p>
+<code>crossterm</code>. The <code>Backend</code> in question would use an external crate e.g. <code>crossterm</code> for actually
+drawing to the terminal.</p>
 </div>
 </div>
 <ul>

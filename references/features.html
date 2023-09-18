@@ -165,7 +165,7 @@
 <h2 id="backend-selection"><a class="header" href="#backend-selection">Backend Selection</a></h2>
 <p>For most cases, the default <code>crossterm</code> backend is the correct choice. See
 <a href="../concepts/backends">Backends</a> for more information. However, this can be changed to termion or termwiz</p>
-<pre><code class="language-console"># Defaults to crossterm
+<pre><code class="language-shell"># Defaults to crossterm
 cargo add ratatui
 
 # For termion, unset the default crossterm feature and select the termion feature
@@ -180,14 +180,14 @@ cargo add termwiz
 <p>This feature enables some extra widgets that are not in <code>default</code> to save on compile time. As of
 v0.21, the only widget in this feature group is the <code>calendar</code> widget, which can be enabled with the
 <code>widget-calendar</code> feature.</p>
-<pre><code class="language-console">cargo add ratatui --features all-widgets
+<pre><code class="language-shell">cargo add ratatui --features all-widgets
 </code></pre>
 <h2 id="widget-calendar"><a class="header" href="#widget-calendar">Widget-Calendar</a></h2>
 <p>This feature enables the calendar widget, which requires the <code>time</code> crate.</p>
-<pre><code class="language-console">cargo add ratatui --features widget-calendar
+<pre><code class="language-shell">cargo add ratatui --features widget-calendar
 </code></pre>
 <h2 id="serde"><a class="header" href="#serde">Serde</a></h2>
-<pre><code class="language-console">cargo add ratatui --features serde
+<pre><code class="language-shell">cargo add ratatui --features serde
 </code></pre>
 
                     </main>

@@ -163,7 +163,7 @@
 <p>Getting started with <code>ratatui</code> is straightforward — Add it to the project, and you are ready to
 start creating beautiful TUIs.</p>
 <p>In this section, we will build a “hello world” TUI application.</p>
-<h3 id="install-rust"><a class="header" href="#install-rust">Install <code>rust</code></a></h3>
+<h2 id="install-rust"><a class="header" href="#install-rust">Install <code>rust</code></a></h2>
 <p>The first step is to install <code>rust</code>.</p>
 <p>Check
 <a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation section of the official Rust Book</a>
@@ -183,12 +183,12 @@ Rust’s package manager, and it is what we will use to create a new project and
 dependency.</p>
 <h3 id="create-a-hello-world-project"><a class="header" href="#create-a-hello-world-project">Create a “hello world” project</a></h3>
 <p>To start with a new project, you can run the following:</p>
-<pre><code class="language-console">cargo new hello-world-tui
+<pre><code class="language-shell">cargo new hello-world-tui
 cd hello-world-tui
 </code></pre>
 <p>This creates a new folder called <code>hello-world-tui</code> and changes the directory to that folder.</p>
 <p><code>cargo new</code> will instantiate a “binary” project by default.</p>
-<pre><code class="language-sh">$ tree .
+<pre><code class="language-plain">$ tree .
 .
 ├── Cargo.toml
 └── src
@@ -204,7 +204,7 @@ cd hello-world-tui
 </div>
 </div>
 <p>You can compile and execute a “binary” project by running <code>cargo run</code>:</p>
-<pre><code class="language-sh">$ cargo run
+<pre><code class="language-shell">$ cargo run
    Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
     Finished dev [unoptimized + debuginfo] target(s) in 0.00s
      Running `target/debug/hello-world-tui`
@@ -218,7 +218,7 @@ Hello, world!
 <div>
 <p>By default <code>cargo run</code> compiles your program with no optimizations and with debug information.
 If you want to run it in with more optimizations, you can run <code>cargo run --release</code>.</p>
-<pre><code class="language-sh">cargo run --release
+<pre><code class="language-shell">cargo run --release
    Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
     Finished release [optimized] target(s) in 0.08s
      Running `target/release/hello-world-tui`
@@ -230,7 +230,7 @@ book</a>.</p>
 </div>
 <h3 id="install-ratatui"><a class="header" href="#install-ratatui">Install <code>ratatui</code></a></h3>
 <p>Installing <code>ratatui</code> is as easy as running the following:</p>
-<pre><code class="language-console">cargo add ratatui crossterm
+<pre><code class="language-shell">cargo add ratatui crossterm
 </code></pre>
 <div id="admonition-note" class="admonition note">
 <div class="admonition-title">
@@ -240,8 +240,8 @@ book</a>.</p>
 <div>
 <p><code>ratatui</code> has to be combined with a terminal backend.
 You can learn more about the different terminal backends in the <a href="./../../how-to/choose-a-backend.html">how to choose a
-backend</a> section. For the examples in this book, we are going to use
-<code>crossterm</code>.</p>
+backend</a> section. For the examples in this book, we are going to
+use <code>crossterm</code>.</p>
 </div>
 </div>
 <p>Running the above command in your console will add the latest version of <code>ratatui</code> and <code>crossterm</code>
@@ -253,7 +253,7 @@ to your project.</p>
 </div>
 <div>
 <p>If you are interested in adding a specific version, you can run the following:</p>
-<pre><code class="language-console">cargo add ratatui --version 0.19.0
+<pre><code class="language-shell">cargo add ratatui --version 0.19.0
 </code></pre>
 </div>
 </div>
@@ -292,11 +292,11 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
 <p>Make sure you save and exit the file! Now we are ready to run the TUI.</p>
 <h3 id="running-the-tui"><a class="header" href="#running-the-tui">Running the TUI</a></h3>
 <p>We can run our program with:</p>
-<pre><code>cargo run
+<pre><code class="language-shell">cargo run
 </code></pre>
 <p>You should see a TUI app with <code>Hello World! (press 'q' to quit)</code> show up in your terminal as a TUI
 app.</p>
-<p><img src="https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif" alt="" /></p>
+<p><img src="https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif" alt="Hello World" /></p>
 <p>You can press <code>q</code> to exit and go back to your terminal as it was before.</p>
 <p>Congratulations! 🎉</p>
 <p>You have written a “hello world” terminal user interface with <code>ratatui</code>. We will learn more about

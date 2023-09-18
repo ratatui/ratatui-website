@@ -161,9 +161,9 @@
                     <main>
                         <h1 id="setup-logging-with-tracing"><a class="header" href="#setup-logging-with-tracing">Setup Logging with tracing</a></h1>
 <p>You’ll need to install <code>tracing</code> and a few related dependencies:</p>
-<pre><code class="language-console">cargo add tracing-error tracing
+<pre><code class="language-shell">cargo add tracing-error tracing
 cargo add tracing-subscriber --features env-filter
-cargo add directories lazy-static color-eyre # (optional)
+cargo add directories lazy_static color-eyre # (optional)
 </code></pre>
 <p>You can paste the following in any module in your project.</p>
 <pre><code class="language-rust">use std::path::PathBuf;
@@ -173,7 +173,7 @@ use directories::ProjectDirs;
 use lazy_static::lazy_static;
 use tracing::error;
 use tracing_error::ErrorLayer;
-use tracing_subscriber::{self, prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
+use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt, Layer};
 
 lazy_static! {
   pub static ref PROJECT_NAME: String = env!(&quot;CARGO_CRATE_NAME&quot;).to_uppercase().to_string();

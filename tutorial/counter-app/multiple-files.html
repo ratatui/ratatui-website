@@ -204,7 +204,7 @@ pub mod update;</code></pre>
 + use color_eyre::eyre::Result;
 </code></pre>
 <p>You’ll need to add <code>color-eyre</code> and remove <code>anyhow</code>:</p>
-<pre><code class="language-console">cargo remove anyhow
+<pre><code class="language-shell">cargo remove anyhow
 cargo add color-eyre
 </code></pre>
 <p>If you are using <code>color_eyre</code>, you’ll also want to add <code>color_eyre::install()?</code> to the beginning of

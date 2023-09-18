@@ -171,7 +171,7 @@ yourself, but running</p>
 <pre><code class="language-shell">cargo run &gt; test.json
 </code></pre>
 <p>and double checking the output.</p>
-<h4 id="mainrs"><a class="header" href="#mainrs">Main.rs</a></h4>
+<h3 id="mainrs"><a class="header" href="#mainrs">Main.rs</a></h3>
 <pre><code class="language-rust no_run noplayground">use std::{error::Error, io};
 
 use crossterm::{
@@ -304,7 +304,7 @@ fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut
     }
 }
 </code></pre>
-<h4 id="apprs"><a class="header" href="#apprs">App.rs</a></h4>
+<h3 id="apprs"><a class="header" href="#apprs">App.rs</a></h3>
 <pre><code class="language-rust no_run noplayground">use serde_json::Result;
 
 pub enum CurrentScreen {
@@ -363,7 +363,7 @@ impl App {
         Ok(())
     }
 }</code></pre>
-<h4 id="uirs"><a class="header" href="#uirs">UI.rs</a></h4>
+<h3 id="uirs"><a class="header" href="#uirs">UI.rs</a></h3>
 <pre><code class="language-rust no_run noplayground">use ratatui::{
     backend::Backend,
     layout::{Constraint, Direction, Layout, Rect},

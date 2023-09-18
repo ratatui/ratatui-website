@@ -169,7 +169,7 @@
 <p>reposted from <a href="https://blog.orhun.dev/ratatui-0-22-0/">https://blog.orhun.dev/ratatui-0-22-0/</a></p>
 </div>
 </div>
-<h3 id="prelude"><a class="header" href="#prelude">Prelude</a></h3>
+<h2 id="prelude"><a class="header" href="#prelude">Prelude</a></h2>
 <p>We now have a <code>prelude</code> module! This allows users of the library to easily use <code>ratatui</code> without a
 huge amount of imports.</p>
 <pre><code class="language-rs">use ratatui::prelude::*;
@@ -185,11 +185,11 @@ assert_eq!(Line::default(), Line);
 assert_eq!(text::Line::default(), ratatui::text::Line::from(vec![]));
 </code></pre>
 <hr />
-<h3 id="new-widget-scrollbar"><a class="header" href="#new-widget-scrollbar">New widget: Scrollbar</a></h3>
+<h2 id="new-widget-scrollbar"><a class="header" href="#new-widget-scrollbar">New widget: Scrollbar</a></h2>
 <p>A scrollbar widget has been added which can be used with any <code>Rect</code>. It can also be customized with
 different styles and symbols.</p>
 <p>Here are the components of a <code>Scrollbar</code>:</p>
-<pre><code class="language-sh">&lt;--▮-------&gt;
+<pre><code class="language-plain">&lt;--▮-------&gt;
 ^  ^   ^   ^
 │  │   │   └ end
 │  │   └──── track
@@ -207,14 +207,14 @@ different styles and symbols.</p>
 );
 </code></pre>
 <p>Will result in:</p>
-<pre><code class="language-sh">┌scrollbar──────────────────↑
+<pre><code class="language-plain">┌scrollbar──────────────────↑
 │This is a longer line      ║
 │Veeeeeeeeeeeeeeeery    looo█
 │This is a line             ║
 └───────────────────────────↓
 </code></pre>
 <hr />
-<h3 id="block-support-multiple-titles"><a class="header" href="#block-support-multiple-titles">Block: support multiple titles</a></h3>
+<h2 id="block-support-multiple-titles"><a class="header" href="#block-support-multiple-titles">Block: support multiple titles</a></h2>
 <p><code>Block</code> widget now supports having more than one title via <code>Title</code> widget.</p>
 <p>Each title will be rendered with a single space separating titles that are in the same position or
 alignment. When both centered and non-centered titles are rendered, the centered space is calculated
@@ -235,20 +235,20 @@ based on the full width of the block, rather than the leftover width.</p>
     );
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh">┌Title─Left──Center─────────────┐
+<pre><code class="language-plain">┌Title─Left──Center─────────────┐
 │                               │
 │                               │
 │                               │
 └Bottom───Bottom center─────────┘
 </code></pre>
 <hr />
-<h3 id="barchart-support-groups"><a class="header" href="#barchart-support-groups">Barchart: support groups</a></h3>
+<h2 id="barchart-support-groups"><a class="header" href="#barchart-support-groups">Barchart: support groups</a></h2>
 <p><code>Barchart</code> has been improved to support adding multiple bars from different data sets. This can be
 done by using the newly added <code>Bar</code> and <code>BarGroup</code> objects.</p>
 <p>See the <a href="https://github.com/ratatui-org/ratatui/blob/main/examples/barchart.rs">barchart example</a>
 for more information and implementation details.</p>
 <hr />
-<h3 id="stylization-shorthands"><a class="header" href="#stylization-shorthands">Stylization shorthands</a></h3>
+<h2 id="stylization-shorthands"><a class="header" href="#stylization-shorthands">Stylization shorthands</a></h2>
 <p>It is possible to use style shorthands for <code>str</code>, <code>Span</code>, and <code>Paragraph</code>.</p>
 <p>A crazy example would be:</p>
 <pre><code class="language-rs">&quot;hello&quot;
@@ -268,7 +268,7 @@ for more information and implementation details.</p>
 )
 </code></pre>
 <hr />
-<h3 id="stylize-everything"><a class="header" href="#stylize-everything">Stylize everything!</a></h3>
+<h2 id="stylize-everything"><a class="header" href="#stylize-everything">Stylize everything</a></h2>
 <p>All widgets can be styled now (i.e. <code>set_style</code>)</p>
 <p><code>Styled</code> trait is implemented for all the remaining widgets, including:</p>
 <ul>
@@ -282,7 +282,7 @@ for more information and implementation details.</p>
 <li><code>Style</code></li>
 </ul>
 <hr />
-<h3 id="constant-styles"><a class="header" href="#constant-styles">Constant styles</a></h3>
+<h2 id="constant-styles"><a class="header" href="#constant-styles">Constant styles</a></h2>
 <p><code>Style</code>s can be constructed in a <code>const</code> context as follows:</p>
 <pre><code class="language-rs">const DEFAULT_MODIFIER: Modifier = Modifier::BOLD.union(Modifier::ITALIC);
 const EMPTY: Modifier = Modifier::empty();
@@ -292,7 +292,7 @@ const DEFAULT_STYLE: Style = Style::with(DEFAULT_MODIFIER, EMPTY)
     .bg(Color::Black);
 </code></pre>
 <hr />
-<h3 id="more-colors-formats"><a class="header" href="#more-colors-formats">More colors formats</a></h3>
+<h2 id="more-colors-formats"><a class="header" href="#more-colors-formats">More colors formats</a></h2>
 <p>It is now possible to parse hyphenated color names like <code>light-red</code> via <code>Color::from_str</code>.</p>
 <p>Additionally, all colors from the
 <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#Colors">ANSI color table</a> are supported (though some
@@ -303,7 +303,7 @@ names are not exactly the same).</p>
 <li><code>darkgray</code> is sometimes called <code>light black</code> or <code>bright black</code> (both are supported)</li>
 <li><code>white</code> is sometimes called <code>light white</code> or <code>bright white</code> (both are supported)</li>
 <li>we support <code>bright</code> and <code>light</code> prefixes for all colors</li>
-<li>we support <code>-</code> and <code>_</code> and <code> </code> as separators for all colors</li>
+<li>we support <code>&quot;-&quot;</code>, <code>&quot;_&quot;</code>, and <code>&quot; &quot;</code> as separators for all colors</li>
 <li>we support both <code>gray</code> and <code>grey</code> spellings</li>
 </ul>
 <p>For example:</p>
@@ -327,7 +327,7 @@ assert_eq!(&quot;white&quot;.parse(), Ok(Color::White));
 assert_eq!(&quot;bright white&quot;.parse(), Ok(Color::White));
 </code></pre>
 <hr />
-<h3 id="integrations"><a class="header" href="#integrations">Integrations</a></h3>
+<h2 id="integrations"><a class="header" href="#integrations">Integrations</a></h2>
 <p>Following tools are now integrated into the repository:</p>
 <ul>
 <li><a href="https://github.com/rhysd/cargo-husky"><code>cargo-husky</code></a>: git pre-push hooks</li>
@@ -337,7 +337,7 @@ assert_eq!(&quot;bright white&quot;.parse(), Ok(Color::White));
 <li><a href="https://github.com/crate-ci/typos"><code>typos</code></a>: spell checker</li>
 </ul>
 <hr />
-<h3 id="other"><a class="header" href="#other">Other</a></h3>
+<h2 id="other"><a class="header" href="#other">Other</a></h2>
 <ul>
 <li>Benchmarks added for the <code>Paragraph</code> widget</li>
 <li>Added underline colors support for <code>crossterm</code> backend</li>

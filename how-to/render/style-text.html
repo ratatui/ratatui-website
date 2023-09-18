@@ -171,16 +171,16 @@ other non text structures).</p>
 <li>Modifiers (like <code>bold</code>, <code>italic</code>, and <code>underline</code>)</li>
 </ul>
 <ol>
-<li>Basic Color Styling</li>
-</ol>
+<li>
+<p>Basic Color Styling</p>
 <p>Setting the foreground (text color) and background:</p>
 <pre><code class="language-rust">let styled_text = Span::styled(
     &quot;Hello, Ratatui!&quot;,
     Style::default().fg(Color::Red).bg(Color::Yellow)
 );</code></pre>
-<ol start="2">
-<li>Using <code>Modifiers</code></li>
-</ol>
+</li>
+<li>
+<p>Using <code>Modifiers</code></p>
 <p>Making text bold or italic:</p>
 <pre><code class="language-rust">let bold_text = Span::styled(
     &quot;This is bold&quot;,
@@ -196,15 +196,17 @@ let italic_text = Span::styled(
     &quot;This is bold and italic&quot;,
     Style::default().modifier(Modifier::BOLD | Modifier::ITALIC)
 );</code></pre>
-<ol start="3">
-<li>Styling within a Line</li>
-</ol>
+</li>
+<li>
+<p>Styling within a Line</p>
 <p>You can mix and match different styled spans within a single line:</p>
 <pre><code class="language-rust">let mixed_line = Line::from(vec![
     Span::styled(&quot;This is mixed&quot;, Style::default().fg(Color::Green)),
     Span::styled(&quot;styling&quot;, Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)),
     Span::from(&quot;!&quot;),
 ]);</code></pre>
+</li>
+</ol>
 <p>This is what it would look like if you rendered a <code>Paragraph</code> with different styles for each line:</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
   let styled_text = Span::styled(&quot;Hello, Ratatui!&quot;, Style::default().fg(Color::Red).bg(Color::Yellow));

@@ -158,7 +158,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p><img src="https://user-images.githubusercontent.com/24392180/244943746-93ab0e38-93e0-4ae0-a31b-91ae6c393185.gif" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/ratatui-org/ratatui/images/examples/demo2-noborders.gif" alt="Demo" /></p>
 <h2 id="what-is-ratatui"><a class="header" href="#what-is-ratatui">What is ratatui?</a></h2>
 <p><code>ratatui</code> is a <a href="https://www.rust-lang.org/">Rust</a> crate that provides widgets allowing you to
 imperatively declare what the view of your application should be, and then draws those widgets
@@ -273,7 +273,7 @@ uses an external big-text widget library, runs asynchronously using tokio.</li>
 <p>Getting started with <code>ratatui</code> is straightforward — Add it to the project, and you are ready to
 start creating beautiful TUIs.</p>
 <p>In this section, we will build a “hello world” TUI application.</p>
-<h3 id="install-rust"><a class="header" href="#install-rust">Install <code>rust</code></a></h3>
+<h2 id="install-rust"><a class="header" href="#install-rust">Install <code>rust</code></a></h2>
 <p>The first step is to install <code>rust</code>.</p>
 <p>Check
 <a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation section of the official Rust Book</a>
@@ -293,12 +293,12 @@ Rust’s package manager, and it is what we will use to create a new project and
 dependency.</p>
 <h3 id="create-a-hello-world-project"><a class="header" href="#create-a-hello-world-project">Create a “hello world” project</a></h3>
 <p>To start with a new project, you can run the following:</p>
-<pre><code class="language-console">cargo new hello-world-tui
+<pre><code class="language-shell">cargo new hello-world-tui
 cd hello-world-tui
 </code></pre>
 <p>This creates a new folder called <code>hello-world-tui</code> and changes the directory to that folder.</p>
 <p><code>cargo new</code> will instantiate a “binary” project by default.</p>
-<pre><code class="language-sh">$ tree .
+<pre><code class="language-plain">$ tree .
 .
 ├── Cargo.toml
 └── src
@@ -314,7 +314,7 @@ cd hello-world-tui
 </div>
 </div>
 <p>You can compile and execute a “binary” project by running <code>cargo run</code>:</p>
-<pre><code class="language-sh">$ cargo run
+<pre><code class="language-shell">$ cargo run
    Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
     Finished dev [unoptimized + debuginfo] target(s) in 0.00s
      Running `target/debug/hello-world-tui`
@@ -328,7 +328,7 @@ Hello, world!
 <div>
 <p>By default <code>cargo run</code> compiles your program with no optimizations and with debug information.
 If you want to run it in with more optimizations, you can run <code>cargo run --release</code>.</p>
-<pre><code class="language-sh">cargo run --release
+<pre><code class="language-shell">cargo run --release
    Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
     Finished release [optimized] target(s) in 0.08s
      Running `target/release/hello-world-tui`
@@ -340,7 +340,7 @@ book</a>.</p>
 </div>
 <h3 id="install-ratatui"><a class="header" href="#install-ratatui">Install <code>ratatui</code></a></h3>
 <p>Installing <code>ratatui</code> is as easy as running the following:</p>
-<pre><code class="language-console">cargo add ratatui crossterm
+<pre><code class="language-shell">cargo add ratatui crossterm
 </code></pre>
 <div id="admonition-note" class="admonition note">
 <div class="admonition-title">
@@ -350,8 +350,8 @@ book</a>.</p>
 <div>
 <p><code>ratatui</code> has to be combined with a terminal backend.
 You can learn more about the different terminal backends in the <a href="tutorial/hello-world/./../../how-to/choose-a-backend.html">how to choose a
-backend</a> section. For the examples in this book, we are going to use
-<code>crossterm</code>.</p>
+backend</a> section. For the examples in this book, we are going to
+use <code>crossterm</code>.</p>
 </div>
 </div>
 <p>Running the above command in your console will add the latest version of <code>ratatui</code> and <code>crossterm</code>
@@ -363,7 +363,7 @@ to your project.</p>
 </div>
 <div>
 <p>If you are interested in adding a specific version, you can run the following:</p>
-<pre><code class="language-console">cargo add ratatui --version 0.19.0
+<pre><code class="language-shell">cargo add ratatui --version 0.19.0
 </code></pre>
 </div>
 </div>
@@ -402,11 +402,11 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
 <p>Make sure you save and exit the file! Now we are ready to run the TUI.</p>
 <h3 id="running-the-tui"><a class="header" href="#running-the-tui">Running the TUI</a></h3>
 <p>We can run our program with:</p>
-<pre><code>cargo run
+<pre><code class="language-shell">cargo run
 </code></pre>
 <p>You should see a TUI app with <code>Hello World! (press 'q' to quit)</code> show up in your terminal as a TUI
 app.</p>
-<p><img src="https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif" alt="" /></p>
+<p><img src="https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif" alt="Hello World" /></p>
 <p>You can press <code>q</code> to exit and go back to your terminal as it was before.</p>
 <p>Congratulations! 🎉</p>
 <p>You have written a “hello world” terminal user interface with <code>ratatui</code>. We will learn more about
@@ -428,11 +428,11 @@ decrement the counter when a key is pressed. Let’s increment and decrement the
 <code>k</code>.</p>
 <h2 id="initialization"><a class="header" href="#initialization">Initialization</a></h2>
 <p>Go ahead and set up a new rust project with</p>
-<pre><code class="language-sh">cargo init ratatui-counter-app
+<pre><code class="language-shell">cargo init ratatui-counter-app
 cd ratatui-counter-app
 </code></pre>
 <p>We are only going to use 3 dependencies in this tutorial:</p>
-<pre><code class="language-sh">cargo add ratatui crossterm anyhow
+<pre><code class="language-shell">cargo add ratatui crossterm anyhow
 </code></pre>
 <div id="admonition-tip" class="admonition tip">
 <div class="admonition-title">
@@ -445,14 +445,14 @@ cd ratatui-counter-app
 </div>
 <h2 id="filestructure"><a class="header" href="#filestructure">Filestructure</a></h2>
 <p>We are going to start off like in the previous “hello world” tutorial with one file like so:</p>
-<pre><code class="language-sh">tree .
+<pre><code class="language-plain">tree .
 ├── Cargo.toml
 ├── LICENSE
 └── src
    └── main.rs
 </code></pre>
 <p>but this time for the counter example, we will expand it out to multiple files like so:</p>
-<pre><code class="language-sh">tree .
+<pre><code class="language-plain">tree .
 ├── Cargo.toml
 ├── LICENSE
 └── src
@@ -906,7 +906,7 @@ pub mod update;</code></pre>
 + use color_eyre::eyre::Result;
 </code></pre>
 <p>You’ll need to add <code>color-eyre</code> and remove <code>anyhow</code>:</p>
-<pre><code class="language-console">cargo remove anyhow
+<pre><code class="language-shell">cargo remove anyhow
 cargo add color-eyre
 </code></pre>
 <p>If you are using <code>color_eyre</code>, you’ll also want to add <code>color_eyre::install()?</code> to the beginning of
@@ -1037,7 +1037,7 @@ pub fn render(app: &amp;mut App, f: &amp;mut Frame) {
 }</code></pre>
 <p>Keep in mind it won’t render until we have written the code for <code>tui::Frame</code></p>
 <p>When rendered, this is what the UI will look like:</p>
-<p><img src="https://user-images.githubusercontent.com/1813121/263155937-d8a8b6f6-97f4-4839-b855-ffd0249c2ae0.png" alt="" /></p>
+<p><img src="https://user-images.githubusercontent.com/1813121/263155937-d8a8b6f6-97f4-4839-b855-ffd0249c2ae0.png" alt="Counter app demo" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="eventrs"><a class="header" href="#eventrs">event.rs</a></h1>
 <p>We are going to introduce a new concept right now. The concept of an <code>EventHandler</code>.</p>
 <p>Previously, we were polling for key inputs every 250 ms using crossterm as part of the <code>main</code> loop.
@@ -1099,7 +1099,7 @@ use <code>mpsc</code> to set us up for the future.</p>
 </div>
 </div>
 <p>Finally, here’s the code that starts a thread that polls for events from <code>crossterm</code> and maps it to
-our <code>Event</code> enum. </p>
+our <code>Event</code> enum.</p>
 <pre><code class="language-rust">use std::{
   sync::mpsc,
   thread,
@@ -1564,7 +1564,7 @@ Sleep 2.5s
 ```
 
 -->
-<p><img src="https://user-images.githubusercontent.com/1813121/263404720-41bd81a0-4eec-479c-9333-44363a183613.gif" alt="" /></p>
+<p><img src="https://user-images.githubusercontent.com/1813121/263404720-41bd81a0-4eec-479c-9333-44363a183613.gif" alt="Counter app demo" /></p>
 <div id="admonition-note" class="admonition note">
 <div class="admonition-title">
 <p>Note</p>
@@ -1583,10 +1583,10 @@ application will be to give the user an interface to create correct json, instea
 about commas and brackets themselves.</p>
 <h2 id="initialization-1"><a class="header" href="#initialization-1">Initialization</a></h2>
 <p>Go ahead and set up a new rust project with</p>
-<pre><code class="language-sh">cargo init ratatui-json-editor
+<pre><code class="language-shell">cargo init ratatui-json-editor
 </code></pre>
 <p>and put the following in the <code>Cargo.toml</code>:</p>
-<pre><code>[dependencies]
+<pre><code class="language-toml">[dependencies]
 crossterm = &quot;0.26.1&quot;
 ratatui = &quot;0.22.0&quot;
 serde = { version = &quot;1.0.181&quot;, features = [&quot;derive&quot;] }
@@ -1595,7 +1595,7 @@ serde_json = &quot;1.0.104&quot;
 <p>or the latest version of these libraries.</p>
 <h2 id="filestructure-1"><a class="header" href="#filestructure-1">Filestructure</a></h2>
 <p>Now create two files inside of <code>src/</code> so it looks like this:</p>
-<pre><code>src
+<pre><code class="language-plain">src
 ├── main.rs
 ├── ui.rs
 └── app.rs
@@ -1608,7 +1608,9 @@ application state struct called <code>App</code> or some variant of that name. W
 in this application as well.</p>
 <p>This struct will contain all of our “persistent” data and will be passed to any function that needs
 to know the current state of the application.</p>
-<!-- (Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models) -->
+<!--
+    (Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models)
+-->
 <h2 id="application-modes"><a class="header" href="#application-modes">Application modes</a></h2>
 <p>It is useful to think about the several “modes” that your application can be in. Thinking in “modes”
 will make it easier to segregate everything from what window is getting drawn, to what keybinds to
@@ -1659,7 +1661,7 @@ stores this data which can be passed around where it is needed.</p>
 <p>While we could simply keep our application state as simply a holder of values, we can also create a
 few helper functions which will make our life easier elsewhere. Of course, these functions should
 only affect the application state itself, and nothing outside of it.</p>
-<h4 id="new"><a class="header" href="#new"><code>new()</code></a></h4>
+<h3 id="new"><a class="header" href="#new"><code>new()</code></a></h3>
 <p>We will be adding this function simply to make creating the state easier. While this could be
 avoided by specifying it all in the instantiation of the variable, doing it here allows for easy to
 change universal defaults for the state.</p>
@@ -1674,7 +1676,7 @@ change universal defaults for the state.</p>
         }
     }
     ...</code></pre>
-<h4 id="save_key_value"><a class="header" href="#save_key_value"><code>save_key_value()</code></a></h4>
+<h3 id="save_key_value"><a class="header" href="#save_key_value"><code>save_key_value()</code></a></h3>
 <p>This function will be called when the user saves a key-value pair in the editor. It adds the two
 stored variables to the key-value pairs <code>HashMap</code>, and resets the status of all of the editing
 variables.</p>
@@ -1688,7 +1690,7 @@ variables.</p>
         self.currently_editing = None;
     }
     ...</code></pre>
-<h4 id="toggle_editing"><a class="header" href="#toggle_editing"><code>toggle_editing()</code></a></h4>
+<h3 id="toggle_editing"><a class="header" href="#toggle_editing"><code>toggle_editing()</code></a></h3>
 <p>Sometimes it is easier to put simple logic into a convenience function so we don’t have to worry
 about it in the main code block. <code>toggle_editing</code> is one of those cases. All we are doing, is
 checking if something is currently being edited, and if it is, swapping between editing the Key and
@@ -1705,7 +1707,7 @@ Value fields.</p>
         }
     }
     ...</code></pre>
-<h4 id="print_json"><a class="header" href="#print_json"><code>print_json()</code></a></h4>
+<h3 id="print_json"><a class="header" href="#print_json"><code>print_json()</code></a></h3>
 <p>Finally, is another convenience function to print out the serialized json from all of our key-value
 pairs.</p>
 <pre><code class="language-rust no_run noplayground">    ...
@@ -2270,9 +2272,9 @@ giving it a <code>Block</code> with borders enabled. (See <a href="tutorial/json
     f.render_widget(title, chunks[0]);</code></pre>
 <p>In this code, the first thing we do, is create a <code>Block</code> with all borders enabled, and the default
 style. Next, we created a paragraph widget with the text “Create New Json” styled green. (See
-<a href="tutorial/json-editor/../../how-to/widgets/paragraph.html">How-To: Paragraphs</a> for more information about creating paragraphs and
-<a href="tutorial/json-editor/../../how-to/render/style-text.html">How-To: Styling-Text</a> for styling text) Finally, we call
-<code>render_widget</code> on our <code>Frame</code>, and give it the widget we want to render it, and the <code>Rect</code>
+<a href="tutorial/json-editor/../../how-to/widgets/paragraph.html">How-To: Paragraphs</a> for more information about creating
+paragraphs and <a href="tutorial/json-editor/../../how-to/render/style-text.html">How-To: Styling-Text</a> for styling text) Finally,
+we call <code>render_widget</code> on our <code>Frame</code>, and give it the widget we want to render it, and the <code>Rect</code>
 representing where it needs to go and what size it should be. (this is the way all widgets are
 drawn)</p>
 <h2 id="the-list-of-existing-pairs"><a class="header" href="#the-list-of-existing-pairs">The list of existing pairs</a></h2>
@@ -2533,7 +2535,7 @@ yourself, but running</p>
 <pre><code class="language-shell">cargo run &gt; test.json
 </code></pre>
 <p>and double checking the output.</p>
-<h4 id="mainrs-2"><a class="header" href="#mainrs-2">Main.rs</a></h4>
+<h3 id="mainrs-2"><a class="header" href="#mainrs-2">Main.rs</a></h3>
 <pre><code class="language-rust no_run noplayground">use std::{error::Error, io};
 
 use crossterm::{
@@ -2666,7 +2668,7 @@ fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut
     }
 }
 </code></pre>
-<h4 id="apprs-2"><a class="header" href="#apprs-2">App.rs</a></h4>
+<h3 id="apprs-2"><a class="header" href="#apprs-2">App.rs</a></h3>
 <pre><code class="language-rust no_run noplayground">use serde_json::Result;
 
 pub enum CurrentScreen {
@@ -2725,7 +2727,7 @@ impl App {
         Ok(())
     }
 }</code></pre>
-<h4 id="uirs-2"><a class="header" href="#uirs-2">UI.rs</a></h4>
+<h3 id="uirs-2"><a class="header" href="#uirs-2">UI.rs</a></h3>
 <pre><code class="language-rust no_run noplayground">use ratatui::{
     backend::Backend,
     layout::{Constraint, Direction, Layout, Rect},
@@ -4563,26 +4565,28 @@ pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::St
 <p>A <code>Span</code> consists of “content” and a “style” for the content. And a <code>Span</code> can be created in a few
 different ways.</p>
 <ol>
-<li>using <code>Span::raw</code>:</li>
-</ol>
+<li>
+<p>using <code>Span::raw</code>:</p>
 <pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let span = Span::raw(&quot;This is text that is not styled&quot;);
     // -- snip ---
 }</code></pre>
-<ol start="2">
-<li>using <code>Span::styled</code>:</li>
-</ol>
+</li>
+<li>
+<p>using <code>Span::styled</code>:</p>
 <pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let span = Span::styled(&quot;This is text that will be yellow&quot;, Style::default().fg(Color::Yellow));
     // -- snip ---
 }</code></pre>
-<ol start="3">
-<li>using the <code>Stylize</code> trait:</li>
-</ol>
+</li>
+<li>
+<p>using the <code>Stylize</code> trait:</p>
 <pre><code class="language-rust">fn ui(_app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
     let span = &quot;This is text that will be yellow&quot;.yellow();
     // -- snip ---
 }</code></pre>
+</li>
+</ol>
 <p>A <code>Span</code> is the basic building block for any styled text, and can be used anywhere text is
 displayed.</p>
 <h2 id="line"><a class="header" href="#line"><code>Line</code></a></h2>
@@ -4625,9 +4629,10 @@ row of words, phrases or sentences.</p>
     let text = Text::from(line);
     f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.size());
 }</code></pre>
-<p>Here’s a HTML representation of what you’d get in the terminal:</p>
+<p>Here’s an HTML representation of what you’d get in the terminal:</p>
 <div style="border: 1px solid black; display: inline-block; padding: 5px;">
-    <span style="color: red;">hello</span> <span style="color: red; font-weight: bold;">world</span>
+    <span style="color: red;">hello</span>
+    <span style="color: red; font-weight: bold;">world</span>
 </div>
 <p>Often code like the one above can be simplified:</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
@@ -4659,7 +4664,8 @@ multiple lines styled differently. This is one way you might go about that:</p>
         <span style="color: blue;">hello world 2</span>
     </p>
     <p>
-        <span style="color: green;">hello</span> <span style="color: green; font-weight: bold;">world</span> 3
+        <span style="color: green;">hello</span>
+        <span style="color: green; font-weight: bold;">world</span> 3
     </p>
 </div>
 <p>We will talk more about styling in the next section.</p>
@@ -4675,16 +4681,16 @@ other non text structures).</p>
 <li>Modifiers (like <code>bold</code>, <code>italic</code>, and <code>underline</code>)</li>
 </ul>
 <ol>
-<li>Basic Color Styling</li>
-</ol>
+<li>
+<p>Basic Color Styling</p>
 <p>Setting the foreground (text color) and background:</p>
 <pre><code class="language-rust">let styled_text = Span::styled(
     &quot;Hello, Ratatui!&quot;,
     Style::default().fg(Color::Red).bg(Color::Yellow)
 );</code></pre>
-<ol start="2">
-<li>Using <code>Modifiers</code></li>
-</ol>
+</li>
+<li>
+<p>Using <code>Modifiers</code></p>
 <p>Making text bold or italic:</p>
 <pre><code class="language-rust">let bold_text = Span::styled(
     &quot;This is bold&quot;,
@@ -4700,15 +4706,17 @@ let italic_text = Span::styled(
     &quot;This is bold and italic&quot;,
     Style::default().modifier(Modifier::BOLD | Modifier::ITALIC)
 );</code></pre>
-<ol start="3">
-<li>Styling within a Line</li>
-</ol>
+</li>
+<li>
+<p>Styling within a Line</p>
 <p>You can mix and match different styled spans within a single line:</p>
 <pre><code class="language-rust">let mixed_line = Line::from(vec![
     Span::styled(&quot;This is mixed&quot;, Style::default().fg(Color::Green)),
     Span::styled(&quot;styling&quot;, Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)),
     Span::from(&quot;!&quot;),
 ]);</code></pre>
+</li>
+</ol>
 <p>This is what it would look like if you rendered a <code>Paragraph</code> with different styles for each line:</p>
 <pre><code class="language-rust">fn ui(_: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
   let styled_text = Span::styled(&quot;Hello, Ratatui!&quot;, Style::default().fg(Color::Red).bg(Color::Yellow));
@@ -4832,7 +4840,7 @@ Git commit hash. The variable can be populated during the build process by <code
 <p>By invoking the CLI tool with the <code>--version</code> flag, users will be presented with the version
 details, including the authors, commit hash, and the paths to the configuration and data
 directories.</p>
-<p><img src="https://user-images.githubusercontent.com/1813121/252721469-4d5ec38b-e868-46b4-b7b7-1c2c8bc496ac.png" alt="" /></p>
+<p><img src="https://user-images.githubusercontent.com/1813121/252721469-4d5ec38b-e868-46b4-b7b7-1c2c8bc496ac.png" alt="–version output" /></p>
 <p>The <code>version()</code> function’s output is just an example. You can easily adjust its content by amending
 the string template code above.</p>
 <p>Here’s the full <code>build.rs</code> for your reference:</p>
@@ -4897,11 +4905,11 @@ predictable and user-friendly.</p>
 config and data directories) based on established conventions, including the XDG Base Directory
 Specification.</p>
 <ol>
-<li>Add <code>directories-rs</code> to your <code>Cargo.toml</code></li>
-</ol>
-<pre><code class="language-sh">cargo add directories
+<li>
+<p>Add <code>directories-rs</code> to your <code>Cargo.toml</code></p>
+<pre><code class="language-shell">cargo add directories
 </code></pre>
-<ol start="2">
+</li>
 <li>
 <p>Use the <code>ProjectDirs</code> struct to retrieve paths based on your project’s domain and project name
 and create helper functions for getting the <code>data_dir</code> and <code>config_dir</code>.</p>
@@ -4951,9 +4959,9 @@ That way it is unlikely that any other program will mess with the configuration 
 plan on distributing.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="setup-logging-with-tracing"><a class="header" href="#setup-logging-with-tracing">Setup Logging with tracing</a></h1>
 <p>You’ll need to install <code>tracing</code> and a few related dependencies:</p>
-<pre><code class="language-console">cargo add tracing-error tracing
+<pre><code class="language-shell">cargo add tracing-error tracing
 cargo add tracing-subscriber --features env-filter
-cargo add directories lazy-static color-eyre # (optional)
+cargo add directories lazy_static color-eyre # (optional)
 </code></pre>
 <p>You can paste the following in any module in your project.</p>
 <pre><code class="language-rust">use std::path::PathBuf;
@@ -4963,7 +4971,7 @@ use directories::ProjectDirs;
 use lazy_static::lazy_static;
 use tracing::error;
 use tracing_error::ErrorLayer;
-use tracing_subscriber::{self, prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
+use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt, Layer};
 
 lazy_static! {
   pub static ref PROJECT_NAME: String = env!(&quot;CARGO_CRATE_NAME&quot;).to_uppercase().to_string();
@@ -5367,7 +5375,7 @@ when this happens, you want to be a good citizen and:</p>
 </ol>
 <h2 id="better-panic"><a class="header" href="#better-panic"><code>better-panic</code></a></h2>
 <p><a href="https://github.com/mitsuhiko/better-panic"><code>better-panic</code></a> gives you pretty backtraces for panics.</p>
-<pre><code class="language-console">cargo add better-panic
+<pre><code class="language-shell">cargo add better-panic
 </code></pre>
 <p>Here’s an example of <code>initialize_panic_handler()</code> using <code>better-panic</code> to provide a prettier
 backtrace by default.</p>
@@ -5421,7 +5429,7 @@ index 289e40b..de48392 100644
    }
 </code></pre>
 <p>This is what a prettier stacktrace would look like with <code>better-panic</code>:</p>
-<pre><code>Backtrace (most recent call last):
+<pre><code class="language-plain">Backtrace (most recent call last):
   File &quot;/Users/kd/gitrepos/ratatui-async-template/src/main.rs:46&quot;, in ratatui_async_template::main
     Ok(())
   File &quot;/Users/kd/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokio-1.28.2/src/runtime/runtime.rs:304&quot;, in tokio::runtime::runtime::Runtime::block_on
@@ -5458,7 +5466,7 @@ history, and iterate on your application rapidly during development.</p>
 <p>This kind of detailed stacktrace is only available in debug builds. For release builds, you may get
 inlined or truncated stacktraces.</p>
 <p>For example, here’s what I get when I compile with all optimizations on:</p>
-<pre><code>Backtrace (most recent call last):
+<pre><code class="language-plain">Backtrace (most recent call last):
   File &quot;&lt;unknown&gt;:0&quot;, in __mh_execute_header
   File &quot;&lt;unknown&gt;:0&quot;, in __mh_execute_header
   File &quot;&lt;unknown&gt;:0&quot;, in __mh_execute_header
@@ -5483,7 +5491,7 @@ to show the users of your application in the following subsections.</p>
 <h3 id="color-eyre-panic-hook"><a class="header" href="#color-eyre-panic-hook">color-eyre panic hook</a></h3>
 <p>Another way to manage printing of stack-traces is by using
 <a href="https://github.com/eyre-rs/color-eyre"><code>color-eyre</code></a>:</p>
-<pre><code class="language-console">cargo add color-eyre
+<pre><code class="language-shell">cargo add color-eyre
 </code></pre>
 <p><code>color-eyre</code> has a panic hook that is better suited for users in my opinion.</p>
 <div id="admonition-tip" class="admonition tip">
@@ -5499,7 +5507,7 @@ to show the users of your application in the following subsections.</p>
 </div>
 <p>When a <code>panic!</code> occurs, after the application cleanly restores the terminal, we can print out a nice
 error message created by <code>color-eyre</code> like so:</p>
-<pre><code>The application panicked (crashed).
+<pre><code class="language-plain">The application panicked (crashed).
 Message:  At the disco
 Location: src/components/app.rs:80
 
@@ -5511,7 +5519,7 @@ Run with RUST_BACKTRACE=full to include source snippets.
 <p>This is short and clear, providing a link to the user to report the bug.</p>
 <p>Users can also opt to give you a more detailed stacktrace if they can reproduce the error (with a
 debug build and with <code>export RUST_BACKTRACE=1</code>):</p>
-<pre><code>The application panicked (crashed).
+<pre><code class="language-plain">The application panicked (crashed).
 Message:  At the disco
 Location: src/components/app.rs:80
 
@@ -5550,11 +5558,11 @@ This is a bug. Consider reporting it at https://github.com/ratatui-org/ratatui-a
 <h2 id="human-panic"><a class="header" href="#human-panic">human-panic</a></h2>
 <p>To use <a href="https://github.com/rust-cli/human-panic">human-panic</a>, you’ll have to install it as a
 dependency:</p>
-<pre><code class="language-console">cargo add human-panic
+<pre><code class="language-shell">cargo add human-panic
 </code></pre>
 <p>Personally, I think <code>human-panic</code> provides the most user friendly panic handling functionality out
 of the box when users experience an unexpected panic:</p>
-<pre><code>Well, this is embarrassing.
+<pre><code class="language-plain">Well, this is embarrassing.
 
 ratatui-async-template had a problem and crashed. To help us diagnose the problem you can send us a crash report.
 
@@ -5568,7 +5576,7 @@ Thank you kindly!
 </code></pre>
 <p>It generates a report where information relevant to the crash is logged. Here’s the content of the
 temporary report file that <code>human-panic</code> creates (with optimizations turned on):</p>
-<pre><code>name = &quot;ratatui-async-template&quot;
+<pre><code class="language-plain">name = &quot;ratatui-async-template&quot;
 operating_system = &quot;Mac OS 13.5.2 [64-bit]&quot;
 crate_version = &quot;0.1.0&quot;
 explanation = &quot;&quot;&quot;
@@ -5589,7 +5597,7 @@ backtrace = &quot;&quot;&quot;
 <p>You can mix and match these different panic handlers, using <code>better-panic</code> for debug builds and
 <code>color-eyre</code> and <code>human-panic</code> for release builds. The code below also prints the <code>color-eyre</code>
 stacktrace to <code>log::error!</code> for good measure (after striping ansi escape sequences).</p>
-<pre><code class="language-console">cargo add color-eyre human-panic libc better-panic strip-ansi-escapes
+<pre><code class="language-shell">cargo add color-eyre human-panic libc better-panic strip-ansi-escapes
 </code></pre>
 <p>Here’s code you can copy paste into your project (if you use the
 <a href="how-to/develop-apps/./abstract-terminal-and-event-handler.html"><code>Tui</code></a> struct to handle terminal exits):</p>
@@ -6136,9 +6144,15 @@ permanent widget object in memory.</li>
 }</code></pre>
 <p><a href="https://caseymuratori.com/blog_0001">This article</a> and the accompanying YouTube video is worth your
 time if you are new to the immediate mode rendering paradigm.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Z1qyvQsjK5Y?si=eiBHXiXIo3Z0u2zs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z1qyvQsjK5Y?si=eiBHXiXIo3Z0u2zs"
+ title="YouTube video player" frameborder="0"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowfullscreen></iframe>
 <p>This 4 minute talk about <code>IMGUI</code> is also tangentially relevant.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LSRJ1jZq90k?si=8NB5yiZ8IGS_QE_E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LSRJ1jZq90k?si=8NB5yiZ8IGS_QE_E"
+ title="YouTube video player" frameborder="0"
+ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+ allowfullscreen></iframe>
 <h2 id="advantages-of-immediate-mode-rendering"><a class="header" href="#advantages-of-immediate-mode-rendering">Advantages of Immediate Mode Rendering</a></h2>
 <ul>
 <li><strong>Simplicity</strong>: Without a persistent widget state, your UI logic becomes a direct reflection of
@@ -6159,7 +6173,8 @@ thread is inadvertently blocked, the UI will not update until the thread resumes
 </div>
 <div>
 <p>The <code>ratatui</code> library in particular only handles how widget would be rendered to a “Backend”, e.g.
-<code>crossterm</code>. The <code>Backend</code> in question would use an external crate e.g. <code>crossterm</code> for actually drawing to the terminal.</p>
+<code>crossterm</code>. The <code>Backend</code> in question would use an external crate e.g. <code>crossterm</code> for actually
+drawing to the terminal.</p>
 </div>
 </div>
 <ul>
@@ -6182,7 +6197,7 @@ directly expose any event catching; the programmer will depend on the chosen bac
 <p>However, there are a few ways to think about event handling that may help you. While this is not an
 exhaustive list, it covers a few of the more common implementations. But remember, the correct way,
 is the one that works for you and your current application.</p>
-<h3 id="centralized-event-handling"><a class="header" href="#centralized-event-handling">Centralized event handling</a></h3>
+<h2 id="centralized-event-handling"><a class="header" href="#centralized-event-handling">Centralized event handling</a></h2>
 <p>This is the simplest way to handle events because it handles all of the events as they appear. It is
 often simply a match on the results of <code>event::read()?</code> (in crossterm) on the different supported
 keys. Pros: This has the advantage of requiring no message passing, and allows the programmer to
@@ -6190,7 +6205,7 @@ edit all of the possible keyboard events in one place.</p>
 <p>Cons: However, this particular way of handling events simply does not scale well. Because <em>all</em>
 events are handled in one place, you will be unable to split different groups of keybinds out into
 separate locations.</p>
-<h3 id="centralized-catching-message-passing"><a class="header" href="#centralized-catching-message-passing">Centralized catching, message passing</a></h3>
+<h2 id="centralized-catching-message-passing"><a class="header" href="#centralized-catching-message-passing">Centralized catching, message passing</a></h2>
 <p>This way of handling events involves polling for events in one place, and then sending
 messages/calling sub functions with the event that was caught. Pros: This has a similar appeal to
 the first method in its simplicity. With this paradigm, you can easily split extensive pattern
@@ -6199,7 +6214,7 @@ basic multi-threaded applications because message channels are used to pass mult
 messages.</p>
 <p>Cons: This method requires a main loop to be running to consistently poll for events in a
 centralized place.</p>
-<h3 id="distributed-event-loopssegmented-applications"><a class="header" href="#distributed-event-loopssegmented-applications">Distributed event loops/segmented applications</a></h3>
+<h2 id="distributed-event-loopssegmented-applications"><a class="header" href="#distributed-event-loopssegmented-applications">Distributed event loops/segmented applications</a></h2>
 <p>In this style, control of the <code>Terminal</code> and the main loop to a sub-module. In this case, the entire
 rendering and event handling responsibilities can be safely passed to the sub-module. In theory, an
 application built like this doesn’t need a centralized event listener. Pros: There is no centralized
@@ -6759,7 +6774,7 @@ crossterm based terminal applications by providing functions to handle key combi
 <p>reposted from <a href="https://blog.orhun.dev/ratatui-0-23-0/">https://blog.orhun.dev/ratatui-0-23-0/</a></p>
 </div>
 </div>
-<h3 id="coolify-everything-"><a class="header" href="#coolify-everything-">Coolify everything 😎</a></h3>
+<h2 id="coolify-everything-"><a class="header" href="#coolify-everything-">Coolify everything 😎</a></h2>
 <p>We already had a cool name and a logo, and now we have a cool description as well:</p>
 <pre><code class="language-diff">- ratatui: A Rust library to build rich terminal user interfaces or dashboards.
 + ratatui: A Rust library that's all about cooking up terminal user interfaces.
@@ -6768,7 +6783,7 @@ crossterm based terminal applications by providing functions to handle key combi
 <ul>
 <li><a href="https://github.com/ratatui-org/ratatui"><strong>https://github.com/ratatui-org/ratatui</strong></a></li>
 </ul>
-<h3 id="barchart-horizontal-bars"><a class="header" href="#barchart-horizontal-bars">Barchart: horizontal bars</a></h3>
+<h2 id="barchart-horizontal-bars"><a class="header" href="#barchart-horizontal-bars">Barchart: horizontal bars</a></h2>
 <p>You can now render the bars horizontally for the <code>Barchart</code> widget. This is especially useful in
 some cases to make more efficient use of the available space.</p>
 <p>Simply use the <code>Direction</code> attribute for rendering horizontal bars:</p>
@@ -6783,7 +6798,7 @@ some cases to make more efficient use of the available space.</p>
 horizontal bars):</p>
 <p><img src="https://user-images.githubusercontent.com/15311024/263077132-ff80b2c4-9d2d-480b-9a72-f3779688bec8.png" alt="horizontal bars" /></p>
 <hr />
-<h3 id="voluntary-skipping-capability-for-sixel"><a class="header" href="#voluntary-skipping-capability-for-sixel">Voluntary skipping capability for Sixel</a></h3>
+<h2 id="voluntary-skipping-capability-for-sixel"><a class="header" href="#voluntary-skipping-capability-for-sixel">Voluntary skipping capability for Sixel</a></h2>
 <blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Sixel">Sixel</a> is a bitmap graphics format supported by terminals.
 “Sixel mode” is entered by sending the sequence <code>ESC+Pq</code>. The “String Terminator” sequence <code>ESC+\</code>
@@ -6799,7 +6814,7 @@ iTerm, Kitty, etc.</p>
 <a href="https://github.com/benjajaja/ratatu-image"><em>ratatu-image</em></a></p>
 <p><img src="https://raw.githubusercontent.com/benjajaja/ratatu-image/master/assets/Recording.gif" alt="ratatu-image" /></p>
 <hr />
-<h3 id="tablelist-highlight-spacing"><a class="header" href="#tablelist-highlight-spacing">Table/List: Highlight spacing</a></h3>
+<h2 id="tablelist-highlight-spacing"><a class="header" href="#tablelist-highlight-spacing">Table/List: Highlight spacing</a></h2>
 <p>We added a new property called <code>HighlightSpacing</code> to the <code>Table</code> and <code>List</code> widgets and it can be
 optionally set via calling <code>highlight_spacing</code> function.</p>
 <p>Before this option was available, selecting a row in the table when no row was selected previously
@@ -6818,7 +6833,7 @@ configurable with this newly added option.</p>
 selected or not.</li>
 </ul>
 <hr />
-<h3 id="table-support-line-alignment"><a class="header" href="#table-support-line-alignment">Table: support line alignment</a></h3>
+<h2 id="table-support-line-alignment"><a class="header" href="#table-support-line-alignment">Table: support line alignment</a></h2>
 <pre><code class="language-rs">let table = Table::new(vec![
         Row::new(vec![Line::from(&quot;Left&quot;).alignment(Alignment::Left)]),
         Row::new(vec![Line::from(&quot;Center&quot;).alignment(Alignment::Center)]),
@@ -6832,7 +6847,7 @@ selected or not.</li>
                Right
 </code></pre>
 <hr />
-<h3 id="scrollbar-optional-track-symbol"><a class="header" href="#scrollbar-optional-track-symbol">Scrollbar: optional track symbol</a></h3>
+<h2 id="scrollbar-optional-track-symbol"><a class="header" href="#scrollbar-optional-track-symbol">Scrollbar: optional track symbol</a></h2>
 <p>The track symbol in the <code>Scrollbar</code> is now optional, simplifying composition with other widgets. It
 also makes it easier to use the <code>Scrollbar</code> in tandem with a block with special block characters.</p>
 <p>One breaking change is that <code>track_symbol</code> needs to be set in the following way now:</p>
@@ -6842,13 +6857,13 @@ also makes it easier to use the <code>Scrollbar</code> in tandem with a block wi
 <p>It also makes it possible to render a custom track that is composed out of multiple differing track
 symbols.</p>
 <hr />
-<h3 id="symbolsscrollbar-module"><a class="header" href="#symbolsscrollbar-module"><code>symbols::scrollbar</code> module</a></h3>
+<h2 id="symbolsscrollbar-module"><a class="header" href="#symbolsscrollbar-module"><code>symbols::scrollbar</code> module</a></h2>
 <p>The symbols and sets are moved from <code>widgets::scrollbar</code> to <code>symbols::scrollbar</code>. This makes it
 consistent with the other symbol sets. We also made the <code>scrollbar</code> module private.</p>
 <p>Since this is a breaking change, you need to update your code to add an import for
 <code>ratatui::symbols::scrollbar::*</code> (or the specific symbols you need).</p>
 <hr />
-<h3 id="alpha-releases"><a class="header" href="#alpha-releases">Alpha releases</a></h3>
+<h2 id="alpha-releases"><a class="header" href="#alpha-releases">Alpha releases</a></h2>
 <p>The alpha releases (i.e. pre-releases) are created *every Saturday* and they are automated with
 the help of
 <a href="https://github.com/ratatui-org/ratatui/blob/main/.github/workflows/cd.yml">this GitHub Actions workflow</a>.
@@ -6860,7 +6875,7 @@ we hit a stable release.</p>
 and documentation:
 <a href="https://github.com/ratatui-org/ratatui/issues/412">https://github.com/ratatui-org/ratatui/issues/412</a></p>
 <hr />
-<h3 id="example-gifs"><a class="header" href="#example-gifs">Example GIFs</a></h3>
+<h2 id="example-gifs"><a class="header" href="#example-gifs">Example GIFs</a></h2>
 <p>We added GIFs for each example in the <code>examples/</code> directory and added a <code>README.md</code> for preview.
 This should make it easier to see what each example does without having to run it.</p>
 <p>See:
@@ -6892,29 +6907,29 @@ Sleep 4s
 moving everything to GitHub. If you are interested in contributing regarding this, see
 <a href="https://github.com/ratatui-org/ratatui/issues/401">https://github.com/ratatui-org/ratatui/issues/401</a></p>
 <hr />
-<h3 id="common-traits"><a class="header" href="#common-traits">Common traits</a></h3>
+<h2 id="common-traits"><a class="header" href="#common-traits">Common traits</a></h2>
 <p>With the help of <a href="https://crates.io/crates/strum">strum</a> crate, we added <code>Display</code> and <code>FromStr</code>
 implementation to enum types.</p>
 <p>Also, we implemented common traits such as <code>Debug</code>, <code>Default</code>, <code>Clone</code>, <code>Copy</code>, <code>Eq</code>, <code>PartialEq</code>,
 <code>Ord</code>, <code>PartialOrd</code>, <code>Hash</code> to the structs/enums where possible.</p>
 <hr />
-<h3 id="test-coverage-"><a class="header" href="#test-coverage-">Test coverage 🧪</a></h3>
+<h2 id="test-coverage-"><a class="header" href="#test-coverage-">Test coverage 🧪</a></h2>
 <p><code>ratatui</code> now has <a href="https://app.codecov.io/gh/ratatui-org/ratatui">90% test coverage</a>!</p>
 <p>Shoutout to everyone who added tests/benchmarks for various widgets made this possible.</p>
 <hr />
-<h3 id="no-unsafe-"><a class="header" href="#no-unsafe-">No unsafe ⚠️</a></h3>
+<h2 id="no-unsafe-"><a class="header" href="#no-unsafe-">No unsafe ⚠️</a></h2>
 <p>We now <em>forbid</em> <a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">unsafe code</a> in <code>ratatui</code>.
 Also, see <a href="https://github.com/ratatui-org/ratatui/discussions/66">this discussion</a> we had in the
 past about using <code>unsafe</code> code for optimization purposes.</p>
 <hr />
-<h3 id="the-book-"><a class="header" href="#the-book-">The book 📕</a></h3>
+<h2 id="the-book-"><a class="header" href="#the-book-">The book 📕</a></h2>
 <p>We are working on a book for more in-depth <code>ratatui</code> documentation and usage examples, you can read
 it from here:
 <a href="https://ratatui-org.github.io/ratatui-book/">https://ratatui-org.github.io/ratatui-book/</a></p>
 <p>Repository:
 <a href="https://github.com/ratatui-org/ratatui-book"><strong>https://github.com/ratatui-org/ratatui-book</strong></a></p>
 <hr />
-<h3 id="other"><a class="header" href="#other">Other</a></h3>
+<h2 id="other"><a class="header" href="#other">Other</a></h2>
 <ul>
 <li>Expand serde attributes for <code>TestBuffer</code> for de/serializing the whole test buffer.</li>
 <li>Add weak constraints to make <code>Rect</code>s closer to each other in size.</li>
@@ -6934,7 +6949,7 @@ it from here:
 <p>reposted from <a href="https://blog.orhun.dev/ratatui-0-22-0/">https://blog.orhun.dev/ratatui-0-22-0/</a></p>
 </div>
 </div>
-<h3 id="prelude"><a class="header" href="#prelude">Prelude</a></h3>
+<h2 id="prelude"><a class="header" href="#prelude">Prelude</a></h2>
 <p>We now have a <code>prelude</code> module! This allows users of the library to easily use <code>ratatui</code> without a
 huge amount of imports.</p>
 <pre><code class="language-rs">use ratatui::prelude::*;
@@ -6950,11 +6965,11 @@ assert_eq!(Line::default(), Line);
 assert_eq!(text::Line::default(), ratatui::text::Line::from(vec![]));
 </code></pre>
 <hr />
-<h3 id="new-widget-scrollbar"><a class="header" href="#new-widget-scrollbar">New widget: Scrollbar</a></h3>
+<h2 id="new-widget-scrollbar"><a class="header" href="#new-widget-scrollbar">New widget: Scrollbar</a></h2>
 <p>A scrollbar widget has been added which can be used with any <code>Rect</code>. It can also be customized with
 different styles and symbols.</p>
 <p>Here are the components of a <code>Scrollbar</code>:</p>
-<pre><code class="language-sh">&lt;--▮-------&gt;
+<pre><code class="language-plain">&lt;--▮-------&gt;
 ^  ^   ^   ^
 │  │   │   └ end
 │  │   └──── track
@@ -6972,14 +6987,14 @@ different styles and symbols.</p>
 );
 </code></pre>
 <p>Will result in:</p>
-<pre><code class="language-sh">┌scrollbar──────────────────↑
+<pre><code class="language-plain">┌scrollbar──────────────────↑
 │This is a longer line      ║
 │Veeeeeeeeeeeeeeeery    looo█
 │This is a line             ║
 └───────────────────────────↓
 </code></pre>
 <hr />
-<h3 id="block-support-multiple-titles"><a class="header" href="#block-support-multiple-titles">Block: support multiple titles</a></h3>
+<h2 id="block-support-multiple-titles"><a class="header" href="#block-support-multiple-titles">Block: support multiple titles</a></h2>
 <p><code>Block</code> widget now supports having more than one title via <code>Title</code> widget.</p>
 <p>Each title will be rendered with a single space separating titles that are in the same position or
 alignment. When both centered and non-centered titles are rendered, the centered space is calculated
@@ -7000,20 +7015,20 @@ based on the full width of the block, rather than the leftover width.</p>
     );
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh">┌Title─Left──Center─────────────┐
+<pre><code class="language-plain">┌Title─Left──Center─────────────┐
 │                               │
 │                               │
 │                               │
 └Bottom───Bottom center─────────┘
 </code></pre>
 <hr />
-<h3 id="barchart-support-groups"><a class="header" href="#barchart-support-groups">Barchart: support groups</a></h3>
+<h2 id="barchart-support-groups"><a class="header" href="#barchart-support-groups">Barchart: support groups</a></h2>
 <p><code>Barchart</code> has been improved to support adding multiple bars from different data sets. This can be
 done by using the newly added <code>Bar</code> and <code>BarGroup</code> objects.</p>
 <p>See the <a href="https://github.com/ratatui-org/ratatui/blob/main/examples/barchart.rs">barchart example</a>
 for more information and implementation details.</p>
 <hr />
-<h3 id="stylization-shorthands"><a class="header" href="#stylization-shorthands">Stylization shorthands</a></h3>
+<h2 id="stylization-shorthands"><a class="header" href="#stylization-shorthands">Stylization shorthands</a></h2>
 <p>It is possible to use style shorthands for <code>str</code>, <code>Span</code>, and <code>Paragraph</code>.</p>
 <p>A crazy example would be:</p>
 <pre><code class="language-rs">&quot;hello&quot;
@@ -7033,7 +7048,7 @@ for more information and implementation details.</p>
 )
 </code></pre>
 <hr />
-<h3 id="stylize-everything"><a class="header" href="#stylize-everything">Stylize everything!</a></h3>
+<h2 id="stylize-everything"><a class="header" href="#stylize-everything">Stylize everything</a></h2>
 <p>All widgets can be styled now (i.e. <code>set_style</code>)</p>
 <p><code>Styled</code> trait is implemented for all the remaining widgets, including:</p>
 <ul>
@@ -7047,7 +7062,7 @@ for more information and implementation details.</p>
 <li><code>Style</code></li>
 </ul>
 <hr />
-<h3 id="constant-styles"><a class="header" href="#constant-styles">Constant styles</a></h3>
+<h2 id="constant-styles"><a class="header" href="#constant-styles">Constant styles</a></h2>
 <p><code>Style</code>s can be constructed in a <code>const</code> context as follows:</p>
 <pre><code class="language-rs">const DEFAULT_MODIFIER: Modifier = Modifier::BOLD.union(Modifier::ITALIC);
 const EMPTY: Modifier = Modifier::empty();
@@ -7057,7 +7072,7 @@ const DEFAULT_STYLE: Style = Style::with(DEFAULT_MODIFIER, EMPTY)
     .bg(Color::Black);
 </code></pre>
 <hr />
-<h3 id="more-colors-formats"><a class="header" href="#more-colors-formats">More colors formats</a></h3>
+<h2 id="more-colors-formats"><a class="header" href="#more-colors-formats">More colors formats</a></h2>
 <p>It is now possible to parse hyphenated color names like <code>light-red</code> via <code>Color::from_str</code>.</p>
 <p>Additionally, all colors from the
 <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#Colors">ANSI color table</a> are supported (though some
@@ -7068,7 +7083,7 @@ names are not exactly the same).</p>
 <li><code>darkgray</code> is sometimes called <code>light black</code> or <code>bright black</code> (both are supported)</li>
 <li><code>white</code> is sometimes called <code>light white</code> or <code>bright white</code> (both are supported)</li>
 <li>we support <code>bright</code> and <code>light</code> prefixes for all colors</li>
-<li>we support <code>-</code> and <code>_</code> and <code> </code> as separators for all colors</li>
+<li>we support <code>&quot;-&quot;</code>, <code>&quot;_&quot;</code>, and <code>&quot; &quot;</code> as separators for all colors</li>
 <li>we support both <code>gray</code> and <code>grey</code> spellings</li>
 </ul>
 <p>For example:</p>
@@ -7092,7 +7107,7 @@ assert_eq!(&quot;white&quot;.parse(), Ok(Color::White));
 assert_eq!(&quot;bright white&quot;.parse(), Ok(Color::White));
 </code></pre>
 <hr />
-<h3 id="integrations-1"><a class="header" href="#integrations-1">Integrations</a></h3>
+<h2 id="integrations-1"><a class="header" href="#integrations-1">Integrations</a></h2>
 <p>Following tools are now integrated into the repository:</p>
 <ul>
 <li><a href="https://github.com/rhysd/cargo-husky"><code>cargo-husky</code></a>: git pre-push hooks</li>
@@ -7102,7 +7117,7 @@ assert_eq!(&quot;bright white&quot;.parse(), Ok(Color::White));
 <li><a href="https://github.com/crate-ci/typos"><code>typos</code></a>: spell checker</li>
 </ul>
 <hr />
-<h3 id="other-1"><a class="header" href="#other-1">Other</a></h3>
+<h2 id="other-1"><a class="header" href="#other-1">Other</a></h2>
 <ul>
 <li>Benchmarks added for the <code>Paragraph</code> widget</li>
 <li>Added underline colors support for <code>crossterm</code> backend</li>
@@ -7110,7 +7125,7 @@ assert_eq!(&quot;bright white&quot;.parse(), Ok(Color::White));
 <li>The project license has been updated to acknowledge <code>ratatui</code> developers</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="v021"><a class="header" href="#v021"><a href="https://github.com/ratatui-org/ratatui/releases/tag/v0.21.0">v0.21</a></a></h1>
-<h3 id="new-backend-termwiz"><a class="header" href="#new-backend-termwiz">New backend: <code>termwiz</code></a></h3>
+<h2 id="new-backend-termwiz"><a class="header" href="#new-backend-termwiz">New backend: <code>termwiz</code></a></h2>
 <p><code>ratatui</code> supports a new backend called <code>termwiz</code> which is a “Terminal Wizardry” crate that powers
 <a href="https://github.com/wez/wezterm">wezterm</a>.</p>
 <p>To use it, enable the <code>termwiz</code> feature in <code>Cargo.toml</code>:</p>
@@ -7145,7 +7160,7 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
 }
 </code></pre>
 <hr />
-<h3 id="new-widget-calendar"><a class="header" href="#new-widget-calendar">New widget: Calendar</a></h3>
+<h2 id="new-widget-calendar"><a class="header" href="#new-widget-calendar">New widget: Calendar</a></h2>
 <p>A calendar widget has been added which was originally a part of the
 <a href="https://github.com/sophacles/extra-widgets">extra-widgets</a> repository.</p>
 <p>Since this new widget depends on <code>time</code> crate, we gated it behind <code>widget-calendar</code> feature to avoid
@@ -7164,7 +7179,7 @@ features = [&quot;widget-calendar&quot;]
 .show_surrounding(Style::default()),
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh">     January 2023
+<pre><code class="language-plain">     January 2023
  Su Mo Tu We Th Fr Sa
   1  2  3  4  5  6  7
   8  9 10 11 12 13 14
@@ -7173,7 +7188,7 @@ features = [&quot;widget-calendar&quot;]
  29 30 31  1  2  3  4
 </code></pre>
 <hr />
-<h3 id="new-widget-circle"><a class="header" href="#new-widget-circle">New widget: Circle</a></h3>
+<h2 id="new-widget-circle"><a class="header" href="#new-widget-circle">New widget: Circle</a></h2>
 <p><code>Circle</code> widget has been added with the use-case of showing an accuracy radius on the world map.</p>
 <p>Here is an example of how to use it with <code>Canvas</code>:</p>
 <pre><code class="language-rs">Canvas::default()
@@ -7190,12 +7205,12 @@ features = [&quot;widget-calendar&quot;]
     .y_bounds([-10.0, 10.0]),
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh"> ⡠⠤⢤⡀
+<pre><code class="language-plain"> ⡠⠤⢤⡀
 ⢸⡁  ⡧
  ⠑⠒⠚⠁
 </code></pre>
 <hr />
-<h3 id="inline-viewport"><a class="header" href="#inline-viewport">Inline Viewport</a></h3>
+<h2 id="inline-viewport"><a class="header" href="#inline-viewport">Inline Viewport</a></h2>
 <p>This was a highly requested feature and the original implementation was done by
 <a href="https://github.com/fdehau">@fdehau</a> himself. Folks at <a href="https://atuin.sh">Atuin</a> completed the
 implementation and we are happy to finally have this incorporated in the new release!</p>
@@ -7204,7 +7219,7 @@ displaying content.</p>
 <p>In the repository, there is an example that simulates downloading multiple files in parallel:
 <a href="https://github.com/ratatui-org/ratatui/blob/main/examples/inline.rs">https://github.com/ratatui-org/ratatui/blob/main/examples/inline.rs</a></p>
 <hr />
-<h3 id="block-title-on-bottom"><a class="header" href="#block-title-on-bottom">Block: title on bottom</a></h3>
+<h2 id="block-title-on-bottom"><a class="header" href="#block-title-on-bottom">Block: title on bottom</a></h2>
 <blockquote>
 <p>Before you could only put the title on the top row of a Block. Now you can put it on the bottom
 row! Revolutionary.</p>
@@ -7221,13 +7236,13 @@ row! Revolutionary.</p>
     )
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh">┌─────────────────────┐
+<pre><code class="language-plain">┌─────────────────────┐
 │       ratatui       │
 │                     │
 └────────Title────────┘
 </code></pre>
 <hr />
-<h3 id="block-support-adding-padding"><a class="header" href="#block-support-adding-padding">Block: support adding padding</a></h3>
+<h2 id="block-support-adding-padding"><a class="header" href="#block-support-adding-padding">Block: support adding padding</a></h2>
 <p>If we want to render a widget inside a <code>Block</code> with a certain distance from its borders, we need to
 create another <code>Layout</code> element based on the outer <code>Block</code>, add a margin and render the <code>Widget</code>
 into it. Adding a padding property on the block element skips the creation of this second Layout.</p>
@@ -7254,7 +7269,7 @@ f.render_widget(inner_block, inner_area);
 f.render_widget(paragraph, area);
 </code></pre>
 <hr />
-<h3 id="text-display-secure-data"><a class="header" href="#text-display-secure-data">Text: display secure data</a></h3>
+<h2 id="text-display-secure-data"><a class="header" href="#text-display-secure-data">Text: display secure data</a></h2>
 <p>A new type called <code>Masked</code> is added for text-related types for masking data with a mask character.
 The example usage is as follows:</p>
 <pre><code class="language-rs">Line::from(vec![
@@ -7266,10 +7281,10 @@ The example usage is as follows:</p>
 ])
 </code></pre>
 <p>Results in:</p>
-<pre><code class="language-sh">Masked text: ********
+<pre><code class="language-plain">Masked text: ********
 </code></pre>
 <hr />
-<h3 id="border-macro"><a class="header" href="#border-macro"><code>border!</code> macro</a></h3>
+<h2 id="border-macro"><a class="header" href="#border-macro"><code>border!</code> macro</a></h2>
 <p>A <code>border!</code> macro has been added that takes <code>TOP</code>, <code>BOTTOM</code>, <code>LEFT</code>, <code>RIGHT</code>, and <code>ALL</code> and returns
 a <code>Borders</code> object.</p>
 <p>An empty <code>border!()</code> call returns <code>NONE</code>.</p>
@@ -7286,7 +7301,7 @@ features = [&quot;macros&quot;]
 </code></pre>
 <p>Going forward, we will most likely put the new macros behind <code>macros</code> feature as well.</p>
 <hr />
-<h3 id="color-support-conversion-from-string"><a class="header" href="#color-support-conversion-from-string">Color: support conversion from <code>String</code></a></h3>
+<h2 id="color-support-conversion-from-string"><a class="header" href="#color-support-conversion-from-string">Color: support conversion from <code>String</code></a></h2>
 <p>Have you ever needed this conversion?</p>
 <pre><code class="language-rs">&quot;black&quot; =&gt; Color::Black,
 &quot;red&quot; =&gt; Color::Red,
@@ -7299,7 +7314,7 @@ Color::from_str(&quot;10&quot;)        // Color::Indexed(10)
 Color::from_str(&quot;#FF0000&quot;)   // Color::Rgb(255, 0, 0)
 </code></pre>
 <hr />
-<h3 id="spans---line"><a class="header" href="#spans---line"><code>Spans</code> -&gt; <code>Line</code></a></h3>
+<h2 id="spans---line"><a class="header" href="#spans---line"><code>Spans</code> -&gt; <code>Line</code></a></h2>
 <p><code>Line</code> is a significantly better name over <code>Spans</code> as the plural causes confusion and the type
 really is a representation of a line of text made up of spans.</p>
 <p>So, <code>Spans</code> is renamed as <code>Line</code> and a deprecation notice has been added.</p>
@@ -7307,7 +7322,7 @@ really is a representation of a line of text made up of spans.</p>
 <a href="https://github.com/ratatui-org/ratatui/pull/178">https://github.com/ratatui-org/ratatui/pull/178</a>
 for more discussion.</p>
 <hr />
-<h3 id="other-features"><a class="header" href="#other-features">Other features</a></h3>
+<h2 id="other-features"><a class="header" href="#other-features">Other features</a></h2>
 <ul>
 <li><code>List</code> now has a <code>len()</code> method for returning the number of items</li>
 <li><code>Sparkline</code> now has a <code>direction()</code> method for specifying the render direction (left to right /
@@ -7316,7 +7331,7 @@ right to left)</li>
 <li>Expose the test buffer (<code>TestBackend</code>) with <code>Display</code> implementation</li>
 </ul>
 <hr />
-<h3 id="new-apps"><a class="header" href="#new-apps">New apps</a></h3>
+<h2 id="new-apps"><a class="header" href="#new-apps">New apps</a></h2>
 <p>Here is the list of applications that has been added:</p>
 <ul>
 <li><a href="https://github.com/BrookJeynes/oxycards">oxycards</a>: quiz card application built within the
@@ -7328,7 +7343,7 @@ terminal.</li>
 <a href="https://github.com/ratatui-org/ratatui/wiki/Apps-using-Ratatui">Wiki</a> so check it out for more
 applications built with <code>ratatui</code>!</p>
 <hr />
-<h3 id="migration-from-tui-rs"><a class="header" href="#migration-from-tui-rs">Migration from <code>tui-rs</code></a></h3>
+<h2 id="migration-from-tui-rs"><a class="header" href="#migration-from-tui-rs">Migration from <code>tui-rs</code></a></h2>
 <p>We put together a migration guide at the Wiki:
 <a href="https://github.com/ratatui-org/ratatui/wiki/Migrating-from-TUI">Migrating from TUI</a></p>
 <p>Also, the minimum supported Rust version is <code>1.65.0</code></p>
@@ -7355,7 +7370,7 @@ chit-chat, feel free to <a href="https://discord.gg/pMCEU9hNEj">join our Discord
 <h2 id="backend-selection"><a class="header" href="#backend-selection">Backend Selection</a></h2>
 <p>For most cases, the default <code>crossterm</code> backend is the correct choice. See
 <a href="references/../concepts/backends">Backends</a> for more information. However, this can be changed to termion or termwiz</p>
-<pre><code class="language-console"># Defaults to crossterm
+<pre><code class="language-shell"># Defaults to crossterm
 cargo add ratatui
 
 # For termion, unset the default crossterm feature and select the termion feature
@@ -7370,32 +7385,32 @@ cargo add termwiz
 <p>This feature enables some extra widgets that are not in <code>default</code> to save on compile time. As of
 v0.21, the only widget in this feature group is the <code>calendar</code> widget, which can be enabled with the
 <code>widget-calendar</code> feature.</p>
-<pre><code class="language-console">cargo add ratatui --features all-widgets
+<pre><code class="language-shell">cargo add ratatui --features all-widgets
 </code></pre>
 <h2 id="widget-calendar"><a class="header" href="#widget-calendar">Widget-Calendar</a></h2>
 <p>This feature enables the calendar widget, which requires the <code>time</code> crate.</p>
-<pre><code class="language-console">cargo add ratatui --features widget-calendar
+<pre><code class="language-shell">cargo add ratatui --features widget-calendar
 </code></pre>
 <h2 id="serde"><a class="header" href="#serde">Serde</a></h2>
-<pre><code class="language-console">cargo add ratatui --features serde
+<pre><code class="language-shell">cargo add ratatui --features serde
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ratatui"><a class="header" href="#ratatui">Ratatui</a></h1>
 <p>Check out the <a href="https://github.com/ratatui-org/ratatui/blob/main/CONTRIBUTING.md">CONTRIBUTING GUIDE</a>
 for more information.</p>
-<h3 id="keep-prs-small-intentional-and-focused"><a class="header" href="#keep-prs-small-intentional-and-focused">Keep PRs small, intentional and focused</a></h3>
+<h2 id="keep-prs-small-intentional-and-focused"><a class="header" href="#keep-prs-small-intentional-and-focused">Keep PRs small, intentional and focused</a></h2>
 <p>Try to do one pull request per change. The time taken to review a PR grows exponential with the size
 of the change. Small focused PRs will generally be much more faster to review. PRs that include both
 refactoring (or reformatting) with actual changes are more difficult to review as every line of the
 change becomes a place where a bug may have been introduced. Consider splitting refactoring /
 reformatting changes into a separate PR from those that make a behavioral change, as the tests help
 guarantee that the behavior is unchanged.</p>
-<h3 id="search-tui-rs-for-similar-work"><a class="header" href="#search-tui-rs-for-similar-work">Search <code>tui-rs</code> for similar work</a></h3>
+<h2 id="search-tui-rs-for-similar-work"><a class="header" href="#search-tui-rs-for-similar-work">Search <code>tui-rs</code> for similar work</a></h2>
 <p>The original fork of Ratatui, <a href="https://github.com/fdehau/tui-rs/"><code>tui-rs</code></a>, has a large amount of
 history of the project. Please search, read, link, and summarize any relevant
 <a href="https://github.com/fdehau/tui-rs/issues/">issues</a>,
 <a href="https://github.com/fdehau/tui-rs/discussions/">discussions</a> and
 <a href="https://github.com/fdehau/tui-rs/pulls">pull requests</a>.</p>
-<h3 id="use-conventional-commits"><a class="header" href="#use-conventional-commits">Use conventional commits</a></h3>
+<h2 id="use-conventional-commits"><a class="header" href="#use-conventional-commits">Use conventional commits</a></h2>
 <p>We use <a href="https://www.conventionalcommits.org/en/v1.0.0/">conventional commits</a> and check for them as
 a lint build step. To help adhere to the format, we recommend to install
 <a href="https://commitizen-tools.github.io/commitizen/">Commitizen</a>. By using this tool you automatically
@@ -7405,25 +7420,25 @@ the title. The summary helps expand on that to provide information that helps pr
 describes the nature of the problem that the commit is solving and any unintuitive effects of the
 change. It’s rare that code changes can easily communicate intent, so make sure this is clearly
 documented.</p>
-<h3 id="clean-up-your-commits"><a class="header" href="#clean-up-your-commits">Clean up your commits</a></h3>
+<h2 id="clean-up-your-commits"><a class="header" href="#clean-up-your-commits">Clean up your commits</a></h2>
 <p>The final version of your PR that will be committed to the repository should be rebased and tested
 against main. Every commit will end up as a line in the changelog, so please squash commits that are
 only formatting or incremental fixes to things brought up as part of the PR review. Aim for a single
 commit (unless there is a strong reason to stack the commits). See
 <a href="https://sethrobertson.github.io/GitBestPractices/#sausage">Git Best Practices - On Sausage Making</a>
 for more on this.</p>
-<h3 id="run-ci-tests-before-pushing-a-pr"><a class="header" href="#run-ci-tests-before-pushing-a-pr">Run CI tests before pushing a PR</a></h3>
+<h2 id="run-ci-tests-before-pushing-a-pr"><a class="header" href="#run-ci-tests-before-pushing-a-pr">Run CI tests before pushing a PR</a></h2>
 <p>We’re using <a href="https://github.com/rhysd/cargo-husky">cargo-husky</a> to automatically run git hooks,
 which will run <code>cargo make ci</code> before each push. To initialize the hook run <code>cargo test</code>. If
 <code>cargo-make</code> is not installed, it will provide instructions to install it for you. This will ensure
 that your code is formatted, compiles and passes all tests before you push. If you need to skip this
 check, you can use <code>git push --no-verify</code>.</p>
-<h3 id="sign-your-commits"><a class="header" href="#sign-your-commits">Sign your commits</a></h3>
+<h2 id="sign-your-commits"><a class="header" href="#sign-your-commits">Sign your commits</a></h2>
 <p>We use commit signature verification, which will block commits from being merged via the UI unless
 they are signed. To set up your machine to sign commits, see
 <a href="https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification">managing commit signature verification</a>
 in GitHub docs.</p>
-<h3 id="setup"><a class="header" href="#setup">Setup</a></h3>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
 <p>Clone the repo and build it using <a href="https://sagiegurari.github.io/cargo-make/">cargo-make</a></p>
 <p>Ratatui is an ordinary Rust project where common tasks are managed with
 <a href="https://github.com/sagiegurari/cargo-make/">cargo-make</a>. It wraps common <code>cargo</code> commands with sane
@@ -7433,7 +7448,7 @@ defaults depending on your platform of choice. Building the project should be as
 cd ratatui
 cargo make build
 </code></pre>
-<h3 id="tests"><a class="header" href="#tests">Tests</a></h3>
+<h2 id="tests"><a class="header" href="#tests">Tests</a></h2>
 <p>The <a href="https://app.codecov.io/gh/ratatui-org/ratatui">test coverage</a> of the crate is reasonably good,
 but this can always be improved. Focus on keeping the tests simple and obvious and write unit tests
 for all new or modified code. Beside the usual doc and unit tests, one of the most valuable test you
@@ -7453,7 +7468,7 @@ exist to show coverage directly in your editor. E.g.:</p>
 <li><a href="https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters">https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters</a></li>
 <li><a href="https://github.com/alepez/vim-llvmcov">https://github.com/alepez/vim-llvmcov</a></li>
 </ul>
-<h3 id="use-of-unsafe-for-optimization-purposes"><a class="header" href="#use-of-unsafe-for-optimization-purposes">Use of unsafe for optimization purposes</a></h3>
+<h2 id="use-of-unsafe-for-optimization-purposes"><a class="header" href="#use-of-unsafe-for-optimization-purposes">Use of unsafe for optimization purposes</a></h2>
 <p>We don’t currently use any unsafe code in Ratatui, and would like to keep it that way. However there
 may be specific cases that this becomes necessary in order to avoid slowness. Please see
 <a href="https://github.com/ratatui-org/ratatui/discussions/66">this discussion</a> for more about the
@@ -7474,7 +7489,7 @@ cargo install mdbook-mermaid --version 0.12.6
 cargo install mdbook-emojicodes --version 0.2.2
 </code></pre>
 <p>These plugins allow additional features.</p>
-<h3 id="mdbook-admonish"><a class="header" href="#mdbook-admonish"><code>mdbook-admonish</code></a></h3>
+<h2 id="mdbook-admonish"><a class="header" href="#mdbook-admonish"><code>mdbook-admonish</code></a></h2>
 <p>The following raw markdown:</p>
 <pre><code class="language-markdown">```admonish note
 This is a note
@@ -7529,7 +7544,7 @@ This is a info
 <p>This is a info</p>
 </div>
 </div>
-<h3 id="mdbook-mermaid"><a class="header" href="#mdbook-mermaid"><code>mdbook-mermaid</code></a></h3>
+<h2 id="mdbook-mermaid"><a class="header" href="#mdbook-mermaid"><code>mdbook-mermaid</code></a></h2>
 <p>The following raw markdown:</p>
 <pre><code class="language-markdown">```mermaid
 graph TD;
@@ -7546,7 +7561,7 @@ graph TD;
     B--&gt;D;
     C--&gt;D;
 </pre>
-<h3 id="mdbook-svgbob2"><a class="header" href="#mdbook-svgbob2"><code>mdbook-svgbob2</code></a></h3>
+<h2 id="mdbook-svgbob2"><a class="header" href="#mdbook-svgbob2"><code>mdbook-svgbob2</code></a></h2>
 <p>The following raw markdown:</p>
 <pre><code class="language-markdown">```svgbob
        .---.
@@ -7609,7 +7624,7 @@ graph TD;
     <line x1="72" y1="80" x2="60" y2="104" class="solid"></line>
   </g>
 </svg></pre>
-<h3 id="mdbook-emojicodes"><a class="header" href="#mdbook-emojicodes"><code>mdbook-emojicodes</code></a></h3>
+<h2 id="mdbook-emojicodes"><a class="header" href="#mdbook-emojicodes"><code>mdbook-emojicodes</code></a></h2>
 <p>The following raw markdown:</p>
 <pre><code class="language-markdown">I love cats 🐱 and dogs 🐶, I have two, one's gray, like a raccoon 🦝, and the other
 one is black, like the night 🌃.
@@ -7617,7 +7632,8 @@ one is black, like the night 🌃.
 <p>will render as the following:</p>
 <p>I love cats 🐱 and dogs 🐶, I have two, one’s gray, like a raccoon 🦝, and the other
 one is black, like the night 🌃.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="the-mit-license"><a class="header" href="#the-mit-license">The MIT License</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="license"><a class="header" href="#license">LICENSE</a></h1>
+<h1 id="the-mit-license"><a class="header" href="#the-mit-license">The MIT License</a></h1>
 <p>Copyright (c) 2023 Ratatui Developers</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
