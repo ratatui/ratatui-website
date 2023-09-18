@@ -17,19 +17,19 @@ cargo run > test.json
 
 and double checking the output.
 
-#### Main.rs
+### Main.rs
 
 ```rust,no_run,noplayground
 {{#include ./ratatui-json-editor-app/src/main.rs:all}}
 ```
 
-#### App.rs
+### App.rs
 
 ```rust,no_run,noplayground
 {{#include ./ratatui-json-editor-app/src/app.rs:all}}
 ```
 
-#### UI.rs
+### UI.rs
 
 ```rust,no_run,noplayground
 {{#include ./ratatui-json-editor-app/src/ui.rs:all}}

@@ -1,6 +1,6 @@
 # Introduction
 
-![](https://user-images.githubusercontent.com/24392180/244943746-93ab0e38-93e0-4ae0-a31b-91ae6c393185.gif)
+![Demo](https://raw.githubusercontent.com/ratatui-org/ratatui/images/examples/demo2-noborders.gif)
 
 ## What is ratatui?
 

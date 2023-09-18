@@ -22,7 +22,7 @@ cargo install mdbook-emojicodes --version 0.2.2
 
 These plugins allow additional features.
 
-### `mdbook-admonish`
+## `mdbook-admonish`
 
 The following raw markdown:
 
@@ -62,7 +62,7 @@ This is a warning
 This is a info
 ```
 
-### `mdbook-mermaid`
+## `mdbook-mermaid`
 
 The following raw markdown:
 
@@ -86,7 +86,7 @@ graph TD;
     C-->D;
 ```
 
-### `mdbook-svgbob2`
+## `mdbook-svgbob2`
 
 The following raw markdown:
 
@@ -114,7 +114,7 @@ will render as the following:
        '
 ```
 
-### `mdbook-emojicodes`
+## `mdbook-emojicodes`
 
 The following raw markdown:
 

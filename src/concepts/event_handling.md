@@ -7,7 +7,7 @@ However, there are a few ways to think about event handling that may help you. W
 exhaustive list, it covers a few of the more common implementations. But remember, the correct way,
 is the one that works for you and your current application.
 
-### Centralized event handling
+## Centralized event handling
 
 This is the simplest way to handle events because it handles all of the events as they appear. It is
 often simply a match on the results of `event::read()?` (in crossterm) on the different supported
@@ -18,7 +18,7 @@ Cons: However, this particular way of handling events simply does not scale well
 events are handled in one place, you will be unable to split different groups of keybinds out into
 separate locations.
 
-### Centralized catching, message passing
+## Centralized catching, message passing
 
 This way of handling events involves polling for events in one place, and then sending
 messages/calling sub functions with the event that was caught. Pros: This has a similar appeal to
@@ -30,7 +30,7 @@ messages.
 Cons: This method requires a main loop to be running to consistently poll for events in a
 centralized place.
 
-### Distributed event loops/segmented applications
+## Distributed event loops/segmented applications
 
 In this style, control of the `Terminal` and the main loop to a sub-module. In this case, the entire
 rendering and event handling responsibilities can be safely passed to the sub-module. In theory, an

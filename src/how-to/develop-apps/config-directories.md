@@ -19,9 +19,9 @@ Specification.
 
 1. Add `directories-rs` to your `Cargo.toml`
 
-```sh
-cargo add directories
-```
+   ```shell
+   cargo add directories
+   ```
 
 2. Use the `ProjectDirs` struct to retrieve paths based on your project's domain and project name
    and create helper functions for getting the `data_dir` and `config_dir`.

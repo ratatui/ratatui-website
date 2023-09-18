@@ -41,7 +41,7 @@ Instead of `anyhow` you can also use [`eyre`](https://github.com/eyre-rs/eyre) o
 
 You'll need to add `color-eyre` and remove `anyhow`:
 
-```console
+```shell
 cargo remove anyhow
 cargo add color-eyre
 ```

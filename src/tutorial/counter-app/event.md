@@ -41,7 +41,7 @@ use `mpsc` to set us up for the future.
 ```
 
 Finally, here's the code that starts a thread that polls for events from `crossterm` and maps it to
-our `Event` enum. 
+our `Event` enum.
 
 ```rust
 {{#include ./ratatui-counter-app/src/event.rs:event_import}}

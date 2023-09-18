@@ -71,7 +71,7 @@ By invoking the CLI tool with the `--version` flag, users will be presented with
 details, including the authors, commit hash, and the paths to the configuration and data
 directories.
 
-![](https://user-images.githubusercontent.com/1813121/252721469-4d5ec38b-e868-46b4-b7b7-1c2c8bc496ac.png)
+![--version output](https://user-images.githubusercontent.com/1813121/252721469-4d5ec38b-e868-46b4-b7b7-1c2c8bc496ac.png)
 
 The `version()` function's output is just an example. You can easily adjust its content by amending
 the string template code above.

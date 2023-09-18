@@ -12,13 +12,13 @@ about commas and brackets themselves.
 
 Go ahead and set up a new rust project with
 
-```sh
+```shell
 cargo init ratatui-json-editor
 ```
 
 and put the following in the `Cargo.toml`:
 
-```
+```toml
 {{#include ./ratatui-json-editor-app/Cargo.toml:8:}}
 ```
 
@@ -28,7 +28,7 @@ or the latest version of these libraries.
 
 Now create two files inside of `src/` so it looks like this:
 
-```
+```plain
 src
 ├── main.rs
 ├── ui.rs

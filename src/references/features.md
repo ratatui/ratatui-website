@@ -8,7 +8,7 @@ As ratatui grows and evolves, this list may change, so make sure to check the
 For most cases, the default `crossterm` backend is the correct choice. See
 [Backends](../concepts/backends) for more information. However, this can be changed to termion or termwiz
 
-```console
+```shell
 # Defaults to crossterm
 cargo add ratatui
 
@@ -27,7 +27,7 @@ This feature enables some extra widgets that are not in `default` to save on com
 v0.21, the only widget in this feature group is the `calendar` widget, which can be enabled with the
 `widget-calendar` feature.
 
-```console
+```shell
 cargo add ratatui --features all-widgets
 ```
 
@@ -35,12 +35,12 @@ cargo add ratatui --features all-widgets
 
 This feature enables the calendar widget, which requires the `time` crate.
 
-```console
+```shell
 cargo add ratatui --features widget-calendar
 ```
 
 ## Serde
 
-```console
+```shell
 cargo add ratatui --features serde
 ```

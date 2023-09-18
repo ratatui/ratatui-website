@@ -3,7 +3,7 @@
 Check out the [CONTRIBUTING GUIDE](https://github.com/ratatui-org/ratatui/blob/main/CONTRIBUTING.md)
 for more information.
 
-### Keep PRs small, intentional and focused
+## Keep PRs small, intentional and focused
 
 Try to do one pull request per change. The time taken to review a PR grows exponential with the size
 of the change. Small focused PRs will generally be much more faster to review. PRs that include both
@@ -12,7 +12,7 @@ change becomes a place where a bug may have been introduced. Consider splitting 
 reformatting changes into a separate PR from those that make a behavioral change, as the tests help
 guarantee that the behavior is unchanged.
 
-### Search `tui-rs` for similar work
+## Search `tui-rs` for similar work
 
 The original fork of Ratatui, [`tui-rs`](https://github.com/fdehau/tui-rs/), has a large amount of
 history of the project. Please search, read, link, and summarize any relevant
@@ -20,7 +20,7 @@ history of the project. Please search, read, link, and summarize any relevant
 [discussions](https://github.com/fdehau/tui-rs/discussions/) and
 [pull requests](https://github.com/fdehau/tui-rs/pulls).
 
-### Use conventional commits
+## Use conventional commits
 
 We use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) and check for them as
 a lint build step. To help adhere to the format, we recommend to install
@@ -32,7 +32,7 @@ describes the nature of the problem that the commit is solving and any unintuiti
 change. It's rare that code changes can easily communicate intent, so make sure this is clearly
 documented.
 
-### Clean up your commits
+## Clean up your commits
 
 The final version of your PR that will be committed to the repository should be rebased and tested
 against main. Every commit will end up as a line in the changelog, so please squash commits that are
@@ -41,7 +41,7 @@ commit (unless there is a strong reason to stack the commits). See
 [Git Best Practices - On Sausage Making](https://sethrobertson.github.io/GitBestPractices/#sausage)
 for more on this.
 
-### Run CI tests before pushing a PR
+## Run CI tests before pushing a PR
 
 We're using [cargo-husky](https://github.com/rhysd/cargo-husky) to automatically run git hooks,
 which will run `cargo make ci` before each push. To initialize the hook run `cargo test`. If
@@ -49,14 +49,14 @@ which will run `cargo make ci` before each push. To initialize the hook run `car
 that your code is formatted, compiles and passes all tests before you push. If you need to skip this
 check, you can use `git push --no-verify`.
 
-### Sign your commits
+## Sign your commits
 
 We use commit signature verification, which will block commits from being merged via the UI unless
 they are signed. To set up your machine to sign commits, see
 [managing commit signature verification](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
 in GitHub docs.
 
-### Setup
+## Setup
 
 Clone the repo and build it using [cargo-make](https://sagiegurari.github.io/cargo-make/)
 
@@ -71,7 +71,7 @@ cd ratatui
 cargo make build
 ```
 
-### Tests
+## Tests
 
 The [test coverage](https://app.codecov.io/gh/ratatui-org/ratatui) of the crate is reasonably good,
 but this can always be improved. Focus on keeping the tests simple and obvious and write unit tests
@@ -95,7 +95,7 @@ exist to show coverage directly in your editor. E.g.:
 - <https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters>
 - <https://github.com/alepez/vim-llvmcov>
 
-### Use of unsafe for optimization purposes
+## Use of unsafe for optimization purposes
 
 We don't currently use any unsafe code in Ratatui, and would like to keep it that way. However there
 may be specific cases that this becomes necessary in order to avoid slowness. Please see
