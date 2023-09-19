@@ -59,7 +59,7 @@
 
 - [FAQ](./faq/README.md)
 
-  - [Duplicate key events](./faq/duplicate-key-events-windows.md)
+  - [Duplicate key events on Windows](./faq/duplicate-key-events-windows.md)
   - [`tokio` / `async`](./faq/tokio-async.md)
   - [`tui.rs` history](./faq/tui-rs-history.md)
   - [`ratatui` vs `tui-realm`](./faq/ratatui-vs-tui-realm.md)
