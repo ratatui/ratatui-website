@@ -37,6 +37,11 @@ Another way to think about it is, do you think your app would work better with 1
    `--------'
 ```
 
+```admonish note
+Even with the above architecture, you can use tokio to spawn tasks during `Update State`,
+and follow up on the work done by those tasks in the next iteration.
+```
+
 Or would it work with 3 threads / `tokio` tasks like this:
 
 ```svgbob
@@ -62,6 +67,9 @@ Or would it work with 3 threads / `tokio` tasks like this:
 | Render Component |    ┊                                  ┊  |   Update State   |
 `------------------'    ┊                                  ┊  `------------------'
 ```
+
+In your `main` thread or `tokio` task, do you expect to be spawning more `tokio` tasks? How many
+more tasks do you plan to be spawning?
 
 The former can be done without any `async` code and the latter is the approach showcased in
 [`ratatui-async-template`](https://github.com/ratatui-org/ratatui-async-template) with `tokio`.

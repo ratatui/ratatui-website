@@ -1,20 +1,8 @@
 # FAQ
 
-- [Duplicate Key Events on Windows](#why-am-i-getting-duplicate-key-events-on-windows)
-- [`tokio` / `async`](#when-should-i-use-tokio-and-asyncawait)
-- [`tui.rs` history](#what-is-the-relational-between-tui-rs-and-ratatui)
-
-## Why am I getting duplicate key events on Windows?
-
-{{#include ./duplicate-key-events-windows.md:4:}}
-
-## When should I use `tokio` and `async`/`await`?
-
-{{#include ./tokio-async.md:2:}}
-
-## What is the relational between `tui-rs` and `ratatui`?
-
-{{#include ./tui-rs-history.md:2:}}
+- [Duplicate Key Events on Windows](./duplicate-key-events-windows.md)
+- [`tokio` / `async`](./tokio-async.md)
+- [`tui.rs` history](./tui-rs-history.md)
 
 ## What is the difference between a library and a framework?
 
