@@ -5713,9 +5713,10 @@ in and out <code>ratatui</code> applications will see a terminal resize event th
 and rows. You should ensure your <code>ratatui</code> application can handle these changes gracefully.</p>
 <p>You can detect changes in the terminal’s size by listening for terminal resize events from the
 backend of your choice and you can adjust your application layout as needed.</p>
-<p>For example, here’s how you might do it in crossterm:</p>
+<p>For example, here’s how you might do it in
+<a href="https://docs.rs/crossterm/0.27.0/crossterm/event/enum.Event.html#variant.Resize">crossterm</a>:</p>
 <pre><code class="language-rust">    match crossterm::terminal::read() {
-        Some(Ok(evt)) =&gt; {
+        Ok(evt) =&gt; {
             match evt {
                 crossterm::event::Event::Resize(x, y) =&gt; {
                     // handle resize event here
