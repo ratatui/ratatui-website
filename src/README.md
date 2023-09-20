@@ -1,6 +1,6 @@
 # Introduction
 
-![Demo](https://raw.githubusercontent.com/ratatui-org/ratatui/images/examples/demo2-noborders.gif)
+![Demo](https://raw.githubusercontent.com/ratatui-org/ratatui/images/examples/demo2.gif)
 
 ## What is ratatui?
 
