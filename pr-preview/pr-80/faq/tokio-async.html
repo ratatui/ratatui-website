@@ -240,7 +240,16 @@ If the answer is not much, maybe it is simpler to not use <code>async</code> and
     <line x1="100" y1="172" x2="100" y2="196" class="solid"></line>
     <path d="M 100,196 A 4,4 0,0,1 96,200" class="nofill"></path>
   </g>
-</svg></pre>
+</svg></pre><div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+</div>
+<div>
+<p>Even with the above architecture, you can use tokio to spawn tasks during <code>Update State</code>,
+and follow up on the work done by those tasks in the next iteration.</p>
+</div>
+</div>
 <p>Or would it work with 3 threads / <code>tokio</code> tasks like this:</p>
 <pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="664" height="352">
   <style>
@@ -407,6 +416,8 @@ If the answer is not much, maybe it is simpler to not use <code>async</code> and
     <path d="M 652,324 A 4,4 0,0,1 648,328" class="nofill"></path>
   </g>
 </svg></pre>
+<p>In your <code>main</code> thread or <code>tokio</code> task, do you expect to be spawning more <code>tokio</code> tasks? How many
+more tasks do you plan to be spawning?</p>
 <p>The former can be done without any <code>async</code> code and the latter is the approach showcased in
 <a href="https://github.com/ratatui-org/ratatui-async-template"><code>ratatui-async-template</code></a> with <code>tokio</code>.</p>
 
