@@ -5700,14 +5700,14 @@ generated.</p>
   },</code></pre>
 <h2 id="when-should-i-use-tokio-and-asyncawait"><a class="header" href="#when-should-i-use-tokio-and-asyncawait">When should I use <code>tokio</code> and <code>async</code>/<code>await</code>?</a></h2>
 <p><code>ratatui</code> isn’t a native <code>async</code> library. So is it beneficial to use <code>tokio</code> or <code>async</code>/<code>await</code>?</p>
-<p>And as a user, there really is only one point of interface with the <code>ratatui</code> library and that’s the
-<code>terminal.draw(|f| ui(f))</code> functionality, because the rendering of widgets happens in <code>ui(f)</code>.
-Everything else in your code is your own to do as you wish.</p>
+<p>As a user of <code>rataui</code>, there really is only one point of interface with the <code>ratatui</code> library and
+that’s the <code>terminal.draw(|f| ui(f))</code> functionality (the creation of widgets provided by <code>ratatui</code>
+typically happens in <code>ui(f)</code>). Everything else in your code is your own to do as you wish.</p>
 <p>Should <code>terminal.draw(|f| ui(f))</code> be <code>async</code>? Possibly. Rendering to the terminal buffer is
 relatively fast, especially using the double buffer technique that only renders diffs that <code>ratatui</code>
-uses.</p>
-<p>Can we make it <code>async</code> ourselves? Yes, we can. Check out
-<a href="https://github.com/ratatui-org/ratatui-async-template">https://github.com/ratatui-org/ratatui-async-template</a> for an example.</p>
+uses. Creating of the widgets can also be done quite efficiently.</p>
+<p>So one question you may ask is can we make <code>terminal.draw(|f| ui(f))</code> <code>async</code> ourselves? Yes, we
+can. Check out <a href="https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0">https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0</a> for an example.</p>
 <p>The only other part related to <code>ratatui</code> that is beneficial to being <code>async</code> is reading the key
 event inputs from <code>stdin</code>, and that can be made <code>async</code> with <code>crossterm</code>’s event-stream.</p>
 <p>So the real question is what other parts of your app require <code>async</code> or benefit from being <code>async</code>?
@@ -6045,14 +6045,14 @@ generated.</p>
   },</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="when-should-i-use-tokio-and-asyncawait-1"><a class="header" href="#when-should-i-use-tokio-and-asyncawait-1">When should I use <code>tokio</code> and <code>async</code>/<code>await</code>?</a></h1>
 <p><code>ratatui</code> isn’t a native <code>async</code> library. So is it beneficial to use <code>tokio</code> or <code>async</code>/<code>await</code>?</p>
-<p>And as a user, there really is only one point of interface with the <code>ratatui</code> library and that’s the
-<code>terminal.draw(|f| ui(f))</code> functionality, because the rendering of widgets happens in <code>ui(f)</code>.
-Everything else in your code is your own to do as you wish.</p>
+<p>As a user of <code>rataui</code>, there really is only one point of interface with the <code>ratatui</code> library and
+that’s the <code>terminal.draw(|f| ui(f))</code> functionality (the creation of widgets provided by <code>ratatui</code>
+typically happens in <code>ui(f)</code>). Everything else in your code is your own to do as you wish.</p>
 <p>Should <code>terminal.draw(|f| ui(f))</code> be <code>async</code>? Possibly. Rendering to the terminal buffer is
 relatively fast, especially using the double buffer technique that only renders diffs that <code>ratatui</code>
-uses.</p>
-<p>Can we make it <code>async</code> ourselves? Yes, we can. Check out
-<a href="https://github.com/ratatui-org/ratatui-async-template">https://github.com/ratatui-org/ratatui-async-template</a> for an example.</p>
+uses. Creating of the widgets can also be done quite efficiently.</p>
+<p>So one question you may ask is can we make <code>terminal.draw(|f| ui(f))</code> <code>async</code> ourselves? Yes, we
+can. Check out <a href="https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0">https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0</a> for an example.</p>
 <p>The only other part related to <code>ratatui</code> that is beneficial to being <code>async</code> is reading the key
 event inputs from <code>stdin</code>, and that can be made <code>async</code> with <code>crossterm</code>’s event-stream.</p>
 <p>So the real question is what other parts of your app require <code>async</code> or benefit from being <code>async</code>?
