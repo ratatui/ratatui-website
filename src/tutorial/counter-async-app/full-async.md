@@ -59,9 +59,9 @@ impl TerminalHandler {
             break;
           },
           Some(Message::Render) => {
-            let mut h = app.lock().await;
+            let mut _app = app.lock().await;
             t.draw(|f| {
-              h.render(f, f.size());
+              _app.render(f, f.size());
             })
             .unwrap();
           },
@@ -89,5 +89,9 @@ impl TerminalHandler {
 }
 ```
 
-This is usually overkill and you'll probably only need to use this approach if creating and
-rendering the UI takes a significant amount of time in your application.
+In this particular code above, since we take the lock to render, the `app` handle event or update
+methods will not be called while rendering is occurring.
+
+In order for this approach to be useful, you'll have to break your state down into different
+structs. In cases where you do this, and have different parts of your app state being updated and
+rendered, this approach may be viable. This is usually overkill and almost never required.
