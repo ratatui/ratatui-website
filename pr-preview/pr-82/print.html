@@ -3914,9 +3914,9 @@ impl TerminalHandler {
     Ok(())
   }
 }</code></pre>
-<p>In this particular code above, since we take the lock to render, the app handle event or update
+<p>In this particular code above, since we take the lock to render, the <code>app</code> handle event or update
 methods will not be called while rendering is occurring.</p>
-<p>In order for this approach to be useful, you’ll have to break your app state down into different
+<p>In order for this approach to be useful, you’ll have to break your state down into different
 structs. In cases where you do this, and have different parts of your app state being updated and
 rendered, this approach may be viable. This is usually overkill and almost never required.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="stopwatch-app"><a class="header" href="#stopwatch-app">Stopwatch App</a></h1>
