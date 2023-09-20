@@ -2973,7 +2973,8 @@ You can learn a lot more about this pattern from the excellent <a href="http://g
 </div>
 </div>
 <p>You can learn more about this concept in
-<a href="tutorial/counter-async-app/../../concepts/application-patterns/the-elm-architecture.html">The Elm Architecture section</a> of the documentation.</p>
+<a href="tutorial/counter-async-app/../../concepts/application-patterns/the-elm-architecture.html">The Elm Architecture section</a> of the
+documentation.</p>
 <p>The key idea is that we have an <code>Action</code> enum that tracks all the actions that can be carried out by
 the <code>App</code>.</p>
 <pre><code class="language-rust">use anyhow::Result;
@@ -3109,6 +3110,38 @@ fn main() -&gt; Result&lt;()&gt; {
     BreakLoop --&gt; MainEnd;
     ShouldQuit --&gt;|No| CheckEvent;
 </pre>
+<p>This may seem like a lot more boilerplate to achieve the same thing. However, <code>Action</code> enums have a
+few advantages.</p>
+<p>Firstly, they can be mapped from keypresses programmatically. For example, you can define a
+configuration file that reads which keys are mapped to which <code>Action</code> like so:</p>
+<pre><code class="language-toml">[keymap]
+&quot;q&quot; = &quot;Quit&quot;
+&quot;j&quot; = &quot;Increment&quot;
+&quot;k&quot; = &quot;Decrement&quot;
+</code></pre>
+<p>Then you can add a new key configuration like so:</p>
+<pre><code class="language-rust">struct App {
+  counter: i64,
+  should_quit: bool,
+  // new field
+  keyconfig: HashMap&lt;KeyCode, Action&gt;
+}</code></pre>
+<p>If you populate <code>keyconfig</code> with the contents of a user provided <code>toml</code> file, then you can figure
+out which action to take by updating the <code>get_action()</code> function:</p>
+<pre><code class="language-rust">fn get_action(app: &amp;App) -&gt; Action {
+  let tick_rate = std::time::Duration::from_millis(250);
+  if event::poll(tick_rate).unwrap() {
+    if let Key(key) = event::read().unwrap() {
+      app.keyconfig.get(key.code).unwrap_or(Action::None)
+    } else {
+      Action::None
+    }
+  } else {
+    Action::None
+  }
+}</code></pre>
+<p>The other advantage of using an <code>Action</code> enum is that you can tell your application what it should
+do next by sending a message over a channel. We will discuss this approach in the next section.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sync-increment--decrement"><a class="header" href="#sync-increment--decrement">Sync Increment &amp; Decrement</a></h1>
 <p>In order to set up an <code>async</code> application, it is important to make the generation of <code>Action</code>s
 “asynchronous”.</p>
