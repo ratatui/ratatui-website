@@ -2,16 +2,16 @@
 
 `ratatui` isn't a native `async` library. So is it beneficial to use `tokio` or `async`/`await`?
 
-And as a user, there really is only one point of interface with the `ratatui` library and that's the
-`terminal.draw(|f| ui(f))` functionality, because the rendering of widgets happens in `ui(f)`.
-Everything else in your code is your own to do as you wish.
+As a user of `rataui`, there really is only one point of interface with the `ratatui` library and
+that's the `terminal.draw(|f| ui(f))` functionality (the creation of widgets provided by `ratatui`
+typically happens in `ui(f)`). Everything else in your code is your own to do as you wish.
 
 Should `terminal.draw(|f| ui(f))` be `async`? Possibly. Rendering to the terminal buffer is
 relatively fast, especially using the double buffer technique that only renders diffs that `ratatui`
-uses.
+uses. Creating of the widgets can also be done quite efficiently.
 
-Can we make it `async` ourselves? Yes, we can. Check out
-<https://github.com/ratatui-org/ratatui-async-template> for an example.
+So one question you may ask is can we make `terminal.draw(|f| ui(f))` `async` ourselves? Yes, we
+can. Check out <https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0> for an example.
 
 The only other part related to `ratatui` that is beneficial to being `async` is reading the key
 event inputs from `stdin`, and that can be made `async` with `crossterm`'s event-stream.
