@@ -60,6 +60,7 @@
 - [FAQ](./faq/README.md)
 
   - [Duplicate key events on Windows](./faq/duplicate-key-events-windows.md)
+  - [Changing font size](./faq/change-font-size.md)
   - [`tokio` / `async`](./faq/tokio-async.md)
   - [`tui.rs` history](./faq/tui-rs-history.md)
   - [`ratatui` vs `tui-realm`](./faq/ratatui-vs-tui-realm.md)
