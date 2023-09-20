@@ -6,7 +6,7 @@
 
 ## Why am I getting duplicate key events on Windows?
 
-{{#include ./duplicate-key-events-windows.md:2:}}
+{{#include ./duplicate-key-events-windows.md:4:}}
 
 ## When should I use `tokio` and `async`/`await`?
 
