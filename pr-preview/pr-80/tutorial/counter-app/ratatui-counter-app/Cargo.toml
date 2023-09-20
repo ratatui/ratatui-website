@@ -1,0 +1,11 @@
+[package]
+name = "ratatui-counter-app"
+version = "0.1.0"
+authors = ["Dheepak Krishnamurthy <me@kdheepak.com>"]
+license = "MIT"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.75"
+crossterm = "0.27.0"
+ratatui = "0.23.0"
