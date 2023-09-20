@@ -34,7 +34,8 @@ You can learn a lot more about this pattern from the excellent [http://gameprogr
 ```
 
 You can learn more about this concept in
-[The Elm Architecture section](../../concepts/application-patterns/the-elm-architecture.md) of the documentation.
+[The Elm Architecture section](../../concepts/application-patterns/the-elm-architecture.md) of the
+documentation.
 
 The key idea is that we have an `Action` enum that tracks all the actions that can be carried out by
 the `App`.
@@ -176,3 +177,48 @@ graph TD
     BreakLoop --> MainEnd;
     ShouldQuit -->|No| CheckEvent;
 ```
+
+This may seem like a lot more boilerplate to achieve the same thing. However, `Action` enums have a
+few advantages.
+
+Firstly, they can be mapped from keypresses programmatically. For example, you can define a
+configuration file that reads which keys are mapped to which `Action` like so:
+
+```toml
+[keymap]
+"q" = "Quit"
+"j" = "Increment"
+"k" = "Decrement"
+```
+
+Then you can add a new key configuration like so:
+
+```rust
+struct App {
+  counter: i64,
+  should_quit: bool,
+  // new field
+  keyconfig: HashMap<KeyCode, Action>
+}
+```
+
+If you populate `keyconfig` with the contents of a user provided `toml` file, then you can figure
+out which action to take by updating the `get_action()` function:
+
+```rust
+fn get_action(app: &App) -> Action {
+  let tick_rate = std::time::Duration::from_millis(250);
+  if event::poll(tick_rate).unwrap() {
+    if let Key(key) = event::read().unwrap() {
+      app.keyconfig.get(key.code).unwrap_or(Action::None)
+    } else {
+      Action::None
+    }
+  } else {
+    Action::None
+  }
+}
+```
+
+The other advantage of using an `Action` enum is that you can tell your application what it should
+do next by sending a message over a channel. We will discuss this approach in the next section.
