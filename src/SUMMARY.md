@@ -50,6 +50,7 @@
     - [Create a Widget]()
   - [Develop Applications](./how-to/develop-apps/README.md)
     - [CLI arguments](./how-to/develop-apps/cli-arguments.md)
+    - [Change font size](./how-to/develop-apps/change-font-size.md)
     - [Configuration Directories](./how-to/develop-apps/config-directories.md)
     - [Logging with Tracing](./how-to/develop-apps/tracing.md)
     - [Combine Terminal and Event handler](./how-to/develop-apps/abstract-terminal-and-event-handler.md)
@@ -60,7 +61,6 @@
 - [FAQ](./faq/README.md)
 
   - [Duplicate key events on Windows](./faq/duplicate-key-events-windows.md)
-  - [Changing font size](./faq/change-font-size.md)
   - [`tokio` / `async`](./faq/tokio-async.md)
   - [`tui.rs` history](./faq/tui-rs-history.md)
   - [`ratatui` vs `tui-realm`](./faq/ratatui-vs-tui-realm.md)
