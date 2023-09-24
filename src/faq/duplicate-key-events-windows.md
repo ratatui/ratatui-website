@@ -1,5 +1,7 @@
 # Why am I getting duplicate key events on Windows?
 
+{{#title Duplicate key events on Windows}}
+
 A lot of examples out there in the wild might use the following code for sending key presses:
 
 ```rust
