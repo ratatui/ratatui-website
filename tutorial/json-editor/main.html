@@ -231,7 +231,7 @@ important that we handle our error in such a way that we can call this last piec
 
     Ok(())
 }</code></pre>
-<p>The if statement at the end of boilerplate checks if the <code>run_app</code> function errored. If <code>run_app</code>
+<p>The if statement at the end of boilerplate checks if the <code>run_app</code> function errored, or if it
 returned an <code>Ok</code> state. If it returned an <code>Ok</code> state, we need to check if we should print the json.</p>
 <p>If we don’t call our print function before we call <code>execute!(LeaveAlternateScreen)</code>, our prints will
 be rendered on an old screen and lost when we leave the alternate screen. (For more information on
