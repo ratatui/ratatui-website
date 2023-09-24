@@ -78,7 +78,7 @@ important that we handle our error in such a way that we can call this last piec
 {{#include ./ratatui-json-editor-app/src/main.rs:final_print}}
 ```
 
-The if statement at the end of boilerplate checks if the `run_app` function errored. If `run_app`
+The if statement at the end of boilerplate checks if the `run_app` function errored, or if it
 returned an `Ok` state. If it returned an `Ok` state, we need to check if we should print the json.
 
 If we don't call our print function before we call `execute!(LeaveAlternateScreen)`, our prints will
