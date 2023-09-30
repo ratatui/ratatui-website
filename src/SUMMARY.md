@@ -65,6 +65,7 @@
 
 # Reference
 
+- [Showcase](./showcase/README.md)
 - [Concepts](./concepts/README.md)
 
   - [Backends](./concepts/backends/README.md)
