@@ -54,7 +54,7 @@ applications.
 [Termwiz]: <https://crates.io/crates/termwiz>
 
 ```admonish note
-Help Us Improve!
+Help us improve!
 
 We've designed this user guide to aid you throughout your journey with our open-source project.
 However, the beauty of open source is that it's not just about receiving, but also contributing. We
