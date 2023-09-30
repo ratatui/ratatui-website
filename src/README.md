@@ -17,7 +17,7 @@ or [Termwiz] to handle:
 - mouse events
 - switching to raw mode and the alternate screen
 
-Ratatui is very flexible and customizable. It does not dicate how you need to structure your
+Ratatui is very flexible and customizable. It does not dictate how you need to structure your
 application, as it is a library not a framework.
 This book covers some different options covering the range from simple single file applications
 throught more complex applications using approaches based on components, Flux and The Elm
