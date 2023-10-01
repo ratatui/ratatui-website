@@ -20,9 +20,9 @@ output processing), an [Alternate Screen](./alternate-screen.md) which allows it
 separate buffer than your shell commands use, and [Mouse Capture](./mouse-capture.md), which allows
 your application to capture mouse events.
 
-[Crossterm]: https://crates.io/crate/crossterm
-[Termion]: https://crates.io/crate/termion
-[Termwiz]: https://crates.io/crate/termwiz
+[Crossterm]: https://crates.io/crates/crossterm
+[Termion]: https://crates.io/crates/termion
+[Termwiz]: https://crates.io/crates/termwiz
 [`Terminal`]: https://docs.rs/ratatui/latest/ratatui/terminal/struct.Terminal.html
 [`CrosstermBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.CrosstermBackend.html
 [`TermionBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TermionBackend.html
