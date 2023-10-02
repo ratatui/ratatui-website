@@ -47,7 +47,7 @@
   - [Use Widgets](./how-to/widgets/README.md)
     - [Paragraph](./how-to/widgets/paragraph.md)
     - [Block](./how-to/widgets/block.md)
-    - [Create a Widget]()
+    - [Create a Widget](./how-to/widgets/custom.md)
   - [Develop Applications](./how-to/develop-apps/README.md)
     - [CLI arguments](./how-to/develop-apps/cli-arguments.md)
     - [Configuration Directories](./how-to/develop-apps/config-directories.md)
