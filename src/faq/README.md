@@ -16,7 +16,7 @@ serve different purposes and have distinct characteristics.
 | **Nature**       | Libraries are passive in nature. They wait for the application's code to invoke their methods.                                                                                                                             | Frameworks are active and have a predefined flow of their own. The developer fills in specific pieces of the framework with their own code.                                                                                                                                          |
 | **Example**      | Imagine you're building a house. A library would be like a toolbox with tools (functions) that you can use at will. You decide when and where to use each tool.                                                            | Using the house-building analogy, a framework would be like a prefabricated house where the main structure is already built. You're tasked with filling in the interiors and decor, but you have to follow the design and architecture already provided by the prefabricated design. |
 
-## What is the difference between a `ratatui` (a library) and a `tui-realm` (a framework)?
+## What is the difference between a `ratatui` (a library) and a [`tui-realm`](https://github.com/veeso/tui-realm/) (a framework)?
 
 While `ratatui` provides tools (widgets) for building terminal UIs, it doesn't dictate or enforce a
 specific way to structure your application. You need to decide how to best use the library in your
@@ -26,6 +26,122 @@ In contrast, `tui-realm` might provide more guidelines and enforcements about ho
 should be structured or how data flows through it. And, for the price of that freedom, you get more
 features out of the box with `tui-realm` and potentially lesser code in your application to do the
 same thing that you would with `ratatui`.
+
+## What is the difference between `ratatui` and `cursive`?
+
+[Cursive](https://github.com/gyscos/cursive) and Ratatui are both libraries that make TUIs easier to write.
+Both libraries are great! Both also work on linux, macOS and windows.
+
+### Cursive
+
+Cursive uses a more declarative UI: the user defines the layout, then cursive handles the event loop.
+Cursive also handles most input (including mouse clicks), and forwards events to the currently focused view. User-code is more focused on "events" than on keyboard input.
+Cursive also supports different backends like ncurses, pancurses, termion, and crossterm.
+
+One of cursive's main features is its built-in event loop. You can easily attach callbacks to events like clicks or key presses, making it straightforward to handle user interactions.
+
+```rust
+use cursive::views::{Dialog, TextView};
+
+fn main() {
+    // Creates the cursive root - required for every application.
+    let mut siv = cursive::default();
+
+    // Creates a dialog with a single "Quit" button
+    siv.add_layer(Dialog::around(TextView::new("Hello World!"))
+                         .title("Cursive")
+                         .button("Quit", |s| s.quit()));
+
+    // Starts the event loop.
+    siv.run();
+}
+```
+
+![](https://user-images.githubusercontent.com/1813121/271896508-d5f6192c-d51b-4299-9b5e-9d91e4618f64.png)
+
+### Ratatui
+
+In Ratatui, the user handles the event loop, the application state, and re-draws the entire UI on each iteration.
+It does not handle input and users have use another library (like [crossterm](https://github.com/TimonPost/crossterm)).
+Ratatui supports Crossterm, termion, wezterm as backends.
+
+
+```rust
+use ratatui::{prelude::*, widgets::*};
+
+fn init() -> Result<(), Box<dyn std::error::Error>> {
+  crossterm::terminal::enable_raw_mode()?;
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+  Ok(())
+}
+
+fn exit() -> Result<(), Box<dyn std::error::Error>> {
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?;
+  Ok(())
+}
+
+fn centered_rect(r: Rect, percent_x: u16, percent_y: u16) -> Rect {
+  let popup_layout = Layout::default()
+    .direction(Direction::Vertical)
+    .constraints(
+      [
+        Constraint::Percentage((100 - percent_y) / 2),
+        Constraint::Percentage(percent_y),
+        Constraint::Percentage((100 - percent_y) / 2),
+      ]
+      .as_ref(),
+    )
+    .split(r);
+
+  Layout::default()
+    .direction(Direction::Horizontal)
+    .constraints(
+      [
+        Constraint::Percentage((100 - percent_x) / 2),
+        Constraint::Percentage(percent_x),
+        Constraint::Percentage((100 - percent_x) / 2),
+      ]
+      .as_ref(),
+    )
+    .split(popup_layout[1])[1]
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+  init()?;
+
+  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+
+  loop {
+    terminal.draw(|f| {
+      let rect = centered_rect(f.size(), 35, 35);
+      f.render_widget(
+        Paragraph::new("Hello World!\n\n\n'q' to quit")
+          .block(
+            Block::default().title(block::Title::from("Ratatui").alignment(Alignment::Center)).borders(Borders::all()),
+          )
+          .alignment(Alignment::Center),
+        rect,
+      );
+    })?;
+
+    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        if key.code == crossterm::event::KeyCode::Char('q') {
+          break;
+        }
+      }
+    }
+  }
+  exit()?;
+
+  Ok(())
+}
+```
+
+![](https://user-images.githubusercontent.com/1813121/271896510-c8db19d1-f132-49b5-89da-c32cc21ab765.png)
+
+You may have to write more code but you get precise control over exact UI you want to display with Ratatui.
 
 ## Can you change font size in a terminal using `ratatui`?
 
