@@ -561,6 +561,41 @@ to render a widget, i.e. a <code>Paragraph</code> widget.</p>
 <pre><code class="language-rust">    terminal.draw(|f| {
       f.render_widget(Paragraph::new(format!(&quot;Counter: {counter}&quot;)), f.size());
     })?;</code></pre>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-app/single-function.html#admonition-note"></a></p>
+</div>
+<div>
+<p>The most important thing to know with Ratatui is that you have to use one and <em>only</em> one
+<code>terminal.draw()</code> call in your <code>main</code> loop.</p>
+<p>Because Ratatui using a double buffer rendering technique,
+writing code like this will <em><strong>NOT</strong></em> render all three widgets:</p>
+<pre><code class="language-rust">  loop {
+    terminal.draw(|f| {
+      f.render_widget(widget1, f.size());
+    })?;
+    terminal.draw(|f| {
+      f.render_widget(widget2, f.size());
+    })?;
+    terminal.draw(|f| {
+      f.render_widget(widget3, f.size());
+    })?;
+    // handle events
+    // manage state
+  }</code></pre>
+<p>You want to write the code like this instead:</p>
+<pre><code class="language-rust">  loop {
+    terminal.draw(|f| {
+      f.render_widget(widget1, f.size());
+      f.render_widget(widget2, f.size());
+      f.render_widget(widget3, f.size());
+    })?;
+    // handle events
+    // manage state
+  }</code></pre>
+</div>
+</div>
 <h2 id="user-input"><a class="header" href="#user-input">User Input</a></h2>
 <p>Every 250 milliseconds, the application checks if the user has pressed a key:</p>
 <ul>
