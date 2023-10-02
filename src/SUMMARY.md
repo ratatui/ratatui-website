@@ -38,8 +38,7 @@
 - [How To](./how-to/README.md)
 
   - [Layout UIs](./how-to/layout/README.md)
-    - [Layout Basics](./how-to/layout/basics.md)
-    - [Layout Advanced](./how-to/layout/advanced.md)
+    - [Dynamic Layouts](./how-to/layout/dynamic.md)
     - [Center a Rect](./how-to/layout/center-a-rect.md)
   - [Render Text](./how-to/render/README.md)
     - [Display Text](./how-to/render/display-text.md)
@@ -73,6 +72,7 @@
     - [Raw Mode](./concepts/backends/raw-mode.md)
     - [Alternate Screen](./concepts/backends/alternate-screen.md)
     - [Mouse Capture](./concepts/backends/mouse-capture.md)
+  - [Layout](./concepts/layout/README.md)
   - [Rendering](./concepts/rendering.md)
   - [Event Handling](./concepts/event_handling.md)
     - [Key Binding]()
