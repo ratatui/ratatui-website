@@ -1,6 +1,6 @@
 # Event Handling
 
-There are many ways to handle events with the `ratatui` library. Mostly becuase `ratatui` does not
+There are many ways to handle events with the `ratatui` library. Mostly because `ratatui` does not
 directly expose any event catching; the programmer will depend on the chosen backend's library.
 
 However, there are a few ways to think about event handling that may help you. While this is not an
