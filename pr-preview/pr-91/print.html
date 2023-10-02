@@ -6486,17 +6486,14 @@ displayed. This area is represented by a rectangle with a specific height and wi
 You can specify this rectangle as an absolute position and size, or you can use the [<code>Layout</code>]
 struct to divide the terminal window dynamically based on constraints such as <code>Length</code>, <code>Min</code>, <code>Max</code>,
 <code>Ratio</code>, <code>Percentage</code>.</p>
-<p>The following example renders “Hello world!” in the center of the screen, by manually calculating
-the rect to render within.</p>
+<p>The following example renders “Hello world!” 10 times, by manually calculating the areas to render
+within.</p>
 <pre><code class="language-rust">let greeting = &quot;Hello world!&quot;;
-let full_screen = frame.size();
-let area = Rect {
-    x: (full_screen.x - greeting.len() as u16) / 2,
-    y: full_screen.size().y / 2,
-    width: full_screen.width,
-    height: full_screen.height,
-};
-frame.render_widget(Paragraph(&quot;Hello world!&quot;), area);</code></pre>
+for i in 0..10 {
+    let area = Rect::new(0, i, frame.size().width, 1);
+    frame.render_widget(Paragraph(&quot;Hello world!&quot;), area);
+}</code></pre>
+<h2 id="the-layout-struct"><a class="header" href="#the-layout-struct">The Layout struct</a></h2>
 <p>A simple example of using the layout struct might look like this:</p>
 <pre><code class="language-rust">use ratatui::prelude::*;
 
