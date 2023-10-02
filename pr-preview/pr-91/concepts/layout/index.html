@@ -259,7 +259,7 @@ frame.render_widget(Paragraph(&quot;Bottom&quot;).borders(Borders::ALL), layout[
 └───────────────────────────────────┘
 </code></pre>
 <p>In this example, two <code>Paragraph</code> widgets are generated, named “Top” and “Bottom.” These widgets are
-then rendered in the first and second areas (layout[0] and layout[1]) of the split buffer,
+then rendered in the first and second areas (<code>layout[0]</code> and <code>layout[1]</code>) of the split buffer,
 respectively. It’s important to note that layouts return an indexed list of rectangles, defined by
 their respective constraints. In this case, <code>layout[0]</code> refers to the top half of the screen, and
 <code>layout[1]</code> refers to the bottom half.</p>
