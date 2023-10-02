@@ -5786,25 +5786,21 @@ stacktrace to <code>log::error!</code> for good measure (after striping ansi esc
 <a href="https://github.com/fdehau/tui-rs/">tui-rs</a>, created to continue maintenance of the project.</p>
 <p>Several options are available to migrate apps and libs:</p>
 <ul>
-<li>Use <code>ratatui</code> as a drop in replacement aliased as tui</li>
-<li>Replace <code>ratatui</code> fully</li>
-<li>Support both <code>tui</code> and <code>ratatui</code> (useful for libraries)</li>
+<li>Fully replace <code>tui-rs</code> with <code>ratatui</code> (preferred approach)</li>
+<li>Use <code>ratatui</code> as a drop in replacement aliased as <code>tui</code></li>
+<li>Support both <code>tui</code> and <code>ratatui</code></li>
 </ul>
+<h2 id="fully-replace-tui-with-ratatui"><a class="header" href="#fully-replace-tui-with-ratatui">Fully replace Tui with Ratatui</a></h2>
+<p>Most new code should use the following. To take this approach to migration requires find and
+replace <code>tui::</code>-&gt;<code>ratatui::</code> on the entire codebase.</p>
+<pre><code class="language-toml">ratatui = { version = &quot;0.23.0&quot; }
+crossterm = { version = &quot;0.27.0&quot; }
+</code></pre>
 <h2 id="drop-in-replacement"><a class="header" href="#drop-in-replacement">Drop in replacement</a></h2>
 <p>The simplest approach to migrating to <code>ratatui</code> is to use it as drop in replacement for tui and
-updating the terminal libraries used (<code>crossterm</code> / <code>termion</code>). E.g.:</p>
-<pre><code class="language-toml">tui = { package = &quot;ratatui&quot;, version = &quot;0.21.0&quot;, features = [&quot;crossterm&quot;] }
-crossterm = { version = &quot;0.26.1&quot; }
-</code></pre>
-<p>Or:</p>
-<pre><code class="language-toml">tui = { package = &quot;ratatui&quot;, version = &quot;0.21.0&quot;, default-features = false, features = [&quot;termion&quot;] }
-termion = { version = &quot;2.0&quot; }
-</code></pre>
-<h2 id="fully-replace-tui-with-ratatui"><a class="header" href="#fully-replace-tui-with-ratatui">Fully replace Tui with Ratatui</a></h2>
-<p>Most new code would instead use the following. To take this approach to migration requires find and
-replace <code>tui::</code>-&gt;<code>ratatui::</code> on the entire codebase.</p>
-<pre><code class="language-toml">ratatui = { version = &quot;0.21.0&quot; }
-crossterm = { version = &quot;0.26.1&quot; }
+update the terminal libraries used (<code>crossterm</code> / <code>termion</code>). E.g.:</p>
+<pre><code class="language-toml">tui = { package = &quot;ratatui&quot;, version = &quot;0.23.0&quot;, features = [&quot;crossterm&quot;] }
+crossterm = { version = &quot;0.27.0&quot; }
 </code></pre>
 <h2 id="support-both-tui-and-ratatui"><a class="header" href="#support-both-tui-and-ratatui">Support both tui and ratatui</a></h2>
 <p>For more complex scenarios where a library (or in some cases an app) needs to support both ratatui
@@ -5812,7 +5808,10 @@ and maintain existing support for tui, it may be feasible to use feature flags t
 library to use. See <a href="https://github.com/gin66/tui-logger">tui-logger</a> for an example of this
 approach.</p>
 <h2 id="backwards-compatibility-and-breaking-changes"><a class="header" href="#backwards-compatibility-and-breaking-changes">Backwards compatibility and breaking changes</a></h2>
-<p><a href="https://github.com/ratatui-org/ratatui/pulls?q=is%3Apr+label%3A%22breaking+change%22+is%3Aclosed">You can see the list of breaking changes here</a></p>
+<ul>
+<li><a href="https://github.com/ratatui-org/ratatui/blob/main/BREAKING-CHANGES.md">BREAKING-CHANGES.md</a></li>
+<li>PRs tagged with the <a href="https://github.com/ratatui-org/ratatui/pulls?q=is%3Apr+label%3A%22breaking+change%22+is%3Aclosed">breaking changes</a> label</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
 <ul>
 <li><a href="faq/./duplicate-key-events-windows.html">Duplicate Key Events on Windows</a></li>
@@ -6613,7 +6612,7 @@ minimum size.</p>
 <p>The Ratio and Percentage are defined in terms of the parent’s size</p>
 <p>This may have unexpected side effects in situations where you expect a fixed and flexible sized
 rects to be combined in the same layout. Consider using nested layouts or manually calculating the
-sizes if necesary to create complex layouts.</p>
+sizes if necessary to create complex layouts.</p>
 </div>
 </div>
 <p>Constraints can be mixed and matched within a layout to create dynamic and adjustable interfaces.
@@ -6721,7 +6720,7 @@ the developer to be principled.</p>
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="event-handling-1"><a class="header" href="#event-handling-1">Event Handling</a></h1>
-<p>There are many ways to handle events with the <code>ratatui</code> library. Mostly becuase <code>ratatui</code> does not
+<p>There are many ways to handle events with the <code>ratatui</code> library. Mostly because <code>ratatui</code> does not
 directly expose any event catching; the programmer will depend on the chosen backend’s library.</p>
 <p>However, there are a few ways to think about event handling that may help you. While this is not an
 exhaustive list, it covers a few of the more common implementations. But remember, the correct way,
