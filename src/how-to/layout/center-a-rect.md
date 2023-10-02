@@ -34,3 +34,40 @@ fn centered_rect(r: Rect, percent_x: u16, percent_y: u16) -> Rect {
     .split(popup_layout[1])[1]
 }
 ````
+
+Then you can use it to draw any widget like this:
+
+```rust
+terminal.draw(|f| {
+    f.render_widget(Block::default().borders(Borders::all()).title("Main"), centered_rect(f.size(), 35, 35));
+})?;
+```
+
+```text
+
+
+
+
+
+
+                    ┌Main────────────────────────────────┐
+                    │                                    │
+                    │                                    │
+                    │                                    │
+                    │                                    │
+                    │                                    │
+                    │                                    │
+                    │                                    │
+                    │                                    │
+                    └────────────────────────────────────┘
+
+
+
+
+
+
+
+
+
+
+```

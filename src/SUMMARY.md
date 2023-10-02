@@ -38,9 +38,9 @@
 - [How To](./how-to/README.md)
 
   - [Layout UIs](./how-to/layout/README.md)
-    - [Layout Widgets]()
+    - [Layout Basics](./how-to/layout/basics.md)
+    - [Layout Advanced](./how-to/layout/advanced.md)
     - [Center a Rect](./how-to/layout/center-a-rect.md)
-    - [Nest Blocks]()
   - [Render Text](./how-to/render/README.md)
     - [Display Text](./how-to/render/display-text.md)
     - [Style Text](./how-to/render/style-text.md)
