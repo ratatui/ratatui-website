@@ -47,7 +47,7 @@
   - [Use Widgets](./how-to/widgets/README.md)
     - [Paragraph](./how-to/widgets/paragraph.md)
     - [Block](./how-to/widgets/block.md)
-    - [Create a Widget](./how-to/widgets/custom.md)
+    - [Custom](./how-to/widgets/custom.md)
   - [Develop Applications](./how-to/develop-apps/README.md)
     - [CLI arguments](./how-to/develop-apps/cli-arguments.md)
     - [Configuration Directories](./how-to/develop-apps/config-directories.md)
@@ -80,12 +80,6 @@
     - [The Elm Architecture](./concepts/application-patterns/the-elm-architecture.md)
     - [Component Architecture](./concepts/application-patterns/component-architecture.md)
     - [Flux Architecture](./concepts/application-patterns/flux-architecture.md)
-  - [Project Structure]()
-  - [Design Patterns]()
-    - [Application State]()
-    - [Threading]()
-    - [Logging]()
-    - [Configuration]()
 
 - [Integrations](./integrations/README.md)
 
