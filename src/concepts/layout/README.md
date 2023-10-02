@@ -23,23 +23,21 @@ sections with content.
 When rendering widgets to the screen, you first need to define the area where the widget will be
 displayed. This area is represented by a rectangle with a specific height and width in the buffer.
 You can specify this rectangle as an absolute position and size, or you can use the [`Layout`]
-struct to divide the terminal window dynamically based on constraints such as Length, Min, Max,
-Ratio, Percentage.
+struct to divide the terminal window dynamically based on constraints such as `Length`, `Min`, `Max`,
+`Ratio`, `Percentage`.
 
-The following example renders "Hello world!" in the center of the screen, by manually calculating
-the rect to render within.
+The following example renders "Hello world!" 10 times, by manually calculating the areas to render
+within.
 
 ```rust
 let greeting = "Hello world!";
-let full_screen = frame.size();
-let area = Rect {
-    x: (full_screen.x - greeting.len() as u16) / 2,
-    y: full_screen.size().y / 2,
-    width: full_screen.width,
-    height: full_screen.height,
-};
-frame.render_widget(Paragraph("Hello world!"), area);
+for i in 0..10 {
+    let area = Rect::new(0, i, frame.size().width, 1);
+    frame.render_widget(Paragraph("Hello world!"), area);
+}
 ```
+
+## The Layout struct
 
 A simple example of using the layout struct might look like this:
 
@@ -85,7 +83,7 @@ This might look something like:
 ```
 
 In this example, two `Paragraph` widgets are generated, named "Top" and "Bottom." These widgets are
-then rendered in the first and second areas (layout[0] and layout[1]) of the split buffer,
+then rendered in the first and second areas (`layout[0]` and `layout[1]`) of the split buffer,
 respectively. It's important to note that layouts return an indexed list of rectangles, defined by
 their respective constraints. In this case, `layout[0]` refers to the top half of the screen, and
 `layout[1]` refers to the bottom half.
@@ -170,11 +168,11 @@ provides several constraint types for fine-tuning your user interface's layout:
   `Percentage` or `Ratio`, the component will never exceed the specified maximum size.
 
 ```admonish warning
-The Ratio and Percentage are defined in terms of the parent's size
+The `Ratio` and `Percentage` constraints are defined in terms of the parent's size.
 
 This may have unexpected side effects in situations where you expect a fixed and flexible sized
 rects to be combined in the same layout. Consider using nested layouts or manually calculating the
-sizes if necesary to create complex layouts.
+sizes if necessary to create complex layouts.
 ```
 
 Constraints can be mixed and matched within a layout to create dynamic and adjustable interfaces.
@@ -203,8 +201,8 @@ By default, the split method allocates any remaining space in the area to the la
 layout. To avoid this, add an unused `Min(0)` constraint as the last constraint.
 
 Ratatui uses a constraint solver algorithm called Casssowary in order to determine the right size
-for the rects. In some cases, not every constraint will be possible to acheive, and the solver can
-return an arbitrary solution that is close to fullfilling the constraints. The specific result is
+for the rects. In some cases, not every constraint will be possible to achieve, and the solver can
+return an arbitrary solution that is close to fulfilling the constraints. The specific result is
 non-deterministic when this occurs.
 
 ## Other Layout approaches
