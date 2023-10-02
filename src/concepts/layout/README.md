@@ -54,13 +54,13 @@ let layout = Layout::default()
 ```
 
 In this example, we have indicated that we want to split the available space vertically into two
-equal parts, allocating 50% of the screen height to each. The `split` function takes the total size
-of the terminal window as an argument, returned by the `frame.size()` method, and then calculates
-the appropriate size and placement for each rectangle based on the specified constraints.
+equal parts, allocating 50% of the screen height to each. The [`Layout::split`] function takes the
+total size of the terminal window as an argument, returned by the [`Frame::size()`] method, and then
+calculates the appropriate size and placement for each rectangle based on the specified constraints.
 
 Once you have defined your layout (or a set of nested layouts), you can use one of the rectangle
 areas derived from such layout to render your widget. This can be achieved by calling either the
-`frame.render_widget` or `frame.render_stateful_widget` methods:
+[`Frame::render_widget`] or [`frame::render_stateful_widget`] methods:
 
 ```rust
 frame.render_widget(Paragraph("Top").borders(Borders::ALL), layout[0]);
@@ -145,7 +145,7 @@ the flexibility to create complex and adaptive graphical interfaces.
 
 ## Constraints
 
-Constraints dictate the size and arrangement of components within layouts. The Ratatui framework
+[`Constraint`]s dictate the size and arrangement of components within layouts. The Ratatui framework
 provides several constraint types for fine-tuning your user interface's layout:
 
 - `Constraint::Length(u16)`: This constraint specifies a specific number of rows or columns that a
@@ -212,3 +212,12 @@ flexbox / grid algorithms (similar to CSS) to layout rects. This can work nicely
 in to Ratatui (yet). See [taffy in
 ratatui](https://github.com/search?q=repo%3Aratatui-org%2Fratatui%20taffy&type=code) for more
 details.
+
+[`Layout`]: https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html
+[`Layout::split`]: https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html#method.split
+[`Frame::size()`]: https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.size
+[`Frame::render_widget`]:
+    https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_widget
+[`Frame::render_stateful_widget`]:
+    https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_stateful_widget
+[`Constraint`]: https://docs.rs/ratatui/latest/ratatui/layout/enum.Constraint.html
