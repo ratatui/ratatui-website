@@ -213,7 +213,7 @@ interface, dividing the screen into various sections using constraints, while wi
 sections with content.</p>
 <p>When rendering widgets to the screen, you first need to define the area where the widget will be
 displayed. This area is represented by a rectangle with a specific height and width in the buffer.
-You can specify this rectangle as an absolute position and size, or you can use the [<code>Layout</code>]
+You can specify this rectangle as an absolute position and size, or you can use the <a href="https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html"><code>Layout</code></a>
 struct to divide the terminal window dynamically based on constraints such as <code>Length</code>, <code>Min</code>, <code>Max</code>,
 <code>Ratio</code>, <code>Percentage</code>.</p>
 <p>The following example renders “Hello world!” 10 times, by manually calculating the areas to render
@@ -235,12 +235,12 @@ let layout = Layout::default()
     ])
     .split(frame.size());</code></pre>
 <p>In this example, we have indicated that we want to split the available space vertically into two
-equal parts, allocating 50% of the screen height to each. The <code>split</code> function takes the total size
-of the terminal window as an argument, returned by the <code>frame.size()</code> method, and then calculates
-the appropriate size and placement for each rectangle based on the specified constraints.</p>
+equal parts, allocating 50% of the screen height to each. The <a href="https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html#method.split"><code>Layout::split</code></a> function takes the
+total size of the terminal window as an argument, returned by the <a href="https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.size"><code>Frame::size()</code></a> method, and then
+calculates the appropriate size and placement for each rectangle based on the specified constraints.</p>
 <p>Once you have defined your layout (or a set of nested layouts), you can use one of the rectangle
 areas derived from such layout to render your widget. This can be achieved by calling either the
-<code>frame.render_widget</code> or <code>frame.render_stateful_widget</code> methods:</p>
+<a href="https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_widget"><code>Frame::render_widget</code></a> or <a href="https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_stateful_widget"><code>frame::render_stateful_widget</code></a> methods:</p>
 <pre><code class="language-rust">frame.render_widget(Paragraph(&quot;Top&quot;).borders(Borders::ALL), layout[0]);
 frame.render_widget(Paragraph(&quot;Bottom&quot;).borders(Borders::ALL), layout[1]);</code></pre>
 <p>This might look something like:</p>
@@ -302,7 +302,7 @@ frame.render_widget(Paragraph(&quot;inner 1&quot;).borders(Borders::ALL), inner_
 <p>This enables you to divide the terminal window into multiple sections of varying sizes, giving you
 the flexibility to create complex and adaptive graphical interfaces.</p>
 <h2 id="constraints"><a class="header" href="#constraints">Constraints</a></h2>
-<p>Constraints dictate the size and arrangement of components within layouts. The Ratatui framework
+<p><a href="https://docs.rs/ratatui/latest/ratatui/layout/enum.Constraint.html"><code>Constraint</code></a>s dictate the size and arrangement of components within layouts. The Ratatui framework
 provides several constraint types for fine-tuning your user interface’s layout:</p>
 <ul>
 <li>
