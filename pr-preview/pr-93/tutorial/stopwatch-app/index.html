@@ -175,7 +175,6 @@ directories = &quot;5.0.1&quot;
 futures = &quot;0.3.28&quot;
 human-panic = &quot;1.2.0&quot;
 itertools = &quot;0.11.0&quot;
-lazy_static = &quot;1.4.0&quot;
 libc = &quot;0.2.147&quot;
 log = &quot;0.4.20&quot;
 ratatui = &quot;0.23.0&quot;
@@ -183,103 +182,36 @@ strip-ansi-escapes = &quot;0.2.0&quot;
 strum = &quot;0.25.0&quot;
 tokio = { version = &quot;1.32.0&quot;, features = [&quot;full&quot;] }
 tokio-util = &quot;0.7.8&quot;
-tracing = &quot;0.1.37&quot;
-tracing-error = &quot;0.2.0&quot;
-tracing-subscriber = { version = &quot;0.3.17&quot;, features = [&quot;env-filter&quot;] }
 tui-big-text = &quot;0.1.4&quot;
 </code></pre>
 <p>Here’s a gif of what it will look like if you run this:</p>
 <p><img src="https://vhs.charm.sh/vhs-3dTTtrLkyU54hNah22PAR9.gif" alt="Stopwatch" /></p>
+<p>This application uses an external dependency called
+<a href="https://github.com/joshka/tui-bug-text"><code>tui-big-text</code></a>.</p>
+<p>This application also combines the <code>AppState</code> (or Mode) pattern from
+<a href="../json-editor/README.html">the JSON Editor</a> with the <code>Message</code> (or <code>Command</code> or <code>Action</code>) pattern
+from <a href="../counter-async-app/README.html">the Async Counter App</a>. This <code>Message</code> pattern is common in
+<a href="../../concepts/application-patterns/the-elm-architecture.html">The Elm Architecture pattern</a>.</p>
 <p>Here’s the full application:</p>
 <pre><code class="language-rust">use std::time::{Duration, Instant};
 
 use color_eyre::eyre::{eyre, Result};
 use futures::{FutureExt, StreamExt};
 use itertools::Itertools;
-use lazy_static::lazy_static;
 use ratatui::{backend::CrosstermBackend as Backend, prelude::*, widgets::*};
 use strum::EnumIs;
-use tracing_subscriber::{prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
 use tui_big_text::BigText;
 
 pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, Backend&lt;std::io::Stderr&gt;&gt;;
 
-lazy_static! {
-  pub static ref PROJECT_NAME: String = env!(&quot;CARGO_PKG_NAME&quot;).to_uppercase().to_string();
-  pub static ref DATA_FOLDER: Option&lt;std::path::PathBuf&gt; =
-    std::env::var(format!(&quot;{}_DATA&quot;, PROJECT_NAME.clone())).ok().map(std::path::PathBuf::from);
-  pub static ref LOG_FILE: String = format!(&quot;{}.log&quot;, PROJECT_NAME.to_lowercase());
-}
-
-fn project_directory() -&gt; Option&lt;directories::ProjectDirs&gt; {
-  directories::ProjectDirs::from(&quot;com&quot;, &quot;kdheepak&quot;, PROJECT_NAME.clone().to_lowercase().as_str())
-}
-
-pub fn get_data_dir() -&gt; std::path::PathBuf {
-  let directory = if let Some(s) = DATA_FOLDER.clone() {
-    s
-  } else if let Some(proj_dirs) = project_directory() {
-    proj_dirs.data_local_dir().to_path_buf()
-  } else {
-    std::path::PathBuf::from(&quot;.&quot;).join(&quot;.data&quot;)
-  };
-  directory
-}
-
-pub fn initialize_logging() -&gt; Result&lt;()&gt; {
-  let directory = get_data_dir();
-  std::fs::create_dir_all(directory.clone())?;
-  let log_path = directory.join(LOG_FILE.clone());
-  let log_file = std::fs::File::create(log_path)?;
-  let file_subscriber = tracing_subscriber::fmt::layer()
-    .with_file(true)
-    .with_line_number(true)
-    .with_writer(log_file)
-    .with_target(false)
-    .with_ansi(false)
-    .with_filter(tracing_subscriber::filter::EnvFilter::from_default_env());
-
-  tracing_subscriber::registry().with(file_subscriber).with(tracing_error::ErrorLayer::default()).init();
-
-  Ok(())
-}
-
-pub fn initialize_panic_handler() -&gt; Result&lt;()&gt; {
-  let (panic_hook, eyre_hook) = color_eyre::config::HookBuilder::default().into_hooks();
-  eyre_hook.install()?;
-  std::panic::set_hook(Box::new(move |panic_info| {
-    if let Ok(t) = Tui::new() {
-      if let Err(r) = t.exit() {
-        log::error!(&quot;Unable to exit Terminal: {:?}&quot;, r);
-      }
-    }
-    let msg = format!(&quot;{}&quot;, panic_hook.panic_report(panic_info));
-    log::error!(&quot;{}&quot;, strip_ansi_escapes::strip_str(&amp;msg));
-    use human_panic::{handle_dump, print_msg, Metadata};
-    let meta = Metadata {
-      version: env!(&quot;CARGO_PKG_VERSION&quot;).into(),
-      name: env!(&quot;CARGO_PKG_NAME&quot;).into(),
-      authors: env!(&quot;CARGO_PKG_AUTHORS&quot;).replace(':', &quot;, &quot;).into(),
-      homepage: env!(&quot;CARGO_PKG_HOMEPAGE&quot;).into(),
-    };
-    let file_path = handle_dump(&amp;meta, panic_info);
-    print_msg(file_path, &amp;meta).expect(&quot;human-panic: printing error message to console failed&quot;);
-    eprintln!(&quot;{}&quot;, msg);
-    std::process::exit(libc::EXIT_FAILURE);
-  }));
-  Ok(())
-}
-
 #[tokio::main]
 async fn main() -&gt; Result&lt;()&gt; {
-  initialize_panic_handler()?;
   let mut app = StopwatchApp::default();
   app.run().await
 }
 
 #[derive(Clone, Debug)]
 pub enum Event {
-  Quit,
   Error,
   Tick,
   Key(crossterm::event::KeyEvent),
@@ -505,125 +437,6 @@ impl StopwatchApp {
 
   fn format_duration(&amp;self, duration: Duration) -&gt; String {
     format!(&quot;{:02}:{:02}.{:03}&quot;, duration.as_secs() / 60, duration.as_secs() % 60, duration.subsec_millis())
-  }
-}
-
-struct Tui {
-  pub terminal: Terminal&lt;Backend&lt;std::io::Stderr&gt;&gt;,
-  pub task: tokio::task::JoinHandle&lt;()&gt;,
-  pub cancellation_token: tokio_util::sync::CancellationToken,
-  pub event_rx: tokio::sync::mpsc::UnboundedReceiver&lt;Event&gt;,
-  pub event_tx: tokio::sync::mpsc::UnboundedSender&lt;Event&gt;,
-}
-
-impl Tui {
-  fn new() -&gt; Result&lt;Tui&gt; {
-    let terminal = ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
-    let (event_tx, event_rx) = tokio::sync::mpsc::unbounded_channel();
-    let cancellation_token = tokio_util::sync::CancellationToken::new();
-    let task = tokio::spawn(async {});
-    Ok(Self { terminal, task, cancellation_token, event_rx, event_tx })
-  }
-
-  pub async fn next(&amp;mut self) -&gt; Option&lt;Event&gt; {
-    self.event_rx.recv().await
-  }
-
-  pub fn enter(&amp;mut self) -&gt; Result&lt;()&gt; {
-    crossterm::terminal::enable_raw_mode()?;
-    crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen, crossterm::cursor::Hide)?;
-    self.start();
-    Ok(())
-  }
-
-  pub fn exit(&amp;self) -&gt; Result&lt;()&gt; {
-    self.stop()?;
-    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen, crossterm::cursor::Show)?;
-    crossterm::terminal::disable_raw_mode()?;
-    Ok(())
-  }
-
-  pub fn cancel(&amp;self) {
-    self.cancellation_token.cancel();
-  }
-
-  pub fn stop(&amp;self) -&gt; Result&lt;()&gt; {
-    self.cancel();
-    let mut counter = 0;
-    while !self.task.is_finished() {
-      std::thread::sleep(Duration::from_millis(250));
-      counter += 1;
-      if counter &gt; 5 {
-        self.task.abort();
-      }
-      if counter &gt; 10 {
-        log::error!(&quot;Failed to abort task for unknown reason&quot;);
-        return Err(eyre!(&quot;Unable to abort task&quot;));
-      }
-    }
-    Ok(())
-  }
-
-  pub fn start(&amp;mut self) {
-    let tick_rate = std::time::Duration::from_millis(60);
-    self.cancel();
-    self.cancellation_token = tokio_util::sync::CancellationToken::new();
-    let _cancellation_token = self.cancellation_token.clone();
-    let _event_tx = self.event_tx.clone();
-    self.task = tokio::spawn(async move {
-      let mut reader = crossterm::event::EventStream::new();
-      let mut interval = tokio::time::interval(tick_rate);
-      loop {
-        let delay = interval.tick();
-        let crossterm_event = reader.next().fuse();
-        tokio::select! {
-          _ = _cancellation_token.cancelled() =&gt; {
-            break;
-          }
-          maybe_event = crossterm_event =&gt; {
-            match maybe_event {
-              Some(Ok(evt)) =&gt; {
-                match evt {
-                  crossterm::event::Event::Key(key) =&gt; {
-                    if key.kind == crossterm::event::KeyEventKind::Press {
-                      _event_tx.send(Event::Key(key)).unwrap();
-                    }
-                  },
-                  _ =&gt; {}
-                }
-              }
-              Some(Err(_)) =&gt; {
-                _event_tx.send(Event::Error).unwrap();
-              }
-              None =&gt; {},
-            }
-          },
-          _ = delay =&gt; {
-              _event_tx.send(Event::Tick).unwrap();
-          },
-        }
-      }
-    });
-  }
-}
-
-impl std::ops::Deref for Tui {
-  type Target = ratatui::Terminal&lt;Backend&lt;std::io::Stderr&gt;&gt;;
-
-  fn deref(&amp;self) -&gt; &amp;Self::Target {
-    &amp;self.terminal
-  }
-}
-
-impl std::ops::DerefMut for Tui {
-  fn deref_mut(&amp;mut self) -&gt; &amp;mut Self::Target {
-    &amp;mut self.terminal
-  }
-}
-
-impl Drop for Tui {
-  fn drop(&amp;mut self) {
-    self.exit().unwrap();
   }
 }</code></pre>
 
