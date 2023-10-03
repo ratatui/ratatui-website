@@ -1,6 +1,6 @@
 # Dynamic layouts
 
-With real-world applications, the content can often be dynamic. For example, a chat application may
+With real world applications, the content can often be dynamic. For example, a chat application may
 need to resize the chat input area based on the number of incoming messages. To achieve this, you
 can generate layouts dynamically:
 
@@ -10,13 +10,10 @@ fn get_layout_based_on_messages(msg_count: usize, f: &Frame) -> Vec<Rect> {
 
     Layout::default()
         .direction(Direction::Vertical)
-        .constraints(
-            [
-                Constraint::Percentage(msg_percentage),
-                Constraint::Percentage(100 - msg_percentage),
-            ]
-            .as_ref(),
-        )
+        .constraints([
+            Constraint::Percentage(msg_percentage),
+            Constraint::Percentage(100 - msg_percentage),
+        ])
         .split(f.size())
 }
 ```
@@ -42,13 +39,10 @@ match action {
 
 let chunks = Layout::default()
     .direction(Direction::Horizontal)
-    .constraints(
-        [
-            Constraint::Percentage(current_percentage),
-            Constraint::Percentage(100 - current_percentage),
-        ]
-        .as_ref(),
-    )
+    .constraints([
+        Constraint::Percentage(current_percentage),
+        Constraint::Percentage(100 - current_percentage),
+    ])
     .split(f.size());
 
 ```
