@@ -1,4 +1,4 @@
-# Styling-Text
+# Styling Text
 
 Styling enhances user experience by adding colors, emphasis, and other visual aids. In `ratatui`,
 the primary tool for this is the `ratatui::style::Style` struct.
@@ -14,51 +14,51 @@ Common styling attributes include:
 
 1. Basic Color Styling
 
-    Setting the foreground (text color) and background:
+   Setting the foreground (text color) and background:
 
-    ```rust
-    let styled_text = Span::styled(
-        "Hello, Ratatui!",
-        Style::default().fg(Color::Red).bg(Color::Yellow)
-    );
-    ```
+   ```rust
+   let styled_text = Span::styled(
+       "Hello, Ratatui!",
+       Style::default().fg(Color::Red).bg(Color::Yellow)
+   );
+   ```
 
 2. Using `Modifiers`
 
-    Making text bold or italic:
+   Making text bold or italic:
 
-    ```rust
-    let bold_text = Span::styled(
-        "This is bold",
-        Style::default().modifier(Modifier::BOLD)
-    );
+   ```rust
+   let bold_text = Span::styled(
+       "This is bold",
+       Style::default().modifier(Modifier::BOLD)
+   );
 
-    let italic_text = Span::styled(
-        "This is italic",
-        Style::default().modifier(Modifier::ITALIC)
-    );
-    ```
+   let italic_text = Span::styled(
+       "This is italic",
+       Style::default().modifier(Modifier::ITALIC)
+   );
+   ```
 
-    You can also combine multiple modifiers:
+   You can also combine multiple modifiers:
 
-    ```rust
-    let bold_italic_text = Span::styled(
-        "This is bold and italic",
-        Style::default().modifier(Modifier::BOLD | Modifier::ITALIC)
-    );
-    ```
+   ```rust
+   let bold_italic_text = Span::styled(
+       "This is bold and italic",
+       Style::default().modifier(Modifier::BOLD | Modifier::ITALIC)
+   );
+   ```
 
 3. Styling within a Line
 
-    You can mix and match different styled spans within a single line:
+   You can mix and match different styled spans within a single line:
 
-    ```rust
-    let mixed_line = Line::from(vec![
-        Span::styled("This is mixed", Style::default().fg(Color::Green)),
-        Span::styled("styling", Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)),
-        Span::from("!"),
-    ]);
-    ```
+   ```rust
+   let mixed_line = Line::from(vec![
+       Span::styled("This is mixed", Style::default().fg(Color::Green)),
+       Span::styled("styling", Style::default().fg(Color::Red).add_modifier(Modifier::BOLD)),
+       Span::from("!"),
+   ]);
+   ```
 
 This is what it would look like if you rendered a `Paragraph` with different styles for each line:
 

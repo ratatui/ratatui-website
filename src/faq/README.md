@@ -29,16 +29,18 @@ same thing that you would with `ratatui`.
 
 ## What is the difference between `ratatui` and `cursive`?
 
-[Cursive](https://github.com/gyscos/cursive) and Ratatui are both libraries that make TUIs easier to write.
-Both libraries are great! Both also work on linux, macOS and windows.
+[Cursive](https://github.com/gyscos/cursive) and Ratatui are both libraries that make TUIs easier to
+write. Both libraries are great! Both also work on linux, macOS and windows.
 
 ### Cursive
 
-Cursive uses a more declarative UI: the user defines the layout, then cursive handles the event loop.
-Cursive also handles most input (including mouse clicks), and forwards events to the currently focused view. User-code is more focused on "events" than on keyboard input.
-Cursive also supports different backends like ncurses, pancurses, termion, and crossterm.
+Cursive uses a more declarative UI: the user defines the layout, then cursive handles the event
+loop. Cursive also handles most input (including mouse clicks), and forwards events to the currently
+focused view. User-code is more focused on "events" than on keyboard input. Cursive also supports
+different backends like ncurses, pancurses, termion, and crossterm.
 
-One of cursive's main features is its built-in event loop. You can easily attach callbacks to events like clicks or key presses, making it straightforward to handle user interactions.
+One of cursive's main features is its built-in event loop. You can easily attach callbacks to events
+like clicks or key presses, making it straightforward to handle user interactions.
 
 ```rust
 use cursive::views::{Dialog, TextView};
@@ -61,10 +63,10 @@ fn main() {
 
 ### Ratatui
 
-In Ratatui, the user handles the event loop, the application state, and re-draws the entire UI on each iteration.
-It does not handle input and users have use another library (like [crossterm](https://github.com/TimonPost/crossterm)).
-Ratatui supports Crossterm, termion, wezterm as backends.
-
+In Ratatui, the user handles the event loop, the application state, and re-draws the entire UI on
+each iteration. It does not handle input and users have use another library (like
+[crossterm](https://github.com/TimonPost/crossterm)). Ratatui supports Crossterm, termion, wezterm
+as backends.
 
 ```rust
 use ratatui::{prelude::*, widgets::*};
@@ -141,7 +143,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ![](https://user-images.githubusercontent.com/1813121/271896510-c8db19d1-f132-49b5-89da-c32cc21ab765.png)
 
-You may have to write more code but you get precise control over exact UI you want to display with Ratatui.
+You may have to write more code but you get precise control over exact UI you want to display with
+Ratatui.
 
 ## Can you change font size in a terminal using `ratatui`?
 
@@ -195,3 +198,40 @@ Additionally you can use [`figlet`](https://docs.rs/figlet-rs/latest/figlet_rs/)
 lines. Here's an example using [`tui-big-text`](https://github.com/joshka/tui-big-text/):
 
 ![[tui-big-text](https://github.com/joshka/tui-big-text/)](https://camo.githubusercontent.com/3a738ce21da3ae67660181538ef27473b86bebca73f42944e8012d52f86e500d/68747470733a2f2f7668732e636861726d2e73682f7668732d3364545474724c6b79553534684e61683232504152392e676966)
+
+## Can you use multiple `terminal.draw()` calls consequently?
+
+You _cannot_ use `terminal.draw()` multiple times in the same `main` loop.
+
+Because Ratatui uses a double buffer rendering technique, writing code like this will **_NOT_**
+render all three widgets:
+
+```rust
+  loop {
+    terminal.draw(|f| {
+      f.render_widget(widget1, f.size());
+    })?;
+    terminal.draw(|f| {
+      f.render_widget(widget2, f.size());
+    })?;
+    terminal.draw(|f| {
+      f.render_widget(widget3, f.size());
+    })?;
+    // handle events
+    // manage state
+  }
+```
+
+You want to write the code like this instead:
+
+```rust
+  loop {
+    terminal.draw(|f| {
+      f.render_widget(widget1, f.size());
+      f.render_widget(widget2, f.size());
+      f.render_widget(widget3, f.size());
+    })?;
+    // handle events
+    // manage state
+  }
+```
