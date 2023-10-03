@@ -169,42 +169,33 @@ or terminal games that want to use the full terminal window without disrupting t
 other terminal content.</p>
 <p>This creates a seamless transition between the application and the regular terminal session, as the
 content displayed before launching the application will reappear after the application exits.</p>
-<p>Take this “hello world” program below. If we include the
+<p>Take this “hello world” program below. If we run it with and without the
 <code>std::io::stderr().execute(EnterAlternateScreen)?</code> (and the corresponding <code>LeaveAlternateScreen</code>),
 you can see how the program behaves differently.</p>
-<pre><code class="language-rust">use crossterm::{
-  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-  ExecutableCommand,
-};
-use ratatui::{prelude::*, widgets::*};
-
-fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-  let should_use_alternate_screen = if let Some(should_use_alternate_screen) = std::env::args().nth(1) {
-    should_use_alternate_screen.parse::&lt;bool&gt;()?
-  } else {
-    return Err(format!(&quot;Unable to get input argument&quot;).into());
+<pre><code class="language-diff">  use crossterm::{
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+    ExecutableCommand,
   };
+  use ratatui::{prelude::*, widgets::*};
 
-  if should_use_alternate_screen {
-    std::io::stderr().execute(EnterAlternateScreen)?;
+  fn main() {
+-   std::io::stderr().execute(EnterAlternateScreen).unwrap();
+
+    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr())).unwrap();
+    terminal
+      .draw(|f| {
+        let mut area = f.size();
+        area.y = area.height / 2;
+        area.height = area.height / 2;
+        f.render_widget(Paragraph::new(&quot;Hello World!&quot;), area);
+      })
+      .unwrap();
+
+    std::thread::sleep(std::time::Duration::from_secs(2));
+
+-   std::io::stderr().execute(LeaveAlternateScreen).unwrap();
   }
-
-  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-  terminal.draw(|f| {
-    let mut area = f.size();
-    area.y = area.height / 2;
-    area.height = area.height / 2;
-    f.render_widget(Paragraph::new(&quot;Hello World!&quot;), area);
-  })?;
-
-  std::thread::sleep(std::time::Duration::from_secs(2));
-
-  if should_use_alternate_screen {
-    std::io::stderr().execute(LeaveAlternateScreen)?;
-  }
-
-  Ok(())
-}</code></pre>
+</code></pre>
 <!--
 Output ./demo.gif
 
@@ -250,7 +241,7 @@ Enter
 Sleep 5s
 -->
 <p><img src="https://user-images.githubusercontent.com/1813121/272153791-5a0fbdd9-8e9b-4220-8255-0f96b836b823.gif" alt="" /></p>
-<p>Try running this code on your own to experiment with <code>EnterAlternateScreen</code> and
+<p>Try running this code on your own and experiment with <code>EnterAlternateScreen</code> and
 <code>LeaveAlternateScreen</code>.</p>
 <p>Note that not all terminal emulators support the alternate screen, and even those that do may handle
 it differently. As a result, the behavior may vary depending on the backend being used. Always
