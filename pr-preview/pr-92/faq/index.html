@@ -184,13 +184,15 @@ should be structured or how data flows through it. And, for the price of that fr
 features out of the box with <code>tui-realm</code> and potentially lesser code in your application to do the
 same thing that you would with <code>ratatui</code>.</p>
 <h2 id="what-is-the-difference-between-ratatui-and-cursive"><a class="header" href="#what-is-the-difference-between-ratatui-and-cursive">What is the difference between <code>ratatui</code> and <code>cursive</code>?</a></h2>
-<p><a href="https://github.com/gyscos/cursive">Cursive</a> and Ratatui are both libraries that make TUIs easier to write.
-Both libraries are great! Both also work on linux, macOS and windows.</p>
+<p><a href="https://github.com/gyscos/cursive">Cursive</a> and Ratatui are both libraries that make TUIs easier to
+write. Both libraries are great! Both also work on linux, macOS and windows.</p>
 <h3 id="cursive"><a class="header" href="#cursive">Cursive</a></h3>
-<p>Cursive uses a more declarative UI: the user defines the layout, then cursive handles the event loop.
-Cursive also handles most input (including mouse clicks), and forwards events to the currently focused view. User-code is more focused on “events” than on keyboard input.
-Cursive also supports different backends like ncurses, pancurses, termion, and crossterm.</p>
-<p>One of cursive’s main features is its built-in event loop. You can easily attach callbacks to events like clicks or key presses, making it straightforward to handle user interactions.</p>
+<p>Cursive uses a more declarative UI: the user defines the layout, then cursive handles the event
+loop. Cursive also handles most input (including mouse clicks), and forwards events to the currently
+focused view. User-code is more focused on “events” than on keyboard input. Cursive also supports
+different backends like ncurses, pancurses, termion, and crossterm.</p>
+<p>One of cursive’s main features is its built-in event loop. You can easily attach callbacks to events
+like clicks or key presses, making it straightforward to handle user interactions.</p>
 <pre><code class="language-rust">use cursive::views::{Dialog, TextView};
 
 fn main() {
@@ -207,9 +209,10 @@ fn main() {
 }</code></pre>
 <p><img src="https://user-images.githubusercontent.com/1813121/271896508-d5f6192c-d51b-4299-9b5e-9d91e4618f64.png" alt="" /></p>
 <h3 id="ratatui"><a class="header" href="#ratatui">Ratatui</a></h3>
-<p>In Ratatui, the user handles the event loop, the application state, and re-draws the entire UI on each iteration.
-It does not handle input and users have use another library (like <a href="https://github.com/TimonPost/crossterm">crossterm</a>).
-Ratatui supports Crossterm, termion, wezterm as backends.</p>
+<p>In Ratatui, the user handles the event loop, the application state, and re-draws the entire UI on
+each iteration. It does not handle input and users have use another library (like
+<a href="https://github.com/TimonPost/crossterm">crossterm</a>). Ratatui supports Crossterm, termion, wezterm
+as backends.</p>
 <pre><code class="language-rust">use ratatui::{prelude::*, widgets::*};
 
 fn init() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
@@ -281,7 +284,8 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
   Ok(())
 }</code></pre>
 <p><img src="https://user-images.githubusercontent.com/1813121/271896510-c8db19d1-f132-49b5-89da-c32cc21ab765.png" alt="" /></p>
-<p>You may have to write more code but you get precise control over exact UI you want to display with Ratatui.</p>
+<p>You may have to write more code but you get precise control over exact UI you want to display with
+Ratatui.</p>
 <h2 id="can-you-change-font-size-in-a-terminal-using-ratatui"><a class="header" href="#can-you-change-font-size-in-a-terminal-using-ratatui">Can you change font size in a terminal using <code>ratatui</code>?</a></h2>
 <p><code>ratatui</code> itself doesn’t control the terminal’s font size. <code>ratatui</code> renders content based on the
 size and capabilities of the terminal it’s running in. If you want to change the font size, you’ll
@@ -326,6 +330,33 @@ text content in your application.</p>
 <a href="https://github.com/joshka/tui-big-text/"><code>tui-big-text</code></a> to display text content across multiple
 lines. Here’s an example using <a href="https://github.com/joshka/tui-big-text/"><code>tui-big-text</code></a>:</p>
 <p><img src="https://camo.githubusercontent.com/3a738ce21da3ae67660181538ef27473b86bebca73f42944e8012d52f86e500d/68747470733a2f2f7668732e636861726d2e73682f7668732d3364545474724c6b79553534684e61683232504152392e676966" alt="tui-big-text" /></p>
+<h2 id="can-you-use-multiple-terminaldraw-calls-consequently"><a class="header" href="#can-you-use-multiple-terminaldraw-calls-consequently">Can you use multiple <code>terminal.draw()</code> calls consequently?</a></h2>
+<p>You <em>cannot</em> use <code>terminal.draw()</code> multiple times in the same <code>main</code> loop.</p>
+<p>Because Ratatui uses a double buffer rendering technique, writing code like this will <em><strong>NOT</strong></em>
+render all three widgets:</p>
+<pre><code class="language-rust">  loop {
+    terminal.draw(|f| {
+      f.render_widget(widget1, f.size());
+    })?;
+    terminal.draw(|f| {
+      f.render_widget(widget2, f.size());
+    })?;
+    terminal.draw(|f| {
+      f.render_widget(widget3, f.size());
+    })?;
+    // handle events
+    // manage state
+  }</code></pre>
+<p>You want to write the code like this instead:</p>
+<pre><code class="language-rust">  loop {
+    terminal.draw(|f| {
+      f.render_widget(widget1, f.size());
+      f.render_widget(widget2, f.size());
+      f.render_widget(widget3, f.size());
+    })?;
+    // handle events
+    // manage state
+  }</code></pre>
 
                     </main>
 
