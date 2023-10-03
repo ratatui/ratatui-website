@@ -160,7 +160,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="dynamic-layouts"><a class="header" href="#dynamic-layouts">Dynamic layouts</a></h1>
-<p>With real-world applications, the content can often be dynamic. For example, a chat application may
+<p>With real world applications, the content can often be dynamic. For example, a chat application may
 need to resize the chat input area based on the number of incoming messages. To achieve this, you
 can generate layouts dynamically:</p>
 <pre><code class="language-rust">fn get_layout_based_on_messages(msg_count: usize, f: &amp;Frame) -&gt; Vec&lt;Rect&gt; {
@@ -168,13 +168,10 @@ can generate layouts dynamically:</p>
 
     Layout::default()
         .direction(Direction::Vertical)
-        .constraints(
-            [
-                Constraint::Percentage(msg_percentage),
-                Constraint::Percentage(100 - msg_percentage),
-            ]
-            .as_ref(),
-        )
+        .constraints([
+            Constraint::Percentage(msg_percentage),
+            Constraint::Percentage(100 - msg_percentage),
+        ])
         .split(f.size())
 }</code></pre>
 <p>You can even update the layout based on some user input or command:</p>
@@ -196,13 +193,10 @@ can generate layouts dynamically:</p>
 
 let chunks = Layout::default()
     .direction(Direction::Horizontal)
-    .constraints(
-        [
-            Constraint::Percentage(current_percentage),
-            Constraint::Percentage(100 - current_percentage),
-        ]
-        .as_ref(),
-    )
+    .constraints([
+        Constraint::Percentage(current_percentage),
+        Constraint::Percentage(100 - current_percentage),
+    ])
     .split(f.size());
 </code></pre>
 
