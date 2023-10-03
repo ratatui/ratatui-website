@@ -85,7 +85,7 @@ Again using `crossterm`, we can create an instance of terminal backend
 let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
 ```
 
-## Shut Down
+## Shut down
 
 Terminal disables raw mode and exits the alternate screen for a clean exit, ensuring the terminal
 returns to its original state
@@ -121,7 +121,7 @@ state, which in turn updates the display on the next loop.
 
 Every TUI with `ratatui` is bound to have (at least) one main application run loop like this.
 
-## UI
+## User interface
 
 The UI part of our code takes the state of the application, i.e. the value of `counter` and uses it
 to render a widget, i.e. a `Paragraph` widget.
@@ -138,7 +138,7 @@ The most important thing to know with Ratatui is that you have to use one and _o
 [See the FAQ for more information.](./../../faq/)
 ```
 
-## User Input
+## User input
 
 Every 250 milliseconds, the application checks if the user has pressed a key:
 
