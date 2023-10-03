@@ -133,8 +133,8 @@ to render a widget, i.e. a `Paragraph` widget.
 ```
 
 ```admonish note
-The most important thing to know with Ratatui is that you have to use one and _only_ one
-`terminal.draw()` call in your `main` loop.
+The closure passed to the `Terminal::draw()` method must render the entire UI. Call the
+draw method at most once for each pass through your application's main loop.
 [See the FAQ for more information.](./../../faq/)
 ```
 
