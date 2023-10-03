@@ -2,8 +2,6 @@
 
 [Introduction to Ratatui](./README.md)
 
-# User Guide
-
 - [Installation](./installation.md)
 
 - [Tutorials](./tutorial/README.md)
@@ -35,6 +33,22 @@
     - [Full Async](./tutorial/counter-async-app/full-async.md)
   - [Stopwatch App](./tutorial/stopwatch-app/README.md)
 
+- [Concepts](./concepts/README.md)
+
+  - [Backends](./concepts/backends/README.md)
+    - [Comparison](./concepts/backends/comparison.md)
+    - [Raw Mode](./concepts/backends/raw-mode.md)
+    - [Alternate Screen](./concepts/backends/alternate-screen.md)
+    - [Mouse Capture](./concepts/backends/mouse-capture.md)
+  - [Layout](./concepts/layout/README.md)
+  - [Rendering](./concepts/rendering.md)
+  - [Event Handling](./concepts/event_handling.md)
+    - [Key Binding]()
+  - [Application Patterns](./concepts/application-patterns/README.md)
+    - [The Elm Architecture](./concepts/application-patterns/the-elm-architecture.md)
+    - [Component Architecture](./concepts/application-patterns/component-architecture.md)
+    - [Flux Architecture](./concepts/application-patterns/flux-architecture.md)
+
 - [How To](./how-to/README.md)
 
   - [Layout UIs](./how-to/layout/README.md)
@@ -62,27 +76,6 @@
   - [`tokio` / `async`](./faq/tokio-async.md)
   - [`tui.rs` history](./faq/tui-rs-history.md)
 
-# Reference
-
-- [Showcase](./showcase/README.md)
-- [Concepts](./concepts/README.md)
-
-  - [Backends](./concepts/backends/README.md)
-    - [Comparison](./concepts/backends/comparison.md)
-    - [Raw Mode](./concepts/backends/raw-mode.md)
-    - [Alternate Screen](./concepts/backends/alternate-screen.md)
-    - [Mouse Capture](./concepts/backends/mouse-capture.md)
-  - [Layout](./concepts/layout/README.md)
-  - [Rendering](./concepts/rendering.md)
-  - [Event Handling](./concepts/event_handling.md)
-    - [Key Binding]()
-  - [Application Patterns](./concepts/application-patterns/README.md)
-    - [The Elm Architecture](./concepts/application-patterns/the-elm-architecture.md)
-    - [Component Architecture](./concepts/application-patterns/component-architecture.md)
-    - [Flux Architecture](./concepts/application-patterns/flux-architecture.md)
-
-- [Integrations](./integrations/README.md)
-
 - [Highlights]()
 
   - [v0.23](./highlights/v0.23.md)
@@ -91,6 +84,7 @@
 
 - [References](./references/README.md)
 
+  - [Showcase](./showcase/README.md)
   - [Features](./references/features.md)
 
 - [Developer Guide]()
