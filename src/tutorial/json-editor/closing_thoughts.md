@@ -8,8 +8,11 @@ get some inspiration for what model will work best for your application.
 
 ## Finished Files
 
-Here you can find the finished project used for the tutorial. You can test this application by
-yourself, but running
+You can find the finished project used for the tutorial on
+[GitHub](https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/json-editor). The code
+is also shown at the bottom of this page.
+
+You can test this application by yourself by running:
 
 ```shell
 cargo run > test.json

@@ -77,7 +77,7 @@ change universal defaults for the state.
 
 ```rust,no_run,noplayground
 {{#include ./ratatui-json-editor-app/src/app.rs:impl_new}}
-    ...
+    // --snip--
 ```
 
 ### `save_key_value()`
@@ -87,9 +87,9 @@ stored variables to the key-value pairs `HashMap`, and resets the status of all 
 variables.
 
 ```rust,no_run,noplayground
-    ...
+    // --snip--
 {{#include ./ratatui-json-editor-app/src/app.rs:save_key_value}}
-    ...
+    // --snip--
 ```
 
 ### `toggle_editing()`
@@ -100,9 +100,9 @@ checking if something is currently being edited, and if it is, swapping between 
 Value fields.
 
 ```rust,no_run,noplayground
-    ...
+    // --snip--
 {{#include ./ratatui-json-editor-app/src/app.rs:toggle_editing}}
-    ...
+    // --snip--
 ```
 
 ### `print_json()`
@@ -111,9 +111,9 @@ Finally, is another convenience function to print out the serialized json from a
 pairs.
 
 ```rust,no_run,noplayground
-    ...
+    // --snip--
 {{#include ./ratatui-json-editor-app/src/app.rs:print_json}}
-    ...
+    // --snip--
 ```
 
 <!-- prettier-ignore -->

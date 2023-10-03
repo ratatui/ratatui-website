@@ -46,7 +46,7 @@ our `Event` enum.
 ```rust
 {{#include ./ratatui-counter-app/src/event.rs:event_import}}
 
-// --snip--
+// -- snip --
 
 {{#include ./ratatui-counter-app/src/event.rs:eventhandler_impl}}
 ```

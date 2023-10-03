@@ -20,30 +20,30 @@ different ways.
 
 1. using `Span::raw`:
 
-    ```rust
-    fn ui(_app: &App, f: &mut Frame<'_>) {
-        let span = Span::raw("This is text that is not styled");
-        // -- snip ---
-    }
-    ```
+   ```rust
+   fn ui(_app: &App, f: &mut Frame<'_>) {
+       let span = Span::raw("This is text that is not styled");
+       // --snip--
+   }
+   ```
 
 2. using `Span::styled`:
 
-    ```rust
-    fn ui(_app: &App, f: &mut Frame<'_>) {
-        let span = Span::styled("This is text that will be yellow", Style::default().fg(Color::Yellow));
-        // -- snip ---
-    }
-    ```
+   ```rust
+   fn ui(_app: &App, f: &mut Frame<'_>) {
+       let span = Span::styled("This is text that will be yellow", Style::default().fg(Color::Yellow));
+       // --snip--
+   }
+   ```
 
 3. using the `Stylize` trait:
 
-    ```rust
-    fn ui(_app: &App, f: &mut Frame<'_>) {
-        let span = "This is text that will be yellow".yellow();
-        // -- snip ---
-    }
-    ```
+   ```rust
+   fn ui(_app: &App, f: &mut Frame<'_>) {
+       let span = "This is text that will be yellow".yellow();
+       // --snip--
+   }
+   ```
 
 A `Span` is the basic building block for any styled text, and can be used anywhere text is
 displayed.
@@ -64,7 +64,7 @@ fn ui(_: &App, f: &mut Frame<'_>) {
         " ".into(),
         "world".red().bold()
     ]);
-    // -- snip ---
+    // --snip--
 }
 ```
 
@@ -73,7 +73,7 @@ A `Line` can be constructed directly from content, where the content is `Into<Co
 ```rust
 fn ui(_: &App, f: &mut Frame<'_>) {
     let line = Line::from("hello world");
-    // -- snip ---
+    // --snip--
 }
 ```
 
@@ -82,7 +82,7 @@ You can even style a full line directly:
 ```rust
 fn ui(_: &App, f: &mut Frame<'_>) {
     let line = Line::styled("hello world", Style::default().fg(Color::Yellow));
-    // -- snip ---
+    // --snip--
 }
 ```
 
@@ -91,7 +91,7 @@ And you can use the `Stylize` trait on the line directly by using `into()`:
 ```rust
 fn ui(_: &App, f: &mut Frame<'_>) {
     let line: Line = "hello world".yellow().into();
-    // -- snip ---
+    // --snip--
 }
 ```
 
