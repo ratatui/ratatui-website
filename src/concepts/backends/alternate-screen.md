@@ -11,44 +11,34 @@ other terminal content.
 This creates a seamless transition between the application and the regular terminal session, as the
 content displayed before launching the application will reappear after the application exits.
 
-Take this "hello world" program below. If we include the
+Take this "hello world" program below. If we run it with and without the
 `std::io::stderr().execute(EnterAlternateScreen)?` (and the corresponding `LeaveAlternateScreen`),
 you can see how the program behaves differently.
 
-```rust
-use crossterm::{
-  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-  ExecutableCommand,
-};
-use ratatui::{prelude::*, widgets::*};
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-  let should_use_alternate_screen = if let Some(should_use_alternate_screen) = std::env::args().nth(1) {
-    should_use_alternate_screen.parse::<bool>()?
-  } else {
-    return Err(format!("Unable to get input argument").into());
+```diff
+  use crossterm::{
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+    ExecutableCommand,
   };
+  use ratatui::{prelude::*, widgets::*};
 
-  if should_use_alternate_screen {
-    std::io::stderr().execute(EnterAlternateScreen)?;
+  fn main() {
+-   std::io::stderr().execute(EnterAlternateScreen).unwrap();
+
+    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr())).unwrap();
+    terminal
+      .draw(|f| {
+        let mut area = f.size();
+        area.y = area.height / 2;
+        area.height = area.height / 2;
+        f.render_widget(Paragraph::new("Hello World!"), area);
+      })
+      .unwrap();
+
+    std::thread::sleep(std::time::Duration::from_secs(2));
+
+-   std::io::stderr().execute(LeaveAlternateScreen).unwrap();
   }
-
-  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-  terminal.draw(|f| {
-    let mut area = f.size();
-    area.y = area.height / 2;
-    area.height = area.height / 2;
-    f.render_widget(Paragraph::new("Hello World!"), area);
-  })?;
-
-  std::thread::sleep(std::time::Duration::from_secs(2));
-
-  if should_use_alternate_screen {
-    std::io::stderr().execute(LeaveAlternateScreen)?;
-  }
-
-  Ok(())
-}
 ```
 
 <!--
@@ -98,7 +88,7 @@ Sleep 5s
 
 ![](https://user-images.githubusercontent.com/1813121/272153791-5a0fbdd9-8e9b-4220-8255-0f96b836b823.gif)
 
-Try running this code on your own to experiment with `EnterAlternateScreen` and
+Try running this code on your own and experiment with `EnterAlternateScreen` and
 `LeaveAlternateScreen`.
 
 Note that not all terminal emulators support the alternate screen, and even those that do may handle
