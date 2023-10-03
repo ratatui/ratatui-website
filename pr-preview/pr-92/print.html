@@ -6451,9 +6451,9 @@ or terminal games that want to use the full terminal window without disrupting t
 other terminal content.</p>
 <p>This creates a seamless transition between the application and the regular terminal session, as the
 content displayed before launching the application will reappear after the application exits.</p>
-<p>Take this “hello world” program below. If we remove the
-<code>crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)</code> (and the
-corresponding <code>LeaveAlternateScreen</code>), you can see how the program behaves differently.</p>
+<p>Take this “hello world” program below. If we include the
+<code>std::io::stderr().execute(EnterAlternateScreen)?</code> (and the corresponding <code>LeaveAlternateScreen</code>),
+you can see how the program behaves differently.</p>
 <pre><code class="language-rust">use crossterm::{
   terminal::{EnterAlternateScreen, LeaveAlternateScreen},
   ExecutableCommand,
