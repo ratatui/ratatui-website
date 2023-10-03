@@ -11,47 +11,92 @@ other terminal content.
 This creates a seamless transition between the application and the regular terminal session, as the
 content displayed before launching the application will reappear after the application exits.
 
-Take this "hello world" program below. If we remove the
-`crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)` (and the
-corresponding `LeaveAlternateScreen`), you can see how the program behaves differently.
+Take this "hello world" program below. If we include the
+`std::io::stderr().execute(EnterAlternateScreen)?` (and the corresponding `LeaveAlternateScreen`),
+you can see how the program behaves differently.
 
-```diff
-  use ratatui::{prelude::*, widgets::*};
+```rust
+use crossterm::{
+  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+  ExecutableCommand,
+};
+use ratatui::{prelude::*, widgets::*};
 
-  fn main() -> Result<(), Box<dyn std::error::Error>> {
-    crossterm::terminal::enable_raw_mode()?;
--   crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+  let should_use_alternate_screen = if let Some(should_use_alternate_screen) = std::env::args().nth(1) {
+    should_use_alternate_screen.parse::<bool>()?
+  } else {
+    return Err(format!("Unable to get input argument").into());
+  };
 
-    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-
-    loop {
-      terminal.draw(|f| {
-        let rects = Layout::default()
-          .direction(Direction::Vertical)
-          .constraints([Constraint::Percentage(75), Constraint::Percentage(25)])
-          .split(f.size());
-        f.render_widget(Paragraph::new("Hello World! (press 'q' to quit)"), rects[1]);
-      })?;
-
-      if crossterm::event::poll(std::time::Duration::from_millis(250))? {
-        if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-          if key.code == crossterm::event::KeyCode::Char('q') {
-            break;
-          }
-        }
-      }
-    }
-
--   crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
-    crossterm::terminal::disable_raw_mode()?;
-
-    Ok(())
+  if should_use_alternate_screen {
+    std::io::stderr().execute(EnterAlternateScreen)?;
   }
+
+  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+  terminal.draw(|f| {
+    let mut area = f.size();
+    area.y = area.height / 2;
+    area.height = area.height / 2;
+    f.render_widget(Paragraph::new("Hello World!"), area);
+  })?;
+
+  std::thread::sleep(std::time::Duration::from_secs(2));
+
+  if should_use_alternate_screen {
+    std::io::stderr().execute(LeaveAlternateScreen)?;
+  }
+
+  Ok(())
+}
 ```
 
-| With `EnterAlternateScreen`                                                                               | With no `EnterAlternateScreen`                                                                            |
-| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| ![](https://user-images.githubusercontent.com/1813121/272107438-2057ca69-0405-40fe-bc81-f123b05efbde.gif) | ![](https://user-images.githubusercontent.com/1813121/272107285-82dda0f7-b197-4f9b-b57e-9e0f5c025da0.gif) |
+<!--
+Output ./demo.gif
+
+Set FontSize 18
+Set Width 1200
+Set Height 800
+Set Theme "Catppuccin Mocha"
+
+Type "# WITH Alternate Screen"
+Enter
+Type "# Cursor is here before program starts"
+Enter
+
+Sleep 5s
+
+Type "cargo run -- true"
+Enter
+Sleep 5s
+
+Type "# Cursor is here after program completes"
+Enter
+
+Sleep 5s
+
+Type "reset"
+Enter
+Sleep 2s
+
+Type "# WITHOUT Alternate Screen"
+Enter
+Type "# Cursor is here before program starts"
+Enter
+
+Sleep 5s
+
+Type "cargo run -- false"
+Enter
+Sleep 5s
+
+Type "# Cursor is here after program completes"
+Enter
+
+Sleep 5s
+-->
+
+![](https://user-images.githubusercontent.com/1813121/272153791-5a0fbdd9-8e9b-4220-8255-0f96b836b823.gif)
 
 Try running this code on your own to experiment with `EnterAlternateScreen` and
 `LeaveAlternateScreen`.
