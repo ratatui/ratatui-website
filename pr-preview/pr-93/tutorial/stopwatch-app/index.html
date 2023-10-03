@@ -192,7 +192,11 @@ tui-big-text = &quot;0.1.4&quot;
 <a href="../json-editor/README.html">the JSON Editor</a> with the <code>Message</code> (or <code>Command</code> or <code>Action</code>) pattern
 from <a href="../counter-async-app/README.html">the Async Counter App</a>. This <code>Message</code> pattern is common in
 <a href="../../concepts/application-patterns/the-elm-architecture.html">The Elm Architecture pattern</a>.</p>
-<p>Here’s the full application:</p>
+<p>This application uses a <code>Tui</code> struct that
+<a href="../../how-to/develop-apps/abstract-terminal-and-event-handler.html">combines the <code>Terminal</code> and <code>Event Handler</code></a>.</p>
+<p>The full code is available on
+<a href="https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/stopwatch-app/ratatui-stopwatch-app">GitHub</a>.</p>
+<p>Here’s the relevant application part of the code:</p>
 <pre><code class="language-rust">use std::time::{Duration, Instant};
 
 use color_eyre::eyre::{eyre, Result};
