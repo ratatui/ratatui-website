@@ -567,8 +567,8 @@ to render a widget, i.e. a <code>Paragraph</code> widget.</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/single-function.html#admonition-note"></a></p>
 </div>
 <div>
-<p>The most important thing to know with Ratatui is that you have to use one and <em>only</em> one
-<code>terminal.draw()</code> call in your <code>main</code> loop.
+<p>The closure passed to the <code>Terminal::draw()</code> method must render the entire UI. Call the
+draw method at most once for each pass through your application’s main loop.
 <a href="tutorial/counter-app/./../../faq/">See the FAQ for more information.</a></p>
 </div>
 </div>
