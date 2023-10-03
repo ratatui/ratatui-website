@@ -16,28 +16,34 @@ Take this "hello world" program below. If we run it with and without the
 you can see how the program behaves differently.
 
 ```rust
-# use crossterm::{
-#     terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-#     ExecutableCommand,
-# };
-# use ratatui::{prelude::*, widgets::*};
 # use std::{
-#     io::{stderr, Result},
-#     thread::sleep,
-#     time::Duration,
+#   io::{stderr, Result},
+#   thread::sleep,
+#   time::Duration,
 # };
 #
+# use crossterm::{
+#   terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+#   ExecutableCommand,
+# };
+# use ratatui::{prelude::*, widgets::*};
+#
 # fn main() -> Result<()> {
+#   let should_enter_alternate_screen = std::env::args().nth(1).unwrap().parse::<bool>().unwrap();
+#   if should_enter_alternate_screen {
   stderr().execute(EnterAlternateScreen)?; // remove this line
+#   }
 
   let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
 
   terminal.draw(|f| {
-      f.render_widget(Paragraph::new("Hello World!"), Rect::new(10, 10, 20, 1));
+    f.render_widget(Paragraph::new("Hello World!"), Rect::new(10, 20, 20, 1));
   })?;
   sleep(Duration::from_secs(2));
 
+#   if should_enter_alternate_screen {
   stderr().execute(LeaveAlternateScreen)?; // remove this line
+#   }
 #   Ok(())
 # }
 ```
@@ -66,9 +72,9 @@ Enter
 
 Sleep 5s
 
-Type "reset"
-Enter
-Sleep 2s
+# Type "reset"
+# Enter
+# Sleep 2s
 
 Type "# WITHOUT Alternate Screen"
 Enter
@@ -87,7 +93,7 @@ Enter
 Sleep 5s
 -->
 
-![](https://user-images.githubusercontent.com/1813121/272153791-5a0fbdd9-8e9b-4220-8255-0f96b836b823.gif)
+![](https://user-images.githubusercontent.com/1813121/272299743-f666980f-93b8-40d4-a979-1fce26d0f84a.gif)
 
 Try running this code on your own and experiment with `EnterAlternateScreen` and
 `LeaveAlternateScreen`.
