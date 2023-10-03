@@ -20,9 +20,9 @@ Then you'll be able write code like this:
 ```rust
 impl App {
   async fn run(&mut self) -> Result<()> {
-    let mut tui = tui::Tui::new()?;
-    tui.tick_rate(4.0); // 4 ticks per second
-    tui.frame_rate(30.0); // 30 frames per second
+    let mut tui = tui::Tui::new()?
+            .tick_rate(4.0) // 4 ticks per second
+            .frame_rate(30.0); // 30 frames per second
     tui.enter()?; // Starts event handler
     loop {
       tui.draw(|f| { // Deref allows calling `tui.draw`
@@ -57,12 +57,15 @@ use std::{
 use color_eyre::eyre::Result;
 use crossterm::{
   cursor,
-  event::{Event as CrosstermEvent, KeyEvent, KeyEventKind, MouseEvent},
+  event::{
+    DisableBracketedPaste, DisableMouseCapture, EnableBracketedPaste, EnableMouseCapture, Event as CrosstermEvent,
+    KeyEvent, KeyEventKind, MouseEvent,
+  },
   terminal::{EnterAlternateScreen, LeaveAlternateScreen},
 };
 use futures::{FutureExt, StreamExt};
 use ratatui::backend::CrosstermBackend as Backend;
-use serde_derive::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 use tokio::{
   sync::mpsc::{self, UnboundedReceiver, UnboundedSender},
   task::JoinHandle,
@@ -95,25 +98,41 @@ pub struct Tui {
   pub event_tx: UnboundedSender<Event>,
   pub frame_rate: f64,
   pub tick_rate: f64,
+  pub mouse: bool,
+  pub paste: bool,
 }
 
 impl Tui {
   pub fn new() -> Result<Self> {
-    let tick_rate = 4.0; // 4 ticks per second
-    let frame_rate = 30.0; // 30 frames per seconds
+    let tick_rate = 4.0;
+    let frame_rate = 60.0;
     let terminal = ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
     let (event_tx, event_rx) = mpsc::unbounded_channel();
     let cancellation_token = CancellationToken::new();
     let task = tokio::spawn(async {});
-    Ok(Self { terminal, task, cancellation_token, event_rx, event_tx, frame_rate, tick_rate })
+    let mouse = false;
+    let paste = false;
+    Ok(Self { terminal, task, cancellation_token, event_rx, event_tx, frame_rate, tick_rate, mouse, paste })
   }
 
-  pub fn tick_rate(&mut self, tick_rate: f64) {
+  pub fn tick_rate(mut self, tick_rate: f64) -> Self {
     self.tick_rate = tick_rate;
+    self
   }
 
-  pub fn frame_rate(&mut self, frame_rate: f64) {
+  pub fn frame_rate(mut self, frame_rate: f64) -> Self {
     self.frame_rate = frame_rate;
+    self
+  }
+
+  pub fn mouse(mut self, mouse: bool) -> Self {
+    self.mouse = mouse;
+    self
+  }
+
+  pub fn paste(mut self, paste: bool) -> Self {
+    self.paste = paste;
+    self
   }
 
   pub fn start(&mut self) {
@@ -189,8 +208,8 @@ impl Tui {
         self.task.abort();
       }
       if counter > 100 {
-        log::error!("Failed to abort task for unknown reason");
-        return Err(color_eyre::eyre::eyre!("Unable to abort task"));
+        log::error!("Failed to abort task in 100 milliseconds for unknown reason");
+        break;
       }
     }
     Ok(())
@@ -199,14 +218,29 @@ impl Tui {
   pub fn enter(&mut self) -> Result<()> {
     crossterm::terminal::enable_raw_mode()?;
     crossterm::execute!(std::io::stderr(), EnterAlternateScreen, cursor::Hide)?;
+    if self.mouse {
+      crossterm::execute!(std::io::stderr(), EnableMouseCapture)?;
+    }
+    if self.paste {
+      crossterm::execute!(std::io::stderr(), EnableBracketedPaste)?;
+    }
     self.start();
     Ok(())
   }
 
-  pub fn exit(&self) -> Result<()> {
+  pub fn exit(&mut self) -> Result<()> {
     self.stop()?;
-    crossterm::execute!(std::io::stderr(), LeaveAlternateScreen, cursor::Show)?;
-    crossterm::terminal::disable_raw_mode()?;
+    if crossterm::terminal::is_raw_mode_enabled()? {
+      self.flush()?;
+      if self.paste {
+        crossterm::execute!(std::io::stderr(), DisableBracketedPaste)?;
+      }
+      if self.mouse {
+        crossterm::execute!(std::io::stderr(), DisableMouseCapture)?;
+      }
+      crossterm::execute!(std::io::stderr(), LeaveAlternateScreen, cursor::Show)?;
+      crossterm::terminal::disable_raw_mode()?;
+    }
     Ok(())
   }
 
@@ -214,7 +248,7 @@ impl Tui {
     self.cancellation_token.cancel();
   }
 
-  pub fn suspend(&self) -> Result<()> {
+  pub fn suspend(&mut self) -> Result<()> {
     self.exit()?;
     #[cfg(not(windows))]
     signal_hook::low_level::raise(signal_hook::consts::signal::SIGTSTP)?;

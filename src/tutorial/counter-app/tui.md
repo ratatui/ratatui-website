@@ -35,11 +35,11 @@ This is essentially the same as the `startup` function from before. One importan
 this function can be used to set a panic hook that calls the `reset()` method.
 
 ```rust
-impl tui {
+impl Tui {
   // --snip--
 
 {{#include ./ratatui-counter-app/src/tui.rs:tui_exit}}
-  
+
   // --snip--
 }
 ```
@@ -50,7 +50,7 @@ reset, ensuring that the terminal doesn't remain in a disrupted state.
 Finally, we can set up the draw method:
 
 ```rust
-impl tui {
+impl Tui {
     // --snip--
 
 {{#include ./ratatui-counter-app/src/tui.rs:tui_draw}}
