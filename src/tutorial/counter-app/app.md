@@ -35,5 +35,5 @@ Or even test all functions that start with `test_app_` by doing this:
 cargo test -- app::tests::test_app_ --nocapture
 ```
 
-The `--nocapture` flag prints stdout stderr to the console, which can help debugging tests.
+The `--nocapture` flag prints stdout and stderr to the console, which can help debugging tests.
 ````
