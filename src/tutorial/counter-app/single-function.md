@@ -132,44 +132,11 @@ to render a widget, i.e. a `Paragraph` widget.
     })?;
 ```
 
-````admonish note
+```admonish note
 The most important thing to know with Ratatui is that you have to use one and _only_ one
 `terminal.draw()` call in your `main` loop.
-
-Because Ratatui using a double buffer rendering technique,
-writing code like this will **_NOT_** render all three widgets:
-
-```rust
-  loop {
-    terminal.draw(|f| {
-      f.render_widget(widget1, f.size());
-    })?;
-    terminal.draw(|f| {
-      f.render_widget(widget2, f.size());
-    })?;
-    terminal.draw(|f| {
-      f.render_widget(widget3, f.size());
-    })?;
-    // handle events
-    // manage state
-  }
+[See the FAQ for more information.](./../../faq/)
 ```
-
-You want to write the code like this instead:
-
-```rust
-  loop {
-    terminal.draw(|f| {
-      f.render_widget(widget1, f.size());
-      f.render_widget(widget2, f.size());
-      f.render_widget(widget3, f.size());
-    })?;
-    // handle events
-    // manage state
-  }
-```
-
-````
 
 ## User Input
 
