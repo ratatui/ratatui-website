@@ -6460,30 +6460,30 @@ content displayed before launching the application will reappear after the appli
 <p>Take this “hello world” program below. If we run it with and without the
 <code>std::io::stderr().execute(EnterAlternateScreen)?</code> (and the corresponding <code>LeaveAlternateScreen</code>),
 you can see how the program behaves differently.</p>
-<pre><code class="language-diff">  use crossterm::{
-    terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-    ExecutableCommand,
-  };
-  use ratatui::{prelude::*, widgets::*};
+<pre><code class="language-rust"><span class="boring">use crossterm::{
+</span><span class="boring">    terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+</span><span class="boring">    ExecutableCommand,
+</span><span class="boring">};
+</span><span class="boring">use ratatui::{prelude::*, widgets::*};
+</span><span class="boring">use std::{
+</span><span class="boring">    io::{stderr, Result},
+</span><span class="boring">    thread::sleep,
+</span><span class="boring">    time::Duration,
+</span><span class="boring">};
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;()&gt; {
+</span>  stderr().execute(EnterAlternateScreen)?; // remove this line
 
-  fn main() {
--   std::io::stderr().execute(EnterAlternateScreen).unwrap();
+  let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
 
-    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr())).unwrap();
-    terminal
-      .draw(|f| {
-        let mut area = f.size();
-        area.y = area.height / 2;
-        area.height = area.height / 2;
-        f.render_widget(Paragraph::new(&quot;Hello World!&quot;), area);
-      })
-      .unwrap();
+  terminal.draw(|f| {
+      f.render_widget(Paragraph::new(&quot;Hello World!&quot;), Rect::new(10, 10, 20, 1));
+  })?;
+  sleep(Duration::from_secs(2));
 
-    std::thread::sleep(std::time::Duration::from_secs(2));
-
--   std::io::stderr().execute(LeaveAlternateScreen).unwrap();
-  }
-</code></pre>
+  stderr().execute(LeaveAlternateScreen)?; // remove this line
+<span class="boring">  Ok(())
+</span><span class="boring">}</span></code></pre>
 <!--
 Output ./demo.gif
 
