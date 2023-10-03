@@ -15,30 +15,31 @@ Take this "hello world" program below. If we run it with and without the
 `std::io::stderr().execute(EnterAlternateScreen)?` (and the corresponding `LeaveAlternateScreen`),
 you can see how the program behaves differently.
 
-```diff
-  use crossterm::{
-    terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-    ExecutableCommand,
-  };
-  use ratatui::{prelude::*, widgets::*};
+```rust
+# use crossterm::{
+#     terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+#     ExecutableCommand,
+# };
+# use ratatui::{prelude::*, widgets::*};
+# use std::{
+#     io::{stderr, Result},
+#     thread::sleep,
+#     time::Duration,
+# };
+#
+# fn main() -> Result<()> {
+  stderr().execute(EnterAlternateScreen)?; // remove this line
 
-  fn main() {
--   std::io::stderr().execute(EnterAlternateScreen).unwrap();
+  let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
 
-    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr())).unwrap();
-    terminal
-      .draw(|f| {
-        let mut area = f.size();
-        area.y = area.height / 2;
-        area.height = area.height / 2;
-        f.render_widget(Paragraph::new("Hello World!"), area);
-      })
-      .unwrap();
+  terminal.draw(|f| {
+      f.render_widget(Paragraph::new("Hello World!"), Rect::new(10, 10, 20, 1));
+  })?;
+  sleep(Duration::from_secs(2));
 
-    std::thread::sleep(std::time::Duration::from_secs(2));
-
--   std::io::stderr().execute(LeaveAlternateScreen).unwrap();
-  }
+  stderr().execute(LeaveAlternateScreen)?; // remove this line
+#   Ok(())
+# }
 ```
 
 <!--
