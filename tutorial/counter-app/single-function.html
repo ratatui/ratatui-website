@@ -224,7 +224,7 @@ crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen
 <h2 id="initialize"><a class="header" href="#initialize">Initialize</a></h2>
 <p>Again using <code>crossterm</code>, we can create an instance of terminal backend</p>
 <pre><code class="language-rust">let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;</code></pre>
-<h2 id="shut-down"><a class="header" href="#shut-down">Shut Down</a></h2>
+<h2 id="shut-down"><a class="header" href="#shut-down">Shut down</a></h2>
 <p>Terminal disables raw mode and exits the alternate screen for a clean exit, ensuring the terminal
 returns to its original state</p>
 <pre><code class="language-rust">crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
@@ -244,13 +244,24 @@ state, which in turn updates the display on the next loop.</p>
     // Break from loop based on user input and/or state
   }</code></pre>
 <p>Every TUI with <code>ratatui</code> is bound to have (at least) one main application run loop like this.</p>
-<h2 id="ui"><a class="header" href="#ui">UI</a></h2>
+<h2 id="user-interface"><a class="header" href="#user-interface">User interface</a></h2>
 <p>The UI part of our code takes the state of the application, i.e. the value of <code>counter</code> and uses it
 to render a widget, i.e. a <code>Paragraph</code> widget.</p>
 <pre><code class="language-rust">    terminal.draw(|f| {
       f.render_widget(Paragraph::new(format!(&quot;Counter: {counter}&quot;)), f.size());
     })?;</code></pre>
-<h2 id="user-input"><a class="header" href="#user-input">User Input</a></h2>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+</div>
+<div>
+<p>The closure passed to the <code>Terminal::draw()</code> method must render the entire UI. Call the
+draw method at most once for each pass through your application’s main loop.
+<a href="./../../faq/">See the FAQ for more information.</a></p>
+</div>
+</div>
+<h2 id="user-input"><a class="header" href="#user-input">User input</a></h2>
 <p>Every 250 milliseconds, the application checks if the user has pressed a key:</p>
 <ul>
 <li><code>j</code> increases the counter</li>

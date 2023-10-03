@@ -535,7 +535,7 @@ crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen
 <h2 id="initialize"><a class="header" href="#initialize">Initialize</a></h2>
 <p>Again using <code>crossterm</code>, we can create an instance of terminal backend</p>
 <pre><code class="language-rust">let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;</code></pre>
-<h2 id="shut-down"><a class="header" href="#shut-down">Shut Down</a></h2>
+<h2 id="shut-down"><a class="header" href="#shut-down">Shut down</a></h2>
 <p>Terminal disables raw mode and exits the alternate screen for a clean exit, ensuring the terminal
 returns to its original state</p>
 <pre><code class="language-rust">crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
@@ -555,13 +555,24 @@ state, which in turn updates the display on the next loop.</p>
     // Break from loop based on user input and/or state
   }</code></pre>
 <p>Every TUI with <code>ratatui</code> is bound to have (at least) one main application run loop like this.</p>
-<h2 id="ui"><a class="header" href="#ui">UI</a></h2>
+<h2 id="user-interface"><a class="header" href="#user-interface">User interface</a></h2>
 <p>The UI part of our code takes the state of the application, i.e. the value of <code>counter</code> and uses it
 to render a widget, i.e. a <code>Paragraph</code> widget.</p>
 <pre><code class="language-rust">    terminal.draw(|f| {
       f.render_widget(Paragraph::new(format!(&quot;Counter: {counter}&quot;)), f.size());
     })?;</code></pre>
-<h2 id="user-input"><a class="header" href="#user-input">User Input</a></h2>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-app/single-function.html#admonition-note"></a></p>
+</div>
+<div>
+<p>The closure passed to the <code>Terminal::draw()</code> method must render the entire UI. Call the
+draw method at most once for each pass through your application’s main loop.
+<a href="tutorial/counter-app/./../../faq/">See the FAQ for more information.</a></p>
+</div>
+</div>
+<h2 id="user-input"><a class="header" href="#user-input">User input</a></h2>
 <p>Every 250 milliseconds, the application checks if the user has pressed a key:</p>
 <ul>
 <li><code>j</code> increases the counter</li>
@@ -4438,8 +4449,7 @@ handle CLI arguments, tracing, configuration, panics, etc.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="layout"><a class="header" href="#layout">Layout</a></h1>
 <p>In this section we will cover layout basics and advanced techniques.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="layout-advanced"><a class="header" href="#layout-advanced">Layout Advanced</a></h1>
-<h2 id="dynamic-layouts"><a class="header" href="#dynamic-layouts">Dynamic layouts</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-layouts"><a class="header" href="#dynamic-layouts">Dynamic layouts</a></h1>
 <p>With real-world applications, the content can often be dynamic. For example, a chat application may
 need to resize the chat input area based on the number of incoming messages. To achieve this, you
 can generate layouts dynamically:</p>
@@ -4669,7 +4679,7 @@ multiple lines styled differently. This is one way you might go about that:</p>
     </p>
 </div>
 <p>We will talk more about styling in the next section.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="styling-text"><a class="header" href="#styling-text">Styling-Text</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="styling-text"><a class="header" href="#styling-text">Styling Text</a></h1>
 <p>Styling enhances user experience by adding colors, emphasis, and other visual aids. In <code>ratatui</code>,
 the primary tool for this is the <code>ratatui::style::Style</code> struct.</p>
 <p><code>ratatui::style::Style</code> provides a set of methods to apply styling attributes to your text. These
@@ -5837,13 +5847,15 @@ should be structured or how data flows through it. And, for the price of that fr
 features out of the box with <code>tui-realm</code> and potentially lesser code in your application to do the
 same thing that you would with <code>ratatui</code>.</p>
 <h2 id="what-is-the-difference-between-ratatui-and-cursive"><a class="header" href="#what-is-the-difference-between-ratatui-and-cursive">What is the difference between <code>ratatui</code> and <code>cursive</code>?</a></h2>
-<p><a href="https://github.com/gyscos/cursive">Cursive</a> and Ratatui are both libraries that make TUIs easier to write.
-Both libraries are great! Both also work on linux, macOS and windows.</p>
+<p><a href="https://github.com/gyscos/cursive">Cursive</a> and Ratatui are both libraries that make TUIs easier to
+write. Both libraries are great! Both also work on linux, macOS and windows.</p>
 <h3 id="cursive"><a class="header" href="#cursive">Cursive</a></h3>
-<p>Cursive uses a more declarative UI: the user defines the layout, then cursive handles the event loop.
-Cursive also handles most input (including mouse clicks), and forwards events to the currently focused view. User-code is more focused on “events” than on keyboard input.
-Cursive also supports different backends like ncurses, pancurses, termion, and crossterm.</p>
-<p>One of cursive’s main features is its built-in event loop. You can easily attach callbacks to events like clicks or key presses, making it straightforward to handle user interactions.</p>
+<p>Cursive uses a more declarative UI: the user defines the layout, then cursive handles the event
+loop. Cursive also handles most input (including mouse clicks), and forwards events to the currently
+focused view. User-code is more focused on “events” than on keyboard input. Cursive also supports
+different backends like ncurses, pancurses, termion, and crossterm.</p>
+<p>One of cursive’s main features is its built-in event loop. You can easily attach callbacks to events
+like clicks or key presses, making it straightforward to handle user interactions.</p>
 <pre><code class="language-rust">use cursive::views::{Dialog, TextView};
 
 fn main() {
@@ -5860,9 +5872,10 @@ fn main() {
 }</code></pre>
 <p><img src="https://user-images.githubusercontent.com/1813121/271896508-d5f6192c-d51b-4299-9b5e-9d91e4618f64.png" alt="" /></p>
 <h3 id="ratatui"><a class="header" href="#ratatui">Ratatui</a></h3>
-<p>In Ratatui, the user handles the event loop, the application state, and re-draws the entire UI on each iteration.
-It does not handle input and users have use another library (like <a href="https://github.com/TimonPost/crossterm">crossterm</a>).
-Ratatui supports Crossterm, termion, wezterm as backends.</p>
+<p>In Ratatui, the user handles the event loop, the application state, and re-draws the entire UI on
+each iteration. It does not handle input and users have use another library (like
+<a href="https://github.com/TimonPost/crossterm">crossterm</a>). Ratatui supports Crossterm, termion, wezterm
+as backends.</p>
 <pre><code class="language-rust">use ratatui::{prelude::*, widgets::*};
 
 fn init() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
@@ -5934,7 +5947,8 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
   Ok(())
 }</code></pre>
 <p><img src="https://user-images.githubusercontent.com/1813121/271896510-c8db19d1-f132-49b5-89da-c32cc21ab765.png" alt="" /></p>
-<p>You may have to write more code but you get precise control over exact UI you want to display with Ratatui.</p>
+<p>You may have to write more code but you get precise control over exact UI you want to display with
+Ratatui.</p>
 <h2 id="can-you-change-font-size-in-a-terminal-using-ratatui"><a class="header" href="#can-you-change-font-size-in-a-terminal-using-ratatui">Can you change font size in a terminal using <code>ratatui</code>?</a></h2>
 <p><code>ratatui</code> itself doesn’t control the terminal’s font size. <code>ratatui</code> renders content based on the
 size and capabilities of the terminal it’s running in. If you want to change the font size, you’ll
@@ -5979,6 +5993,33 @@ text content in your application.</p>
 <a href="https://github.com/joshka/tui-big-text/"><code>tui-big-text</code></a> to display text content across multiple
 lines. Here’s an example using <a href="https://github.com/joshka/tui-big-text/"><code>tui-big-text</code></a>:</p>
 <p><img src="https://camo.githubusercontent.com/3a738ce21da3ae67660181538ef27473b86bebca73f42944e8012d52f86e500d/68747470733a2f2f7668732e636861726d2e73682f7668732d3364545474724c6b79553534684e61683232504152392e676966" alt="tui-big-text" /></p>
+<h2 id="can-you-use-multiple-terminaldraw-calls-consequently"><a class="header" href="#can-you-use-multiple-terminaldraw-calls-consequently">Can you use multiple <code>terminal.draw()</code> calls consequently?</a></h2>
+<p>You <em>cannot</em> use <code>terminal.draw()</code> multiple times in the same <code>main</code> loop.</p>
+<p>Because Ratatui uses a double buffer rendering technique, writing code like this will <em><strong>NOT</strong></em>
+render all three widgets:</p>
+<pre><code class="language-rust">  loop {
+    terminal.draw(|f| {
+      f.render_widget(widget1, f.size());
+    })?;
+    terminal.draw(|f| {
+      f.render_widget(widget2, f.size());
+    })?;
+    terminal.draw(|f| {
+      f.render_widget(widget3, f.size());
+    })?;
+    // handle events
+    // manage state
+  }</code></pre>
+<p>You want to write the code like this instead:</p>
+<pre><code class="language-rust">  loop {
+    terminal.draw(|f| {
+      f.render_widget(widget1, f.size());
+      f.render_widget(widget2, f.size());
+      f.render_widget(widget3, f.size());
+    })?;
+    // handle events
+    // manage state
+  }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="why-am-i-getting-duplicate-key-events-on-windows"><a class="header" href="#why-am-i-getting-duplicate-key-events-on-windows">Why am I getting duplicate key events on Windows?</a></h1>
 <p>A lot of examples out there in the wild might use the following code for sending key presses:</p>
 <pre><code class="language-rust">  CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),</code></pre>
@@ -6416,6 +6457,86 @@ or terminal games that want to use the full terminal window without disrupting t
 other terminal content.</p>
 <p>This creates a seamless transition between the application and the regular terminal session, as the
 content displayed before launching the application will reappear after the application exits.</p>
+<p>Take this “hello world” program below. If we run it with and without the
+<code>std::io::stderr().execute(EnterAlternateScreen)?</code> (and the corresponding <code>LeaveAlternateScreen</code>),
+you can see how the program behaves differently.</p>
+<pre><code class="language-rust"><span class="boring">use std::{
+</span><span class="boring">  io::{stderr, Result},
+</span><span class="boring">  thread::sleep,
+</span><span class="boring">  time::Duration,
+</span><span class="boring">};
+</span><span class="boring">
+</span><span class="boring">use crossterm::{
+</span><span class="boring">  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+</span><span class="boring">  ExecutableCommand,
+</span><span class="boring">};
+</span><span class="boring">use ratatui::{prelude::*, widgets::*};
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;()&gt; {
+</span><span class="boring">  let should_enter_alternate_screen = std::env::args().nth(1).unwrap().parse::&lt;bool&gt;().unwrap();
+</span><span class="boring">  if should_enter_alternate_screen {
+</span>  stderr().execute(EnterAlternateScreen)?; // remove this line
+<span class="boring">  }
+</span>
+  let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
+
+  terminal.draw(|f| {
+    f.render_widget(Paragraph::new(&quot;Hello World!&quot;), Rect::new(10, 20, 20, 1));
+  })?;
+  sleep(Duration::from_secs(2));
+
+<span class="boring">  if should_enter_alternate_screen {
+</span>  stderr().execute(LeaveAlternateScreen)?; // remove this line
+<span class="boring">  }
+</span><span class="boring">  Ok(())
+</span><span class="boring">}</span></code></pre>
+<!--
+Output ./demo.gif
+
+Set FontSize 18
+Set Width 1200
+Set Height 800
+Set Theme "Catppuccin Mocha"
+
+Type "# WITH Alternate Screen"
+Enter
+Type "# Cursor is here before program starts"
+Enter
+
+Sleep 5s
+
+Type "cargo run -- true"
+Enter
+Sleep 5s
+
+Type "# Cursor is here after program completes"
+Enter
+
+Sleep 5s
+
+# Type "reset"
+# Enter
+# Sleep 2s
+
+Type "# WITHOUT Alternate Screen"
+Enter
+Type "# Cursor is here before program starts"
+Enter
+
+Sleep 5s
+
+Type "cargo run -- false"
+Enter
+Sleep 5s
+
+Type "# Cursor is here after program completes"
+Enter
+
+Sleep 5s
+-->
+<p><img src="https://user-images.githubusercontent.com/1813121/272299743-f666980f-93b8-40d4-a979-1fce26d0f84a.gif" alt="" /></p>
+<p>Try running this code on your own and experiment with <code>EnterAlternateScreen</code> and
+<code>LeaveAlternateScreen</code>.</p>
 <p>Note that not all terminal emulators support the alternate screen, and even those that do may handle
 it differently. As a result, the behavior may vary depending on the backend being used. Always
 consult the specific backend’s documentation to understand how it implements the alternate screen.</p>
@@ -7870,7 +7991,7 @@ applications built with <code>ratatui</code>!</p>
 <hr />
 <h2 id="migration-from-tui-rs"><a class="header" href="#migration-from-tui-rs">Migration from <code>tui-rs</code></a></h2>
 <p>We put together a migration guide at the Wiki:
-<a href="https://github.com/ratatui-org/ratatui/wiki/Migrating-from-TUI">Migrating from TUI</a></p>
+<a href="highlights/./../how-to/develop-apps/migrate-from-tui-rs.html">Migrating from TUI</a></p>
 <p>Also, the minimum supported Rust version is <code>1.65.0</code></p>
 <hr />
 <h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
