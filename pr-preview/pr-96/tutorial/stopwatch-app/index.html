@@ -160,7 +160,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="stopwatch-app"><a class="header" href="#stopwatch-app">Stopwatch App</a></h1>
-<p>Here’s the dependencies:</p>
+<p>In this section, we are going to combine what we learnt in the previous tutorials and build a
+stopwatch application. We are also going to take advantage of a widget from an external dependency.</p>
+<p>Here’s the dependencies you’ll need in your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[package]
 name = &quot;ratatui-stopwatch-app&quot;
 version = &quot;0.1.0&quot;
@@ -443,6 +445,29 @@ impl StopwatchApp {
     format!(&quot;{:02}:{:02}.{:03}&quot;, duration.as_secs() / 60, duration.as_secs() % 60, duration.subsec_millis())
   }
 }</code></pre>
+<p>It is worth thinking about what it takes to build your own custom widget by looking at
+<a href="https://github.com/joshka/tui-big-text/blob/7f9e84968a9ba4db824a7ece7d186e58bb35999d/src/lib.rs#L83-L104">the source for the <code>BigText</code> widget</a>:</p>
+<pre><code class="language-rust">#[derive(Debug, Builder, Clone, PartialEq, Eq, Hash)]
+pub struct BigText&lt;'a&gt; {
+    #[builder(setter(into))]
+    lines: Vec&lt;Line&lt;'a&gt;&gt;,
+
+    #[builder(default)]
+    style: Style,
+}
+
+impl Widget for BigText&lt;'_&gt; {
+    fn render(self, area: Rect, buf: &amp;mut Buffer) {
+        let layout = layout(area);
+        for (line, line_layout) in self.lines.iter().zip(layout) {
+            for (g, cell) in line.styled_graphemes(self.style).zip(line_layout) {
+                render_symbol(g, cell, buf);
+            }
+        }
+    }
+}</code></pre>
+<p>To build a custom widget, you have ti implement the <code>Widget</code> trait. We cover how to implement the
+<code>Widget</code> trait for your own structs in <a href="../../how-to/widgets/custom.html">a separate section</a>.</p>
 
                     </main>
 
