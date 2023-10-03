@@ -172,29 +172,35 @@ content displayed before launching the application will reappear after the appli
 <p>Take this “hello world” program below. If we run it with and without the
 <code>std::io::stderr().execute(EnterAlternateScreen)?</code> (and the corresponding <code>LeaveAlternateScreen</code>),
 you can see how the program behaves differently.</p>
-<pre><code class="language-rust"><span class="boring">use crossterm::{
-</span><span class="boring">    terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-</span><span class="boring">    ExecutableCommand,
-</span><span class="boring">};
-</span><span class="boring">use ratatui::{prelude::*, widgets::*};
-</span><span class="boring">use std::{
-</span><span class="boring">    io::{stderr, Result},
-</span><span class="boring">    thread::sleep,
-</span><span class="boring">    time::Duration,
+<pre><code class="language-rust"><span class="boring">use std::{
+</span><span class="boring">  io::{stderr, Result},
+</span><span class="boring">  thread::sleep,
+</span><span class="boring">  time::Duration,
 </span><span class="boring">};
 </span><span class="boring">
+</span><span class="boring">use crossterm::{
+</span><span class="boring">  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+</span><span class="boring">  ExecutableCommand,
+</span><span class="boring">};
+</span><span class="boring">use ratatui::{prelude::*, widgets::*};
+</span><span class="boring">
 </span><span class="boring">fn main() -&gt; Result&lt;()&gt; {
+</span><span class="boring">  let should_enter_alternate_screen = std::env::args().nth(1).unwrap().parse::&lt;bool&gt;().unwrap();
+</span><span class="boring">  if should_enter_alternate_screen {
 </span>  stderr().execute(EnterAlternateScreen)?; // remove this line
-
+<span class="boring">  }
+</span>
   let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
 
   terminal.draw(|f| {
-      f.render_widget(Paragraph::new(&quot;Hello World!&quot;), Rect::new(10, 10, 20, 1));
+    f.render_widget(Paragraph::new(&quot;Hello World!&quot;), Rect::new(10, 20, 20, 1));
   })?;
   sleep(Duration::from_secs(2));
 
-  stderr().execute(LeaveAlternateScreen)?; // remove this line
-<span class="boring">  Ok(())
+<span class="boring">  if should_enter_alternate_screen {
+</span>  stderr().execute(LeaveAlternateScreen)?; // remove this line
+<span class="boring">  }
+</span><span class="boring">  Ok(())
 </span><span class="boring">}</span></code></pre>
 <!--
 Output ./demo.gif
@@ -220,9 +226,9 @@ Enter
 
 Sleep 5s
 
-Type "reset"
-Enter
-Sleep 2s
+# Type "reset"
+# Enter
+# Sleep 2s
 
 Type "# WITHOUT Alternate Screen"
 Enter
@@ -240,7 +246,7 @@ Enter
 
 Sleep 5s
 -->
-<p><img src="https://user-images.githubusercontent.com/1813121/272153791-5a0fbdd9-8e9b-4220-8255-0f96b836b823.gif" alt="" /></p>
+<p><img src="https://user-images.githubusercontent.com/1813121/272299743-f666980f-93b8-40d4-a979-1fce26d0f84a.gif" alt="" /></p>
 <p>Try running this code on your own and experiment with <code>EnterAlternateScreen</code> and
 <code>LeaveAlternateScreen</code>.</p>
 <p>Note that not all terminal emulators support the alternate screen, and even those that do may handle
