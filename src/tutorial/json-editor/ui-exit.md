@@ -12,4 +12,4 @@ in the `stdout` pipe, or close without outputting anything.
 
 The only thing in this part that we haven't done before, is use the `Clear` widget. This is a
 special widget that does what the name suggests --- it clears everything in the space it is
-rendered. In this case, it clears all of the menu that was prerendered behind it.
+rendered.
