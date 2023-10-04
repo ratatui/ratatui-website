@@ -155,8 +155,8 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
 
         let value_text = Paragraph::new(app.value_input.clone()).block(value_block);
         f.render_widget(value_text, popup_chunks[1]);
-        // ANCHOR_END: key_value_blocks
     }
+    // ANCHOR_END: key_value_blocks
 
     // ANCHOR: exit_screen
     if let CurrentScreen::Exiting = app.current_screen {

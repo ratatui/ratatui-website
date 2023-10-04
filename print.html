@@ -2496,7 +2496,8 @@ create the blocks and paragraphs to show what the user has already entered.</p>
         f.render_widget(key_text, popup_chunks[0]);
 
         let value_text = Paragraph::new(app.value_input.clone()).block(value_block);
-        f.render_widget(value_text, popup_chunks[1]);</code></pre>
+        f.render_widget(value_text, popup_chunks[1]);
+    }</code></pre>
 <p>Note that we are declaring the blocks as variables, and then adding extra styling to the block the
 user is currently editing. Then we create the <code>Paragraph</code> widgets, and assign the blocks with those
 variables. Also note how we used the <code>popup_chunks</code> layout instead of the <code>popup_block</code> layout to
@@ -2525,9 +2526,10 @@ in the <code>stdout</code> pipe, or close without outputting anything.</p>
         let area = centered_rect(60, 25, f.size());
         f.render_widget(exit_paragraph, area);
     }</code></pre>
-<p>The only thing in this part that we haven’t done before, is use the <code>Clear</code> widget. This is a
+<p>The only thing in this part that we haven’t done before, is use the 
+<a href="https://docs.rs/ratatui/latest/ratatui/widgets/struct.Clear.html"><code>Clear</code></a> widget. This is a
 special widget that does what the name suggests — it clears everything in the space it is
-rendered. In this case, it clears all of the menu that was prerendered behind it.</p>
+rendered.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="closing-thoughts"><a class="header" href="#closing-thoughts">Closing Thoughts</a></h1>
 <p>This tutorial should get you started with a basic understanding of the flow of a <code>ratatui</code> program.
 However, this is only <em>one</em> way to create a <code>ratatui</code> application. Because <code>ratatui</code> is relatively
