@@ -10,6 +10,7 @@ in the `stdout` pipe, or close without outputting anything.
 {{#include ./ratatui-json-editor-app/src/ui.rs:exit_screen}}
 ```
 
-The only thing in this part that we haven't done before, is use the `Clear` widget. This is a
+The only thing in this part that we haven't done before, is use the 
+[`Clear`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Clear.html) widget. This is a
 special widget that does what the name suggests --- it clears everything in the space it is
-rendered. In this case, it clears all of the menu that was prerendered behind it.
+rendered.
