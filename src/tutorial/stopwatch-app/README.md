@@ -58,5 +58,5 @@ impl Widget for BigText<'_> {
 }
 ```
 
-To build a custom widget, you have ti implement the `Widget` trait. We cover how to implement the
+To build a custom widget, you have to implement the `Widget` trait. We cover how to implement the
 `Widget` trait for your own structs in [a separate section](../../how-to/widgets/custom.md).
