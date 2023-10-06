@@ -352,8 +352,7 @@ passed into the <code>Paragraph</code> widget to get the desired effect.</p>
 you want to render ansi escape sequences in Ratatui.</p>
 </div>
 </div>
-<p>The important thing to note is that all widgets render to a <code>Buffer</code>. For example, here’s a snippet
-of the <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets/block.rs#L752-L760"><code>render</code> method for <code>Block</code></a>:</p>
+<p>As another example, here’s a snippet of the <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets/block.rs#L752-L760"><code>render</code> method for <code>Block</code></a>:</p>
 <pre><code class="language-rust">    fn render(self, area: Rect, buf: &amp;mut Buffer) {
         buf.set_style(area, self.style);
         let symbols = self.border_set;
@@ -376,9 +375,10 @@ of the <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cb
         }
         // --snip--
     }</code></pre>
-<p>Widgets may overwrite the same <code>Cell</code>, so the order in which widgets are rendered is important. For
-example, in the first <code>draw</code> call, <code>content1</code> will be overwritten by <code>content2</code> which will be
-overwritten by <code>content3</code> in the <code>Buffer</code> struct:</p>
+<p>The important thing to note is that all widgets render to the same <code>Buffer</code> within a single
+<code>terminal.draw(|f| ...)</code> call. Widgets may overwrite the same <code>Cell</code>, so the order in which widgets
+are rendered is important. For example, in the first <code>draw</code> call, <code>content1</code> will be overwritten by
+<code>content2</code> which will be overwritten by <code>content3</code> in the <code>Buffer</code> struct:</p>
 <pre><code class="language-rust">terminal.draw(|f| {
     f.render_widget(Paragraph(&quot;content1&quot;), f.size());
     f.render_widget(Paragraph(&quot;content2&quot;), f.size());
