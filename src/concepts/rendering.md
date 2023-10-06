@@ -49,14 +49,14 @@ This 4 minute talk about `IMGUI` is also tangentially relevant.
  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
  allowfullscreen></iframe>
 
-## Advantages of Immediate Mode Rendering
+### Advantages of Immediate Mode Rendering
 
 - **Simplicity**: Without a persistent widget state, your UI logic becomes a direct reflection of
   your application state. You don't have to sync them or worry about past widget states.
 - **Flexibility**: You can change your UI layout or logic any time, as nothing is set in stone. Want
   to hide a widget conditionally? Just don't draw it based on some condition.
 
-## Disadvantages of Immediate Mode Rendering
+### Disadvantages of Immediate Mode Rendering
 
 - **Render loop management**: In Immediate mode rendering, the onus of rendering lies solely on the
   programmer. Every visual update necessitates a call to `Backend.draw()`. Hence, if the rendering
