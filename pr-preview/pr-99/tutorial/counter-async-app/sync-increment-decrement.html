@@ -169,11 +169,15 @@
     loop {
       let action = if crossterm::event::poll(tick_rate).unwrap() {
         if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
-          match key.code {
-            crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
-            crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
-            crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
-            _ =&gt; Action::None,
+          if key.kind == event::KeyEventKind::Press {
+            match key.code {
+              crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
+              crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
+              crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
+              _ =&gt; Action::None,
+            }
+          } else {
+            Action::None
           }
         } else {
           Action::None
@@ -304,11 +308,15 @@ fn start_event_handler(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -
     loop {
       let action = if crossterm::event::poll(tick_rate).unwrap() {
         if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
-          match key.code {
-            crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
-            crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
-            crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
-            _ =&gt; Action::None,
+          if key.kind == event::KeyEventKind::Press {
+            match key.code {
+              crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
+              crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
+              crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
+              _ =&gt; Action::None,
+            }
+          } else {
+            Action::None
           }
         } else {
           Action::None

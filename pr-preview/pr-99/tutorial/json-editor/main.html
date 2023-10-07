@@ -323,6 +323,10 @@ need to refer to the documentation of that backend for more information.</p>
 <p>We will start with the keybinds and event handling for the <code>CurrentScreen::Main</code>.</p>
 <pre><code class="language-rust no_run noplayground">        // --snip--
         if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Release {
+                // Skip events that are not KeyEventKind::Press
+                continue;
+            }
             match app.current_screen {
                 CurrentScreen::Main =&gt; match key.code {
                     KeyCode::Char('e') =&gt; {
@@ -431,6 +435,10 @@ that is the final key or value.</p>
 <p>Altogether, the event loop should look like this:</p>
 <pre><code class="language-rust no_run noplayground">        // --snip--
         if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Release {
+                // Skip events that are not KeyEventKind::Press
+                continue;
+            }
             match app.current_screen {
                 CurrentScreen::Main =&gt; match key.code {
                     KeyCode::Char('e') =&gt; {

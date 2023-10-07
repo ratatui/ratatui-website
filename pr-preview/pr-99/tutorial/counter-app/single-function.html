@@ -281,9 +281,15 @@ draw method at most once for each pass through your application’s main loop.
         }
       }
     }</code></pre>
-<p>However, on Windows, <code>crossterm</code> generates a key event for both <code>Press</code> and <code>Release</code>. This code
-above will increment or decrement the counter twice.</p>
-<p>All we need to do to fix this is check for <code>key.kind == crossterm::event::KeyEventKind::Press</code>:</p>
+<div id="admonition-attention" class="admonition warning">
+<div class="admonition-title">
+<p>Attention</p>
+<p><a class="admonition-anchor-link" href="#admonition-attention"></a></p>
+</div>
+<div>
+<p>On Windows, when using <code>Crossterm</code>, this will send the same <code>Event::Key(e)</code> twice; one for when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when you release the key, i.e. <code>KeyEventKind::Release</code>.
+On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds of <code>key</code> event is generated.</p>
+<p>To make the code work as expected across all platforms, you have to do this instead:</p>
 <pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
         // check if key.kind is a `KeyEventKind::Press`
@@ -297,6 +303,8 @@ above will increment or decrement the counter twice.</p>
         }
       }
     }</code></pre>
+</div>
+</div>
 <h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
 <p>By understanding the structure and components used in this simple counter application, you are set
 up to explore crafting more intricate terminal-based interfaces using <code>ratatui</code>.</p>

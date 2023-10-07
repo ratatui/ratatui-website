@@ -592,9 +592,15 @@ draw method at most once for each pass through your application’s main loop.
         }
       }
     }</code></pre>
-<p>However, on Windows, <code>crossterm</code> generates a key event for both <code>Press</code> and <code>Release</code>. This code
-above will increment or decrement the counter twice.</p>
-<p>All we need to do to fix this is check for <code>key.kind == crossterm::event::KeyEventKind::Press</code>:</p>
+<div id="admonition-attention" class="admonition warning">
+<div class="admonition-title">
+<p>Attention</p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-app/single-function.html#admonition-attention"></a></p>
+</div>
+<div>
+<p>On Windows, when using <code>Crossterm</code>, this will send the same <code>Event::Key(e)</code> twice; one for when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when you release the key, i.e. <code>KeyEventKind::Release</code>.
+On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds of <code>key</code> event is generated.</p>
+<p>To make the code work as expected across all platforms, you have to do this instead:</p>
 <pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
         // check if key.kind is a `KeyEventKind::Press`
@@ -608,6 +614,8 @@ above will increment or decrement the counter twice.</p>
         }
       }
     }</code></pre>
+</div>
+</div>
 <h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
 <p>By understanding the structure and components used in this simple counter application, you are set
 up to explore crafting more intricate terminal-based interfaces using <code>ratatui</code>.</p>
@@ -1942,6 +1950,10 @@ need to refer to the documentation of that backend for more information.</p>
 <p>We will start with the keybinds and event handling for the <code>CurrentScreen::Main</code>.</p>
 <pre><code class="language-rust no_run noplayground">        // --snip--
         if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Release {
+                // Skip events that are not KeyEventKind::Press
+                continue;
+            }
             match app.current_screen {
                 CurrentScreen::Main =&gt; match key.code {
                     KeyCode::Char('e') =&gt; {
@@ -2050,6 +2062,10 @@ that is the final key or value.</p>
 <p>Altogether, the event loop should look like this:</p>
 <pre><code class="language-rust no_run noplayground">        // --snip--
         if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Release {
+                // Skip events that are not KeyEventKind::Press
+                continue;
+            }
             match app.current_screen {
                 CurrentScreen::Main =&gt; match key.code {
                     KeyCode::Char('e') =&gt; {
@@ -2642,6 +2658,10 @@ fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut
         terminal.draw(|f| ui(f, app))?;
 
         if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Release {
+                // Skip events that are not KeyEventKind::Press
+                continue;
+            }
             match app.current_screen {
                 CurrentScreen::Main =&gt; match key.code {
                     KeyCode::Char('e') =&gt; {
@@ -3067,11 +3087,15 @@ fn get_action(_app: &amp;App) -&gt; Action {
   let tick_rate = std::time::Duration::from_millis(250);
   if event::poll(tick_rate).unwrap() {
     if let Key(key) = event::read().unwrap() {
-      match key.code {
-        Char('j') =&gt; Action::Increment,
-        Char('k') =&gt; Action::Decrement,
-        Char('q') =&gt; Action::Quit,
-        _ =&gt; Action::None,
+      if key.kind == event::KeyEventKind::Press {
+        match key.code {
+            Char('j') =&gt; Action::Increment,
+            Char('k') =&gt; Action::Decrement,
+            Char('q') =&gt; Action::Quit,
+            _ =&gt; Action::None,
+        }
+      } else {
+        Action::None
       }
     } else {
       Action::None
@@ -3173,7 +3197,11 @@ out which action to take by updating the <code>get_action()</code> function:</p>
   let tick_rate = std::time::Duration::from_millis(250);
   if event::poll(tick_rate).unwrap() {
     if let Key(key) = event::read().unwrap() {
-      app.keyconfig.get(key.code).unwrap_or(Action::None)
+      if key.kind == event::KeyEventKind::Press {
+        app.keyconfig.get(key.code).unwrap_or(Action::None)
+      } else {
+        Action::None
+      }
     } else {
       Action::None
     }
@@ -3193,11 +3221,15 @@ do next by sending a message over a channel. We will discuss this approach in th
     loop {
       let action = if crossterm::event::poll(tick_rate).unwrap() {
         if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
-          match key.code {
-            crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
-            crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
-            crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
-            _ =&gt; Action::None,
+          if key.kind == event::KeyEventKind::Press {
+            match key.code {
+              crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
+              crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
+              crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
+              _ =&gt; Action::None,
+            }
+          } else {
+            Action::None
           }
         } else {
           Action::None
@@ -3328,11 +3360,15 @@ fn start_event_handler(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -
     loop {
       let action = if crossterm::event::poll(tick_rate).unwrap() {
         if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
-          match key.code {
-            crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
-            crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
-            crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
-            _ =&gt; Action::None,
+          if key.kind == event::KeyEventKind::Press {
+            match key.code {
+              crossterm::event::KeyCode::Char('j') =&gt; Action::Increment,
+              crossterm::event::KeyCode::Char('k') =&gt; Action::Decrement,
+              crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
+              _ =&gt; Action::None,
+            }
+          } else {
+            Action::None
           }
         } else {
           Action::None
@@ -3486,11 +3522,14 @@ fn handle_event(app: &amp;App, tx: mpsc::UnboundedSender&lt;Action&gt;) -&gt; to
     loop {
       let action = if crossterm::event::poll(tick_rate).unwrap() {
         if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
-          match key.code {
-            crossterm::event::KeyCode::Char('j') =&gt; Action::ScheduleIncrement,
-            crossterm::event::KeyCode::Char('k') =&gt; Action::ScheduleDecrement,
-            crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
-            _ =&gt; Action::None,
+          if key.kind == event::KeyEventKind::Press {
+            match key.code {
+              crossterm::event::KeyCode::Char('j') =&gt; Action::ScheduleIncrement,
+              crossterm::event::KeyCode::Char('k') =&gt; Action::ScheduleDecrement,
+              crossterm::event::KeyCode::Char('q') =&gt; Action::Quit,
+              _ =&gt; Action::None,
+          } else {
+            Action::None
           }
         } else {
           Action::None
@@ -3599,11 +3638,13 @@ pressed <code>j</code> and decremented a counter when we pressed <code>k</code>.
   loop {
     if crossterm::event::poll(Duration::from_millis(250))? {
       if let Event::Key(key) = crossterm::event::read()? {
-        match key.code {
-          KeyCode::Char('j') =&gt; app.increment(),
-          KeyCode::Char('k') =&gt; app.decrement(),
-          KeyCode::Char('q') =&gt; break,
-          _ =&gt; (),
+        if key.kind == event::KeyEventKind::Press {
+          match key.code {
+            KeyCode::Char('j') =&gt; app.increment(),
+            KeyCode::Char('k') =&gt; app.decrement(),
+            KeyCode::Char('q') =&gt; break,
+            _ =&gt; (),
+          }
         }
       }
     };
@@ -3669,7 +3710,11 @@ impl EventHandler {
       loop {
         if crossterm::event::poll(tick_rate)? {
           match crossterm::event::read()? {
-            CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),
+            CrosstermEvent::Key(e) =&gt; {
+              if key.kind == event::KeyEventKind::Press {
+                tx.send(Event::Key(e))
+              }
+            },
             _ =&gt; unimplemented!(),
           }?
         }
@@ -3700,7 +3745,11 @@ impl EventHandler {
       loop {
         if crossterm::event::poll(tick_rate)? {
           match crossterm::event::read()? {
-            CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),
+            CrosstermEvent::Key(e) =&gt; {
+              if key.kind == event::KeyEventKind::Press {
+                tx.send(Event::Key(e))
+              }
+            },
             _ =&gt; unimplemented!(),
           }?
         }
@@ -3734,7 +3783,11 @@ impl EventHandler {
         loop {
           if crossterm::event::poll(tick_rate)? {
             match crossterm::event::read()? {
-              CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),
+              CrosstermEvent::Key(e) =&gt; {
+                if key.kind == event::KeyEventKind::Press {
+                  tx.send(Event::Key(e))
+                }
+              },
               _ =&gt; unimplemented!(),
             }?
           }
@@ -3751,24 +3804,6 @@ impl EventHandler {
     }
   }
 </code></pre>
-<div id="admonition-attention" class="admonition warning">
-<div class="admonition-title">
-<p>Attention</p>
-<p><a class="admonition-anchor-link" href="tutorial/counter-async-app/async-event-stream.html#admonition-attention"></a></p>
-</div>
-<div>
-<p>A lot of examples out there in the wild might use the following code for sending key presses:</p>
-<pre><code class="language-rust">  CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),</code></pre>
-<p>However, on Windows, when using <code>Crossterm</code>, this will send the same <code>Event::Key(e)</code> twice; one for when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when you release the key, i.e. <code>KeyEventKind::Release</code>.
-On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds of <code>key</code> event is generated.</p>
-<p>To make the code work as expected across all platforms, you can do this instead:</p>
-<pre><code class="language-rust">  CrosstermEvent::Key(key) =&gt; {
-    if key.kind == KeyEventKind::Press {
-      event_tx.send(Event::Key(key)).unwrap();
-    }
-  },</code></pre>
-</div>
-</div>
 <p>Tokio is an asynchronous runtime for the Rust programming language. It is one of the more popular
 runtimes for asynchronous programming in rust. You can learn more about here
 <a href="https://tokio.rs/tokio/tutorial">https://tokio.rs/tokio/tutorial</a>. For the rest of the tutorial here, we are going to assume we want

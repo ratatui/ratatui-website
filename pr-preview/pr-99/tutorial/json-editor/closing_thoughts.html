@@ -231,6 +231,10 @@ fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut
         terminal.draw(|f| ui(f, app))?;
 
         if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Release {
+                // Skip events that are not KeyEventKind::Press
+                continue;
+            }
             match app.current_screen {
                 CurrentScreen::Main =&gt; match key.code {
                     KeyCode::Char('e') =&gt; {

@@ -215,11 +215,13 @@ pressed <code>j</code> and decremented a counter when we pressed <code>k</code>.
   loop {
     if crossterm::event::poll(Duration::from_millis(250))? {
       if let Event::Key(key) = crossterm::event::read()? {
-        match key.code {
-          KeyCode::Char('j') =&gt; app.increment(),
-          KeyCode::Char('k') =&gt; app.decrement(),
-          KeyCode::Char('q') =&gt; break,
-          _ =&gt; (),
+        if key.kind == event::KeyEventKind::Press {
+          match key.code {
+            KeyCode::Char('j') =&gt; app.increment(),
+            KeyCode::Char('k') =&gt; app.decrement(),
+            KeyCode::Char('q') =&gt; break,
+            _ =&gt; (),
+          }
         }
       }
     };
@@ -285,7 +287,11 @@ impl EventHandler {
       loop {
         if crossterm::event::poll(tick_rate)? {
           match crossterm::event::read()? {
-            CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),
+            CrosstermEvent::Key(e) =&gt; {
+              if key.kind == event::KeyEventKind::Press {
+                tx.send(Event::Key(e))
+              }
+            },
             _ =&gt; unimplemented!(),
           }?
         }
@@ -316,7 +322,11 @@ impl EventHandler {
       loop {
         if crossterm::event::poll(tick_rate)? {
           match crossterm::event::read()? {
-            CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),
+            CrosstermEvent::Key(e) =&gt; {
+              if key.kind == event::KeyEventKind::Press {
+                tx.send(Event::Key(e))
+              }
+            },
             _ =&gt; unimplemented!(),
           }?
         }
@@ -350,7 +360,11 @@ impl EventHandler {
         loop {
           if crossterm::event::poll(tick_rate)? {
             match crossterm::event::read()? {
-              CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),
+              CrosstermEvent::Key(e) =&gt; {
+                if key.kind == event::KeyEventKind::Press {
+                  tx.send(Event::Key(e))
+                }
+              },
               _ =&gt; unimplemented!(),
             }?
           }
@@ -367,24 +381,6 @@ impl EventHandler {
     }
   }
 </code></pre>
-<div id="admonition-attention" class="admonition warning">
-<div class="admonition-title">
-<p>Attention</p>
-<p><a class="admonition-anchor-link" href="#admonition-attention"></a></p>
-</div>
-<div>
-<p>A lot of examples out there in the wild might use the following code for sending key presses:</p>
-<pre><code class="language-rust">  CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),</code></pre>
-<p>However, on Windows, when using <code>Crossterm</code>, this will send the same <code>Event::Key(e)</code> twice; one for when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when you release the key, i.e. <code>KeyEventKind::Release</code>.
-On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds of <code>key</code> event is generated.</p>
-<p>To make the code work as expected across all platforms, you can do this instead:</p>
-<pre><code class="language-rust">  CrosstermEvent::Key(key) =&gt; {
-    if key.kind == KeyEventKind::Press {
-      event_tx.send(Event::Key(key)).unwrap();
-    }
-  },</code></pre>
-</div>
-</div>
 <p>Tokio is an asynchronous runtime for the Rust programming language. It is one of the more popular
 runtimes for asynchronous programming in rust. You can learn more about here
 <a href="https://tokio.rs/tokio/tutorial">https://tokio.rs/tokio/tutorial</a>. For the rest of the tutorial here, we are going to assume we want
