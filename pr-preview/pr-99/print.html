@@ -4973,6 +4973,8 @@ terminal:</p>
     frame.render_widget(Paragraph::new(&quot;content2&quot;), frame.size());
     frame.render_widget(Paragraph::new(&quot;content3&quot;), frame.size());
 })</code></pre>
+<p>It’s also important to note that each time an application calls <code>terminal.draw()</code> it must draw all
+the widgets it expects to be rendered to the terminal, and not just a part of the frame</p>
 <p>In summary, the application calls <code>terminal.draw(|frame| ...)</code>, and Ratatui provides a frame to the
 closure. Using the frame’s <code>render_widget</code> method, each widget draws to a buffer. Ratatui writes the
 contents of the buffer to the terminal.</p>
