@@ -66,7 +66,7 @@
     - [CLI arguments](./how-to/develop-apps/cli-arguments.md)
     - [Configuration Directories](./how-to/develop-apps/config-directories.md)
     - [Logging with Tracing](./how-to/develop-apps/tracing.md)
-    - [Combine Terminal and Event handler](./how-to/develop-apps/abstract-terminal-and-event-handler.md)
+    - [Async Terminal and Event handler](./how-to/develop-apps/abstract-terminal-and-event-handler.md)
     - [Setup Panic Hooks](./how-to/develop-apps/setup-panic-hooks.md)
     - [Better Panic Hooks](./how-to/develop-apps/better-panic-hooks.md)
     - [Migrate from tui-rs](./how-to/develop-apps/migrate-from-tui-rs.md)

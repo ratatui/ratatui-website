@@ -1,7 +1,14 @@
-# Single `Tui` struct with `Terminal` and `EventHandler`
+# Async `Tui` with `Terminal` and `EventHandler` using `tokio` and `crossterm`
 
-If you want a `tui.rs` with `Terminal` with `Deref` and `DerefMut`, and an `EventHandler`, you can
-use the following code.
+If you want a `Tui` struct:
+
+- with `Deref` and `DerefMut`
+- with `Terminal` enter raw mode, exit raw mode etc
+- with signal handling support
+- with key event `EventHandler` with `crossterm`'s `EventStream` support
+- and with `tokio`'s `select!`
+
+then you can copy-paste this `Tui` struct into your project.
 
 Add the following dependencies:
 
@@ -253,6 +260,8 @@ impl Drop for Tui {
 Then you'll be able write code like this:
 
 ```rust
+mod tui;
+
 impl App {
   async fn run(&mut self) -> Result<()> {
     let mut tui = tui::Tui::new()?
