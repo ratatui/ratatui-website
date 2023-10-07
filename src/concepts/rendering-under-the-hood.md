@@ -1,8 +1,8 @@
 # How does Ratatui work?
 
 You may have read in previous sections that Ratatui is a immediate mode rendering library. But what
-does that really mean? And how is it implemented? In this section, we are going to discuss what it
-means "to be a `Widget`" and what happens behind the scenes in Ratatui.
+does that really mean? And how is it implemented? In this section, we will discuss how Ratatui renders `Widget`
+to the screen, starting with the `Terminal`'s `draw` method and ending with your chosen backend library.
 
 In Ratatui, the primary mechanism for making something that is renderable is through the `Widget`
 trait.
