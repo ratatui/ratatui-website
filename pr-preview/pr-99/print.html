@@ -4770,9 +4770,9 @@ struct. This <code>Widget::render()</code> method is part of the <a href="https:
     /// Draws the current state of the widget in the given buffer.
     fn render(self, area: Rect, buf: &amp;mut Buffer);
 }</code></pre>
-<p>Any struct (inside Ratatui or third party crates) can provide an implementation of the
-<code>Widget::render()</code> method, making an instance of that struct renderable to the terminal. That is the
-only method required to implement a custom widget.</p>
+<p>Any struct (inside Ratatui or third party crates) can implement the <code>Widget</code> trait, making an
+instance of that struct renderable to the terminal. The <code>Widget::render()</code> method is the only method
+required to make a struct a renderable widget.</p>
 <!--prettier-ignore-->
 <p>In the <code>Paragraph</code> example above, <code>f.render_widget()</code> calls the
 <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/widgets/paragraph.rs#L213-L214"><code>Widget::render()</code> method implemented for <code>Paragraph</code></a>.</p>
