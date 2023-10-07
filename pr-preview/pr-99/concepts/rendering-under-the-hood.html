@@ -165,9 +165,9 @@ does that really mean? And how is it implemented? In this section, we will discu
 renders a widget to the screen, starting with the <code>Terminal</code>’s <code>draw</code> method and ending with your
 chosen backend library.</p>
 <p>To render an UI in Ratatui, your application calls the <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L325-L360"><code>Terminal::draw()</code></a> method. This method
-takes a <a href="https://doc.rust-lang.org/stable/book/ch13-01-closures.html">closure</a> which accepts an instance of a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a>. Inside the <code>draw</code> method, applications
-can call <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596"><code>Frame::render_widget()</code></a>to render the state of a widget within the available renderable
-area. We only discuss the <code>Frame::render_widget()</code> here but this discussion about rendering applies
+takes a <a href="https://doc.rust-lang.org/stable/book/ch13-01-closures.html">closure</a> which accepts an instance of <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a>. Inside the <code>draw</code> method, applications can
+call <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596"><code>Frame::render_widget()</code></a>to render the state of a widget within the available renderable area.
+We only discuss the <code>Frame::render_widget()</code> here but this discussion about rendering applies
 equally to <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L628"><code>Frame::render_stateful_widget()</code></a>.</p>
 <p>The <code>Frame</code> holds a reference to a buffer which it can render widgets to using the <code>render_widget()</code>
 method. At the end of the <code>draw</code> method (after the closure returns), Ratatui persists the content of
@@ -204,7 +204,7 @@ impl Widget for Clear {
     }
 }</code></pre>
 <p>Every time your application calls <code>terminal.draw(|frame| ...)</code>, Ratatui passes into the closure a
-new instance of a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a> which contains a mutable reference to an instance of <code>Buffer</code>.</p>
+new instance of <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a> which contains a mutable reference to an instance of <code>Buffer</code>.</p>
 <p>In the closure, when the application calls the <code>Frame::render_widget()</code> method, it will call the
 <code>Clear</code>’s <code>Widget::render()</code> method passing it the area (a <code>Rect</code> value) and a mutable reference to
 the frame’s <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a>.</p>
