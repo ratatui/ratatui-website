@@ -160,8 +160,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="how-does-ratatui-work"><a class="header" href="#how-does-ratatui-work">How does Ratatui work?</a></h1>
-<p>In this section, we are going to discuss what it means “to be a <code>Widget</code>” and what happens behind
-the scenes in Ratatui.</p>
+<p>You may have read in previous sections that Ratatui is a immediate mode rendering library. But what
+does that really mean? And how is it implemented? In this section, we are going to discuss what it
+means “to be a <code>Widget</code>” and what happens behind the scenes in Ratatui.</p>
 <p>The first thing to note is that Ratatui has a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets.rs#L107-L112"><code>Widget</code></a> trait.</p>
 <pre><code class="language-rust">pub trait Widget {
     /// Draws the current state of the widget in the given buffer. That is the only method required
