@@ -1,70 +1,70 @@
 # How does Ratatui work?
 
 You may have read in previous sections that Ratatui is a immediate mode rendering library. But what
-does that really mean? And how is it implemented? In this section, we will discuss how Ratatui renders `Widget`
-to the screen, starting with the `Terminal`'s `draw` method and ending with your chosen backend library.
+does that really mean? And how is it implemented? In this section, we will discuss how Ratatui
+renders a widget to the screen, starting with the `Terminal`'s `draw` method and ending with your
+chosen backend library.
 
-In Ratatui, the primary mechanism for making something that is renderable is through the `Widget`
-trait.
+## Overview
+
+To render an UI in Ratatui, your application calls the [`Terminal::draw()`] method. This method
+takes a [closure] which accepts an instance of [`Frame`]. Inside the `draw` method, applications can
+call [`Frame::render_widget()`] to render the state of a widget within the available renderable
+area. We only discuss the `Frame::render_widget()` in this page but this discussion about rendering
+applies equally to [`Frame::render_stateful_widget()`].
+
+As an example, here is the `terminal.draw()` call for a simple "hello world" with Ratatui.
+
+```rust
+terminal.draw(|frame| {
+    frame.render_widget(Paragraph::new("Hello World!"), frame.size());
+});
+```
+
+The closure gets an argument `frame` of type `&mut Frame`.
+
+`frame.size()` returns a `Rect` that represents the total renderable area. `Frame` also holds a
+reference to a buffer which it can render widgets to using the `render_widget()` method. At the end
+of the `draw` method (after the closure returns), Ratatui persists the content of the buffer to the
+terminal. We will discuss more about `Buffer` later in this page.
+
+[`Terminal::draw()`]:
+  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L325-L360
+[closure]: https://doc.rust-lang.org/stable/book/ch13-01-closures.html
+[`Frame::render_widget()`]:
+  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596
+[`Frame::render_stateful_widget()`]:
+  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L628
+
+## `Widget` trait
+
+In Ratatui, the `frame.render_widget()` method calls a `Widget::render()` method on the struct. This
+`Widget::render()` method is part of the [`Widget`] trait.
 
 ```rust
 pub trait Widget {
-    /// Draws the current state of the widget in the given buffer. That is the only method required
-    /// to implement a custom widget.
+    /// Draws the current state of the widget in the given buffer.
     fn render(self, area: Rect, buf: &mut Buffer);
 }
 ```
 
-Any struct (inside Ratatui or third party crates) can provide an implementation of the `Widget`
-trait for said struct, making an instance of that struct renderable to the terminal.
+[`Widget`]:
+  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets.rs#L107-L112
 
-For example, the `Paragraph` struct is a widget provided by Ratatui. Here's how you may use the
-`Paragraph` widget:
+Any struct (inside Ratatui or third party crates) can implement the `Widget` trait, making an
+instance of that struct renderable to the terminal. The `Widget::render()` method is the only method
+required to make a struct a renderable widget.
 
-```rust
-fn main() {
-    let mut terminal = ratatui::terminal::Terminal::new(ratatui::backend::CrosstermBackend::new(std::io::stderr()))?;
+<!--prettier-ignore-->
+In the `Paragraph` example above, `frame.render_widget()` calls the
+[`Widget::render()` method implemented for `Paragraph`].
 
-    terminal.draw(|f| {
-        f.render_widget(Paragraph::new("Hello World!"), f.size());
-    })?;
-}
-```
+[`Widget::render()` method implemented for `Paragraph`]:
+  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/widgets/paragraph.rs#L213-L214
 
-In order to use Ratatui, users are expected to create an instance of the `Terminal` struct and call
-the `draw` method by passing in a function. This function takes one argument of type [`Frame`]. For
-example, the following code is exactly equivalent to the code above:
-
-```rust
-fn main() {
-    let mut terminal = ratatui::terminal::Terminal::new(ratatui::backend::CrosstermBackend::new(std::io::stderr()))?;
-
-    terminal.draw(ui)?;
-}
-
-fn ui(frame: &mut Frame) {
-    frame.render_widget(
-        Paragraph::new("Hello World!"),
-        frame.size(),
-    );
-}
-```
-
-This `Frame` struct contains a method called `render_widget` which takes any object that implements
-the `Widget` trait. This `render_widget` method calls the `Widget::render` method on the type-erased
-`Widget` struct.
-
-```rust
-    pub fn render_widget<W>(&mut self, widget: W, area: Rect)
-    where
-        W: Widget,
-    {
-        widget.render(area, self.buffer);
-    }
-```
-
-As mentioned above, implementing the `Widget` trait is the primary way to make a struct renderable.
-As an example, here's the full implementation for the `Clear` widget:
+As a simple example, let's take a look at the builtin `Clear` widget. The `Clear` widget resets the
+style information of every cell in the buffer back to the defaults. Here is the full implementation
+for the `Clear` widget:
 
 ```rust
 pub struct Clear;
@@ -80,171 +80,143 @@ impl Widget for Clear {
 }
 ```
 
-There are 2 things that you should notice.
+In the `Clear` widget example above, when the application calls the `Frame::render_widget()` method,
+it will call the `Clear`'s `Widget::render()` method passing it the area (a `Rect` value) and a
+mutable reference to the frame's [`Buffer`]. You can see that the `render` loops through the entire
+area and calls `buf.get_mut(x, y).reset()`.
 
-1. The `Widget` gets the current area as a `Rect`.
-2. The `Widget` gets a mutable reference to a "`Buffer`".
+## Buffer
 
-The top level widget usually gets a reference to the entire size of the terminal as a `Rect`, i.e.
-`f.size()`. However, nested widgets may get a smaller area. Any implementation of a `Widget` must
-only draw "within the lines" of the `Rect` area.
+A `Buffer` represents a rectangular area that covers the Terminal's [`Viewport`] which the
+application can draw into by manipulating its contents. A [`Buffer`] contains a collection of
+[`Cell`]s to represent the rows and columns of the terminal's display area. Widgets interact with
+these `Cell`s using `Buffer` methods.
 
-You might think that a `Widget` renders directly to the terminal but that is not the case. Ratatui
-uses something called a "double-buffer" rendering technique.
+Every time your application calls `terminal.draw(|frame| ...)`, Ratatui passes into the closure a
+new instance of [`Frame`] which contains a mutable reference to an instance of `Buffer`. Ratatui
+widgets render to this intermediate buffer before any information is written to the terminal. This
+is in contrast to using a library like `crossterm` directly, where writing text to terminal can
+occur immediately.
 
-Every time `terminal.draw(|f| ...)` is called, a new [`Frame`] struct is constructed that contains a
-mutable reference to an instance of the `Buffer` struct:
+Here's a visual representation of a `Buffer` that is 12 `Cell`s wide and 4 `Cell`s tall.
 
-```rust
-pub struct Frame<'a> {
-    // --snip--
-    /// The buffer that is used to draw the current frame
-    buffer: &'a mut Buffer,
-}
+```svgbob
+        0     1     2     3     4     5     6     7     8     9    10    11
+     ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
+   0 │  H  │  e  │  l  │  l  │  o  │     │  W  │  o  │  r  │  l  │  d  │  !  │
+     ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+   1 │     │     │     │     │  ▲  │     │     │     │     │     │     │     │
+     ├─────┼─────┼─────┼─────┼─ │ ─┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+   2 │     │     │     │     │  │  │     │     │     │     │     │     │     │
+     ├─────┼─────┼─────┼─────┼─ │ ─┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+   3 │     │     │   ┌──────────┴──────────┐   │     │     │     │     │     │
+     └─────┴─────┴── │ ┴─────┴─────┴─────┴ │ ──┴─────┴─────┴─────┴─────┴─────┘
+                     │                     │
+              ┌──────┴──────┐       ┌──────┴──────┐
+              │   symbol    │       │    style    │
+              │             │       │             │
+              │     “o”     │       │ fg":"Reset  │
+              │             │       │ bg":"Reset  │
+              │             │       │             │
+              └─────────────┘       └─────────────┘
+
+
 ```
 
-The `Buffer` represents the area in which content is going to be drawn to the terminal. The `Buffer`
-struct implements a number of methods such as [`get_mut`] and [`set_string`]:
+In Ratatui, a `Cell` struct is the smallest renderable unit of code. Each `Cell` tracks symbol and
+style information (foreground color, background color, modifiers etc). `Cell`s are similar to a
+"pixel" in a graphical UI. Terminals generally render text so that each individual cell takes up
+space approximately twice as high as it is wide. A `Cell` in Ratatui should usually contain 1 wide
+string content.
 
-```rust
-pub fn get_mut(&mut self, x: u16, y: u16) -> &mut Cell {
-}
+`Buffer` implements methods to write text, set styles on particular areas and manipulate individual
+cells. For example,
 
-pub fn set_string<S>(&mut self, x: u16, y: u16, string: S, style: Style)
-where
-    S: AsRef<str> {
-}
-```
+- `buf.get_mut(0, 0)` will return a `Cell` with the symbol and style information for row = 0 and col
+  = 0.
+- `buf.set_string(0, 0, "Hello World!", Style::default())` will render `hello world` into the
+  `Buffer` starting at row = 0 and col = 0 with the style set to default for all those cells.
 
-These methods allow any implementation of the `Widget` trait to write into any parts of the
+These methods allow any implementation of the `Widget` trait to write into different parts of the
 `Buffer`.
 
-A [`Buffer`] is essentially a collection of `Cell`s:
-
-```rust
-pub struct Buffer {
-    // --snip--
-    pub content: Vec<Cell>,
-}
-```
-
-In Ratatui, this `Cell` struct is the smallest renderable unit of code. A `Cell` essentially has a
-`String` which is the symbol that will be drawn in that `Cell` as well as `Style` information
-(foreground color, background color, modifiers etc).
-
-```rust
-// pseudo code
-pub struct Cell {
-  content: String,
-  style: Style,
-}
-```
-
-```admonish
-`Cell`s are the closest analog to a "pixel" in a terminal.
-Most terminals render monospaced text 2 high and 1 wide.
-A `Cell` in Ratatui should usually contain 1 wide string content.
-```
-
-Here's a simplified class diagram for reference:
-
-```mermaid
-classDiagram
-    class Cell {
-        +content: String
-        +style: Style
-    }
-
-    class Buffer {
-        +area: Rect
-        +content: Vec<Cell>
-    }
-
-    class Frame {
-        +buffer: mut Buffer
-        +render_widget()
-    }
-
-    class Widget {
-        <<interface>>
-        +render(area: Rect, buf: &mut Buffer)
-    }
-
-    class Paragraph
-    class Block
-    class Table
-
-    Buffer --> Cell
-    Frame --> Buffer
-    Widget <|.. Paragraph
-    Widget <|.. Block
-    Widget <|.. Table
-
-
-```
-
-Basically what this all means that any content rendered to a `Buffer` is only stored in that
-particular `Buffer` struct in the form of `Cell`s that contain string and style information.
+What this means is that any content rendered to a `Buffer` is only stored in `Buffer` that is
+attached to the frame during the `draw` call.
 
 ```admonish note
-Because any styling has to happen though the `Style` struct (i.e. methods that apply
-`Style`s to `Cell`s) you can't use ansi escape sequences directly in the string content.
-
-As a workaround, what you can do however is convert the ansi escape sequences into a
-`ratatui::text::Text` struct that contains the appropriate `Style`s. There's a crate for this that
-might help: <https://crates.io/crates/ansi-to-tui>. And this `Text` struct that you create can be
-passed into the `Paragraph` widget to get the desired effect.
-
-Even if this particular crate doesn't work for you this approach is probably what you want to use if
-you want to render ansi escape sequences in Ratatui.
-You can learn more about the text related of Ratatui features and displaying text
-[here](./../how-to/render/display-text.md).
+ANSI Escape sequences for color and style that are stored in the cell's string content are not
+rendered as the style information is stored separately in the cell. If your text has ANSI styling
+info, consider using the [`ansi-to-tui`](https://crates.io/crates/ansi-to-tui) crate to convert it
+to a `Text` value before rendering. You can learn more about the text related Ratatui features and
+displaying text [here](./../how-to/render/display-text.md).
 ```
 
-After all the `Widget`s are rendered to the same `Buffer` struct, i.e. after
-`terminal.draw(|f| ...)` returns, [`terminal.flush()`] is called. This is where the content is
-actually written out to the terminal.
+## `flush()`
 
-In `flush()`, the difference between the previous and the current buffer is obtained and that is
-passed it to the current backend for drawing to your actual terminal.
+After the closure provided to the `draw` method finishes, the `draw` method calls
+[`Terminal::flush()`]. This causes the buffer to be written to the screen. Ratatui uses a double
+buffer approach so that it can use a diff to figure out which content to write to the terminal
+screen efficiently.
 
-```rust
-    pub fn flush(&mut self) -> io::Result<()> {
-        let previous_buffer = &self.buffers[1 - self.current];
-        let current_buffer = &self.buffers[self.current];
-        let updates = previous_buffer.diff(current_buffer);
-        if let Some((col, row, _)) = updates.last() {
-            self.last_known_cursor_pos = (*col, *row);
-        }
-        self.backend.draw(updates.into_iter())
-    }
-```
-
-After `flush()`, the buffers are swapped and the next time `terminal.draw(|f| ...)` is called a
-`Frame` is constructed with the other `Buffer` struct. This is why it is called a double-buffer
-rendering technique.
+`flush()` calculates the difference between the previous and the current buffer and passes it to the
+current backend for drawing to the actual terminal. After `flush()`, Ratatui swaps the buffers and
+the next time it calls `terminal.draw(|frame| ...)` it constructs `Frame` with the other `Buffer`.
 
 The important thing to note is that because all widgets render to the same `Buffer` within a single
-`terminal.draw(|f| ...)` call, rendering of different widgets may overwrite the same `Cell`, so the
-order in which widgets are rendered is relevant. For example, in this `draw` example below,
-`"content1"` will be overwritten by `"content2"` which will be overwritten by `"content3"` in the
-`Buffer` struct, and Ratatui will only ever write out `"content3"` to the terminal:
+`terminal.draw(|frame| ...)` call, rendering of different widgets may overwrite the same `Cell`.
+This means the order in which widgets are rendered will affect the final UI.
+
+For example, in this `draw` example below, `"content1"` will be overwritten by `"content2"` which
+will be overwritten by `"content3"` in `Buffer`, and Ratatui will only ever write out `"content3"`
+to the terminal:
 
 ```rust
-terminal.draw(|f| {
-    f.render_widget(Paragraph::new("content1"), f.size());
-    f.render_widget(Paragraph::new("content2"), f.size());
-    f.render_widget(Paragraph::new("content3"), f.size());
+terminal.draw(|frame| {
+    frame.render_widget(Paragraph::new("content1"), frame.size());
+    frame.render_widget(Paragraph::new("content2"), frame.size());
+    frame.render_widget(Paragraph::new("content3"), frame.size());
 })
 ```
 
-This was a sneak peak into what happens under the hood in Ratatui. If you have any questions, feel
-free to open issues or discussions on [the main repository](https://github.com/ratatui-org/ratatui).
+It's also important to note that each time an application calls `terminal.draw()` it must draw all
+the widgets it expects to be rendered to the terminal, and not just a part of the frame.
+
+## Conclusion
+
+In summary, the application calls `terminal.draw(|frame| ...)`, and the terminal constructs a frame
+that is passed to the closure provided by the application. The closure draws each widget to the
+buffer by calling the `Frame::render_widget`, which in turn calls each widget's render method.
+Finally, Ratatui writes the contents of the buffer to the terminal.
+
+```mermaid
+sequenceDiagram
+    participant A as App
+    participant T as Terminal
+    participant B as Buffer
+    A ->>+ T: draw
+    create participant F as frame
+    T ->> F: new
+    T ->>+ A: ui
+    create participant W as widget
+    A ->> W: new
+    A ->>+ F: render_widget
+    F ->>+ W: render
+    opt
+    W ->> B: get_cell
+    W ->> B: set_string
+    W ->> B: set_line
+    W ->>- B: set_style
+    end
+    deactivate A
+    T -->> A: completed_frame
+```
 
 [`Cell`]:
   https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L15-L26
 [`Buffer`]:
   https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157
+[`Viewport`]:
+  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L41-L65
 [`Text`]:
   https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/text/text.rs#L30-L33
 [`Line`]:
@@ -255,9 +227,7 @@ free to open issues or discussions on [the main repository](https://github.com/r
   https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets/block.rs#L752-L760
 [`Frame`]:
   https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578
-[`Widget`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets.rs#L107-L112
-[`terminal.flush()`]:
+[`Terminal::flush()`]:
   https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L253-L263
 [`get_mut`]:
   https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/buffer.rs#L207-L211
