@@ -229,3 +229,33 @@ You want to write the code like this instead:
     // manage state
   }
 ```
+
+## Should I use `stdout` or `stderr`?
+
+When using `crossterm`, application developers have the option of rendering to `stdout` or `stderr`.
+
+```rust
+let mut t = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
+// OR
+let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+```
+
+Both of these will work fine for normal purposes. The question you have to ask if how would you like
+your application to behave in non-TTY environments.
+
+For example, if you run `ratatui-application | grep foo` with `stdout`, your application won't
+render anything to the screen and there would be no indication of anything going wrong. With
+`stderr` the application will still render a TUI.
+
+With `stdout`:
+
+- Every app needs to add code to check if the output is a TTY and do something different based on
+  the result
+- App can't write a result to the user that can be passed in a pipeline, e.g.
+  `my-select-some-value-app | grep foo`
+- Tends to be what most command line applications do by default.
+
+With `stderr`:
+
+- No special setup necessary in order to run in a pipe command
+- Unconventional and that might subvert users expectations
