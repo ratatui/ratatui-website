@@ -246,7 +246,13 @@ impl EventHandler {
 
           if event::poll(timeout).expect(&quot;no events available&quot;) {
             match event::read().expect(&quot;unable to read event&quot;) {
-              CrosstermEvent::Key(e) =&gt; sender.send(Event::Key(e)),
+              CrosstermEvent::Key(e) =&gt; {
+                if e.kind == event::KeyEventKind::Press {
+                  sender.send(Event::Key(e))
+                } else {
+                  Ok(()) // ignore KeyEventKind::Release on windows
+                }
+              },
               CrosstermEvent::Mouse(e) =&gt; sender.send(Event::Mouse(e)),
               CrosstermEvent::Resize(w, h) =&gt; sender.send(Event::Resize(w, h)),
               _ =&gt; unimplemented!(),
@@ -283,7 +289,13 @@ event is available, it’s read and sent through the sender channel. The types o
 include keypresses, mouse movements, screen resizing, and regular time ticks.</p>
 <pre><code class="language-rust">if event::poll(timeout)? {
   match event::read()? {
-    CrosstermEvent::Key(e) =&gt; sender.send(Event::Key(e))?,
+    CrosstermEvent::Key(e) =&gt; {
+        if e.kind == event::KeyEventKind::Press {
+            sender.send(Event::Key(e))
+        } else {
+            Ok(()) // ignore KeyEventKind::Release on windows
+        }
+    },
     CrosstermEvent::Mouse(e) =&gt; sender.send(Event::Mouse(e))?,
     CrosstermEvent::Resize(w, h) =&gt; sender.send(Event::Resize(w, h))?,
     _ =&gt; unimplemented!(),
@@ -352,7 +364,13 @@ impl EventHandler {
 
           if event::poll(timeout).expect(&quot;no events available&quot;) {
             match event::read().expect(&quot;unable to read event&quot;) {
-              CrosstermEvent::Key(e) =&gt; sender.send(Event::Key(e)),
+              CrosstermEvent::Key(e) =&gt; {
+                if e.kind == event::KeyEventKind::Press {
+                  sender.send(Event::Key(e))
+                } else {
+                  Ok(()) // ignore KeyEventKind::Release on windows
+                }
+              },
               CrosstermEvent::Mouse(e) =&gt; sender.send(Event::Mouse(e)),
               CrosstermEvent::Resize(w, h) =&gt; sender.send(Event::Resize(w, h)),
               _ =&gt; unimplemented!(),

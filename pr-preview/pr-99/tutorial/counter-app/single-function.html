@@ -192,11 +192,13 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
     if crossterm::event::poll(std::time::Duration::from_millis(250))? {
       // If a key event occurs, handle it
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-        match key.code {
-          crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
-          crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
-          crossterm::event::KeyCode::Char('q') =&gt; break,
-          _ =&gt; (),
+        if key.kind == crossterm::event::KeyEventKind::Press {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
+            crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
+            crossterm::event::KeyCode::Char('q') =&gt; break,
+            _ =&gt; (),
+          }
         }
       }
     }
@@ -268,14 +270,30 @@ draw method at most once for each pass through your application’s main loop.
 <li><code>k</code> decreases the counter</li>
 <li><code>q</code> exits the application</li>
 </ul>
+<p>Usually you’ll be able to write code like the following:</p>
 <pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
-      // If a key event occurs, handle it
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
         match key.code {
           crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
           crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
           crossterm::event::KeyCode::Char('q') =&gt; break,
           _ =&gt; (),
+        }
+      }
+    }</code></pre>
+<p>However, on Windows, <code>crossterm</code> generates a key event for both <code>Press</code> and <code>Release</code>. This code
+above will increment or decrement the counter twice.</p>
+<p>All we need to do to fix this is check for <code>key.kind == crossterm::event::KeyEventKind::Press</code>:</p>
+<pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        // check if key.kind is a `KeyEventKind::Press`
+        if key.kind == crossterm::event::KeyEventKind::Press {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
+            crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
+            crossterm::event::KeyCode::Char('q') =&gt; break,
+            _ =&gt; (),
+          }
         }
       }
     }</code></pre>

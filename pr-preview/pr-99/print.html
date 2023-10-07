@@ -503,11 +503,13 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
     if crossterm::event::poll(std::time::Duration::from_millis(250))? {
       // If a key event occurs, handle it
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-        match key.code {
-          crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
-          crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
-          crossterm::event::KeyCode::Char('q') =&gt; break,
-          _ =&gt; (),
+        if key.kind == crossterm::event::KeyEventKind::Press {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
+            crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
+            crossterm::event::KeyCode::Char('q') =&gt; break,
+            _ =&gt; (),
+          }
         }
       }
     }
@@ -579,14 +581,30 @@ draw method at most once for each pass through your application’s main loop.
 <li><code>k</code> decreases the counter</li>
 <li><code>q</code> exits the application</li>
 </ul>
+<p>Usually you’ll be able to write code like the following:</p>
 <pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
-      // If a key event occurs, handle it
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
         match key.code {
           crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
           crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
           crossterm::event::KeyCode::Char('q') =&gt; break,
           _ =&gt; (),
+        }
+      }
+    }</code></pre>
+<p>However, on Windows, <code>crossterm</code> generates a key event for both <code>Press</code> and <code>Release</code>. This code
+above will increment or decrement the counter twice.</p>
+<p>All we need to do to fix this is check for <code>key.kind == crossterm::event::KeyEventKind::Press</code>:</p>
+<pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        // check if key.kind is a `KeyEventKind::Press`
+        if key.kind == crossterm::event::KeyEventKind::Press {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
+            crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
+            crossterm::event::KeyCode::Char('q') =&gt; break,
+            _ =&gt; (),
+          }
         }
       }
     }</code></pre>
@@ -666,11 +684,13 @@ type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;</code></pre>
 <pre><code class="language-rust">fn update(app: &amp;mut App) -&gt; Result&lt;()&gt; {
   if event::poll(std::time::Duration::from_millis(250))? {
     if let Key(key) = event::read()? {
-      match key.code {
-        Char('j') =&gt; app.counter += 1,
-        Char('k') =&gt; app.counter -= 1,
-        Char('q') =&gt; app.should_quit = true,
-        _ =&gt; (),
+      if key.kind == event::KeyEventKind::Press {
+        match key.code {
+          Char('j') =&gt; app.counter += 1,
+          Char('k') =&gt; app.counter -= 1,
+          Char('q') =&gt; app.should_quit = true,
+          _ =&gt; (),
+        }
       }
     }
   }
@@ -797,11 +817,13 @@ fn ui(app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
 fn update(app: &amp;mut App) -&gt; Result&lt;()&gt; {
   if event::poll(std::time::Duration::from_millis(250))? {
     if let Key(key) = event::read()? {
-      match key.code {
-        Char('j') =&gt; app.counter += 1,
-        Char('k') =&gt; app.counter -= 1,
-        Char('q') =&gt; app.should_quit = true,
-        _ =&gt; (),
+      if key.kind == event::KeyEventKind::Press {
+        match key.code {
+          Char('j') =&gt; app.counter += 1,
+          Char('k') =&gt; app.counter -= 1,
+          Char('q') =&gt; app.should_quit = true,
+          _ =&gt; (),
+        }
       }
     }
   }
@@ -1142,7 +1164,13 @@ impl EventHandler {
 
           if event::poll(timeout).expect(&quot;no events available&quot;) {
             match event::read().expect(&quot;unable to read event&quot;) {
-              CrosstermEvent::Key(e) =&gt; sender.send(Event::Key(e)),
+              CrosstermEvent::Key(e) =&gt; {
+                if e.kind == event::KeyEventKind::Press {
+                  sender.send(Event::Key(e))
+                } else {
+                  Ok(()) // ignore KeyEventKind::Release on windows
+                }
+              },
               CrosstermEvent::Mouse(e) =&gt; sender.send(Event::Mouse(e)),
               CrosstermEvent::Resize(w, h) =&gt; sender.send(Event::Resize(w, h)),
               _ =&gt; unimplemented!(),
@@ -1179,7 +1207,13 @@ event is available, it’s read and sent through the sender channel. The types o
 include keypresses, mouse movements, screen resizing, and regular time ticks.</p>
 <pre><code class="language-rust">if event::poll(timeout)? {
   match event::read()? {
-    CrosstermEvent::Key(e) =&gt; sender.send(Event::Key(e))?,
+    CrosstermEvent::Key(e) =&gt; {
+        if e.kind == event::KeyEventKind::Press {
+            sender.send(Event::Key(e))
+        } else {
+            Ok(()) // ignore KeyEventKind::Release on windows
+        }
+    },
     CrosstermEvent::Mouse(e) =&gt; sender.send(Event::Mouse(e))?,
     CrosstermEvent::Resize(w, h) =&gt; sender.send(Event::Resize(w, h))?,
     _ =&gt; unimplemented!(),
@@ -1248,7 +1282,13 @@ impl EventHandler {
 
           if event::poll(timeout).expect(&quot;no events available&quot;) {
             match event::read().expect(&quot;unable to read event&quot;) {
-              CrosstermEvent::Key(e) =&gt; sender.send(Event::Key(e)),
+              CrosstermEvent::Key(e) =&gt; {
+                if e.kind == event::KeyEventKind::Press {
+                  sender.send(Event::Key(e))
+                } else {
+                  Ok(()) // ignore KeyEventKind::Release on windows
+                }
+              },
               CrosstermEvent::Mouse(e) =&gt; sender.send(Event::Mouse(e)),
               CrosstermEvent::Resize(w, h) =&gt; sender.send(Event::Resize(w, h)),
               _ =&gt; unimplemented!(),

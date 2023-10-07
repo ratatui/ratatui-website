@@ -230,11 +230,13 @@ type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;</code></pre>
 <pre><code class="language-rust">fn update(app: &amp;mut App) -&gt; Result&lt;()&gt; {
   if event::poll(std::time::Duration::from_millis(250))? {
     if let Key(key) = event::read()? {
-      match key.code {
-        Char('j') =&gt; app.counter += 1,
-        Char('k') =&gt; app.counter -= 1,
-        Char('q') =&gt; app.should_quit = true,
-        _ =&gt; (),
+      if key.kind == event::KeyEventKind::Press {
+        match key.code {
+          Char('j') =&gt; app.counter += 1,
+          Char('k') =&gt; app.counter -= 1,
+          Char('q') =&gt; app.should_quit = true,
+          _ =&gt; (),
+        }
       }
     }
   }
@@ -361,11 +363,13 @@ fn ui(app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
 fn update(app: &amp;mut App) -&gt; Result&lt;()&gt; {
   if event::poll(std::time::Duration::from_millis(250))? {
     if let Key(key) = event::read()? {
-      match key.code {
-        Char('j') =&gt; app.counter += 1,
-        Char('k') =&gt; app.counter -= 1,
-        Char('q') =&gt; app.should_quit = true,
-        _ =&gt; (),
+      if key.kind == event::KeyEventKind::Press {
+        match key.code {
+          Char('j') =&gt; app.counter += 1,
+          Char('k') =&gt; app.counter -= 1,
+          Char('q') =&gt; app.should_quit = true,
+          _ =&gt; (),
+        }
       }
     }
   }
