@@ -35,11 +35,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if crossterm::event::poll(std::time::Duration::from_millis(250))? {
       // If a key event occurs, handle it
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-        match key.code {
-          crossterm::event::KeyCode::Char('j') => counter += 1,
-          crossterm::event::KeyCode::Char('k') => counter -= 1,
-          crossterm::event::KeyCode::Char('q') => break,
-          _ => (),
+        if key.kind == crossterm::event::KeyEventKind::Press {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') => counter += 1,
+            crossterm::event::KeyCode::Char('k') => counter -= 1,
+            crossterm::event::KeyCode::Char('q') => break,
+            _ => (),
+          }
         }
       }
     }
@@ -146,9 +148,10 @@ Every 250 milliseconds, the application checks if the user has pressed a key:
 - `k` decreases the counter
 - `q` exits the application
 
+Usually you'll be able to write code like the following:
+
 ```rust
     if crossterm::event::poll(std::time::Duration::from_millis(250))? {
-      // If a key event occurs, handle it
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
         match key.code {
           crossterm::event::KeyCode::Char('j') => counter += 1,
@@ -159,6 +162,31 @@ Every 250 milliseconds, the application checks if the user has pressed a key:
       }
     }
 ```
+
+````admonish attention
+
+On Windows, when using `Crossterm`, this will send the same `Event::Key(e)` twice; one for when you press the key, i.e. `KeyEventKind::Press` and one for when you release the key, i.e. `KeyEventKind::Release`.
+On `MacOS` and `Linux` only `KeyEventKind::Press` kinds of `key` event is generated.
+
+To make the code work as expected across all platforms, you have to do this instead:
+
+```rust
+    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
+      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
+        // check if key.kind is a `KeyEventKind::Press`
+        if key.kind == crossterm::event::KeyEventKind::Press {
+          match key.code {
+            crossterm::event::KeyCode::Char('j') => counter += 1,
+            crossterm::event::KeyCode::Char('k') => counter -= 1,
+            crossterm::event::KeyCode::Char('q') => break,
+            _ => (),
+          }
+        }
+      }
+    }
+```
+
+````
 
 ## Conclusion
 

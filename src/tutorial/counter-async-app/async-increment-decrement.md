@@ -104,11 +104,14 @@ fn handle_event(app: &App, tx: mpsc::UnboundedSender<Action>) -> tokio::task::Jo
     loop {
       let action = if crossterm::event::poll(tick_rate).unwrap() {
         if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
-          match key.code {
-            crossterm::event::KeyCode::Char('j') => Action::ScheduleIncrement,
-            crossterm::event::KeyCode::Char('k') => Action::ScheduleDecrement,
-            crossterm::event::KeyCode::Char('q') => Action::Quit,
-            _ => Action::None,
+          if key.kind == event::KeyEventKind::Press {
+            match key.code {
+              crossterm::event::KeyCode::Char('j') => Action::ScheduleIncrement,
+              crossterm::event::KeyCode::Char('k') => Action::ScheduleDecrement,
+              crossterm::event::KeyCode::Char('q') => Action::Quit,
+              _ => Action::None,
+          } else {
+            Action::None
           }
         } else {
           Action::None
