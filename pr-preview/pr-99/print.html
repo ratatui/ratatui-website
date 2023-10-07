@@ -4328,22 +4328,14 @@ to hide a widget conditionally? Just don’t draw it based on some condition.</l
 </ul>
 <h3 id="disadvantages-of-immediate-mode-rendering"><a class="header" href="#disadvantages-of-immediate-mode-rendering">Disadvantages of Immediate Mode Rendering</a></h3>
 <ul>
-<li><strong>Render loop management</strong>: In Immediate mode rendering, the onus of rendering lies solely on the
-programmer. Every visual update necessitates a call to <code>Backend.draw()</code>. Hence, if the rendering
-thread is inadvertently blocked, the UI will not update until the thread resumes.</li>
-</ul>
-<div id="admonition-note" class="admonition note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="concepts/rendering.html#admonition-note"></a></p>
-</div>
-<div>
-<p>The <code>ratatui</code> library in particular only handles how widget would be rendered to a “Backend”, e.g.
-<code>crossterm</code>. The <code>Backend</code> in question would use an external crate e.g. <code>crossterm</code> for actually
-drawing to the terminal.</p>
-</div>
-</div>
-<ul>
+<li>
+<p><strong>Render loop management</strong>: In Immediate mode rendering, the onus of triggering rendering lies on
+the programmer. Every visual update necessitates a call to <code>Backend.draw()</code>. Hence, if the
+rendering thread is inadvertently blocked, the UI will not update until the thread resumes. The
+<code>ratatui</code> library in particular only handles how widgets are rendered to a “Backend” (e.g.
+<code>CrosstermBackend</code>). The Backend would in turn use an external crate (e.g. <code>crossterm</code>) to
+actually draw to the terminal.</p>
+</li>
 <li>
 <p><strong>Event loop orchestration</strong>: Along with managing “the render loop”, developers are also
 responsible for handling “the event loop”. This involves deciding on a third-party library for the
