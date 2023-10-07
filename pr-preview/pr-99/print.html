@@ -7125,6 +7125,30 @@ render all three widgets:</p>
     // handle events
     // manage state
   }</code></pre>
+<h2 id="should-i-use-stdout-or-stderr"><a class="header" href="#should-i-use-stdout-or-stderr">Should I use <code>stdout</code> or <code>stderr</code>?</a></h2>
+<p>When using <code>crossterm</code>, application developers have the option of rendering to <code>stdout</code> or <code>stderr</code>.</p>
+<pre><code class="language-rust">let mut t = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
+// OR
+let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;</code></pre>
+<p>Both of these will work fine for normal purposes. The question you have to ask if how would you like
+your application to behave in non-TTY environments.</p>
+<p>For example, if you run <code>ratatui-application | grep foo</code> with <code>stdout</code>, your application won’t
+render anything to the screen and there would be no indication of anything going wrong. With
+<code>stderr</code> the application will still render a TUI.</p>
+<p>With <code>stdout</code>:</p>
+<ul>
+<li>every app needs to add code to check if the output is a TTY and do something different based on
+the result</li>
+<li>app can’t write a result to the user that can be passed in a pipeline, e.g.
+<code>my-select-some-value-app | grep foo</code></li>
+<li>Tends to be what most command line applications do by default.</li>
+</ul>
+<p>With <code>stderr</code>:</p>
+<ul>
+<li>no special setup necessary in order to run in a pipeline</li>
+<li>default behavior just works</li>
+<li>Unconventional so you might subvert users expectations</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="why-am-i-getting-duplicate-key-events-on-windows"><a class="header" href="#why-am-i-getting-duplicate-key-events-on-windows">Why am I getting duplicate key events on Windows?</a></h1>
 <p>A lot of examples out there in the wild might use the following code for sending key presses:</p>
 <pre><code class="language-rust">  CrosstermEvent::Key(e) =&gt; tx.send(Event::Key(e)),</code></pre>
