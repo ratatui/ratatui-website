@@ -4754,8 +4754,9 @@ renders a widget to the screen, starting with the <code>Terminal</code>’s <cod
 chosen backend library.</p>
 <p>To render an UI in Ratatui, your application calls the <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L325-L360"><code>Terminal::draw()</code></a> method. This method
 takes a <a href="https://doc.rust-lang.org/stable/book/ch13-01-closures.html">closure</a> which accepts an instance of a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a>. Inside the <code>draw</code> method, applications
-can call <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596"><code>Frame::render_widget()</code></a> or <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L628"><code>Frame::render_stateful_widget()</code></a> to render the state of a
-widget within the available renderable area.</p>
+can call <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596"><code>Frame::render_widget()</code></a>to render the state of a widget within the available renderable
+area. We only discuss the <code>Frame::render_widget()</code> here but this discussion about rendering applies
+equally to <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L628"><code>Frame::render_stateful_widget()</code></a>.</p>
 <p>The <code>Frame</code> holds a reference to a buffer which it can render widgets to using the <code>render_widget()</code>
 method. At the end of the <code>draw</code> method (after the closure returns), Ratatui persists the content of
 the buffer to the terminal. We will discuss more about the <code>Buffer</code> later in this page.</p>
@@ -4776,8 +4777,9 @@ required to make a struct a renderable widget.</p>
 <!--prettier-ignore-->
 <p>In the <code>Paragraph</code> example above, <code>frame.render_widget()</code> calls the
 <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/widgets/paragraph.rs#L213-L214"><code>Widget::render()</code> method implemented for <code>Paragraph</code></a>.</p>
-<p>As mentioned above, implementing the <code>Widget</code> trait is the primary way to make a struct renderable.
-As an example, here’s the full implementation for the <code>Clear</code> widget:</p>
+<p>As mentioned above, implementing the <code>Widget</code> trait is the primary way to make a struct renderable.</p>
+<p>A simple example widget is the builtin <code>Clear</code> widget. This resets the style information of every
+cell in the buffer back to the defaults Here is the full implementation for the <code>Clear</code> widget.</p>
 <pre><code class="language-rust">pub struct Clear;
 
 impl Widget for Clear {
@@ -4789,15 +4791,9 @@ impl Widget for Clear {
         }
     }
 }</code></pre>
-<p>There are 2 things that you should notice.</p>
-<ol>
-<li>The <code>Widget::render</code> gets the current area as a <code>Rect</code>.
-<ul>
-<li>Any implementation of a <code>Widget</code> should only draw “within the lines” of the <code>Rect</code> area.</li>
-</ul>
-</li>
-<li>The <code>Widget::render</code> gets a mutable reference to a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a> object.</li>
-</ol>
+<p>The <code>Widget::render</code> gets the current area as a <code>Rect</code>. Any implementation of a <code>Widget</code> should only
+draw “within the lines” of the <code>Rect</code> area. The <code>Widget::render</code> also gets a mutable reference to a
+<a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a> object.</p>
 <p>Ratatui widgets render to an intermediate buffer before any information is rendered to the terminal.
 This is in contrast to using a library like <code>crossterm</code> directly, where writing text to terminal can
 occur immediately.</p>
