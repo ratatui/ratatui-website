@@ -264,16 +264,20 @@ mod tui;
 
 impl App {
   async fn run(&mut self) -> Result<()> {
+
     let mut tui = tui::Tui::new()?
             .tick_rate(4.0) // 4 ticks per second
             .frame_rate(30.0); // 30 frames per second
-    tui.enter()?; // Starts event handler
+
+    tui.enter()?; // Starts event handler, enters raw mode, enters alternate screen
+
     loop {
-      tui.draw(|f| { // Deref allows calling `tui.draw`
+
+      tui.draw(|f| { // Deref allows calling `tui.terminal.draw`
         self.ui(f);
       })?;
 
-      if let Some(evt) = tui.next().await { // `tui.next().await` returns next event
+      if let Some(evt) = tui.next().await { // `tui.next().await` blocks till next event
         let mut maybe_action = self.handle_event(evt);
         while let Some(action) = maybe_action {
           maybe_action = self.update(action);
@@ -284,7 +288,9 @@ impl App {
         break;
       }
     }
-    tui.exit()?; // Stops event handler
+
+    tui.exit()?; // stops event handler, exits raw mode, exits alternate screen
+
     Ok(())
   }
 }
