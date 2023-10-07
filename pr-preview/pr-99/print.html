@@ -4275,10 +4275,11 @@ impl Widget for BigText&lt;'_&gt; {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="concepts"><a class="header" href="#concepts">Concepts</a></h1>
 <p>In this section, we will cover various concepts associated with terminal user interfaces, such as:</p>
 <ul>
-<li>Application patterns</li>
-<li>Event handling</li>
-<li>Storing state</li>
 <li>Rendering</li>
+<li>Layout</li>
+<li>Application patterns</li>
+<li>Backends</li>
+<li>Event handling</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="rendering"><a class="header" href="#rendering">Rendering</a></h1>
 <p>The world of UI development consists mainly of two dominant paradigms: retained mode and immediate
@@ -4608,7 +4609,7 @@ Finally, Ratatui writes the contents of the buffer to the terminal.</p>
 <p>The coordinate system in Ratatui runs left to right, top to bottom, with the origin <code>(0, 0)</code> in the
 top left corner of the terminal. The x and y coordinates are represented by u16 values and are
 generally listed in that order in most places.</p>
-<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="280" height="160">
+<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="192" height="160">
   <style>
     line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
     <!--separator-->
@@ -4631,22 +4632,15 @@ generally listed in that order in most places.</p>
       <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
     </marker>
   </defs>
-  <rect class="backdrop" x="0" y="0" width="280" height="160"></rect>
-  <path d="M 8,0 A 16,16 0,0,0 8,16" class="nofill"></path>
-  <text x="18" y="12" >0,</text>
-  <text x="42" y="12" >0</text>
-  <path d="M 56,0 A 16,16 0,0,1 56,16" class="nofill"></path>
-  <text x="186" y="12" >x</text>
-  <path d="M 208,0 A 16,16 0,0,0 208,16" class="nofill"></path>
-  <text x="210" y="12" >columns</text>
-  <path d="M 264,0 A 16,16 0,0,1 264,16" class="nofill"></path>
+  <rect class="backdrop" x="0" y="0" width="192" height="160"></rect>
+  <text x="178" y="12" >x</text>
   <text x="26" y="140" >y</text>
-  <path d="M 48,128 A 16,16 0,0,0 48,144" class="nofill"></path>
-  <text x="50" y="140" >rows</text>
-  <path d="M 80,128 A 16,16 0,0,1 80,144" class="nofill"></path>
+  <text x="2" y="12" >(0,0)</text>
+  <text x="194" y="12" >(columns)</text>
+  <text x="42" y="140" >(rows)</text>
   <g>
-    <line x1="80" y1="8" x2="168" y2="8" class="solid"></line>
-    <polygon points="168,4 176,8 168,12" class="filled"></polygon>
+    <line x1="56" y1="8" x2="160" y2="8" class="solid"></line>
+    <polygon points="160,4 168,8 160,12" class="filled"></polygon>
   </g>
   <g>
     <line x1="28" y1="32" x2="28" y2="100" class="solid"></line>
@@ -4659,8 +4653,8 @@ sections with content.</p>
 <p>When rendering widgets to the screen, you first need to define the area where the widget will be
 displayed. This area is represented by a rectangle with a specific height and width in the buffer.
 You can specify this rectangle as an absolute position and size, or you can use the <a href="https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html"><code>Layout</code></a>
-struct to divide the terminal window dynamically based on constraints such as <code>Length</code>, <code>Min</code>, <code>Max</code>,
-<code>Ratio</code>, <code>Percentage</code>.</p>
+struct to divide the terminal window dynamically based on constraints such as <code>Length</code>, <code>Min</code>,
+<code>Max</code>, <code>Ratio</code>, <code>Percentage</code>.</p>
 <p>The following example renders “Hello world!” 10 times, by manually calculating the areas to render
 within.</p>
 <pre><code class="language-rust">let greeting = &quot;Hello world!&quot;;
@@ -4812,9 +4806,9 @@ non-deterministic when this occurs.</p>
 <h2 id="other-layout-approaches"><a class="header" href="#other-layout-approaches">Other Layout approaches</a></h2>
 <p>There are a few PoCs of using <a href="https://crates.io/crate/taffy">Taffy</a> for creating layouts that use
 flexbox / grid algorithms (similar to CSS) to layout rects. This can work nicely, but is not built
-in to Ratatui (yet). See <a href="https://github.com/search?q=repo%3Aratatui-org%2Fratatui%20taffy&amp;type=code">taffy in
-ratatui</a> for more
-details.</p>
+in to Ratatui (yet). See
+<a href="https://github.com/search?q=repo%3Aratatui-org%2Fratatui%20taffy&amp;type=code">taffy in ratatui</a> for
+more details.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="application-patterns"><a class="header" href="#application-patterns">Application Patterns</a></h1>
 <p>This page covers several patterns one can use for their application and acts as a top-level page for
 the following articles where these patterns are gone into more in-depth.</p>
