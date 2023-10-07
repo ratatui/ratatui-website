@@ -1,4 +1,4 @@
-# How does Ratatui work?
+# How does Ratatui work under the hood?
 
 You may have read in previous sections that Ratatui is a immediate mode rendering library. But what
 does that really mean? And how is it implemented? In this section, we will discuss how Ratatui
