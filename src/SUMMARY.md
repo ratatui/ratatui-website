@@ -36,19 +36,19 @@
 
 - [Concepts](./concepts/README.md)
 
+  - [Rendering](./concepts/rendering.md)
+    - [Under the hood](./concepts/rendering-under-the-hood.md)
+  - [Layout](./concepts/layout/README.md)
+  - [Application Patterns](./concepts/application-patterns/README.md)
+    - [The Elm Architecture](./concepts/application-patterns/the-elm-architecture.md)
+    - [Component Architecture](./concepts/application-patterns/component-architecture.md)
+    - [Flux Architecture](./concepts/application-patterns/flux-architecture.md)
   - [Backends](./concepts/backends/README.md)
     - [Comparison](./concepts/backends/comparison.md)
     - [Raw Mode](./concepts/backends/raw-mode.md)
     - [Alternate Screen](./concepts/backends/alternate-screen.md)
     - [Mouse Capture](./concepts/backends/mouse-capture.md)
-  - [Layout](./concepts/layout/README.md)
-  - [Rendering](./concepts/rendering.md)
-    - [Under the hood](./concepts/rendering-under-the-hood.md)
   - [Event Handling](./concepts/event_handling.md)
-  - [Application Patterns](./concepts/application-patterns/README.md)
-    - [The Elm Architecture](./concepts/application-patterns/the-elm-architecture.md)
-    - [Component Architecture](./concepts/application-patterns/component-architecture.md)
-    - [Flux Architecture](./concepts/application-patterns/flux-architecture.md)
 
 - [How To](./how-to/README.md)
 
