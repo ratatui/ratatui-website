@@ -363,17 +363,16 @@ render anything to the screen and there would be no indication of anything going
 <code>stderr</code> the application will still render a TUI.</p>
 <p>With <code>stdout</code>:</p>
 <ul>
-<li>every app needs to add code to check if the output is a TTY and do something different based on
+<li>Every app needs to add code to check if the output is a TTY and do something different based on
 the result</li>
-<li>app can’t write a result to the user that can be passed in a pipeline, e.g.
+<li>App can’t write a result to the user that can be passed in a pipeline, e.g.
 <code>my-select-some-value-app | grep foo</code></li>
 <li>Tends to be what most command line applications do by default.</li>
 </ul>
 <p>With <code>stderr</code>:</p>
 <ul>
-<li>no special setup necessary in order to run in a pipeline</li>
-<li>default behavior just works</li>
-<li>Unconventional so you might subvert users expectations</li>
+<li>No special setup necessary in order to run in a pipe command</li>
+<li>Unconventional and that might subvert users expectations</li>
 </ul>
 
                     </main>
