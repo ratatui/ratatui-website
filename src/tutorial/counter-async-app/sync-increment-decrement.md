@@ -12,11 +12,15 @@ fn start_event_handler(app: &App, tx: mpsc::UnboundedSender<Action>) -> tokio::t
     loop {
       let action = if crossterm::event::poll(tick_rate).unwrap() {
         if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
-          match key.code {
-            crossterm::event::KeyCode::Char('j') => Action::Increment,
-            crossterm::event::KeyCode::Char('k') => Action::Decrement,
-            crossterm::event::KeyCode::Char('q') => Action::Quit,
-            _ => Action::None,
+          if key.kind == event::KeyEventKind::Press {
+            match key.code {
+              crossterm::event::KeyCode::Char('j') => Action::Increment,
+              crossterm::event::KeyCode::Char('k') => Action::Decrement,
+              crossterm::event::KeyCode::Char('q') => Action::Quit,
+              _ => Action::None,
+            }
+          } else {
+            Action::None
           }
         } else {
           Action::None
@@ -154,11 +158,15 @@ fn start_event_handler(app: &App, tx: mpsc::UnboundedSender<Action>) -> tokio::t
     loop {
       let action = if crossterm::event::poll(tick_rate).unwrap() {
         if let crossterm::event::Event::Key(key) = crossterm::event::read().unwrap() {
-          match key.code {
-            crossterm::event::KeyCode::Char('j') => Action::Increment,
-            crossterm::event::KeyCode::Char('k') => Action::Decrement,
-            crossterm::event::KeyCode::Char('q') => Action::Quit,
-            _ => Action::None,
+          if key.kind == event::KeyEventKind::Press {
+            match key.code {
+              crossterm::event::KeyCode::Char('j') => Action::Increment,
+              crossterm::event::KeyCode::Char('k') => Action::Decrement,
+              crossterm::event::KeyCode::Char('q') => Action::Quit,
+              _ => Action::None,
+            }
+          } else {
+            Action::None
           }
         } else {
           Action::None

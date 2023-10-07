@@ -5,7 +5,7 @@ top left corner of the terminal. The x and y coordinates are represented by u16 
 generally listed in that order in most places.
 
 ```svgbob
-( 0, 0 )  -----------> x (columns)
+"(0,0)"-------------> x "(columns)"
 
    |
    |
@@ -13,7 +13,7 @@ generally listed in that order in most places.
    |
    v
 
-   y (rows)
+   y "(rows)"
 ```
 
 Layouts and widgets form the basis of the UI in Ratatui. Layouts dictate the structure of the
@@ -23,8 +23,8 @@ sections with content.
 When rendering widgets to the screen, you first need to define the area where the widget will be
 displayed. This area is represented by a rectangle with a specific height and width in the buffer.
 You can specify this rectangle as an absolute position and size, or you can use the [`Layout`]
-struct to divide the terminal window dynamically based on constraints such as `Length`, `Min`, `Max`,
-`Ratio`, `Percentage`.
+struct to divide the terminal window dynamically based on constraints such as `Length`, `Min`,
+`Max`, `Ratio`, `Percentage`.
 
 The following example renders "Hello world!" 10 times, by manually calculating the areas to render
 within.
@@ -209,15 +209,15 @@ non-deterministic when this occurs.
 
 There are a few PoCs of using [Taffy](https://crates.io/crate/taffy) for creating layouts that use
 flexbox / grid algorithms (similar to CSS) to layout rects. This can work nicely, but is not built
-in to Ratatui (yet). See [taffy in
-ratatui](https://github.com/search?q=repo%3Aratatui-org%2Fratatui%20taffy&type=code) for more
-details.
+in to Ratatui (yet). See
+[taffy in ratatui](https://github.com/search?q=repo%3Aratatui-org%2Fratatui%20taffy&type=code) for
+more details.
 
 [`Layout`]: https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html
 [`Layout::split`]: https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html#method.split
 [`Frame::size()`]: https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.size
 [`Frame::render_widget`]:
-    https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_widget
+  https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_widget
 [`Frame::render_stateful_widget`]:
-    https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_stateful_widget
+  https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_stateful_widget
 [`Constraint`]: https://docs.rs/ratatui/latest/ratatui/layout/enum.Constraint.html

@@ -90,11 +90,15 @@ fn get_action(_app: &App) -> Action {
   let tick_rate = std::time::Duration::from_millis(250);
   if event::poll(tick_rate).unwrap() {
     if let Key(key) = event::read().unwrap() {
-      match key.code {
-        Char('j') => Action::Increment,
-        Char('k') => Action::Decrement,
-        Char('q') => Action::Quit,
-        _ => Action::None,
+      if key.kind == event::KeyEventKind::Press {
+        match key.code {
+            Char('j') => Action::Increment,
+            Char('k') => Action::Decrement,
+            Char('q') => Action::Quit,
+            _ => Action::None,
+        }
+      } else {
+        Action::None
       }
     } else {
       Action::None
@@ -210,7 +214,11 @@ fn get_action(app: &App) -> Action {
   let tick_rate = std::time::Duration::from_millis(250);
   if event::poll(tick_rate).unwrap() {
     if let Key(key) = event::read().unwrap() {
-      app.keyconfig.get(key.code).unwrap_or(Action::None)
+      if key.kind == event::KeyEventKind::Press {
+        app.keyconfig.get(key.code).unwrap_or(Action::None)
+      } else {
+        Action::None
+      }
     } else {
       Action::None
     }

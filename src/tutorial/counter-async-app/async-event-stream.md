@@ -58,11 +58,13 @@ fn main() -> Result {
   loop {
     if crossterm::event::poll(Duration::from_millis(250))? {
       if let Event::Key(key) = crossterm::event::read()? {
-        match key.code {
-          KeyCode::Char('j') => app.increment(),
-          KeyCode::Char('k') => app.decrement(),
-          KeyCode::Char('q') => break,
-          _ => (),
+        if key.kind == event::KeyEventKind::Press {
+          match key.code {
+            KeyCode::Char('j') => app.increment(),
+            KeyCode::Char('k') => app.decrement(),
+            KeyCode::Char('q') => break,
+            _ => (),
+          }
         }
       }
     };
@@ -141,7 +143,11 @@ impl EventHandler {
       loop {
         if crossterm::event::poll(tick_rate)? {
           match crossterm::event::read()? {
-            CrosstermEvent::Key(e) => tx.send(Event::Key(e)),
+            CrosstermEvent::Key(e) => {
+              if key.kind == event::KeyEventKind::Press {
+                tx.send(Event::Key(e))
+              }
+            },
             _ => unimplemented!(),
           }?
         }
@@ -176,7 +182,11 @@ impl EventHandler {
       loop {
         if crossterm::event::poll(tick_rate)? {
           match crossterm::event::read()? {
-            CrosstermEvent::Key(e) => tx.send(Event::Key(e)),
+            CrosstermEvent::Key(e) => {
+              if key.kind == event::KeyEventKind::Press {
+                tx.send(Event::Key(e))
+              }
+            },
             _ => unimplemented!(),
           }?
         }
@@ -214,7 +224,11 @@ impl EventHandler {
         loop {
           if crossterm::event::poll(tick_rate)? {
             match crossterm::event::read()? {
-              CrosstermEvent::Key(e) => tx.send(Event::Key(e)),
+              CrosstermEvent::Key(e) => {
+                if key.kind == event::KeyEventKind::Press {
+                  tx.send(Event::Key(e))
+                }
+              },
               _ => unimplemented!(),
             }?
           }
@@ -231,30 +245,6 @@ impl EventHandler {
     }
   }
 ```
-
-````admonish attention
-
-A lot of examples out there in the wild might use the following code for sending key presses:
-
-
-```rust
-  CrosstermEvent::Key(e) => tx.send(Event::Key(e)),
-```
-
-However, on Windows, when using `Crossterm`, this will send the same `Event::Key(e)` twice; one for when you press the key, i.e. `KeyEventKind::Press` and one for when you release the key, i.e. `KeyEventKind::Release`.
-On `MacOS` and `Linux` only `KeyEventKind::Press` kinds of `key` event is generated.
-
-To make the code work as expected across all platforms, you can do this instead:
-
-```rust
-  CrosstermEvent::Key(key) => {
-    if key.kind == KeyEventKind::Press {
-      event_tx.send(Event::Key(key)).unwrap();
-    }
-  },
-```
-
-````
 
 Tokio is an asynchronous runtime for the Rust programming language. It is one of the more popular
 runtimes for asynchronous programming in rust. You can learn more about here

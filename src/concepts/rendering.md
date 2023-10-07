@@ -49,24 +49,21 @@ This 4 minute talk about `IMGUI` is also tangentially relevant.
  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
  allowfullscreen></iframe>
 
-## Advantages of Immediate Mode Rendering
+### Advantages of Immediate Mode Rendering
 
 - **Simplicity**: Without a persistent widget state, your UI logic becomes a direct reflection of
   your application state. You don't have to sync them or worry about past widget states.
 - **Flexibility**: You can change your UI layout or logic any time, as nothing is set in stone. Want
   to hide a widget conditionally? Just don't draw it based on some condition.
 
-## Disadvantages of Immediate Mode Rendering
+### Disadvantages of Immediate Mode Rendering
 
-- **Render loop management**: In Immediate mode rendering, the onus of rendering lies solely on the
-  programmer. Every visual update necessitates a call to `Backend.draw()`. Hence, if the rendering
-  thread is inadvertently blocked, the UI will not update until the thread resumes.
-
-  ```admonish note
-  The `ratatui` library in particular only handles how widget would be rendered to a "Backend", e.g.
-  `crossterm`. The `Backend` in question would use an external crate e.g. `crossterm` for actually
-  drawing to the terminal.
-  ```
+- **Render loop management**: In Immediate mode rendering, the onus of triggering rendering lies on
+  the programmer. Every visual update necessitates a call to `Backend.draw()`. Hence, if the
+  rendering thread is inadvertently blocked, the UI will not update until the thread resumes. The
+  `ratatui` library in particular only handles how widgets are rendered to a "Backend" (e.g.
+  `CrosstermBackend`). The Backend would in turn use an external crate (e.g. `crossterm`) to
+  actually draw to the terminal.
 
 - **Event loop orchestration**: Along with managing "the render loop", developers are also
   responsible for handling "the event loop". This involves deciding on a third-party library for the
