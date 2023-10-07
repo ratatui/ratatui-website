@@ -208,9 +208,9 @@ new instance of <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c
 <p>In the closure, when the application calls the <code>Frame::render_widget()</code> method, it will call the
 <code>Clear</code>’s <code>Widget::render()</code> method passing it the area (a <code>Rect</code> value) and a mutable reference to
 the frame’s <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a>.</p>
-<p>Ratatui widgets render to an intermediate buffer before any information is written to the terminal.
-This is in contrast to using a library like <code>crossterm</code> directly, where writing text to terminal can
-occur immediately.</p>
+<p>Ratatui widgets render to this intermediate buffer before any information is written to the
+terminal. This is in contrast to using a library like <code>crossterm</code> directly, where writing text to
+terminal can occur immediately.</p>
 <p>The <code>Buffer</code> represents an area that the application can draw into by manipulating its contents. A
 <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a> contains a collection of <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L15-L26"><code>Cell</code></a>s to represent the rows and columns of the terminal’s
 display area. Widgets interact with these <code>Cell</code>s using the <code>Buffer</code> methods.</p>
