@@ -161,50 +161,45 @@
                     <main>
                         <h1 id="how-does-ratatui-work"><a class="header" href="#how-does-ratatui-work">How does Ratatui work?</a></h1>
 <p>You may have read in previous sections that Ratatui is a immediate mode rendering library. But what
-does that really mean? And how is it implemented? In this section, we will discuss how Ratatui renders <code>Widget</code>
-to the screen, starting with the <code>Terminal</code>’s <code>draw</code> method and ending with your chosen backend library.</p>
-<p>In Ratatui, the primary mechanism for making something that is renderable is through the <code>Widget</code>
-trait.</p>
-<pre><code class="language-rust">pub trait Widget {
-    /// Draws the current state of the widget in the given buffer. That is the only method required
-    /// to implement a custom widget.
-    fn render(self, area: Rect, buf: &amp;mut Buffer);
-}</code></pre>
-<p>Any struct (inside Ratatui or third party crates) can provide an implementation of the <code>Widget</code>
-trait for said struct, making an instance of that struct renderable to the terminal.</p>
-<p>For example, the <code>Paragraph</code> struct is a widget provided by Ratatui. Here’s how you may use the
-<code>Paragraph</code> widget:</p>
+does that really mean? And how is it implemented? In this section, we will discuss how Ratatui
+renders <code>Widget</code> to the screen, starting with the <code>Terminal</code>’s <code>draw</code> method and ending with your
+chosen backend library.</p>
+<p>To render an UI in Ratatui, your application calls the <code>Terminal::draw(|f| ...)</code> method. This method
+takes a closure<sup class="footnote-reference"><a href="#closure">1</a></sup> which accepts an instance of a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a>. Inside the <code>draw</code> method,
+applications can call <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596"><code>Frame::render_widget()</code></a> or <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L628"><code>Frame::render_stateful_widget()</code></a> to render
+the state of a widget within the available renderable area.</p>
+<p>What happens under the hood is that <code>Frame</code> has a reference to the current <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a>.
+<code>Frame::render_widget()</code> calls the <code>render</code> method on a Widget to write content to the current
+<code>Buffer</code>. At the end of the <code>draw</code> method, Ratatui persists the content of the <code>Buffer</code> struct to
+the terminal.</p>
+<!--prettier-ignore-->
+<div class="footnote-definition" id="closure"><sup class="footnote-definition-label">1</sup>
+<p>A closure is an anonymous function that can capture its environment, often used for short-lived tasks and functional constructs.</p>
+</div>
+<p>Here is a simple “hello world” example with Ratatui.</p>
 <pre><code class="language-rust">fn main() {
-    let mut terminal = ratatui::terminal::Terminal::new(ratatui::backend::CrosstermBackend::new(std::io::stderr()))?;
+    let mut terminal = ratatui::terminal::Terminal::new(
+        ratatui::backend::CrosstermBackend::new(std::io::stderr())
+    ).unwrap();
 
     terminal.draw(|f| {
         f.render_widget(Paragraph::new(&quot;Hello World!&quot;), f.size());
-    })?;
+    }).unwrap();
 }</code></pre>
-<p>In order to use Ratatui, users are expected to create an instance of the <code>Terminal</code> struct and call
-the <code>draw</code> method by passing in a function. This function takes one argument of type <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a>. For
-example, the following code is exactly equivalent to the code above:</p>
-<pre><code class="language-rust">fn main() {
-    let mut terminal = ratatui::terminal::Terminal::new(ratatui::backend::CrosstermBackend::new(std::io::stderr()))?;
-
-    terminal.draw(ui)?;
-}
-
-fn ui(frame: &amp;mut Frame) {
-    frame.render_widget(
-        Paragraph::new(&quot;Hello World!&quot;),
-        frame.size(),
-    );
+<p>In order to use Ratatui, users have to create an instance of the <code>Terminal</code> struct and call the
+<code>draw</code> method by passing in an anonymous function. This function takes one argument of type
+<a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a>.</p>
+<p><code>f.size()</code> returns a <code>Rect</code> that represents the total renderable area. The <code>f.render_widget()</code>
+method calls a <code>Widget::render()</code> method on the struct. This <code>Widget::render()</code> method is part of
+the <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets.rs#L107-L112"><code>Widget</code></a> trait.</p>
+<pre><code class="language-rust">pub trait Widget {
+    /// Draws the current state of the widget in the given buffer.
+    fn render(self, area: Rect, buf: &amp;mut Buffer);
 }</code></pre>
-<p>This <code>Frame</code> struct contains a method called <code>render_widget</code> which takes any object that implements
-the <code>Widget</code> trait. This <code>render_widget</code> method calls the <code>Widget::render</code> method on the type-erased
-<code>Widget</code> struct.</p>
-<pre><code class="language-rust">    pub fn render_widget&lt;W&gt;(&amp;mut self, widget: W, area: Rect)
-    where
-        W: Widget,
-    {
-        widget.render(area, self.buffer);
-    }</code></pre>
+<p>Any struct (inside Ratatui or third party crates) can provide an implementation of the
+<code>Widget::render()</code> method, making an instance of that struct renderable to the terminal. That is the
+only method required to implement a custom widget.</p>
+<p>In the <code>Paragraph</code> example above, this calls <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/widgets/paragraph.rs#L213-L214"><code>Widget::render()</code> implemented for <code>Paragraph</code></a>.</p>
 <p>As mentioned above, implementing the <code>Widget</code> trait is the primary way to make a struct renderable.
 As an example, here’s the full implementation for the <code>Clear</code> widget:</p>
 <pre><code class="language-rust">pub struct Clear;
@@ -220,139 +215,195 @@ impl Widget for Clear {
 }</code></pre>
 <p>There are 2 things that you should notice.</p>
 <ol>
-<li>The <code>Widget</code> gets the current area as a <code>Rect</code>.</li>
-<li>The <code>Widget</code> gets a mutable reference to a “<code>Buffer</code>”.</li>
+<li>The <code>Widget::render</code> gets the current area as a <code>Rect</code>.
+<ul>
+<li>Any implementation of a <code>Widget</code> should only draw “within the lines” of the <code>Rect</code> area.</li>
+</ul>
+</li>
+<li>The <code>Widget::render</code> gets a mutable reference to a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a> object.</li>
 </ol>
-<p>The top level widget usually gets a reference to the entire size of the terminal as a <code>Rect</code>, i.e.
-<code>f.size()</code>. However, nested widgets may get a smaller area. Any implementation of a <code>Widget</code> must
-only draw “within the lines” of the <code>Rect</code> area.</p>
-<p>You might think that a <code>Widget</code> renders directly to the terminal but that is not the case. Ratatui
-uses something called a “double-buffer” rendering technique.</p>
-<p>Every time <code>terminal.draw(|f| ...)</code> is called, a new <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a> struct is constructed that contains a
-mutable reference to an instance of the <code>Buffer</code> struct:</p>
-<pre><code class="language-rust">pub struct Frame&lt;'a&gt; {
-    // --snip--
-    /// The buffer that is used to draw the current frame
-    buffer: &amp;'a mut Buffer,
-}</code></pre>
-<p>The <code>Buffer</code> represents the area in which content is going to be drawn to the terminal. The <code>Buffer</code>
-struct implements a number of methods such as <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/buffer.rs#L207-L211"><code>get_mut</code></a> and <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/buffer.rs#L289-L294"><code>set_string</code></a>:</p>
-<pre><code class="language-rust">pub fn get_mut(&amp;mut self, x: u16, y: u16) -&gt; &amp;mut Cell {
-}
-
-pub fn set_string&lt;S&gt;(&amp;mut self, x: u16, y: u16, string: S, style: Style)
-where
-    S: AsRef&lt;str&gt; {
-}</code></pre>
-<p>These methods allow any implementation of the <code>Widget</code> trait to write into any parts of the
+<p>Ratatui widgets render to an intermediate buffer before any information is rendered to the terminal.
+This is in contrast to using a library like <code>crossterm</code> directly, where writing text to terminal can
+occur immediately.</p>
+<p>Every time your application calls <code>terminal.draw(|f| ...)</code>, Ratatui passes into the closure a new
+instance of a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a> which contains a mutable reference to an instance of <code>Buffer</code>.</p>
+<p>The <code>Buffer</code> represents an area that the application can draw into by manipulating its contents. A
+<a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a> contains a collection of <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L15-L26"><code>Cell</code></a>s to represent the rows and columns of the terminal’s
+display area. Widgets interact with these <code>Cell</code>s using the <code>Buffer</code> methods.</p>
+<p>Here’s a visual representation of a <code>Buffer</code> that is 12 <code>Cell</code>s wide and 4 <code>Cell</code>s tall.</p>
+<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="632" height="304">
+  <style>
+    line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
+    <!--separator-->
+    
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="632" height="304"></rect>
+  <text x="66" y="12" >0</text>
+  <text x="114" y="12" >1</text>
+  <text x="162" y="12" >2</text>
+  <text x="210" y="12" >3</text>
+  <text x="258" y="12" >4</text>
+  <text x="306" y="12" >5</text>
+  <text x="354" y="12" >6</text>
+  <text x="402" y="12" >7</text>
+  <text x="450" y="12" >8</text>
+  <text x="498" y="12" >9</text>
+  <text x="538" y="12" >10</text>
+  <text x="586" y="12" >11</text>
+  <text x="66" y="44" >H</text>
+  <text x="114" y="44" >e</text>
+  <text x="162" y="44" >l</text>
+  <text x="210" y="44" >l</text>
+  <text x="258" y="44" >o</text>
+  <text x="354" y="44" >W</text>
+  <text x="402" y="44" >o</text>
+  <text x="450" y="44" >r</text>
+  <text x="498" y="44" >l</text>
+  <text x="546" y="44" >d</text>
+  <text x="594" y="44" >!</text>
+  <text x="146" y="204" >symbol</text>
+  <text x="338" y="204" >style</text>
+  <text x="26" y="44" >0</text>
+  <text x="26" y="76" >1</text>
+  <text x="26" y="108" >2</text>
+  <text x="26" y="140" >3</text>
+  <text x="322" y="236" >fg</text>
+  <text x="322" y="252" >bg</text>
+  <line x1="344" y1="232" x2="352" y2="232" class="solid"></line>
+  <line x1="344" y1="248" x2="352" y2="248" class="solid"></line>
+  <text x="362" y="236" >Reset</text>
+  <text x="362" y="252" >Reset</text>
+  <g>
+    <line x1="44" y1="24" x2="620" y2="24" class="solid"></line>
+    <line x1="44" y1="24" x2="44" y2="152" class="solid"></line>
+    <line x1="92" y1="24" x2="92" y2="152" class="solid"></line>
+    <line x1="140" y1="24" x2="140" y2="152" class="solid"></line>
+    <line x1="188" y1="24" x2="188" y2="152" class="solid"></line>
+    <line x1="236" y1="24" x2="236" y2="152" class="solid"></line>
+    <line x1="284" y1="24" x2="284" y2="152" class="solid"></line>
+    <line x1="332" y1="24" x2="332" y2="152" class="solid"></line>
+    <line x1="380" y1="24" x2="380" y2="152" class="solid"></line>
+    <line x1="428" y1="24" x2="428" y2="152" class="solid"></line>
+    <line x1="476" y1="24" x2="476" y2="152" class="solid"></line>
+    <line x1="524" y1="24" x2="524" y2="152" class="solid"></line>
+    <line x1="572" y1="24" x2="572" y2="152" class="solid"></line>
+    <line x1="620" y1="24" x2="620" y2="152" class="solid"></line>
+    <line x1="44" y1="56" x2="256" y2="56" class="solid"></line>
+    <line x1="264" y1="56" x2="620" y2="56" class="solid"></line>
+    <line x1="44" y1="88" x2="620" y2="88" class="solid"></line>
+    <line x1="44" y1="120" x2="620" y2="120" class="solid"></line>
+    <line x1="44" y1="152" x2="620" y2="152" class="solid"></line>
+  </g>
+  <g>
+    <polygon points="256,60 260,48 264,60" class="filled"></polygon>
+    <line x1="260" y1="60" x2="260" y2="136" class="solid"></line>
+    <line x1="172" y1="136" x2="356" y2="136" class="solid"></line>
+    <line x1="172" y1="136" x2="172" y2="184" class="solid"></line>
+    <line x1="356" y1="136" x2="356" y2="184" class="solid"></line>
+    <line x1="116" y1="184" x2="228" y2="184" class="solid"></line>
+    <line x1="116" y1="184" x2="116" y2="280" class="solid"></line>
+    <line x1="228" y1="184" x2="228" y2="280" class="solid"></line>
+    <line x1="300" y1="184" x2="412" y2="184" class="solid"></line>
+    <line x1="300" y1="184" x2="300" y2="280" class="solid"></line>
+    <line x1="412" y1="184" x2="412" y2="280" class="solid"></line>
+    <line x1="116" y1="280" x2="228" y2="280" class="solid"></line>
+    <line x1="300" y1="280" x2="412" y2="280" class="solid"></line>
+  </g>
+  <g>
+    <text x="162" y="236">“</text>
+    <text x="170" y="236">o”</text>
+  </g>
+</svg></pre>
+<p>In Ratatui, a <code>Cell</code> struct is the smallest renderable unit of code. Each <code>Cell</code> tracks symbol and
+style information (foreground color, background color, modifiers etc). <code>Cell</code>s are similar to a
+“pixel” in a graphical UI. Terminals generally render text so that each individual cell takes up
+space approximately twice as high as it is wide. A <code>Cell</code> in Ratatui should usually contain 1 wide
+string content.</p>
+<p>The <code>Buffer</code> implements methods to write text, set styles on particular areas and manipulate
+individual cells. For example,</p>
+<ul>
+<li><code>buf.get_mut(0, 0)</code> will return a <code>Cell</code> with the symbol and style information for row = 0 and col
+= 0.</li>
+<li><code>buf.set_string(0, 0, &quot;Hello World!&quot;, Style::default())</code> will render <code>hello world</code> into the
+<code>Buffer</code> starting at row = 0 and col = 0 with the style set to default for all those cells.</li>
+</ul>
+<p>These methods allow any implementation of the <code>Widget</code> trait to write into different parts of the
 <code>Buffer</code>.</p>
-<p>A <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a> is essentially a collection of <code>Cell</code>s:</p>
-<pre><code class="language-rust">pub struct Buffer {
-    // --snip--
-    pub content: Vec&lt;Cell&gt;,
-}</code></pre>
-<p>In Ratatui, this <code>Cell</code> struct is the smallest renderable unit of code. A <code>Cell</code> essentially has a
-<code>String</code> which is the symbol that will be drawn in that <code>Cell</code> as well as <code>Style</code> information
-(foreground color, background color, modifiers etc).</p>
-<pre><code class="language-rust">// pseudo code
-pub struct Cell {
-  content: String,
-  style: Style,
-}</code></pre>
+<p>This all means that any content rendered to a <code>Buffer</code> is only stored in the <code>Buffer</code> that is
+attached to the frame during the <code>draw</code> call.</p>
 <div id="admonition-note" class="admonition note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
 </div>
 <div>
-<p><code>Cell</code>s are the closest analog to a “pixel” in a terminal.
-Most terminals render monospaced text 2 high and 1 wide.
-A <code>Cell</code> in Ratatui should usually contain 1 wide string content.</p>
+<p>ANSI Escape sequences for color and style that are stored in the cell’s string content are not
+rendered as the style information is stored separately in the cell. If your text has ANSI styling
+info, consider using the <a href="https://crates.io/crates/ansi-to-tui"><code>ansi-to-tui</code></a> crate to convert it
+to a <code>Text</code> value before rendering. You can learn more about the text related Ratatui features and
+displaying text <a href="./../how-to/render/display-text.html">here</a>.</p>
 </div>
 </div>
-<p>Here’s a simplified class diagram for reference:</p>
-<pre class="mermaid">classDiagram
-    class Cell {
-        +content: String
-        +style: Style
-    }
-
-    class Buffer {
-        +area: Rect
-        +content: Vec&lt;Cell&gt;
-    }
-
-    class Frame {
-        +buffer: mut Buffer
-        +render_widget()
-    }
-
-    class Widget {
-        &lt;&lt;interface&gt;&gt;
-        +render(area: Rect, buf: &amp;mut Buffer)
-    }
-
-    class Paragraph
-    class Block
-    class Table
-
-    Buffer --&gt; Cell
-    Frame --&gt; Buffer
-    Widget &lt;|.. Paragraph
-    Widget &lt;|.. Block
-    Widget &lt;|.. Table
-
-
-</pre>
-<p>Basically what this all means that any content rendered to a <code>Buffer</code> is only stored in that
-particular <code>Buffer</code> struct in the form of <code>Cell</code>s that contain string and style information.</p>
-<div id="admonition-note-1" class="admonition note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="#admonition-note-1"></a></p>
-</div>
-<div>
-<p>Because any styling has to happen though the <code>Style</code> struct (i.e. methods that apply
-<code>Style</code>s to <code>Cell</code>s) you can’t use ansi escape sequences directly in the string content.</p>
-<p>As a workaround, what you can do however is convert the ansi escape sequences into a
-<code>ratatui::text::Text</code> struct that contains the appropriate <code>Style</code>s. There’s a crate for this that
-might help: <a href="https://crates.io/crates/ansi-to-tui">https://crates.io/crates/ansi-to-tui</a>. And this <code>Text</code> struct that you create can be
-passed into the <code>Paragraph</code> widget to get the desired effect.</p>
-<p>Even if this particular crate doesn’t work for you this approach is probably what you want to use if
-you want to render ansi escape sequences in Ratatui.
-You can learn more about the text related of Ratatui features and displaying text
-<a href="./../how-to/render/display-text.html">here</a>.</p>
-</div>
-</div>
-<p>After all the <code>Widget</code>s are rendered to the same <code>Buffer</code> struct, i.e. after
-<code>terminal.draw(|f| ...)</code> returns, <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L253-L263"><code>terminal.flush()</code></a> is called. This is where the content is
-actually written out to the terminal.</p>
+<p>After the closure provided to the <code>draw</code> method finishes, the <code>draw</code> method calls
+<a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L253-L263"><code>Terminal::flush()</code></a>. This causes the buffer to be written to the screen. Ratatui uses a double
+buffer approach so that it can use a diff to figure out which content to write to the terminal
+screen efficiently.</p>
 <p>In <code>flush()</code>, the difference between the previous and the current buffer is obtained and that is
-passed it to the current backend for drawing to your actual terminal.</p>
-<pre><code class="language-rust">    pub fn flush(&amp;mut self) -&gt; io::Result&lt;()&gt; {
-        let previous_buffer = &amp;self.buffers[1 - self.current];
-        let current_buffer = &amp;self.buffers[self.current];
-        let updates = previous_buffer.diff(current_buffer);
-        if let Some((col, row, _)) = updates.last() {
-            self.last_known_cursor_pos = (*col, *row);
-        }
-        self.backend.draw(updates.into_iter())
-    }</code></pre>
-<p>After <code>flush()</code>, the buffers are swapped and the next time <code>terminal.draw(|f| ...)</code> is called a
-<code>Frame</code> is constructed with the other <code>Buffer</code> struct. This is why it is called a double-buffer
-rendering technique.</p>
+passed it to the current backend for drawing to your actual terminal. After <code>flush()</code>, the buffers
+are swapped and the next time <code>terminal.draw(|f| ...)</code> is called a <code>Frame</code> is constructed with the
+other <code>Buffer</code> struct.</p>
+<pre class="mermaid">sequenceDiagram
+    participant A as App
+    participant T as Terminal
+    participant B as Buffer
+    A -&gt;&gt;+ T: draw
+    create participant F as frame
+    T -&gt;&gt; F: new
+    T -&gt;&gt;+ A: ui
+    create participant W as widget
+    A -&gt;&gt; W: new
+    A -&gt;&gt;+ F: render_widget
+    F -&gt;&gt;+ W: render
+    opt
+    W -&gt;&gt; B: get_cell
+    W -&gt;&gt; B: set_string
+    W -&gt;&gt; B: set_line
+    W -&gt;&gt;- B: set_style
+    end
+    deactivate A
+    T --&gt;&gt; A: completed_frame
+</pre>
 <p>The important thing to note is that because all widgets render to the same <code>Buffer</code> within a single
-<code>terminal.draw(|f| ...)</code> call, rendering of different widgets may overwrite the same <code>Cell</code>, so the
-order in which widgets are rendered is relevant. For example, in this <code>draw</code> example below,
-<code>&quot;content1&quot;</code> will be overwritten by <code>&quot;content2&quot;</code> which will be overwritten by <code>&quot;content3&quot;</code> in the
-<code>Buffer</code> struct, and Ratatui will only ever write out <code>&quot;content3&quot;</code> to the terminal:</p>
+<code>terminal.draw(|f| ...)</code> call, rendering of different widgets may overwrite the same <code>Cell</code>. This
+means the order in which widgets are rendered will affect the final UI. For example, in this <code>draw</code>
+example below, <code>&quot;content1&quot;</code> will be overwritten by <code>&quot;content2&quot;</code> which will be overwritten by
+<code>&quot;content3&quot;</code> in the <code>Buffer</code> struct, and Ratatui will only ever write out <code>&quot;content3&quot;</code> to the
+terminal:</p>
 <pre><code class="language-rust">terminal.draw(|f| {
     f.render_widget(Paragraph::new(&quot;content1&quot;), f.size());
     f.render_widget(Paragraph::new(&quot;content2&quot;), f.size());
     f.render_widget(Paragraph::new(&quot;content3&quot;), f.size());
 })</code></pre>
-<p>This was a sneak peak into what happens under the hood in Ratatui. If you have any questions, feel
-free to open issues or discussions on <a href="https://github.com/ratatui-org/ratatui">the main repository</a>.</p>
+<p>In summary, the application calls <code>terminal.draw(|f| ...)</code>, and Ratatui provides a frame to the
+closure. Using the frame’s <code>render_widget</code> method, each widget draws to a buffer. Ratatui writes the
+contents of the buffer to the terminal.</p>
 
                     </main>
 
