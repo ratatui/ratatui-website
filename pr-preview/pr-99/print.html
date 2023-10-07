@@ -4750,36 +4750,26 @@ the developer to be principled.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="how-does-ratatui-work"><a class="header" href="#how-does-ratatui-work">How does Ratatui work?</a></h1>
 <p>You may have read in previous sections that Ratatui is a immediate mode rendering library. But what
 does that really mean? And how is it implemented? In this section, we will discuss how Ratatui
-renders <code>Widget</code> to the screen, starting with the <code>Terminal</code>’s <code>draw</code> method and ending with your
+renders a widget to the screen, starting with the <code>Terminal</code>’s <code>draw</code> method and ending with your
 chosen backend library.</p>
 <p>To render an UI in Ratatui, your application calls the <code>Terminal::draw(|f| ...)</code> method. This method
 takes a closure<sup class="footnote-reference"><a href="#closure">1</a></sup> which accepts an instance of a <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a>. Inside the <code>draw</code> method,
 applications can call <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596"><code>Frame::render_widget()</code></a> or <a href="https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L628"><code>Frame::render_stateful_widget()</code></a> to render
 the state of a widget within the available renderable area.</p>
-<p>What happens under the hood is that <code>Frame</code> has a reference to the current <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a>.
-<code>Frame::render_widget()</code> calls the <code>render</code> method on a Widget to write content to the current
-<code>Buffer</code>. At the end of the <code>draw</code> method, Ratatui persists the content of the <code>Buffer</code> struct to
-the terminal.</p>
+<p>The <code>Frame</code> has a reference to the current <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157"><code>Buffer</code></a>. <code>Frame::render_widget()</code> calls the <code>render</code>
+method on a widget to write content to the current <code>Buffer</code>. At the end of the <code>draw</code> method,
+Ratatui persists the content of Buffer` struct to the terminal.</p>
 <!--prettier-ignore-->
 <div class="footnote-definition" id="closure"><sup class="footnote-definition-label">1</sup>
 <p>A closure is an anonymous function that can capture its environment, often used for short-lived tasks and functional constructs.</p>
 </div>
-<p>Here is a simple “hello world” example with Ratatui.</p>
-<pre><code class="language-rust">fn main() {
-    let mut terminal = ratatui::terminal::Terminal::new(
-        ratatui::backend::CrosstermBackend::new(std::io::stderr())
-    ).unwrap();
-
-    terminal.draw(|f| {
-        f.render_widget(Paragraph::new(&quot;Hello World!&quot;), f.size());
-    }).unwrap();
-}</code></pre>
-<p>In order to use Ratatui, users have to create an instance of the <code>Terminal</code> struct and call the
-<code>draw</code> method by passing in an anonymous function. This function takes one argument of type
-<a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578"><code>Frame</code></a>.</p>
-<p><code>f.size()</code> returns a <code>Rect</code> that represents the total renderable area. The <code>f.render_widget()</code>
-method calls a <code>Widget::render()</code> method on the struct. This <code>Widget::render()</code> method is part of
-the <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets.rs#L107-L112"><code>Widget</code></a> trait.</p>
+<p>Here is the <code>terminal.draw()</code> call for a simple “hello world” example with Ratatui.</p>
+<pre><code class="language-rust">terminal.draw(|f| {
+    f.render_widget(Paragraph::new(&quot;Hello World!&quot;), f.size());
+});</code></pre>
+<p>The closure takes one argument of type <code>&amp;mut Frame</code>. <code>f.size()</code> returns a <code>Rect</code> that represents the
+total renderable area. The <code>f.render_widget()</code> method calls a <code>Widget::render()</code> method on the
+struct. This <code>Widget::render()</code> method is part of the <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets.rs#L107-L112"><code>Widget</code></a> trait.</p>
 <pre><code class="language-rust">pub trait Widget {
     /// Draws the current state of the widget in the given buffer.
     fn render(self, area: Rect, buf: &amp;mut Buffer);
