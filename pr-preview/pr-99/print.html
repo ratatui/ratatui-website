@@ -4761,7 +4761,7 @@ method. At the end of the <code>draw</code> method (after the closure returns), 
 the buffer to the terminal. We will discuss more about the <code>Buffer</code> later in this page.</p>
 <p>Here is the <code>terminal.draw()</code> call for a simple “hello world” example with Ratatui.</p>
 <pre><code class="language-rust">terminal.draw(|frame| {
-    frame.render_widget(Paragraph::new(&quot;Hello World!&quot;), f.size());
+    frame.render_widget(Paragraph::new(&quot;Hello World!&quot;), frame.size());
 });</code></pre>
 <p>The closure takes an argument of type <code>&amp;mut Frame</code>. <code>f.size()</code> returns a <code>Rect</code> that represents the
 total renderable area. The <code>f.render_widget()</code> method calls a <code>Widget::render()</code> method on the
