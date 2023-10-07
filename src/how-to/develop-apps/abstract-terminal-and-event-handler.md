@@ -1,10 +1,5 @@
 # Single `Tui` struct with `Terminal` and `EventHandler`
 
-```admonish note
-This is just one way to setup your application, there are many others. See
-[Application Patterns](../../concepts/application-patterns/) for more.
-```
-
 If you want a `tui.rs` with `Terminal` with `Deref` and `DerefMut`, and an `EventHandler`, you can
 use the following code.
 
@@ -13,37 +8,6 @@ Add the following dependencies:
 ```bash
 cargo add ratatui crossterm tokio tokio_util futures # required
 cargo add color_eyre serde serde_derive # optional
-```
-
-Then you'll be able write code like this:
-
-```rust
-impl App {
-  async fn run(&mut self) -> Result<()> {
-    let mut tui = tui::Tui::new()?
-            .tick_rate(4.0) // 4 ticks per second
-            .frame_rate(30.0); // 30 frames per second
-    tui.enter()?; // Starts event handler
-    loop {
-      tui.draw(|f| { // Deref allows calling `tui.draw`
-        self.ui(f);
-      })?;
-
-      if let Some(evt) = tui.next().await { // `tui.next().await` returns next event
-        let mut maybe_action = self.handle_event(evt);
-        while let Some(action) = maybe_action {
-          maybe_action = self.update(action);
-        }
-      };
-
-      if self.should_quit {
-        break;
-      }
-    }
-    tui.exit()?; // Stops event handler
-    Ok(())
-  }
-}
 ```
 
 You'll need to copy the code to a `./src/tui.rs`:
@@ -282,6 +246,37 @@ impl DerefMut for Tui {
 impl Drop for Tui {
   fn drop(&mut self) {
     self.exit().unwrap();
+  }
+}
+```
+
+Then you'll be able write code like this:
+
+```rust
+impl App {
+  async fn run(&mut self) -> Result<()> {
+    let mut tui = tui::Tui::new()?
+            .tick_rate(4.0) // 4 ticks per second
+            .frame_rate(30.0); // 30 frames per second
+    tui.enter()?; // Starts event handler
+    loop {
+      tui.draw(|f| { // Deref allows calling `tui.draw`
+        self.ui(f);
+      })?;
+
+      if let Some(evt) = tui.next().await { // `tui.next().await` returns next event
+        let mut maybe_action = self.handle_event(evt);
+        while let Some(action) = maybe_action {
+          maybe_action = self.update(action);
+        }
+      };
+
+      if self.should_quit {
+        break;
+      }
+    }
+    tui.exit()?; // Stops event handler
+    Ok(())
   }
 }
 ```
