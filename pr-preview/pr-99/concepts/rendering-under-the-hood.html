@@ -331,8 +331,8 @@ cells. For example,</p>
 </ul>
 <p>These methods allow any implementation of the <code>Widget</code> trait to write into different parts of the
 <code>Buffer</code>.</p>
-<p>This all means that any content rendered to a <code>Buffer</code> is only stored in <code>Buffer</code> that is attached
-to the frame during the <code>draw</code> call.</p>
+<p>What this means is that any content rendered to a <code>Buffer</code> is only stored in <code>Buffer</code> that is
+attached to the frame during the <code>draw</code> call.</p>
 <div id="admonition-note" class="admonition note">
 <div class="admonition-title">
 <p>Note</p>
@@ -350,10 +350,9 @@ displaying text <a href="./../how-to/render/display-text.html">here</a>.</p>
 <a href="https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L253-L263"><code>Terminal::flush()</code></a>. This causes the buffer to be written to the screen. Ratatui uses a double
 buffer approach so that it can use a diff to figure out which content to write to the terminal
 screen efficiently.</p>
-<p>In <code>flush()</code>, the difference between the previous and the current buffer is obtained and that is
-passed it to the current backend for drawing to your actual terminal. After <code>flush()</code>, the buffers
-are swapped and the next time <code>terminal.draw(|frame| ...)</code> is called a <code>Frame</code> is constructed with
-the other <code>Buffer</code> struct.</p>
+<p><code>flush()</code> calculates the difference between the previous and the current buffer and passes it to the
+current backend for drawing to the actual terminal. After <code>flush()</code>, Ratatui swaps the buffers and
+the next time it calls <code>terminal.draw(|frame| ...)</code> it constructs <code>Frame</code> with the other <code>Buffer</code>.</p>
 <pre class="mermaid">sequenceDiagram
     participant A as App
     participant T as Terminal
@@ -386,10 +385,11 @@ This means the order in which widgets are rendered will affect the final UI. For
     frame.render_widget(Paragraph::new(&quot;content3&quot;), frame.size());
 })</code></pre>
 <p>It’s also important to note that each time an application calls <code>terminal.draw()</code> it must draw all
-the widgets it expects to be rendered to the terminal, and not just a part of the frame</p>
-<p>In summary, the application calls <code>terminal.draw(|frame| ...)</code>, and Ratatui provides a frame to the
-closure. Using the frame’s <code>render_widget</code> method, each widget draws to a buffer. Ratatui writes the
-contents of the buffer to the terminal.</p>
+the widgets it expects to be rendered to the terminal, and not just a part of the frame.</p>
+<p>In summary, the application calls <code>terminal.draw(|frame| ...)</code>, and the terminal constructs a frame
+that is passed to the closure provided by the application. The closure draws each widget to the
+buffer by calling the <code>Frame::render_widget</code>, which in turn calls each widget’s render method.
+Finally, Ratatui writes the contents of the buffer to the terminal.</p>
 
                     </main>
 
