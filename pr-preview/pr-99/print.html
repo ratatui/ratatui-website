@@ -6357,49 +6357,12 @@ tui logger widget with tracing.</p>
 </div>
 <p><img src="https://user-images.githubusercontent.com/1813121/254093932-46d8c6fd-c572-4675-bcaf-45a36eed51ff.png" alt="Top half is a terminal with the TUI showing a Vertical split with tui-logger widget. Bottom half is a terminal showing the output of running tail -f on the log file." /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="single-tui-struct-with-terminal-and-eventhandler"><a class="header" href="#single-tui-struct-with-terminal-and-eventhandler">Single <code>Tui</code> struct with <code>Terminal</code> and <code>EventHandler</code></a></h1>
-<div id="admonition-note" class="admonition note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="how-to/develop-apps/abstract-terminal-and-event-handler.html#admonition-note"></a></p>
-</div>
-<div>
-<p>This is just one way to setup your application, there are many others. See
-<a href="how-to/develop-apps/../../concepts/application-patterns/">Application Patterns</a> for more.</p>
-</div>
-</div>
 <p>If you want a <code>tui.rs</code> with <code>Terminal</code> with <code>Deref</code> and <code>DerefMut</code>, and an <code>EventHandler</code>, you can
 use the following code.</p>
 <p>Add the following dependencies:</p>
 <pre><code class="language-bash">cargo add ratatui crossterm tokio tokio_util futures # required
 cargo add color_eyre serde serde_derive # optional
 </code></pre>
-<p>Then you’ll be able write code like this:</p>
-<pre><code class="language-rust">impl App {
-  async fn run(&amp;mut self) -&gt; Result&lt;()&gt; {
-    let mut tui = tui::Tui::new()?
-            .tick_rate(4.0) // 4 ticks per second
-            .frame_rate(30.0); // 30 frames per second
-    tui.enter()?; // Starts event handler
-    loop {
-      tui.draw(|f| { // Deref allows calling `tui.draw`
-        self.ui(f);
-      })?;
-
-      if let Some(evt) = tui.next().await { // `tui.next().await` returns next event
-        let mut maybe_action = self.handle_event(evt);
-        while let Some(action) = maybe_action {
-          maybe_action = self.update(action);
-        }
-      };
-
-      if self.should_quit {
-        break;
-      }
-    }
-    tui.exit()?; // Stops event handler
-    Ok(())
-  }
-}</code></pre>
 <p>You’ll need to copy the code to a <code>./src/tui.rs</code>:</p>
 <pre><code class="language-rust">use std::{
   ops::{Deref, DerefMut},
@@ -6634,6 +6597,33 @@ impl DerefMut for Tui {
 impl Drop for Tui {
   fn drop(&amp;mut self) {
     self.exit().unwrap();
+  }
+}</code></pre>
+<p>Then you’ll be able write code like this:</p>
+<pre><code class="language-rust">impl App {
+  async fn run(&amp;mut self) -&gt; Result&lt;()&gt; {
+    let mut tui = tui::Tui::new()?
+            .tick_rate(4.0) // 4 ticks per second
+            .frame_rate(30.0); // 30 frames per second
+    tui.enter()?; // Starts event handler
+    loop {
+      tui.draw(|f| { // Deref allows calling `tui.draw`
+        self.ui(f);
+      })?;
+
+      if let Some(evt) = tui.next().await { // `tui.next().await` returns next event
+        let mut maybe_action = self.handle_event(evt);
+        while let Some(action) = maybe_action {
+          maybe_action = self.update(action);
+        }
+      };
+
+      if self.should_quit {
+        break;
+      }
+    }
+    tui.exit()?; // Stops event handler
+    Ok(())
   }
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="setup-panic-hooks"><a class="header" href="#setup-panic-hooks">Setup Panic Hooks</a></h1>
