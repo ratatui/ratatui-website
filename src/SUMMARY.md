@@ -27,10 +27,9 @@
     - [Conclusion](./tutorial/json-editor/closing_thoughts.md)
   - [Async Counter App](./tutorial/counter-async-app/README.md)
     - [Actions](./tutorial/counter-async-app/actions.md)
-    - [Sync Increment & Decrement](./tutorial/counter-async-app/sync-increment-decrement.md)
-    - [Async Increment & Decrement](./tutorial/counter-async-app/async-increment-decrement.md)
     - [Async Event Stream](./tutorial/counter-async-app/async-event-stream.md)
-    - [Full Async](./tutorial/counter-async-app/full-async.md)
+    - [Full Async - Events](./tutorial/counter-async-app/full-async-events.md)
+    - [Full Async - Actions](./tutorial/counter-async-app/full-async-actions.md)
     - [Conclusion](./tutorial/counter-async-app/conclusion.md)
   - [Stopwatch App](./tutorial/stopwatch-app/README.md)
 

@@ -38,7 +38,83 @@ You can learn more about this concept in
 documentation.
 
 The key idea is that we have an `Action` enum that tracks all the actions that can be carried out by
-the `App`.
+the `App`. Here's the variants of the `Action` enum we will be using:
+
+```rust
+pub enum Action {
+  Tick,
+  Increment,
+  Decrement,
+  Quit,
+  None,
+}
+```
+
+Now we add a new `get_action` function to map a `KeyEvent` to an `Action`.
+
+```rust
+fn get_action(_app: &App) -> Action {
+  let tick_rate = std::time::Duration::from_millis(250);
+  if event::poll(tick_rate).unwrap() {
+    if let Key(key) = event::read().unwrap() {
+      if key.kind == event::KeyEventKind::Press {
+        return match key.code {
+          Char('j') => Action::Increment,
+          Char('k') => Action::Decrement,
+          Char('q') => Action::Quit,
+          _ => Action::None,
+        };
+      }
+    }
+  };
+  Action::None
+}
+```
+
+````admonish tip
+Instead of using a `None` variant in `Action`, you can drop the `None` from `Action`
+and use Rust's built-in `Option` types instead.
+This is what your code might actually look like:
+
+```rust
+fn get_action(_app: &App) -> Result<Option<Action>> {
+  let tick_rate = std::time::Duration::from_millis(250);
+  if event::poll(tick_rate)? {
+    if let Key(key) = event::read()? {
+      if key.kind == event::KeyEventKind::Press {
+        let action = match key.code {
+          Char('j') => Action::Increment,
+          Char('k') => Action::Decrement,
+          Char('q') => Action::Quit,
+          _ => return Ok(None),
+        };
+        return Ok(Some(action))
+      }
+    }
+  };
+  Ok(None)
+}
+```
+
+But, for illustration purposes, in this tutorial we will stick to using `Action::None` for now.
+````
+
+And the `update` function takes an `Action` instead, unlike before where it took a `KeyEvent`.
+
+```rust
+fn update(app: &mut App, action: Action) {
+  match action {
+    Action::Quit => app.should_quit = true,
+    Action::Increment => app.counter += 1,
+    Action::Decrement => app.counter -= 1,
+    Action::Tick => {},
+    _ => {},
+  };
+}
+
+```
+
+Here's the full single file version of the counter app using the `Action` enum for your reference:
 
 ```rust
 use anyhow::Result;
@@ -91,21 +167,16 @@ fn get_action(_app: &App) -> Action {
   if event::poll(tick_rate).unwrap() {
     if let Key(key) = event::read().unwrap() {
       if key.kind == event::KeyEventKind::Press {
-        match key.code {
-            Char('j') => Action::Increment,
-            Char('k') => Action::Decrement,
-            Char('q') => Action::Quit,
-            _ => Action::None,
-        }
-      } else {
-        Action::None
+        return match key.code {
+          Char('j') => Action::Increment,
+          Char('k') => Action::Decrement,
+          Char('q') => Action::Quit,
+          _ => Action::None,
+        };
       }
-    } else {
-      Action::None
     }
-  } else {
-    Action::None
-  }
+  };
+  Action::None
 }
 
 fn update(app: &mut App, action: Action) {
@@ -215,16 +286,11 @@ fn get_action(app: &App) -> Action {
   if event::poll(tick_rate).unwrap() {
     if let Key(key) = event::read().unwrap() {
       if key.kind == event::KeyEventKind::Press {
-        app.keyconfig.get(key.code).unwrap_or(Action::None)
-      } else {
-        Action::None
+        return app.keyconfig.get(key.code).unwrap_or(Action::None)
       }
-    } else {
-      Action::None
     }
-  } else {
-    Action::None
-  }
+  };
+  Action::None
 }
 ```
 

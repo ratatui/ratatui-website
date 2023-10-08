@@ -1,15 +1,127 @@
 # event.rs
 
-We are going to introduce a new concept right now. The concept of an `EventHandler`.
+Most applications will have a main run loop like this:
 
-Previously, we were polling for key inputs every 250 ms using crossterm as part of the `main` loop.
-Instead, now we are going to start a thread in the background that does the same thing.
+```rust
+fn main() -> Result<()> {
+  let mut app = App::new();
+
+  let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+
+  loop {
+
+    // get key event and update state
+    // ... Special handling to read key or mouse events required here
+
+    t.terminal.draw(|f| { // <- `terminal.draw` is the only ratatui function here
+      ui(app, f) // render state to terminal
+    })?;
+
+  }
+
+  Ok(())
+}
+```
+
+```admonish note
+The `terminal.draw(|f| { ui(app, f); })` call is the only line in the code above that
+uses `ratatui` functionality. You can learn more about
+[`draw` from the official documentation](https://docs.rs/ratatui/latest/ratatui/terminal/struct.Terminal.html#method.draw).
+Essentially, `terminal.draw()` takes a callback that takes a
+[`Frame`](https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html) and
+expects the callback to render widgets to that frame, which is then drawn to the terminal
+using a double buffer technique.
+```
+
+While we are in the "raw mode", any key presses in that terminal window are sent to `stdin`. We have
+to read these key presses from `stdin` if we want to act on them.
+
+In tutorials up until now, we have been using `crossterm::event::poll()` and
+`crossterm::event::read()`, like so:
+
+```rust
+# fn main() -> Result {
+#   let mut app = App::new();
+#
+#   let mut t = Tui::new()?;
+#
+#   t.enter()?;
+#
+  loop {
+    // crossterm::event::poll() here will block for a maximum 250ms
+    // will return true as soon as key is available to read
+    if crossterm::event::poll(Duration::from_millis(250))? {
+      // crossterm::event::read() blocks till it can read single key
+      // when used with poll, key is always available
+      if let Event::Key(key) = crossterm::event::read()? {
+        if key.kind == event::KeyEventKind::Press {
+          match key.code {
+            KeyCode::Char('j') => app.increment(),
+            KeyCode::Char('k') => app.decrement(),
+            KeyCode::Char('q') => break,
+            _ => (),
+          }
+        }
+      }
+    };
+    t.terminal.draw(|f| {
+      ui(app, f)
+    })?;
+  }
+#
+#   t.exit()?;
+#
+#   Ok(())
+# }
+```
+
+`crossterm::event::poll()` blocks till a key is received on `stdin`, at which point it returns
+`true` and `crossterm::event::read()` reads the single key event.
+
+This works perfectly fine, and a lot of small to medium size programs can get away with doing just
+that.
+
+However, this approach conflates the key input handling with app state updates, and does so in the
+"draw" loop. The practical issue with this approach is we block the draw loop for 250 ms waiting for
+a key press. This can have odd side effects, for example pressing an holding a key will result in
+faster draws to the terminal. You can try this out by pressing and holding any key and watching your
+CPU usage using `top` or `htop`.
+
+In terms of architecture, the code could get complicated to reason about. For example, we may even
+want key presses to mean _different_ things depending on the state of the app (when you are focused
+on an input field, you may want to enter the letter `"j"` into the text input field, but when
+focused on a list of items, you may want to scroll down the list.)
+
+![Pressing `j` 3 times to increment counter and 3 times in the text field](https://user-images.githubusercontent.com/1813121/254444604-de8cfcfa-eeec-417a-a8b0-92a7ccb5fcb5.gif)
+
+<!--
+```
+Set Shell zsh
+Sleep 1s
+Hide
+Type "cargo run"
+Enter
+Sleep 1s
+Show
+Type "jjj"
+Sleep 5s
+Sleep 5s
+Type "/jjj"
+Sleep 5s
+Escape
+Type "q"
+```
+-->
+
+We have to do a few different things set ourselves up, so let's take things one step at a time.
+
+First, instead of polling, we are going to introduce channels to get the key presses asynchronously
+and send them over a channel. We will then receive on the channel in the `main` loop.
 
 First, let's create an `Event` enum to handle the different kinds of events that can occur:
 
 ```rust
-use crossterm::event::{self, KeyEvent, MouseEvent};
-
+use crossterm::event::{KeyEvent, MouseEvent};
 {{#include ./ratatui-counter-app/src/event.rs:event}}
 ```
 
