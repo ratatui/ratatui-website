@@ -4,39 +4,28 @@ Most applications will have a main run loop like this:
 
 ```rust
 fn main() -> Result<()> {
-  let mut app = App::new();
-
-  let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-
+  crossterm::terminal::enable_raw_mode()?; // enter raw mode
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+#   let mut app = App::new();
+#   let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+  // --snip--
   loop {
-
-    // get key event and update state
-    // ... Special handling to read key or mouse events required here
-
-    t.terminal.draw(|f| { // <- `terminal.draw` is the only ratatui function here
-      ui(app, f) // render state to terminal
-    })?;
-
+    // --snip--
+#     terminal.draw(|f| { // <- `terminal.draw` is the only ratatui function here
+#       ui(app, f) // render state to terminal
+#     })?;
   }
-
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?; // exit raw mode
   Ok(())
 }
 ```
 
-```admonish note
-The `terminal.draw(|f| { ui(app, f); })` call is the only line in the code above that
-uses `ratatui` functionality. You can learn more about
-[`draw` from the official documentation](https://docs.rs/ratatui/latest/ratatui/terminal/struct.Terminal.html#method.draw).
-Essentially, `terminal.draw()` takes a callback that takes a
-[`Frame`](https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html) and
-expects the callback to render widgets to that frame, which is then drawn to the terminal
-using a double buffer technique.
-```
+While the application is in the "raw mode", any key presses in that terminal window are sent to
+`stdin`. We have to make sure that the application reads these key presses from `stdin` if we want
+to act on them.
 
-While we are in the "raw mode", any key presses in that terminal window are sent to `stdin`. We have
-to read these key presses from `stdin` if we want to act on them.
-
-In tutorials up until now, we have been using `crossterm::event::poll()` and
+In the tutorials up until now, we have been using `crossterm::event::poll()` and
 `crossterm::event::read()`, like so:
 
 ```rust
@@ -51,9 +40,11 @@ In tutorials up until now, we have been using `crossterm::event::poll()` and
     // crossterm::event::poll() here will block for a maximum 250ms
     // will return true as soon as key is available to read
     if crossterm::event::poll(Duration::from_millis(250))? {
+
       // crossterm::event::read() blocks till it can read single key
       // when used with poll, key is always available
       if let Event::Key(key) = crossterm::event::read()? {
+
         if key.kind == event::KeyEventKind::Press {
           match key.code {
             KeyCode::Char('j') => app.increment(),
@@ -62,7 +53,9 @@ In tutorials up until now, we have been using `crossterm::event::poll()` and
             _ => (),
           }
         }
+
       }
+
     };
     t.terminal.draw(|f| {
       ui(app, f)
@@ -115,10 +108,11 @@ Type "q"
 
 We have to do a few different things set ourselves up, so let's take things one step at a time.
 
-First, instead of polling, we are going to introduce channels to get the key presses asynchronously
-and send them over a channel. We will then receive on the channel in the `main` loop.
+First, instead of polling, we are going to introduce channels to get the key presses "in the
+background" and send them over a channel. We will then receive these events on the channel in the
+`main` loop.
 
-First, let's create an `Event` enum to handle the different kinds of events that can occur:
+Let's create an `Event` enum to handle the different kinds of events that can occur:
 
 ```rust
 use crossterm::event::{KeyEvent, MouseEvent};
@@ -163,7 +157,7 @@ our `Event` enum.
 {{#include ./ratatui-counter-app/src/event.rs:eventhandler_impl}}
 ```
 
-At the beginning of our `EventHandler` `new` method, we create a channel using `mpsc::channel()`.
+At the beginning of our `EventHandler::new` method, we create a channel using `mpsc::channel()`.
 
 ```rust
 let (sender, receiver) = mpsc::channel();
@@ -172,12 +166,15 @@ let (sender, receiver) = mpsc::channel();
 This gives us a `sender` and `receiver` pair. The `sender` can be used to send events, while the
 `receiver` can be used to receive them.
 
-A new thread is spawned to handle events. This thread runs in the background and is responsible for
-polling and sending events to our main application through the channel.
+Notice that we are using `std::thread::spawn` in this `EventHandler`. This thread is spawned to
+handle events and runs in the background and is responsible for polling and sending events to our
+main application through the channel. In the
+[async counter tutorial](./../counter-async-app/async-event-stream.md) we will use
+`tokio::task::spawn` instead.
 
-Within our background thread, we continuously poll for events with `event::poll(timeout)`. If an
-event is available, it's read and sent through the sender channel. The types of events we handle
-include keypresses, mouse movements, screen resizing, and regular time ticks.
+In this background thread, we continuously poll for events with `event::poll(timeout)`. If an event
+is available, it's read and sent through the sender channel. The types of events we handle include
+keypresses, mouse movements, screen resizing, and regular time ticks.
 
 ```rust
 if event::poll(timeout)? {

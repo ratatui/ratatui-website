@@ -17,9 +17,10 @@ pub enum Event {
 
 And we will only render in the main run loop when we receive a `Event::Render`.
 
-Below is a snippet of a `Tui` struct. Check out
-[this section of the book](../../how-to/develop-apps/abstract-terminal-and-event-handler.md) for a
-more featureful version of this struct.
+Below is the relevant snippet of an updated `Tui` struct from earlier. You can click on the "Show
+hidden lines" button at the top right of the code block or check out
+[this section of the book](../../how-to/develop-apps/abstract-terminal-and-event-handler.md) for the
+full version this struct.
 
 The key things to note are that we create a `tick_interval`, `render_interval` and `reader` stream
 that can be polled using `tokio::select!`. This means that even while waiting for a key press, we

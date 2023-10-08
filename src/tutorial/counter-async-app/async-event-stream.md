@@ -143,11 +143,13 @@ like this:
 async fn main() -> {
   let mut app = App::new();
 
-  let events = EventHandler::new();
+  let backend = CrosstermBackend::new(std::io::stderr());
+  let terminal = Terminal::new(backend)?;
+  let events = EventHandler::new(250);
 
-  let mut t = Tui::new()?;
+  let mut tui = Tui::new(terminal, events)?;
 
-  t.enter()?;
+  tui.enter()?;
 
   loop {
     if let Event::Key(key) = events.next().await? {
@@ -159,12 +161,12 @@ async fn main() -> {
       }
     }
 
-    t.terminal.draw(|f| {
+    tui.draw(|f| {
       ui(app, f)
     })?;
   }
 
-  t.exit()?;
+  tui.exit()?;
 
   Ok(())
 }
