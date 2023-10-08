@@ -1,6 +1,8 @@
 # Full Async - `Action`s
 
-Now that we have introduced `Event`s and `Action`s, we can introduce a channel for `Action`s.
+Now that we have introduced `Event`s and `Action`s, we are going introduce a new `mpsc::channel` for
+`Action`s. The advantage of this is that we can programmatically trigger updates to the state of the
+app by sending `Action`s on the channel.
 
 Here's the `run` function refactored from before to introduce an `Action` channel. In addition to
 refactoring, we store the `action_tx` half of the channel in the `App`.
