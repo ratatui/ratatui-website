@@ -17,8 +17,10 @@ pub enum Event {
 
 And we will only render in the main run loop when we receive a `Event::Render`.
 
-Below is the relevant snippet of an updated `Tui` struct from earlier. You can click on the "Show
-hidden lines" button at the top right of the code block or check out
+Another thing I like to do is combine the `EventHandler` struct and the `Terminal` functionality. We
+are going to rename our `EventHandler` struct to a `Tui` struct, and move it to `./src/tui.rs`.
+Below is the relevant snippet of an updated `Tui` struct. You can click on the "Show hidden lines"
+button at the top right of the code block or check out
 [this section of the book](../../how-to/develop-apps/abstract-terminal-and-event-handler.md) for the
 full version this struct.
 
