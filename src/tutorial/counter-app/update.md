@@ -10,6 +10,10 @@ Finally we have the `update.rs` file. Here, the `update()` function takes in two
 {{#include ./ratatui-counter-app/src/update.rs}}
 ```
 
+Note that here we don't have to check that `key_event.kind` is `KeyEventKind::Press` because we
+already do that check in [tui.rs](./tui.md) and only send `KeyEventKind::Press` events on the
+channel.
+
 ```admonish question
 As an exercise, can you refactor this app to use "The Elm Architecture" principles?
 
