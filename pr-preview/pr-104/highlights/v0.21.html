@@ -1,0 +1,444 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>v0.21 - Ratatui Book</title>
+
+
+        <!-- Custom HTML head -->
+        <script type="module">
+          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+          mermaid.initialize({ startOnLoad: true });
+        </script>
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href=".././mdbook-admonish.css">
+        <link rel="stylesheet" href=".././theme/catppuccin.css">
+        <link rel="stylesheet" href=".././theme/catppuccin-highlight.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction to Ratatui</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../tutorial/index.html"><strong aria-hidden="true">2.</strong> Tutorials</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/hello-world/index.html"><strong aria-hidden="true">2.1.</strong> Hello World</a></li><li class="chapter-item "><a href="../tutorial/counter-app/index.html"><strong aria-hidden="true">2.2.</strong> Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/counter-app/single-function.html"><strong aria-hidden="true">2.2.1.</strong> Single Function</a></li><li class="chapter-item "><a href="../tutorial/counter-app/multiple-functions.html"><strong aria-hidden="true">2.2.2.</strong> Multiple Functions</a></li><li class="chapter-item "><a href="../tutorial/counter-app/multiple-files.html"><strong aria-hidden="true">2.2.3.</strong> Multiple Files</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/counter-app/app.html"><strong aria-hidden="true">2.2.3.1.</strong> app.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/ui.html"><strong aria-hidden="true">2.2.3.2.</strong> ui.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/event.html"><strong aria-hidden="true">2.2.3.3.</strong> event.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/tui.html"><strong aria-hidden="true">2.2.3.4.</strong> tui.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/update.html"><strong aria-hidden="true">2.2.3.5.</strong> update.rs</a></li><li class="chapter-item "><a href="../tutorial/counter-app/main.html"><strong aria-hidden="true">2.2.3.6.</strong> main.rs</a></li></ol></li></ol></li><li class="chapter-item "><a href="../tutorial/json-editor/index.html"><strong aria-hidden="true">2.3.</strong> JSON Editor</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/json-editor/app.html"><strong aria-hidden="true">2.3.1.</strong> App.rs - Holding application state</a></li><li class="chapter-item "><a href="../tutorial/json-editor/main.html"><strong aria-hidden="true">2.3.2.</strong> Main.rs - UI loop and event handling</a></li><li class="chapter-item "><a href="../tutorial/json-editor/ui.html"><strong aria-hidden="true">2.3.3.</strong> Ui.rs - Layouts, widgets, frames, oh my!</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/json-editor/ui-main.html"><strong aria-hidden="true">2.3.3.1.</strong> Ui.rs - Main</a></li><li class="chapter-item "><a href="../tutorial/json-editor/ui-editing.html"><strong aria-hidden="true">2.3.3.2.</strong> Ui.rs - Editing</a></li><li class="chapter-item "><a href="../tutorial/json-editor/ui-exit.html"><strong aria-hidden="true">2.3.3.3.</strong> Ui.rs - Exit</a></li></ol></li><li class="chapter-item "><a href="../tutorial/json-editor/closing_thoughts.html"><strong aria-hidden="true">2.3.4.</strong> Conclusion</a></li></ol></li><li class="chapter-item "><a href="../tutorial/counter-async-app/index.html"><strong aria-hidden="true">2.4.</strong> Async Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../tutorial/counter-async-app/actions.html"><strong aria-hidden="true">2.4.1.</strong> Actions</a></li><li class="chapter-item "><a href="../tutorial/counter-async-app/async-event-stream.html"><strong aria-hidden="true">2.4.2.</strong> Async Event Stream</a></li><li class="chapter-item "><a href="../tutorial/counter-async-app/full-async-events.html"><strong aria-hidden="true">2.4.3.</strong> Full Async - Events</a></li><li class="chapter-item "><a href="../tutorial/counter-async-app/full-async-actions.html"><strong aria-hidden="true">2.4.4.</strong> Full Async - Actions</a></li><li class="chapter-item "><a href="../tutorial/counter-async-app/conclusion.html"><strong aria-hidden="true">2.4.5.</strong> Conclusion</a></li></ol></li><li class="chapter-item "><a href="../tutorial/stopwatch-app/index.html"><strong aria-hidden="true">2.5.</strong> Stopwatch App</a></li></ol></li><li class="chapter-item expanded "><a href="../concepts/index.html"><strong aria-hidden="true">3.</strong> Concepts</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../concepts/rendering.html"><strong aria-hidden="true">3.1.</strong> Rendering</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../concepts/rendering-under-the-hood.html"><strong aria-hidden="true">3.1.1.</strong> Under the hood</a></li></ol></li><li class="chapter-item "><a href="../concepts/layout/index.html"><strong aria-hidden="true">3.2.</strong> Layout</a></li><li class="chapter-item "><a href="../concepts/application-patterns/index.html"><strong aria-hidden="true">3.3.</strong> Application Patterns</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../concepts/application-patterns/the-elm-architecture.html"><strong aria-hidden="true">3.3.1.</strong> The Elm Architecture</a></li><li class="chapter-item "><a href="../concepts/application-patterns/component-architecture.html"><strong aria-hidden="true">3.3.2.</strong> Component Architecture</a></li><li class="chapter-item "><a href="../concepts/application-patterns/flux-architecture.html"><strong aria-hidden="true">3.3.3.</strong> Flux Architecture</a></li></ol></li><li class="chapter-item "><a href="../concepts/backends/index.html"><strong aria-hidden="true">3.4.</strong> Backends</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../concepts/backends/comparison.html"><strong aria-hidden="true">3.4.1.</strong> Comparison</a></li><li class="chapter-item "><a href="../concepts/backends/raw-mode.html"><strong aria-hidden="true">3.4.2.</strong> Raw Mode</a></li><li class="chapter-item "><a href="../concepts/backends/alternate-screen.html"><strong aria-hidden="true">3.4.3.</strong> Alternate Screen</a></li><li class="chapter-item "><a href="../concepts/backends/mouse-capture.html"><strong aria-hidden="true">3.4.4.</strong> Mouse Capture</a></li></ol></li><li class="chapter-item "><a href="../concepts/event_handling.html"><strong aria-hidden="true">3.5.</strong> Event Handling</a></li></ol></li><li class="chapter-item expanded "><a href="../how-to/index.html"><strong aria-hidden="true">4.</strong> How To</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/layout/index.html"><strong aria-hidden="true">4.1.</strong> Layout UIs</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/layout/dynamic.html"><strong aria-hidden="true">4.1.1.</strong> Dynamic Layouts</a></li><li class="chapter-item "><a href="../how-to/layout/center-a-rect.html"><strong aria-hidden="true">4.1.2.</strong> Center a Rect</a></li></ol></li><li class="chapter-item "><a href="../how-to/render/index.html"><strong aria-hidden="true">4.2.</strong> Render Text</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/render/display-text.html"><strong aria-hidden="true">4.2.1.</strong> Display Text</a></li><li class="chapter-item "><a href="../how-to/render/style-text.html"><strong aria-hidden="true">4.2.2.</strong> Style Text</a></li></ol></li><li class="chapter-item "><a href="../how-to/widgets/index.html"><strong aria-hidden="true">4.3.</strong> Use Widgets</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/widgets/paragraph.html"><strong aria-hidden="true">4.3.1.</strong> Paragraph</a></li><li class="chapter-item "><a href="../how-to/widgets/block.html"><strong aria-hidden="true">4.3.2.</strong> Block</a></li><li class="chapter-item "><a href="../how-to/widgets/custom.html"><strong aria-hidden="true">4.3.3.</strong> Custom</a></li></ol></li><li class="chapter-item "><a href="../how-to/develop-apps/index.html"><strong aria-hidden="true">4.4.</strong> Develop Applications</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../how-to/develop-apps/cli-arguments.html"><strong aria-hidden="true">4.4.1.</strong> CLI arguments</a></li><li class="chapter-item "><a href="../how-to/develop-apps/config-directories.html"><strong aria-hidden="true">4.4.2.</strong> Configuration Directories</a></li><li class="chapter-item "><a href="../how-to/develop-apps/tracing.html"><strong aria-hidden="true">4.4.3.</strong> Logging with Tracing</a></li><li class="chapter-item "><a href="../how-to/develop-apps/abstract-terminal-and-event-handler.html"><strong aria-hidden="true">4.4.4.</strong> Async Terminal and Event handler</a></li><li class="chapter-item "><a href="../how-to/develop-apps/setup-panic-hooks.html"><strong aria-hidden="true">4.4.5.</strong> Setup Panic Hooks</a></li><li class="chapter-item "><a href="../how-to/develop-apps/better-panic-hooks.html"><strong aria-hidden="true">4.4.6.</strong> Better Panic Hooks</a></li><li class="chapter-item "><a href="../how-to/develop-apps/migrate-from-tui-rs.html"><strong aria-hidden="true">4.4.7.</strong> Migrate from tui-rs</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../faq/index.html"><strong aria-hidden="true">5.</strong> FAQ</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../faq/duplicate-key-events-windows.html"><strong aria-hidden="true">5.1.</strong> Duplicate key events</a></li><li class="chapter-item "><a href="../faq/tokio-async.html"><strong aria-hidden="true">5.2.</strong> tokio / async</a></li><li class="chapter-item "><a href="../faq/tui-rs-history.html"><strong aria-hidden="true">5.3.</strong> tui.rs history</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Highlights</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../highlights/v0.23.html"><strong aria-hidden="true">6.1.</strong> v0.23</a></li><li class="chapter-item "><a href="../highlights/v0.22.html"><strong aria-hidden="true">6.2.</strong> v0.22</a></li><li class="chapter-item expanded "><a href="../highlights/v0.21.html" class="active"><strong aria-hidden="true">6.3.</strong> v0.21</a></li></ol></li><li class="chapter-item expanded "><a href="../references/index.html"><strong aria-hidden="true">7.</strong> References</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../showcase/index.html"><strong aria-hidden="true">7.1.</strong> Showcase</a></li><li class="chapter-item "><a href="../references/features.html"><strong aria-hidden="true">7.2.</strong> Features</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> Developer Guide</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../developer-guide/ratatui.html"><strong aria-hidden="true">8.1.</strong> Ratatui</a></li><li class="chapter-item "><a href="../developer-guide/book.html"><strong aria-hidden="true">8.2.</strong> Ratatui Book</a></li><li class="chapter-item "><a href="../LICENSE.html"><strong aria-hidden="true">8.3.</strong> License</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../contributors.html">Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappé</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Ratatui Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book/edit/main/src/highlights/v0.21.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="v021"><a class="header" href="#v021"><a href="https://github.com/ratatui-org/ratatui/releases/tag/v0.21.0">v0.21</a></a></h1>
+<h2 id="new-backend-termwiz"><a class="header" href="#new-backend-termwiz">New backend: <code>termwiz</code></a></h2>
+<p><code>ratatui</code> supports a new backend called <code>termwiz</code> which is a “Terminal Wizardry” crate that powers
+<a href="https://github.com/wez/wezterm">wezterm</a>.</p>
+<p>To use it, enable the <code>termwiz</code> feature in <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[dependencies.ratatui]
+version = &quot;0.21.0&quot;
+features = [&quot;termwiz&quot;]
+default-features = false
+</code></pre>
+<p>Then you can utilize <code>TermwizBackend</code> object for creating a terminal. Here is a simple program that
+shows a text on the screen for 5 seconds using <code>ratatui</code> + <code>termwiz</code>:</p>
+<pre><code class="language-rs">use ratatui::{backend::TermwizBackend, widgets::Paragraph, Terminal};
+use std::{
+    error::Error,
+    thread,
+    time::{Duration, Instant},
+};
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+    let backend = TermwizBackend::new()?;
+    let mut terminal = Terminal::new(backend)?;
+    terminal.hide_cursor()?;
+
+    let now = Instant::now();
+    while now.elapsed() &lt; Duration::from_secs(5) {
+        terminal.draw(|f| f.render_widget(Paragraph::new(&quot;termwiz example&quot;), f.size()))?;
+        thread::sleep(Duration::from_millis(250));
+    }
+
+    terminal.show_cursor()?;
+    terminal.flush()?;
+    Ok(())
+}
+</code></pre>
+<hr />
+<h2 id="new-widget-calendar"><a class="header" href="#new-widget-calendar">New widget: Calendar</a></h2>
+<p>A calendar widget has been added which was originally a part of the
+<a href="https://github.com/sophacles/extra-widgets">extra-widgets</a> repository.</p>
+<p>Since this new widget depends on <code>time</code> crate, we gated it behind <code>widget-calendar</code> feature to avoid
+an extra dependency:</p>
+<pre><code class="language-toml">[dependencies.ratatui]
+version = &quot;0.21.0&quot;
+features = [&quot;widget-calendar&quot;]
+</code></pre>
+<p>Here is the example usage:</p>
+<pre><code class="language-rs">Monthly::new(
+    time::Date::from_calendar_date(2023, time::Month::January, 1).unwrap(),
+    CalendarEventStore::default(),
+)
+.show_weekdays_header(Style::default())
+.show_month_header(Style::default())
+.show_surrounding(Style::default()),
+</code></pre>
+<p>Results in:</p>
+<pre><code class="language-plain">     January 2023
+ Su Mo Tu We Th Fr Sa
+  1  2  3  4  5  6  7
+  8  9 10 11 12 13 14
+ 15 16 17 18 19 20 21
+ 22 23 24 25 26 27 28
+ 29 30 31  1  2  3  4
+</code></pre>
+<hr />
+<h2 id="new-widget-circle"><a class="header" href="#new-widget-circle">New widget: Circle</a></h2>
+<p><code>Circle</code> widget has been added with the use-case of showing an accuracy radius on the world map.</p>
+<p>Here is an example of how to use it with <code>Canvas</code>:</p>
+<pre><code class="language-rs">Canvas::default()
+    .paint(|ctx| {
+        ctx.draw(&amp;Circle {
+            x: 5.0,
+            y: 2.0,
+            radius: 5.0,
+            color: Color::Reset,
+        });
+    })
+    .marker(Marker::Braille)
+    .x_bounds([-10.0, 10.0])
+    .y_bounds([-10.0, 10.0]),
+</code></pre>
+<p>Results in:</p>
+<pre><code class="language-plain"> ⡠⠤⢤⡀
+⢸⡁  ⡧
+ ⠑⠒⠚⠁
+</code></pre>
+<hr />
+<h2 id="inline-viewport"><a class="header" href="#inline-viewport">Inline Viewport</a></h2>
+<p>This was a highly requested feature and the original implementation was done by
+<a href="https://github.com/fdehau">@fdehau</a> himself. Folks at <a href="https://atuin.sh">Atuin</a> completed the
+implementation and we are happy to finally have this incorporated in the new release!</p>
+<p>An inline viewport refers to a rectangular section of the terminal window that is set aside for
+displaying content.</p>
+<p>In the repository, there is an example that simulates downloading multiple files in parallel:
+<a href="https://github.com/ratatui-org/ratatui/blob/main/examples/inline.rs">https://github.com/ratatui-org/ratatui/blob/main/examples/inline.rs</a></p>
+<hr />
+<h2 id="block-title-on-bottom"><a class="header" href="#block-title-on-bottom">Block: title on bottom</a></h2>
+<blockquote>
+<p>Before you could only put the title on the top row of a Block. Now you can put it on the bottom
+row! Revolutionary.</p>
+</blockquote>
+<p>For example, place the title on the bottom and center:</p>
+<pre><code class="language-rs">Paragraph::new(&quot;ratatui&quot;)
+    .alignment(Alignment::Center)
+    .block(
+        Block::default()
+            .title(Span::styled(&quot;Title&quot;, Style::default()))
+            .title_on_bottom()
+            .title_alignment(Alignment::Center)
+            .borders(Borders::ALL),
+    )
+</code></pre>
+<p>Results in:</p>
+<pre><code class="language-plain">┌─────────────────────┐
+│       ratatui       │
+│                     │
+└────────Title────────┘
+</code></pre>
+<hr />
+<h2 id="block-support-adding-padding"><a class="header" href="#block-support-adding-padding">Block: support adding padding</a></h2>
+<p>If we want to render a widget inside a <code>Block</code> with a certain distance from its borders, we need to
+create another <code>Layout</code> element based on the outer <code>Block</code>, add a margin and render the <code>Widget</code>
+into it. Adding a padding property on the block element skips the creation of this second Layout.</p>
+<p>This property works especially when rendering texts, as we can just create a block with padding and
+use it as the text wrapper:</p>
+<pre><code class="language-rs">let block = Block::default()
+    .borders(Borders::ALL)
+    .padding(Padding::new(1, 1, 2, 2));
+let paragraph = Paragraph::new(&quot;example paragraph&quot;).block(block);
+f.render_widget(paragraph, area);
+</code></pre>
+<p>Rendering another widget should be easy too, using the <code>.inner</code> method:</p>
+<pre><code class="language-rs">let block = Block::default().borders(Borders::ALL).padding(Padding {
+    left: todo!(),
+    right: todo!(),
+    top: todo!(),
+    bottom: todo!(),
+});
+let inner_block = Block::default().borders(Borders::ALL);
+let inner_area = block.inner(area);
+
+f.render_widget(block, area);
+f.render_widget(inner_block, inner_area);
+f.render_widget(paragraph, area);
+</code></pre>
+<hr />
+<h2 id="text-display-secure-data"><a class="header" href="#text-display-secure-data">Text: display secure data</a></h2>
+<p>A new type called <code>Masked</code> is added for text-related types for masking data with a mask character.
+The example usage is as follows:</p>
+<pre><code class="language-rs">Line::from(vec![
+    Span::raw(&quot;Masked text: &quot;),
+    Span::styled(
+        Masked::new(&quot;password&quot;, '*'),
+        Style::default().fg(Color::Red),
+    ),
+])
+</code></pre>
+<p>Results in:</p>
+<pre><code class="language-plain">Masked text: ********
+</code></pre>
+<hr />
+<h2 id="border-macro"><a class="header" href="#border-macro"><code>border!</code> macro</a></h2>
+<p>A <code>border!</code> macro has been added that takes <code>TOP</code>, <code>BOTTOM</code>, <code>LEFT</code>, <code>RIGHT</code>, and <code>ALL</code> and returns
+a <code>Borders</code> object.</p>
+<p>An empty <code>border!()</code> call returns <code>NONE</code>.</p>
+<p>For example:</p>
+<pre><code class="language-rs">border!(ALL)
+border!(LEFT, RIGHT)
+border!()
+</code></pre>
+<p>This is gated behind a <code>macros</code> feature flag to ensure short build times. To enable it, update
+<code>Cargo.toml</code> as follows:</p>
+<pre><code class="language-toml">[dependencies.ratatui]
+version = &quot;0.21.0&quot;
+features = [&quot;macros&quot;]
+</code></pre>
+<p>Going forward, we will most likely put the new macros behind <code>macros</code> feature as well.</p>
+<hr />
+<h2 id="color-support-conversion-from-string"><a class="header" href="#color-support-conversion-from-string">Color: support conversion from <code>String</code></a></h2>
+<p>Have you ever needed this conversion?</p>
+<pre><code class="language-rs">&quot;black&quot; =&gt; Color::Black,
+&quot;red&quot; =&gt; Color::Red,
+&quot;green&quot; =&gt; Color::Green,
+// etc.
+</code></pre>
+<p>Don’t worry, we got you covered:</p>
+<pre><code class="language-rs">Color::from_str(&quot;lightblue&quot;) // Color::LightBlue
+Color::from_str(&quot;10&quot;)        // Color::Indexed(10)
+Color::from_str(&quot;#FF0000&quot;)   // Color::Rgb(255, 0, 0)
+</code></pre>
+<hr />
+<h2 id="spans---line"><a class="header" href="#spans---line"><code>Spans</code> -&gt; <code>Line</code></a></h2>
+<p><code>Line</code> is a significantly better name over <code>Spans</code> as the plural causes confusion and the type
+really is a representation of a line of text made up of spans.</p>
+<p>So, <code>Spans</code> is renamed as <code>Line</code> and a deprecation notice has been added.</p>
+<p>See
+<a href="https://github.com/ratatui-org/ratatui/pull/178">https://github.com/ratatui-org/ratatui/pull/178</a>
+for more discussion.</p>
+<hr />
+<h2 id="other-features"><a class="header" href="#other-features">Other features</a></h2>
+<ul>
+<li><code>List</code> now has a <code>len()</code> method for returning the number of items</li>
+<li><code>Sparkline</code> now has a <code>direction()</code> method for specifying the render direction (left to right /
+right to left)</li>
+<li><code>Table</code> and <code>List</code> states now have <code>offset()</code> and <code>offset_mut()</code> methods</li>
+<li>Expose the test buffer (<code>TestBackend</code>) with <code>Display</code> implementation</li>
+</ul>
+<hr />
+<h2 id="new-apps"><a class="header" href="#new-apps">New apps</a></h2>
+<p>Here is the list of applications that has been added:</p>
+<ul>
+<li><a href="https://github.com/BrookJeynes/oxycards">oxycards</a>: quiz card application built within the
+terminal.</li>
+<li><a href="https://github.com/Xithrius/twitch-tui">twitch-tui</a>: twitch chat in the terminal.</li>
+<li><a href="https://github.com/pythops/tenere">tenere</a>: TUI interface for LLMs.</li>
+</ul>
+<p>Also, we moved <code>APPS.md</code> file to the
+<a href="https://github.com/ratatui-org/ratatui/wiki/Apps-using-Ratatui">Wiki</a> so check it out for more
+applications built with <code>ratatui</code>!</p>
+<hr />
+<h2 id="migration-from-tui-rs"><a class="header" href="#migration-from-tui-rs">Migration from <code>tui-rs</code></a></h2>
+<p>We put together a migration guide at the Wiki:
+<a href="./../how-to/develop-apps/migrate-from-tui-rs.html">Migrating from TUI</a></p>
+<p>Also, the minimum supported Rust version is <code>1.65.0</code></p>
+<hr />
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Any contribution is highly appreciated! There are
+<a href="https://github.com/ratatui-org/ratatui/blob/main/CONTRIBUTING.md">contribution guidelines</a> for
+getting started.</p>
+<p>Feel free to <a href="https://github.com/ratatui-org/ratatui/issues/new/choose">submit issues</a> and throw in
+ideas!</p>
+<p>If you are having a problem with <code>ratatui</code> or want to contribute to the project or just want to
+chit-chat, feel free to <a href="https://discord.gg/pMCEU9hNEj">join our Discord server</a>!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../highlights/v0.22.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../references/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../highlights/v0.22.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../references/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
