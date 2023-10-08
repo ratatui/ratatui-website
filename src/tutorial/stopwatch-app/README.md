@@ -22,7 +22,8 @@ from [the Async Counter App](../counter-async-app/README.md). This `Message` pat
 [The Elm Architecture pattern](../../concepts/application-patterns/the-elm-architecture.md).
 
 This application uses a `Tui` struct that
-[combines the `Terminal` and `Event Handler`](../../how-to/develop-apps/abstract-terminal-and-event-handler.md).
+[combines the `Terminal` and `Event Handler`](../../how-to/develop-apps/abstract-terminal-and-event-handler.md)
+that we discussed in the previous section.
 
 The full code is available on
 [GitHub](https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/stopwatch-app/ratatui-stopwatch-app).
