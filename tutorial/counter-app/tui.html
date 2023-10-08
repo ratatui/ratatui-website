@@ -205,7 +205,7 @@ example, here’s the <code>init</code> method:</p>
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
-  pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
+  pub fn enter(&amp;mut self) -&gt; Result&lt;()&gt; {
     terminal::enable_raw_mode()?;
     crossterm::execute!(io::stderr(), EnterAlternateScreen, EnableMouseCapture)?;
 
@@ -302,7 +302,7 @@ impl Tui {
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
-  pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
+  pub fn enter(&amp;mut self) -&gt; Result&lt;()&gt; {
     terminal::enable_raw_mode()?;
     crossterm::execute!(io::stderr(), EnterAlternateScreen, EnableMouseCapture)?;
 

@@ -1085,41 +1085,25 @@ pub fn render(app: &amp;mut App, f: &amp;mut Frame) {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="eventrs"><a class="header" href="#eventrs">event.rs</a></h1>
 <p>Most applications will have a main run loop like this:</p>
 <pre><code class="language-rust">fn main() -&gt; Result&lt;()&gt; {
-  let mut app = App::new();
-
-  let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-
+  crossterm::terminal::enable_raw_mode()?; // enter raw mode
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+<span class="boring">  let mut app = App::new();
+</span><span class="boring">  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+</span>  // --snip--
   loop {
-
-    // get key event and update state
-    // ... Special handling to read key or mouse events required here
-
-    t.terminal.draw(|f| { // &lt;- `terminal.draw` is the only ratatui function here
-      ui(app, f) // render state to terminal
-    })?;
-
-  }
-
+    // --snip--
+<span class="boring">    terminal.draw(|f| { // &lt;- `terminal.draw` is the only ratatui function here
+</span><span class="boring">      ui(app, f) // render state to terminal
+</span><span class="boring">    })?;
+</span>  }
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
+  crossterm::terminal::disable_raw_mode()?; // exit raw mode
   Ok(())
 }</code></pre>
-<div id="admonition-note" class="admonition note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="tutorial/counter-app/event.html#admonition-note"></a></p>
-</div>
-<div>
-<p>The <code>terminal.draw(|f| { ui(app, f); })</code> call is the only line in the code above that
-uses <code>ratatui</code> functionality. You can learn more about
-<a href="https://docs.rs/ratatui/latest/ratatui/terminal/struct.Terminal.html#method.draw"><code>draw</code> from the official documentation</a>.
-Essentially, <code>terminal.draw()</code> takes a callback that takes a
-<a href="https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html"><code>Frame</code></a> and
-expects the callback to render widgets to that frame, which is then drawn to the terminal
-using a double buffer technique.</p>
-</div>
-</div>
-<p>While we are in the “raw mode”, any key presses in that terminal window are sent to <code>stdin</code>. We have
-to read these key presses from <code>stdin</code> if we want to act on them.</p>
-<p>In tutorials up until now, we have been using <code>crossterm::event::poll()</code> and
+<p>While the application is in the “raw mode”, any key presses in that terminal window are sent to
+<code>stdin</code>. We have to make sure that the application reads these key presses from <code>stdin</code> if we want
+to act on them.</p>
+<p>In the tutorials up until now, we have been using <code>crossterm::event::poll()</code> and
 <code>crossterm::event::read()</code>, like so:</p>
 <pre><code class="language-rust"><span class="boring">fn main() -&gt; Result {
 </span><span class="boring">  let mut app = App::new();
@@ -1132,9 +1116,11 @@ to read these key presses from <code>stdin</code> if we want to act on them.</p>
     // crossterm::event::poll() here will block for a maximum 250ms
     // will return true as soon as key is available to read
     if crossterm::event::poll(Duration::from_millis(250))? {
+
       // crossterm::event::read() blocks till it can read single key
       // when used with poll, key is always available
       if let Event::Key(key) = crossterm::event::read()? {
+
         if key.kind == event::KeyEventKind::Press {
           match key.code {
             KeyCode::Char('j') =&gt; app.increment(),
@@ -1143,7 +1129,9 @@ to read these key presses from <code>stdin</code> if we want to act on them.</p>
             _ =&gt; (),
           }
         }
+
       }
+
     };
     t.terminal.draw(|f| {
       ui(app, f)
@@ -1187,9 +1175,10 @@ Type "q"
 ```
 -->
 <p>We have to do a few different things set ourselves up, so let’s take things one step at a time.</p>
-<p>First, instead of polling, we are going to introduce channels to get the key presses asynchronously
-and send them over a channel. We will then receive on the channel in the <code>main</code> loop.</p>
-<p>First, let’s create an <code>Event</code> enum to handle the different kinds of events that can occur:</p>
+<p>First, instead of polling, we are going to introduce channels to get the key presses “in the
+background” and send them over a channel. We will then receive these events on the channel in the
+<code>main</code> loop.</p>
+<p>Let’s create an <code>Event</code> enum to handle the different kinds of events that can occur:</p>
 <pre><code class="language-rust">use crossterm::event::{KeyEvent, MouseEvent};
 
 /// Terminal events.
@@ -1234,10 +1223,10 @@ another thread (the consumer) can receive this data.</p>
 locks or other synchronization mechanisms. The “Multiple Producer, Single Consumer” aspect of
 <code>std::sync::mpsc</code> means that while multiple threads can send data into the channel, only a single
 thread can retrieve and process this data, ensuring a clear and orderly flow of information.</p>
-<div id="admonition-note-1" class="admonition note">
+<div id="admonition-note" class="admonition note">
 <div class="admonition-title">
 <p>Note</p>
-<p><a class="admonition-anchor-link" href="tutorial/counter-app/event.html#admonition-note-1"></a></p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-app/event.html#admonition-note"></a></p>
 </div>
 <div>
 <p>In the code in this section, we only need a “Single Producer, Single Consumer” but we are going to
@@ -1303,15 +1292,18 @@ impl EventHandler {
     Ok(self.receiver.recv()?)
   }
 }</code></pre>
-<p>At the beginning of our <code>EventHandler</code> <code>new</code> method, we create a channel using <code>mpsc::channel()</code>.</p>
+<p>At the beginning of our <code>EventHandler::new</code> method, we create a channel using <code>mpsc::channel()</code>.</p>
 <pre><code class="language-rust">let (sender, receiver) = mpsc::channel();</code></pre>
 <p>This gives us a <code>sender</code> and <code>receiver</code> pair. The <code>sender</code> can be used to send events, while the
 <code>receiver</code> can be used to receive them.</p>
-<p>A new thread is spawned to handle events. This thread runs in the background and is responsible for
-polling and sending events to our main application through the channel.</p>
-<p>Within our background thread, we continuously poll for events with <code>event::poll(timeout)</code>. If an
-event is available, it’s read and sent through the sender channel. The types of events we handle
-include keypresses, mouse movements, screen resizing, and regular time ticks.</p>
+<p>Notice that we are using <code>std::thread::spawn</code> in this <code>EventHandler</code>. This thread is spawned to
+handle events and runs in the background and is responsible for polling and sending events to our
+main application through the channel. In the
+<a href="tutorial/counter-app/./../counter-async-app/async-event-stream.html">async counter tutorial</a> we will use
+<code>tokio::task::spawn</code> instead.</p>
+<p>In this background thread, we continuously poll for events with <code>event::poll(timeout)</code>. If an event
+is available, it’s read and sent through the sender channel. The types of events we handle include
+keypresses, mouse movements, screen resizing, and regular time ticks.</p>
 <pre><code class="language-rust">if event::poll(timeout)? {
   match event::read()? {
     CrosstermEvent::Key(e) =&gt; {
@@ -1467,7 +1459,7 @@ example, here’s the <code>init</code> method:</p>
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
-  pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
+  pub fn enter(&amp;mut self) -&gt; Result&lt;()&gt; {
     terminal::enable_raw_mode()?;
     crossterm::execute!(io::stderr(), EnterAlternateScreen, EnableMouseCapture)?;
 
@@ -1564,7 +1556,7 @@ impl Tui {
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
-  pub fn init(&amp;mut self) -&gt; Result&lt;()&gt; {
+  pub fn enter(&amp;mut self) -&gt; Result&lt;()&gt; {
     terminal::enable_raw_mode()?;
     crossterm::execute!(io::stderr(), EnterAlternateScreen, EnableMouseCapture)?;
 
@@ -1637,7 +1629,7 @@ pub fn update(app: &amp;mut App, key_event: KeyEvent) {
   };
 }</code></pre>
 <p>Note that here we don’t have to check that <code>key_event.kind</code> is <code>KeyEventKind::Press</code> because we
-already do that check in <a href="tutorial/counter-app/./tui.html">tui.rs</a> and only send <code>KeyEventKind::Press</code> events on the
+already do that check in <a href="tutorial/counter-app/./event.html">event.rs</a> and only send <code>KeyEventKind::Press</code> events on the
 channel.</p>
 <div id="admonition-question" class="admonition question">
 <div class="admonition-title">
@@ -1682,7 +1674,7 @@ fn main() -&gt; Result&lt;()&gt; {
   let terminal = Terminal::new(backend)?;
   let events = EventHandler::new(250);
   let mut tui = Tui::new(terminal, events);
-  tui.init()?;
+  tui.enter()?;
 
   // Start the main loop.
   while !app.should_quit {
@@ -1734,15 +1726,6 @@ Sleep 2.5s
 <p><img src="https://user-images.githubusercontent.com/1813121/263404720-41bd81a0-4eec-479c-9333-44363a183613.gif" alt="Counter app demo" /></p>
 <p>You can find the full source code for this multiple files tutorial here:
 <a href="https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/counter-app/ratatui-counter-app">https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/counter-app/ratatui-counter-app</a>.</p>
-<div id="admonition-note" class="admonition note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="tutorial/counter-app/main.html#admonition-note"></a></p>
-</div>
-<div>
-<p>Check out the concepts pages, e.g. <a href="tutorial/counter-app/./../../concepts/the-elm-architecture.html">The Elm Architecture</a> for more information on how to structure your applications.</p>
-</div>
-</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="json-editor"><a class="header" href="#json-editor">JSON Editor</a></h1>
 <p>Now that we have covered some of the basics of a “hello world” and “counter” app, we are ready to
 build and manage something more involved.</p>
@@ -3497,11 +3480,13 @@ like this:</p>
 async fn main() -&gt; {
   let mut app = App::new();
 
-  let events = EventHandler::new();
+  let backend = CrosstermBackend::new(std::io::stderr());
+  let terminal = Terminal::new(backend)?;
+  let events = EventHandler::new(250);
 
-  let mut t = Tui::new()?;
+  let mut tui = Tui::new(terminal, events)?;
 
-  t.enter()?;
+  tui.enter()?;
 
   loop {
     if let Event::Key(key) = events.next().await? {
@@ -3513,12 +3498,12 @@ async fn main() -&gt; {
       }
     }
 
-    t.terminal.draw(|f| {
+    tui.draw(|f| {
       ui(app, f)
     })?;
   }
 
-  t.exit()?;
+  tui.exit()?;
 
   Ok(())
 }</code></pre>
@@ -3847,9 +3832,10 @@ pub enum Event {
   Key(KeyEvent),
 }</code></pre>
 <p>And we will only render in the main run loop when we receive a <code>Event::Render</code>.</p>
-<p>Below is a snippet of a <code>Tui</code> struct. Check out
-<a href="tutorial/counter-async-app/../../how-to/develop-apps/abstract-terminal-and-event-handler.html">this section of the book</a> for a
-more featureful version of this struct.</p>
+<p>Below is the relevant snippet of an updated <code>Tui</code> struct from earlier. You can click on the “Show
+hidden lines” button at the top right of the code block or check out
+<a href="tutorial/counter-async-app/../../how-to/develop-apps/abstract-terminal-and-event-handler.html">this section of the book</a> for the
+full version this struct.</p>
 <p>The key things to note are that we create a <code>tick_interval</code>, <code>render_interval</code> and <code>reader</code> stream
 that can be polled using <code>tokio::select!</code>. This means that even while waiting for a key press, we
 will still send a <code>Event::Tick</code> and <code>Event::Render</code> at regular intervals.</p>

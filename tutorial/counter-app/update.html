@@ -184,7 +184,7 @@ pub fn update(app: &amp;mut App, key_event: KeyEvent) {
   };
 }</code></pre>
 <p>Note that here we don’t have to check that <code>key_event.kind</code> is <code>KeyEventKind::Press</code> because we
-already do that check in <a href="./tui.html">tui.rs</a> and only send <code>KeyEventKind::Press</code> events on the
+already do that check in <a href="./event.html">event.rs</a> and only send <code>KeyEventKind::Press</code> events on the
 channel.</p>
 <div id="admonition-question" class="admonition question">
 <div class="admonition-title">
