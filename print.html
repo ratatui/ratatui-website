@@ -581,7 +581,7 @@ draw method at most once for each pass through your application’s main loop.
 <li><code>k</code> decreases the counter</li>
 <li><code>q</code> exits the application</li>
 </ul>
-<p>Usually you’ll be able to write code like the following:</p>
+<p>For Linux and MacOS, you’ll be able to write code like the following:</p>
 <pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
         match key.code {
@@ -592,15 +592,12 @@ draw method at most once for each pass through your application’s main loop.
         }
       }
     }</code></pre>
-<div id="admonition-attention" class="admonition warning">
-<div class="admonition-title">
-<p>Attention</p>
-<p><a class="admonition-anchor-link" href="tutorial/counter-app/single-function.html#admonition-attention"></a></p>
-</div>
-<div>
-<p>On Windows, when using <code>Crossterm</code>, this will send the same <code>Event::Key(e)</code> twice; one for when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when you release the key, i.e. <code>KeyEventKind::Release</code>.
-On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds of <code>key</code> event is generated.</p>
-<p>To make the code work as expected across all platforms, you have to do this instead:</p>
+<p>On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</code> kinds of <code>key</code> event is generated. However, on
+Windows when using <code>Crossterm</code>, the above code will send the same <code>Event::Key(e)</code> twice; one for
+when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when you release the key, i.e.
+<code>KeyEventKind::Release</code>.</p>
+<p>To make the code work in a cross platform manner, you’ll want to check that <code>key.kind</code> is
+<code>KeyEventKind::Press</code>, like so:</p>
 <pre><code class="language-rust">    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
       if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
         // check if key.kind is a `KeyEventKind::Press`
@@ -614,8 +611,6 @@ On <code>MacOS</code> and <code>Linux</code> only <code>KeyEventKind::Press</cod
         }
       }
     }</code></pre>
-</div>
-</div>
 <h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
 <p>By understanding the structure and components used in this simple counter application, you are set
 up to explore crafting more intricate terminal-based interfaces using <code>ratatui</code>.</p>
