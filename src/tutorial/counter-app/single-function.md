@@ -148,7 +148,7 @@ Every 250 milliseconds, the application checks if the user has pressed a key:
 - `k` decreases the counter
 - `q` exits the application
 
-Usually you'll be able to write code like the following:
+For Linux and MacOS, you'll be able to write code like the following:
 
 ```rust
     if crossterm::event::poll(std::time::Duration::from_millis(250))? {
@@ -163,12 +163,13 @@ Usually you'll be able to write code like the following:
     }
 ```
 
-````admonish attention
+On `MacOS` and `Linux` only `KeyEventKind::Press` kinds of `key` event is generated. However, on
+Windows when using `Crossterm`, the above code will send the same `Event::Key(e)` twice; one for
+when you press the key, i.e. `KeyEventKind::Press` and one for when you release the key, i.e.
+`KeyEventKind::Release`.
 
-On Windows, when using `Crossterm`, this will send the same `Event::Key(e)` twice; one for when you press the key, i.e. `KeyEventKind::Press` and one for when you release the key, i.e. `KeyEventKind::Release`.
-On `MacOS` and `Linux` only `KeyEventKind::Press` kinds of `key` event is generated.
-
-To make the code work as expected across all platforms, you have to do this instead:
+To make the code work in a cross platform manner, you'll want to check that `key.kind` is
+`KeyEventKind::Press`, like so:
 
 ```rust
     if crossterm::event::poll(std::time::Duration::from_millis(250))? {
@@ -185,8 +186,6 @@ To make the code work as expected across all platforms, you have to do this inst
       }
     }
 ```
-
-````
 
 ## Conclusion
 
