@@ -28,7 +28,7 @@ pub struct Tui {
 }
 ///// ANCHOR_END: tui
 
-///// ANCHOR: tui_init
+///// ANCHOR: tui_enter
 impl Tui {
   /// Constructs a new instance of [`Tui`].
   pub fn new(terminal: CrosstermTerminal, events: EventHandler) -> Self {
@@ -38,7 +38,7 @@ impl Tui {
   /// Initializes the terminal interface.
   ///
   /// It enables the raw mode and sets terminal properties.
-  pub fn init(&mut self) -> Result<()> {
+  pub fn enter(&mut self) -> Result<()> {
     terminal::enable_raw_mode()?;
     crossterm::execute!(io::stderr(), EnterAlternateScreen, EnableMouseCapture)?;
 
@@ -55,7 +55,7 @@ impl Tui {
     Ok(())
   }
 
-  ///// ANCHOR_END: tui_init
+  ///// ANCHOR_END: tui_enter
 
   ///// ANCHOR: tui_draw
   /// [`Draw`] the terminal interface by [`rendering`] the widgets.

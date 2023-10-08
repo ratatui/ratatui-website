@@ -44,7 +44,3 @@ Sleep 2.5s
 
 You can find the full source code for this multiple files tutorial here:
 <https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/counter-app/ratatui-counter-app>.
-
-```admonish note
-Check out the concepts pages, e.g. [The Elm Architecture](./../../concepts/the-elm-architecture.md) for more information on how to structure your applications.
-```

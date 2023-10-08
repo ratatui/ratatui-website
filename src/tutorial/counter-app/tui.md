@@ -27,7 +27,7 @@ With this `Tui` struct, we can add helper methods to handle modifying the termin
 example, here's the `init` method:
 
 ```rust
-{{#include ./ratatui-counter-app/src/tui.rs:tui_init}}
+{{#include ./ratatui-counter-app/src/tui.rs:tui_enter}}
 }
 ```
 
