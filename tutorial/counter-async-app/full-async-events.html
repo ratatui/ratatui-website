@@ -172,8 +172,10 @@ pub enum Event {
   Key(KeyEvent),
 }</code></pre>
 <p>And we will only render in the main run loop when we receive a <code>Event::Render</code>.</p>
-<p>Below is the relevant snippet of an updated <code>Tui</code> struct from earlier. You can click on the “Show
-hidden lines” button at the top right of the code block or check out
+<p>Another thing I like to do is combine the <code>EventHandler</code> struct and the <code>Terminal</code> functionality. We
+are going to rename our <code>EventHandler</code> struct to a <code>Tui</code> struct, and move it to <code>./src/tui.rs</code>.
+Below is the relevant snippet of an updated <code>Tui</code> struct. You can click on the “Show hidden lines”
+button at the top right of the code block or check out
 <a href="../../how-to/develop-apps/abstract-terminal-and-event-handler.html">this section of the book</a> for the
 full version this struct.</p>
 <p>The key things to note are that we create a <code>tick_interval</code>, <code>render_interval</code> and <code>reader</code> stream

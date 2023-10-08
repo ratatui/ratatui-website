@@ -160,7 +160,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="full-async---actions"><a class="header" href="#full-async---actions">Full Async - <code>Action</code>s</a></h1>
-<p>Now that we have introduced <code>Event</code>s and <code>Action</code>s, we can introduce a channel for <code>Action</code>s.</p>
+<p>Now that we have introduced <code>Event</code>s and <code>Action</code>s, we are going introduce a new <code>mpsc::channel</code> for
+<code>Action</code>s. The advantage of this is that we can programmatically trigger updates to the state of the
+app by sending <code>Action</code>s on the channel.</p>
 <p>Here’s the <code>run</code> function refactored from before to introduce an <code>Action</code> channel. In addition to
 refactoring, we store the <code>action_tx</code> half of the channel in the <code>App</code>.</p>
 <pre><code class="language-rust">async fn run() -&gt; Result&lt;()&gt; {

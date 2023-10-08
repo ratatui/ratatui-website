@@ -296,12 +296,7 @@ async fn main() -&gt; {
 
   loop {
     if let Event::Key(key) = events.next().await? {
-      match key.code {
-        KeyCode::Char('j') =&gt; app.increment(),
-        KeyCode::Char('k') =&gt; app.decrement(),
-        KeyCode::Char('q') =&gt; break,
-        _ =&gt; (),
-      }
+      // --snip--
     }
 
     tui.draw(|f| {
@@ -314,14 +309,37 @@ async fn main() -&gt; {
   Ok(())
 }</code></pre>
 <h3 id="cancellationtoken-and-tokios-select"><a class="header" href="#cancellationtoken-and-tokios-select"><code>CancellationToken</code> and <code>tokio</code>’s <code>select!</code></a></h3>
-<p>We can make some improvements to our <code>EventHandler</code> now. First, we want to be able to start and stop
-our tokio task on request. This is useful if we want to implement signal handler support in our
-Ratatui application. We can use a <code>CancellationToken</code> to stop the tokio task, and spawn a new task
-when we need to start on up.</p>
+<p>We can make some additional improvements to our <code>EventHandler</code> now. First, we want to be able to
+start and stop our tokio task on request. This is useful if we want to implement signal handler
+support in our Ratatui application. We can create a <code>CancellationToken</code> and store it in our
+<code>EventHandler</code>, and when <code>CancellationToken::cancel()</code> is called we can break out of loop to stop
+the tokio task. We can also spawn a new task when we need to start it up again.</p>
 <p>Next, we can use <a href="https://tokio.rs/tokio/tutorial/select"><code>tokio</code>’s <code>select!</code> macro</a> which allows us
 to wait on multiple <code>async</code> computations and returns when a single computation completes.</p>
-<p>Here’s what the completed <code>EventHandler</code> code with these two features:</p>
-<pre><code class="language-rust no_run noplayground">use anyhow::Result;
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+</div>
+<div>
+<p>Using <code>crossterm::event::EventStream::new()</code> requires the <code>event-stream</code> feature to be enabled.</p>
+<pre><code class="language-yml">crossterm = { version = &quot;0.27.0&quot;, features = [&quot;event-stream&quot;] }
+</code></pre>
+</div>
+</div>
+<p>With this <code>EventHandler</code> implemented, we can use <code>tokio</code> to create a separate “task” that handles
+any key asynchronously in our <code>main</code> loop.</p>
+<p>With <code>tokio</code> and our new <code>EventHandler</code>, here’s what our application now looks like:</p>
+<pre><code class="language-rust">use color_eyre::eyre::Result;
+use crossterm::{
+  event::{self, Event::Key, KeyCode::Char},
+  execute,
+  terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+};
+use ratatui::{
+  prelude::{CrosstermBackend, Terminal},
+  widgets::Paragraph,
+};
 use crossterm::{
   cursor,
   event::{Event as CrosstermEvent, KeyEvent, KeyEventKind, MouseEvent},
@@ -331,14 +349,19 @@ use tokio::{
   sync::{mpsc, oneshot},
   task::JoinHandle,
 };
+use tokio_util::sync::CancellationToken;
 
+pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+
+// typically stored in ./src/event.rs
 #[derive(Clone, Copy, Debug)]
 pub enum Event {
   Error,
-  AppTick,
+  Tick,
   Key(KeyEvent),
 }
 
+// typically stored in ./src/event.rs
 #[derive(Debug)]
 pub struct EventHandler {
   _tx: mpsc::UnboundedSender&lt;Event&gt;,
@@ -347,6 +370,7 @@ pub struct EventHandler {
   stop_cancellation_token: CancellationToken,
 }
 
+// typically stored in ./src/event.rs
 impl EventHandler {
   pub fn new(tick_rate: u64) -&gt; Self {
     let tick_rate = std::time::Duration::from_millis(tick_rate);
@@ -386,7 +410,7 @@ impl EventHandler {
             }
           },
           _ = delay =&gt; {
-              tx.send(Event::AppTick).unwrap();
+              tx.send(Event::Tick).unwrap();
           },
         }
       }
@@ -395,8 +419,8 @@ impl EventHandler {
     Self { _tx, rx, task: Some(task), stop_cancellation_token }
   }
 
-  pub async fn next(&amp;mut self) -&gt; Option&lt;Event&gt; {
-    self.rx.recv().await
+  pub async fn next(&amp;mut self) -&gt; Result&lt;Event&gt; {
+    self.rx.recv().await.ok_or(color_eyre::eyre::eyre!(&quot;Unable to get event&quot;))
   }
 
   pub async fn stop(&amp;mut self) -&gt; Result&lt;()&gt; {
@@ -406,46 +430,9 @@ impl EventHandler {
     }
     Ok(())
   }
-}</code></pre>
-<div id="admonition-note" class="admonition note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
-</div>
-<div>
-<p>Using <code>crossterm::event::EventStream::new()</code> requires the <code>event-stream</code> feature to be enabled.</p>
-<pre><code class="language-yml">crossterm = { version = &quot;0.27.0&quot;, features = [&quot;event-stream&quot;] }
-</code></pre>
-</div>
-</div>
-<p>With this <code>EventHandler</code> implemented, we can use <code>tokio</code> to create a separate “task” that handles
-any key asynchronously in our <code>main</code> loop.</p>
-<p>With <code>tokio</code> and our new <code>EventHandler</code>, here’s what our application now looks like:</p>
-<pre><code class="language-rust">use color_eyre::eyre::Result;
-use crossterm::{
-  event::{self, Event::Key, KeyCode::Char},
-  execute,
-  terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-};
-use ratatui::{
-  prelude::{CrosstermBackend, Terminal},
-  widgets::Paragraph,
-};
+}
 
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
-
-<span class="boring">use crossterm::{
-</span><span class="boring">  cursor,
-</span><span class="boring">  event::{Event as CrosstermEvent, KeyEvent, KeyEventKind, MouseEvent},
-</span><span class="boring">};
-</span><span class="boring">use futures::{FutureExt, StreamExt};
-</span><span class="boring">use tokio::{
-</span><span class="boring">  sync::{mpsc, oneshot},
-</span><span class="boring">  task::JoinHandle,
-</span><span class="boring">};
-</span><span class="boring">use tokio_util::sync::CancellationToken;
-</span><span class="boring">
-</span>fn startup() -&gt; Result&lt;()&gt; {
+fn startup() -&gt; Result&lt;()&gt; {
   enable_raw_mode()?;
   execute!(std::io::stderr(), EnterAlternateScreen)?;
   Ok(())
@@ -501,83 +488,7 @@ fn update(app: &amp;mut App, action: Action) {
     _ =&gt; {},
   };
 }
-<span class="boring">
-</span><span class="boring">#[derive(Clone, Copy, Debug)]
-</span><span class="boring">pub enum Event {
-</span><span class="boring">  Error,
-</span><span class="boring">  Tick,
-</span><span class="boring">  Key(KeyEvent),
-</span><span class="boring">}
-</span><span class="boring">
-</span><span class="boring">#[derive(Debug)]
-</span><span class="boring">pub struct EventHandler {
-</span><span class="boring">  _tx: mpsc::UnboundedSender&lt;Event&gt;,
-</span><span class="boring">  rx: mpsc::UnboundedReceiver&lt;Event&gt;,
-</span><span class="boring">  task: Option&lt;JoinHandle&lt;()&gt;&gt;,
-</span><span class="boring">  stop_cancellation_token: CancellationToken,
-</span><span class="boring">}
-</span><span class="boring">
-</span><span class="boring">impl EventHandler {
-</span><span class="boring">  pub fn new(tick_rate: u64) -&gt; Self {
-</span><span class="boring">    let tick_rate = std::time::Duration::from_millis(tick_rate);
-</span><span class="boring">
-</span><span class="boring">    let (tx, rx) = mpsc::unbounded_channel();
-</span><span class="boring">    let _tx = tx.clone();
-</span><span class="boring">
-</span><span class="boring">    let stop_cancellation_token = CancellationToken::new();
-</span><span class="boring">    let _stop_cancellation_token = stop_cancellation_token.clone();
-</span><span class="boring">
-</span><span class="boring">    let task = tokio::spawn(async move {
-</span><span class="boring">      let mut reader = crossterm::event::EventStream::new();
-</span><span class="boring">      let mut interval = tokio::time::interval(tick_rate);
-</span><span class="boring">      loop {
-</span><span class="boring">        let delay = interval.tick();
-</span><span class="boring">        let crossterm_event = reader.next().fuse();
-</span><span class="boring">        tokio::select! {
-</span><span class="boring">          _ = _stop_cancellation_token.cancelled() =&gt; {
-</span><span class="boring">            break;
-</span><span class="boring">          }
-</span><span class="boring">          maybe_event = crossterm_event =&gt; {
-</span><span class="boring">            match maybe_event {
-</span><span class="boring">              Some(Ok(evt)) =&gt; {
-</span><span class="boring">                match evt {
-</span><span class="boring">                  CrosstermEvent::Key(key) =&gt; {
-</span><span class="boring">                    if key.kind == KeyEventKind::Press {
-</span><span class="boring">                      tx.send(Event::Key(key)).unwrap();
-</span><span class="boring">                    }
-</span><span class="boring">                  },
-</span><span class="boring">                  _ =&gt; {},
-</span><span class="boring">                }
-</span><span class="boring">              }
-</span><span class="boring">              Some(Err(_)) =&gt; {
-</span><span class="boring">                tx.send(Event::Error).unwrap();
-</span><span class="boring">              }
-</span><span class="boring">              None =&gt; {},
-</span><span class="boring">            }
-</span><span class="boring">          },
-</span><span class="boring">          _ = delay =&gt; {
-</span><span class="boring">              tx.send(Event::Tick).unwrap();
-</span><span class="boring">          },
-</span><span class="boring">        }
-</span><span class="boring">      }
-</span><span class="boring">    });
-</span><span class="boring">
-</span><span class="boring">    Self { _tx, rx, task: Some(task), stop_cancellation_token }
-</span><span class="boring">  }
-</span><span class="boring">
-</span><span class="boring">  pub async fn next(&amp;mut self) -&gt; Result&lt;Event&gt; {
-</span><span class="boring">    self.rx.recv().await.ok_or(color_eyre::eyre::eyre!(&quot;Unable to get event&quot;))
-</span><span class="boring">  }
-</span><span class="boring">
-</span><span class="boring">  pub async fn stop(&amp;mut self) -&gt; Result&lt;()&gt; {
-</span><span class="boring">    self.stop_cancellation_token.cancel();
-</span><span class="boring">    if let Some(handle) = self.task.take() {
-</span><span class="boring">      handle.await.unwrap();
-</span><span class="boring">    }
-</span><span class="boring">    Ok(())
-</span><span class="boring">  }
-</span><span class="boring">}
-</span>
+
 async fn run() -&gt; Result&lt;()&gt; {
   // ratatui terminal
   let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;

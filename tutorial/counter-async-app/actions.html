@@ -160,29 +160,102 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="counter-app-with-actions"><a class="header" href="#counter-app-with-actions">Counter App with Actions</a></h1>
-<p>Let’s take the single file multiple function example from the counter app from earlier.</p>
-<p>This was what the flow chart looked like.</p>
-<pre class="mermaid">graph TD
-    MainRun[Main: Run];
-    CheckEvent[Main: Poll KeyPress];
-    UpdateApp[Main: Update App];
-    ShouldQuit[Main: Check should_quit?];
-    BreakLoop[Main: Break Loop];
-    MainStart[Main: Start];
-    MainEnd[Main: End];
-    MainStart --&gt; MainRun;
-    MainRun --&gt; CheckEvent;
-    CheckEvent --&gt;|No KeyPress| Draw;
-    CheckEvent --&gt; |KeyPress Received| UpdateApp;
-    Draw --&gt; ShouldQuit;
-    UpdateApp --&gt; Draw;
-    ShouldQuit --&gt;|Yes| BreakLoop;
-    BreakLoop --&gt; MainEnd;
-    ShouldQuit --&gt;|No| CheckEvent;
-</pre>
-<p>Now that we know what enums are, we are going to extend the counter application to include
-“Action“s. One of the first steps to building a <code>async</code> applications is to use the <code>Command</code>,
-<code>Action</code>, or <code>Message</code> pattern.</p>
+<p>Let’s take the single file multiple function example from the counter app from earlier:</p>
+<pre><code class="language-rust">// Hover on this codeblock and click &quot;Show hidden lines&quot; to see the code
+// --snip--
+<span class="boring">use anyhow::Result;
+</span><span class="boring">use crossterm::{
+</span><span class="boring">  event::{self, Event::Key, KeyCode::Char},
+</span><span class="boring">  execute,
+</span><span class="boring">  terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+</span><span class="boring">};
+</span><span class="boring">use ratatui::{
+</span><span class="boring">  prelude::{CrosstermBackend, Terminal},
+</span><span class="boring">  widgets::Paragraph,
+</span><span class="boring">};
+</span><span class="boring">
+</span><span class="boring">pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
+</span><span class="boring">
+</span><span class="boring">fn startup() -&gt; Result&lt;()&gt; {
+</span><span class="boring">  enable_raw_mode()?;
+</span><span class="boring">  execute!(std::io::stderr(), EnterAlternateScreen)?;
+</span><span class="boring">  Ok(())
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn shutdown() -&gt; Result&lt;()&gt; {
+</span><span class="boring">  execute!(std::io::stderr(), LeaveAlternateScreen)?;
+</span><span class="boring">  disable_raw_mode()?;
+</span><span class="boring">  Ok(())
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">// App state
+</span><span class="boring">struct App {
+</span><span class="boring">  counter: i64,
+</span><span class="boring">  should_quit: bool,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">// App ui render function
+</span><span class="boring">fn ui(app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
+</span><span class="boring">  f.render_widget(Paragraph::new(format!(&quot;Counter: {}&quot;, app.counter)), f.size());
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">// App update function
+</span><span class="boring">fn update(app: &amp;mut App) -&gt; Result&lt;()&gt; {
+</span><span class="boring">  if event::poll(std::time::Duration::from_millis(250))? {
+</span><span class="boring">    if let Key(key) = event::read()? {
+</span><span class="boring">      if key.kind == event::KeyEventKind::Press {
+</span><span class="boring">        match key.code {
+</span><span class="boring">          Char('j') =&gt; app.counter += 1,
+</span><span class="boring">          Char('k') =&gt; app.counter -= 1,
+</span><span class="boring">          Char('q') =&gt; app.should_quit = true,
+</span><span class="boring">          _ =&gt; (),
+</span><span class="boring">        }
+</span><span class="boring">      }
+</span><span class="boring">    }
+</span><span class="boring">  }
+</span><span class="boring">  Ok(())
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn run() -&gt; Result&lt;()&gt; {
+</span><span class="boring">  // ratatui terminal
+</span><span class="boring">  let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+</span><span class="boring">
+</span><span class="boring">  // application state
+</span><span class="boring">  let mut app = App { counter: 0, should_quit: false };
+</span><span class="boring">
+</span><span class="boring">  loop {
+</span><span class="boring">    // application update
+</span><span class="boring">    update(&amp;mut app)?;
+</span><span class="boring">
+</span><span class="boring">    // application render
+</span><span class="boring">    t.draw(|f| {
+</span><span class="boring">      ui(&amp;app, f);
+</span><span class="boring">    })?;
+</span><span class="boring">
+</span><span class="boring">    // application exit
+</span><span class="boring">    if app.should_quit {
+</span><span class="boring">      break;
+</span><span class="boring">    }
+</span><span class="boring">  }
+</span><span class="boring">
+</span><span class="boring">  Ok(())
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() -&gt; Result&lt;()&gt; {
+</span><span class="boring">  // setup terminal
+</span><span class="boring">  startup()?;
+</span><span class="boring">
+</span><span class="boring">  let result = run();
+</span><span class="boring">
+</span><span class="boring">  // teardown terminal before unwrapping Result of app run
+</span><span class="boring">  shutdown()?;
+</span><span class="boring">
+</span><span class="boring">  result?;
+</span><span class="boring">
+</span><span class="boring">  Ok(())
+</span><span class="boring">}</span></code></pre>
+<p>One of the first steps to building a <code>async</code> applications is to use the <code>Command</code>, <code>Action</code>, or
+<code>Message</code> pattern.</p>
 <div id="admonition-tip" class="admonition tip">
 <div class="admonition-title">
 <p>Tip</p>
@@ -196,8 +269,10 @@ You can learn a lot more about this pattern from the excellent <a href="http://g
 <p>You can learn more about this concept in
 <a href="../../concepts/application-patterns/the-elm-architecture.html">The Elm Architecture section</a> of the
 documentation.</p>
-<p>The key idea is that we have an <code>Action</code> enum that tracks all the actions that can be carried out by
-the <code>App</code>. Here’s the variants of the <code>Action</code> enum we will be using:</p>
+<p>We have learnt about enums JSON-editor tutorial. We are going to extend the counter application to
+include “Action“s using Rust’s enum features. The key idea is that we have an <code>Action</code> enum that
+tracks all the actions that can be carried out by the <code>App</code>. Here’s the variants of the <code>Action</code>
+enum we will be using:</p>
 <pre><code class="language-rust">pub enum Action {
   Tick,
   Increment,
@@ -251,7 +326,7 @@ This is what your code might actually look like:</p>
 <p>But, for illustration purposes, in this tutorial we will stick to using <code>Action::None</code> for now.</p>
 </div>
 </div>
-<p>And the <code>update</code> function takes an <code>Action</code> instead, unlike before where it took a <code>KeyEvent</code>.</p>
+<p>And the <code>update</code> function takes an <code>Action</code> instead:</p>
 <pre><code class="language-rust">fn update(app: &amp;mut App, action: Action) {
   match action {
     Action::Quit =&gt; app.should_quit = true,
@@ -304,7 +379,7 @@ pub enum Action {
 }
 
 // App ui render function
-fn ui(f: &amp;mut Frame&lt;'_&gt;, app: &amp;App) {
+fn ui(app: &amp;App, f: &amp;mut Frame&lt;'_&gt;) {
   f.render_widget(Paragraph::new(format!(&quot;Counter: {}&quot;, app.counter)), f.size());
 }
 
@@ -350,7 +425,7 @@ fn run() -&gt; Result&lt;()&gt; {
 
     // application render
     t.draw(|f| {
-      ui(f, &amp;app);
+      ui(&amp;app, f);
     })?;
 
     // application exit
@@ -395,8 +470,8 @@ fn main() -&gt; Result&lt;()&gt; {
     BreakLoop --&gt; MainEnd;
     ShouldQuit --&gt;|No| CheckEvent;
 </pre>
-<p>This may seem like a lot more boilerplate to achieve the same thing. However, <code>Action</code> enums have a
-few advantages.</p>
+<p>While this may seem like a lot more boilerplate to achieve the same thing, <code>Action</code> enums have a few
+advantages.</p>
 <p>Firstly, they can be mapped from keypresses programmatically. For example, you can define a
 configuration file that reads which keys are mapped to which <code>Action</code> like so:</p>
 <pre><code class="language-toml">[keymap]
@@ -423,6 +498,80 @@ out which action to take by updating the <code>get_action()</code> function:</p>
     }
   };
   Action::None
+}</code></pre>
+<p>Another advantage of this is that the business logic of the <code>App</code> struct can be tested without
+having to create an instance of a <code>Tui</code> or <code>EventHandler</code>, e.g.:</p>
+<pre><code class="language-rust">mod tests {
+  #[test]
+  fn test_app() {
+    let mut app = App::new();
+    let old_counter = app.counter;
+    update(&amp;mut app, Action::Increment);
+    assert!(app.counter == old_counter + 1);
+  }
+}</code></pre>
+<p>In the test above, we did not create an instance of the <code>Terminal</code> or the <code>EventHandler</code>, and did
+not call the <code>run</code> function, but we are still able to test the business logic of our application.
+Updating the app state on <code>Action</code>s gets us one step closer to making our application a “state
+machine”, which improves understanding and testability.</p>
+<p>If we wanted to be purist about it, we would make a struct called <code>AppState</code> which would be
+immutable, and we would have an <code>update</code> function return a new instance of the <code>AppState</code>:</p>
+<pre><code class="language-rust">fn update(app_state: AppState, action: Action) -&gt; AppState {
+  let mut state = app_state.clone();
+  state.counter += 1;
+  state
+}</code></pre>
+<div id="admonition-note" class="admonition note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
+</div>
+<div>
+<p><a href="https://github.com/charmbracelet/bubbletea"><code>Charm</code>’s <code>bubbletea</code></a> also follows the TEA paradigm.
+Here’s an example of what the <code>Update</code> function for a counter example might look like in Go:</p>
+<pre><code class="language-go">func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+    switch msg := msg.(type) {
+
+    // Is it a key press?
+    case tea.KeyMsg:
+        // These keys should exit the program.
+        case &quot;q&quot;:
+            return m, tea.Quit
+
+        case &quot;k&quot;:
+            m.counter--
+
+        case &quot;j&quot;:
+            m.counter++
+    }
+
+    // Note that we're not returning a command.
+    return m, nil
+}
+</code></pre>
+</div>
+</div>
+<p>Like in <code>Charm</code>, we may also want to choose a action to follow up after an <code>update</code> by returning
+another <code>Action</code>:</p>
+<pre><code class="language-rust">fn update(app_state: AppState, action: Action) -&gt; (AppState, Action) {
+  let mut state = app_state.clone();
+  state.counter += 1;
+  (state, Action::None) // no follow up action
+  // OR
+  (state, Action::Tick) // force app to tick
+}</code></pre>
+<p>We would have to modify our <code>run</code> function to handle the above paradigm though. Also, writing code
+to follow this architecture in Rust requires more upfront design, mostly because you have to make
+your <code>AppState</code> struct <code>Clone</code>-friendly.</p>
+<p>For this tutorial, we will stick to having a mutable <code>App</code>:</p>
+<pre><code class="language-rust">fn update(app: &amp;mut App, action: Action) {
+  match action {
+    Action::Quit =&gt; app.should_quit = true,
+    Action::Increment =&gt; app.counter += 1,
+    Action::Decrement =&gt; app.counter -= 1,
+    Action::Tick =&gt; {},
+    _ =&gt; {},
+  };
 }</code></pre>
 <p>The other advantage of using an <code>Action</code> enum is that you can tell your application what it should
 do next by sending a message over a channel. We will discuss this approach in the next section.</p>
