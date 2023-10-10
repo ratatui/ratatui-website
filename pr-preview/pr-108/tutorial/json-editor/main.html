@@ -1,0 +1,596 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Main.rs - UI loop and event handling - Ratatui Book</title>
+
+
+        <!-- Custom HTML head -->
+        <script type="module">
+          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+          mermaid.initialize({ startOnLoad: true });
+        </script>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../.././mdbook-admonish.css">
+        <link rel="stylesheet" href="../.././theme/catppuccin.css">
+        <link rel="stylesheet" href="../.././theme/catppuccin-highlight.css">
+        <link rel="stylesheet" href="../.././theme/catppuccin-admonish.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction to Ratatui</a></li><li class="chapter-item expanded "><a href="../../installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../../tutorial/index.html"><strong aria-hidden="true">2.</strong> Tutorials</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../tutorial/hello-world/index.html"><strong aria-hidden="true">2.1.</strong> Hello World</a></li><li class="chapter-item "><a href="../../tutorial/counter-app/index.html"><strong aria-hidden="true">2.2.</strong> Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../tutorial/counter-app/single-function.html"><strong aria-hidden="true">2.2.1.</strong> Single Function</a></li><li class="chapter-item "><a href="../../tutorial/counter-app/multiple-functions.html"><strong aria-hidden="true">2.2.2.</strong> Multiple Functions</a></li><li class="chapter-item "><a href="../../tutorial/counter-app/multiple-files.html"><strong aria-hidden="true">2.2.3.</strong> Multiple Files</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../tutorial/counter-app/app.html"><strong aria-hidden="true">2.2.3.1.</strong> app.rs</a></li><li class="chapter-item "><a href="../../tutorial/counter-app/ui.html"><strong aria-hidden="true">2.2.3.2.</strong> ui.rs</a></li><li class="chapter-item "><a href="../../tutorial/counter-app/event.html"><strong aria-hidden="true">2.2.3.3.</strong> event.rs</a></li><li class="chapter-item "><a href="../../tutorial/counter-app/tui.html"><strong aria-hidden="true">2.2.3.4.</strong> tui.rs</a></li><li class="chapter-item "><a href="../../tutorial/counter-app/update.html"><strong aria-hidden="true">2.2.3.5.</strong> update.rs</a></li><li class="chapter-item "><a href="../../tutorial/counter-app/main.html"><strong aria-hidden="true">2.2.3.6.</strong> main.rs</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../tutorial/json-editor/index.html"><strong aria-hidden="true">2.3.</strong> JSON Editor</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../tutorial/json-editor/app.html"><strong aria-hidden="true">2.3.1.</strong> App.rs - Holding application state</a></li><li class="chapter-item expanded "><a href="../../tutorial/json-editor/main.html" class="active"><strong aria-hidden="true">2.3.2.</strong> Main.rs - UI loop and event handling</a></li><li class="chapter-item "><a href="../../tutorial/json-editor/ui.html"><strong aria-hidden="true">2.3.3.</strong> Ui.rs - Layouts, widgets, frames, oh my!</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../tutorial/json-editor/ui-main.html"><strong aria-hidden="true">2.3.3.1.</strong> Ui.rs - Main</a></li><li class="chapter-item "><a href="../../tutorial/json-editor/ui-editing.html"><strong aria-hidden="true">2.3.3.2.</strong> Ui.rs - Editing</a></li><li class="chapter-item "><a href="../../tutorial/json-editor/ui-exit.html"><strong aria-hidden="true">2.3.3.3.</strong> Ui.rs - Exit</a></li></ol></li><li class="chapter-item "><a href="../../tutorial/json-editor/closing_thoughts.html"><strong aria-hidden="true">2.3.4.</strong> Conclusion</a></li></ol></li><li class="chapter-item "><a href="../../tutorial/counter-async-app/index.html"><strong aria-hidden="true">2.4.</strong> Async Counter App</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../tutorial/counter-async-app/async-event-stream.html"><strong aria-hidden="true">2.4.1.</strong> Async KeyEvents</a></li><li class="chapter-item "><a href="../../tutorial/counter-async-app/full-async-events.html"><strong aria-hidden="true">2.4.2.</strong> Async Render</a></li><li class="chapter-item "><a href="../../tutorial/counter-async-app/actions.html"><strong aria-hidden="true">2.4.3.</strong> Introducing Actions</a></li><li class="chapter-item "><a href="../../tutorial/counter-async-app/full-async-actions.html"><strong aria-hidden="true">2.4.4.</strong> Async Actions</a></li><li class="chapter-item "><a href="../../tutorial/counter-async-app/conclusion.html"><strong aria-hidden="true">2.4.5.</strong> Conclusion</a></li></ol></li><li class="chapter-item "><a href="../../tutorial/stopwatch-app/index.html"><strong aria-hidden="true">2.5.</strong> Stopwatch App</a></li></ol></li><li class="chapter-item expanded "><a href="../../concepts/index.html"><strong aria-hidden="true">3.</strong> Concepts</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../concepts/rendering.html"><strong aria-hidden="true">3.1.</strong> Rendering</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../concepts/rendering-under-the-hood.html"><strong aria-hidden="true">3.1.1.</strong> Under the hood</a></li></ol></li><li class="chapter-item "><a href="../../concepts/layout/index.html"><strong aria-hidden="true">3.2.</strong> Layout</a></li><li class="chapter-item "><a href="../../concepts/application-patterns/index.html"><strong aria-hidden="true">3.3.</strong> Application Patterns</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../concepts/application-patterns/the-elm-architecture.html"><strong aria-hidden="true">3.3.1.</strong> The Elm Architecture</a></li><li class="chapter-item "><a href="../../concepts/application-patterns/component-architecture.html"><strong aria-hidden="true">3.3.2.</strong> Component Architecture</a></li><li class="chapter-item "><a href="../../concepts/application-patterns/flux-architecture.html"><strong aria-hidden="true">3.3.3.</strong> Flux Architecture</a></li></ol></li><li class="chapter-item "><a href="../../concepts/backends/index.html"><strong aria-hidden="true">3.4.</strong> Backends</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../concepts/backends/comparison.html"><strong aria-hidden="true">3.4.1.</strong> Comparison</a></li><li class="chapter-item "><a href="../../concepts/backends/raw-mode.html"><strong aria-hidden="true">3.4.2.</strong> Raw Mode</a></li><li class="chapter-item "><a href="../../concepts/backends/alternate-screen.html"><strong aria-hidden="true">3.4.3.</strong> Alternate Screen</a></li><li class="chapter-item "><a href="../../concepts/backends/mouse-capture.html"><strong aria-hidden="true">3.4.4.</strong> Mouse Capture</a></li></ol></li><li class="chapter-item "><a href="../../concepts/event_handling.html"><strong aria-hidden="true">3.5.</strong> Event Handling</a></li></ol></li><li class="chapter-item expanded "><a href="../../how-to/index.html"><strong aria-hidden="true">4.</strong> How To</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../how-to/layout/index.html"><strong aria-hidden="true">4.1.</strong> Layout UIs</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../how-to/layout/dynamic.html"><strong aria-hidden="true">4.1.1.</strong> Dynamic Layouts</a></li><li class="chapter-item "><a href="../../how-to/layout/center-a-rect.html"><strong aria-hidden="true">4.1.2.</strong> Center a Rect</a></li></ol></li><li class="chapter-item "><a href="../../how-to/render/index.html"><strong aria-hidden="true">4.2.</strong> Render Text</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../how-to/render/display-text.html"><strong aria-hidden="true">4.2.1.</strong> Display Text</a></li><li class="chapter-item "><a href="../../how-to/render/style-text.html"><strong aria-hidden="true">4.2.2.</strong> Style Text</a></li></ol></li><li class="chapter-item "><a href="../../how-to/widgets/index.html"><strong aria-hidden="true">4.3.</strong> Use Widgets</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../how-to/widgets/paragraph.html"><strong aria-hidden="true">4.3.1.</strong> Paragraph</a></li><li class="chapter-item "><a href="../../how-to/widgets/block.html"><strong aria-hidden="true">4.3.2.</strong> Block</a></li><li class="chapter-item "><a href="../../how-to/widgets/custom.html"><strong aria-hidden="true">4.3.3.</strong> Custom</a></li></ol></li><li class="chapter-item "><a href="../../how-to/develop-apps/index.html"><strong aria-hidden="true">4.4.</strong> Develop Applications</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../how-to/develop-apps/cli-arguments.html"><strong aria-hidden="true">4.4.1.</strong> CLI arguments</a></li><li class="chapter-item "><a href="../../how-to/develop-apps/config-directories.html"><strong aria-hidden="true">4.4.2.</strong> Configuration Directories</a></li><li class="chapter-item "><a href="../../how-to/develop-apps/tracing.html"><strong aria-hidden="true">4.4.3.</strong> Logging with Tracing</a></li><li class="chapter-item "><a href="../../how-to/develop-apps/abstract-terminal-and-event-handler.html"><strong aria-hidden="true">4.4.4.</strong> Async Terminal and Event handler</a></li><li class="chapter-item "><a href="../../how-to/develop-apps/setup-panic-hooks.html"><strong aria-hidden="true">4.4.5.</strong> Setup Panic Hooks</a></li><li class="chapter-item "><a href="../../how-to/develop-apps/better-panic-hooks.html"><strong aria-hidden="true">4.4.6.</strong> Better Panic Hooks</a></li><li class="chapter-item "><a href="../../how-to/develop-apps/migrate-from-tui-rs.html"><strong aria-hidden="true">4.4.7.</strong> Migrate from tui-rs</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../faq/index.html"><strong aria-hidden="true">5.</strong> FAQ</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../faq/duplicate-key-events-windows.html"><strong aria-hidden="true">5.1.</strong> Duplicate key events</a></li><li class="chapter-item "><a href="../../faq/tokio-async.html"><strong aria-hidden="true">5.2.</strong> tokio / async</a></li><li class="chapter-item "><a href="../../faq/tui-rs-history.html"><strong aria-hidden="true">5.3.</strong> tui.rs history</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Highlights</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../highlights/v0.23.html"><strong aria-hidden="true">6.1.</strong> v0.23</a></li><li class="chapter-item "><a href="../../highlights/v0.22.html"><strong aria-hidden="true">6.2.</strong> v0.22</a></li><li class="chapter-item "><a href="../../highlights/v0.21.html"><strong aria-hidden="true">6.3.</strong> v0.21</a></li></ol></li><li class="chapter-item expanded "><a href="../../references/index.html"><strong aria-hidden="true">7.</strong> References</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../showcase/index.html"><strong aria-hidden="true">7.1.</strong> Showcase</a></li><li class="chapter-item "><a href="../../references/features.html"><strong aria-hidden="true">7.2.</strong> Features</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> Developer Guide</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../developer-guide/ratatui.html"><strong aria-hidden="true">8.1.</strong> Ratatui</a></li><li class="chapter-item "><a href="../../developer-guide/book.html"><strong aria-hidden="true">8.2.</strong> Ratatui Book</a></li><li class="chapter-item "><a href="../../LICENSE.html"><strong aria-hidden="true">8.3.</strong> License</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../../contributors.html">Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappé</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Ratatui Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/ratatui-org/ratatui-book/edit/main/src/tutorial/json-editor/main.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="mainrs"><a class="header" href="#mainrs">Main.rs</a></h1>
+<p>The <code>main</code> file in many ratatui applications is simply a place to store the startup loop, and
+occasionally event handling. (See more ways to handle events in
+<a href="../../concepts/event_handling.html">Event Handling</a>))</p>
+<p>In this application, we will be using our <code>main</code> function to run the startup steps, and start the
+main loop. We will also put our main loop logic and event handling in this file.</p>
+<h2 id="main"><a class="header" href="#main">Main</a></h2>
+<p>In our main function, we will set up the terminal, create an application state and run our
+application, and finally reset the terminal to the state we found it in.</p>
+<h3 id="application-pre-run-steps"><a class="header" href="#application-pre-run-steps">Application pre-run steps</a></h3>
+<p>Because a <code>ratatui</code> application takes the whole screen, and captures all of the keyboard input, we
+need some boilerplate at the beginning of our <code>main</code> function.</p>
+<pre><code class="language-rust no_run noplayground">use crossterm::event::EnableMouseCapture;
+use crossterm::execute;
+use crossterm::terminal::{enable_raw_mode, EnterAlternateScreen};
+use std::io;</code></pre>
+<pre><code class="language-rust no_run noplayground">fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+    // setup terminal
+    enable_raw_mode()?;
+    let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
+    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
+    // --snip--</code></pre>
+<p>You might notice that we are using <code>stderr</code> for our output. This is because we want to allow the
+user to pipe their completed json to other programs like <code>ratatui-tutorial &gt; output.json</code>. To do
+this, we are utilizing the fact that <code>stderr</code> is piped differently than <code>stdout</code>, and rendering out
+project in <code>stderr</code>, and printout our completed json in <code>stdout</code>.</p>
+<p>For more information, please read the
+<a href="https://docs.rs/crossterm/latest/crossterm/">crossterm documentation</a></p>
+<h3 id="state-creation-and-loop-starting"><a class="header" href="#state-creation-and-loop-starting">State creation, and loop starting</a></h3>
+<p>Now that we have prepared the terminal for our application to run, it is time to actually run it.</p>
+<p>First, we need to create an instance of our <code>ApplicationState</code> or <code>app</code>, to hold all of the
+program’s state, and then we will call our function which handles the event and draw loop.</p>
+<pre><code class="language-rust no_run noplayground">    // --snip--
+    let backend = CrosstermBackend::new(stderr);
+    let mut terminal = Terminal::new(backend)?;
+
+    // create app and run it
+    let mut app = App::new();
+    let res = run_app(&amp;mut terminal, &amp;mut app);
+
+    // --snip--</code></pre>
+<h3 id="application-post-run-steps"><a class="header" href="#application-post-run-steps">Application post-run steps</a></h3>
+<p>Since our <code>ratatui</code> application has changed the state of the user’s terminal with our
+<a href="#application-pre-run-steps">pre-run boilerplate</a>, we need to undo what have did, and put the
+terminal back to the way we found it.</p>
+<p>Most of these functions will simply be the inverse of what we have done above.</p>
+<pre><code class="language-rust no_run noplayground">use crossterm::event::DisableMouseCapture;
+use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};</code></pre>
+<pre><code class="language-rust no_run noplayground">    // --snip--
+    // restore terminal
+    disable_raw_mode()?;
+    execute!(
+        terminal.backend_mut(),
+        LeaveAlternateScreen,
+        DisableMouseCapture
+    )?;
+    terminal.show_cursor()?;
+    // --snip--</code></pre>
+<p>When an application exits without running this closing boilerplate, the terminal will act very
+strange, and the user will usually have to end the terminal session and start a new one. Thus it is
+important that we handle our error in such a way that we can call this last piece.</p>
+<pre><code class="language-rust no_run noplayground">    // --snip--
+    if let Ok(do_print) = res {
+        if do_print {
+            app.print_json()?;
+        }
+    } else if let Err(err) = res {
+        println!(&quot;{err:?}&quot;);
+    }
+
+    Ok(())
+}</code></pre>
+<p>The if statement at the end of boilerplate checks if the <code>run_app</code> function errored, or if it
+returned an <code>Ok</code> state. If it returned an <code>Ok</code> state, we need to check if we should print the json.</p>
+<p>If we don’t call our print function before we call <code>execute!(LeaveAlternateScreen)</code>, our prints will
+be rendered on an old screen and lost when we leave the alternate screen. (For more information on
+how this works, read the
+<a href="https://docs.rs/crossterm/latest/crossterm/terminal/struct.LeaveAlternateScreen.html">Crossterm documentation</a>)</p>
+<p>So, altogether, our finished function should looks like this:</p>
+<pre><code class="language-rust no_run noplayground">fn main() -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
+    // setup terminal
+    enable_raw_mode()?;
+    let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
+    execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
+    let backend = CrosstermBackend::new(stderr);
+    let mut terminal = Terminal::new(backend)?;
+
+    // create app and run it
+    let mut app = App::new();
+    let res = run_app(&amp;mut terminal, &amp;mut app);
+
+
+    // restore terminal
+    disable_raw_mode()?;
+    execute!(
+        terminal.backend_mut(),
+        LeaveAlternateScreen,
+        DisableMouseCapture
+    )?;
+    terminal.show_cursor()?;
+
+    if let Ok(do_print) = res {
+        if do_print {
+            app.print_json()?;
+        }
+    } else if let Err(err) = res {
+        println!(&quot;{err:?}&quot;);
+    }
+
+    Ok(())
+}</code></pre>
+<h2 id="run_app"><a class="header" href="#run_app"><code>run_app</code></a></h2>
+<p>In this function, we will start to do the actual logic.</p>
+<h3 id="method-signature"><a class="header" href="#method-signature">Method signature</a></h3>
+<p>Let’s start with the method signature:</p>
+<pre><code class="language-rust no_run noplayground">fn run_app&lt;B: Backend&gt;(terminal: &amp;mut Terminal&lt;B&gt;, app: &amp;mut App) -&gt; io::Result&lt;bool&gt; {
+    // --snip--</code></pre>
+<p>You’ll notice that we make this function generic across the <code>ratatui::backend::Backend</code>. In previous
+sections we hardcoded the <code>CrosstermBackend</code>. This trait approach allows us to make our code backend
+agnostic.</p>
+<p>This method accepts an object of type <code>Terminal</code> which implements the <code>ratatui::backend::Backend</code>
+trait. This trait includes the three (four counting the <code>TestBackend</code>) officially supported backends
+included in <code>ratatui</code>. It allows for 3rd party backends to be implemented.</p>
+<p><code>run_app</code> also requires a mutable borrow to an application state object, as defined in this project.</p>
+<p>Finally, the <code>run_app</code> returns an <code>io::Result&lt;bool&gt;</code> that indicates if there was an io error with
+the <code>Err</code> state, and an <code>Ok(true)</code> or <code>Ok(false)</code> that indicates if the program should print out the
+finished json.</p>
+<h3 id="ui-loop"><a class="header" href="#ui-loop">UI Loop</a></h3>
+<p>Because <code>ratatui</code> requires us to implement our own event/ui loop, we will simply use the following
+code to update our main loop.</p>
+<pre><code class="language-rust no_run noplayground">    // --snip--
+    loop {
+        terminal.draw(|f| ui(f, app))?;
+        // --snip--</code></pre>
+<p>Let’s unpack that <code>draw</code> call really quick.</p>
+<ul>
+<li><code>terminal</code> is the <code>Terminal&lt;Backend&gt;</code> that we take as an argument,</li>
+<li><code>draw</code> is the <code>ratatui</code> command to draw a <code>Frame</code> to the terminal<sup class="footnote-reference"><a href="#note">1</a></sup>.</li>
+<li><code>|f| ui(f, &amp;app)</code> tells <code>draw</code> that we want to take <code>f: &lt;Frame&gt;</code> and pass it to our function <code>ui</code>,
+and <code>ui</code> will draw to that <code>Frame</code>.</li>
+</ul>
+<!-- prettier-ignore -->
+<div class="footnote-definition" id="note"><sup class="footnote-definition-label">1</sup>
+<p>Technically this is the command to the <code>Terminal&lt;Backend&gt;</code>, but that only matters on the <code>TestBackend</code>.</p>
+</div>
+<p>Notice that we also pass an immutable borrow of our application state to the <code>ui</code> function. This
+will be important later.</p>
+<h3 id="event-handling"><a class="header" href="#event-handling">Event handling</a></h3>
+<p>Now that we have started our app , and have set up the UI rendering, we will implement the event
+handling.</p>
+<h4 id="polling"><a class="header" href="#polling">Polling</a></h4>
+<p>Because we are using <code>crossterm</code>, we can simply poll for keyboard events with</p>
+<pre><code class="language-rust">if let Event::Key(key) = event::read()? {
+    dbg!(key.code)
+}</code></pre>
+<p>and then match the results.</p>
+<p>Alternatively, we can set up a thread to run in the background to poll and send <code>Event</code>s (as we did
+in the “counter” tutorial). Let’s keep things simple here for the sake of illustration.</p>
+<p>Note that the process for polling events will vary on the backend you are utilizing, and you will
+need to refer to the documentation of that backend for more information.</p>
+<h4 id="main-screen"><a class="header" href="#main-screen">Main Screen</a></h4>
+<p>We will start with the keybinds and event handling for the <code>CurrentScreen::Main</code>.</p>
+<pre><code class="language-rust no_run noplayground">        // --snip--
+        if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Release {
+                // Skip events that are not KeyEventKind::Press
+                continue;
+            }
+            match app.current_screen {
+                CurrentScreen::Main =&gt; match key.code {
+                    KeyCode::Char('e') =&gt; {
+                        app.current_screen = CurrentScreen::Editing;
+                        app.currently_editing = Some(CurrentlyEditing::Key);
+                    }
+                    KeyCode::Char('q') =&gt; {
+                        app.current_screen = CurrentScreen::Exiting;
+                    }
+                    _ =&gt; {}
+                },
+                // --snip--</code></pre>
+<p>After matching to the <code>Main</code> enum variant, we match the event. When the user is in the main screen,
+there are only two keybinds, and the rest are ignored.</p>
+<p>In this case, <code>KeyCode::Char('e')</code> changes the current screen to <code>CurrentScreen::Editing</code> and sets
+the <code>CurrentlyEditing</code> to a <code>Some</code> and notes that the user should be editing the <code>Key</code> value field,
+as opposed to the <code>Value</code> field.</p>
+<p><code>KeyCode::Char('q')</code> is straightforward, as it simply switches the application to the <code>Exiting</code>
+screen, and allows the ui and future event handling runs to do the rest.</p>
+<h4 id="exiting"><a class="header" href="#exiting">Exiting</a></h4>
+<p>The next handler we will prepare, will handle events while the application is on the
+<code>CurrentScreen::Exiting</code>. The job of this screen is to ask if the user wants to exit without
+outputting the json. It is simply a <code>y/n</code> question, so that is all we listen for. We also add an
+alternate exit key with <code>q</code>. If the user chooses to output the json, we return an <code>Ok(true)</code> that
+indicates that our <code>main</code> function should call <code>app.print_json()</code> to perform the serialization and
+printing for us after resetting the terminal to normal</p>
+<pre><code class="language-rust no_run noplayground">                // --snip--
+                CurrentScreen::Exiting =&gt; match key.code {
+                    KeyCode::Char('y') =&gt; {
+                        return Ok(true);
+                    }
+                    KeyCode::Char('n') | KeyCode::Char('q') =&gt; {
+                        return Ok(false);
+                    }
+                    _ =&gt; {}
+                },
+                // --snip--</code></pre>
+<h4 id="editing"><a class="header" href="#editing">Editing</a></h4>
+<p>Our final handler will be a bit more involved, as we will be changing the state of internal
+variables.</p>
+<p>We would like the <code>Enter</code> key to serve two purposes. When the user is editing the <code>Key</code>, we want the
+enter key to switch the focus to editing the <code>Value</code>. However, if the <code>Value</code> is what is being
+currently edited, <code>Enter</code> will save the key-value pair, and return to the <code>Main</code> screen.</p>
+<pre><code class="language-rust no_run noplayground">                // --snip--
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; {
+                    match key.code {
+                        KeyCode::Enter =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.save_key_value();
+                                        app.current_screen = CurrentScreen::Main;
+                                    }
+                                }
+                            }
+                        }
+                        // --snip--</code></pre>
+<p>When <code>Backspace</code> is pressed, we need to first determine if the user is editing a <code>Key</code> or a <code>Value</code>,
+then <code>pop()</code> the endings of those strings accordingly.</p>
+<pre><code class="language-rust no_run noplayground">                        // --snip--
+                        KeyCode::Backspace =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.pop();
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.pop();
+                                    }
+                                }
+                            }
+                        }
+                        // --snip--</code></pre>
+<p>When <code>Escape</code> is pressed, we want to quit editing.</p>
+<pre><code class="language-rust no_run noplayground">                        // --snip--
+                        KeyCode::Esc =&gt; {
+                            app.current_screen = CurrentScreen::Main;
+                            app.currently_editing = None;
+                        }
+                        // --snip--</code></pre>
+<p>When <code>Tab</code> is pressed, we want the currently editing selection to switch.</p>
+<pre><code class="language-rust no_run noplayground">                        // --snip--
+                        KeyCode::Tab =&gt; {
+                            app.toggle_editing();
+                        }
+                        // --snip--</code></pre>
+<p>And finally, if the user types a valid character, we want to capture that, and add it to the string
+that is the final key or value.</p>
+<pre><code class="language-rust no_run noplayground">                        // --snip--
+                        KeyCode::Char(value) =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.push(value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.push(value);
+                                    }
+                                }
+                            }
+                        }
+                        // --snip--</code></pre>
+<p>Altogether, the event loop should look like this:</p>
+<pre><code class="language-rust no_run noplayground">        // --snip--
+        if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Release {
+                // Skip events that are not KeyEventKind::Press
+                continue;
+            }
+            match app.current_screen {
+                CurrentScreen::Main =&gt; match key.code {
+                    KeyCode::Char('e') =&gt; {
+                        app.current_screen = CurrentScreen::Editing;
+                        app.currently_editing = Some(CurrentlyEditing::Key);
+                    }
+                    KeyCode::Char('q') =&gt; {
+                        app.current_screen = CurrentScreen::Exiting;
+                    }
+                    _ =&gt; {}
+                },
+                CurrentScreen::Exiting =&gt; match key.code {
+                    KeyCode::Char('y') =&gt; {
+                        return Ok(true);
+                    }
+                    KeyCode::Char('n') | KeyCode::Char('q') =&gt; {
+                        return Ok(false);
+                    }
+                    _ =&gt; {}
+                },
+                CurrentScreen::Editing if key.kind == KeyEventKind::Press =&gt; {
+                    match key.code {
+                        KeyCode::Enter =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.save_key_value();
+                                        app.current_screen = CurrentScreen::Main;
+                                    }
+                                }
+                            }
+                        }
+                        KeyCode::Backspace =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.pop();
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.pop();
+                                    }
+                                }
+                            }
+                        }
+                        KeyCode::Esc =&gt; {
+                            app.current_screen = CurrentScreen::Main;
+                            app.currently_editing = None;
+                        }
+                        KeyCode::Tab =&gt; {
+                            app.toggle_editing();
+                        }
+                        KeyCode::Char(value) =&gt; {
+                            if let Some(editing) = &amp;app.currently_editing {
+                                match editing {
+                                    CurrentlyEditing::Key =&gt; {
+                                        app.key_input.push(value);
+                                    }
+                                    CurrentlyEditing::Value =&gt; {
+                                        app.value_input.push(value);
+                                    }
+                                }
+                            }
+                        }
+                        _ =&gt; {}
+                    }
+                }
+                _ =&gt; {}
+            }
+        }
+        // --snip--</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../tutorial/json-editor/app.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../tutorial/json-editor/ui.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../tutorial/json-editor/app.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../tutorial/json-editor/ui.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
