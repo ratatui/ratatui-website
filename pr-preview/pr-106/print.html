@@ -3281,7 +3281,7 @@ async fn main() -&gt; Result&lt;()&gt; {
 there are no <code>async</code> functions other than <code>main</code> and we are not using <code>.await</code> anywhere yet. We will
 change that in the following sections. But first, we let us introduce the <code>Action</code> enum.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="async-event-stream"><a class="header" href="#async-event-stream">Async Event Stream</a></h1>
-<p>Previously, in the mutliple file version of the counter app, in
+<p>Previously, in the multiple file version of the counter app, in
 <a href="tutorial/counter-async-app/./../counter-app/event.html"><code>event.rs</code></a> we created an <code>EventHandler</code> using <code>std::thread::spawn</code>,
 i.e. OS threads.</p>
 <p>In this section, we are going to do the same thing with “green” threads or tasks, i.e. rust’s
