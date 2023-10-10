@@ -1,105 +1,7 @@
 # Counter App with Actions
 
-Let's take the single file multiple function example from the counter app from earlier:
-
-```rust
-// Hover on this codeblock and click "Show hidden lines" to see the code
-// --snip--
-# use anyhow::Result;
-# use crossterm::{
-#   event::{self, Event::Key, KeyCode::Char},
-#   execute,
-#   terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-# };
-# use ratatui::{
-#   prelude::{CrosstermBackend, Terminal},
-#   widgets::Paragraph,
-# };
-#
-# pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
-#
-# fn startup() -> Result<()> {
-#   enable_raw_mode()?;
-#   execute!(std::io::stderr(), EnterAlternateScreen)?;
-#   Ok(())
-# }
-#
-# fn shutdown() -> Result<()> {
-#   execute!(std::io::stderr(), LeaveAlternateScreen)?;
-#   disable_raw_mode()?;
-#   Ok(())
-# }
-#
-# // App state
-# struct App {
-#   counter: i64,
-#   should_quit: bool,
-# }
-#
-# // App ui render function
-# fn ui(app: &App, f: &mut Frame<'_>) {
-#   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
-# }
-#
-# // App update function
-# fn update(app: &mut App) -> Result<()> {
-#   if event::poll(std::time::Duration::from_millis(250))? {
-#     if let Key(key) = event::read()? {
-#       if key.kind == event::KeyEventKind::Press {
-#         match key.code {
-#           Char('j') => app.counter += 1,
-#           Char('k') => app.counter -= 1,
-#           Char('q') => app.should_quit = true,
-#           _ => (),
-#         }
-#       }
-#     }
-#   }
-#   Ok(())
-# }
-#
-# fn run() -> Result<()> {
-#   // ratatui terminal
-#   let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-#
-#   // application state
-#   let mut app = App { counter: 0, should_quit: false };
-#
-#   loop {
-#     // application update
-#     update(&mut app)?;
-#
-#     // application render
-#     t.draw(|f| {
-#       ui(&app, f);
-#     })?;
-#
-#     // application exit
-#     if app.should_quit {
-#       break;
-#     }
-#   }
-#
-#   Ok(())
-# }
-#
-# fn main() -> Result<()> {
-#   // setup terminal
-#   startup()?;
-#
-#   let result = run();
-#
-#   // teardown terminal before unwrapping Result of app run
-#   shutdown()?;
-#
-#   result?;
-#
-#   Ok(())
-# }
-```
-
-One of the first steps to building a `async` applications is to use the `Command`, `Action`, or
-`Message` pattern.
+One of the first steps to building truly `async` TUI applications is to use the `Command`, `Action`,
+or `Message` pattern.
 
 ```admonish tip
 The `Command` pattern is the concept of "reified method calls".
@@ -110,8 +12,8 @@ You can learn more about this concept in
 [The Elm Architecture section](../../concepts/application-patterns/the-elm-architecture.md) of the
 documentation.
 
-We have learnt about enums JSON-editor tutorial. We are going to extend the counter application to
-include "Action"s using Rust's enum features. The key idea is that we have an `Action` enum that
+We have learnt about enums in JSON-editor tutorial. We are going to extend the counter application
+to include `Action`s using Rust's enum features. The key idea is that we have an `Action` enum that
 tracks all the actions that can be carried out by the `App`. Here's the variants of the `Action`
 enum we will be using:
 
@@ -125,22 +27,17 @@ pub enum Action {
 }
 ```
 
-Now we add a new `get_action` function to map a `KeyEvent` to an `Action`.
+Now we add a new `get_action` function to map a `Event` to an `Action`.
 
 ```rust
-fn get_action(_app: &App) -> Action {
-  let tick_rate = std::time::Duration::from_millis(250);
-  if event::poll(tick_rate).unwrap() {
-    if let Key(key) = event::read().unwrap() {
-      if key.kind == event::KeyEventKind::Press {
-        return match key.code {
-          Char('j') => Action::Increment,
-          Char('k') => Action::Decrement,
-          Char('q') => Action::Quit,
-          _ => Action::None,
-        };
-      }
-    }
+fn get_action(_app: &App, event: Event) -> Action {
+  if let Key(key) = event {
+    return match key.code {
+      Char('j') => Action::Increment,
+      Char('k') => Action::Decrement,
+      Char('q') => Action::Quit,
+      _ => Action::None,
+    };
   };
   Action::None
 }
@@ -152,20 +49,15 @@ and use Rust's built-in `Option` types instead.
 This is what your code might actually look like:
 
 ```rust
-fn get_action(_app: &App) -> Result<Option<Action>> {
-  let tick_rate = std::time::Duration::from_millis(250);
-  if event::poll(tick_rate)? {
-    if let Key(key) = event::read()? {
-      if key.kind == event::KeyEventKind::Press {
-        let action = match key.code {
-          Char('j') => Action::Increment,
-          Char('k') => Action::Decrement,
-          Char('q') => Action::Quit,
-          _ => return Ok(None),
-        };
-        return Ok(Some(action))
-      }
-    }
+fn get_action(_app: &App, event: Event) -> Result<Option<Action>> {
+  if let Key(key) = event {
+    let action = match key.code {
+      Char('j') => Action::Increment,
+      Char('k') => Action::Decrement,
+      Char('q') => Action::Quit,
+      _ => return Ok(None),
+    };
+    return Ok(Some(action))
   };
   Ok(None)
 }
@@ -192,7 +84,9 @@ fn update(app: &mut App, action: Action) {
 Here's the full single file version of the counter app using the `Action` enum for your reference:
 
 ```rust
-use anyhow::Result;
+mod tui;
+
+use color_eyre::eyre::Result;
 use crossterm::{
   event::{self, Event::Key, KeyCode::Char},
   execute,
@@ -204,18 +98,6 @@ use ratatui::{
 };
 
 pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
-
-fn startup() -> Result<()> {
-  enable_raw_mode()?;
-  execute!(std::io::stderr(), EnterAlternateScreen)?;
-  Ok(())
-}
-
-fn shutdown() -> Result<()> {
-  execute!(std::io::stderr(), LeaveAlternateScreen)?;
-  disable_raw_mode()?;
-  Ok(())
-}
 
 // App state
 struct App {
@@ -237,19 +119,14 @@ fn ui(app: &App, f: &mut Frame<'_>) {
   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
 }
 
-fn get_action(_app: &App) -> Action {
-  let tick_rate = std::time::Duration::from_millis(250);
-  if event::poll(tick_rate).unwrap() {
-    if let Key(key) = event::read().unwrap() {
-      if key.kind == event::KeyEventKind::Press {
-        return match key.code {
-          Char('j') => Action::Increment,
-          Char('k') => Action::Decrement,
-          Char('q') => Action::Quit,
-          _ => Action::None,
-        };
-      }
-    }
+fn get_action(_app: &App, event: Event) -> Action {
+  if let Key(key) = event {
+    return match key.code {
+      Char('j') => Action::Increment,
+      Char('k') => Action::Decrement,
+      Char('q') => Action::Quit,
+      _ => Action::None,
+    };
   };
   Action::None
 }
@@ -266,21 +143,25 @@ fn update(app: &mut App, action: Action) {
 
 fn run() -> Result<()> {
   // ratatui terminal
-  let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+  let mut tui = tui::Tui::new()?.tick_rate(1.0).frame_rate(30.0);
+  tui.enter()?;
 
   // application state
   let mut app = App { counter: 0, should_quit: false };
 
   loop {
-    let action = get_action(&mut app);
+    let event = tui.next().await?; // blocks until next event
+
+    if let Event::Render = event.clone() {
+      // application render
+      tui.draw(|f| {
+        ui(f, &app);
+      })?;
+    }
+    let action = get_action(&mut app, event); // new
 
     // application update
-    update(&mut app, action);
-
-    // application render
-    t.draw(|f| {
-      ui(&app, f);
-    })?;
+    update(&mut app, action); // new
 
     // application exit
     if app.should_quit {
@@ -291,41 +172,14 @@ fn run() -> Result<()> {
   Ok(())
 }
 
-fn main() -> Result<()> {
-  // setup terminal
-  startup()?;
-
-  let result = run();
-
-  // teardown terminal before unwrapping Result of app run
-  shutdown()?;
+#[tokio::main]
+async fn main() -> Result<()> {
+  let result = run().await;
 
   result?;
 
   Ok(())
 }
-```
-
-```mermaid
-graph TD
-    MainRun[Main: Run];
-    CheckEvent[Main: Poll KeyPress];
-    UpdateApp[Main: Update App with Action];
-    KeyPressToAction[Main: Convert KeyPress to Action];
-    ShouldQuit[Main: Check should_quit?];
-    BreakLoop[Main: Break Loop];
-    MainStart[Main: Start];
-    MainEnd[Main: End];
-    MainStart --> MainRun;
-    MainRun --> CheckEvent;
-    CheckEvent -->|No KeyPress| Draw;
-    CheckEvent --> |KeyPress Received| KeyPressToAction;
-    KeyPressToAction --> |Action| UpdateApp;
-    UpdateApp --> Draw;
-    Draw --> ShouldQuit;
-    ShouldQuit -->|Yes| BreakLoop;
-    BreakLoop --> MainEnd;
-    ShouldQuit -->|No| CheckEvent;
 ```
 
 While this may seem like a lot more boilerplate to achieve the same thing, `Action` enums have a few
@@ -356,14 +210,9 @@ If you populate `keyconfig` with the contents of a user provided `toml` file, th
 out which action to take by updating the `get_action()` function:
 
 ```rust
-fn get_action(app: &App) -> Action {
-  let tick_rate = std::time::Duration::from_millis(250);
-  if event::poll(tick_rate).unwrap() {
-    if let Key(key) = event::read().unwrap() {
-      if key.kind == event::KeyEventKind::Press {
-        return app.keyconfig.get(key.code).unwrap_or(Action::None)
-      }
-    }
+fn get_action(app: &App, event: Event) -> Action {
+  if let Event::Key(key) = event {
+    return app.keyconfig.get(key.code).unwrap_or(Action::None)
   };
   Action::None
 }

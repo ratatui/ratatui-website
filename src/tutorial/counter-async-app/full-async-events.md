@@ -1,24 +1,24 @@
 # Full Async - `Event`s
 
 There are a number of ways to make our application work more in an `async` manner. The easiest way
-to do this is to add some additional `Event` variants to our existing `EventHandler`. Specifically,
-we want to add a `Event::Tick` and `Event::Render` variant:
+to do this is to add more `Event` variants to our existing `EventHandler`. Specifically, we would
+like to only render in the main run loop when we receive a `Event::Render` variant:
 
 ```rust
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Event {
   Quit,
   Error,
-  Tick, // new
+  Tick,
   Render, // new
   Key(KeyEvent),
 }
 ```
 
-And we will only render in the main run loop when we receive a `Event::Render`.
+Another thing I personally like to do is combine the `EventHandler` struct and the `Terminal`
+functionality. To do this, we are going to rename our `EventHandler` struct to a `Tui` struct. We
+are also going to include a few more `Event` variants for making our application more capable.
 
-Another thing I like to do is combine the `EventHandler` struct and the `Terminal` functionality. We
-are going to rename our `EventHandler` struct to a `Tui` struct, and move it to `./src/tui.rs`.
 Below is the relevant snippet of an updated `Tui` struct. You can click on the "Show hidden lines"
 button at the top right of the code block or check out
 [this section of the book](../../how-to/develop-apps/abstract-terminal-and-event-handler.md) for the
@@ -45,7 +45,6 @@ will still send a `Event::Tick` and `Event::Render` at regular intervals.
 # };
 # use futures::{FutureExt, StreamExt};
 # use ratatui::backend::CrosstermBackend as Backend;
-# use serde::{Deserialize, Serialize};
 # use tokio::{
 #   sync::mpsc::{self, UnboundedReceiver, UnboundedSender},
 #   task::JoinHandle,
@@ -54,22 +53,22 @@ will still send a `Event::Tick` and `Event::Render` at regular intervals.
 #
 # pub type Frame<'a> = ratatui::Frame<'a, Backend<std::io::Stderr>>;
 #
-# #[derive(Clone, Debug, Serialize, Deserialize)]
-# pub enum Event {
-#   Init,
-#   Quit,
-#   Error,
-#   Closed,
-#   Tick,
-#   Render,
-#   FocusGained,
-#   FocusLost,
-#   Paste(String),
-#   Key(KeyEvent),
-#   Mouse(MouseEvent),
-#   Resize(u16, u16),
-# }
-#
+#[derive(Clone, Debug)]
+pub enum Event {
+  Init,
+  Quit,
+  Error,
+  Closed,
+  Tick,
+  Render,
+  FocusGained,
+  FocusLost,
+  Paste(String),
+  Key(KeyEvent),
+  Mouse(MouseEvent),
+  Resize(u16, u16),
+}
+
 pub struct Tui {
   pub terminal: ratatui::Terminal<Backend<std::io::Stderr>>,
   pub task: JoinHandle<()>,
@@ -242,6 +241,16 @@ impl Tui {
 # }
 ```
 
+We made a number of changes to the `Tui` struct.
+
+1. We added a `Deref` and `DerefMut` so we can call `tui.draw(|f| ...)` to have it call
+   `tui.terminal.draw(|f| ...)`.
+2. We moved the `startup()` and `shutdown()` functionality into the `Tui` struct.
+3. We also added a `CancellationToken` so that we can start and stop the tokio task more easily.
+4. We added `Event` variants for `Resize`, `Focus`, and `Paste`.
+5. We added methods to set the `tick_rate`, `frame_rate`, and whether we want to enable `mouse` or
+   `paste` events.
+
 Here's the code for the fully async application:
 
 ```rust
@@ -260,43 +269,21 @@ struct App {
   should_quit: bool,
 }
 
-// App actions
-#[derive(Clone)]
-pub enum Action {
-  Tick,
-  Increment,
-  Decrement,
-  Quit,
-  None,
-}
-
 // App ui render function
 fn ui(f: &mut Frame<'_>, app: &App) {
   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
 }
 
-fn get_action(_app: &App, event: Event) -> Action {
+fn update(app: &mut App, event: Event) {
   match event {
-    Event::Error => Action::None,
-    Event::Tick => Action::Tick,
     Event::Key(key) => {
       match key.code {
-        Char('j') => Action::Increment,
-        Char('k') => Action::Decrement,
-        Char('q') => Action::Quit,
+        Char('j') => app.counter += 1,
+        Char('k') => app.counter -= 1,
+        Char('q') => app.should_quit = true,
         _ => Action::None,
       }
     },
-    _ => Action::None,
-  }
-}
-
-fn update(app: &mut App, action: Action) {
-  match action {
-    Action::Quit => app.should_quit = true,
-    Action::Increment => app.counter += 1,
-    Action::Decrement => app.counter -= 1,
-    Action::Tick => {},
     _ => {},
   };
 }
@@ -319,10 +306,8 @@ async fn run() -> Result<()> {
       })?;
     }
 
-    let action = get_action(&mut app, event);
-
     // application update
-    update(&mut app, action.clone());
+    update(&mut app, event);
 
     // application exit
     if app.should_quit {
@@ -347,6 +332,6 @@ async fn main() -> Result<()> {
 The above code ensures that we render at a consistent frame rate. As an exercise, play around with
 this frame rate and tick rate to see how the CPU utilization changes as you change those numbers.
 
-Even though our application renders in an "async" manner, we still are not able to take advantage of
-tokio tasks to create `Action`s and update the app state. We will improve this in the next section
-to make our application truly async capable.
+Even though our application renders in an "async" manner, we also want to perform "actions" in an
+asynchronous manner. We will improve this in the next section to make our application truly async
+capable.
