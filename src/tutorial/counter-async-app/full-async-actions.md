@@ -11,8 +11,11 @@ refactoring, we store the `action_tx` half of the channel in the `App`.
 {{#include ./ratatui-counter-async-app/src/main.rs:run}}
 ```
 
-Now that we have stored the `action_tx`, we can use this to schedule async work. For example, let's
-say we wanted to press `J` and `K` to perform some network request and _then_ increment the counter.
+Running the code with this change should give the exact same behavior as before.
+
+Now that we have stored the `action_tx` half of the channel in the `App`, we can use this to
+schedule tasks. For example, let's say we wanted to press `J` and `K` to perform some network
+request and _then_ increment the counter.
 
 First, we have to update my `Action` enum:
 
@@ -32,7 +35,7 @@ Finally, we can handle the action in my `update` function my spawning a tokio ta
 {{#include ./ratatui-counter-async-app/src/main.rs:update}}
 ```
 
-Here is the full code for reference (with an improved UI to boot):
+Here is the full code for reference:
 
 ```rust
 {{#include ./ratatui-counter-async-app/src/main.rs:all}}
