@@ -1,155 +1,216 @@
 # Hello World
 
-Getting started with `ratatui` is straightforward --- Add it to the project, and you are ready to
-start creating beautiful TUIs.
+This tutorial will lead you through creating a simple "Hello World" TUI app that displays some text
+in the middle of the screen and waits for the user to press q to exit. It demonstrates the necessary
+tasks that any application developed with Ratatui needs to undertake. We assume that you have a
+basic understanding of the terminal a text editor or Rust IDE (if you don't have a preference,
+[VSCode] makes a good default choice).
 
-In this section, we will build a "hello world" TUI application.
+[VSCode]: https://code.visualstudio.com/
 
-## Install `rust`
+We're going to build the following:
 
-The first step is to install `rust`.
+![hello](https://github.com/ratatui-org/ratatui-book/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387)
 
-Check
-[Installation section of the official Rust Book](https://doc.rust-lang.org/book/ch01-01-installation.html)
-for more information. Most people tend to use `rustup` to manage their installation.
+## Install Rust
 
-```admonish tip
-`rustup` installs The Rust Programming Language from the official release channels,
-enabling you to easily switch between stable, beta, and nightly compilers and keep them updated.
-```
+The first step is to install Rust. See the [Installation] section of the official Rust Book for
+more information. Most people tend to use `rustup`, a command line tool for managing Rust versions
+and associated tools.
 
-`rustup` will set you up with the latest stable version of `rust` as well as `cargo`. `cargo` is
-Rust's package manager, and it is what we will use to create a new project and add `ratatui` as a
-dependency.
+[Installation]: https://doc.rust-lang.org/book/ch01-01-installation.html
 
-### Create a "hello world" project
-
-To start with a new project, you can run the following:
+Once you've installed Rust, verify that it's installed by running:
 
 ```shell
-cargo new hello-world-tui
-cd hello-world-tui
+rustc --version
 ```
 
-This creates a new folder called `hello-world-tui` and changes the directory to that folder.
-
-`cargo new` will instantiate a "binary" project by default.
+You should see output similar to the following (the exact version, date and commit hash will vary):
 
 ```plain
-$ tree .
-.
-├── Cargo.toml
-└── src
-   └── main.rs
+rustc 1.72.1 (d5c2e9c34 2023-09-13)
 ```
 
-```admonish tip
-It is always good idea to add a `LICENSE` and a `README.md` for your projects.
-```
+## Create a new project
 
-You can compile and execute a "binary" project by running `cargo run`:
+Let's create a new Rust project. In the terminal, navigate to a folder where you will store your
+projects and run:
 
 ```shell
-$ cargo run
-   Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
-     Running `target/debug/hello-world-tui`
-Hello, world!
+cargo new hello-ratatui
+cd hello-ratatui
 ```
 
-````admonish attention
-By default `cargo run` compiles your program with no optimizations and with debug information.
-If you want to run it in with more optimizations, you can run `cargo run --release`.
+The `cargo new` command creates a new folder called `hello-ratatui` with a basic binary application
+in it. You should see:
 
-```shell
-cargo run --release
-   Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
-    Finished release [optimized] target(s) in 0.08s
-     Running `target/release/hello-world-tui`
-Hello, world!
+```plain
+     Created binary (application) `hello-ratatui` package
 ```
 
-For more information, check out [the `cargo` section in the official rust
-book](https://doc.rust-lang.org/book/ch01-03-hello-cargo.html).
-````
+If you examine the folders and files created this will look like:
 
-### Install `ratatui`
-
-Installing `ratatui` is as easy as running the following:
-
-```shell
-cargo add ratatui crossterm
+```plain
+hello-ratatui/
+├── src/
+│  └── main.rs
+└── Cargo.toml
 ```
 
-```admonish note
-`ratatui` has to be combined with a terminal backend.
-You can learn more about the different terminal backends in the [how to choose a
-backend](./../../how-to/choose-a-backend.md) section. For the examples in this book, we are going to
-use `crossterm`.
-```
+`cargo new` created a default `main.rs` with a small console program that prints "Hello, world!".
 
-Running the above command in your console will add the latest version of `ratatui` and `crossterm`
-to your project.
-
-````admonish tip
-If you are interested in adding a specific version, you can run the following:
-
-```shell
-cargo add ratatui --version 0.19.0
-```
-````
-
-### `src/main.rs`
-
-Open `src/main.rs` in your favorite editor, and copy paste the following code to it:
-
-```rust,no_run,noplayground
-use ratatui::{
-  prelude::{CrosstermBackend, Terminal},
-  widgets::Paragraph,
-};
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-  crossterm::terminal::enable_raw_mode()?;
-  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
-
-  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-
-  loop {
-    terminal.draw(|f| {
-      f.render_widget(Paragraph::new("Hello World! (press 'q' to quit)"), f.size());
-    })?;
-
-    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
-      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-        if key.code == crossterm::event::KeyCode::Char('q') {
-          break;
-        }
-      }
-    }
-  }
-
-  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
-  crossterm::terminal::disable_raw_mode()?;
-
-  Ok(())
+```rust
+fn main() {
+    println!("Hello, world!");
 }
 ```
 
-Make sure you save and exit the file! Now we are ready to run the TUI.
-
-### Running the TUI
-
-We can run our program with:
+Let's build and execute the project. Run:
 
 ```shell
 cargo run
 ```
 
-You should see a TUI app with `Hello World! (press 'q' to quit)` show up in your terminal as a TUI
+You should see:
+
+```plain
+   Compiling hello-ratatui v0.1.0 (/Users/joshka/local/hello-ratatui)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.18s
+     Running `target/debug/hello-ratatui`
+Hello, world!
+```
+
+The default `main.rs` program is responsible for printing the last line. We're going to replace it
+with something a little bit more exciting.
+
+## Install Ratatui
+
+First up, we need to install the Ratatui crate into our project. We also need to install a
+[backend]. We will use [Crossterm] here as the backend as it's compatible with most operating
+systems. To install the latest version of the `ratatui` and `crossterm` crates into the project
+run:
+
+[backend]: ../../concepts/backends/
+[Crossterm]: https://crates.io/crates/crossterm
+
+```shell
+cargo add ratatui crossterm
+```
+
+Cargo will output the following (note that the exact versions may be later than the ones in this
+tutorial).
+
+```plain
+    Updating crates.io index
+      Adding ratatui v0.23.0 to dependencies.
+             Features:
+             + crossterm
+             - all-widgets
+             - document-features
+             - macros
+             - serde
+             - termion
+             - termwiz
+             - widget-calendar
+      Adding crossterm v0.27.0 to dependencies.
+             Features:
+             + bracketed-paste
+             + events
+             + windows
+             - event-stream
+             - filedescriptor
+             - serde
+             - use-dev-tty
+    Updating crates.io index
+```
+
+If you examine the `Cargo.toml` file, you should see that the new crates have been added to the
+dependencies section:
+
+```toml
+[dependencies]
+crossterm = "0.27.0"
+ratatui = "0.23.0"
+```
+
+## Create a TUI application
+
+We're going to now replace the default console application code that `cargo new` created with a
+Ratatui application that displays a colored message the middle of the screen and waits for the user
+to press a key to exit.
+
+In your editor, open `src/main.rs`. Replace the existing code with the following:
+
+```rust,no_run
+{{#include ../../../code/hello-world-tutorial/src/main.rs:all}}
+```
+
+This program imports the necessary items to create a Ratatui Application.
+
+- From `crossterm` we import modules, types, methods and traits to handle [events], [raw mode], and
+  the [alternate screen].
+- From `std` we import the `io::Result` which most of the backend methods return, and the `stderr()`
+- From `ratatui` we import a [backend], the main terminal type, and several other types.
+
+[events]: ../../concepts/event_handling.md
+[raw mode]: ../../concepts/backends/raw-mode.md
+[alternate screen]: ../../concepts/backends/alternate-screen.md
+
+Let's examine the rest of the application section by section:
+
+```rust,no_run
+{{#include ../../../code/hello-world-tutorial/src/main.rs:setup}}
+```
+
+In the main method, we first enter the alternate screen, which is a secondary screen that allows
+your application to not disturb the normal output of terminal apps. We then enable raw mode, which
+turns off input and output processing by the terminal which allows our application to have better
+control over when characters are echoed to the screen. The app then creates a backend and terminal
+and makes sure to clear the screen.
+
+The main part of our application is the main loop. Our application repeatedly draws the ui and then
+handles any events that have occurred.
+
+```rust,no_run
+{{#include ../../../code/hello-world-tutorial/src/main.rs:draw}}
+```
+
+The `draw` call on `terminal` is the main interaction with Ratatui. Here we create an area that is
+the full size of your terminal window and render a new Paragraph with white foreground text and a
+blue background.
+
+```rust,no_run
+{{#include ../../../code/hello-world-tutorial/src/main.rs:event}}
+```
+
+After the draw, we check to see if any events have occurred. These are things like keyboard presses,
+mouse events, resizes, etc. If the user has pressed the `q` key, we break out of the loop.
+
+Finally, the application cleans up after itself by exiting the alternate screen and disabling raw
+mode.
+
+```rust,no_run
+{{#include ../../../code/hello-world-tutorial/src/main.rs:teardown}}
+```
+
+```admonish warning
+If we don't disable raw mode, terminals act weirdly when the mouse or navigation keys are pressed.
+To fix this on a Linux / macOS terminal type `reset`. On Windows TODO
+```
+
+## Running the Application
+
+Make sure you save the file! Let's run the app:
+
+```shell
+cargo run
+```
+
+You should see a TUI app with `Hello Ratatui! (press 'q' to quit)` show up in your terminal as a TUI
 app.
 
-![Hello World](https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif)
+![hello](https://github.com/ratatui-org/ratatui-book/assets/381361/98eee556-6283-4aa5-a068-99392e1a5dda)
 
 You can press `q` to exit and go back to your terminal as it was before.
 
