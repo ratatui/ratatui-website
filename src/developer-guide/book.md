@@ -12,8 +12,8 @@ Feel free to make contributions if you'd like to improve the documentation.
 If you want to set up your local environment, you can run the following:
 
 ```bash
-cargo install mdbook --version 0.4.30
-cargo install mdbook-admonish --version 1.9.0
+cargo install mdbook --version 0.4.35
+cargo install mdbook-admonish --version 1.13.0
 cargo install mdbook-svgbob2 --version 0.3.0
 cargo install mdbook-linkcheck --version 0.7.7
 cargo install mdbook-mermaid --version 0.12.6

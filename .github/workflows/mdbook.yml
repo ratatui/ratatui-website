@@ -30,12 +30,12 @@ jobs:
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v1
         with:
-          mdbook-version: "0.4.30"
+          mdbook-version: "0.4.35"
 
       - uses: baptiste0928/cargo-install@v2
         with:
           crate: mdbook-admonish
-          version: "1.9.0"
+          version: "1.13.0"
 
       - uses: baptiste0928/cargo-install@v2
         with:
