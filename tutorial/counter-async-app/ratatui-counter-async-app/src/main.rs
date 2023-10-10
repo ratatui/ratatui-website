@@ -103,7 +103,7 @@ fn update(app: &mut App, action: Action) {
 
 //// ANCHOR: run
 async fn run() -> Result<()> {
-  let (action_tx, mut action_rx) = mpsc::unbounded_channel();
+  let (action_tx, mut action_rx) = mpsc::unbounded_channel(); // new
 
   // ratatui terminal
   let mut tui = tui::Tui::new()?.tick_rate(1.0).frame_rate(30.0);
