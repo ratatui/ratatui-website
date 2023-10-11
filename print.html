@@ -314,9 +314,9 @@ basic understanding of the terminal a text editor or Rust IDE (if you don’t ha
 <p>We’re going to build the following:</p>
 <p><img src="https://github.com/ratatui-org/ratatui-book/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387" alt="hello" /></p>
 <h2 id="install-rust"><a class="header" href="#install-rust">Install Rust</a></h2>
-<p>The first step is to install Rust. See the <a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation</a> section of the official Rust Book for
-more information. Most people tend to use <code>rustup</code>, a command line tool for managing Rust versions
-and associated tools.</p>
+<p>The first step is to install Rust. See the <a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation</a> section of the official Rust Book for more
+information. Most people tend to use <code>rustup</code>, a command line tool for managing Rust versions and
+associated tools.</p>
 <p>Once you’ve installed Rust, verify that it’s installed by running:</p>
 <pre><code class="language-shell">rustc --version
 </code></pre>
@@ -357,8 +357,7 @@ with something a little bit more exciting.</p>
 <h2 id="install-ratatui"><a class="header" href="#install-ratatui">Install Ratatui</a></h2>
 <p>First up, we need to install the Ratatui crate into our project. We also need to install a
 <a href="tutorial/hello-world/../../concepts/backends/">backend</a>. We will use <a href="https://crates.io/crates/crossterm">Crossterm</a> here as the backend as it’s compatible with most operating
-systems. To install the latest version of the <code>ratatui</code> and <code>crossterm</code> crates into the project
-run:</p>
+systems. To install the latest version of the <code>ratatui</code> and <code>crossterm</code> crates into the project run:</p>
 <pre><code class="language-shell">cargo add ratatui crossterm
 </code></pre>
 <p>Cargo will output the following (note that the exact versions may be later than the ones in this
@@ -488,8 +487,9 @@ mode.</p>
 <p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-warning"></a></p>
 </div>
 <div>
-<p>If we don’t disable raw mode, terminals act weirdly when the mouse or navigation keys are pressed.
-To fix this on a Linux / macOS terminal type <code>reset</code>. On Windows TODO</p>
+<p>If we don’t disable raw mode before exit, terminals can act weirdly when the mouse or
+navigation keys are pressed. To fix this, on a Linux / macOS terminal type <code>reset</code>.
+On Windows, you’ll have to close the tab and open a new terminal.</p>
 </div>
 </div>
 <h2 id="running-the-application"><a class="header" href="#running-the-application">Running the Application</a></h2>
