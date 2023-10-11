@@ -14,9 +14,9 @@ We're going to build the following:
 
 ## Install Rust
 
-The first step is to install Rust. See the [Installation] section of the official Rust Book for
-more information. Most people tend to use `rustup`, a command line tool for managing Rust versions
-and associated tools.
+The first step is to install Rust. See the [Installation] section of the official Rust Book for more
+information. Most people tend to use `rustup`, a command line tool for managing Rust versions and
+associated tools.
 
 [Installation]: https://doc.rust-lang.org/book/ch01-01-installation.html
 
@@ -88,8 +88,7 @@ with something a little bit more exciting.
 
 First up, we need to install the Ratatui crate into our project. We also need to install a
 [backend]. We will use [Crossterm] here as the backend as it's compatible with most operating
-systems. To install the latest version of the `ratatui` and `crossterm` crates into the project
-run:
+systems. To install the latest version of the `ratatui` and `crossterm` crates into the project run:
 
 [backend]: ../../concepts/backends/
 [Crossterm]: https://crates.io/crates/crossterm
@@ -195,8 +194,9 @@ mode.
 ```
 
 ```admonish warning
-If we don't disable raw mode, terminals act weirdly when the mouse or navigation keys are pressed.
-To fix this on a Linux / macOS terminal type `reset`. On Windows TODO
+If we don't disable raw mode before exit, terminals can act weirdly when the mouse or
+navigation keys are pressed. To fix this, on a Linux / macOS terminal type `reset`.
+On Windows, you'll have to close the tab and open a new terminal.
 ```
 
 ## Running the Application
