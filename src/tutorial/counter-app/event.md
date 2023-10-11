@@ -50,7 +50,7 @@ In the tutorials up until now, we have been using `crossterm::event::poll()` and
             KeyCode::Char('j') => app.increment(),
             KeyCode::Char('k') => app.decrement(),
             KeyCode::Char('q') => break,
-            _ => (),
+            _ => {},
           }
         }
 

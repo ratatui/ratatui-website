@@ -76,7 +76,7 @@ Let's take the single file multiple function example from the counter app from e
 #           Char('j') => app.counter += 1,
 #           Char('k') => app.counter -= 1,
 #           Char('q') => app.should_quit = true,
-#           _ => (),
+#           _ => {},
 #         }
 #       }
 #     }
@@ -178,7 +178,7 @@ to make our `main` function a `tokio` entry point.
 #           Char('j') => app.counter += 1,
 #           Char('k') => app.counter -= 1,
 #           Char('q') => app.should_quit = true,
-#           _ => (),
+#           _ => {},
 #         }
 #       }
 #     }

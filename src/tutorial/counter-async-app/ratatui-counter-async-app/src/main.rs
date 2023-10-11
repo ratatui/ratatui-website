@@ -122,7 +122,7 @@ async fn run() -> Result<()> {
         let action = get_action(&mut app, e);
         action_tx.send(action.clone())?;
       },
-      _ => (),
+      _ => {},
     };
 
     while let Ok(action) = action_rx.try_recv() {
