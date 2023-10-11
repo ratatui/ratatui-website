@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Ratatui Book</title>
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex">
 
 
         <!-- Custom HTML head -->
@@ -13,10 +13,9 @@
           mermaid.initialize({ startOnLoad: true });
         </script>
 
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
@@ -38,17 +37,19 @@
         <link rel="stylesheet" href="./mdbook-admonish.css">
         <link rel="stylesheet" href="./theme/catppuccin.css">
         <link rel="stylesheet" href="./theme/catppuccin-highlight.css">
+        <link rel="stylesheet" href="./theme/catppuccin-admonish.css">
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -64,27 +65,34 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
 
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
-            var html = document.querySelector('html');
-            var sidebar = 'hidden';
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -94,20 +102,42 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -147,7 +177,7 @@
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -195,7 +225,7 @@ foundational concepts and walking through common patterns of using Ratatui. Addi
 who have worked with TUIs will understand the nuances and benefits of using Ratatui.</p>
 <p>We hope that this book can be a journey into creating beautiful and functional terminal-based
 applications.</p>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="index.html#admonition-note"></a></p>
@@ -220,7 +250,7 @@ innovative ideas, helpful feedback, or useful suggestions, please don’t hesita
 crossterm = &quot;0.27.0&quot;
 ratatui = &quot;0.23.0&quot;
 </code></pre>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="installation.html#admonition-tip"></a></p>
@@ -284,7 +314,7 @@ start creating beautiful TUIs.</p>
 <p>Check
 <a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation section of the official Rust Book</a>
 for more information. Most people tend to use <code>rustup</code> to manage their installation.</p>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-tip"></a></p>
@@ -310,7 +340,7 @@ cd hello-world-tui
 └── src
    └── main.rs
 </code></pre>
-<div id="admonition-tip-1" class="admonition tip">
+<div id="admonition-tip-1" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-tip-1"></a></p>
@@ -326,7 +356,7 @@ cd hello-world-tui
      Running `target/debug/hello-world-tui`
 Hello, world!
 </code></pre>
-<div id="admonition-attention" class="admonition warning">
+<div id="admonition-attention" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Attention</p>
 <p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-attention"></a></p>
@@ -348,7 +378,7 @@ book</a>.</p>
 <p>Installing <code>ratatui</code> is as easy as running the following:</p>
 <pre><code class="language-shell">cargo add ratatui crossterm
 </code></pre>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-note"></a></p>
@@ -362,7 +392,7 @@ use <code>crossterm</code>.</p>
 </div>
 <p>Running the above command in your console will add the latest version of <code>ratatui</code> and <code>crossterm</code>
 to your project.</p>
-<div id="admonition-tip-2" class="admonition tip">
+<div id="admonition-tip-2" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-tip-2"></a></p>
@@ -417,7 +447,7 @@ app.</p>
 <p>Congratulations! 🎉</p>
 <p>You have written a “hello world” terminal user interface with <code>ratatui</code>. We will learn more about
 how <code>ratatui</code> works in the next sections.</p>
-<div id="admonition-question" class="admonition question">
+<div id="admonition-question" class="admonition admonish-question">
 <div class="admonition-title">
 <p>Question</p>
 <p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-question"></a></p>
@@ -440,7 +470,7 @@ cd ratatui-counter-app
 <p>We are only going to use 3 dependencies in this tutorial:</p>
 <pre><code class="language-shell">cargo add ratatui crossterm anyhow
 </code></pre>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/index.html#admonition-tip"></a></p>
@@ -563,7 +593,7 @@ to render a widget, i.e. a <code>Paragraph</code> widget.</p>
 <pre><code class="language-rust">    terminal.draw(|f| {
       f.render_widget(Paragraph::new(format!(&quot;Counter: {counter}&quot;)), f.size());
     })?;</code></pre>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/single-function.html#admonition-note"></a></p>
@@ -638,7 +668,7 @@ use ratatui::{
 <pre><code class="language-rust">type Err = Box&lt;dyn std::error::Error&gt;;
 type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;
 pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;</code></pre>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/multiple-functions.html#admonition-tip"></a></p>
@@ -699,7 +729,7 @@ type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;</code></pre>
   }
   Ok(())
 }</code></pre>
-<div id="admonition-tip-1" class="admonition tip">
+<div id="admonition-tip-1" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/multiple-functions.html#admonition-tip-1"></a></p>
@@ -746,7 +776,7 @@ to follow.</p>
   status?;
   Ok(())
 }</code></pre>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/multiple-functions.html#admonition-note"></a></p>
@@ -890,7 +920,7 @@ fn main() -&gt; Result&lt;()&gt; {
     BreakLoop --&gt; MainEnd;
     ShouldQuit --&gt;|No| CheckEvent;
 </pre>
-<div id="admonition-question" class="admonition question">
+<div id="admonition-question" class="admonition admonish-question">
 <div class="admonition-title">
 <p>Question</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/multiple-functions.html#admonition-question"></a></p>
@@ -939,7 +969,7 @@ pub mod update;</code></pre>
 <p>We are going to use <code>anyhow</code> in this section of the tutorial.</p>
 <pre><code class="language-bash">cargo add anyhow
 </code></pre>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/multiple-files.html#admonition-tip"></a></p>
@@ -1025,7 +1055,7 @@ instance, it may seem like overkill but it is good practice nonetheless.</p>
     assert_eq!(app.counter, 0);
   }
 }</code></pre>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/app.html#admonition-tip"></a></p>
@@ -1208,7 +1238,7 @@ pub struct EventHandler {
 }</code></pre>
 <p>We are using <a href="https://doc.rust-lang.org/std/sync/mpsc/"><code>std::sync::mpsc</code></a> which is a “Multiple
 Producer Single Consumer” channel.</p>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/event.html#admonition-tip"></a></p>
@@ -1223,7 +1253,7 @@ another thread (the consumer) can receive this data.</p>
 locks or other synchronization mechanisms. The “Multiple Producer, Single Consumer” aspect of
 <code>std::sync::mpsc</code> means that while multiple threads can send data into the channel, only a single
 thread can retrieve and process this data, ensuring a clear and orderly flow of information.</p>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/event.html#admonition-note"></a></p>
@@ -1631,7 +1661,7 @@ pub fn update(app: &amp;mut App, key_event: KeyEvent) {
 <p>Note that here we don’t have to check that <code>key_event.kind</code> is <code>KeyEventKind::Press</code> because we
 already do that check in <a href="tutorial/counter-app/./event.html">event.rs</a> and only send <code>KeyEventKind::Press</code> events on the
 channel.</p>
-<div id="admonition-question" class="admonition question">
+<div id="admonition-question" class="admonition admonish-question">
 <div class="admonition-title">
 <p>Question</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-app/update.html#admonition-question"></a></p>
@@ -2230,7 +2260,7 @@ that is the final key or value.</p>
 <p>Finally we come to the last piece of the puzzle, and also the hardest part when you are just
 starting out creating <code>ratatui</code> TUIs — the UI. We created a very simple UI with just one widget in
 the previous tutorial, but here we’ll explore some more sophisticated layouts.</p>
-<div id="admonition-attention" class="admonition warning">
+<div id="admonition-attention" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Attention</p>
 <p><a class="admonition-anchor-link" href="tutorial/json-editor/ui.html#admonition-attention"></a></p>
@@ -2257,7 +2287,7 @@ areas. For this, we can use the <code>Layout</code> functionality in <code>ratat
         ])
         .split(f.size());</code></pre>
 <p>This can be likened to partitioning a large rectangle into smaller sections.</p>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/json-editor/ui.html#admonition-tip"></a></p>
@@ -3406,7 +3436,7 @@ support in our Ratatui application. We can create a <code>CancellationToken</cod
 the tokio task. We can also spawn a new task when we need to start it up again.</p>
 <p>We can use <a href="https://tokio.rs/tokio/tutorial/select"><code>tokio</code>’s <code>select!</code> macro</a> which allows us to
 wait on multiple <code>async</code> computations and returns when a single computation completes.</p>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-async-app/async-event-stream.html#admonition-note"></a></p>
@@ -3923,7 +3953,7 @@ capable.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="counter-app-with-actions"><a class="header" href="#counter-app-with-actions">Counter App with Actions</a></h1>
 <p>One of the first steps to building truly <code>async</code> TUI applications is to use the <code>Command</code>, <code>Action</code>,
 or <code>Message</code> pattern.</p>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-async-app/actions.html#admonition-tip"></a></p>
@@ -3959,7 +3989,7 @@ enum we will be using:</p>
   };
   Action::None
 }</code></pre>
-<div id="admonition-tip-1" class="admonition tip">
+<div id="admonition-tip-1" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-async-app/actions.html#admonition-tip-1"></a></p>
@@ -4137,7 +4167,7 @@ immutable, and we would have an <code>update</code> function return a new instan
   state.counter += 1;
   state
 }</code></pre>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="tutorial/counter-async-app/actions.html#admonition-note"></a></p>
@@ -5040,7 +5070,7 @@ widgets render to this intermediate buffer before any information is written to 
 content rendered to a <code>Buffer</code> is only stored in <code>Buffer</code> that is attached to the frame during the
 <code>draw</code> call. This is in contrast to using a library like <code>crossterm</code> directly, where writing text to
 terminal can occur immediately.</p>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="concepts/rendering-under-the-hood.html#admonition-note"></a></p>
@@ -5267,7 +5297,7 @@ minimum size.</p>
 <code>Percentage</code> or <code>Ratio</code>, the component will never exceed the specified maximum size.</p>
 </li>
 </ul>
-<div id="admonition-warning" class="admonition warning">
+<div id="admonition-warning" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Warning</p>
 <p><a class="admonition-anchor-link" href="concepts/layout/index.html#admonition-warning"></a></p>
@@ -5319,7 +5349,7 @@ the following articles where these patterns are gone into more in-depth.</p>
 <p>When building terminal user interfaces (TUI) with <code>ratatui</code>, it’s helpful to have a solid structure
 for organizing your application. One proven architecture comes from the Elm language, known simply
 as The Elm Architecture (TEA).</p>
-<div id="admonition-attention" class="admonition warning">
+<div id="admonition-attention" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Attention</p>
 <p><a class="admonition-anchor-link" href="concepts/application-patterns/the-elm-architecture.html#admonition-attention"></a></p>
@@ -5397,7 +5427,7 @@ model. Instead, it should produce a new instance of the model reflecting the des
 <p>In TEA, it’s crucial to maintain a clear separation between the data (model) and the logic that
 alters it (update). This immutability principle ensures predictability and makes the application
 easier to reason about.</p>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="concepts/application-patterns/the-elm-architecture.html#admonition-note"></a></p>
@@ -5442,7 +5472,7 @@ or have an update lead to another update.</p>
   }
   None // Default return value if no specific message is to be returned
 }</code></pre>
-<div id="admonition-attention-1" class="admonition warning">
+<div id="admonition-attention-1" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Attention</p>
 <p><a class="admonition-anchor-link" href="concepts/application-patterns/the-elm-architecture.html#admonition-attention-1"></a></p>
@@ -5498,7 +5528,7 @@ function shouldn’t modify global state or perform any other actions. Its sole 
 model to a visual representation.</p>
 <p>For a given state of the model, the view function should always produce the same visual output. This
 predictability makes your TUI application easier to reason about and debug.</p>
-<div id="admonition-note-1" class="admonition note">
+<div id="admonition-note-1" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="concepts/application-patterns/the-elm-architecture.html#admonition-note-1"></a></p>
@@ -5836,7 +5866,7 @@ output processing), an <a href="concepts/backends/./alternate-screen.html">Alter
 separate buffer than your shell commands use, and <a href="concepts/backends/./mouse-capture.html">Mouse Capture</a>, which allows
 your application to capture mouse events.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="comparison-of-backends"><a class="header" href="#comparison-of-backends">Comparison of Backends</a></h1>
-<div id="admonition-tldr" class="admonition abstract">
+<div id="admonition-tldr" class="admonition admonish-abstract">
 <div class="admonition-title">
 <p>Tldr</p>
 <p><a class="admonition-anchor-link" href="concepts/backends/comparison.html#admonition-tldr"></a></p>
@@ -6334,7 +6364,7 @@ let italic_text = Span::styled(
         !
     </p>
 </div>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="how-to/render/style-text.html#admonition-tip"></a></p>
@@ -6772,7 +6802,7 @@ macro_rules! trace_dbg {
 <code>log::LevelFilter::Info</code>).</p>
 <p>Additionally, the location of the log files would be decided by your environment variables. See
 <a href="how-to/develop-apps/./config-directories.html">the section on XDG directories</a> for more information.</p>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="how-to/develop-apps/tracing.html#admonition-tip"></a></p>
@@ -7256,7 +7286,7 @@ to show the users of your application in the following subsections.</p>
 <pre><code class="language-shell">cargo add color-eyre
 </code></pre>
 <p><code>color-eyre</code> has a panic hook that is better suited for users in my opinion.</p>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="how-to/develop-apps/better-panic-hooks.html#admonition-tip"></a></p>
@@ -7587,7 +7617,7 @@ backend of your choice and you can adjust your application layout as needed.</p>
             }
         }
     }</code></pre>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="faq/index.html#admonition-tip"></a></p>
@@ -7749,7 +7779,7 @@ If the answer is not much, maybe it is simpler to not use <code>async</code> and
     <line x1="100" y1="172" x2="100" y2="196" class="solid"></line>
     <path d="M 100,196 A 4,4 0,0,1 96,200" class="nofill"></path>
   </g>
-</svg></pre><div id="admonition-note" class="admonition note">
+</svg></pre><div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="faq/tokio-async.html#admonition-note"></a></p>
@@ -7950,7 +7980,7 @@ to <strong>work on or discuss</strong> an issue will have to follow the followin
 </ul>
 <p>You can then resume the conversation by replying to the new issue you have created.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="v0230"><a class="header" href="#v0230"><a href="https://github.com/ratatui-org/ratatui/releases/tag/v0.23.0">v0.23.0</a></a></h1>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="highlights/v0.23.html#admonition-note"></a></p>
@@ -8125,7 +8155,7 @@ it from here:
 <li>We created a Matrix bridge at <a href="https://matrix.to/#/#ratatui:matrix.org">#ratatui:matrix.org</a>.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="v022"><a class="header" href="#v022"><a href="https://github.com/ratatui-org/ratatui/releases/tag/v0.22.0">v0.22</a></a></h1>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="highlights/v0.22.html#admonition-note"></a></p>
@@ -8865,8 +8895,8 @@ decision.</p>
 and is available to view at <a href="https://ratatui-org.github.io/ratatui-book/">https://ratatui-org.github.io/ratatui-book/</a>.</p>
 <p>Feel free to make contributions if you’d like to improve the documentation.</p>
 <p>If you want to set up your local environment, you can run the following:</p>
-<pre><code class="language-bash">cargo install mdbook --version 0.4.30
-cargo install mdbook-admonish --version 1.9.0
+<pre><code class="language-bash">cargo install mdbook --version 0.4.35
+cargo install mdbook-admonish --version 1.13.0
 cargo install mdbook-svgbob2 --version 0.3.0
 cargo install mdbook-linkcheck --version 0.7.7
 cargo install mdbook-mermaid --version 0.12.6
@@ -8892,7 +8922,7 @@ This is a info
 ```
 </code></pre>
 <p>will render as the following:</p>
-<div id="admonition-note" class="admonition note">
+<div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="developer-guide/book.html#admonition-note"></a></p>
@@ -8901,7 +8931,7 @@ This is a info
 <p>This is a note</p>
 </div>
 </div>
-<div id="admonition-tip" class="admonition tip">
+<div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
 <p><a class="admonition-anchor-link" href="developer-guide/book.html#admonition-tip"></a></p>
@@ -8910,7 +8940,7 @@ This is a info
 <p>This is a tip</p>
 </div>
 </div>
-<div id="admonition-warning" class="admonition warning">
+<div id="admonition-warning" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Warning</p>
 <p><a class="admonition-anchor-link" href="developer-guide/book.html#admonition-warning"></a></p>
@@ -8919,7 +8949,7 @@ This is a info
 <p>This is a warning</p>
 </div>
 </div>
-<div id="admonition-info" class="admonition info">
+<div id="admonition-info" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Info</p>
 <p><a class="admonition-anchor-link" href="developer-guide/book.html#admonition-info"></a></p>
@@ -9059,26 +9089,27 @@ for more up to date information.</p>
 
 
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
 
 
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
 
-        <script type="text/javascript">
+        <script>
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });
         </script>
 
+    </div>
     </body>
 </html>
