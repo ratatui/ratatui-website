@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -197,11 +197,12 @@
 and is available to view at <a href="https://ratatui-org.github.io/ratatui-book/">https://ratatui-org.github.io/ratatui-book/</a>.</p>
 <p>Feel free to make contributions if you’d like to improve the documentation.</p>
 <p>If you want to set up your local environment, you can run the following:</p>
-<pre><code class="language-bash">cargo install cargo-make
-cargo make install
-</code></pre>
-<p>You can run the following to view a local copy of the documentation:</p>
-<pre><code class="language-bash">cargo make serve
+<pre><code class="language-bash">cargo install mdbook --version 0.4.35
+cargo install mdbook-admonish --version 1.13.0
+cargo install mdbook-svgbob2 --version 0.3.0
+cargo install mdbook-linkcheck --version 0.7.7
+cargo install mdbook-mermaid --version 0.12.6
+cargo install mdbook-emojicodes --version 0.2.2
 </code></pre>
 <p>These plugins allow additional features.</p>
 <h2 id="mdbook-admonish"><a class="header" href="#mdbook-admonish"><code>mdbook-admonish</code></a></h2>
