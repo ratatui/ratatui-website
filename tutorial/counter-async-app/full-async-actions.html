@@ -185,7 +185,7 @@ refactoring, we store the <code>action_tx</code> half of the channel in the <cod
         let action = get_action(&amp;mut app, e);
         action_tx.send(action.clone())?;
       },
-      _ =&gt; (),
+      _ =&gt; {},
     };
 
     while let Ok(action) = action_rx.try_recv() {
@@ -387,7 +387,7 @@ async fn run() -&gt; Result&lt;()&gt; {
         let action = get_action(&amp;mut app, e);
         action_tx.send(action.clone())?;
       },
-      _ =&gt; (),
+      _ =&gt; {},
     };
 
     while let Ok(action) = action_rx.try_recv() {

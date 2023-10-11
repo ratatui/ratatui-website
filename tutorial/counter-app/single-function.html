@@ -197,7 +197,7 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
             crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
             crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
             crossterm::event::KeyCode::Char('q') =&gt; break,
-            _ =&gt; (),
+            _ =&gt; {},
           }
         }
       }
@@ -277,7 +277,7 @@ draw method at most once for each pass through your application’s main loop.
           crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
           crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
           crossterm::event::KeyCode::Char('q') =&gt; break,
-          _ =&gt; (),
+          _ =&gt; {},
         }
       }
     }</code></pre>
@@ -295,7 +295,7 @@ when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when y
             crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
             crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
             crossterm::event::KeyCode::Char('q') =&gt; break,
-            _ =&gt; (),
+            _ =&gt; {},
           }
         }
       }

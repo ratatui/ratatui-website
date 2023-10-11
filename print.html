@@ -508,7 +508,7 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
             crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
             crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
             crossterm::event::KeyCode::Char('q') =&gt; break,
-            _ =&gt; (),
+            _ =&gt; {},
           }
         }
       }
@@ -588,7 +588,7 @@ draw method at most once for each pass through your application’s main loop.
           crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
           crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
           crossterm::event::KeyCode::Char('q') =&gt; break,
-          _ =&gt; (),
+          _ =&gt; {},
         }
       }
     }</code></pre>
@@ -606,7 +606,7 @@ when you press the key, i.e. <code>KeyEventKind::Press</code> and one for when y
             crossterm::event::KeyCode::Char('j') =&gt; counter += 1,
             crossterm::event::KeyCode::Char('k') =&gt; counter -= 1,
             crossterm::event::KeyCode::Char('q') =&gt; break,
-            _ =&gt; (),
+            _ =&gt; {},
           }
         }
       }
@@ -692,7 +692,7 @@ type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;</code></pre>
           Char('j') =&gt; app.counter += 1,
           Char('k') =&gt; app.counter -= 1,
           Char('q') =&gt; app.should_quit = true,
-          _ =&gt; (),
+          _ =&gt; {},
         }
       }
     }
@@ -825,7 +825,7 @@ fn update(app: &amp;mut App) -&gt; Result&lt;()&gt; {
           Char('j') =&gt; app.counter += 1,
           Char('k') =&gt; app.counter -= 1,
           Char('q') =&gt; app.should_quit = true,
-          _ =&gt; (),
+          _ =&gt; {},
         }
       }
     }
@@ -1126,7 +1126,7 @@ to act on them.</p>
             KeyCode::Char('j') =&gt; app.increment(),
             KeyCode::Char('k') =&gt; app.decrement(),
             KeyCode::Char('q') =&gt; break,
-            _ =&gt; (),
+            _ =&gt; {},
           }
         }
 
@@ -3133,7 +3133,7 @@ tokio-util = &quot;0.7.9&quot;
 </span><span class="boring">          Char('j') =&gt; app.counter += 1,
 </span><span class="boring">          Char('k') =&gt; app.counter -= 1,
 </span><span class="boring">          Char('q') =&gt; app.should_quit = true,
-</span><span class="boring">          _ =&gt; (),
+</span><span class="boring">          _ =&gt; {},
 </span><span class="boring">        }
 </span><span class="boring">      }
 </span><span class="boring">    }
@@ -3230,7 +3230,7 @@ to make our <code>main</code> function a <code>tokio</code> entry point.</p>
 </span><span class="boring">          Char('j') =&gt; app.counter += 1,
 </span><span class="boring">          Char('k') =&gt; app.counter -= 1,
 </span><span class="boring">          Char('q') =&gt; app.should_quit = true,
-</span><span class="boring">          _ =&gt; (),
+</span><span class="boring">          _ =&gt; {},
 </span><span class="boring">        }
 </span><span class="boring">      }
 </span><span class="boring">    }
@@ -3547,7 +3547,7 @@ looks like:</p>
       Char('j') =&gt; app.counter += 1,
       Char('k') =&gt; app.counter -= 1,
       Char('q') =&gt; app.should_quit = true,
-      _ =&gt; (),
+      _ =&gt; {},
     }
   }
   Ok(())
@@ -4217,7 +4217,7 @@ refactoring, we store the <code>action_tx</code> half of the channel in the <cod
         let action = get_action(&amp;mut app, e);
         action_tx.send(action.clone())?;
       },
-      _ =&gt; (),
+      _ =&gt; {},
     };
 
     while let Ok(action) = action_rx.try_recv() {
@@ -4419,7 +4419,7 @@ async fn run() -&gt; Result&lt;()&gt; {
         let action = get_action(&amp;mut app, e);
         action_tx.send(action.clone())?;
       },
-      _ =&gt; (),
+      _ =&gt; {},
     };
 
     while let Ok(action) = action_rx.try_recv() {

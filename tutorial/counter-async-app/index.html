@@ -227,7 +227,7 @@ tokio-util = &quot;0.7.9&quot;
 </span><span class="boring">          Char('j') =&gt; app.counter += 1,
 </span><span class="boring">          Char('k') =&gt; app.counter -= 1,
 </span><span class="boring">          Char('q') =&gt; app.should_quit = true,
-</span><span class="boring">          _ =&gt; (),
+</span><span class="boring">          _ =&gt; {},
 </span><span class="boring">        }
 </span><span class="boring">      }
 </span><span class="boring">    }
@@ -324,7 +324,7 @@ to make our <code>main</code> function a <code>tokio</code> entry point.</p>
 </span><span class="boring">          Char('j') =&gt; app.counter += 1,
 </span><span class="boring">          Char('k') =&gt; app.counter -= 1,
 </span><span class="boring">          Char('q') =&gt; app.should_quit = true,
-</span><span class="boring">          _ =&gt; (),
+</span><span class="boring">          _ =&gt; {},
 </span><span class="boring">        }
 </span><span class="boring">      }
 </span><span class="boring">    }

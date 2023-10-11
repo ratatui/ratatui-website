@@ -235,7 +235,7 @@ type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;</code></pre>
           Char('j') =&gt; app.counter += 1,
           Char('k') =&gt; app.counter -= 1,
           Char('q') =&gt; app.should_quit = true,
-          _ =&gt; (),
+          _ =&gt; {},
         }
       }
     }
@@ -368,7 +368,7 @@ fn update(app: &amp;mut App) -&gt; Result&lt;()&gt; {
           Char('j') =&gt; app.counter += 1,
           Char('k') =&gt; app.counter -= 1,
           Char('q') =&gt; app.should_quit = true,
-          _ =&gt; (),
+          _ =&gt; {},
         }
       }
     }
