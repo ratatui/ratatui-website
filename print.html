@@ -306,143 +306,199 @@ async TUI using <a href="https://tokio.rs/">tokio</a>.</li>
 uses an external big-text widget library, runs asynchronously using tokio.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hello-world"><a class="header" href="#hello-world">Hello World</a></h1>
-<p>Getting started with <code>ratatui</code> is straightforward — Add it to the project, and you are ready to
-start creating beautiful TUIs.</p>
-<p>In this section, we will build a “hello world” TUI application.</p>
-<h2 id="install-rust"><a class="header" href="#install-rust">Install <code>rust</code></a></h2>
-<p>The first step is to install <code>rust</code>.</p>
-<p>Check
-<a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation section of the official Rust Book</a>
-for more information. Most people tend to use <code>rustup</code> to manage their installation.</p>
-<div id="admonition-tip" class="admonition admonish-tip">
-<div class="admonition-title">
-<p>Tip</p>
-<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-tip"></a></p>
-</div>
-<div>
-<p><code>rustup</code> installs The Rust Programming Language from the official release channels,
-enabling you to easily switch between stable, beta, and nightly compilers and keep them updated.</p>
-</div>
-</div>
-<p><code>rustup</code> will set you up with the latest stable version of <code>rust</code> as well as <code>cargo</code>. <code>cargo</code> is
-Rust’s package manager, and it is what we will use to create a new project and add <code>ratatui</code> as a
-dependency.</p>
-<h3 id="create-a-hello-world-project"><a class="header" href="#create-a-hello-world-project">Create a “hello world” project</a></h3>
-<p>To start with a new project, you can run the following:</p>
-<pre><code class="language-shell">cargo new hello-world-tui
-cd hello-world-tui
+<p>This tutorial will lead you through creating a simple “Hello World” TUI app that displays some text
+in the middle of the screen and waits for the user to press q to exit. It demonstrates the necessary
+tasks that any application developed with Ratatui needs to undertake. We assume that you have a
+basic understanding of the terminal a text editor or Rust IDE (if you don’t have a preference,
+<a href="https://code.visualstudio.com/">VSCode</a> makes a good default choice).</p>
+<p>We’re going to build the following:</p>
+<p><img src="https://github.com/ratatui-org/ratatui-book/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387" alt="hello" /></p>
+<h2 id="install-rust"><a class="header" href="#install-rust">Install Rust</a></h2>
+<p>The first step is to install Rust. See the <a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation</a> section of the official Rust Book for
+more information. Most people tend to use <code>rustup</code>, a command line tool for managing Rust versions
+and associated tools.</p>
+<p>Once you’ve installed Rust, verify that it’s installed by running:</p>
+<pre><code class="language-shell">rustc --version
 </code></pre>
-<p>This creates a new folder called <code>hello-world-tui</code> and changes the directory to that folder.</p>
-<p><code>cargo new</code> will instantiate a “binary” project by default.</p>
-<pre><code class="language-plain">$ tree .
-.
-├── Cargo.toml
-└── src
-   └── main.rs
+<p>You should see output similar to the following (the exact version, date and commit hash will vary):</p>
+<pre><code class="language-plain">rustc 1.72.1 (d5c2e9c34 2023-09-13)
 </code></pre>
-<div id="admonition-tip-1" class="admonition admonish-tip">
-<div class="admonition-title">
-<p>Tip</p>
-<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-tip-1"></a></p>
-</div>
-<div>
-<p>It is always good idea to add a <code>LICENSE</code> and a <code>README.md</code> for your projects.</p>
-</div>
-</div>
-<p>You can compile and execute a “binary” project by running <code>cargo run</code>:</p>
-<pre><code class="language-shell">$ cargo run
-   Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
-     Running `target/debug/hello-world-tui`
-Hello, world!
+<h2 id="create-a-new-project"><a class="header" href="#create-a-new-project">Create a new project</a></h2>
+<p>Let’s create a new Rust project. In the terminal, navigate to a folder where you will store your
+projects and run:</p>
+<pre><code class="language-shell">cargo new hello-ratatui
+cd hello-ratatui
 </code></pre>
-<div id="admonition-attention" class="admonition admonish-warning">
-<div class="admonition-title">
-<p>Attention</p>
-<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-attention"></a></p>
-</div>
-<div>
-<p>By default <code>cargo run</code> compiles your program with no optimizations and with debug information.
-If you want to run it in with more optimizations, you can run <code>cargo run --release</code>.</p>
-<pre><code class="language-shell">cargo run --release
-   Compiling hello-world-tui v0.1.0 (/Users/USER/gitrepos/hello-world-tui)
-    Finished release [optimized] target(s) in 0.08s
-     Running `target/release/hello-world-tui`
-Hello, world!
+<p>The <code>cargo new</code> command creates a new folder called <code>hello-ratatui</code> with a basic binary application
+in it. You should see:</p>
+<pre><code class="language-plain">     Created binary (application) `hello-ratatui` package
 </code></pre>
-<p>For more information, check out <a href="https://doc.rust-lang.org/book/ch01-03-hello-cargo.html">the <code>cargo</code> section in the official rust
-book</a>.</p>
-</div>
-</div>
-<h3 id="install-ratatui"><a class="header" href="#install-ratatui">Install <code>ratatui</code></a></h3>
-<p>Installing <code>ratatui</code> is as easy as running the following:</p>
-<pre><code class="language-shell">cargo add ratatui crossterm
+<p>If you examine the folders and files created this will look like:</p>
+<pre><code class="language-plain">hello-ratatui/
+├── src/
+│  └── main.rs
+└── Cargo.toml
 </code></pre>
-<div id="admonition-note" class="admonition admonish-note">
-<div class="admonition-title">
-<p>Note</p>
-<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-note"></a></p>
-</div>
-<div>
-<p><code>ratatui</code> has to be combined with a terminal backend.
-You can learn more about the different terminal backends in the <a href="tutorial/hello-world/./../../how-to/choose-a-backend.html">how to choose a
-backend</a> section. For the examples in this book, we are going to
-use <code>crossterm</code>.</p>
-</div>
-</div>
-<p>Running the above command in your console will add the latest version of <code>ratatui</code> and <code>crossterm</code>
-to your project.</p>
-<div id="admonition-tip-2" class="admonition admonish-tip">
-<div class="admonition-title">
-<p>Tip</p>
-<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-tip-2"></a></p>
-</div>
-<div>
-<p>If you are interested in adding a specific version, you can run the following:</p>
-<pre><code class="language-shell">cargo add ratatui --version 0.19.0
-</code></pre>
-</div>
-</div>
-<h3 id="srcmainrs"><a class="header" href="#srcmainrs"><code>src/main.rs</code></a></h3>
-<p>Open <code>src/main.rs</code> in your favorite editor, and copy paste the following code to it:</p>
-<pre><code class="language-rust no_run noplayground">use ratatui::{
-  prelude::{CrosstermBackend, Terminal},
-  widgets::Paragraph,
-};
-
-fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-  crossterm::terminal::enable_raw_mode()?;
-  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
-
-  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-
-  loop {
-    terminal.draw(|f| {
-      f.render_widget(Paragraph::new(&quot;Hello World! (press 'q' to quit)&quot;), f.size());
-    })?;
-
-    if crossterm::event::poll(std::time::Duration::from_millis(250))? {
-      if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-        if key.code == crossterm::event::KeyCode::Char('q') {
-          break;
-        }
-      }
-    }
-  }
-
-  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
-  crossterm::terminal::disable_raw_mode()?;
-
-  Ok(())
+<p><code>cargo new</code> created a default <code>main.rs</code> with a small console program that prints “Hello, world!”.</p>
+<pre><code class="language-rust">fn main() {
+    println!(&quot;Hello, world!&quot;);
 }</code></pre>
-<p>Make sure you save and exit the file! Now we are ready to run the TUI.</p>
-<h3 id="running-the-tui"><a class="header" href="#running-the-tui">Running the TUI</a></h3>
-<p>We can run our program with:</p>
+<p>Let’s build and execute the project. Run:</p>
 <pre><code class="language-shell">cargo run
 </code></pre>
-<p>You should see a TUI app with <code>Hello World! (press 'q' to quit)</code> show up in your terminal as a TUI
+<p>You should see:</p>
+<pre><code class="language-plain">   Compiling hello-ratatui v0.1.0 (/Users/joshka/local/hello-ratatui)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.18s
+     Running `target/debug/hello-ratatui`
+Hello, world!
+</code></pre>
+<p>The default <code>main.rs</code> program is responsible for printing the last line. We’re going to replace it
+with something a little bit more exciting.</p>
+<h2 id="install-ratatui"><a class="header" href="#install-ratatui">Install Ratatui</a></h2>
+<p>First up, we need to install the Ratatui crate into our project. We also need to install a
+<a href="tutorial/hello-world/../../concepts/backends/">backend</a>. We will use <a href="https://crates.io/crates/crossterm">Crossterm</a> here as the backend as it’s compatible with most operating
+systems. To install the latest version of the <code>ratatui</code> and <code>crossterm</code> crates into the project
+run:</p>
+<pre><code class="language-shell">cargo add ratatui crossterm
+</code></pre>
+<p>Cargo will output the following (note that the exact versions may be later than the ones in this
+tutorial).</p>
+<pre><code class="language-plain">    Updating crates.io index
+      Adding ratatui v0.23.0 to dependencies.
+             Features:
+             + crossterm
+             - all-widgets
+             - document-features
+             - macros
+             - serde
+             - termion
+             - termwiz
+             - widget-calendar
+      Adding crossterm v0.27.0 to dependencies.
+             Features:
+             + bracketed-paste
+             + events
+             + windows
+             - event-stream
+             - filedescriptor
+             - serde
+             - use-dev-tty
+    Updating crates.io index
+</code></pre>
+<p>If you examine the <code>Cargo.toml</code> file, you should see that the new crates have been added to the
+dependencies section:</p>
+<pre><code class="language-toml">[dependencies]
+crossterm = &quot;0.27.0&quot;
+ratatui = &quot;0.23.0&quot;
+</code></pre>
+<h2 id="create-a-tui-application"><a class="header" href="#create-a-tui-application">Create a TUI application</a></h2>
+<p>We’re going to now replace the default console application code that <code>cargo new</code> created with a
+Ratatui application that displays a colored message the middle of the screen and waits for the user
+to press a key to exit.</p>
+<p>In your editor, open <code>src/main.rs</code>. Replace the existing code with the following:</p>
+<pre><code class="language-rust no_run">use crossterm::{
+    event::{self, KeyCode, KeyEventKind},
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    ExecutableCommand,
+};
+use ratatui::{
+    prelude::{CrosstermBackend, Stylize, Terminal},
+    widgets::Paragraph,
+};
+use std::io::{stderr, Result};
+
+fn main() -&gt; Result&lt;()&gt; {
+    stderr().execute(EnterAlternateScreen)?;
+    enable_raw_mode()?;
+    let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
+    terminal.clear()?;
+
+    loop {
+        terminal.draw(|frame| {
+            let area = frame.size();
+            frame.render_widget(
+                Paragraph::new(&quot;Hello Ratatui! (press 'q' to quit)&quot;)
+                    .white()
+                    .on_blue(),
+                area,
+            );
+        })?;
+
+        if event::poll(std::time::Duration::from_millis(100))? {
+            if let event::Event::Key(key) = event::read()? {
+                if key.kind == KeyEventKind::Press &amp;&amp; key.code == KeyCode::Char('q') {
+                    break;
+                }
+            }
+        }
+    }
+
+    stderr().execute(LeaveAlternateScreen)?;
+    disable_raw_mode()?;
+    Ok(())
+}</code></pre>
+<p>This program imports the necessary items to create a Ratatui Application.</p>
+<ul>
+<li>From <code>crossterm</code> we import modules, types, methods and traits to handle <a href="tutorial/hello-world/../../concepts/event_handling.html">events</a>, <a href="tutorial/hello-world/../../concepts/backends/raw-mode.html">raw mode</a>, and
+the <a href="tutorial/hello-world/../../concepts/backends/alternate-screen.html">alternate screen</a>.</li>
+<li>From <code>std</code> we import the <code>io::Result</code> which most of the backend methods return, and the <code>stderr()</code></li>
+<li>From <code>ratatui</code> we import a <a href="tutorial/hello-world/../../concepts/backends/">backend</a>, the main terminal type, and several other types.</li>
+</ul>
+<p>Let’s examine the rest of the application section by section:</p>
+<pre><code class="language-rust no_run">    stderr().execute(EnterAlternateScreen)?;
+    enable_raw_mode()?;
+    let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
+    terminal.clear()?;</code></pre>
+<p>In the main method, we first enter the alternate screen, which is a secondary screen that allows
+your application to not disturb the normal output of terminal apps. We then enable raw mode, which
+turns off input and output processing by the terminal which allows our application to have better
+control over when characters are echoed to the screen. The app then creates a backend and terminal
+and makes sure to clear the screen.</p>
+<p>The main part of our application is the main loop. Our application repeatedly draws the ui and then
+handles any events that have occurred.</p>
+<pre><code class="language-rust no_run">        terminal.draw(|frame| {
+            let area = frame.size();
+            frame.render_widget(
+                Paragraph::new(&quot;Hello Ratatui! (press 'q' to quit)&quot;)
+                    .white()
+                    .on_blue(),
+                area,
+            );
+        })?;</code></pre>
+<p>The <code>draw</code> call on <code>terminal</code> is the main interaction with Ratatui. Here we create an area that is
+the full size of your terminal window and render a new Paragraph with white foreground text and a
+blue background.</p>
+<pre><code class="language-rust no_run">        if event::poll(std::time::Duration::from_millis(100))? {
+            if let event::Event::Key(key) = event::read()? {
+                if key.kind == KeyEventKind::Press &amp;&amp; key.code == KeyCode::Char('q') {
+                    break;
+                }
+            }
+        }</code></pre>
+<p>After the draw, we check to see if any events have occurred. These are things like keyboard presses,
+mouse events, resizes, etc. If the user has pressed the <code>q</code> key, we break out of the loop.</p>
+<p>Finally, the application cleans up after itself by exiting the alternate screen and disabling raw
+mode.</p>
+<pre><code class="language-rust no_run">    stderr().execute(LeaveAlternateScreen)?;
+    disable_raw_mode()?;
+    Ok(())</code></pre>
+<div id="admonition-warning" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-warning"></a></p>
+</div>
+<div>
+<p>If we don’t disable raw mode, terminals act weirdly when the mouse or navigation keys are pressed.
+To fix this on a Linux / macOS terminal type <code>reset</code>. On Windows TODO</p>
+</div>
+</div>
+<h2 id="running-the-application"><a class="header" href="#running-the-application">Running the Application</a></h2>
+<p>Make sure you save the file! Let’s run the app:</p>
+<pre><code class="language-shell">cargo run
+</code></pre>
+<p>You should see a TUI app with <code>Hello Ratatui! (press 'q' to quit)</code> show up in your terminal as a TUI
 app.</p>
-<p><img src="https://user-images.githubusercontent.com/1813121/262363304-d601478e-2091-40ce-b96f-671e9bf8904b.gif" alt="Hello World" /></p>
+<p><img src="https://github.com/ratatui-org/ratatui-book/assets/381361/98eee556-6283-4aa5-a068-99392e1a5dda" alt="hello" /></p>
 <p>You can press <code>q</code> to exit and go back to your terminal as it was before.</p>
 <p>Congratulations! 🎉</p>
 <p>You have written a “hello world” terminal user interface with <code>ratatui</code>. We will learn more about
