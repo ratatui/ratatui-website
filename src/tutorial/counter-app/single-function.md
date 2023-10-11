@@ -40,7 +40,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             crossterm::event::KeyCode::Char('j') => counter += 1,
             crossterm::event::KeyCode::Char('k') => counter -= 1,
             crossterm::event::KeyCode::Char('q') => break,
-            _ => (),
+            _ => {},
           }
         }
       }
@@ -157,7 +157,7 @@ For Linux and MacOS, you'll be able to write code like the following:
           crossterm::event::KeyCode::Char('j') => counter += 1,
           crossterm::event::KeyCode::Char('k') => counter -= 1,
           crossterm::event::KeyCode::Char('q') => break,
-          _ => (),
+          _ => {},
         }
       }
     }
@@ -180,7 +180,7 @@ To make the code work in a cross platform manner, you'll want to check that `key
             crossterm::event::KeyCode::Char('j') => counter += 1,
             crossterm::event::KeyCode::Char('k') => counter -= 1,
             crossterm::event::KeyCode::Char('q') => break,
-            _ => (),
+            _ => {},
           }
         }
       }

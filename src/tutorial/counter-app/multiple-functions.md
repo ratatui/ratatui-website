@@ -112,7 +112,7 @@ fn update(app: &mut App) -> Result<()> {
           Char('j') => app.counter += 1,
           Char('k') => app.counter -= 1,
           Char('q') => app.should_quit = true,
-          _ => (),
+          _ => {},
         }
       }
     }
@@ -262,7 +262,7 @@ fn update(app: &mut App) -> Result<()> {
           Char('j') => app.counter += 1,
           Char('k') => app.counter -= 1,
           Char('q') => app.should_quit = true,
-          _ => (),
+          _ => {},
         }
       }
     }
