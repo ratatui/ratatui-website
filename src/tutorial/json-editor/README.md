@@ -19,7 +19,7 @@ cargo init ratatui-json-editor
 and put the following in the `Cargo.toml`:
 
 ```toml
-{{#include ./ratatui-json-editor-app/Cargo.toml:8:}}
+{{#include ../../../code/ratatui-json-editor-app/Cargo.toml:8:}}
 ```
 
 or the latest version of these libraries.

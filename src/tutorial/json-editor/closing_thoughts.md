@@ -23,17 +23,17 @@ and double checking the output.
 ### Main.rs
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/main.rs:all}}
+{{#include ../../../code/ratatui-json-editor-app/src/main.rs:all}}
 ```
 
 ### App.rs
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/app.rs:all}}
+{{#include ../../../code/ratatui-json-editor-app/src/app.rs:all}}
 ```
 
 ### UI.rs
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:all}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:all}}
 ```

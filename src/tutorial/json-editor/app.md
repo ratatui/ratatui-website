@@ -35,7 +35,7 @@ In this tutorial application, we will have three "screens":
 We represent these possible modes with a simple enum:
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/app.rs:screen_modes}}
+{{#include ../../../code/ratatui-json-editor-app/src/app.rs:screen_modes}}
 ```
 
 ### Currently Editing Enum
@@ -51,7 +51,7 @@ For this purpose, we will create another enum for our application state called `
 keep track of which field the user is currently entering:
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/app.rs:currently_editing}}
+{{#include ../../../code/ratatui-json-editor-app/src/app.rs:currently_editing}}
 ```
 
 ## The full application state
@@ -60,7 +60,7 @@ Now that we have enums to help us track where the user is, we will create the st
 stores this data which can be passed around where it is needed.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/app.rs:app_fields}}
+{{#include ../../../code/ratatui-json-editor-app/src/app.rs:app_fields}}
 ```
 
 ## Helper functions
@@ -76,7 +76,7 @@ avoided by specifying it all in the instantiation of the variable, doing it here
 change universal defaults for the state.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/app.rs:impl_new}}
+{{#include ../../../code/ratatui-json-editor-app/src/app.rs:impl_new}}
     // --snip--
 ```
 
@@ -88,7 +88,7 @@ variables.
 
 ```rust,no_run,noplayground
     // --snip--
-{{#include ./ratatui-json-editor-app/src/app.rs:save_key_value}}
+{{#include ../../../code/ratatui-json-editor-app/src/app.rs:save_key_value}}
     // --snip--
 ```
 
@@ -101,7 +101,7 @@ Value fields.
 
 ```rust,no_run,noplayground
     // --snip--
-{{#include ./ratatui-json-editor-app/src/app.rs:toggle_editing}}
+{{#include ../../../code/ratatui-json-editor-app/src/app.rs:toggle_editing}}
     // --snip--
 ```
 
@@ -112,7 +112,7 @@ pairs.
 
 ```rust,no_run,noplayground
     // --snip--
-{{#include ./ratatui-json-editor-app/src/app.rs:print_json}}
+{{#include ../../../code/ratatui-json-editor-app/src/app.rs:print_json}}
     // --snip--
 ```
 

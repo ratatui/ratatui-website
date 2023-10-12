@@ -7,7 +7,7 @@ In this screen, we are asking the user if they want to output the key-value pair
 in the `stdout` pipe, or close without outputting anything.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:exit_screen}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:exit_screen}}
 ```
 
 The only thing in this part that we haven't done before, is use the 

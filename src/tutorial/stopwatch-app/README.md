@@ -6,7 +6,7 @@ stopwatch application. We are also going to take advantage of a widget from an e
 Here's the dependencies you'll need in your `Cargo.toml`:
 
 ```toml
-{{#include ./ratatui-stopwatch-app/Cargo.toml}}
+{{#include ../../../code/ratatui-stopwatch-app/Cargo.toml}}
 ```
 
 Here's a gif of what it will look like if you run this:
@@ -31,7 +31,7 @@ The full code is available on
 Here's the relevant application part of the code:
 
 ```rust
-{{#include ./ratatui-stopwatch-app/src/main.rs:app}}
+{{#include ../../../code/ratatui-stopwatch-app/src/main.rs:app}}
 ```
 
 It is worth thinking about what it takes to build your own custom widget by looking at

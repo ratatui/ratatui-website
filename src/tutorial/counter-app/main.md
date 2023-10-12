@@ -3,9 +3,9 @@
 Putting it all together, we have the `main.rs` function:
 
 ```rust
-{{#include ./ratatui-counter-app/src/main.rs:imports_main}}
+{{#include ../../../code/ratatui-counter-app/src/main.rs:imports_main}}
 
-{{#include ./ratatui-counter-app/src/main.rs:main}}
+{{#include ../../../code/ratatui-counter-app/src/main.rs:main}}
 ```
 
 Because we call `tui.events.next()` in a loop, it blocks until there's an event generated. If
