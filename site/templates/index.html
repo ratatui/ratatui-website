@@ -1,0 +1,49 @@
+{% extends "juice/templates/index.html" %}
+{% block hero %}
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<section class="text-center">
+    <h1 class="heading-text" style="font-size: 50px">
+        Cooking up delicious TUIs
+    </h1>
+    <h3 class="title-text">
+        <b>Ratatui</b> is a Rust crate for building Text UIs.
+    </h3>
+    <div>
+        <a class="github-button" href="https://github.com/ratatui-org/ratatui" data-size="large" data-show-count="true"
+            aria-label="Star ratatui-org/ratatui on GitHub">Star</a>
+        <a class="github-button" href="https://github.com/ratatui-org/ratatui/fork" data-size="large"
+            data-show-count="true" aria-label="Fork ratatui-org/ratatui on GitHub">Fork</a>
+    </div>
+</section>
+
+<img class="hero-image" style="width: 50%"
+    src="https://raw.githubusercontent.com/ratatui-org/ratatui/images/examples/demo2.gif">
+
+<div class="explore-more text" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+    Explore More ⇩
+</div>
+<style>
+    .hero section {
+        padding: 0 5rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        .hero section {
+            padding: 0 2rem;
+        }
+
+        .hero-image {
+            display: none
+        }
+    }
+</style>
+
+{% endblock hero %}
+
+{% block footer %}
+<footer>
+    <small class="subtext">
+        <a href="https://ratatui.rs">ratatui.rs</a> © 2023
+    </small>
+</footer>
+{% endblock footer %}

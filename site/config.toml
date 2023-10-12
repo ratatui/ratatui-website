@@ -1,11 +1,16 @@
 # The URL the site will be built for
 base_url = "https://ratatui.rs"
+title = "Ratatui.rs"
+description = "Ratatui website"
+author = "The Ratatui Developers"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
+
+theme = "juice"
 
 [markdown]
 # Whether to do syntax highlighting
@@ -14,3 +19,12 @@ highlight_code = true
 
 [extra]
 # Put all your custom variables here
+
+juice_logo_path = "logo.png"
+juice_logo_name = "Ratatui"
+juice_extra_menu = [
+    { title = "Book", link = "https://ratatui.rs/book" },
+    { title = "API Docs", link = "https://docs.rs/ratatui/latest/ratatui/" },
+    { title = "Github", link = "https://github.com/ratatui-org/ratatui" },
+]
+repository_url = "https://github.com/ratatui-org/ratatui"
