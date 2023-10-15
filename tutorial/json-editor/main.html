@@ -232,7 +232,7 @@ program’s state, and then we will call our function which handles the event an
     // --snip--</code></pre>
 <h3 id="application-post-run-steps"><a class="header" href="#application-post-run-steps">Application post-run steps</a></h3>
 <p>Since our <code>ratatui</code> application has changed the state of the user’s terminal with our
-<a href="#application-pre-run-steps">pre-run boilerplate</a>, we need to undo what have did, and put the
+<a href="#application-pre-run-steps">pre-run boilerplate</a>, we need to undo what we have done, and put the
 terminal back to the way we found it.</p>
 <p>Most of these functions will simply be the inverse of what we have done above.</p>
 <pre><code class="language-rust no_run noplayground">use crossterm::event::DisableMouseCapture;

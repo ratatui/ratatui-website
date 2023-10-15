@@ -1234,7 +1234,7 @@ to act on them.</p>
 that.</p>
 <p>However, this approach conflates the key input handling with app state updates, and does so in the
 “draw” loop. The practical issue with this approach is we block the draw loop for 250 ms waiting for
-a key press. This can have odd side effects, for example pressing an holding a key will result in
+a key press. This can have odd side effects, for example pressing and holding a key will result in
 faster draws to the terminal. You can try this out by pressing and holding any key and watching your
 CPU usage using <code>top</code> or <code>htop</code>.</p>
 <p>In terms of architecture, the code could get complicated to reason about. For example, we may even
@@ -2002,7 +2002,7 @@ program’s state, and then we will call our function which handles the event an
     // --snip--</code></pre>
 <h3 id="application-post-run-steps"><a class="header" href="#application-post-run-steps">Application post-run steps</a></h3>
 <p>Since our <code>ratatui</code> application has changed the state of the user’s terminal with our
-<a href="tutorial/json-editor/main.html#application-pre-run-steps">pre-run boilerplate</a>, we need to undo what have did, and put the
+<a href="tutorial/json-editor/main.html#application-pre-run-steps">pre-run boilerplate</a>, we need to undo what we have done, and put the
 terminal back to the way we found it.</p>
 <p>Most of these functions will simply be the inverse of what we have done above.</p>
 <pre><code class="language-rust no_run noplayground">use crossterm::event::DisableMouseCapture;
