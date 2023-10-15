@@ -9,7 +9,7 @@ Now that we have our `Frame`, we can actually begin drawing widgets onto it. We 
 creating out layout.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:ui_layout}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:ui_layout}}
 ```
 
 The variable `chunks` now contains a length 3 array of `Rect` objects that contain the top left
@@ -25,7 +25,7 @@ giving it a `Block` with borders enabled. (See [How-To: Block](../../how-to/widg
 `Paragraph`).
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:title_paragraph}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:title_paragraph}}
 ```
 
 In this code, the first thing we do, is create a `Block` with all borders enabled, and the default
@@ -45,7 +45,7 @@ selecting items on the list with little extra work. We will not be implementing 
 simply want the user to be able to see what they have already entered.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:key_value_list}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:key_value_list}}
 ```
 
 For more information on Line, Span, and Style see
@@ -65,14 +65,14 @@ Here, we will create a `Vec` of `Span` which will be converted later into a sing
 with a style applied, and doesn't end with a newline)
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:lower_navigation_current_screen}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:lower_navigation_current_screen}}
 ```
 
 Next, we are also going to make a hint in the navigation bar with available keys. This one does not
 have several sections of text with different styles, and is thus less code.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:lower_navigation_key_hint}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:lower_navigation_key_hint}}
 ```
 
 Finally, we are going to create our first nested layout. Because the `Layout.split` function
@@ -90,7 +90,7 @@ space for the new layout. If you remember the bottom most section from the above
 We will create a new layout in this space by passing it (`chunks[2]`) as the parameter for `split`.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:lower_navigation_layout}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:lower_navigation_layout}}
 ```
 
 This code is the visual equivalent of this:
@@ -106,5 +106,5 @@ This code is the visual equivalent of this:
 And now we can render our footer paragraphs in the appropriate spaces.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:lower_navigation_rendering}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:lower_navigation_rendering}}
 ```

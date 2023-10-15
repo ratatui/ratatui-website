@@ -12,7 +12,7 @@ The first thing we will do, is draw the `Block` that will contain the popup. We 
 below)
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:editing_popup}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:editing_popup}}
 ```
 
 ## Popup contents
@@ -25,14 +25,14 @@ Note the use of `margin(1)`, which gives a 1 space margin around any layout bloc
 blocks and widgets don't overwrite anything from the first popup block.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:popup_layout}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:popup_layout}}
 ```
 
 Now that we have the layout for where we want to display the keys and values, we will actually
 create the blocks and paragraphs to show what the user has already entered.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:key_value_blocks}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:key_value_blocks}}
 ```
 
 Note that we are declaring the blocks as variables, and then adding extra styling to the block the

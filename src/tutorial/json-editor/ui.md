@@ -23,7 +23,7 @@ Now, envision a scenario where we wish to divide our renderable `Rect` area into
 areas. For this, we can use the `Layout` functionality in `ratatui`.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:ui_layout}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:ui_layout}}
 ```
 
 This can be likened to partitioning a large rectangle into smaller sections.
@@ -66,12 +66,12 @@ Now that we have that out of the way, let us create the TUI for our application.
 
 ## The function signature
 
-Our ui function needs two things to successfully create our UI elements. The `Frame` which contains
-the size of the terminal at render time (this is important, because it allows us to take resizeable
+Our UI function needs two things to successfully create our UI elements. The `Frame` which contains
+the size of the terminal at render time (this is important, because it allows us to take resizable
 terminals into account), and the application state.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:method_sig}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:method_sig}}
 ```
 
 Before we proceed, let's implement a `centered_rect` helper function. This code is adapted from the
@@ -79,7 +79,7 @@ Before we proceed, let's implement a `centered_rect` helper function. This code 
 official repo.
 
 ```rust,no_run,noplayground
-{{#include ./ratatui-json-editor-app/src/ui.rs:centered_rect}}
+{{#include ../../../code/ratatui-json-editor-app/src/ui.rs:centered_rect}}
 ```
 
 This will be useful for the later subsections.

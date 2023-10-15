@@ -7,7 +7,7 @@ Finally we have the `update.rs` file. Here, the `update()` function takes in two
 - `app`: A mutable reference to our application's state, represented by the `App` struct.
 
 ```rust
-{{#include ./ratatui-counter-app/src/update.rs}}
+{{#include ../../../code/ratatui-counter-app/src/update.rs}}
 ```
 
 Note that here we don't have to check that `key_event.kind` is `KeyEventKind::Press` because we
