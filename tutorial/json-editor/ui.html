@@ -317,8 +317,8 @@ horizontal cuts).</li>
 </svg></pre>
 <p>Now that we have that out of the way, let us create the TUI for our application.</p>
 <h2 id="the-function-signature"><a class="header" href="#the-function-signature">The function signature</a></h2>
-<p>Our ui function needs two things to successfully create our UI elements. The <code>Frame</code> which contains
-the size of the terminal at render time (this is important, because it allows us to take resizeable
+<p>Our UI function needs two things to successfully create our UI elements. The <code>Frame</code> which contains
+the size of the terminal at render time (this is important, because it allows us to take resizable
 terminals into account), and the application state.</p>
 <pre><code class="language-rust no_run noplayground">pub fn ui&lt;B: Backend&gt;(f: &amp;mut Frame&lt;B&gt;, app: &amp;App) {</code></pre>
 <p>Before we proceed, let’s implement a <code>centered_rect</code> helper function. This code is adapted from the
