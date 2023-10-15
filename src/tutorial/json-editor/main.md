@@ -53,7 +53,7 @@ program's state, and then we will call our function which handles the event and 
 ### Application post-run steps
 
 Since our `ratatui` application has changed the state of the user's terminal with our
-[pre-run boilerplate](#application-pre-run-steps), we need to undo what have did, and put the
+[pre-run boilerplate](#application-pre-run-steps), we need to undo what we have done, and put the
 terminal back to the way we found it.
 
 Most of these functions will simply be the inverse of what we have done above.

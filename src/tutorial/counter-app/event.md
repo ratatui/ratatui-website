@@ -76,7 +76,7 @@ that.
 
 However, this approach conflates the key input handling with app state updates, and does so in the
 "draw" loop. The practical issue with this approach is we block the draw loop for 250 ms waiting for
-a key press. This can have odd side effects, for example pressing an holding a key will result in
+a key press. This can have odd side effects, for example pressing and holding a key will result in
 faster draws to the terminal. You can try this out by pressing and holding any key and watching your
 CPU usage using `top` or `htop`.
 
