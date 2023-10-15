@@ -23,7 +23,7 @@ highlight_code = true
 juice_logo_path = "logo.png"
 juice_logo_name = "Ratatui"
 juice_extra_menu = [
-    { title = "Book", link = "https://ratatui.rs/book" },
+    { title = "Book", link = "/book" },
     { title = "API Docs", link = "https://docs.rs/ratatui/latest/ratatui/" },
     { title = "Github", link = "https://github.com/ratatui-org/ratatui" },
 ]
