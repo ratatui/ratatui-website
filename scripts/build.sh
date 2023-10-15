@@ -16,7 +16,7 @@ cd site
 curl -L https://github.com/getzola/zola/releases/download/v0.17.2/zola-v0.17.2-x86_64-unknown-linux-gnu.tar.gz | tar xvz
 ./zola build \
     --output-dir ../build \
-    --base-url https://netlify--joshka-ratatui-book.netlify.app/
+    --base-url https://ratatui.netlify.app/
 cd ..
 
 # for faster installation
