@@ -11,6 +11,7 @@ compile_sass = true
 build_search_index = true
 
 theme = "juice"
+# taxonomies = [{ name = "categories" }]
 
 [markdown]
 # Whether to do syntax highlighting
@@ -24,6 +25,7 @@ juice_logo_path = "logo.png"
 juice_logo_name = "Ratatui"
 juice_extra_menu = [
     { title = "Book", link = "/book" },
+    { title = "Blog", link = "/blog" },
     { title = "API Docs", link = "https://docs.rs/ratatui/latest/ratatui/" },
     { title = "Github", link = "https://github.com/ratatui-org/ratatui" },
 ]

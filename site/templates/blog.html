@@ -1,0 +1,24 @@
+{% import "_macros.html" as macros %}
+{% extends "index.html" %}
+
+{% block title %}{{ section.title }} | {{ super() }} | {% endblock title %}
+
+{% block header %}
+<header class="box-shadow">
+    {{ macros::render_header() }}
+</header>
+{% endblock header %}
+
+{% block content %}
+<div class="heading-text">{{ section.description }}</div>
+<ul>
+    <!-- If you are using pagination, section.pages will be empty. You need to use the paginator object -->
+    {% for page in section.pages %}
+    <li>
+        <a href="{{ page.permalink | safe }}">{{page.date}}: {{ page.title }}</a>
+        {{ page.summary | safe }}
+    </li>
+
+    {% endfor %}
+</ul>
+{% endblock content %}
