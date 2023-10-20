@@ -18,6 +18,7 @@ cargo install mdbook-svgbob2 --version 0.3.0
 cargo install mdbook-linkcheck --version 0.7.7
 cargo install mdbook-mermaid --version 0.12.6
 cargo install mdbook-emojicodes --version 0.2.2
+cargo install mdbook-catppuccin --version 2.0.1
 ```
 
 These plugins allow additional features.
