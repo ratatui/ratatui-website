@@ -3485,11 +3485,7 @@ impl EventHandler {
   }
 </code></pre>
 <h3 id="tokios-select"><a class="header" href="#tokios-select"><code>tokio</code>’s <code>select!</code></a></h3>
-<p>We can make some additional improvements to our <code>EventHandler</code> now. First, we want to be able to
-start and stop our tokio task on request. This is useful if we want to implement signal handler
-support in our Ratatui application. We can create a <code>CancellationToken</code> and store it in our
-<code>EventHandler</code>, and when <code>CancellationToken::cancel()</code> is called we can break out of loop to stop
-the tokio task. We can also spawn a new task when we need to start it up again.</p>
+<p>We can make some additional improvements to our <code>EventHandler</code> now.</p>
 <p>We can use <a href="https://tokio.rs/tokio/tutorial/select"><code>tokio</code>’s <code>select!</code> macro</a> which allows us to
 wait on multiple <code>async</code> computations and returns when a single computation completes.</p>
 <div id="admonition-note" class="admonition admonish-note">
