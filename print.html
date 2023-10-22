@@ -3170,7 +3170,21 @@ crossterm = { version = &quot;0.27.0&quot;, features = [&quot;event-stream&quot;
 ratatui = &quot;0.23.0&quot;
 tokio = { version = &quot;1.32.0&quot;, features = [&quot;full&quot;] }
 tokio-util = &quot;0.7.9&quot;
+futures = &quot;0.3.28&quot;
 </code></pre>
+<div id="admonition-note" class="admonition admonish-note">
+<div class="admonition-title">
+<p>Note</p>
+<p><a class="admonition-anchor-link" href="tutorial/counter-async-app/index.html#admonition-note"></a></p>
+</div>
+<div>
+<p>If you were already using <code>crossterm</code> before, note that now you’ll need to add
+<code>features = [&quot;event-stream&quot;]</code> to use crossterm’s async features.</p>
+<p>You can use <code>cargo add</code> from the command line to add the above dependencies in one go:</p>
+<pre><code class="language-bash">cargo add ratatui crossterm color-eyre tokio tokio-util futures --features tokio/full,crossterm/event-stream
+</code></pre>
+</div>
+</div>
 <h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
 <p>Let’s take the single file multiple function example from the counter app from earlier:</p>
 <pre><code class="language-rust">// Hover on this codeblock and click &quot;Show hidden lines&quot; in the top right to see the full code
