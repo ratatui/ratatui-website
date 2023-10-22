@@ -23,7 +23,20 @@ crossterm = { version = "0.27.0", features = ["event-stream"] }
 ratatui = "0.23.0"
 tokio = { version = "1.32.0", features = ["full"] }
 tokio-util = "0.7.9"
+futures = "0.3.28"
 ```
+
+````admonish note
+If you were already using `crossterm` before, note that now you'll need to add
+`features = ["event-stream"]` to use crossterm's async features.
+
+You can use `cargo add` from the command line to add the above dependencies in one go:
+
+```bash
+cargo add ratatui crossterm color-eyre tokio tokio-util futures --features tokio/full,crossterm/event-stream
+```
+
+````
 
 ## Setup
 
