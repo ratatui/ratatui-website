@@ -78,6 +78,7 @@
 
 - [Highlights]()
 
+  - [v0.24](./highlights/v0.24.md)
   - [v0.23](./highlights/v0.23.md)
   - [v0.22](./highlights/v0.22.md)
   - [v0.21](./highlights/v0.21.md)
