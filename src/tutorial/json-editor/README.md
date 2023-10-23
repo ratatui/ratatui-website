@@ -13,7 +13,7 @@ about commas and brackets themselves.
 Go ahead and set up a new rust project with
 
 ```shell
-cargo init ratatui-json-editor
+cargo new ratatui-json-editor
 ```
 
 and put the following in the `Cargo.toml`:
