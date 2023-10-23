@@ -12,7 +12,7 @@ decrement the counter when a key is pressed. Let's increment and decrement the c
 Go ahead and set up a new rust project with
 
 ```shell
-cargo init ratatui-counter-app
+cargo new ratatui-counter-app
 cd ratatui-counter-app
 ```
 
