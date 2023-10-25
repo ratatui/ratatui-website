@@ -6,19 +6,17 @@ tasks that any application developed with Ratatui needs to undertake. We assume 
 basic understanding of the terminal a text editor or Rust IDE (if you don't have a preference,
 [VSCode] makes a good default choice).
 
-[VSCode]: https://code.visualstudio.com/
-
 We're going to build the following:
 
 ![hello](https://github.com/ratatui-org/ratatui-book/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387)
+
+The full code for this tutorial is available to view at <https://github.com/ratatui-org/ratatui-book/tree/main/code/hello-world-tutorial>
 
 ## Install Rust
 
 The first step is to install Rust. See the [Installation] section of the official Rust Book for more
 information. Most people tend to use `rustup`, a command line tool for managing Rust versions and
 associated tools.
-
-[Installation]: https://doc.rust-lang.org/book/ch01-01-installation.html
 
 Once you've installed Rust, verify that it's installed by running:
 
@@ -90,9 +88,6 @@ First up, we need to install the Ratatui crate into our project. We also need to
 [backend]. We will use [Crossterm] here as the backend as it's compatible with most operating
 systems. To install the latest version of the `ratatui` and `crossterm` crates into the project run:
 
-[backend]: ../../concepts/backends/
-[Crossterm]: https://crates.io/crates/crossterm
-
 ```shell
 cargo add ratatui crossterm
 ```
@@ -135,62 +130,63 @@ ratatui = "0.23.0"
 
 ## Create a TUI application
 
-We're going to now replace the default console application code that `cargo new` created with a
-Ratatui application that displays a colored message the middle of the screen and waits for the user
-to press a key to exit.
+Let's replace the default console application code that `cargo new` created with a Ratatui
+application that displays a colored message the middle of the screen and waits for the user to press
+a key to exit.
 
-In your editor, open `src/main.rs`. Replace the existing code with the following:
+Note: a full copy of the code is available below in the [Running the
+application](#running-the-application) section.
 
-```rust,no_run
-{{#include ../../../code/hello-world-tutorial/src/main.rs:all}}
+### Imports
+
+First let's add the module imports necessary to run our application.
+
+- From `crossterm` import modules, types, methods and traits to handle [events], [raw mode], and
+the [alternate screen]. See the [Crossterm docs] for more information on these types.
+- From `ratatui` import:
+  - [`CrosstermBackend`], a [backend] implementation for Crossterm
+  - [`Terminal`] which provides the means to output to the terminal
+  - [`Stylize`], an extension trait that adds [style shorthands] to other types
+  - [`Paragraph`] widget, which is used to display text
+- From `std` we import the `io::Result` which most of the backend methods return, and the `stdout()`
+  method.
+
+```admonish info
+Ratatui has a [`prelude`](https://docs.rs/ratatui/latest/ratatui/prelude/index.html) module that
+re-exports the most used types and traits. Importing this module with a wildcard import can
+simplify your application's imports.
 ```
 
-This program imports the necessary items to create a Ratatui Application.
+In your editor, open `src/main.rs` and add the following at the top of the file.
 
-- From `crossterm` we import modules, types, methods and traits to handle [events], [raw mode], and
-  the [alternate screen].
-- From `std` we import the `io::Result` which most of the backend methods return, and the `stderr()`
-- From `ratatui` we import a [backend], the main terminal type, and several other types.
+```rust
+{{#include ../../../code/hello-world-tutorial/src/main.rs:imports}}
+```
 
-[events]: ../../concepts/event_handling.md
-[raw mode]: ../../concepts/backends/raw-mode.md
-[alternate screen]: ../../concepts/backends/alternate-screen.md
+### Setting up and restoring the terminal
 
-Let's examine the rest of the application section by section:
+Next, we need to add code to the main function to setup and restore the terminal state.
+
+Our application needs to do a few things in order to setup the terminal for use:
+
+- First, the application enters the [alternate screen], which is a secondary screen that allows your
+  application to render whatever it needs to, without disturbing the normal output of terminal apps
+  in your shell.
+- Next, the application enables [raw mode], which turns off input and output processing by the
+  terminal. This allows our application control when characters are printed to the screen.
+- The app then creates a [backend] and [`Terminal`] and then clears the screen.
+
+When the application is finished it needs to restore the terminal state by leaving the alternate
+screen and disabling raw mode.
+
+Replace the existing `main` function with the following:
 
 ```rust,no_run
 {{#include ../../../code/hello-world-tutorial/src/main.rs:setup}}
-```
 
-In the main method, we first enter the alternate screen, which is a secondary screen that allows
-your application to not disturb the normal output of terminal apps. We then enable raw mode, which
-turns off input and output processing by the terminal which allows our application to have better
-control over when characters are echoed to the screen. The app then creates a backend and terminal
-and makes sure to clear the screen.
+    // TODO main loop
 
-The main part of our application is the main loop. Our application repeatedly draws the ui and then
-handles any events that have occurred.
-
-```rust,no_run
-{{#include ../../../code/hello-world-tutorial/src/main.rs:draw}}
-```
-
-The `draw` call on `terminal` is the main interaction with Ratatui. Here we create an area that is
-the full size of your terminal window and render a new Paragraph with white foreground text and a
-blue background.
-
-```rust,no_run
-{{#include ../../../code/hello-world-tutorial/src/main.rs:event}}
-```
-
-After the draw, we check to see if any events have occurred. These are things like keyboard presses,
-mouse events, resizes, etc. If the user has pressed the `q` key, we break out of the loop.
-
-Finally, the application cleans up after itself by exiting the alternate screen and disabling raw
-mode.
-
-```rust,no_run
-{{#include ../../../code/hello-world-tutorial/src/main.rs:teardown}}
+{{#include ../../../code/hello-world-tutorial/src/main.rs:restore}}
 ```
 
 ```admonish warning
@@ -199,7 +195,61 @@ navigation keys are pressed. To fix this, on a Linux / macOS terminal type `rese
 On Windows, you'll have to close the tab and open a new terminal.
 ```
 
+### Add a main loop
+
+The main part of our application is the main loop. Our application repeatedly draws the ui and then
+handles any events that have occurred.
+
+Replace `// TODO main loop` with a loop:
+
+```rust,no_run
+    loop {
+        // TODO draw
+        // TODO handle events
+    }
+```
+
+### Draw to the terminal
+
+The `draw` method on [`terminal`] is the main interaction point that an app has with Ratatui. The
+`draw` method accepts a closure that has a single [`Frame`] parameter, and renders the entire
+screen. Our application creates an area that is the full size of the terminal window and renders
+a new Paragraph with white foreground text and a blue background. The `white()` and `on_blue()`
+methods are defined in the [`Stylize`] extension trait as [style shorthands], rather than on the
+[`Paragraph`] widget.
+
+Replace `// TODO draw` with the following
+
+```rust,no_run
+{{#include ../../../code/hello-world-tutorial/src/main.rs:draw}}
+```
+
+### Handle events
+
+After Ratatui has drawn a frame, our application needs to check to see if any events have occurred.
+These are things like keyboard presses, mouse events, resizes, etc. If the user has pressed the `q`
+key, we break out of the loop. We add a small timeout to the event polling to ensure that our UI
+remains responsive regardless of whether there are events pending (16ms is ~60fps). Note that it's
+important to check that the event kind is `Press` otherwise Windows terminals will see each key
+twice.
+
+Replace `// TODO handle events` with:
+
+```rust,no_run
+{{#include ../../../code/hello-world-tutorial/src/main.rs:handle-events}}
+```
+
 ## Running the Application
+
+Your application should look like:
+
+<details><summary>main.rs</summary>
+
+```rust,no_run
+{{#include ../../../code/hello-world-tutorial/src/main.rs:all}}
+```
+
+</details>
 
 Make sure you save the file! Let's run the app:
 
@@ -222,3 +272,18 @@ how `ratatui` works in the next sections.
 ```admonish question
 Can you modify the example above to exit when pressing `q` _or_ when pressing `Q`?
 ```
+
+[VSCode]: https://code.visualstudio.com/
+[Installation]: https://doc.rust-lang.org/book/ch01-01-installation.html
+[events]: ../../concepts/event_handling.md
+[raw mode]: ../../concepts/backends/raw-mode.md
+[alternate screen]: ../../concepts/backends/alternate-screen.md
+[backend]: ../../concepts/backends/
+[Crossterm]: https://crates.io/crates/crossterm
+[Crossterm docs]: https://docs.rs/crossterm/0.27.0/crossterm/
+[`CrosstermBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.CrosstermBackend.html
+[`Terminal`]: https://docs.rs/ratatui/latest/ratatui/terminal/index.html
+[`Frame`]: https://docs.rs/ratatui/latest/ratatui/struct.Frame.html
+[`Stylize`]: https://docs.rs/ratatui/latest/ratatui/style/trait.Stylize.html
+[`Paragraph`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Paragraph.html
+[style shorthands]: https://docs.rs/ratatui/latest/ratatui/style/#using-style-shorthands

@@ -15,3 +15,5 @@ no-inline-html:
         - div # for example output
         - p # for example output
         - span # for example output
+        - details
+        - summary
