@@ -318,6 +318,7 @@ basic understanding of the terminal a text editor or Rust IDE (if you don’t ha
 <a href="https://code.visualstudio.com/">VSCode</a> makes a good default choice).</p>
 <p>We’re going to build the following:</p>
 <p><img src="https://github.com/ratatui-org/ratatui-book/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387" alt="hello" /></p>
+<p>The full code for this tutorial is available to view at <a href="https://github.com/ratatui-org/ratatui-book/tree/main/code/hello-world-tutorial">https://github.com/ratatui-org/ratatui-book/tree/main/code/hello-world-tutorial</a></p>
 <h2 id="install-rust"><a class="header" href="#install-rust">Install Rust</a></h2>
 <p>The first step is to install Rust. See the <a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation</a> section of the official Rust Book for more
 information. Most people tend to use <code>rustup</code>, a command line tool for managing Rust versions and
@@ -396,10 +397,129 @@ crossterm = &quot;0.27.0&quot;
 ratatui = &quot;0.23.0&quot;
 </code></pre>
 <h2 id="create-a-tui-application"><a class="header" href="#create-a-tui-application">Create a TUI application</a></h2>
-<p>We’re going to now replace the default console application code that <code>cargo new</code> created with a
-Ratatui application that displays a colored message the middle of the screen and waits for the user
-to press a key to exit.</p>
-<p>In your editor, open <code>src/main.rs</code>. Replace the existing code with the following:</p>
+<p>Let’s replace the default console application code that <code>cargo new</code> created with a Ratatui
+application that displays a colored message the middle of the screen and waits for the user to press
+a key to exit.</p>
+<p>Note: a full copy of the code is available below in the <a href="tutorial/hello-world/index.html#running-the-application">Running the
+application</a> section.</p>
+<h3 id="imports"><a class="header" href="#imports">Imports</a></h3>
+<p>First let’s add the module imports necessary to run our application.</p>
+<ul>
+<li>From <code>crossterm</code> import modules, types, methods and traits to handle <a href="tutorial/hello-world/../../concepts/event_handling.html">events</a>, <a href="tutorial/hello-world/../../concepts/backends/raw-mode.html">raw mode</a>, and
+the <a href="tutorial/hello-world/../../concepts/backends/alternate-screen.html">alternate screen</a>. See the <a href="https://docs.rs/crossterm/0.27.0/crossterm/">Crossterm docs</a> for more information on these types.</li>
+<li>From <code>ratatui</code> import:
+<ul>
+<li><a href="https://docs.rs/ratatui/latest/ratatui/backend/struct.CrosstermBackend.html"><code>CrosstermBackend</code></a>, a <a href="tutorial/hello-world/../../concepts/backends/">backend</a> implementation for Crossterm</li>
+<li><a href="https://docs.rs/ratatui/latest/ratatui/terminal/index.html"><code>Terminal</code></a> which provides the means to output to the terminal</li>
+<li><a href="https://docs.rs/ratatui/latest/ratatui/style/trait.Stylize.html"><code>Stylize</code></a>, an extension trait that adds <a href="https://docs.rs/ratatui/latest/ratatui/style/#using-style-shorthands">style shorthands</a> to other types</li>
+<li><a href="https://docs.rs/ratatui/latest/ratatui/widgets/struct.Paragraph.html"><code>Paragraph</code></a> widget, which is used to display text</li>
+</ul>
+</li>
+<li>From <code>std</code> we import the <code>io::Result</code> which most of the backend methods return, and the <code>stdout()</code>
+method.</li>
+</ul>
+<div id="admonition-info" class="admonition admonish-info">
+<div class="admonition-title">
+<p>Info</p>
+<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-info"></a></p>
+</div>
+<div>
+<p>Ratatui has a <a href="https://docs.rs/ratatui/latest/ratatui/prelude/index.html"><code>prelude</code></a> module that
+re-exports the most used types and traits. Importing this module with a wildcard import can
+simplify your application’s imports.</p>
+</div>
+</div>
+<p>In your editor, open <code>src/main.rs</code> and add the following at the top of the file.</p>
+<pre><code class="language-rust">use crossterm::{
+    event::{self, KeyCode, KeyEventKind},
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    ExecutableCommand,
+};
+use ratatui::{
+    prelude::{CrosstermBackend, Stylize, Terminal},
+    widgets::Paragraph,
+};
+use std::io::{stdout, Result};</code></pre>
+<h3 id="setting-up-and-restoring-the-terminal"><a class="header" href="#setting-up-and-restoring-the-terminal">Setting up and restoring the terminal</a></h3>
+<p>Next, we need to add code to the main function to setup and restore the terminal state.</p>
+<p>Our application needs to do a few things in order to setup the terminal for use:</p>
+<ul>
+<li>First, the application enters the <a href="tutorial/hello-world/../../concepts/backends/alternate-screen.html">alternate screen</a>, which is a secondary screen that allows your
+application to render whatever it needs to, without disturbing the normal output of terminal apps
+in your shell.</li>
+<li>Next, the application enables <a href="tutorial/hello-world/../../concepts/backends/raw-mode.html">raw mode</a>, which turns off input and output processing by the
+terminal. This allows our application control when characters are printed to the screen.</li>
+<li>The app then creates a <a href="tutorial/hello-world/../../concepts/backends/">backend</a> and <a href="https://docs.rs/ratatui/latest/ratatui/terminal/index.html"><code>Terminal</code></a> and then clears the screen.</li>
+</ul>
+<p>When the application is finished it needs to restore the terminal state by leaving the alternate
+screen and disabling raw mode.</p>
+<p>Replace the existing <code>main</code> function with the following:</p>
+<pre><code class="language-rust no_run">fn main() -&gt; Result&lt;()&gt; {
+    stdout().execute(EnterAlternateScreen)?;
+    enable_raw_mode()?;
+    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
+    terminal.clear()?;
+
+    // TODO main loop
+
+    stdout().execute(LeaveAlternateScreen)?;
+    disable_raw_mode()?;
+    Ok(())
+}</code></pre>
+<div id="admonition-warning" class="admonition admonish-warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-warning"></a></p>
+</div>
+<div>
+<p>If we don’t disable raw mode before exit, terminals can act weirdly when the mouse or
+navigation keys are pressed. To fix this, on a Linux / macOS terminal type <code>reset</code>.
+On Windows, you’ll have to close the tab and open a new terminal.</p>
+</div>
+</div>
+<h3 id="add-a-main-loop"><a class="header" href="#add-a-main-loop">Add a main loop</a></h3>
+<p>The main part of our application is the main loop. Our application repeatedly draws the ui and then
+handles any events that have occurred.</p>
+<p>Replace <code>// TODO main loop</code> with a loop:</p>
+<pre><code class="language-rust no_run">    loop {
+        // TODO draw
+        // TODO handle events
+    }</code></pre>
+<h3 id="draw-to-the-terminal"><a class="header" href="#draw-to-the-terminal">Draw to the terminal</a></h3>
+<p>The <code>draw</code> method on <a href="https://docs.rs/ratatui/latest/ratatui/terminal/index.html"><code>terminal</code></a> is the main interaction point that an app has with Ratatui. The
+<code>draw</code> method accepts a closure that has a single <a href="https://docs.rs/ratatui/latest/ratatui/struct.Frame.html"><code>Frame</code></a> parameter, and renders the entire
+screen. Our application creates an area that is the full size of the terminal window and renders
+a new Paragraph with white foreground text and a blue background. The <code>white()</code> and <code>on_blue()</code>
+methods are defined in the <a href="https://docs.rs/ratatui/latest/ratatui/style/trait.Stylize.html"><code>Stylize</code></a> extension trait as <a href="https://docs.rs/ratatui/latest/ratatui/style/#using-style-shorthands">style shorthands</a>, rather than on the
+<a href="https://docs.rs/ratatui/latest/ratatui/widgets/struct.Paragraph.html"><code>Paragraph</code></a> widget.</p>
+<p>Replace <code>// TODO draw</code> with the following</p>
+<pre><code class="language-rust no_run">        terminal.draw(|frame| {
+            let area = frame.size();
+            frame.render_widget(
+                Paragraph::new(&quot;Hello Ratatui! (press 'q' to quit)&quot;)
+                    .white()
+                    .on_blue(),
+                area,
+            );
+        })?;</code></pre>
+<h3 id="handle-events"><a class="header" href="#handle-events">Handle events</a></h3>
+<p>After Ratatui has drawn a frame, our application needs to check to see if any events have occurred.
+These are things like keyboard presses, mouse events, resizes, etc. If the user has pressed the <code>q</code>
+key, we break out of the loop. We add a small timeout to the event polling to ensure that our UI
+remains responsive regardless of whether there are events pending (16ms is ~60fps). Note that it’s
+important to check that the event kind is <code>Press</code> otherwise Windows terminals will see each key
+twice.</p>
+<p>Replace <code>// TODO handle events</code> with:</p>
+<pre><code class="language-rust no_run">        if event::poll(std::time::Duration::from_millis(16))? {
+            if let event::Event::Key(key) = event::read()? {
+                if key.kind == KeyEventKind::Press &amp;&amp; key.code == KeyCode::Char('q') {
+                    break;
+                }
+            }
+        }</code></pre>
+<h2 id="running-the-application"><a class="header" href="#running-the-application">Running the Application</a></h2>
+<p>Your application should look like:</p>
+<details><summary>main.rs</summary>
 <pre><code class="language-rust no_run">use crossterm::{
     event::{self, KeyCode, KeyEventKind},
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -409,12 +529,12 @@ use ratatui::{
     prelude::{CrosstermBackend, Stylize, Terminal},
     widgets::Paragraph,
 };
-use std::io::{stderr, Result};
+use std::io::{stdout, Result};
 
 fn main() -&gt; Result&lt;()&gt; {
-    stderr().execute(EnterAlternateScreen)?;
+    stdout().execute(EnterAlternateScreen)?;
     enable_raw_mode()?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
+    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
     terminal.clear()?;
 
     loop {
@@ -428,7 +548,7 @@ fn main() -&gt; Result&lt;()&gt; {
             );
         })?;
 
-        if event::poll(std::time::Duration::from_millis(100))? {
+        if event::poll(std::time::Duration::from_millis(16))? {
             if let event::Event::Key(key) = event::read()? {
                 if key.kind == KeyEventKind::Press &amp;&amp; key.code == KeyCode::Char('q') {
                     break;
@@ -437,67 +557,11 @@ fn main() -&gt; Result&lt;()&gt; {
         }
     }
 
-    stderr().execute(LeaveAlternateScreen)?;
+    stdout().execute(LeaveAlternateScreen)?;
     disable_raw_mode()?;
     Ok(())
 }</code></pre>
-<p>This program imports the necessary items to create a Ratatui Application.</p>
-<ul>
-<li>From <code>crossterm</code> we import modules, types, methods and traits to handle <a href="tutorial/hello-world/../../concepts/event_handling.html">events</a>, <a href="tutorial/hello-world/../../concepts/backends/raw-mode.html">raw mode</a>, and
-the <a href="tutorial/hello-world/../../concepts/backends/alternate-screen.html">alternate screen</a>.</li>
-<li>From <code>std</code> we import the <code>io::Result</code> which most of the backend methods return, and the <code>stderr()</code></li>
-<li>From <code>ratatui</code> we import a <a href="tutorial/hello-world/../../concepts/backends/">backend</a>, the main terminal type, and several other types.</li>
-</ul>
-<p>Let’s examine the rest of the application section by section:</p>
-<pre><code class="language-rust no_run">    stderr().execute(EnterAlternateScreen)?;
-    enable_raw_mode()?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
-    terminal.clear()?;</code></pre>
-<p>In the main method, we first enter the alternate screen, which is a secondary screen that allows
-your application to not disturb the normal output of terminal apps. We then enable raw mode, which
-turns off input and output processing by the terminal which allows our application to have better
-control over when characters are echoed to the screen. The app then creates a backend and terminal
-and makes sure to clear the screen.</p>
-<p>The main part of our application is the main loop. Our application repeatedly draws the ui and then
-handles any events that have occurred.</p>
-<pre><code class="language-rust no_run">        terminal.draw(|frame| {
-            let area = frame.size();
-            frame.render_widget(
-                Paragraph::new(&quot;Hello Ratatui! (press 'q' to quit)&quot;)
-                    .white()
-                    .on_blue(),
-                area,
-            );
-        })?;</code></pre>
-<p>The <code>draw</code> call on <code>terminal</code> is the main interaction with Ratatui. Here we create an area that is
-the full size of your terminal window and render a new Paragraph with white foreground text and a
-blue background.</p>
-<pre><code class="language-rust no_run">        if event::poll(std::time::Duration::from_millis(100))? {
-            if let event::Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Press &amp;&amp; key.code == KeyCode::Char('q') {
-                    break;
-                }
-            }
-        }</code></pre>
-<p>After the draw, we check to see if any events have occurred. These are things like keyboard presses,
-mouse events, resizes, etc. If the user has pressed the <code>q</code> key, we break out of the loop.</p>
-<p>Finally, the application cleans up after itself by exiting the alternate screen and disabling raw
-mode.</p>
-<pre><code class="language-rust no_run">    stderr().execute(LeaveAlternateScreen)?;
-    disable_raw_mode()?;
-    Ok(())</code></pre>
-<div id="admonition-warning" class="admonition admonish-warning">
-<div class="admonition-title">
-<p>Warning</p>
-<p><a class="admonition-anchor-link" href="tutorial/hello-world/index.html#admonition-warning"></a></p>
-</div>
-<div>
-<p>If we don’t disable raw mode before exit, terminals can act weirdly when the mouse or
-navigation keys are pressed. To fix this, on a Linux / macOS terminal type <code>reset</code>.
-On Windows, you’ll have to close the tab and open a new terminal.</p>
-</div>
-</div>
-<h2 id="running-the-application"><a class="header" href="#running-the-application">Running the Application</a></h2>
+</details>
 <p>Make sure you save the file! Let’s run the app:</p>
 <pre><code class="language-shell">cargo run
 </code></pre>
@@ -614,7 +678,7 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
 }</code></pre>
 <p>In the code above, it is useful to think about various parts of the code as separate pieces of the
 puzzle. This is useful to help refactor and reorganize your code for larger applications.</p>
-<h2 id="imports"><a class="header" href="#imports">Imports</a></h2>
+<h2 id="imports-1"><a class="header" href="#imports-1">Imports</a></h2>
 <p>We start by importing necessary components from the <code>ratatui</code> library, which provides a number of
 different widgets and utilities.</p>
 <pre><code class="language-rust">use ratatui::{
