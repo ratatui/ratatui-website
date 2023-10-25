@@ -8,86 +8,9 @@ In this section, we are going to do the same thing with "green" threads or tasks
 `async`-`await` features + a future executor. We will be using `tokio` for this.
 
 Here's example code of reading key presses asynchronously comparing `std::thread` and `tokio::task`.
-
-## `std::thread`
-
-```rust
-enum Event {
-  Key(crossterm::event::KeyEvent)
-}
-
-struct EventHandler {
-  rx: std::sync::mpsc::Receiver<Event>,
-}
-
-impl EventHandler {
-  fn new() -> Self {
-    let tick_rate = std::time::Duration::from_millis(250);
-    let (tx, rx) =  std::sync::mpsc::channel();
-    std::thread::spawn(move || {
-      loop {
-        if crossterm::event::poll(tick_rate).unwrap() {
-          match crossterm::event::read().unwrap() {
-            CrosstermEvent::Key(e) => {
-              if key.kind == event::KeyEventKind::Press {
-                tx.send(Event::Key(e)).unwrap()
-              }
-            },
-            _ => unimplemented!(),
-          };
-        }
-      }
-    })
-
-    EventHandler { rx }
-  }
-
-  fn next(&self) -> Result<Event> {
-    Ok(self.rx.recv()?)
-  }
-}
-```
-
-## `tokio::task`
-
-```rust
-enum Event {
-  Key(crossterm::event::KeyEvent),
-}
-
-struct EventHandler {
-  rx: tokio::sync::mpsc::UnboundedReceiver<Event>,
-}
-
-impl EventHandler {
-  fn new() -> Self {
-    let tick_rate = std::time::Duration::from_millis(250);
-    let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
-    tokio::spawn(async move {
-      loop {
-        if crossterm::event::poll(tick_rate).unwrap() {
-          match crossterm::event::read().unwrap() {
-            crossterm::event::Event::Key(key) => {
-              if key.kind == event::KeyEventKind::Press {
-                tx.send(Event::Key(key)).unwrap();
-              };
-            },
-            _ => {},
-          }
-        }
-      }
-    });
-
-    Self { rx }
-  }
-
-  async fn next(&mut self) -> Result<Event> {
-    self.rx.recv().await.ok_or(color_eyre::eyre::eyre!("Unable to get event"))
-  }
-}
-```
-
-## `diff`
+Notably, we are using `tokio::sync::mpsc` channels instead of `std::sync::mpsc` channels. And
+because of this, receiving on a channel needs to be `.await`'d and hence needs to be in a `async fn`
+method.
 
 ```diff
   enum Event {
@@ -131,19 +54,24 @@ impl EventHandler {
   }
 ```
 
-### `tokio`'s `select!`
+Even with this change, our `EventHandler` behaves the same way as before. In order to take advantage
+of using `tokio` we have to use `tokio::select!`.
 
-We can make some additional improvements to our `EventHandler` now.
-
-We can use [`tokio`'s `select!` macro](https://tokio.rs/tokio/tutorial/select) which allows us to
-wait on multiple `async` computations and returns when a single computation completes.
+We can use [`tokio`'s `select!` macro](https://tokio.rs/tokio/tutorial/select) to wait on multiple
+`async` computations and return when a any single computation completes.
 
 ````admonish note
 
 Using `crossterm::event::EventStream::new()` requires the `event-stream` feature to be enabled.
+This also requires the `futures` crate. Naturally you'll also need `tokio`.
+
+If you haven't already, add the following to your `Cargo.toml`:
 
 ```yml
 crossterm = { version = "0.27.0", features = ["event-stream"] }
+futures = "0.3.28"
+tokio = { version = "1.32.0", features = ["full"] }
+tokio-util = "0.7.9" # required for `CancellationToken` introduced in the next section
 ```
 
 ````
@@ -218,12 +146,14 @@ impl EventHandler {
 }
 ```
 
-Since `EventHandler::next()` is a `async` function, when we use it we have to call `.await` on it.
-And the function where we call `events.next().await` also needs to be an `async` function. We are
-going to use the event handler in the `run()` function.
+As mentioned before, since `EventHandler::next()` is a `async` function, when we use it we have to
+call `.await` on it. And the function that is the call site of `event_handler.next().await` also
+needs to be an `async` function. In our tutorial, we are going to use the event handler in the
+`run()` function which will now be `async`.
 
-Now that we are getting events asynchronously, we don't need to call `crossterm::event::poll()` in
-the `update` function. Let's make the `update` function take an `Event` instead.
+Also, now that we are getting events asynchronously, we don't need to call
+`crossterm::event::poll()` in the `update` function. Let's make the `update` function take an
+`Event` instead.
 
 If you place the above `EventHandler` in a `src/tui.rs` file, then here's what our application now
 looks like:
