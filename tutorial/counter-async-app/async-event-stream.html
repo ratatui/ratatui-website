@@ -200,78 +200,10 @@
 i.e. OS threads.</p>
 <p>In this section, we are going to do the same thing with “green” threads or tasks, i.e. rust’s
 <code>async</code>-<code>await</code> features + a future executor. We will be using <code>tokio</code> for this.</p>
-<p>Here’s example code of reading key presses asynchronously comparing <code>std::thread</code> and <code>tokio::task</code>.</p>
-<h2 id="stdthread"><a class="header" href="#stdthread"><code>std::thread</code></a></h2>
-<pre><code class="language-rust">enum Event {
-  Key(crossterm::event::KeyEvent)
-}
-
-struct EventHandler {
-  rx: std::sync::mpsc::Receiver&lt;Event&gt;,
-}
-
-impl EventHandler {
-  fn new() -&gt; Self {
-    let tick_rate = std::time::Duration::from_millis(250);
-    let (tx, rx) =  std::sync::mpsc::channel();
-    std::thread::spawn(move || {
-      loop {
-        if crossterm::event::poll(tick_rate).unwrap() {
-          match crossterm::event::read().unwrap() {
-            CrosstermEvent::Key(e) =&gt; {
-              if key.kind == event::KeyEventKind::Press {
-                tx.send(Event::Key(e)).unwrap()
-              }
-            },
-            _ =&gt; unimplemented!(),
-          };
-        }
-      }
-    })
-
-    EventHandler { rx }
-  }
-
-  fn next(&amp;self) -&gt; Result&lt;Event&gt; {
-    Ok(self.rx.recv()?)
-  }
-}</code></pre>
-<h2 id="tokiotask"><a class="header" href="#tokiotask"><code>tokio::task</code></a></h2>
-<pre><code class="language-rust">enum Event {
-  Key(crossterm::event::KeyEvent),
-}
-
-struct EventHandler {
-  rx: tokio::sync::mpsc::UnboundedReceiver&lt;Event&gt;,
-}
-
-impl EventHandler {
-  fn new() -&gt; Self {
-    let tick_rate = std::time::Duration::from_millis(250);
-    let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
-    tokio::spawn(async move {
-      loop {
-        if crossterm::event::poll(tick_rate).unwrap() {
-          match crossterm::event::read().unwrap() {
-            crossterm::event::Event::Key(key) =&gt; {
-              if key.kind == event::KeyEventKind::Press {
-                tx.send(Event::Key(key)).unwrap();
-              };
-            },
-            _ =&gt; {},
-          }
-        }
-      }
-    });
-
-    Self { rx }
-  }
-
-  async fn next(&amp;mut self) -&gt; Result&lt;Event&gt; {
-    self.rx.recv().await.ok_or(color_eyre::eyre::eyre!(&quot;Unable to get event&quot;))
-  }
-}</code></pre>
-<h2 id="diff"><a class="header" href="#diff"><code>diff</code></a></h2>
+<p>Here’s example code of reading key presses asynchronously comparing <code>std::thread</code> and <code>tokio::task</code>.
+Notably, we are using <code>tokio::sync::mpsc</code> channels instead of <code>std::sync::mpsc</code> channels. And
+because of this, receiving on a channel needs to be <code>.await</code>’d and hence needs to be in a <code>async fn</code>
+method.</p>
 <pre><code class="language-diff">  enum Event {
     Key(crossterm::event::KeyEvent)
   }
@@ -312,18 +244,23 @@ impl EventHandler {
     }
   }
 </code></pre>
-<h3 id="tokios-select"><a class="header" href="#tokios-select"><code>tokio</code>’s <code>select!</code></a></h3>
-<p>We can make some additional improvements to our <code>EventHandler</code> now.</p>
-<p>We can use <a href="https://tokio.rs/tokio/tutorial/select"><code>tokio</code>’s <code>select!</code> macro</a> which allows us to
-wait on multiple <code>async</code> computations and returns when a single computation completes.</p>
+<p>Even with this change, our <code>EventHandler</code> behaves the same way as before. In order to take advantage
+of using <code>tokio</code> we have to use <code>tokio::select!</code>.</p>
+<p>We can use <a href="https://tokio.rs/tokio/tutorial/select"><code>tokio</code>’s <code>select!</code> macro</a> to wait on multiple
+<code>async</code> computations and return when a any single computation completes.</p>
 <div id="admonition-note" class="admonition admonish-note">
 <div class="admonition-title">
 <p>Note</p>
 <p><a class="admonition-anchor-link" href="#admonition-note"></a></p>
 </div>
 <div>
-<p>Using <code>crossterm::event::EventStream::new()</code> requires the <code>event-stream</code> feature to be enabled.</p>
+<p>Using <code>crossterm::event::EventStream::new()</code> requires the <code>event-stream</code> feature to be enabled.
+This also requires the <code>futures</code> crate. Naturally you’ll also need <code>tokio</code>.</p>
+<p>If you haven’t already, add the following to your <code>Cargo.toml</code>:</p>
 <pre><code class="language-yml">crossterm = { version = &quot;0.27.0&quot;, features = [&quot;event-stream&quot;] }
+futures = &quot;0.3.28&quot;
+tokio = { version = &quot;1.32.0&quot;, features = [&quot;full&quot;] }
+tokio-util = &quot;0.7.9&quot; # required for `CancellationToken` introduced in the next section
 </code></pre>
 </div>
 </div>
@@ -393,11 +330,13 @@ impl EventHandler {
     self.rx.recv().await.ok_or(color_eyre::eyre::eyre!(&quot;Unable to get event&quot;))
   }
 }</code></pre>
-<p>Since <code>EventHandler::next()</code> is a <code>async</code> function, when we use it we have to call <code>.await</code> on it.
-And the function where we call <code>events.next().await</code> also needs to be an <code>async</code> function. We are
-going to use the event handler in the <code>run()</code> function.</p>
-<p>Now that we are getting events asynchronously, we don’t need to call <code>crossterm::event::poll()</code> in
-the <code>update</code> function. Let’s make the <code>update</code> function take an <code>Event</code> instead.</p>
+<p>As mentioned before, since <code>EventHandler::next()</code> is a <code>async</code> function, when we use it we have to
+call <code>.await</code> on it. And the function that is the call site of <code>event_handler.next().await</code> also
+needs to be an <code>async</code> function. In our tutorial, we are going to use the event handler in the
+<code>run()</code> function which will now be <code>async</code>.</p>
+<p>Also, now that we are getting events asynchronously, we don’t need to call
+<code>crossterm::event::poll()</code> in the <code>update</code> function. Let’s make the <code>update</code> function take an
+<code>Event</code> instead.</p>
 <p>If you place the above <code>EventHandler</code> in a <code>src/tui.rs</code> file, then here’s what our application now
 looks like:</p>
 <pre><code class="language-rust">mod tui;
