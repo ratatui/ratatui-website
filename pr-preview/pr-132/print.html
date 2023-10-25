@@ -318,6 +318,7 @@ basic understanding of the terminal a text editor or Rust IDE (if you don’t ha
 <a href="https://code.visualstudio.com/">VSCode</a> makes a good default choice).</p>
 <p>We’re going to build the following:</p>
 <p><img src="https://github.com/ratatui-org/ratatui-book/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387" alt="hello" /></p>
+<p>The full code for this tutorial is available to view at <a href="https://github.com/ratatui-org/ratatui-book/tree/main/code/hello-world-tutorial">https://github.com/ratatui-org/ratatui-book/tree/main/code/hello-world-tutorial</a></p>
 <h2 id="install-rust"><a class="header" href="#install-rust">Install Rust</a></h2>
 <p>The first step is to install Rust. See the <a href="https://doc.rust-lang.org/book/ch01-01-installation.html">Installation</a> section of the official Rust Book for more
 information. Most people tend to use <code>rustup</code>, a command line tool for managing Rust versions and
@@ -517,8 +518,8 @@ twice.</p>
             }
         }</code></pre>
 <h2 id="running-the-application"><a class="header" href="#running-the-application">Running the Application</a></h2>
-<p>Your code should look like:</p>
-<details><summary>Full Code</summary>
+<p>Your application should look like:</p>
+<details><summary>main.rs</summary>
 <pre><code class="language-rust no_run">use crossterm::{
     event::{self, KeyCode, KeyEventKind},
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
