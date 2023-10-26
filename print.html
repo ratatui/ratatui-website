@@ -8032,8 +8032,147 @@ and follow up on the work done by those tasks in the next iteration.</p>
 <p>In your <code>main</code> thread or <code>tokio</code> task, do you expect to be spawning more <code>tokio</code> tasks? How many
 more tasks do you plan to be spawning?</p>
 <p>The former can be done without any <code>async</code> code and the latter is the approach showcased in
-<a href="https://github.com/ratatui-org/ratatui-async-template"><code>ratatui-async-template</code></a> with <code>tokio</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="tuirs-history"><a class="header" href="#tuirs-history">tui.rs history</a></h1>
+<a href="https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0"><code>ratatui-async-template#v1.0</code></a>
+with <code>tokio</code>.</p>
+<p>The most recent version of the <code>ratatui-async-template</code> uses this architecture instead with tokio:</p>
+<pre class="svgbob"><style>text{fill:var(--fg)}</style><svg xmlns="http://www.w3.org/2000/svg" width="584" height="384">
+  <style>
+    line, path, circle, rect, polygon{stroke:var(--fg);stroke-width:2;stroke-opacity:1;fill-opacity:1;stroke-linecap:round;stroke-linejoin:miter;}text{font-family:Iosevka Fixed, monospace;font-size:14px;}rect.backdrop{stroke:none;fill:transparent;}.broken{stroke-dasharray:8;}.filled{fill:black;}.bg_filled{fill:transparent;}.nofill{fill:transparent;}.end_marked_arrow{marker-end:url(#arrow);}.start_marked_arrow{marker-start:url(#arrow);}.end_marked_diamond{marker-end:url(#diamond);}.start_marked_diamond{marker-start:url(#diamond);}.end_marked_circle{marker-end:url(#circle);}.start_marked_circle{marker-start:url(#circle);}.end_marked_open_circle{marker-end:url(#open_circle);}.start_marked_open_circle{marker-start:url(#open_circle);}.end_marked_big_open_circle{marker-end:url(#big_open_circle);}.start_marked_big_open_circle{marker-start:url(#big_open_circle);}
+    <!--separator-->
+    
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="584" height="384"></rect>
+  <text x="58" y="12" >Event</text>
+  <text x="106" y="12" >Thread</text>
+  <line x1="260" y1="0" x2="260" y2="368" class="broken"></line>
+  <text x="58" y="60" >Get</text>
+  <text x="90" y="60" >Key</text>
+  <text x="122" y="60" >Event</text>
+  <text x="18" y="124" >Send</text>
+  <text x="58" y="124" >Event</text>
+  <text x="106" y="124" >on</text>
+  <text x="130" y="124" >event</text>
+  <line x1="168" y1="128" x2="176" y2="128" class="solid"></line>
+  <text x="178" y="124" >tx</text>
+  <text x="322" y="124" >Recv</text>
+  <text x="362" y="124" >Event</text>
+  <text x="298" y="188" >Map</text>
+  <text x="330" y="188" >Event</text>
+  <text x="378" y="188" >to</text>
+  <text x="402" y="188" >Action</text>
+  <text x="338" y="236" >Tick</text>
+  <text x="314" y="284" >Update</text>
+  <text x="370" y="284" >State</text>
+  <text x="474" y="284" >Render</text>
+  <text x="434" y="348" >Render</text>
+  <text x="490" y="348" >Component</text>
+  <text x="306" y="12" >Main</text>
+  <text x="346" y="12" >Thread</text>
+  <g>
+    <path d="M 40,40 A 4,4 0,0,0 36,44" class="nofill"></path>
+    <line x1="36" y1="44" x2="36" y2="68" class="solid"></line>
+    <line x1="40" y1="40" x2="184" y2="40" class="solid"></line>
+    <path d="M 184,40 A 4,4 0,0,1 188,44" class="nofill"></path>
+    <line x1="188" y1="44" x2="188" y2="68" class="solid"></line>
+    <path d="M 36,68 A 4,4 0,0,0 40,72" class="nofill"></path>
+    <line x1="40" y1="72" x2="184" y2="72" class="solid"></line>
+    <line x1="108" y1="72" x2="108" y2="100" class="solid"></line>
+    <path d="M 188,68 A 4,4 0,0,1 184,72" class="nofill"></path>
+    <polygon points="104,100 112,100 108,112" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 8,104 A 4,4 0,0,0 4,108" class="nofill"></path>
+    <line x1="4" y1="108" x2="4" y2="132" class="solid"></line>
+    <line x1="8" y1="104" x2="104" y2="104" class="solid"></line>
+    <path d="M 4,132 A 4,4 0,0,0 8,136" class="nofill"></path>
+    <line x1="8" y1="136" x2="224" y2="136" class="solid"></line>
+    <line x1="112" y1="104" x2="224" y2="104" class="solid"></line>
+    <path d="M 224,104 A 4,4 0,0,1 228,108" class="nofill"></path>
+    <line x1="228" y1="108" x2="228" y2="132" class="solid"></line>
+    <line x1="228" y1="120" x2="256" y2="120" class="solid"></line>
+    <path d="M 228,132 A 4,4 0,0,1 224,136" class="nofill"></path>
+  </g>
+  <g>
+    <path d="M 312,104 A 4,4 0,0,0 308,108" class="nofill"></path>
+    <line x1="308" y1="108" x2="308" y2="132" class="solid"></line>
+    <line x1="312" y1="104" x2="416" y2="104" class="solid"></line>
+    <path d="M 416,104 A 4,4 0,0,1 420,108" class="nofill"></path>
+    <line x1="420" y1="108" x2="420" y2="132" class="solid"></line>
+    <path d="M 308,132 A 4,4 0,0,0 312,136" class="nofill"></path>
+    <line x1="312" y1="136" x2="416" y2="136" class="solid"></line>
+    <line x1="356" y1="136" x2="356" y2="164" class="solid"></line>
+    <path d="M 420,132 A 4,4 0,0,1 416,136" class="nofill"></path>
+    <polygon points="352,164 360,164 356,176" class="filled"></polygon>
+  </g>
+  <g>
+    <line x1="264" y1="120" x2="296" y2="120" class="solid"></line>
+    <polygon points="296,116 304,120 296,124" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 288,168 A 4,4 0,0,0 284,172" class="nofill"></path>
+    <line x1="284" y1="172" x2="284" y2="196" class="solid"></line>
+    <line x1="288" y1="168" x2="352" y2="168" class="solid"></line>
+    <path d="M 284,196 A 4,4 0,0,0 288,200" class="nofill"></path>
+    <line x1="288" y1="200" x2="456" y2="200" class="solid"></line>
+    <line x1="356" y1="200" x2="356" y2="224" class="solid"></line>
+    <line x1="404" y1="200" x2="404" y2="228" class="solid"></line>
+    <path d="M 404,228 A 4,4 0,0,0 408,232" class="nofill"></path>
+    <line x1="408" y1="232" x2="488" y2="232" class="solid"></line>
+    <path d="M 488,232 A 4,4 0,0,1 492,236" class="nofill"></path>
+    <line x1="492" y1="236" x2="492" y2="272" class="solid"></line>
+    <line x1="360" y1="168" x2="456" y2="168" class="solid"></line>
+    <path d="M 456,168 A 4,4 0,0,1 460,172" class="nofill"></path>
+    <line x1="460" y1="172" x2="460" y2="196" class="solid"></line>
+    <path d="M 460,196 A 4,4 0,0,1 456,200" class="nofill"></path>
+  </g>
+  <g>
+    <line x1="356" y1="240" x2="356" y2="260" class="solid"></line>
+    <polygon points="352,260 360,260 356,272" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 288,264 A 4,4 0,0,0 284,268" class="nofill"></path>
+    <line x1="284" y1="268" x2="284" y2="292" class="solid"></line>
+    <line x1="288" y1="264" x2="352" y2="264" class="solid"></line>
+    <path d="M 284,292 A 4,4 0,0,0 288,296" class="nofill"></path>
+    <line x1="288" y1="296" x2="432" y2="296" class="solid"></line>
+    <line x1="360" y1="264" x2="432" y2="264" class="solid"></line>
+    <path d="M 432,264 A 4,4 0,0,1 436,268" class="nofill"></path>
+    <line x1="436" y1="268" x2="436" y2="292" class="solid"></line>
+    <path d="M 436,292 A 4,4 0,0,1 432,296" class="nofill"></path>
+  </g>
+  <g>
+    <line x1="492" y1="288" x2="492" y2="324" class="solid"></line>
+    <polygon points="488,324 496,324 492,336" class="filled"></polygon>
+  </g>
+  <g>
+    <path d="M 424,328 A 4,4 0,0,0 420,332" class="nofill"></path>
+    <line x1="420" y1="332" x2="420" y2="356" class="solid"></line>
+    <line x1="424" y1="328" x2="488" y2="328" class="solid"></line>
+    <path d="M 420,356 A 4,4 0,0,0 424,360" class="nofill"></path>
+    <line x1="424" y1="360" x2="568" y2="360" class="solid"></line>
+    <line x1="496" y1="328" x2="568" y2="328" class="solid"></line>
+    <path d="M 568,328 A 4,4 0,0,1 572,332" class="nofill"></path>
+    <line x1="572" y1="332" x2="572" y2="356" class="solid"></line>
+    <path d="M 572,356 A 4,4 0,0,1 568,360" class="nofill"></path>
+  </g>
+</svg></pre><div style="break-before: page; page-break-before: always;"></div><h1 id="tuirs-history"><a class="header" href="#tuirs-history">tui.rs history</a></h1>
 <p>This project was forked from <a href="https://github.com/fdehau/tui-rs/"><code>tui-rs</code></a> in February 2023, with
 the <a href="https://github.com/fdehau/tui-rs/issues/654">blessing of the original author</a>, Florian Dehau
 (<a href="https://github.com/fdehau">@fdehau</a>).</p>
