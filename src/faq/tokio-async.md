@@ -72,4 +72,33 @@ In your `main` thread or `tokio` task, do you expect to be spawning more `tokio`
 more tasks do you plan to be spawning?
 
 The former can be done without any `async` code and the latter is the approach showcased in
-[`ratatui-async-template`](https://github.com/ratatui-org/ratatui-async-template) with `tokio`.
+[`ratatui-async-template#v1.0`](https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0)
+with `tokio`.
+
+The most recent version of the `ratatui-async-template` uses this architecture instead with tokio:
+
+```svgbob
+       Event Thread             ┊     Main Thread
+                                ┊
+    ,------------------.        ┊
+    |  Get Key Event   |        ┊
+    `--------+---------'        ┊
+             |                  ┊
+,------------V--------------.   ┊     ,-------------.
+| Send Event on event_tx    |---┊---->| Recv Event  |
+`---------------------------'   ┊     `-----+-------'
+                                ┊           |
+                                ┊  ,--------v------------.
+                                ┊  | Map Event to Action |
+                                ┊  `--------+-----+------'
+                                ┊           |     |
+                                ┊         Tick    '----------.
+                                ┊           |                |
+                                ┊  ,--------v---------.      |
+                                ┊  |   Update State   |    Render
+                                ┊  `------------------'      |
+                                ┊                            |
+                                ┊                   ,--------v---------.
+                                ┊                   | Render Component |
+                                ┊                   `------------------'
+```
