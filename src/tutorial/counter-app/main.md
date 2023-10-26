@@ -44,3 +44,8 @@ Sleep 2.5s
 
 You can find the full source code for this multiple files tutorial here:
 <https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/counter-app/ratatui-counter-app>.
+
+```admonish question
+Right now, this TUI application will render every time a key is pressed.
+As an exercise, can you make this app render only an a predefined tick rate?
+```
