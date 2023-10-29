@@ -8,6 +8,10 @@ key-value pairs, which will be converted and printed to `stdout` in json. The pu
 application will be to give the user an interface to create correct json, instead of having to worry
 about commas and brackets themselves.
 
+Here’s a gif of what it will look like if you run this:
+
+![Demo](https://raw.githubusercontent.com/ratatui-org/ratatui-book/main/src/tutorial/json-editor/demo.gif)
+
 ## Initialization
 
 Go ahead and set up a new rust project with
