@@ -1,6 +1,6 @@
 # Block
 
-The `Block` widgetserves as a foundational building block for structuring and framing other widgets.
+The `Block` widget serves as a foundational building block for structuring and framing other widgets.
 It's essentially a container that can have borders, a title, and other styling elements to enhance
 the aesthetics and structure of your terminal interface. This page provides an in-depth exploration
 of the `Block` widget.
