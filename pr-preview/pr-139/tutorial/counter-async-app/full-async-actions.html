@@ -217,7 +217,7 @@ refactoring, we store the <code>action_tx</code> half of the channel in the <cod
       tui::Event::Tick =&gt; action_tx.send(Action::Tick)?,
       tui::Event::Render =&gt; action_tx.send(Action::Render)?,
       tui::Event::Key(_) =&gt; {
-        let action = get_action(&amp;mut app, e);
+        let action = get_action(&amp;app, e);
         action_tx.send(action.clone())?;
       },
       _ =&gt; {},
@@ -315,8 +315,6 @@ use crossterm::event::KeyCode::Char;
 use ratatui::{prelude::*, widgets::*};
 use tokio::sync::mpsc::{self, UnboundedSender};
 use tui::Event;
-
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 // App state
 struct App {
@@ -419,7 +417,7 @@ async fn run() -&gt; Result&lt;()&gt; {
       tui::Event::Tick =&gt; action_tx.send(Action::Tick)?,
       tui::Event::Render =&gt; action_tx.send(Action::Render)?,
       tui::Event::Key(_) =&gt; {
-        let action = get_action(&amp;mut app, e);
+        let action = get_action(&amp;app, e);
         action_tx.send(action.clone())?;
       },
       _ =&gt; {},

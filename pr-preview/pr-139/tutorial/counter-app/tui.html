@@ -208,7 +208,6 @@ use crossterm::{
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 pub type CrosstermTerminal = ratatui::Terminal&lt;ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 use crate::{app::App, event::EventHandler, ui};</code></pre>
@@ -312,7 +311,6 @@ use crossterm::{
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 pub type CrosstermTerminal = ratatui::Terminal&lt;ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 use crate::{app::App, event::EventHandler, ui};

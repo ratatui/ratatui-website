@@ -206,13 +206,13 @@
 <h2 id="fully-replace-tui-with-ratatui"><a class="header" href="#fully-replace-tui-with-ratatui">Fully replace Tui with Ratatui</a></h2>
 <p>Most new code should use the following. To take this approach to migration requires find and
 replace <code>tui::</code>-&gt;<code>ratatui::</code> on the entire codebase.</p>
-<pre><code class="language-toml">ratatui = { version = &quot;0.23.0&quot; }
+<pre><code class="language-toml">ratatui = { version = &quot;0.24.0&quot; }
 crossterm = { version = &quot;0.27.0&quot; }
 </code></pre>
 <h2 id="drop-in-replacement"><a class="header" href="#drop-in-replacement">Drop in replacement</a></h2>
 <p>The simplest approach to migrating to <code>ratatui</code> is to use it as drop in replacement for tui and
 update the terminal libraries used (<code>crossterm</code> / <code>termion</code>). E.g.:</p>
-<pre><code class="language-toml">tui = { package = &quot;ratatui&quot;, version = &quot;0.23.0&quot;, features = [&quot;crossterm&quot;] }
+<pre><code class="language-toml">tui = { package = &quot;ratatui&quot;, version = &quot;0.24.0&quot;, features = [&quot;crossterm&quot;] }
 crossterm = { version = &quot;0.27.0&quot; }
 </code></pre>
 <h2 id="support-both-tui-and-ratatui"><a class="header" href="#support-both-tui-and-ratatui">Support both tui and ratatui</a></h2>
