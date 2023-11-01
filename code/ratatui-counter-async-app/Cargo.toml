@@ -1,13 +1,22 @@
 [package]
-name = "ratatui-demo"
-version = "0.1.0"
-edition = "2021"
+name = "ratatui-counter-async-app"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 better-panic = "0.3.0"
-clap = { version = "4.4.6", features = ["derive", "cargo", "wrap_help", "unicode", "string", "unstable-styles"] }
+clap = { version = "4.4.6", features = [
+    "derive",
+    "cargo",
+    "wrap_help",
+    "unicode",
+    "string",
+    "unstable-styles",
+] }
 color-eyre = "0.6.2"
 config = "0.13.3"
 crossterm = { version = "0.27.0", features = ["serde", "event-stream"] }
