@@ -33,7 +33,7 @@ within.
 let greeting = "Hello world!";
 for i in 0..10 {
     let area = Rect::new(0, i, frame.size().width, 1);
-    frame.render_widget(Paragraph("Hello world!"), area);
+    frame.render_widget(Paragraph::new("Hello world!"), area);
 }
 ```
 
@@ -63,8 +63,14 @@ areas derived from such layout to render your widget. This can be achieved by ca
 [`Frame::render_widget`] or [`frame::render_stateful_widget`] methods:
 
 ```rust
-frame.render_widget(Paragraph("Top").borders(Borders::ALL), layout[0]);
-frame.render_widget(Paragraph("Bottom").borders(Borders::ALL), layout[1]);
+frame.render_widget(
+    Paragraph::new("Top")
+        .block(Block::new().borders(Borders::ALL)),
+    layout[0]);
+frame.render_widget(
+    Paragraph::new("Bottom")
+        .block(Block::new().borders(Borders::ALL)),
+    layout[1]);
 ```
 
 This might look something like:
@@ -122,9 +128,18 @@ creating two areas that are 25% and 75% of the width of the original rectangle, 
 Rendering some Paragraphs of text into the above layouts produces the following:
 
 ```rust
-frame.render_widget(Paragraph("outer 0").borders(Borders::ALL), outer_layout[0]);
-frame.render_widget(Paragraph("inner 0").borders(Borders::ALL), inner_layout[0]);
-frame.render_widget(Paragraph("inner 1").borders(Borders::ALL), inner_layout[1]);
+frame.render_widget(
+    Paragraph::new("outer 0")
+        .block(Block::new().borders(Borders::ALL)),
+    outer_layout[0]);
+frame.render_widget(
+    Paragraph::new("inner 0")
+        .block(Block::new().borders(Borders::ALL)),
+    inner_layout[0]);
+frame.render_widget(
+    Paragraph::new("inner 1")
+        .block(Block::new().borders(Borders::ALL)),
+    inner_layout[1]);
 ```
 
 ```raw
