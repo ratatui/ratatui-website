@@ -1,4 +1,4 @@
-//// ANCHOR: all
+// ANCHOR: all
 mod tui;
 
 use std::time::Duration;
@@ -9,8 +9,6 @@ use ratatui::{prelude::*, widgets::*};
 use tokio::sync::mpsc::{self, UnboundedSender};
 use tui::Event;
 
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
-
 // App state
 struct App {
   counter: i64,
@@ -19,7 +17,7 @@ struct App {
 }
 
 // App actions
-//// ANCHOR: action_enum
+// ANCHOR: action_enum
 #[derive(Clone)]
 pub enum Action {
   Tick,
@@ -31,7 +29,7 @@ pub enum Action {
   Render,
   None,
 }
-//// ANCHOR_END: action_enum
+// ANCHOR_END: action_enum
 
 // App ui render function
 fn ui(f: &mut Frame<'_>, app: &mut App) {
@@ -51,7 +49,7 @@ fn ui(f: &mut Frame<'_>, app: &mut App) {
   );
 }
 
-//// ANCHOR: get_action
+// ANCHOR: get_action
 fn get_action(_app: &App, event: Event) -> Action {
   match event {
     Event::Error => Action::None,
@@ -70,9 +68,9 @@ fn get_action(_app: &App, event: Event) -> Action {
     _ => Action::None,
   }
 }
-//// ANCHOR_END: get_action
+// ANCHOR_END: get_action
 
-//// ANCHOR: update
+// ANCHOR: update
 fn update(app: &mut App, action: Action) {
   match action {
     Action::Increment => {
@@ -99,9 +97,9 @@ fn update(app: &mut App, action: Action) {
     _ => {},
   };
 }
-//// ANCHOR_END: update
+// ANCHOR_END: update
 
-//// ANCHOR: run
+// ANCHOR: run
 async fn run() -> Result<()> {
   let (action_tx, mut action_rx) = mpsc::unbounded_channel(); // new
 
@@ -119,7 +117,7 @@ async fn run() -> Result<()> {
       tui::Event::Tick => action_tx.send(Action::Tick)?,
       tui::Event::Render => action_tx.send(Action::Render)?,
       tui::Event::Key(_) => {
-        let action = get_action(&mut app, e);
+        let action = get_action(&app, e);
         action_tx.send(action.clone())?;
       },
       _ => {},
@@ -145,7 +143,7 @@ async fn run() -> Result<()> {
 
   Ok(())
 }
-//// ANCHOR_END: run
+// ANCHOR_END: run
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -155,4 +153,4 @@ async fn main() -> Result<()> {
 
   Ok(())
 }
-//// ANCHOR_END: all
+// ANCHOR_END: all

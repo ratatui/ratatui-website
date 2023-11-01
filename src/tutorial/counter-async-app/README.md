@@ -20,7 +20,7 @@ edition = "2021"
 [dependencies]
 color-eyre = "0.6.2"
 crossterm = { version = "0.27.0", features = ["event-stream"] }
-ratatui = "0.23.0"
+ratatui = "0.24.0"
 tokio = { version = "1.32.0", features = ["full"] }
 tokio-util = "0.7.9"
 futures = "0.3.28"

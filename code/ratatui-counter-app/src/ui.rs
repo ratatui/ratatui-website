@@ -1,10 +1,10 @@
 use ratatui::{
-  layout::Alignment,
+  prelude::{Alignment, Frame},
   style::{Color, Style},
   widgets::{Block, BorderType, Borders, Paragraph},
 };
 
-use crate::{app::App, tui::Frame};
+use crate::app::App;
 
 pub fn render(app: &mut App, f: &mut Frame) {
   f.render_widget(
