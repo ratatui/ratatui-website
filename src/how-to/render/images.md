@@ -19,7 +19,7 @@ you have to choose ahead of time. But this allows you to draw _anything_. ITerm2
 supports drawing gifs to the terminal.
 
 Both these two methods give high resolution images because it is the terminal emulator itself that
-is drawing the images, as opposes to drawing text that is a lower fidelity representation of the
+is drawing the images, as opposed to drawing text that is a lower fidelity representation of the
 image.
 
 The half block cells trick uses the fact that terminal fonts are typically 2 times taller than they
