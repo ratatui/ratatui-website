@@ -6323,7 +6323,7 @@ rendered by the top left and bottom left blocks rather than the right block.</p>
     );</code></pre>
 <p>Next, we see that the top left corner of the top right block joins with the top right corner of the
 left block, so we need to replace that with a T shape. We also see omit the bottom border as that
-will be rendered by the bottom right block. We use a custom <a href="https://docs.rs/ratatui/latest/ratatui/symbols/border/struct.Set.html"><code>symbols::border::Set</code></a> to acheive
+will be rendered by the bottom right block. We use a custom <a href="https://docs.rs/ratatui/latest/ratatui/symbols/border/struct.Set.html"><code>symbols::border::Set</code></a> to achieve
 this.</p>
 <pre><code class="language-rust">    // top right block must render the top left border to join with the left block
     let top_right_border_set = symbols::border::Set {
