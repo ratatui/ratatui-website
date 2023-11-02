@@ -5,8 +5,11 @@ There's a few different ways to "draw images" in the terminal:
 1. Sixel
 2. Terminal specific control sequences (ITerm2 vs Kitty vs others)
 3. Half block cells
-4. Braille
-5. other unicode characters
+4. Unicode Box drawing characters (link)
+5. Unicode Line drawing characters (link)
+6. Unicode characters for legacy computing (link)
+7. Unicode Braille block (link)
+8. Plain ASCII drawing
 
 Sixel is a standard for drawing in the terminal but not all terminals support it.
 
