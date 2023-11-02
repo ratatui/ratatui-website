@@ -1,6 +1,6 @@
 # Rendering images
 
-There's basically a few different ways to "draw images" in the terminal.
+There's a few different ways to "draw images" in the terminal:
 
 1. Sixel
 2. Terminal specific control sequences (ITerm2 vs Kitty vs others)
