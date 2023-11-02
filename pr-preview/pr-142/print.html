@@ -6310,7 +6310,7 @@ pane. Often this leads to making UIs that look disconnected. E.g., the following
 <p>The first thing we need to do is work out which borders to collapse. Because in the layout above we
 want to connect the bottom right block to the middle vertical border, we’re going to need this to be
 rendered by the top left and bottom left blocks rather than the right block.</p>
-<p>We need to use the symbols module to acheive this so we add this to the imports:</p>
+<p>We need to use the symbols module to achieve this so we add this to the imports:</p>
 <pre><code class="language-rust">use ratatui::{prelude::*, symbols, widgets::*};</code></pre>
 <p>Our first change is to the left block where we remove the right border:</p>
 <pre><code class="language-rust">    frame.render_widget(
