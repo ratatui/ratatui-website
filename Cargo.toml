@@ -6,6 +6,7 @@ members = [
     "code/ratatui-counter-async-app",
     "code/ratatui-json-editor-app",
     "code/ratatui-stopwatch-app",
+    "code/how-to-collapse-borders",
 ]
 resolver = "2"
 
