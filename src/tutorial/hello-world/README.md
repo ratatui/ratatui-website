@@ -97,7 +97,7 @@ tutorial).
 
 ```plain
     Updating crates.io index
-      Adding ratatui v0.23.0 to dependencies.
+      Adding ratatui v0.24.0 to dependencies.
              Features:
              + crossterm
              - all-widgets
@@ -125,7 +125,7 @@ dependencies section:
 ```toml
 [dependencies]
 crossterm = "0.27.0"
-ratatui = "0.23.0"
+ratatui = "0.24.0"
 ```
 
 ## Create a TUI application

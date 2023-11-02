@@ -11,7 +11,7 @@ or by adding the following to your `Cargo.toml` file:
 ```toml
 [dependencies]
 crossterm = "0.27.0"
-ratatui = "0.23.0"
+ratatui = "0.24.0"
 ```
 
 ````admonish tip
@@ -28,7 +28,7 @@ or by adding the following to your `Cargo.toml` file:
 ```toml
 [dependencies]
 crossterm = "0.27.0"
-ratatui = { version = "0.23.0", features = ["all-widgets"]}
+ratatui = { version = "0.24.0", features = ["all-widgets"]}
 ```
 
 You can learn more about available widgets from the

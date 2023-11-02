@@ -1,7 +1,9 @@
 [package]
 name = "ratatui-stopwatch-app"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -14,9 +16,9 @@ human-panic = "1.2.0"
 itertools = "0.11.0"
 libc = "0.2.147"
 log = "0.4.20"
-ratatui = "0.23.0"
+ratatui = "0.24.0"
 strip-ansi-escapes = "0.2.0"
 strum = "0.25.0"
 tokio = { version = "1.32.0", features = ["full"] }
 tokio-util = "0.7.8"
-tui-big-text = "0.1.4"
+tui-big-text = "0.2.1"

@@ -49,6 +49,7 @@ impl App {
 ///// ANCHOR_END: application_impl
 
 ///// ANCHOR: application_test
+#[cfg(test)]
 mod tests {
   use super::*;
   #[test]

@@ -1,4 +1,4 @@
-//// ANCHOR: app
+// ANCHOR: app
 use std::time::{Duration, Instant};
 
 use color_eyre::eyre::{eyre, Result};
@@ -7,8 +7,6 @@ use itertools::Itertools;
 use ratatui::{backend::CrosstermBackend as Backend, prelude::*, widgets::*};
 use strum::EnumIs;
 use tui_big_text::BigText;
-
-pub type Frame<'a> = ratatui::Frame<'a, Backend<std::io::Stderr>>;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -245,7 +243,7 @@ impl StopwatchApp {
     format!("{:02}:{:02}.{:03}", duration.as_secs() / 60, duration.as_secs() % 60, duration.subsec_millis())
   }
 }
-//// ANCHOR_END: app
+// ANCHOR_END: app
 
 struct Tui {
   pub terminal: Terminal<Backend<std::io::Stderr>>,
@@ -257,7 +255,8 @@ struct Tui {
 
 impl Tui {
   fn new() -> Result<Tui> {
-    let terminal = ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
+    let mut terminal = ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
+    terminal.clear()?;
     let (event_tx, event_rx) = tokio::sync::mpsc::unbounded_channel();
     let cancellation_token = tokio_util::sync::CancellationToken::new();
     let task = tokio::spawn(async {});
@@ -321,16 +320,12 @@ impl Tui {
           }
           maybe_event = crossterm_event => {
             match maybe_event {
-              Some(Ok(evt)) => {
-                match evt {
-                  crossterm::event::Event::Key(key) => {
-                    if key.kind == crossterm::event::KeyEventKind::Press {
-                      _event_tx.send(Event::Key(key)).unwrap();
-                    }
-                  },
-                  _ => {}
+              Some(Ok(crossterm::event::Event::Key(key))) => {
+                if key.kind == crossterm::event::KeyEventKind::Press {
+                    _event_tx.send(Event::Key(key)).unwrap();
                 }
               }
+              Some(Ok(_)) => { }
               Some(Err(_)) => {
                 _event_tx.send(Event::Error).unwrap();
               }

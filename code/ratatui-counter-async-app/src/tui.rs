@@ -21,8 +21,6 @@ use tokio::{
 };
 use tokio_util::sync::CancellationToken;
 
-pub type Frame<'a> = ratatui::Frame<'a, Backend<std::io::Stderr>>;
-
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Event {
   Init,
@@ -74,11 +72,13 @@ impl Tui {
     self
   }
 
+  #[allow(dead_code)]
   pub fn mouse(mut self, mouse: bool) -> Self {
     self.mouse = mouse;
     self
   }
 
+  #[allow(dead_code)]
   pub fn paste(mut self, paste: bool) -> Self {
     self.paste = paste;
     self
@@ -197,6 +197,7 @@ impl Tui {
     self.cancellation_token.cancel();
   }
 
+  #[allow(dead_code)]
   pub fn suspend(&mut self) -> Result<()> {
     self.exit()?;
     #[cfg(not(windows))]
@@ -204,6 +205,7 @@ impl Tui {
     Ok(())
   }
 
+  #[allow(dead_code)]
   pub fn resume(&mut self) -> Result<()> {
     self.enter()?;
     Ok(())
