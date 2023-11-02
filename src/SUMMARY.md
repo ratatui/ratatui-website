@@ -54,6 +54,7 @@
   - [Layout UIs](./how-to/layout/README.md)
     - [Dynamic Layouts](./how-to/layout/dynamic.md)
     - [Center a Rect](./how-to/layout/center-a-rect.md)
+    - [Collapse Borders](./how-to/layout/collapse-borders.md)
   - [Render Text](./how-to/render/README.md)
     - [Display Text](./how-to/render/display-text.md)
     - [Style Text](./how-to/render/style-text.md)
