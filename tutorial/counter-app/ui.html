@@ -203,12 +203,12 @@
 </ol>
 <p>This is what our code will now look like:</p>
 <pre><code class="language-rust">use ratatui::{
-  layout::Alignment,
+  prelude::{Alignment, Frame},
   style::{Color, Style},
   widgets::{Block, BorderType, Borders, Paragraph},
 };
 
-use crate::{app::App, tui::Frame};
+use crate::app::App;
 
 pub fn render(app: &amp;mut App, f: &amp;mut Frame) {
   f.render_widget(

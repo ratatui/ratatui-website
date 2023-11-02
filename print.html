@@ -253,7 +253,7 @@ innovative ideas, helpful feedback, or useful suggestions, please don’t hesita
 <p>or by adding the following to your <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[dependencies]
 crossterm = &quot;0.27.0&quot;
-ratatui = &quot;0.23.0&quot;
+ratatui = &quot;0.24.0&quot;
 </code></pre>
 <div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
@@ -268,7 +268,7 @@ cargo add crossterm
 <p>or by adding the following to your <code>Cargo.toml</code> file:</p>
 <pre><code class="language-toml">[dependencies]
 crossterm = &quot;0.27.0&quot;
-ratatui = { version = &quot;0.23.0&quot;, features = [&quot;all-widgets&quot;]}
+ratatui = { version = &quot;0.24.0&quot;, features = [&quot;all-widgets&quot;]}
 </code></pre>
 <p>You can learn more about available widgets from the
 <a href="https://docs.rs/ratatui/latest/ratatui/widgets/index.html">docs.rs page on widgets</a>.</p>
@@ -369,7 +369,7 @@ systems. To install the latest version of the <code>ratatui</code> and <code>cro
 <p>Cargo will output the following (note that the exact versions may be later than the ones in this
 tutorial).</p>
 <pre><code class="language-plain">    Updating crates.io index
-      Adding ratatui v0.23.0 to dependencies.
+      Adding ratatui v0.24.0 to dependencies.
              Features:
              + crossterm
              - all-widgets
@@ -394,7 +394,7 @@ tutorial).</p>
 dependencies section:</p>
 <pre><code class="language-toml">[dependencies]
 crossterm = &quot;0.27.0&quot;
-ratatui = &quot;0.23.0&quot;
+ratatui = &quot;0.24.0&quot;
 </code></pre>
 <h2 id="create-a-tui-application"><a class="header" href="#create-a-tui-application">Create a TUI application</a></h2>
 <p>Let’s replace the default console application code that <code>cargo new</code> created with a Ratatui
@@ -1164,7 +1164,8 @@ pub struct App {
 <p>We use the principle of encapsulation to expose an interface to modify the state. In this particular
 instance, it may seem like overkill but it is good practice nonetheless.</p>
 <p>The practical advantage of this is that it makes the state changes easy to test.</p>
-<pre><code class="language-rust">mod tests {
+<pre><code class="language-rust">#[cfg(test)]
+mod tests {
   use super::*;
   #[test]
   fn test_app_increment_counter() {
@@ -1205,12 +1206,12 @@ to the test function, like so:</p>
 </ol>
 <p>This is what our code will now look like:</p>
 <pre><code class="language-rust">use ratatui::{
-  layout::Alignment,
+  prelude::{Alignment, Frame},
   style::{Color, Style},
   widgets::{Block, BorderType, Borders, Paragraph},
 };
 
-use crate::{app::App, tui::Frame};
+use crate::app::App;
 
 pub fn render(app: &amp;mut App, f: &amp;mut Frame) {
   f.render_widget(
@@ -1355,10 +1356,12 @@ pub enum Event {
 #[derive(Debug)]
 pub struct EventHandler {
   /// Event sender channel.
+  #[allow(dead_code)]
   sender: mpsc::Sender&lt;Event&gt;,
   /// Event receiver channel.
   receiver: mpsc::Receiver&lt;Event&gt;,
   /// Event handler thread.
+  #[allow(dead_code)]
   handler: thread::JoinHandle&lt;()&gt;,
 }</code></pre>
 <p>We are using <a href="https://doc.rust-lang.org/std/sync/mpsc/"><code>std::sync::mpsc</code></a> which is a “Multiple
@@ -1515,10 +1518,12 @@ pub enum Event {
 #[derive(Debug)]
 pub struct EventHandler {
   /// Event sender channel.
+  #[allow(dead_code)]
   sender: mpsc::Sender&lt;Event&gt;,
   /// Event receiver channel.
   receiver: mpsc::Receiver&lt;Event&gt;,
   /// Event handler thread.
+  #[allow(dead_code)]
   handler: thread::JoinHandle&lt;()&gt;,
 }
 
@@ -1582,7 +1587,6 @@ use crossterm::{
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 pub type CrosstermTerminal = ratatui::Terminal&lt;ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 use crate::{app::App, event::EventHandler, ui};</code></pre>
@@ -1686,7 +1690,6 @@ use crossterm::{
   terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 pub type CrosstermTerminal = ratatui::Terminal&lt;ratatui::backend::CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 use crate::{app::App, event::EventHandler, ui};
@@ -1905,7 +1908,9 @@ about commas and brackets themselves.</p>
 <pre><code class="language-shell">cargo new ratatui-json-editor
 </code></pre>
 <p>and put the following in the <code>Cargo.toml</code>:</p>
-<pre><code class="language-toml">[dependencies]
+<pre><code class="language-toml"># See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
 crossterm = &quot;0.26.1&quot;
 ratatui = &quot;0.22.0&quot;
 serde = { version = &quot;1.0.181&quot;, features = [&quot;derive&quot;] }
@@ -3248,7 +3253,7 @@ edition = &quot;2021&quot;
 [dependencies]
 color-eyre = &quot;0.6.2&quot;
 crossterm = { version = &quot;0.27.0&quot;, features = [&quot;event-stream&quot;] }
-ratatui = &quot;0.23.0&quot;
+ratatui = &quot;0.24.0&quot;
 tokio = { version = &quot;1.32.0&quot;, features = [&quot;full&quot;] }
 tokio-util = &quot;0.7.9&quot;
 futures = &quot;0.3.28&quot;
@@ -4330,7 +4335,7 @@ refactoring, we store the <code>action_tx</code> half of the channel in the <cod
       tui::Event::Tick =&gt; action_tx.send(Action::Tick)?,
       tui::Event::Render =&gt; action_tx.send(Action::Render)?,
       tui::Event::Key(_) =&gt; {
-        let action = get_action(&amp;mut app, e);
+        let action = get_action(&amp;app, e);
         action_tx.send(action.clone())?;
       },
       _ =&gt; {},
@@ -4428,8 +4433,6 @@ use crossterm::event::KeyCode::Char;
 use ratatui::{prelude::*, widgets::*};
 use tokio::sync::mpsc::{self, UnboundedSender};
 use tui::Event;
-
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 // App state
 struct App {
@@ -4532,7 +4535,7 @@ async fn run() -&gt; Result&lt;()&gt; {
       tui::Event::Tick =&gt; action_tx.send(Action::Tick)?,
       tui::Event::Render =&gt; action_tx.send(Action::Render)?,
       tui::Event::Key(_) =&gt; {
-        let action = get_action(&amp;mut app, e);
+        let action = get_action(&amp;app, e);
         action_tx.send(action.clone())?;
       },
       _ =&gt; {},
@@ -4586,8 +4589,10 @@ stopwatch application. We are also going to take advantage of a widget from an e
 <p>Here’s the dependencies you’ll need in your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[package]
 name = &quot;ratatui-stopwatch-app&quot;
-version = &quot;0.1.0&quot;
-edition = &quot;2021&quot;
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -4600,12 +4605,12 @@ human-panic = &quot;1.2.0&quot;
 itertools = &quot;0.11.0&quot;
 libc = &quot;0.2.147&quot;
 log = &quot;0.4.20&quot;
-ratatui = &quot;0.23.0&quot;
+ratatui = &quot;0.24.0&quot;
 strip-ansi-escapes = &quot;0.2.0&quot;
 strum = &quot;0.25.0&quot;
 tokio = { version = &quot;1.32.0&quot;, features = [&quot;full&quot;] }
 tokio-util = &quot;0.7.8&quot;
-tui-big-text = &quot;0.1.4&quot;
+tui-big-text = &quot;0.2.1&quot;
 </code></pre>
 <p>Here’s a gif of what it will look like if you run this:</p>
 <p><img src="https://vhs.charm.sh/vhs-3dTTtrLkyU54hNah22PAR9.gif" alt="Stopwatch" /></p>
@@ -4629,8 +4634,6 @@ use itertools::Itertools;
 use ratatui::{backend::CrosstermBackend as Backend, prelude::*, widgets::*};
 use strum::EnumIs;
 use tui_big_text::BigText;
-
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, Backend&lt;std::io::Stderr&gt;&gt;;
 
 #[tokio::main]
 async fn main() -&gt; Result&lt;()&gt; {
@@ -7552,13 +7555,13 @@ stacktrace to <code>log::error!</code> for good measure (after striping ansi esc
 <h2 id="fully-replace-tui-with-ratatui"><a class="header" href="#fully-replace-tui-with-ratatui">Fully replace Tui with Ratatui</a></h2>
 <p>Most new code should use the following. To take this approach to migration requires find and
 replace <code>tui::</code>-&gt;<code>ratatui::</code> on the entire codebase.</p>
-<pre><code class="language-toml">ratatui = { version = &quot;0.23.0&quot; }
+<pre><code class="language-toml">ratatui = { version = &quot;0.24.0&quot; }
 crossterm = { version = &quot;0.27.0&quot; }
 </code></pre>
 <h2 id="drop-in-replacement"><a class="header" href="#drop-in-replacement">Drop in replacement</a></h2>
 <p>The simplest approach to migrating to <code>ratatui</code> is to use it as drop in replacement for tui and
 update the terminal libraries used (<code>crossterm</code> / <code>termion</code>). E.g.:</p>
-<pre><code class="language-toml">tui = { package = &quot;ratatui&quot;, version = &quot;0.23.0&quot;, features = [&quot;crossterm&quot;] }
+<pre><code class="language-toml">tui = { package = &quot;ratatui&quot;, version = &quot;0.24.0&quot;, features = [&quot;crossterm&quot;] }
 crossterm = { version = &quot;0.27.0&quot; }
 </code></pre>
 <h2 id="support-both-tui-and-ratatui"><a class="header" href="#support-both-tui-and-ratatui">Support both tui and ratatui</a></h2>

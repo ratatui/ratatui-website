@@ -234,7 +234,8 @@ pub struct App {
 <p>We use the principle of encapsulation to expose an interface to modify the state. In this particular
 instance, it may seem like overkill but it is good practice nonetheless.</p>
 <p>The practical advantage of this is that it makes the state changes easy to test.</p>
-<pre><code class="language-rust">mod tests {
+<pre><code class="language-rust">#[cfg(test)]
+mod tests {
   use super::*;
   #[test]
   fn test_app_increment_counter() {

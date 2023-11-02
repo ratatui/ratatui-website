@@ -312,10 +312,12 @@ pub enum Event {
 #[derive(Debug)]
 pub struct EventHandler {
   /// Event sender channel.
+  #[allow(dead_code)]
   sender: mpsc::Sender&lt;Event&gt;,
   /// Event receiver channel.
   receiver: mpsc::Receiver&lt;Event&gt;,
   /// Event handler thread.
+  #[allow(dead_code)]
   handler: thread::JoinHandle&lt;()&gt;,
 }</code></pre>
 <p>We are using <a href="https://doc.rust-lang.org/std/sync/mpsc/"><code>std::sync::mpsc</code></a> which is a “Multiple
@@ -472,10 +474,12 @@ pub enum Event {
 #[derive(Debug)]
 pub struct EventHandler {
   /// Event sender channel.
+  #[allow(dead_code)]
   sender: mpsc::Sender&lt;Event&gt;,
   /// Event receiver channel.
   receiver: mpsc::Receiver&lt;Event&gt;,
   /// Event handler thread.
+  #[allow(dead_code)]
   handler: thread::JoinHandle&lt;()&gt;,
 }
 
