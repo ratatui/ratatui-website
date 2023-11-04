@@ -11,7 +11,7 @@ members = [
 resolver = "2"
 
 [workspace.package]
-version = "0.0.0"                                         # we don't want to publish this workspace
+version = "0.0.0"
 authors = ["The Ratatui Developers"]
 description = "Sample code for the Ratatui book"
 documentation = "https://docs.rs/ratatui/latest/ratatui/"
@@ -20,3 +20,4 @@ keywords = ["tui", "terminal", "dashboard"]
 license = "MIT"
 edition = "2021"
 rust-version = "1.70.0"
+publish = false

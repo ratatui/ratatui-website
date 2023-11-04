@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Dheepak Krishnamurthy <me@kdheepak.com>"]
 license = "MIT"
 edition = "2021"
+publish.workspace = true
 
 [dependencies]
 anyhow = "1.0.75"
