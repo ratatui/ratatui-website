@@ -4,7 +4,7 @@ The world of UI development consists mainly of two dominant paradigms: retained 
 mode. Most traditional GUI libraries operate under the retained mode paradigm. However, `ratatui`
 employs the immediate mode rendering approach. for TUI development.
 
-This makes `ratatui` is different from GUI frameworks you might use, because it only updates when
+This makes `ratatui` different from GUI frameworks you might use, because it only updates when
 you tell it to.
 
 ## What is Immediate Mode Rendering?
