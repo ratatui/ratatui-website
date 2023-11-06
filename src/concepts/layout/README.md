@@ -30,7 +30,6 @@ The following example renders "Hello world!" 10 times, by manually calculating t
 within.
 
 ```rust
-let greeting = "Hello world!";
 for i in 0..10 {
     let area = Rect::new(0, i, frame.size().width, 1);
     frame.render_widget(Paragraph::new("Hello world!"), area);
