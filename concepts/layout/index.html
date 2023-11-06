@@ -246,8 +246,7 @@ struct to divide the terminal window dynamically based on constraints such as <c
 <code>Max</code>, <code>Ratio</code>, <code>Percentage</code>.</p>
 <p>The following example renders “Hello world!” 10 times, by manually calculating the areas to render
 within.</p>
-<pre><code class="language-rust">let greeting = &quot;Hello world!&quot;;
-for i in 0..10 {
+<pre><code class="language-rust">for i in 0..10 {
     let area = Rect::new(0, i, frame.size().width, 1);
     frame.render_widget(Paragraph::new(&quot;Hello world!&quot;), area);
 }</code></pre>
