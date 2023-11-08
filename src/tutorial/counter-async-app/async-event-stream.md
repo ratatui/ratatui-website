@@ -49,7 +49,7 @@ method.
 -   fn next(&self) -> Result<Event> {
 +   async fn next(&mut self) -> Result<Event> {
 -     Ok(self.rx.recv()?)
-+    self.rx.recv().await.ok_or(color_eyre::eyre::eyre!("Unable to get event"))
++     self.rx.recv().await.ok_or(color_eyre::eyre::eyre!("Unable to get event"))
     }
   }
 ```
