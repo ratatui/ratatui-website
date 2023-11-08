@@ -238,9 +238,9 @@ method.</p>
     }
 
 -   fn next(&amp;self) -&gt; Result&lt;Event&gt; {
-+   async fn next(&amp;self) -&gt; Result&lt;Event&gt; {
++   async fn next(&amp;mut self) -&gt; Result&lt;Event&gt; {
 -     Ok(self.rx.recv()?)
-+     Ok(self.rx.recv().await.ok()?)
++     self.rx.recv().await.ok_or(color_eyre::eyre::eyre!(&quot;Unable to get event&quot;))
     }
   }
 </code></pre>
