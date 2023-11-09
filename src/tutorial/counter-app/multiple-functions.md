@@ -30,7 +30,7 @@ By defining custom types and aliases, we can simplify our code and make it more 
 ```rust
 type Err = Box<dyn std::error::Error>;
 type Result<T> = std::result::Result<T, Err>;
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
+pub type Frame<'a> = ratatui::Frame<'a>;
 ```
 
 ````admonish tip
@@ -228,7 +228,7 @@ use ratatui::{
   widgets::Paragraph,
 };
 
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
+pub type Frame<'a> = ratatui::Frame<'a>;
 
 fn startup() -> Result<()> {
   enable_raw_mode()?;
