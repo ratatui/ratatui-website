@@ -20,7 +20,7 @@ $ tree .
 ```
 
 If you want to explore the code on your own, you can check out the completed source code here:
-<https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/counter-app/ratatui-counter-app>
+<https://github.com/ratatui-org/ratatui-book/tree/main/code/ratatui-counter-app>
 
 Let's go ahead and declare these files as modules in `src/main.rs`
 
