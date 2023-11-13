@@ -227,7 +227,6 @@ use ratatui::{
   widgets::Paragraph,
 };
 
-pub type Frame<'a> = ratatui::Frame<'a>;
 
 fn startup() -> Result<()> {
   enable_raw_mode()?;
