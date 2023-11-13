@@ -208,14 +208,13 @@ previous functionality into separate functions.</p>
   terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::{
-  prelude::{CrosstermBackend, Terminal},
+  prelude::{CrosstermBackend, Terminal, Frame},
   widgets::Paragraph,
 };</code></pre>
 <h2 id="typedefs-and-type-aliases"><a class="header" href="#typedefs-and-type-aliases">Typedefs and Type Aliases</a></h2>
 <p>By defining custom types and aliases, we can simplify our code and make it more expressive.</p>
 <pre><code class="language-rust">type Err = Box&lt;dyn std::error::Error&gt;;
-type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;</code></pre>
+type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;</code></pre>
 <div id="admonition-tip" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Tip</p>
@@ -231,7 +230,6 @@ type Result&lt;T&gt; = std::result::Result&lt;T, Err&gt;;</code></pre>
 <p>You will need to run <code>cargo add anyhow</code> for this to work.</p>
 </div>
 </div>
-<p><code>Frame</code> is a shorthand type to represent the frame we draw to when we render our application.</p>
 <h2 id="app-struct"><a class="header" href="#app-struct"><code>App</code> struct</a></h2>
 <p>By defining an <code>App</code> struct, we can encapsulate our application state and make it more structured.</p>
 <pre><code class="language-rust">struct App {
@@ -369,7 +367,6 @@ use ratatui::{
   widgets::Paragraph,
 };
 
-pub type Frame&lt;'a&gt; = ratatui::Frame&lt;'a, CrosstermBackend&lt;std::io::Stderr&gt;&gt;;
 
 fn startup() -&gt; Result&lt;()&gt; {
   enable_raw_mode()?;
