@@ -1,4 +1,4 @@
-# Displaying Text
+# How to: Display Text
 
 This page covers how text displaying works. It will cover `Span`, `Line`, and `Text`, and how these
 can be created, styled, displayed, altered, and such.

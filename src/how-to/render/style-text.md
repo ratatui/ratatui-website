@@ -1,4 +1,4 @@
-# Styling Text
+# How to: Style Text
 
 Styling enhances user experience by adding colors, emphasis, and other visual aids. In `ratatui`,
 the primary tool for this is the `ratatui::style::Style` struct.
