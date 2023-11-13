@@ -29,7 +29,7 @@ Next, we can update my event handler:
 {{#include ../../../code/ratatui-counter-async-app/src/main.rs:get_action}}
 ```
 
-Finally, we can handle the action in my `update` function my spawning a tokio task:
+Finally, we can handle the action in my `update` function by spawning a tokio task:
 
 ```rust
 {{#include ../../../code/ratatui-counter-async-app/src/main.rs:update}}

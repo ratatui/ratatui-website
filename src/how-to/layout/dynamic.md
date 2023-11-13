@@ -5,7 +5,7 @@ need to resize the chat input area based on the number of incoming messages. To 
 can generate layouts dynamically:
 
 ```rust
-fn get_layout_based_on_messages(msg_count: usize, f: &Frame) -> Vec<Rect> {
+fn get_layout_based_on_messages(msg_count: usize, f: &Frame) -> Rc<[Rect]> {
     let msg_percentage = if msg_count > 50 { 80 } else { 50 };
 
     Layout::default()
