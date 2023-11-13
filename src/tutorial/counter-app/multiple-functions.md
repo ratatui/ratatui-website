@@ -18,7 +18,7 @@ use crossterm::{
   terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::{
-  prelude::{CrosstermBackend, Terminal},
+  prelude::{CrosstermBackend, Terminal, Frame},
   widgets::Paragraph,
 };
 ```
@@ -50,8 +50,6 @@ use anyhow::Result;
 You will need to run `cargo add anyhow` for this to work.
 
 ````
-
-`Frame` is a shorthand type to represent the frame we draw to when we render our application.
 
 ## `App` struct
 
