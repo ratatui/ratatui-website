@@ -65,3 +65,15 @@ terminal.draw(|f| {
 
 
 ```
+
+A common use case for this feature is to create a popup style dialog block. For this, typically,
+you'll want to `Clear` the popup area before rendering your content to it.
+The following is an example of how you might do that:
+
+```rust
+terminal.draw(|f| {
+    let popup_area = centered_rect(f.size(), 35, 35);
+    f.render_widget(Clear, popup_area);
+    f.render_widget(Block::default().borders(Borders::all()).title("Main"), popup_area);
+})?;
+```
