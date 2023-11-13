@@ -18,7 +18,7 @@ use crossterm::{
   terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::{
-  prelude::{CrosstermBackend, Terminal},
+  prelude::{CrosstermBackend, Terminal, Frame},
   widgets::Paragraph,
 };
 ```
@@ -30,7 +30,6 @@ By defining custom types and aliases, we can simplify our code and make it more 
 ```rust
 type Err = Box<dyn std::error::Error>;
 type Result<T> = std::result::Result<T, Err>;
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
 ```
 
 ````admonish tip
@@ -51,8 +50,6 @@ use anyhow::Result;
 You will need to run `cargo add anyhow` for this to work.
 
 ````
-
-`Frame` is a shorthand type to represent the frame we draw to when we render our application.
 
 ## `App` struct
 
@@ -228,7 +225,6 @@ use ratatui::{
   widgets::Paragraph,
 };
 
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
 
 fn startup() -> Result<()> {
   enable_raw_mode()?;
