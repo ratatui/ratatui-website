@@ -198,7 +198,7 @@
 <p>With real world applications, the content can often be dynamic. For example, a chat application may
 need to resize the chat input area based on the number of incoming messages. To achieve this, you
 can generate layouts dynamically:</p>
-<pre><code class="language-rust">fn get_layout_based_on_messages(msg_count: usize, f: &amp;Frame) -&gt; Vec&lt;Rect&gt; {
+<pre><code class="language-rust">fn get_layout_based_on_messages(msg_count: usize, f: &amp;Frame) -&gt; Rc&lt;[Rect]&gt; {
     let msg_percentage = if msg_count &gt; 50 { 80 } else { 50 };
 
     Layout::default()

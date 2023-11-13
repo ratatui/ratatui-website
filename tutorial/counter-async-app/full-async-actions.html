@@ -278,7 +278,7 @@ pub enum Action {
     _ =&gt; Action::None,
   }
 }</code></pre>
-<p>Finally, we can handle the action in my <code>update</code> function my spawning a tokio task:</p>
+<p>Finally, we can handle the action in my <code>update</code> function by spawning a tokio task:</p>
 <pre><code class="language-rust">fn update(app: &amp;mut App, action: Action) {
   match action {
     Action::Increment =&gt; {
