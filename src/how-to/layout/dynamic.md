@@ -1,4 +1,4 @@
-# Dynamic layouts
+# How to: Create Dynamic layouts
 
 With real world applications, the content can often be dynamic. For example, a chat application may
 need to resize the chat input area based on the number of incoming messages. To achieve this, you

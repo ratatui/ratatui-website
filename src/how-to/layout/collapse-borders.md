@@ -1,4 +1,4 @@
-# Collapse borders in a layout
+# How to: Collapse borders in a layout
 
 A common layout for applications is to split up the screen into panes, with borders around each
 pane. Often this leads to making UIs that look disconnected. E.g., the following layout:

@@ -7,6 +7,7 @@ members = [
     "code/ratatui-json-editor-app",
     "code/ratatui-stopwatch-app",
     "code/how-to-collapse-borders",
+    "code/how-to-overwrite-regions",
 ]
 resolver = "2"
 
