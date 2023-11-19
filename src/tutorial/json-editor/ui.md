@@ -29,9 +29,8 @@ areas. For this, we can use the `Layout` functionality in `ratatui`.
 This can be likened to partitioning a large rectangle into smaller sections.
 
 ```admonish tip
-For a comprehensive understanding of layout and constraints, refer to
-[Layout Constraints Basics](./../how-to/layout-constraints-basics.md)
-and [Layout Constraints Intermediate](./../how-to/layout-constraints-intermediate.md) sections.
+For a better understanding of layouts and constraints, refer to
+the concepts page on [Layout](./../../concepts/layout/index.html).
 ```
 
 In the example above, you can read the instructions aloud like this:
