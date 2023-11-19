@@ -6,7 +6,7 @@ src = "src"
 title = "Ratatui Book"
 
 [output.html]
-git-repository-url = "https://github.com/ratatui-org/ratatui-book"
+git-repository-url = "https://github.com/ratatui-org/ratatui-book/"
 git-repository-icon = "fa-github"
 edit-url-template = "https://github.com/ratatui-org/ratatui-book/edit/main/{path}"
 additional-css = [
@@ -14,7 +14,7 @@ additional-css = [
     "./theme/catppuccin.css",
     "./theme/catppuccin-highlight.css", "./theme/catppuccin-admonish.css",
 ]
-site-url = "/ratatui-book/"
+site-url = "/"
 
 [output.html.fold]
 enable = true # whether or not to enable section folding
