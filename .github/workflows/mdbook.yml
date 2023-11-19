@@ -61,7 +61,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           PR_NUM=${{ github.event.number }}
-          sed -i "s|site-url = \"/ratatui-book/\"|site-url = \"/ratatui-book/pr-preview/pr-$PR_NUM\"|" ./book.toml
+          sed -i "s|site-url = \"/\"|site-url = \"/pr-preview/pr-$PR_NUM\"|" ./book.toml
 
       - name: Build with mdBook
         run: mdbook build
