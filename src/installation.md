@@ -66,7 +66,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.23", default-features = false, features = ["termion"] }
+ratatui = { version = "0.23", default-features = false, features = ["termwiz"] }
 termwiz = "0.20.0"
 ```
 
