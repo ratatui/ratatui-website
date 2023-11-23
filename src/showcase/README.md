@@ -60,7 +60,7 @@ A terminal user interface for taskwarrior
 
 This is a CLI utility for displaying current network utilization by process, connection and remote IP/hostname
 
-![](https://github.com/imsnif/bandwhich/raw/main/demo.gif?raw=true)
+![](https://github.com/imsnif/bandwhich/blob/main/res/demo.gif?raw=true)
 
 ---
 
