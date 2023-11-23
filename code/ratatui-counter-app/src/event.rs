@@ -55,7 +55,7 @@ impl EventHandler {
           let timeout = tick_rate.checked_sub(last_tick.elapsed()).unwrap_or(tick_rate);
 
           ///// ANCHOR: eventhandler_poll
-          if event::poll(timeout).expect("no events available") {
+          if event::poll(timeout).expect("unable to poll for event") {
             match event::read().expect("unable to read event") {
               CrosstermEvent::Key(e) => {
                 if e.kind == event::KeyEventKind::Press {
