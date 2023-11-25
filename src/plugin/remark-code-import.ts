@@ -1,8 +1,8 @@
 import type { Node } from "unist";
+import type { VFile } from "vfile";
 import { visit } from "unist-util-visit";
 import fs from "fs";
 import path from "path";
-import { VFile } from "vfile";
 
 interface CodeNode extends Node {
   lang?: string;
