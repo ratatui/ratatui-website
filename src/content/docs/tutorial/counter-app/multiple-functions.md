@@ -333,7 +333,7 @@ graph TD
     ShouldQuit -->|No| CheckEvent;
 ```
 
-:::question
+:::note[Homework]
 
 What do you think happens if you modify the example above to change the polling to `0` milliseconds?
 

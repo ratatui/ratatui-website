@@ -5,9 +5,9 @@ title: main.rs
 Putting it all together, we have the `main.rs` function:
 
 ```rust
-{{#include ../../../code/ratatui-counter-app/src/main.rs:imports_main}}
+{{#include ../../../../../../code/ratatui-counter-app/src/main.rs:imports_main}}
 
-{{#include ../../../code/ratatui-counter-app/src/main.rs:main}}
+{{#include ../../../../../../code/ratatui-counter-app/src/main.rs:main}}
 ```
 
 Because we call `tui.events.next()` in a loop, it blocks until there's an event generated. If
@@ -47,7 +47,7 @@ Sleep 2.5s
 You can find the full source code for this multiple files tutorial here:
 <https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/counter-app/ratatui-counter-app>.
 
-:::question
+:::note[Homework]
 
 Right now, this TUI application will render every time a key is pressed. As an exercise, can you
 make this app render only an a predefined tick rate?

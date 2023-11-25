@@ -188,9 +188,7 @@ Replace the existing `main` function with the following:
 
 ```rust
 {{#include ../../../../code/hello-world-tutorial/src/main.rs:setup}}
-
     // TODO main loop
-
 {{#include ../../../../code/hello-world-tutorial/src/main.rs:restore}}
 ```
 
