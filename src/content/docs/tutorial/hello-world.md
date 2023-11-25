@@ -276,7 +276,7 @@ Congratulations! :tada:
 You have written a "hello world" terminal user interface with `ratatui`. We will learn more about
 how `ratatui` works in the next sections.
 
-:::question
+:::note[Homework]
 
 Can you modify the example above to exit when pressing `q` _or_ when pressing `Q`?
 
