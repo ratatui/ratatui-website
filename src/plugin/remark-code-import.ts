@@ -1,13 +1,19 @@
+import type { Node } from "unist";
 import { visit } from "unist-util-visit";
 import fs from "fs";
 import path from "path";
 import { VFile } from "vfile";
 
+interface CodeNode extends Node {
+  lang?: string;
+  value: string;
+}
+
 const remarkIncludeCode = () => {
   // The plugin function, working with a Markdown tree and associated file
   return (tree: Node, file: VFile) => {
     // Visit each 'code' node in the Markdown AST
-    visit(tree, "code", (node) => {
+    visit(tree, "code", (node: CodeNode) => {
       // Process only if the language is Rust
       if (node.lang === "rust") {
         // Regular expression to match custom include directives in the format:
