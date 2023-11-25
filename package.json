@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "remark": "^15.0.1",
+    "remark-emoji": "^4.0.1",
     "unist-util-visit": "^5.0.0"
   }
 }

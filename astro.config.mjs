@@ -3,6 +3,7 @@ import starlight from '@astrojs/starlight';
 import starlightLinksValidator from 'starlight-links-validator'
 import remarkMermaid from '@southball/remark-mermaid';
 import remarkIncludeCode from './src/plugin/remark-code-import';
+import emoji from 'remark-emoji';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
     remarkPlugins: [
       remarkIncludeCode,
       remarkMermaid,
+      emoji,
     ],
   },
   integrations: [

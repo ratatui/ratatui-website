@@ -250,15 +250,11 @@ Replace `// TODO handle events` with:
 
 Your application should look like:
 
-<details><summary>main.rs</summary>
-
 ```rust
 {{#include ../../../../code/hello-world-tutorial/src/main.rs:all}}
 ```
 
-</details>
-
-Make sure you save the file! Let's run the app:
+Make sure you save the file! Now you can run the app using:
 
 ```shell
 cargo run
