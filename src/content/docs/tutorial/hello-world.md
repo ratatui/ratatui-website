@@ -165,7 +165,7 @@ your application's imports.
 In your editor, open `src/main.rs` and add the following at the top of the file.
 
 ```rust
-{{#include ../../../code/hello-world-tutorial/src/main.rs:imports}}
+{{#include ../../../../code/hello-world-tutorial/src/main.rs}}
 ```
 
 ### Setting up and restoring the terminal
@@ -187,11 +187,11 @@ screen and disabling raw mode.
 Replace the existing `main` function with the following:
 
 ```rust
-{{#include ../../../code/hello-world-tutorial/src/main.rs:setup}}
+{{#include ../../../../code/hello-world-tutorial/src/main.rs:setup}}
 
     // TODO main loop
 
-{{#include ../../../code/hello-world-tutorial/src/main.rs:restore}}
+{{#include ../../../../code/hello-world-tutorial/src/main.rs:restore}}
 ```
 
 :::warning
@@ -228,7 +228,7 @@ methods are defined in the [`Stylize`] extension trait as [style shorthands], ra
 Replace `// TODO draw` with the following
 
 ```rust
-{{#include ../../../code/hello-world-tutorial/src/main.rs:draw}}
+{{#include ../../../../code/hello-world-tutorial/src/main.rs:draw}}
 ```
 
 ### Handle events
@@ -243,7 +243,7 @@ twice.
 Replace `// TODO handle events` with:
 
 ```rust
-{{#include ../../../code/hello-world-tutorial/src/main.rs:handle-events}}
+{{#include ../../../../code/hello-world-tutorial/src/main.rs:handle-events}}
 ```
 
 ## Running the Application
@@ -253,7 +253,7 @@ Your application should look like:
 <details><summary>main.rs</summary>
 
 ```rust
-{{#include ../../../code/hello-world-tutorial/src/main.rs:all}}
+{{#include ../../../../code/hello-world-tutorial/src/main.rs:all}}
 ```
 
 </details>

@@ -20,5 +20,9 @@
     "sharp": "^0.32.5",
     "starlight-links-validator": "^0.4.2",
     "typescript": "^5.3.2"
+  },
+  "devDependencies": {
+    "remark": "^15.0.1",
+    "unist-util-visit": "^5.0.0"
   }
 }

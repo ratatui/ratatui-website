@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightLinksValidator from 'starlight-links-validator'
 import remarkMermaid from '@southball/remark-mermaid';
+import remarkIncludeCode from './src/plugin/remark-code-import';
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,6 +10,7 @@ export default defineConfig({
   base: "/ratatui-website", // remove this when switching to ratatui.rs
   markdown: {
     remarkPlugins: [
+      remarkIncludeCode,
       remarkMermaid,
     ],
   },
@@ -30,31 +32,36 @@ export default defineConfig({
         },
         {
           label: 'Tutorial',
-          items: [{
-            label: 'Counter App',
-            items: [
-              {
-                label: 'Single Function',
-                link: '/tutorial/counter-app/single-function'
-              },
-              {
-                label: 'Multiple Functions',
-                link: '/tutorial/counter-app/multiple-functions'
-              },
-              {
-                label: 'Multiple Files',
-                items: [
-                  { label: 'Introduction', link: '/tutorial/counter-app/multiple-files' },
-                  { label: 'app.rs', link: '/tutorial/counter-app/multiple-files/app' },
-                  { label: 'ui.rs', link: '/tutorial/counter-app/multiple-files/ui' },
-                  { label: 'event.rs', link: '/tutorial/counter-app/multiple-files/event' },
-                  { label: 'tui.rs', link: '/tutorial/counter-app/multiple-files/tui' },
-                  { label: 'update.rs', link: '/tutorial/counter-app/multiple-files/update' },
-                  { label: 'main.rs', link: '/tutorial/counter-app/multiple-files/main' }
-                ]
-              }
-            ]
-          }],
+          items: [
+            {
+              label: 'Hello World',
+              link: '/tutorial/hello-world/'
+            },
+            {
+              label: 'Counter App',
+              items: [
+                {
+                  label: 'Single Function',
+                  link: '/tutorial/counter-app/single-function'
+                },
+                {
+                  label: 'Multiple Functions',
+                  link: '/tutorial/counter-app/multiple-functions'
+                },
+                {
+                  label: 'Multiple Files',
+                  items: [
+                    { label: 'Introduction', link: '/tutorial/counter-app/multiple-files' },
+                    { label: 'app.rs', link: '/tutorial/counter-app/multiple-files/app' },
+                    { label: 'ui.rs', link: '/tutorial/counter-app/multiple-files/ui' },
+                    { label: 'event.rs', link: '/tutorial/counter-app/multiple-files/event' },
+                    { label: 'tui.rs', link: '/tutorial/counter-app/multiple-files/tui' },
+                    { label: 'update.rs', link: '/tutorial/counter-app/multiple-files/update' },
+                    { label: 'main.rs', link: '/tutorial/counter-app/multiple-files/main' }
+                  ]
+                }
+              ]
+            }],
         },
       ],
       editLink: {
