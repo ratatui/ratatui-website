@@ -44,12 +44,46 @@ const remarkIncludeCode = () => {
           const filePath = match[1];
           const anchor = match[2];
           const fullPath = path.resolve(path.dirname(file.path), filePath);
-
           try {
             let fileContent = fs.readFileSync(fullPath, "utf8");
-
             // If an anchor is specified, extract the relevant section from the file
             if (anchor) {
+              // Regular expression to match a specific anchored section in the file content.
+              //
+              // Explanation of the regex pattern:
+              // `// ANCHOR: ${anchor}(\\s*[\\s\\S]*?)// ANCHOR_END: ${anchor}`
+              //
+              // // ANCHOR: ${anchor} - Matches the start anchor comment in the file.
+              //                       This part of the regex dynamically inserts the value of
+              //                       the `anchor` variable, allowing it to match a specific
+              //                       anchor name. For example, if `anchor` is "setup", it
+              //                       will match "// ANCHOR: setup".
+              //
+              // (\\s*[\\s\\S]*?) - This is a capturing group that matches the content between
+              //                    the start and end anchors:
+              //   \\s*           - Matches any whitespace characters (including none), ensuring
+              //                    that the capture starts even if there is space after the
+              //                    "// ANCHOR: ${anchor}" comment.
+              //   [\\s\\S]*?     - A non-greedy match for any character (including newlines):
+              //     [\\s\\S]     - Matches any character. \\s is any whitespace character, and
+              //                    \\S is any non-whitespace character. Together, [\\s\\S] is
+              //                    a character class that matches absolutely any character.
+              //     *?           - The non-greedy quantifier, ensuring it captures the smallest
+              //                    amount of content until it reaches the end anchor.
+              //
+              // // ANCHOR_END: ${anchor} - Matches the end anchor comment in the file, similar
+              //                           to the start anchor. This part of the regex also
+              //                           dynamically includes the `anchor` variable, ensuring
+              //                           it matches the corresponding end anchor for the
+              //                           specified start anchor.
+              //
+              // "m" - Multiline flag, allowing '^' and '$' to match start and end of lines, not
+              //       just start and end of string. This is important for matching anchors that
+              //       are not at the very start or end of the file content.
+              //
+              // This regular expression is used to extract a section of text from a file that
+              // is marked by specific start and end anchor comments, allowing for selective
+              // inclusion of file content based on these anchors.
               const anchorRegex = new RegExp(
                 `// ANCHOR: ${anchor}(\\s*[\\s\\S]*?)// ANCHOR_END: ${anchor}`,
                 "m",
@@ -68,7 +102,6 @@ const remarkIncludeCode = () => {
               .split("\n")
               .filter((line) => !line.includes("// ANCHOR_END: "))
               .join("\n");
-
             // Replace the include directive with the indented file content
             node.value = node.value.replace(match[0], fileContent);
           } catch (err) {
