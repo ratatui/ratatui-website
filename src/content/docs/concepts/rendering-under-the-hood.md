@@ -98,7 +98,7 @@ example above, widgets interact with these `Cell`s using `Buffer` methods.
 
 Here's a visual representation of a `Buffer` that is 12 `Cell`s wide and 4 `Cell`s tall.
 
-```svgbob
+```
         0     1     2     3     4     5     6     7     8     9    10    11
      ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
    0 │  H  │  e  │  l  │  l  │  o  │     │  W  │  o  │  r  │  l  │  d  │  !  │
@@ -145,13 +145,15 @@ content rendered to a `Buffer` is only stored in `Buffer` that is attached to th
 `draw` call. This is in contrast to using a library like `crossterm` directly, where writing text to
 terminal can occur immediately.
 
-```admonish note
+:::note
+
 ANSI Escape sequences for color and style that are stored in the cell's string content are not
 rendered as the style information is stored separately in the cell. If your text has ANSI styling
 info, consider using the [`ansi-to-tui`](https://crates.io/crates/ansi-to-tui) crate to convert it
 to a `Text` value before rendering. You can learn more about the text related Ratatui features and
 displaying text [here](./../how-to/render/display-text.md).
-```
+
+:::
 
 ## `flush()`
 
