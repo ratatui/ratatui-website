@@ -13,7 +13,7 @@ export default defineConfig({
   // change this when switching to ratatui.rs
   site: "https://ratatui-org.github.io",
   // remove this when switching to ratatui.rs
-  base: "/ratatui-website",
+  base: "/ratatui.rs",
   markdown: {
     remarkPlugins: [
       remarkIncludeCode,
@@ -369,7 +369,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: "https://github.com/ratatui-org/ratatui-website/edit/main/",
+        baseUrl: "https://github.com/ratatui-org/ratatui.rs/edit/main/",
       },
     }),
     tailwind({
