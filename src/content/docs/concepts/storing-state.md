@@ -2,8 +2,6 @@
 title: Storing Application State
 ---
 
-# Storing Application State
-
 This page covers several ways that a programmer can store the state of the application.
 
 ## Single Silo Method

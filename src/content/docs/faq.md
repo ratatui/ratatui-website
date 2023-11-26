@@ -2,7 +2,7 @@
 title: FAQ
 ---
 
-# Why am I getting duplicate key events on Windows?
+## Why am I getting duplicate key events on Windows?
 
 A lot of examples out there in the wild might use the following code for sending key presses:
 
@@ -25,7 +25,7 @@ To make the code work as expected across all platforms, you can do this instead:
   },
 ```
 
-# When should I use `tokio` and `async`/`await`?
+## When should I use `tokio` and `async`/`await`?
 
 `ratatui` isn't a native `async` library. So is it beneficial to use `tokio` or `async`/`await`?
 
@@ -132,7 +132,7 @@ The most recent version of the `ratatui-async-template` uses this architecture i
                                 ┊                   `------------------'
 ```
 
-# tui.rs history
+## tui.rs history
 
 This project was forked from [`tui-rs`](https://github.com/fdehau/tui-rs/) in February 2023, with
 the [blessing of the original author](https://github.com/fdehau/tui-rs/issues/654), Florian Dehau
@@ -157,7 +157,7 @@ to **work on or discuss** an issue will have to follow the following workflow:
 
 You can then resume the conversation by replying to the new issue you have created.
 
-# What is the difference between a library and a framework?
+## What is the difference between a library and a framework?
 
 The terms library and framework are often used interchangeably in software development, but they
 serve different purposes and have distinct characteristics.
@@ -169,7 +169,7 @@ serve different purposes and have distinct characteristics.
 | **Nature**       | Libraries are passive in nature. They wait for the application's code to invoke their methods.                                                                                                                             | Frameworks are active and have a predefined flow of their own. The developer fills in specific pieces of the framework with their own code.                                                                                                                                          |
 | **Example**      | Imagine you're building a house. A library would be like a toolbox with tools (functions) that you can use at will. You decide when and where to use each tool.                                                            | Using the house-building analogy, a framework would be like a prefabricated house where the main structure is already built. You're tasked with filling in the interiors and decor, but you have to follow the design and architecture already provided by the prefabricated design. |
 
-# What is the difference between a `ratatui` (a library) and a [`tui-realm`](https://github.com/veeso/tui-realm/) (a framework)?
+## What is the difference between a `ratatui` (a library) and a [`tui-realm`](https://github.com/veeso/tui-realm/) (a framework)?
 
 While `ratatui` provides tools (widgets) for building terminal UIs, it doesn't dictate or enforce a
 specific way to structure your application. You need to decide how to best use the library in your
@@ -180,12 +180,12 @@ should be structured or how data flows through it. And, for the price of that fr
 features out of the box with `tui-realm` and potentially lesser code in your application to do the
 same thing that you would with `ratatui`.
 
-# What is the difference between `ratatui` and `cursive`?
+## What is the difference between `ratatui` and `cursive`?
 
 [Cursive](https://github.com/gyscos/cursive) and Ratatui are both libraries that make TUIs easier to
 write. Both libraries are great! Both also work on linux, macOS and windows.
 
-## Cursive
+### Cursive
 
 Cursive uses a more declarative UI: the user defines the layout, then cursive handles the event
 loop. Cursive also handles most input (including mouse clicks), and forwards events to the currently
@@ -214,7 +214,7 @@ fn main() {
 
 ![](https://user-images.githubusercontent.com/1813121/271896508-d5f6192c-d51b-4299-9b5e-9d91e4618f64.png)
 
-## Ratatui
+### Ratatui
 
 In Ratatui, the user handles the event loop, the application state, and re-draws the entire UI on
 each iteration. It does not handle input and users have use another library (like
@@ -293,7 +293,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 You may have to write more code but you get precise control over exact UI you want to display with
 Ratatui.
 
-# Can you change font size in a terminal using `ratatui`?
+## Can you change font size in a terminal using `ratatui`?
 
 `ratatui` itself doesn't control the terminal's font size. `ratatui` renders content based on the
 size and capabilities of the terminal it's running in. If you want to change the font size, you'll
@@ -348,7 +348,7 @@ lines. Here's an example using [`tui-big-text`](https://github.com/joshka/tui-bi
 
 ![[tui-big-text](https://github.com/joshka/tui-big-text/)](https://camo.githubusercontent.com/3a738ce21da3ae67660181538ef27473b86bebca73f42944e8012d52f86e500d/68747470733a2f2f7668732e636861726d2e73682f7668732d3364545474724c6b79553534684e61683232504152392e676966)
 
-# Can you use multiple `terminal.draw()` calls consequently?
+## Can you use multiple `terminal.draw()` calls consequently?
 
 You _cannot_ use `terminal.draw()` multiple times in the same `main` loop.
 
@@ -385,7 +385,7 @@ You want to write the code like this instead:
   }
 ```
 
-# Should I use `stdout` or `stderr`?
+## Should I use `stdout` or `stderr`?
 
 When using `crossterm`, application developers have the option of rendering to `stdout` or `stderr`.
 

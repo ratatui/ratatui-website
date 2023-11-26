@@ -39,17 +39,11 @@ loop {
 [This article](https://caseymuratori.com/blog_0001) and the accompanying YouTube video is worth your
 time if you are new to the immediate mode rendering paradigm.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Z1qyvQsjK5Y?si=eiBHXiXIo3Z0u2zs"
- title="YouTube video player" frameborder="0"
- allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
- allowfullscreen></iframe>
+https://www.youtube.com/watch?v=Z1qyvQsjK5Y
 
 This 4 minute talk about `IMGUI` is also tangentially relevant.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LSRJ1jZq90k?si=8NB5yiZ8IGS_QE_E"
- title="YouTube video player" frameborder="0"
- allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
- allowfullscreen></iframe>
+https://www.youtube.com/watch?v=LSRJ1jZq90k
 
 ### Advantages of Immediate Mode Rendering
 

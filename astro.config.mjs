@@ -6,6 +6,7 @@ import remarkIncludeCode from "/src/plugin/remark-code-import";
 import emoji from "remark-emoji";
 import { remarkKroki } from "remark-kroki";
 import tailwind from "@astrojs/tailwind";
+import remarkYoutube from "remark-youtube";
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,6 +25,7 @@ export default defineConfig({
           output: "inline-svg",
         },
       ],
+      remarkYoutube,
     ],
   },
   integrations: [
@@ -250,6 +252,10 @@ export default defineConfig({
               ],
             },
           ],
+        },
+        {
+          label: "Showcase",
+          link: "/showcase",
         },
         {
           label: "FAQ",

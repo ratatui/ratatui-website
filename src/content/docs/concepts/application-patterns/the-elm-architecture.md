@@ -1,5 +1,5 @@
 ---
-title: Using The Elm Architecture (TEA) with `ratatui`
+title: Using The Elm Architecture (TEA)
 ---
 
 When building terminal user interfaces (TUI) with `ratatui`, it's helpful to have a solid structure
