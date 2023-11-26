@@ -33,6 +33,11 @@ export default defineConfig({
     starlight({
       title: "Ratatui",
       customCss: ["/src/tailwind.css"],
+      logo: {
+        src: "./src/assets/logo.png",
+        replacesTitle: true,
+      },
+      favicon: "./src/assets/logo.png",
       social: {
         github: "https://github.com/ratatui-org/ratatui",
       },
