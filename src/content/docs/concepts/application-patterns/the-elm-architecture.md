@@ -26,7 +26,7 @@ At its core, TEA is split into three main components:
 - **View**: This function is responsible for displaying your model to the user. In Elm, it produces
   HTML. In our case, it'll produce terminal UI elements.
 
-```mermaid
+```kroki type=mermaid
 sequenceDiagram
 participant User
 participant TUI Application
@@ -178,7 +178,7 @@ series of interconnected events.
 
 Here's a state transition diagram of the counter example from above:
 
-```mermaid
+```kroki type=mermaid
 stateDiagram-v2
     state Model {
         counter : counter = 0

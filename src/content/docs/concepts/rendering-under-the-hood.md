@@ -7,7 +7,7 @@ does that really mean? And how is it implemented? In this section, we will discu
 renders a widget to the screen, starting with the `Terminal`'s `draw` method and ending with your
 chosen backend library.
 
-## Overview
+## Introduction
 
 To render an UI in Ratatui, your application calls the [`Terminal::draw()`] method. This method
 takes a [closure] which accepts an instance of [`Frame`]. Inside the `draw` method, applications can
@@ -98,7 +98,7 @@ example above, widgets interact with these `Cell`s using `Buffer` methods.
 
 Here's a visual representation of a `Buffer` that is 12 `Cell`s wide and 4 `Cell`s tall.
 
-```
+```kroki type=svgbob
         0     1     2     3     4     5     6     7     8     9    10    11
      ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
    0 │  H  │  e  │  l  │  l  │  o  │     │  W  │  o  │  r  │  l  │  d  │  !  │
@@ -192,7 +192,7 @@ that is passed to the closure provided by the application. The closure draws eac
 buffer by calling the `Frame::render_widget`, which in turn calls each widget's render method.
 Finally, Ratatui writes the contents of the buffer to the terminal.
 
-```mermaid
+```kroki type=mermaid
 sequenceDiagram
     participant A as App
     participant C as Crossterm

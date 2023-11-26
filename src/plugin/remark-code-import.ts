@@ -20,7 +20,6 @@ const remarkIncludeCode = () => {
         // {{#include filepath[:anchor]}}
         //
         // Explanation of the regex pattern:
-        // /\{\{#include (.*?)(?::(.*?))?\}\}/g
         //
         // \{ - Escapes the '{' character because it has a special meaning in regex.
         //     We need two \{ to represent the two '{' in our target string.
@@ -65,42 +64,36 @@ const remarkIncludeCode = () => {
             let fileContent = fs.readFileSync(fullPath, "utf8");
             // If an anchor is specified, extract the relevant section from the file
             if (anchor) {
-              // Regular expression to match a specific anchored section in the file content.
+              // Regular expression for extracting a section of content based on anchors in a file.
               //
               // Explanation of the regex pattern:
-              // /{2,} ANCHOR: ${anchor} - Matches the start anchor comment in the file.
-              //                       This part of the regex dynamically inserts the value of
-              //                       the `anchor` variable, allowing it to match a specific
-              //                       anchor name. For example, if `anchor` is "setup", it
-              //                       will match "// ANCHOR: setup" or "////// ANCHOR: setup".
               //
-              // (\\s*[\\s\\S]*?) - This is a capturing group that matches the content between
-              //                    the start and end anchors:
-              //   \\s*           - Matches any whitespace characters (including none), ensuring
-              //                    that the capture starts even if there is space after the
-              //                    "// ANCHOR: ${anchor}" comment.
-              //   [\\s\\S]*?     - A non-greedy match for any character (including newlines):
-              //     [\\s\\S]     - Matches any character. \\s is any whitespace character, and
-              //                    \\S is any non-whitespace character. Together, [\\s\\S] is
-              //                    a character class that matches absolutely any character.
-              //     *?           - The non-greedy quantifier, ensuring it captures the smallest
-              //                    amount of content until it reaches the end anchor.
+              // `\\s*/{2,} ANCHOR: ${anchor}\\n{1,}` - This part matches the start of the anchored section:
+              //   \\s*        - Matches any whitespace characters (including none) before the anchor comment.
+              //   /{2,}       - Matches two or more forward slashes, accommodating different comment styles.
+              //   ANCHOR:     - Matches the literal string " ANCHOR:" which precedes the anchor name.
+              //   ${anchor}   - Dynamically inserts the anchor name into the regex.
+              //   \\n{1,}     - Matches one or more newline characters, accommodating variations in line breaks.
               //
-              // /{2,} ANCHOR_END: ${anchor} - Matches the end anchor comment in the file, similar
-              //                           to the start anchor. This part of the regex also
-              //                           dynamically includes the `anchor` variable, ensuring
-              //                           it matches the corresponding end anchor for the
-              //                           specified start anchor.
+              // `(\\s*[\\s\\S]*?)` - This is the capturing group that matches the content of the anchored section:
+              //   \\s*        - Matches any whitespace characters (including none) at the beginning of the content.
+              //   [\\s\\S]*?  - A non-greedy match for any characters (including newlines). This captures the
+              //                 content until it reaches the end anchor comment.
               //
-              // "m" - Multiline flag, allowing '^' and '$' to match start and end of lines, not
-              //       just start and end of string. This is important for matching anchors that
-              //       are not at the very start or end of the file content.
+              // `\\n{1,}\\s*/{2,} ANCHOR_END: ${anchor}` - This part matches the end of the anchored section:
+              //   \\n{1,}     - Matches one or more newline characters before the end anchor comment.
+              //   \\s*        - Matches any whitespace characters (including none) before the end anchor comment.
+              //   /{2,}       - Matches two or more forward slashes, similar to the start anchor.
+              //   ANCHOR_END: - Matches the literal string " ANCHOR_END:" which precedes the anchor name.
+              //   ${anchor}   - Dynamically inserts the anchor name, ensuring it matches the corresponding start anchor.
               //
-              // This regular expression is used to extract a section of text from a file that
-              // is marked by specific start and end anchor comments, allowing for selective
-              // inclusion of file content based on these anchors.
+              // The "m" flag (multiline) allows '^' and '$' to match the start and end of lines, not just the start
+              // and end of the string. This is important for matching anchors that are not at the very start or end
+              // of the file content.
+              //
+              // This regex is designed to be flexible with line endings and whitespace, accommodating variations in file formatting.
               const anchorRegex = new RegExp(
-                `/{2,} ANCHOR: ${anchor}\n(\\s*[\\s\\S]*?)\n/{2,} ANCHOR_END: ${anchor}`,
+                `\\s*/{2,} ANCHOR: ${anchor}\\n{1,}(\\s*[\\s\\S]*?)\\n{1,}\\s*/{2,} ANCHOR_END: ${anchor}`,
                 "m",
               );
               const anchoredContent = fileContent.match(anchorRegex);

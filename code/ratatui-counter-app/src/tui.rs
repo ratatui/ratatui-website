@@ -56,7 +56,7 @@ impl Tui {
 
   ///// ANCHOR_END: tui_enter
 
-  ///// ANCHOR: tui_draw
+  ///// ANCHOR: tuidraw
   /// [`Draw`] the terminal interface by [`rendering`] the widgets.
   ///
   /// [`Draw`]: tui::Terminal::draw
@@ -66,7 +66,7 @@ impl Tui {
     Ok(())
   }
 
-  ///// ANCHOR_END: tui_draw
+  ///// ANCHOR_END: tuidraw
 
   ///// ANCHOR: tui_exit
   /// Resets the terminal interface.

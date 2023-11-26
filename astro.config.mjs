@@ -4,7 +4,7 @@ import starlightLinksValidator from "starlight-links-validator";
 import remarkMermaid from "astro-diagram/remark-mermaid";
 import remarkIncludeCode from "/src/plugin/remark-code-import";
 import emoji from "remark-emoji";
-
+import { remarkKroki } from "remark-kroki";
 import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
@@ -14,7 +14,17 @@ export default defineConfig({
   // remove this when switching to ratatui.rs
   base: "/ratatui-website",
   markdown: {
-    remarkPlugins: [remarkIncludeCode, emoji],
+    remarkPlugins: [
+      remarkIncludeCode,
+      emoji,
+      [
+        remarkKroki,
+        {
+          server: "https://kroki.io/",
+          output: "inline-svg",
+        },
+      ],
+    ],
   },
   integrations: [
     starlightLinksValidator(),

@@ -18,23 +18,23 @@ Take this "hello world" program below. If we run it with and without the
 you can see how the program behaves differently.
 
 ```rust
-# use std::{
-#   io::{stderr, Result},
-#   thread::sleep,
-#   time::Duration,
-# };
-#
-# use crossterm::{
-#   terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-#   ExecutableCommand,
-# };
-# use ratatui::{prelude::*, widgets::*};
-#
-# fn main() -> Result<()> {
-#   let should_enter_alternate_screen = std::env::args().nth(1).unwrap().parse::<bool>().unwrap();
-#   if should_enter_alternate_screen {
+use std::{ // hide_line
+  io::{stderr, Result}, // hide_line
+  thread::sleep, // hide_line
+  time::Duration, // hide_line
+}; // hide_line
+// hide_line
+use crossterm::{ // hide_line
+  terminal::{EnterAlternateScreen, LeaveAlternateScreen}, // hide_line
+  ExecutableCommand, // hide_line
+}; // hide_line
+use ratatui::{prelude::*, widgets::*}; // hide_line
+// hide_line
+fn main() -> Result<()> { // hide_line
+  let should_enter_alternate_screen = std::env::args().nth(1).unwrap().parse::<bool>().unwrap(); // hide_line
+  if should_enter_alternate_screen { // hide_line
   stderr().execute(EnterAlternateScreen)?; // remove this line
-#   }
+  } // hide_line
 
   let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
 
@@ -43,11 +43,11 @@ you can see how the program behaves differently.
   })?;
   sleep(Duration::from_secs(2));
 
-#   if should_enter_alternate_screen {
+  if should_enter_alternate_screen { // hide_line
   stderr().execute(LeaveAlternateScreen)?; // remove this line
-#   }
-#   Ok(())
-# }
+  } // hide_line
+  Ok(()) // hide_line
+} // hide_line
 ```
 
 <!--

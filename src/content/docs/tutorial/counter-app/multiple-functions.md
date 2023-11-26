@@ -313,7 +313,7 @@ fn main() -> Result<()> {
 
 Here's a flow chart representation of the various steps in the program:
 
-```mermaid
+```kroki type=mermaid
 graph TD
     MainRun[Main: Run];
     CheckEvent[Main: Poll KeyPress];
