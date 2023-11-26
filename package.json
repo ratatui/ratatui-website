@@ -14,8 +14,6 @@
     "@astrojs/starlight": "^0.13.0",
     "@astrojs/starlight-tailwind": "^2.0.1",
     "@astrojs/tailwind": "^5.0.2",
-    "@mermaid-js/mermaid-cli": "^9.3.0",
-    "@southball/remark-mermaid": "^0.5.0",
     "astro": "^3.2.3",
     "astro-diagram": "^0.7.0",
     "mermaid": "^10.6.1",

@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
-import remarkMermaid from "@southball/remark-mermaid";
+import remarkMermaid from "astro-diagram/remark-mermaid";
 import remarkIncludeCode from "/src/plugin/remark-code-import";
 import emoji from "remark-emoji";
 
@@ -9,16 +9,12 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://ratatui-org.github.io",
   // change this when switching to ratatui.rs
-  base: "/ratatui-website",
+  site: "https://ratatui-org.github.io",
   // remove this when switching to ratatui.rs
+  base: "/ratatui-website",
   markdown: {
-    remarkPlugins: [
-      remarkIncludeCode,
-      // remarkMermaid,
-      emoji,
-    ],
+    remarkPlugins: [remarkIncludeCode, emoji],
   },
   integrations: [
     starlightLinksValidator(),
