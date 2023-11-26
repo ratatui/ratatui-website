@@ -73,10 +73,8 @@ If this sounds too complex, we're looking for some help to make this easier in
 The full code for this example is available at
 <https://github.com/ratatui-org/ratatui-book/code/how-to-collapse-borders>
 
-<details><summary>Full ui() function</summary>
+Full `ui()` function:
 
 ```rust
 {{#include @code/how-to-collapse-borders/src/bin/solution.rs:ui}}
 ```
-
-</details>

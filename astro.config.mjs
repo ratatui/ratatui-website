@@ -2,7 +2,7 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import starlightLinksValidator from "starlight-links-validator";
 import remarkMermaid from "@southball/remark-mermaid";
-import remarkIncludeCode from "./src/plugin/remark-code-import";
+import remarkIncludeCode from "/src/plugin/remark-code-import";
 import emoji from "remark-emoji";
 
 // https://astro.build/config
@@ -70,33 +70,40 @@ export default defineConfig({
           label: "Concepts",
           items: [
             {
-              label: "Rendering",
-              link: "./concepts/rendering",
-              items: [
-                {
-                  label: "Under the hood",
-                  link: "./concepts/rendering-under-the-hood",
-                },
-              ],
+              label: "Layout",
+              link: "/concepts/layout",
             },
             {
-              label: "Layout",
-              link: "./concepts/layout",
+              label: "Event Handling",
+              link: "/concepts/event-handling",
+            },
+            {
+              label: "Rendering",
+              items: [
+                {
+                  label: "Introduction",
+                  link: "/concepts/rendering",
+                },
+                {
+                  label: "Under the hood",
+                  link: "/concepts/rendering-under-the-hood",
+                },
+              ],
             },
             {
               label: "Application Patterns",
               items: [
                 {
                   label: "The Elm Architecture",
-                  link: "./concepts/application-patterns/the-elm-architecture",
+                  link: "/concepts/application-patterns/the-elm-architecture",
                 },
                 {
                   label: "Component Architecture",
-                  link: "./concepts/application-patterns/component-architecture",
+                  link: "/concepts/application-patterns/component-architecture",
                 },
                 {
                   label: "Flux Architecture",
-                  link: "./concepts/application-patterns/flux-architecture",
+                  link: "/concepts/application-patterns/flux-architecture",
                 },
               ],
             },
@@ -105,25 +112,21 @@ export default defineConfig({
               items: [
                 {
                   label: "Comparison",
-                  link: "./concepts/backends/comparison",
+                  link: "/concepts/backends/comparison",
                 },
                 {
                   label: "Raw Mode",
-                  link: "./concepts/backends/raw-mode",
+                  link: "/concepts/backends/raw-mode",
                 },
                 {
                   label: "Alternate Screen",
-                  link: "./concepts/backends/alternate-screen",
+                  link: "/concepts/backends/alternate-screen",
                 },
                 {
                   label: "Mouse Capture",
-                  link: "./concepts/backends/mouse-capture",
+                  link: "/concepts/backends/mouse-capture",
                 },
               ],
-            },
-            {
-              label: "Event Handling",
-              link: "./concepts/event-handling",
             },
           ],
         },
@@ -135,15 +138,15 @@ export default defineConfig({
               items: [
                 {
                   label: "Dynamic Layouts",
-                  link: "./how-to/layout/dynamic",
+                  link: "/how-to/layout/dynamic",
                 },
                 {
                   label: "Center a Rect",
-                  link: "./how-to/layout/center-a-rect",
+                  link: "/how-to/layout/center-a-rect",
                 },
                 {
                   label: "Collapse Borders",
-                  link: "./how-to/layout/collapse-borders",
+                  link: "/how-to/layout/collapse-borders",
                 },
               ],
             },
@@ -152,15 +155,15 @@ export default defineConfig({
               items: [
                 {
                   label: "Display Text",
-                  link: "./how-to/render/display-text",
+                  link: "/how-to/render/display-text",
                 },
                 {
                   label: "Style Text",
-                  link: "./how-to/render/style-text",
+                  link: "/how-to/render/style-text",
                 },
                 {
                   label: "Overwrite Regions",
-                  link: "./how-to/render/overwrite-regions",
+                  link: "/how-to/render/overwrite-regions",
                 },
               ],
             },
@@ -169,15 +172,15 @@ export default defineConfig({
               items: [
                 {
                   label: "Paragraph",
-                  link: "./how-to/widgets/paragraph",
+                  link: "/how-to/widgets/paragraph",
                 },
                 {
                   label: "Block",
-                  link: "./how-to/widgets/block",
+                  link: "/how-to/widgets/block",
                 },
                 {
                   label: "Custom",
-                  link: "./how-to/widgets/custom",
+                  link: "/how-to/widgets/custom",
                 },
               ],
             },
@@ -186,33 +189,79 @@ export default defineConfig({
               items: [
                 {
                   label: "CLI arguments",
-                  link: "./how-to/develop-apps/cli-arguments"
+                  link: "/how-to/develop-apps/cli-arguments",
                 },
                 {
                   label: "Configuration Directories",
-                  link: "./how-to/develop-apps/config-directories",
+                  link: "/how-to/develop-apps/config-directories",
                 },
                 {
                   label: "Logging with Tracing",
-                  link: "./how-to/develop-apps/logging-with-tracing"
+                  link: "/how-to/develop-apps/logging-with-tracing",
                 },
                 {
                   label: "Async Terminal and Event handler",
-                  link: "./how-to/develop-apps/abstract-terminal-and-event-handler",
+                  link: "/how-to/develop-apps/abstract-terminal-and-event-handler",
                 },
                 {
                   label: "Setup Panic Hooks",
-                  link: "./how-to/develop-apps/setup-panic-hooks"
+                  link: "/how-to/develop-apps/setup-panic-hooks",
                 },
                 {
                   label: "Better Panic Hooks",
-                  link: "./how-to/develop-apps/better-panic-hooks"
+                  link: "/how-to/develop-apps/better-panic-hooks",
                 },
                 {
                   label: "Migrate from tui-rs",
-                  link: "./how-to/develop-apps/migrate-from-tui-rs"
+                  link: "/how-to/develop-apps/migrate-from-tui-rs",
                 },
               ],
+            },
+          ],
+        },
+        {
+          label: "FAQ",
+          link: "/faq",
+        },
+        {
+          label: "Highlights",
+          items: [
+            {
+              label: "v0.24",
+              link: "/highlights/v024",
+            },
+            {
+              label: "v0.23",
+              link: "/highlights/v023",
+            },
+            {
+              label: "v0.22",
+              link: "/highlights/v022",
+            },
+            {
+              label: "v0.21",
+              link: "/highlights/v021",
+            },
+          ],
+        },
+        {
+          label: "Features",
+          link: "/features",
+        },
+        {
+          label: "References",
+          link: "/references",
+        },
+        {
+          label: "Developer Guide",
+          items: [
+            {
+              label: "Ratatui",
+              link: "/developer-guide/ratatui",
+            },
+            {
+              label: "Website",
+              link: "/developer-guide/website",
             },
           ],
         },

@@ -1,5 +1,5 @@
 ---
-title: Better Panic Hooks using `better-panic`, `color-eyre` and `human-panic`
+title: "Better Panic Hooks"
 ---
 
 Your application may panic for a number of reasons (e.g. when you call `.unwrap()` on a `None`). And
