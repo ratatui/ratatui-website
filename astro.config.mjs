@@ -32,7 +32,7 @@ export default defineConfig({
     starlightLinksValidator(),
     starlight({
       title: "Ratatui",
-      customCss: ["./src/tailwind.css"],
+      customCss: ["/src/tailwind.css"],
       social: {
         github: "https://github.com/ratatui-org/ratatui",
       },
@@ -102,17 +102,21 @@ export default defineConfig({
               label: "JSON Editor",
               items: [
                 {
-                  label: "App.rs - Holding application state",
+                  label: "Introduction",
+                  link: "/tutorial/json-editor",
+                },
+                {
+                  label: "App.rs",
                   link: "/tutorial/json-editor/app",
                 },
                 {
-                  label: "Main.rs - UI loop and event handling",
+                  label: "Main.rs",
                   link: "/tutorial/json-editor/main",
                 },
                 {
-                  label: "Ui.rs - Layouts, widgets, frames, oh my!",
-                  link: "/tutorial/json-editor/ui",
+                  label: "Ui.rs",
                   items: [
+                    { label: "UI", link: "/tutorial/json-editor/ui" },
                     { label: "Ui.rs - Main", link: "/tutorial/json-editor/ui-main" },
                     { label: "Ui.rs - Editing", link: "/tutorial/json-editor/ui-editing" },
                     { label: "Ui.rs - Exit", link: "/tutorial/json-editor/ui-exit" },
@@ -121,6 +125,35 @@ export default defineConfig({
                 {
                   label: "Conclusion",
                   link: "/tutorial/json-editor/closing-thoughts",
+                },
+              ],
+            },
+            {
+              label: "Async Counter App",
+              items: [
+                {
+                  label: "Introduction",
+                  link: "/tutorial/counter-async-app",
+                },
+                {
+                  label: "Async KeyEvents",
+                  link: "/tutorial/counter-async-app/async-event-stream",
+                },
+                {
+                  label: "Async Render",
+                  link: "/tutorial/counter-async-app/full-async-events",
+                },
+                {
+                  label: "Introducing Actions",
+                  link: "/tutorial/counter-async-app/actions",
+                },
+                {
+                  label: "Async Actions",
+                  link: "/tutorial/counter-async-app/full-async-actions",
+                },
+                {
+                  label: "Conclusion",
+                  link: "/tutorial/counter-async-app/conclusion",
                 },
               ],
             },
