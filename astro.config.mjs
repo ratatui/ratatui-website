@@ -65,6 +65,67 @@ export default defineConfig({
               ]
             }],
         },
+        {
+          label: 'Concepts',
+          items: [
+            {
+              label: 'Rendering',
+              link: './concepts/rendering',
+              items: [
+                {
+                  label: 'Under the hood',
+                  link: './concepts/rendering-under-the-hood'
+                }
+              ]
+            },
+            {
+              label: 'Layout',
+              link: './concepts/layout'
+            },
+            {
+              label: 'Application Patterns',
+              items: [
+                {
+                  label: 'The Elm Architecture',
+                  link: './concepts/application-patterns/the-elm-architecture'
+                },
+                {
+                  label: 'Component Architecture',
+                  link: './concepts/application-patterns/component-architecture'
+                },
+                {
+                  label: 'Flux Architecture',
+                  link: './concepts/application-patterns/flux-architecture'
+                }
+              ]
+            },
+            {
+              label: 'Backends',
+              items: [
+                {
+                  label: 'Comparison',
+                  link: './concepts/backends/comparison'
+                },
+                {
+                  label: 'Raw Mode',
+                  link: './concepts/backends/raw-mode'
+                },
+                {
+                  label: 'Alternate Screen',
+                  link: './concepts/backends/alternate-screen'
+                },
+                {
+                  label: 'Mouse Capture',
+                  link: './concepts/backends/mouse-capture'
+                }
+              ]
+            },
+            {
+              label: 'Event Handling',
+              link: './concepts/event_handling'
+            }
+          ]
+        }
       ],
       editLink: {
         baseUrl: 'https://github.com/ratatui-org/ratatui-website/edit/main/',
