@@ -44,12 +44,23 @@ const remarkIncludeCode = () => {
         // "{{#include path/to/file}}" - Matches and captures "path/to/file" as the filepath.
         // "{{#include path/to/file:anchorName}}" - Matches and captures "path/to/file" as the filepath
         //                                          and "anchorName" as the anchor.
+        // "{{#include ../../path/to/file}}" - relative path to file from current markdown file
+        // "{{#include @path/to/file}}" - path to file from root directory
         const includeRegex = /\{\{#include (.*?)(?::(.*?))?\}\}/g;
         let match;
+        // There can be multiple includes in a code block
+        // Perform matches one by one, replacing text in AST along the way
         while ((match = includeRegex.exec(node.value)) !== null) {
           const filePath = match[1];
           const anchor = match[2];
-          const fullPath = path.resolve(path.dirname(file.path), filePath);
+          let fullPath;
+          if (filePath.startsWith("@")) {
+            // Inspired by astro aliases: https://docs.astro.build/en/guides/aliases/
+            // Allows for specifying path from root directory
+            fullPath = filePath.replace("@", "./");
+          } else {
+            fullPath = path.resolve(path.dirname(file.path), filePath);
+          }
           try {
             let fileContent = fs.readFileSync(fullPath, "utf8");
             // If an anchor is specified, extract the relevant section from the file
