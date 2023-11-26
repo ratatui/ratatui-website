@@ -1,5 +1,5 @@
 ---
-title: Async `Tui` with `Terminal` and `EventHandler` using `tokio` and `crossterm`
+title: Tui with Terminal and EventHandler
 ---
 
 If you want a `Tui` struct:

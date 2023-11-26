@@ -226,8 +226,8 @@ export default defineConfig({
                   link: "/how-to/develop-apps/logging-with-tracing",
                 },
                 {
-                  label: "Async Terminal and Event handler",
-                  link: "/how-to/develop-apps/abstract-terminal-and-event-handler",
+                  label: "Terminal and Event handler",
+                  link: "/how-to/develop-apps/terminal-and-event-handler",
                 },
                 {
                   label: "Setup Panic Hooks",
