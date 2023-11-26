@@ -270,7 +270,7 @@ pub enum Action {
         Char('j') =&gt; Action::Increment,
         Char('k') =&gt; Action::Decrement,
         Char('J') =&gt; Action::NetworkRequestAndThenIncrement, // new
-        Char('K') =&gt; Action::NetworkRequestAndThenIncrement, // new
+        Char('K') =&gt; Action::NetworkRequestAndThenDecrement, // new
         Char('q') =&gt; Action::Quit,
         _ =&gt; Action::None,
       }
@@ -364,7 +364,7 @@ fn get_action(_app: &amp;App, event: Event) -&gt; Action {
         Char('j') =&gt; Action::Increment,
         Char('k') =&gt; Action::Decrement,
         Char('J') =&gt; Action::NetworkRequestAndThenIncrement, // new
-        Char('K') =&gt; Action::NetworkRequestAndThenIncrement, // new
+        Char('K') =&gt; Action::NetworkRequestAndThenDecrement, // new
         Char('q') =&gt; Action::Quit,
         _ =&gt; Action::None,
       }
