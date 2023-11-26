@@ -127,6 +127,95 @@ export default defineConfig({
             },
           ],
         },
+        {
+          label: "How To",
+          items: [
+            {
+              label: "Layout UIs",
+              items: [
+                {
+                  label: "Dynamic Layouts",
+                  link: "./how-to/layout/dynamic",
+                },
+                {
+                  label: "Center a Rect",
+                  link: "./how-to/layout/center-a-rect",
+                },
+                {
+                  label: "Collapse Borders",
+                  link: "./how-to/layout/collapse-borders",
+                },
+              ],
+            },
+            {
+              label: "Render UIs",
+              items: [
+                {
+                  label: "Display Text",
+                  link: "./how-to/render/display-text",
+                },
+                {
+                  label: "Style Text",
+                  link: "./how-to/render/style-text",
+                },
+                {
+                  label: "Overwrite Regions",
+                  link: "./how-to/render/overwrite-regions",
+                },
+              ],
+            },
+            {
+              label: "Use Widgets",
+              items: [
+                {
+                  label: "Paragraph",
+                  link: "./how-to/widgets/paragraph",
+                },
+                {
+                  label: "Block",
+                  link: "./how-to/widgets/block",
+                },
+                {
+                  label: "Custom",
+                  link: "./how-to/widgets/custom",
+                },
+              ],
+            },
+            {
+              label: "Develop Applications",
+              items: [
+                {
+                  label: "CLI arguments",
+                  link: "./how-to/develop-apps/cli-arguments"
+                },
+                {
+                  label: "Configuration Directories",
+                  link: "./how-to/develop-apps/config-directories",
+                },
+                {
+                  label: "Logging with Tracing",
+                  link: "./how-to/develop-apps/logging-with-tracing"
+                },
+                {
+                  label: "Async Terminal and Event handler",
+                  link: "./how-to/develop-apps/abstract-terminal-and-event-handler",
+                },
+                {
+                  label: "Setup Panic Hooks",
+                  link: "./how-to/develop-apps/setup-panic-hooks"
+                },
+                {
+                  label: "Better Panic Hooks",
+                  link: "./how-to/develop-apps/better-panic-hooks"
+                },
+                {
+                  label: "Migrate from tui-rs",
+                  link: "./how-to/develop-apps/migrate-from-tui-rs"
+                },
+              ],
+            },
+          ],
+        },
       ],
       editLink: {
         baseUrl: "https://github.com/ratatui-org/ratatui-website/edit/main/",

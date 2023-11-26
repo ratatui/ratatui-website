@@ -8,14 +8,14 @@ Most applications will have a main run loop like this:
 fn main() -> Result<()> {
   crossterm::terminal::enable_raw_mode()?; // enter raw mode
   crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
-#   let mut app = App::new();
-#   let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+  let mut app = App::new(); // hide_line
+  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;  // hide_line
   // --snip--
   loop {
     // --snip--
-#     terminal.draw(|f| { // <- `terminal.draw` is the only ratatui function here
-#       ui(app, f) // render state to terminal
-#     })?;
+    terminal.draw(|f| { // <- `terminal.draw` is the only ratatui function here // hide_line
+      ui(app, f) // render state to terminal // hide_line
+    })?;
   }
   crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
   crossterm::terminal::disable_raw_mode()?; // exit raw mode
@@ -31,13 +31,13 @@ In the tutorials up until now, we have been using `crossterm::event::poll()` and
 `crossterm::event::read()`, like so:
 
 ```rust
-# fn main() -> Result {
-#   let mut app = App::new();
-#
-#   let mut t = Tui::new()?;
-#
-#   t.enter()?;
-#
+fn main() -> Result { // hide_line
+  let mut app = App::new(); // hide_line
+ // hide_line
+  let mut t = Tui::new()?; // hide_line
+ // hide_line
+  t.enter()?; // hide_line
+ // hide_line
   loop {
     // crossterm::event::poll() here will block for a maximum 250ms
     // will return true as soon as key is available to read
@@ -63,11 +63,11 @@ In the tutorials up until now, we have been using `crossterm::event::poll()` and
       ui(app, f)
     })?;
   }
-#
-#   t.exit()?;
-#
-#   Ok(())
-# }
+ // hide_line
+   t.exit()?; // hide_line
+ // hide_line
+   Ok(()) // hide_line
+ } // hide_line
 ```
 
 `crossterm::event::poll()` blocks till a key is received on `stdin`, at which point it returns
