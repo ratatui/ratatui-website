@@ -63,7 +63,7 @@ fn get_action(_app: &App, event: Event) -> Action {
                 Char('j') => Action::Increment,
                 Char('k') => Action::Decrement,
                 Char('J') => Action::NetworkRequestAndThenIncrement, // new
-                Char('K') => Action::NetworkRequestAndThenIncrement, // new
+                Char('K') => Action::NetworkRequestAndThenDecrement, // new
                 Char('q') => Action::Quit,
                 _ => Action::None,
             }
