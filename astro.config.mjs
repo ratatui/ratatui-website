@@ -98,6 +98,32 @@ export default defineConfig({
                 },
               ],
             },
+            {
+              label: "JSON Editor",
+              items: [
+                {
+                  label: "App.rs - Holding application state",
+                  link: "/tutorial/json-editor/app",
+                },
+                {
+                  label: "Main.rs - UI loop and event handling",
+                  link: "/tutorial/json-editor/main",
+                },
+                {
+                  label: "Ui.rs - Layouts, widgets, frames, oh my!",
+                  link: "/tutorial/json-editor/ui",
+                  items: [
+                    { label: "Ui.rs - Main", link: "/tutorial/json-editor/ui-main" },
+                    { label: "Ui.rs - Editing", link: "/tutorial/json-editor/ui-editing" },
+                    { label: "Ui.rs - Exit", link: "/tutorial/json-editor/ui-exit" },
+                  ],
+                },
+                {
+                  label: "Conclusion",
+                  link: "/tutorial/json-editor/closing-thoughts",
+                },
+              ],
+            },
           ],
         },
         {
