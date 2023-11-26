@@ -122,7 +122,7 @@ export default defineConfig({
             },
             {
               label: 'Event Handling',
-              link: './concepts/event_handling'
+              link: './concepts/event-handling'
             }
           ]
         }
