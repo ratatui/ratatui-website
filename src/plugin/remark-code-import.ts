@@ -102,7 +102,7 @@ const remarkIncludeCode = () => {
               // is marked by specific start and end anchor comments, allowing for selective
               // inclusion of file content based on these anchors.
               const anchorRegex = new RegExp(
-                `// ANCHOR: ${anchor}(\\s*[\\s\\S]*?)// ANCHOR_END: ${anchor}`,
+                `/{2,} ANCHOR: ${anchor}\n(\\s*[\\s\\S]*?)\n/{2,} ANCHOR_END: ${anchor}`,
                 "m",
               );
               const anchoredContent = fileContent.match(anchorRegex);
@@ -113,17 +113,13 @@ const remarkIncludeCode = () => {
             // Remove lines containing start and end anchor comments
             fileContent = fileContent
               .split("\n")
-              .filter((line) => !line.includes("// ANCHOR: "))
-              .join("\n");
-            fileContent = fileContent
-              .split("\n")
-              .filter((line) => !line.includes("// ANCHOR_END: "))
+              .filter((line) => !line.includes("// ANCHOR: ") && !line.includes("// ANCHOR_END: "))
               .join("\n");
             // Replace the include directive with the indented file content
             node.value = node.value.replace(match[0], fileContent);
           } catch (err) {
             if (err instanceof Error) {
-              console.error(`Error reading file '${fullPath}': ${err.message}`);
+              throw new Error(`Error reading file '${fullPath}': ${err.message}`);
             }
           }
         }
