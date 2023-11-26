@@ -3,8 +3,8 @@ title: Main.rs
 ---
 
 The `main` file in many ratatui applications is simply a place to store the startup loop, and
-occasionally event handling. (See more ways to handle events in
-[Event Handling](../../concepts/event_handling.md)))
+occasionally event handling. See more ways to handle events in
+[Event Handling](../../concepts/event_handling)
 
 In this application, we will be using our `main` function to run the startup steps, and start the
 main loop. We will also put our main loop logic and event handling in this file.

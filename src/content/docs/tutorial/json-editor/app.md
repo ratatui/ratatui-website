@@ -10,7 +10,7 @@ This struct will contain all of our "persistent" data and will be passed to any 
 to know the current state of the application.
 
 <!--
-    (Read [Application Pattern Concepts](../concepts/storing_state.md) to explore some other models)
+    (Read [Application Pattern Concepts](../concepts/storing_state) to explore some other models)
 -->
 
 ## Application modes
@@ -119,4 +119,4 @@ pairs.
 ```
 
 <!-- prettier-ignore -->
-[^note]: In ratatui, every frame draws the UI anew. See the [Rendering section](./../../concepts/rendering.md) for more information.
+[^note]: In ratatui, every frame draws the UI anew. See the [Rendering section](./../../concepts/rendering) for more information.

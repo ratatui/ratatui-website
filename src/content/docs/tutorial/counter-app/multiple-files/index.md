@@ -68,7 +68,7 @@ fn main() -> Result<()> {
 
 `color_eyre` is an error report handler for colorful, consistent, and well formatted error reports
 for all kinds of errors. Check out the
-[section](../../how-to/develop-apps/setup-panic-hooks-color-eyre.md) for setting up panic hooks with
+[section](../../how-to/develop-apps/setup-panic-hooks-color-eyre) for setting up panic hooks with
 color-eyre.
 
 :::

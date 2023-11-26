@@ -14,7 +14,7 @@ We also have a `ratatui-async-template` that has an example of this `Component` 
 
 - <https://github.com/ratatui-org/ratatui-async-template>
 
-We already covered [TEA](./the-elm-architecture.md) in the previous section. The `Component`
+We already covered [TEA](./the-elm-architecture) in the previous section. The `Component`
 architecture takes a slightly more object oriented trait based approach.
 
 Each component encapsulates its own state, event handlers, and rendering logic.

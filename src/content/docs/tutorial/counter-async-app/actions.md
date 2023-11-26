@@ -14,7 +14,7 @@ pattern from the excellent
 :::
 
 You can learn more about this concept in
-[The Elm Architecture section](../../concepts/application-patterns/the-elm-architecture.md) of the
+[The Elm Architecture section](../../concepts/application-patterns/the-elm-architecture) of the
 documentation.
 
 We have learnt about enums in JSON-editor tutorial. We are going to extend the counter application

@@ -101,7 +101,7 @@ The log level is decided by the `${YOUR_CRATE_NAME}_LOGLEVEL` environment variab
 `log::LevelFilter::Info`).
 
 Additionally, the location of the log files would be decided by your environment variables. See
-[the section on XDG directories](./config-directories.md) for more information.
+[the section on XDG directories](./config-directories) for more information.
 
 :::tip
 

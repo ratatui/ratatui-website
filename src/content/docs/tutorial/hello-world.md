@@ -278,10 +278,10 @@ Can you modify the example above to exit when pressing `q` _or_ when pressing `Q
 
 [VSCode]: https://code.visualstudio.com/
 [Installation]: https://doc.rust-lang.org/book/ch01-01-installation.html
-[events]: ../../concepts/event_handling.md
-[raw mode]: ../../concepts/backends/raw-mode.md
-[alternate screen]: ../../concepts/backends/alternate-screen.md
-[backend]: ../../concepts/backends/
+[events]: ../../concepts/event_handling
+[raw mode]: ../../concepts/backends/raw-mode
+[alternate screen]: ../../concepts/backends/alternate-screen
+[backend]: ../../concepts/backends/comparison
 [Crossterm]: https://crates.io/crates/crossterm
 [Crossterm docs]: https://docs.rs/crossterm/0.27.0/crossterm/
 [`CrosstermBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.CrosstermBackend.html

@@ -31,7 +31,7 @@ pub fn initialize_panic_handler() {
 }
 ```
 
-I personally like to reuse the [`Tui`](./abstract-terminal-and-event-handler.md) struct in the panic
+I personally like to reuse the [`Tui`](./abstract-terminal-and-event-handler) struct in the panic
 handler. That way, if I ever decide to move from `crossterm` to `termion` in the future, there's one
 less place in the project that I have to worry about refactoring.
 
@@ -286,7 +286,7 @@ cargo add color-eyre human-panic libc better-panic strip-ansi-escapes
 ```
 
 Here's code you can copy paste into your project (if you use the
-[`Tui`](./abstract-terminal-and-event-handler.md) struct to handle terminal exits):
+[`Tui`](./abstract-terminal-and-event-handler) struct to handle terminal exits):
 
 ```rust
 pub fn initialize_panic_handler() -> Result<()> {
