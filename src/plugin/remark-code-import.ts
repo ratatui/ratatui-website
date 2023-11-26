@@ -68,13 +68,11 @@ const remarkIncludeCode = () => {
               // Regular expression to match a specific anchored section in the file content.
               //
               // Explanation of the regex pattern:
-              // `// ANCHOR: ${anchor}(\\s*[\\s\\S]*?)// ANCHOR_END: ${anchor}`
-              //
-              // // ANCHOR: ${anchor} - Matches the start anchor comment in the file.
+              // /{2,} ANCHOR: ${anchor} - Matches the start anchor comment in the file.
               //                       This part of the regex dynamically inserts the value of
               //                       the `anchor` variable, allowing it to match a specific
               //                       anchor name. For example, if `anchor` is "setup", it
-              //                       will match "// ANCHOR: setup".
+              //                       will match "// ANCHOR: setup" or "////// ANCHOR: setup".
               //
               // (\\s*[\\s\\S]*?) - This is a capturing group that matches the content between
               //                    the start and end anchors:
@@ -88,7 +86,7 @@ const remarkIncludeCode = () => {
               //     *?           - The non-greedy quantifier, ensuring it captures the smallest
               //                    amount of content until it reaches the end anchor.
               //
-              // // ANCHOR_END: ${anchor} - Matches the end anchor comment in the file, similar
+              // /{2,} ANCHOR_END: ${anchor} - Matches the end anchor comment in the file, similar
               //                           to the start anchor. This part of the regex also
               //                           dynamically includes the `anchor` variable, ensuring
               //                           it matches the corresponding end anchor for the
