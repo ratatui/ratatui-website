@@ -23,5 +23,5 @@ Feel free to make contributions and submit a PR if you'd like to improve the doc
 ## Some Guidelines
 
 - Prefer links from the root rather than using mulitple levels of parent links. (e.g.
-  `/concepts/backends/comparison/ instead of`../../backends/comparison/`).
+  `/concepts/backends/comparison/` instead of `../../backends/comparison/`).
 - Prefer to add the last slash on links
