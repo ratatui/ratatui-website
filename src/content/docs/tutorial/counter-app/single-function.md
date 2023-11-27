@@ -140,7 +140,7 @@ to render a widget, i.e. a `Paragraph` widget.
 
 The closure passed to the `Terminal::draw()` method must render the entire UI. Call the draw method
 at most once for each pass through your application's main loop.
-[See the FAQ for more information.](./../../faq/)
+[See the FAQ for more information.](./../../../faq)
 
 :::
 

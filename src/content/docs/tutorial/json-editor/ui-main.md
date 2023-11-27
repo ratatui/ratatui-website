@@ -22,8 +22,8 @@ corner of their space, and their size. We will use these later, after we prepare
 The title is an important piece for any application. It helps the user understand what they can do
 and where they are. To create our title, we are going to use a `Paragraph` widget (which is used to
 display only text), and we are going to tell that `Paragraph` we want a border all around it by
-giving it a `Block` with borders enabled. See [How-To: Block](../../how-to/widgets/block) and
-[How-To: Paragraph](../../how-to/widgets/paragraph) for more information about `Block` and
+giving it a `Block` with borders enabled. See [How-To: Block](../../../how-to/widgets/block) and
+[How-To: Paragraph](../../../how-to/widgets/paragraph) for more information about `Block` and
 `Paragraph`.
 
 ```rust
@@ -32,9 +32,9 @@ giving it a `Block` with borders enabled. See [How-To: Block](../../how-to/widge
 
 In this code, the first thing we do, is create a `Block` with all borders enabled, and the default
 style. Next, we created a paragraph widget with the text "Create New Json" styled green. See
-[How-To: Paragraphs](../../how-to/widgets/paragraph) for more information about creating paragraphs
-and [How-To: Styling-Text](../../how-to/render/style-text) for styling text. Finally, we call
-`render_widget` on our `Frame`, and give it the widget we want to render it, and the `Rect`
+[How-To: Paragraphs](../../../how-to/widgets/paragraph) for more information about creating
+paragraphs and [How-To: Styling-Text](../../../how-to/render/style-text) for styling text. Finally,
+we call `render_widget` on our `Frame`, and give it the widget we want to render it, and the `Rect`
 representing where it needs to go and what size it should be. (this is the way all widgets are
 drawn)
 
@@ -51,7 +51,7 @@ simply want the user to be able to see what they have already entered.
 ```
 
 For more information on Line, Span, and Style see
-[How-To: Displaying Text](../../how-to/render/display-text)
+[How-To: Displaying Text](../../../how-to/render/display-text)
 
 In this piece of the function, we create a vector of `ListItem`s, and populate it with styled and
 formatted key-value pairs. Finally, we create the `List` widget, and render it.

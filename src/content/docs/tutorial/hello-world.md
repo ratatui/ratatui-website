@@ -154,7 +154,7 @@ First let's add the module imports necessary to run our application.
 - From `std` we import the `io::Result` which most of the backend methods return, and the `stdout()`
   method.
 
-:::info
+:::note
 
 Ratatui has a [`prelude`](https://docs.rs/ratatui/latest/ratatui/prelude/index.html) module that
 re-exports the most used types and traits. Importing this module with a wildcard import can simplify
@@ -192,7 +192,7 @@ Replace the existing `main` function with the following:
 {{#include @code/hello-world-tutorial/src/main.rs:restore}}
 ```
 
-:::warning
+:::caution
 
 If we don't disable raw mode before exit, terminals can act weirdly when the mouse or navigation
 keys are pressed. To fix this, on a Linux / macOS terminal type `reset`. On Windows, you'll have to
