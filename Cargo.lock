@@ -326,22 +326,6 @@ dependencies = [
 
 [[package]]
 name = "crossterm"
-version = "0.26.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a84cda67535339806297f1b331d6dd6320470d2a0fe65381e79ee9e156dd3d13"
-dependencies = [
- "bitflags 1.3.2",
- "crossterm_winapi",
- "libc",
- "mio",
- "parking_lot",
- "signal-hook",
- "signal-hook-mio",
- "winapi",
-]
-
-[[package]]
-name = "crossterm"
 version = "0.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f476fe445d41c9e991fd07515a6f463074b782242ccf4a5b7b1d1012e70824df"
@@ -746,8 +730,8 @@ name = "how-to-collapse-borders"
 version = "0.0.0"
 dependencies = [
  "anyhow",
- "crossterm 0.27.0",
- "ratatui 0.24.0",
+ "crossterm",
+ "ratatui",
 ]
 
 [[package]]
@@ -755,10 +739,10 @@ name = "how-to-overwrite-regions"
 version = "0.0.0"
 dependencies = [
  "anyhow",
- "crossterm 0.27.0",
+ "crossterm",
  "derive_setters",
  "lipsum",
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -810,6 +794,15 @@ name = "itertools"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
+dependencies = [
+ "either",
+]
+
+[[package]]
+name = "itertools"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25db6b064527c5d482d0423354fcd07a89a2dfe07b67892e62411946db7f07b0"
 dependencies = [
  "either",
 ]
@@ -1148,7 +1141,7 @@ dependencies = [
 name = "quickstart-ratatui"
 version = "0.1.0"
 dependencies = [
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1187,30 +1180,15 @@ checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
 
 [[package]]
 name = "ratatui"
-version = "0.22.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8285baa38bdc9f879d92c0e37cb562ef38aa3aeefca22b3200186bc39242d3d5"
-dependencies = [
- "bitflags 2.4.1",
- "cassowary",
- "crossterm 0.26.1",
- "indoc",
- "paste",
- "unicode-segmentation",
- "unicode-width",
-]
-
-[[package]]
-name = "ratatui"
 version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ebc917cfb527a566c37ecb94c7e3fd098353516fb4eb6bea17015ade0182425"
 dependencies = [
  "bitflags 2.4.1",
  "cassowary",
- "crossterm 0.27.0",
+ "crossterm",
  "indoc",
- "itertools",
+ "itertools 0.11.0",
  "lru",
  "paste",
  "serde",
@@ -1224,8 +1202,8 @@ name = "ratatui-counter-app"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "crossterm 0.27.0",
- "ratatui 0.24.0",
+ "crossterm",
+ "ratatui",
 ]
 
 [[package]]
@@ -1236,7 +1214,7 @@ dependencies = [
  "clap",
  "color-eyre",
  "config",
- "crossterm 0.27.0",
+ "crossterm",
  "derive_deref",
  "directories",
  "futures",
@@ -1246,7 +1224,7 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui 0.24.0",
+ "ratatui",
  "serde",
  "serde_json",
  "signal-hook",
@@ -1262,16 +1240,16 @@ dependencies = [
 name = "ratatui-hello-world-tutorial"
 version = "0.0.0"
 dependencies = [
- "crossterm 0.27.0",
- "ratatui 0.24.0",
+ "crossterm",
+ "ratatui",
 ]
 
 [[package]]
 name = "ratatui-json-editor-app"
 version = "0.0.0"
 dependencies = [
- "crossterm 0.26.1",
- "ratatui 0.22.0",
+ "crossterm",
+ "ratatui",
  "serde",
  "serde_json",
 ]
@@ -1281,14 +1259,14 @@ name = "ratatui-stopwatch-app"
 version = "0.0.0"
 dependencies = [
  "color-eyre",
- "crossterm 0.27.0",
+ "crossterm",
  "directories",
  "futures",
  "human-panic",
- "itertools",
+ "itertools 0.12.0",
  "libc",
  "log",
- "ratatui 0.24.0",
+ "ratatui",
  "strip-ansi-escapes",
  "strum",
  "tokio",
@@ -1797,8 +1775,8 @@ checksum = "74151869ef001bcfe0df2db07c47377615e63f3c149dbd8aa9f58e8360c6427c"
 dependencies = [
  "derive_builder",
  "font8x8",
- "itertools",
- "ratatui 0.24.0",
+ "itertools 0.11.0",
+ "ratatui",
 ]
 
 [[package]]

@@ -1,6 +1,5 @@
 // ANCHOR: all
 use ratatui::{
-    backend::Backend,
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Style},
     text::{Line, Span, Text},
@@ -11,7 +10,7 @@ use ratatui::{
 use crate::app::{App, CurrentScreen, CurrentlyEditing};
 
 // ANCHOR: method_sig
-pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
+pub fn ui(f: &mut Frame, app: &App) {
     // ANCHOR_END: method_sig
     // Create the layout sections.
     // ANCHOR: ui_layout
