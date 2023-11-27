@@ -34,13 +34,14 @@ export default defineConfig({
       title: "Ratatui",
       customCss: ["/src/tailwind.css"],
       logo: {
-        light: "./src/assets/logo-light.png",
+        light: "./src/assets/logo.png",
         dark: "./src/assets/logo-dark.png",
         replacesTitle: true,
       },
       favicon: "./src/assets/logo.png",
       social: {
         github: "https://github.com/ratatui-org/ratatui",
+        discord: "https://discord.gg/pMCEU9hNEj",
       },
       sidebar: [
         {

@@ -27,6 +27,7 @@
     "remark-emoji": "^4.0.1",
     "remark-kroki": "^0.2.12",
     "remark-youtube": "^1.3.0",
+    "tailwindcss-animate": "^1.0.7",
     "unist-util-visit": "^5.0.0"
   }
 }
