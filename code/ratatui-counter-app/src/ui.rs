@@ -1,13 +1,13 @@
 use ratatui::{
-  prelude::{Alignment, Frame},
-  style::{Color, Style},
-  widgets::{Block, BorderType, Borders, Paragraph},
+    prelude::{Alignment, Frame},
+    style::{Color, Style},
+    widgets::{Block, BorderType, Borders, Paragraph},
 };
 
 use crate::app::App;
 
 pub fn render(app: &mut App, f: &mut Frame) {
-  f.render_widget(
+    f.render_widget(
     Paragraph::new(format!(
       "
         Press `Esc`, `Ctrl-C` or `q` to stop running.\n\

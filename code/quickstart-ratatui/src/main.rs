@@ -1,25 +1,22 @@
 use ratatui::{prelude::*, widgets::*};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
 
-  let mut terminal = Terminal::new(
-    CrosstermBackend::new(std::io::stdout())
-  )?;
+    terminal.draw(|f| {
+        let widget = Paragraph::new("Hello world!")
+            .alignment(Alignment::Center)
+            .block(Block::new().borders(Borders::ALL));
 
-  terminal.draw(|f| {
+        let area = f.size().inner(&Margin {
+            horizontal: 2,
+            vertical: 2,
+        });
 
-    let widget = Paragraph::new("Hello world!")
-      .alignment(Alignment::Center)
-      .block(Block::new().borders(Borders::ALL));
+        f.render_widget(widget, area);
+    })?;
 
-    let area = f.size()
-        .inner(&Margin { horizontal: 2, vertical: 2 });
+    std::thread::sleep(std::time::Duration::from_secs(5));
 
-    f.render_widget(widget, area);
-
-  })?;
-
-  std::thread::sleep(std::time::Duration::from_secs(5));
-
-  Ok(())
+    Ok(())
 }

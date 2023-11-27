@@ -56,11 +56,15 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
     let current_navigation_text = vec![
         // The first half of the text
         match app.current_screen {
-            CurrentScreen::Main => Span::styled("Normal Mode", Style::default().fg(Color::Green)),
+            CurrentScreen::Main => {
+                Span::styled("Normal Mode", Style::default().fg(Color::Green))
+            }
             CurrentScreen::Editing => {
                 Span::styled("Editing Mode", Style::default().fg(Color::Yellow))
             }
-            CurrentScreen::Exiting => Span::styled("Exiting", Style::default().fg(Color::LightRed)),
+            CurrentScreen::Exiting => {
+                Span::styled("Exiting", Style::default().fg(Color::LightRed))
+            }
         }
         .to_owned(),
         // A white divider bar to separate the two sections
@@ -69,15 +73,20 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
         {
             if let Some(editing) = &app.currently_editing {
                 match editing {
-                    CurrentlyEditing::Key => {
-                        Span::styled("Editing Json Key", Style::default().fg(Color::Green))
-                    }
-                    CurrentlyEditing::Value => {
-                        Span::styled("Editing Json Value", Style::default().fg(Color::LightGreen))
-                    }
+                    CurrentlyEditing::Key => Span::styled(
+                        "Editing Json Key",
+                        Style::default().fg(Color::Green),
+                    ),
+                    CurrentlyEditing::Value => Span::styled(
+                        "Editing Json Value",
+                        Style::default().fg(Color::LightGreen),
+                    ),
                 }
             } else {
-                Span::styled("Not Editing Anything", Style::default().fg(Color::DarkGray))
+                Span::styled(
+                    "Not Editing Anything",
+                    Style::default().fg(Color::DarkGray),
+                )
             }
         },
     ];
@@ -104,8 +113,8 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
         }
     };
 
-    let key_notes_footer =
-        Paragraph::new(Line::from(current_keys_hint)).block(Block::default().borders(Borders::ALL));
+    let key_notes_footer = Paragraph::new(Line::from(current_keys_hint))
+        .block(Block::default().borders(Borders::ALL));
     // ANCHOR_END: lower_navigation_key_hint
 
     // ANCHOR: lower_navigation_layout
@@ -135,25 +144,33 @@ pub fn ui<B: Backend>(f: &mut Frame<B>, app: &App) {
         let popup_chunks = Layout::default()
             .direction(Direction::Horizontal)
             .margin(1)
-            .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+            .constraints([
+                Constraint::Percentage(50),
+                Constraint::Percentage(50),
+            ])
             .split(area);
         // ANCHOR_END: popup_layout
 
         // ANCHOR: key_value_blocks
         let mut key_block = Block::default().title("Key").borders(Borders::ALL);
-        let mut value_block = Block::default().title("Value").borders(Borders::ALL);
+        let mut value_block =
+            Block::default().title("Value").borders(Borders::ALL);
 
-        let active_style = Style::default().bg(Color::LightYellow).fg(Color::Black);
+        let active_style =
+            Style::default().bg(Color::LightYellow).fg(Color::Black);
 
         match editing {
             CurrentlyEditing::Key => key_block = key_block.style(active_style),
-            CurrentlyEditing::Value => value_block = value_block.style(active_style),
+            CurrentlyEditing::Value => {
+                value_block = value_block.style(active_style)
+            }
         };
 
         let key_text = Paragraph::new(app.key_input.clone()).block(key_block);
         f.render_widget(key_text, popup_chunks[0]);
 
-        let value_text = Paragraph::new(app.value_input.clone()).block(value_block);
+        let value_text =
+            Paragraph::new(app.value_input.clone()).block(value_block);
         f.render_widget(value_text, popup_chunks[1]);
     }
     // ANCHOR_END: key_value_blocks
