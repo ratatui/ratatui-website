@@ -49,11 +49,11 @@ export default defineConfig({
       sidebar: [
         {
           label: "Introduction",
-          link: "/introduction/",
+          link: "/introduction",
         },
         {
           label: "Installation",
-          link: "/installation/",
+          link: "/installation",
         },
         {
           label: "Tutorial",
@@ -61,7 +61,7 @@ export default defineConfig({
           items: [
             {
               label: "Hello World",
-              link: "/tutorial/hello-world/",
+              link: "/tutorial/hello-world",
             },
             {
               label: "Counter App",
