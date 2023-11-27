@@ -1,3 +1,0 @@
-# LICENSE
-
-{{#include ../LICENSE.md}}
