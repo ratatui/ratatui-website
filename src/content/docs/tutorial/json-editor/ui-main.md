@@ -51,7 +51,7 @@ simply want the user to be able to see what they have already entered.
 ```
 
 For more information on Line, Span, and Style see
-[How-To: Displaying Text](../../how-to/render/display-text)
+[How-To: Displaying Text](../../../how-to/render/display-text)
 
 In this piece of the function, we create a vector of `ListItem`s, and populate it with styled and
 formatted key-value pairs. Finally, we create the `List` widget, and render it.

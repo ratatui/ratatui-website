@@ -13,7 +13,7 @@ Finally we have the `update.rs` file. Here, the `update()` function takes in two
 ```
 
 Note that here we don't have to check that `key_event.kind` is `KeyEventKind::Press` because we
-already do that check in [event.rs](./event) and only send `KeyEventKind::Press` events on the
+already do that check in [event.rs](./../event) and only send `KeyEventKind::Press` events on the
 channel.
 
 :::note[Homework]
@@ -21,7 +21,7 @@ channel.
 As an exercise, can you refactor this app to use "The Elm Architecture" principles?
 
 Check out
-[the concepts page on The Elm Architecture](./../../../concepts/application-patterns/the-elm-architecture)
+[the concepts page on The Elm Architecture](../../../concepts/application-patterns/the-elm-architecture)
 for reference.
 
 :::
