@@ -55,7 +55,7 @@ dependencies on crates.io and GitHub:
 ### 🚀 Productivity and Utilities
 
 - [diskonaut](https://github.com/imsnif/diskonaut): Terminal-based disk space navigator
-- [exhaust](https://github.com/heyrict/exhaust): Exhaust all your possibilities.. for the next
+- [exhaust](https://github.com/heyrict/exhaust): Exhaust all your possibilities for the next
   coming exam
 - [gpg-tui](https://github.com/orhun/gpg-tui): Manage your GnuPG keys with ease!
 - [lazy-etherscan](https://github.com/woxjro/lazy-etherscan): A Simple Terminal UI for the Ethereum

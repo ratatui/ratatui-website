@@ -15,11 +15,11 @@ Ratatui supports the following backends:
 - [Termwiz] via [`TermwizBackend`] and the `termion` feature.
 - A [`TestBackend`] which can be useful to unit test your application's UI
 
-For information on how to choose a backend see: [Comparison](./comparison)
+For information on how to choose a backend see: [Comparison](./comparison/)
 
-Each backend supports [Raw Mode](./raw-mode) (which changes how the terminal handles input and
-output processing), an [Alternate Screen](./alternate-screen) which allows it to render to a
-separate buffer than your shell commands use, and [Mouse Capture](./mouse-capture), which allows
+Each backend supports [Raw Mode](./raw-mode/) (which changes how the terminal handles input and
+output processing), an [Alternate Screen](./alternate-screen/) which allows it to render to a
+separate buffer than your shell commands use, and [Mouse Capture](./mouse-capture/), which allows
 your application to capture mouse events.
 
 [Crossterm]: https://crates.io/crates/crossterm
