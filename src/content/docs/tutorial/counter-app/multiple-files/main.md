@@ -45,7 +45,7 @@ Sleep 2.5s
 ![Counter app demo](https://user-images.githubusercontent.com/1813121/263404720-41bd81a0-4eec-479c-9333-44363a183613.gif)
 
 You can find the full source code for this multiple files tutorial here:
-<https://github.com/ratatui-org/ratatui-book/tree/main/src/tutorial/counter-app/ratatui-counter-app>.
+<https://github.com/ratatui-org/ratatui.rs/tree/main/src/tutorial/counter-app/ratatui-counter-app>.
 
 :::note[Homework]
 

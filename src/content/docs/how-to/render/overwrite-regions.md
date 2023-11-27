@@ -55,4 +55,4 @@ Notice that the background is set to the default background and there are no ita
 the background text.
 
 Full source for this article is available at
-<https://github.com/ratatui-org/ratatui-book/tree/main/code/how-to-overwrite-regions>
+<https://github.com/ratatui-org/ratatui.rs/tree/main/code/how-to-overwrite-regions>

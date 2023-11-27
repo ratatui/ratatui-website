@@ -13,7 +13,7 @@ We're going to build the following:
 ![hello](https://github.com/ratatui-org/ratatui-book/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387)
 
 The full code for this tutorial is available to view at
-<https://github.com/ratatui-org/ratatui-book/tree/main/code/hello-world-tutorial>
+<https://github.com/ratatui-org/ratatui.rs/tree/main/code/hello-world-tutorial>
 
 ## Install Rust
 
@@ -278,7 +278,7 @@ Can you modify the example above to exit when pressing `q` _or_ when pressing `Q
 
 [VSCode]: https://code.visualstudio.com/
 [Installation]: https://doc.rust-lang.org/book/ch01-01-installation.html
-[events]: ../../concepts/event_handling
+[events]: ../../concepts/event-handling
 [raw mode]: ../../concepts/backends/raw-mode
 [alternate screen]: ../../concepts/backends/alternate-screen
 [backend]: ../../concepts/backends/comparison
