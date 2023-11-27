@@ -18,7 +18,7 @@ struct Term {
 }
 
 /// This example shows how to use custom borders to collapse borders between widgets.
-/// See https://ratatui.rs/how-to/layout/collapse-borders/ for more info
+/// See https://ratatui.rs/how-to/layout/collapse-borders for more info
 fn main() -> Result<()> {
   let mut term = Term::init()?;
   loop {
