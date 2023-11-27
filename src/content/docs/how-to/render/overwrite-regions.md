@@ -25,7 +25,7 @@ The following code exhibits this problem:
 {{#include @code/how-to-overwrite-regions/src/bin/problem.rs:ui}}
 ```
 
-![problem](https://github.com/ratatui-org/ratatui-book/assets/381361/a32bd6e2-9704-4054-b41d-a34715fc217f)
+![problem](https://github.com/ratatui-org/website/assets/381361/a32bd6e2-9704-4054-b41d-a34715fc217f)
 
 Notice that the background color (black in this case), the italics, and the lorem ipsum background
 text show through the popup.
@@ -49,10 +49,10 @@ We can use the new `Popup` widget with the following code:
 
 Which results in the following:
 
-![demo](https://github.com/ratatui-org/ratatui-book/assets/381361/39e92dad-8127-4588-8361-45d2f95abf32)
+![demo](https://github.com/ratatui-org/website/assets/381361/39e92dad-8127-4588-8361-45d2f95abf32)
 
 Notice that the background is set to the default background and there are no italics or symbols from
 the background text.
 
 Full source for this article is available at
-<https://github.com/ratatui-org/ratatui.rs/tree/main/code/how-to-overwrite-regions>
+<https://github.com/ratatui-org/website/tree/main/code/how-to-overwrite-regions>

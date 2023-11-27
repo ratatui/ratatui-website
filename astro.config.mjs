@@ -10,10 +10,7 @@ import remarkYoutube from "remark-youtube";
 
 // https://astro.build/config
 export default defineConfig({
-  // change this when switching to ratatui.rs
-  site: "https://beta.ratatui.rs",
-  // remove this when switching to ratatui.rs
-  // base: "/ratatui.rs",
+  site: "https://ratatui.rs",
   prefetch: {
     prefetchAll: true,
   },
@@ -391,7 +388,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: "https://github.com/ratatui-org/ratatui.rs/edit/main/",
+        baseUrl: "https://github.com/ratatui-org/website/edit/main/",
       },
     }),
     tailwind({

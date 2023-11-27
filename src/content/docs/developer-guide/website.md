@@ -2,11 +2,20 @@
 title: Website
 ---
 
-The [ratatui.rs](https://github.com/ratatui-org/ratatui.rs) is written in
-[`Astro`](https://astro.build/) using [`Starlight`](https://starlight.astro.build).
+[ratatui.rs](https://ratatui.rs) is built with [`Astro`](https://astro.build/) and
+[`Starlight`](https://starlight.astro.build).
 
-The book is built as HTML pages as part of a
-[GitHub Action](https://github.com/ratatui-org/ratatui.rs/blob/main/.github/workflows/deploy.yml)
-and is available to view at <https://beta.ratatui.rs/>.
+The source is available from the [ratatui-org/website](https://github.com/ratatui-org/website)
+GitHub repository.
 
-Feel free to make contributions if you'd like to improve the documentation.
+To build and run the site locally:
+
+```shell title="install necessary packages"
+npm install
+```
+
+```shell title="run site"
+npm run dev
+```
+
+Feel free to make contributions and submit a PR if you'd like to improve the documentation.
