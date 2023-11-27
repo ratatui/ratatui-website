@@ -11,9 +11,9 @@ import remarkYoutube from "remark-youtube";
 // https://astro.build/config
 export default defineConfig({
   // change this when switching to ratatui.rs
-  site: "https://ratatui-org.github.io",
+  site: "https://beta.ratatui.rs",
   // remove this when switching to ratatui.rs
-  base: "/ratatui.rs",
+  // base: "/ratatui.rs",
   markdown: {
     remarkPlugins: [
       remarkIncludeCode,
