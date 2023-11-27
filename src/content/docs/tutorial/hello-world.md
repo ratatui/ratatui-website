@@ -165,7 +165,7 @@ your application's imports.
 In your editor, open `src/main.rs` and add the following at the top of the file.
 
 ```rust
-{{#include @code/hello-world-tutorial/src/main.rs}}
+{{#include @code/hello-world-tutorial/src/main.rs:imports}}
 ```
 
 ### Setting up and restoring the terminal
