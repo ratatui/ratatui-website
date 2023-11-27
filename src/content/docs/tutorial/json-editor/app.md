@@ -119,4 +119,4 @@ pairs.
 ```
 
 <!-- prettier-ignore -->
-[^note]: In ratatui, every frame draws the UI anew. See the [Rendering section](./../../concepts/rendering) for more information.
+[^note]: In ratatui, every frame draws the UI anew. See the [Rendering section](./../../../concepts/rendering) for more information.

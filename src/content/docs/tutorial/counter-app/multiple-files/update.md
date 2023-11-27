@@ -20,7 +20,8 @@ channel.
 
 As an exercise, can you refactor this app to use "The Elm Architecture" principles?
 
-Check out [the concepts page on The Elm Architecture](./../../concepts/the-elm-architecture) for
-reference.
+Check out
+[the concepts page on The Elm Architecture](./../../../concepts/application-patterns/the-elm-architecture)
+for reference.
 
 :::

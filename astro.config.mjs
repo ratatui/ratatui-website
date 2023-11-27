@@ -57,6 +57,7 @@ export default defineConfig({
         },
         {
           label: "Tutorial",
+          collapsed: true,
           items: [
             {
               label: "Hello World",
@@ -76,6 +77,7 @@ export default defineConfig({
                 },
                 {
                   label: "Multiple Files",
+                  collapsed: true,
                   items: [
                     {
                       label: "Introduction",
@@ -127,6 +129,7 @@ export default defineConfig({
                 },
                 {
                   label: "Ui.rs",
+                  collapsed: true,
                   items: [
                     { label: "UI", link: "/tutorial/json-editor/ui" },
                     { label: "Ui.rs - Main", link: "/tutorial/json-editor/ui-main" },
@@ -174,6 +177,7 @@ export default defineConfig({
         },
         {
           label: "Concepts",
+          collapsed: true,
           items: [
             {
               label: "Layout",
@@ -241,6 +245,7 @@ export default defineConfig({
         },
         {
           label: "How To",
+          collapsed: true,
           items: [
             {
               label: "Layout UIs",

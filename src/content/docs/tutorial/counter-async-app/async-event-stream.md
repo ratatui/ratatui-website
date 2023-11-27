@@ -2,8 +2,9 @@
 title: Async Event Stream
 ---
 
-Previously, in the multiple file version of the counter app, in [`event.rs`](./../counter-app/event)
-we created an `EventHandler` using `std::thread::spawn`, i.e. OS threads.
+Previously, in the multiple file version of the counter app, in
+[`event.rs`](../counter-app/multiple-files/event) we created an `EventHandler` using
+`std::thread::spawn`, i.e. OS threads.
 
 In this section, we are going to do the same thing with "green" threads or tasks, i.e. rust's
 `async`-`await` features + a future executor. We will be using `tokio` for this.

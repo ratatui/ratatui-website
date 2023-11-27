@@ -72,4 +72,4 @@ ratatui = { version = "0.23", default-features = false, features = ["termwiz"] }
 termwiz = "0.20.0"
 ```
 
-[Backend]: ./concepts/backends/
+[Backend]: ../concepts/backends
