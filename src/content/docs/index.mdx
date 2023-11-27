@@ -23,6 +23,50 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
 
 [![Demo 2](https://github.com/ratatui-org/ratatui/blob/images/examples/demo2.gif?raw=true)](https://github.com/ratatui-org/ratatui/tree/main/examples/demo2)
 
+## Quickstart
+
+1. Setup project
+
+```shell
+cargo new quickstart-ratatui && cd quickstart-ratatui
+```
+
+2. Install `ratatui`:
+
+```shell
+cargo add ratatui
+```
+
+3. Add following code to `./src/main.rs`:
+
+```rust
+{{#include @code/quickstart-ratatui/src/main.rs}}
+```
+
+4. Run binary:
+
+```shell
+cargo run
+```
+
+```kroki type=svgbob
+
+
+  ┌──────────────────────────────────────────────┐
+  │                 Hello world!                 │
+  │                                              │
+  │                                              │
+  │                                              │
+  │                                              │
+  │                                              │
+  │                                              │
+  │                                              │
+  │                                              │
+  └──────────────────────────────────────────────┘
+
+
+```
+
 ## Next steps
 
 <CardGrid>
