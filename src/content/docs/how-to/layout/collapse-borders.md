@@ -71,7 +71,7 @@ If this sounds too complex, we're looking for some help to make this easier in
 :::
 
 The full code for this example is available at
-<https://github.com/ratatui-org/ratatui-book/blob/main/code/how-to-collapse-borders>
+<https://github.com/ratatui-org/website/blob/main/code/how-to-collapse-borders>
 
 Full `ui()` function:
 
