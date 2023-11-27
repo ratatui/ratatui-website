@@ -1,5 +1,5 @@
 ---
-title: Table of contents
+title: Tutorials
 ---
 
 - [Hello World](./hello-world/): This tutorial takes you through the basics of creating a simple
