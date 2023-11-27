@@ -335,10 +335,6 @@ export default defineConfig({
           ],
         },
         {
-          label: "Showcase",
-          link: "/showcase",
-        },
-        {
           label: "FAQ",
           link: "/faq",
         },
@@ -363,6 +359,10 @@ export default defineConfig({
               link: "/highlights/v021",
             },
           ],
+        },
+        {
+          label: "Showcase",
+          link: "/showcase",
         },
         {
           label: "Features",
