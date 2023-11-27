@@ -60,7 +60,7 @@ const remarkIncludeCode = () => {
         }
         try {
           let fileContent = fs.readFileSync(fullPath, "utf8");
-          if (anchor && anchor.search(":") != 0) {
+          if (anchor && anchor.search(":") != -1) {
             const extrema = anchor.split(":");
             const lines = fileContent.split("\n");
             const startLine = extrema[0];
