@@ -48,7 +48,7 @@ We hope that this book can be a journey into creating beautiful and functional t
 applications.
 
 [immediate mode]: https://en.wikipedia.org/wiki/Immediate_mode_(computer_graphics)
-[backend]: ./../concepts/backends
+[backend]: /concepts/backends/
 [Ratatui]: https://crates.io/crates/ratatui
 [Crossterm]: https://crates.io/crates/crossterm
 [Termion]: https://crates.io/crates/termion

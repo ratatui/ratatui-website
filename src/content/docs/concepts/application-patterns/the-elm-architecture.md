@@ -1,5 +1,5 @@
 ---
-title: Using The Elm Architecture (TEA)
+title: The Elm Architecture (TEA)
 ---
 
 When building terminal user interfaces (TUI) with `ratatui`, it's helpful to have a solid structure
@@ -299,7 +299,7 @@ When you put it all together, your main application loop might look something li
 
 This cycle repeats, ensuring your TUI is always up-to-date with user interactions.
 
-As an illustrative example, here's the [Counter App](../../../tutorial/counter-app/single-function)
+As an illustrative example, here's the [Counter App](/tutorials/counter-app/single-function/)
 refactored using TEA.
 
 The notable difference from before is that we have an `Model` struct that captures the app state,

@@ -75,7 +75,9 @@ Enter
 Sleep 5s
 
 # Type "reset"
+
 # Enter
+
 # Sleep 2s
 
 Type "# WITHOUT Alternate Screen"
