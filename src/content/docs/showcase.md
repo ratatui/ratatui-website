@@ -30,7 +30,7 @@ A customizable cross-platform graphical process/system monitor for the terminal
 
 A hackable, minimal, fast TUI file explorer
 
-https://www.youtube.com/watch?v=QJaEMeVo9Uw
+<https://www.youtube.com/watch?v=QJaEMeVo9Uw>
 
 ---
 
@@ -38,7 +38,7 @@ https://www.youtube.com/watch?v=QJaEMeVo9Uw
 
 Blazing fast terminal file manager written in Rust, based on async I/O
 
-[Showcase](https://yazi-rs.github.io/docs/showcase)
+[Showcase](https://yazi-rs.github.io/features)
 
 ---
 
