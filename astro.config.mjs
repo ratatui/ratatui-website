@@ -14,6 +14,9 @@ export default defineConfig({
   site: "https://beta.ratatui.rs",
   // remove this when switching to ratatui.rs
   // base: "/ratatui.rs",
+  prefetch: {
+    prefetchAll: true,
+  },
   markdown: {
     remarkPlugins: [
       remarkIncludeCode,
