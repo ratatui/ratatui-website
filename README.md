@@ -6,7 +6,7 @@ This is the website for [`ratatui`](https://github.com/ratatui-org/ratatui), a R
 rich terminal user interfaces and dashboards.
 
 [![License](https://img.shields.io/crates/l/ratatui?style=for-the-badge)](./LICENSE.md)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ratatui-org/website/deploy.yml?label=Github%20Pages&logo=github&style=for-the-badge)](https://github.com/ratatui-org/ratatui.rs/actions/workflows/deploy.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ratatui-org/website/deploy.yml?label=Github%20Pages&logo=github&style=for-the-badge)](https://github.com/ratatui-org/website/actions/workflows/deploy.yml)
 [![Read the documentation](https://img.shields.io/badge/Read-Documentation-blue?style=for-the-badge)](https://ratatui.rs/)
 [![Discord](https://img.shields.io/discord/1070692720437383208?label=discord&logo=discord&style=for-the-badge)](https://discord.gg/pMCEU9hNEj)
 
