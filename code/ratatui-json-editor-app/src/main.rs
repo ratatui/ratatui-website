@@ -2,9 +2,15 @@
 use std::{error::Error, io};
 
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
+    event::{
+        self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode,
+        KeyEventKind,
+    },
     execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    terminal::{
+        disable_raw_mode, enable_raw_mode, EnterAlternateScreen,
+        LeaveAlternateScreen,
+    },
 };
 use ratatui::{
     backend::{Backend, CrosstermBackend},
@@ -63,7 +69,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 // ANCHOR: run_app_all
 // ANCHOR: run_method_signature
-fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<bool> {
+fn run_app<B: Backend>(
+    terminal: &mut Terminal<B>,
+    app: &mut App,
+) -> io::Result<bool> {
     // ANCHOR_END: run_method_signature
     // ANCHOR: ui_loop
     loop {
@@ -107,11 +116,13 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<
                             if let Some(editing) = &app.currently_editing {
                                 match editing {
                                     CurrentlyEditing::Key => {
-                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                                        app.currently_editing =
+                                            Some(CurrentlyEditing::Value);
                                     }
                                     CurrentlyEditing::Value => {
                                         app.save_key_value();
-                                        app.current_screen = CurrentScreen::Main;
+                                        app.current_screen =
+                                            CurrentScreen::Main;
                                     }
                                 }
                             }
