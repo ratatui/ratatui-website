@@ -64,6 +64,7 @@ export default defineConfig({
             },
             {
               label: "Counter App",
+              collapsed: true,
               items: [
                 {
                   label: "Single Function",
@@ -110,6 +111,7 @@ export default defineConfig({
             },
             {
               label: "JSON Editor",
+              collapsed: true,
               items: [
                 {
                   label: "Introduction",
@@ -140,6 +142,7 @@ export default defineConfig({
             },
             {
               label: "Async Counter App",
+              collapsed: true,
               items: [
                 {
                   label: "Introduction",
@@ -182,6 +185,7 @@ export default defineConfig({
             },
             {
               label: "Rendering",
+              collapsed: true,
               items: [
                 {
                   label: "Introduction",
@@ -195,6 +199,7 @@ export default defineConfig({
             },
             {
               label: "Application Patterns",
+              collapsed: true,
               items: [
                 {
                   label: "The Elm Architecture",
@@ -212,6 +217,7 @@ export default defineConfig({
             },
             {
               label: "Backends",
+              collapsed: true,
               items: [
                 {
                   label: "Comparison",
@@ -238,6 +244,7 @@ export default defineConfig({
           items: [
             {
               label: "Layout UIs",
+              collapsed: true,
               items: [
                 {
                   label: "Dynamic Layouts",
@@ -255,6 +262,7 @@ export default defineConfig({
             },
             {
               label: "Render UIs",
+              collapsed: true,
               items: [
                 {
                   label: "Display Text",
@@ -272,6 +280,7 @@ export default defineConfig({
             },
             {
               label: "Use Widgets",
+              collapsed: true,
               items: [
                 {
                   label: "Paragraph",
@@ -289,6 +298,7 @@ export default defineConfig({
             },
             {
               label: "Develop Applications",
+              collapsed: true,
               items: [
                 {
                   label: "CLI arguments",
@@ -332,6 +342,7 @@ export default defineConfig({
         },
         {
           label: "Highlights",
+          collapsed: true,
           items: [
             {
               label: "v0.24",
@@ -361,6 +372,7 @@ export default defineConfig({
         },
         {
           label: "Developer Guide",
+          collapsed: true,
           items: [
             {
               label: "Ratatui",
