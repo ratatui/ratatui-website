@@ -1,0 +1,17 @@
+{
+  "useTabs": false,
+  "quoteProps": "preserve",
+  "singleQuote": false,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "proseWrap": "always",
+  "plugins": [
+    "prettier-plugin-astro",
+    "prettier-plugin-svelte",
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-tailwindcss"
+  ]
+}
