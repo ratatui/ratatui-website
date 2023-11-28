@@ -8,8 +8,8 @@ import SocialIcons from "@astrojs/starlight/components/SocialIcons.astro";
 import LanguageSelect from "@astrojs/starlight/components/LanguageSelect.astro";
 
 const buttons = [
-  { url: "https://docs.rs/ratatui/latest/ratatui/", html: "docs.rs" },
-  { url: "https://crates.io/crates/ratatui/", html: "crates.io" },
+  { url: "https://docs.rs/ratatui/latest/ratatui/", text: "docs.rs" },
+  { url: "https://crates.io/crates/ratatui/", text: "crates.io" },
 ];
 ---
 
@@ -25,7 +25,7 @@ const buttons = [
           href={button.url}
           class="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white no-underline hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          {button.html}
+          {button.text}
         </a>
       ))
     }
