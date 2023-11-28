@@ -6,6 +6,11 @@ import SiteTitle from "@astrojs/starlight/components/SiteTitle.astro";
 import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
 import SocialIcons from "@astrojs/starlight/components/SocialIcons.astro";
 import LanguageSelect from "@astrojs/starlight/components/LanguageSelect.astro";
+
+const buttons = [
+  { url: "https://docs.rs/ratatui/latest/ratatui/", html: "docs.rs" },
+  { url: "https://crates.io/crates/ratatui/", html: "crates.io" },
+];
 ---
 
 <div class="flex h-full items-center justify-between">
@@ -13,16 +18,18 @@ import LanguageSelect from "@astrojs/starlight/components/LanguageSelect.astro";
     <SiteTitle {...Astro.props} />
   </div>
   <div class="flex flex-grow"></div>
-  <a
-    class="mx-2 rounded bg-blue-700 px-4 py-2 text-white no-underline transition duration-300 hover:bg-blue-900"
-    target="_blank"
-    href="https://docs.rs/ratatui/latest/ratatui/">docs.rs</a
-  >
-  <a
-    class="mx-2 rounded bg-blue-700 px-4 py-2 text-white no-underline transition duration-300 hover:bg-blue-900"
-    target="_blank"
-    href="https://crates.io/crates/ratatui/">crates.io</a
-  >
+  <div class="flex space-x-2">
+    {
+      buttons.map((button) => (
+        <a
+          href={button.url}
+          class="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white no-underline hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          {button.html}
+        </a>
+      ))
+    }
+  </div>
   <div class="flex px-6">
     <Search {...Astro.props} />
   </div>
