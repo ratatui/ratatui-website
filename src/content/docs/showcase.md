@@ -2,6 +2,14 @@
 title: Showcase
 ---
 
+## [`fzf-make`](https://github.com/kyu08/fzf-make)
+
+A command line tool that executes make target using fuzzy finder with preview window
+
+![demo gif of fzf-make](https://raw.githubusercontent.com/kyu08/fzf-make/main/static/demo.gif)
+
+---
+
 ## [`scope-tui`](https://github.com/alemidev/scope-tui)
 
 A simple oscilloscope/vectorscope/spectroscope for your terminal
