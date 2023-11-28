@@ -31,9 +31,9 @@ pub fn initialize_panic_handler() {
 }
 ```
 
-I personally like to reuse the [`Tui`](../terminal-and-event-handler/) struct in the panic
-handler. That way, if I ever decide to move from `crossterm` to `termion` in the future, there's one
-less place in the project that I have to worry about refactoring.
+I personally like to reuse the [`Tui`](../terminal-and-event-handler/) struct in the panic handler.
+That way, if I ever decide to move from `crossterm` to `termion` in the future, there's one less
+place in the project that I have to worry about refactoring.
 
 Here's an example of `initialize_panic_handler()` using
 [`better_panic`](https://docs.rs/better-panic/latest/better_panic/) and

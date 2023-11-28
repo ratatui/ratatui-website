@@ -1,12 +1,11 @@
-import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-import starlightLinksValidator from "starlight-links-validator";
-import remarkMermaid from "astro-diagram/remark-mermaid";
-import remarkIncludeCode from "/src/plugin/remark-code-import";
+import tailwind from "@astrojs/tailwind";
+import { defineConfig } from "astro/config";
 import emoji from "remark-emoji";
 import { remarkKroki } from "remark-kroki";
-import tailwind from "@astrojs/tailwind";
 import remarkYoutube from "remark-youtube";
+import starlightLinksValidator from "starlight-links-validator";
+import remarkIncludeCode from "/src/plugin/remark-code-import";
 
 // https://astro.build/config
 export default defineConfig({
@@ -46,22 +45,30 @@ export default defineConfig({
       sidebar: [
         { label: "Introduction", link: "/introduction/" },
         {
-          label: "Installation", collapsed: true, items: [
+          label: "Installation",
+          collapsed: true,
+          items: [
             { label: "Installation", link: "/installation/" },
             { label: "Feature Flags", link: "/installation/feature-flags/" },
-          ]
+          ],
         },
         {
-          label: "Tutorials", collapsed: true, items: [
+          label: "Tutorials",
+          collapsed: true,
+          items: [
             { label: "Tutorials", link: "/tutorials/" },
             { label: "Hello World", link: "/tutorials/hello-world/" },
             {
-              label: "Counter App", collapsed: true, items: [
+              label: "Counter App",
+              collapsed: true,
+              items: [
                 { label: "Counter App", link: "/tutorials/counter-app/" },
                 { label: "Single Function", link: "/tutorials/counter-app/single-function/" },
                 { label: "Multiple Functions", link: "/tutorials/counter-app/multiple-functions/" },
                 {
-                  label: "Multiple Files", collapsed: true, items: [
+                  label: "Multiple Files",
+                  collapsed: true,
+                  items: [
                     { label: "Multiple Files", link: "/tutorials/counter-app/multiple-files/" },
                     { label: "app.rs", link: "/tutorials/counter-app/multiple-files/app/" },
                     { label: "ui.rs", link: "/tutorials/counter-app/multiple-files/ui/" },
@@ -69,17 +76,21 @@ export default defineConfig({
                     { label: "tui.rs", link: "/tutorials/counter-app/multiple-files/tui/" },
                     { label: "update.rs", link: "/tutorials/counter-app/multiple-files/update/" },
                     { label: "main.rs", link: "/tutorials/counter-app/multiple-files/main/" },
-                  ]
+                  ],
                 },
-              ]
+              ],
             },
             {
-              label: "JSON Editor", collapsed: true, items: [
+              label: "JSON Editor",
+              collapsed: true,
+              items: [
                 { label: "JSON Editor", link: "/tutorials/json-editor/" },
                 { label: "App.rs", link: "/tutorials/json-editor/app/" },
                 { label: "Main.rs", link: "/tutorials/json-editor/main/" },
                 {
-                  label: "Ui.rs", collapsed: true, items: [
+                  label: "Ui.rs",
+                  collapsed: true,
+                  items: [
                     { label: "UI", link: "/tutorials/json-editor/ui/" },
                     { label: "Ui.rs - Main", link: "/tutorials/json-editor/ui-main/" },
                     { label: "Ui.rs - Editing", link: "/tutorials/json-editor/ui-editing/" },
@@ -90,30 +101,44 @@ export default defineConfig({
               ],
             },
             {
-              label: "Async Counter App", collapsed: true, items: [
+              label: "Async Counter App",
+              collapsed: true,
+              items: [
                 { label: "Async Counter App", link: "/tutorials/counter-async-app/" },
-                { label: "Async KeyEvents", link: "/tutorials/counter-async-app/async-event-stream/" },
+                {
+                  label: "Async KeyEvents",
+                  link: "/tutorials/counter-async-app/async-event-stream/",
+                },
                 { label: "Async Render", link: "/tutorials/counter-async-app/full-async-events/" },
                 { label: "Introducing Actions", link: "/tutorials/counter-async-app/actions/" },
-                { label: "Async Actions", link: "/tutorials/counter-async-app/full-async-actions/" },
+                {
+                  label: "Async Actions",
+                  link: "/tutorials/counter-async-app/full-async-actions/",
+                },
                 { label: "Conclusion", link: "/tutorials/counter-async-app/conclusion/" },
               ],
             },
           ],
         },
         {
-          label: "Concepts", collapsed: true, items: [
+          label: "Concepts",
+          collapsed: true,
+          items: [
             { label: "Concepts", link: "/concepts/" },
             { label: "Layout", link: "/concepts/layout/" },
             { label: "Event Handling", link: "/concepts/event-handling/" },
             {
-              label: "Rendering", collapsed: true, items: [
+              label: "Rendering",
+              collapsed: true,
+              items: [
                 { label: "Rendering", link: "/concepts/rendering/" },
                 { label: "Under the hood", link: "/concepts/rendering/under-the-hood/" },
               ],
             },
             {
-              label: "Application Patterns", collapsed: true, items: [
+              label: "Application Patterns",
+              collapsed: true,
+              items: [
                 { label: "Application Patterns", link: "/concepts/application-patterns/" },
                 {
                   label: "The Elm Architecture",
@@ -130,7 +155,9 @@ export default defineConfig({
               ],
             },
             {
-              label: "Backends", collapsed: true, items: [
+              label: "Backends",
+              collapsed: true,
+              items: [
                 { label: "Backends", link: "/concepts/backends/" },
                 { label: "Comparison", link: "/concepts/backends/comparison/" },
                 { label: "Raw Mode", link: "/concepts/backends/raw-mode/" },
@@ -141,10 +168,14 @@ export default defineConfig({
           ],
         },
         {
-          label: "How To", collapsed: true, items: [
+          label: "How To",
+          collapsed: true,
+          items: [
             { label: "How To", link: "/how-to/" },
             {
-              label: "Layout UIs", collapsed: true, items: [
+              label: "Layout UIs",
+              collapsed: true,
+              items: [
                 { label: "Layout UIs", link: "/how-to/layout/" },
                 { label: "Create Dynamic Layouts", link: "/how-to/layout/dynamic/" },
                 { label: "Center a Rect", link: "/how-to/layout/center-a-rect/" },
@@ -152,7 +183,9 @@ export default defineConfig({
               ],
             },
             {
-              label: "Render UIs", collapsed: true, items: [
+              label: "Render UIs",
+              collapsed: true,
+              items: [
                 { label: "Render UIs", link: "/how-to/render/" },
                 { label: "Display Text", link: "/how-to/render/display-text/" },
                 { label: "Style Text", link: "/how-to/render/style-text/" },
@@ -160,7 +193,9 @@ export default defineConfig({
               ],
             },
             {
-              label: "Use Widgets", collapsed: true, items: [
+              label: "Use Widgets",
+              collapsed: true,
+              items: [
                 { label: "Use Widgets", link: "/how-to/widgets/" },
                 { label: "Block", link: "/how-to/widgets/block/" },
                 { label: "Paragraph", link: "/how-to/widgets/paragraph/" },
@@ -168,12 +203,20 @@ export default defineConfig({
               ],
             },
             {
-              label: "Develop Applications", collapsed: true, items: [
+              label: "Develop Applications",
+              collapsed: true,
+              items: [
                 { label: "Develop Applications", link: "/how-to/develop-apps/" },
                 { label: "CLI arguments", link: "/how-to/develop-apps/cli-arguments/" },
-                { label: "Configuration Directories", link: "/how-to/develop-apps/config-directories/" },
+                {
+                  label: "Configuration Directories",
+                  link: "/how-to/develop-apps/config-directories/",
+                },
                 { label: "Logging with Tracing", link: "/how-to/develop-apps/tracing/" },
-                { label: "Terminal and Event handler", link: "/how-to/develop-apps/terminal-and-event-handler/" },
+                {
+                  label: "Terminal and Event handler",
+                  link: "/how-to/develop-apps/terminal-and-event-handler/",
+                },
                 { label: "Setup Panic Hooks", link: "/how-to/develop-apps/panic-hooks/" },
                 { label: "Better Panic Hooks", link: "/how-to/develop-apps/better-panic/" },
                 { label: "Migrate from tui-rs", link: "/how-to/develop-apps/migrate-from-tui-rs/" },
@@ -183,7 +226,9 @@ export default defineConfig({
         },
         { label: "FAQ", link: "/faq/" },
         {
-          label: "Highlights", collapsed: true, items: [
+          label: "Highlights",
+          collapsed: true,
+          items: [
             { label: "Highlights", link: "/highlights/" },
             { label: "v0.24", link: "/highlights/v024/" },
             { label: "v0.23", link: "/highlights/v023/" },
@@ -194,10 +239,13 @@ export default defineConfig({
         { label: "Showcase", link: "/showcase/" },
         { label: "References", link: "/references/" },
         {
-          label: "Developer Guide", collapsed: true, items: [
+          label: "Developer Guide",
+          collapsed: true,
+          items: [
             { label: "Developer Guide", link: "/developer-guide/" },
             { label: "Contributing", link: "/developer-guide/ratatui/" },
-            { label: "This Website", link: "/developer-guide/website/" },],
+            { label: "This Website", link: "/developer-guide/website/" },
+          ],
         },
       ],
       editLink: {
