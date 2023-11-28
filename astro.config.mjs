@@ -38,6 +38,9 @@ export default defineConfig({
         replacesTitle: true,
       },
       favicon: "./src/assets/logo.png",
+      components: {
+        Header: "./src/components/Header.astro",
+      },
       social: {
         github: "https://github.com/ratatui-org/ratatui",
         discord: "https://discord.gg/pMCEU9hNEj",
