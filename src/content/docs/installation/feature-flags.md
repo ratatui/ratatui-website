@@ -1,6 +1,5 @@
 ---
 title: Feature Flags
-
 ---
 
 As ratatui grows and evolves, this list may change, so make sure to check the
