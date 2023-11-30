@@ -313,8 +313,6 @@ use ratatui::{
   widgets::Paragraph,
 };
 
-pub type Frame<'a> = ratatui::Frame<'a, ratatui::backend::CrosstermBackend<std::io::Stderr>>;
-
 // MODEL
 struct Model {
   counter: i32,

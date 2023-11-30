@@ -21,8 +21,6 @@ pub fn initialize_panic_handler() {
   }));
 }
 
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
-
 fn startup() -> Result<()> {
   crossterm::terminal::enable_raw_mode()?;
   crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
@@ -42,7 +40,7 @@ struct App {
   ticker: i64,
 }
 
-fn ui(f: &mut Frame<'_>, app: &mut App) {
+fn ui(f: &mut Frame, app: &mut App) {
   let area = f.size();
   f.render_widget(
     Paragraph::new(format!(

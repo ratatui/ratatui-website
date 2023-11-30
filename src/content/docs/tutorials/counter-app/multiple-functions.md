@@ -96,7 +96,7 @@ fn shutdown() -> Result<()> {
 `ui()` handles rendering of our application state.
 
 ```rust
-fn ui(app: &App, f: &mut Frame<'_>) {
+fn ui(app: &App, f: &mut Frame) {
   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
 }
 ```
@@ -250,7 +250,7 @@ struct App {
 }
 
 // App ui render function
-fn ui(app: &App, f: &mut Frame<'_>) {
+fn ui(app: &App, f: &mut Frame) {
   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
 }
 

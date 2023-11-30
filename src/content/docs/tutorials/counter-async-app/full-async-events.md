@@ -119,8 +119,6 @@ use crossterm::event::KeyCode::Char;
 use ratatui::{prelude::CrosstermBackend, widgets::Paragraph};
 use tui::Event;
 
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
-
 // App state
 struct App {
   counter: i64,
@@ -128,7 +126,7 @@ struct App {
 }
 
 // App ui render function
-fn ui(f: &mut Frame<'_>, app: &App) {
+fn ui(f: &mut Frame, app: &App) {
   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
 }
 

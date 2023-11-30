@@ -67,7 +67,7 @@ pub trait Component {
   fn update(&mut self, action: Action) -> Action {
     Action::Noop
   }
-  fn render(&mut self, f: &mut Frame<'_>, rect: Rect);
+  fn render(&mut self, f: &mut Frame, rect: Rect);
 }
 ```
 
