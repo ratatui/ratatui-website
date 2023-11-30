@@ -14,7 +14,6 @@ The examples below assume the following imports:
 
 ```rust
 use ratatui::{prelude::*, widgets::*};
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
 ```
 
 A `Span` consists of "content" and a "style" for the content. And a `Span` can be created in a few
@@ -23,7 +22,7 @@ different ways.
 1. using `Span::raw`:
 
    ```rust
-   fn ui(_app: &App, f: &mut Frame<'_>) {
+   fn ui(_app: &App, f: &mut Frame) {
        let span = Span::raw("This is text that is not styled");
        // --snip--
    }
@@ -32,7 +31,7 @@ different ways.
 2. using `Span::styled`:
 
    ```rust
-   fn ui(_app: &App, f: &mut Frame<'_>) {
+   fn ui(_app: &App, f: &mut Frame) {
        let span = Span::styled("This is text that will be yellow", Style::default().fg(Color::Yellow));
        // --snip--
    }
@@ -41,7 +40,7 @@ different ways.
 3. using the `Stylize` trait:
 
    ```rust
-   fn ui(_app: &App, f: &mut Frame<'_>) {
+   fn ui(_app: &App, f: &mut Frame) {
        let span = "This is text that will be yellow".yellow();
        // --snip--
    }
@@ -60,7 +59,7 @@ Since each `Line` struct consists of multiple `Span` objects, this allows for va
 row of words, phrases or sentences.
 
 ```rust
-fn ui(_: &App, f: &mut Frame<'_>) {
+fn ui(_: &App, f: &mut Frame) {
     let line = Line::from(vec![
         "hello".red(),
         " ".into(),
@@ -73,7 +72,7 @@ fn ui(_: &App, f: &mut Frame<'_>) {
 A `Line` can be constructed directly from content, where the content is `Into<Cow<'a, &str>>`.
 
 ```rust
-fn ui(_: &App, f: &mut Frame<'_>) {
+fn ui(_: &App, f: &mut Frame) {
     let line = Line::from("hello world");
     // --snip--
 }
@@ -82,7 +81,7 @@ fn ui(_: &App, f: &mut Frame<'_>) {
 You can even style a full line directly:
 
 ```rust
-fn ui(_: &App, f: &mut Frame<'_>) {
+fn ui(_: &App, f: &mut Frame) {
     let line = Line::styled("hello world", Style::default().fg(Color::Yellow));
     // --snip--
 }
@@ -91,7 +90,7 @@ fn ui(_: &App, f: &mut Frame<'_>) {
 And you can use the `Stylize` trait on the line directly by using `into()`:
 
 ```rust
-fn ui(_: &App, f: &mut Frame<'_>) {
+fn ui(_: &App, f: &mut Frame) {
     let line: Line = "hello world".yellow().into();
     // --snip--
 }
@@ -105,7 +104,7 @@ fn ui(_: &App, f: &mut Frame<'_>) {
 Most widgets accept content that can be converted to `Text`.
 
 ```rust
-fn ui(_: &App, f: &mut Frame<'_>) {
+fn ui(_: &App, f: &mut Frame) {
     let span1 = "hello".red();
     let span2 = "world".red().bold();
     let line = Line::from(vec![span1, " ".into(), span2]);
@@ -124,7 +123,7 @@ Here's an HTML representation of what you'd get in the terminal:
 Often code like the one above can be simplified:
 
 ```rust
-fn ui(_: &App, f: &mut Frame<'_>) {
+fn ui(_: &App, f: &mut Frame) {
     let line: Line = vec![
         "hello".red(),
         " ".into(),
@@ -142,7 +141,7 @@ Something that you might find yourself doing pretty often for a `Paragraph` is w
 multiple lines styled differently. This is one way you might go about that:
 
 ```rust
-fn ui(_: &App, f: &mut Frame<'_>) {
+fn ui(_: &App, f: &mut Frame) {
     let text = vec![
         "hello world 1".into(),
         "hello world 2".blue().into(),

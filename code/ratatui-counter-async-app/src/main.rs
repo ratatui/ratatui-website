@@ -32,7 +32,7 @@ pub enum Action {
 // ANCHOR_END: action_enum
 
 // App ui render function
-fn ui(f: &mut Frame<'_>, app: &mut App) {
+fn ui(f: &mut Frame, app: &mut App) {
     let area = f.size();
     f.render_widget(
         Paragraph::new(format!(

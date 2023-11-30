@@ -65,7 +65,7 @@ Common styling attributes include:
 This is what it would look like if you rendered a `Paragraph` with different styles for each line:
 
 ```rust
-fn ui(_: &App, f: &mut Frame<'_>) {
+fn ui(_: &App, f: &mut Frame) {
   let styled_text = Span::styled("Hello, Ratatui!", Style::default().fg(Color::Red).bg(Color::Yellow));
   let bold_text = Span::styled("This is bold", Style::default().add_modifier(Modifier::BOLD));
   let italic_text = Span::styled("This is italic", Style::default().add_modifier(Modifier::ITALIC));

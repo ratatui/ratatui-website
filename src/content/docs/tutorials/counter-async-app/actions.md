@@ -103,8 +103,6 @@ use ratatui::{
   widgets::Paragraph,
 };
 
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
-
 // App state
 struct App {
   counter: i64,
@@ -121,7 +119,7 @@ pub enum Action {
 }
 
 // App ui render function
-fn ui(app: &App, f: &mut Frame<'_>) {
+fn ui(app: &App, f: &mut Frame) {
   f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
 }
 
