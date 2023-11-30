@@ -58,10 +58,7 @@ struct Model {
 For a counter app, our model may look like this:
 
 ```rust
-struct Model {
-  counter: i32,
-  should_quit: bool,
-}
+{{ #include @code/the-elm-architecture/src/main.rs:model }}
 ```
 
 ### 2. Handling Updates
@@ -83,12 +80,7 @@ enum Message {
 For a counter app, our `Message` enum may look like this:
 
 ```rust
-enum Message {
-  Increment,
-  Decrement,
-  Reset,
-  Quit,
-}
+{{ #include @code/the-elm-architecture/src/main.rs:message }}
 ```
 
 **`update()` function**
@@ -137,30 +129,7 @@ or have an update lead to another update.
 For example, this is what the `update()` function may look like for a counter app:
 
 ```rust
-fn update(model: &mut Model, msg: Message) -> Option<Message> {
-  match msg {
-    Message::Increment => {
-      model.counter += 1;
-      if model.counter > 50 {
-        return Some(Message::Reset);
-      }
-    },
-    Message::Decrement => {
-      model.counter -= 1;
-      if model.counter < -50 {
-        return Some(Message::Reset);
-      }
-    },
-    Message::Reset => {
-      model.counter = 0;
-    },
-    Message::Quit => {
-      model.should_quit = true;
-    },
-    _ => {},
-  }
-  None // Default return value if no specific message is to be returned
-}
+{{ #include @code/the-elm-architecture/src/main.rs:update }}
 ```
 
 :::attention
@@ -222,6 +191,12 @@ fn view(model: &Model) {
 Every time the model is updated, the view function should be capable of reflecting those changes
 accurately in the terminal UI.
 
+A view for a simple counter app might look like:
+
+```rust
+{{ #include @code/the-elm-architecture/src/main.rs:view }}
+```
+
 In TEA, you are expected to ensure that your view function is side-effect free. The `view()`
 function shouldn't modify global state or perform any other actions. Its sole job is to map the
 model to a visual representation.
@@ -253,19 +228,16 @@ were interested in rendering a `List`, your `view` function may look like this:
 
 ```rust
 fn view(model: &mut Model, f: &mut Frame) {
-  let items = app.items.items.iter().map(|element| ListItem::new(element)).collect();
-  f.render_stateful_widget(List::new(items), f.size(), &mut app.items.state);
+    let items = app.items.items.iter().map(|element| ListItem::new(element)).collect();
+    f.render_stateful_widget(List::new(items), f.size(), &mut app.items.state);
 }
 
 fn main() {
-  loop {
-    ...
-    terminal
-      .draw(|f| {
-        view(&mut model, f);
-      })?;
-    ...
-  }
+    loop {
+        ...
+        terminal.draw(|f| view(&mut model, f) )?;
+        ...
+    }
 }
 ```
 
@@ -276,15 +248,15 @@ might have a `view` that looks like this:
 
 ```rust
 fn view(model: &mut Model, f: &mut Frame) {
-  let area = f.size();
-  let input = Paragraph::new(app.input.value());
-  f.render_widget(input, area);
-  if app.mode == Mode::Insert {
-    f.set_cursor(
-      (area.x + 1 + self.input.cursor() as u16).min(area.x + area.width - 2),
-      area.y + 1
-    )
-  }
+    let area = f.size();
+    let input = Paragraph::new(app.input.value());
+    f.render_widget(input, area);
+    if app.mode == Mode::Insert {
+        f.set_cursor(
+            (area.x + 1 + self.input.cursor() as u16).min(area.x + area.width - 2),
+            area.y + 1
+        )
+    }
 }
 ```
 
@@ -306,117 +278,5 @@ The notable difference from before is that we have an `Model` struct that captur
 and a `Message` enum that captures the various actions your app can take.
 
 ```rust
-// cargo add anyhow ratatui crossterm
-use anyhow::Result;
-use ratatui::{
-  prelude::{CrosstermBackend, Terminal},
-  widgets::Paragraph,
-};
-
-// MODEL
-struct Model {
-  counter: i32,
-  should_quit: bool,
-}
-
-// MESSAGES
-#[derive(PartialEq)]
-enum Message {
-  Increment,
-  Decrement,
-  Reset,
-  Quit,
-}
-
-// UPDATE
-fn update(model: &mut Model, msg: Message) -> Option<Message> {
-  match msg {
-    Message::Increment => {
-      model.counter += 1;
-      if model.counter > 50 {
-        return Some(Message::Reset);
-      }
-    },
-    Message::Decrement => {
-      model.counter -= 1;
-      if model.counter < -50 {
-        return Some(Message::Reset);
-      }
-    },
-    Message::Reset => model.counter = 0,
-    Message::Quit => model.should_quit = true, // You can handle cleanup and exit here
-  };
-  None
-}
-
-// VIEW
-fn view(model: &mut Model, f: &mut Frame) {
-  f.render_widget(Paragraph::new(format!("Counter: {}", model.counter)), f.size());
-}
-
-// Convert Event to Message
-// We don't need to pass in a `model` to this function in this example
-// but you might need it as your project evolves
-fn handle_event(_: &Model) -> Result<Option<Message>> {
-  let message = if crossterm::event::poll(std::time::Duration::from_millis(250))? {
-    if let crossterm::event::Event::Key(key) = crossterm::event::read()? {
-      match key.code {
-        crossterm::event::KeyCode::Char('j') => Message::Increment,
-        crossterm::event::KeyCode::Char('k') => Message::Decrement,
-        crossterm::event::KeyCode::Char('q') => Message::Quit,
-        _ => return Ok(None),
-      }
-    } else {
-      return Ok(None);
-    }
-  } else {
-    return Ok(None);
-  };
-  Ok(Some(message))
-}
-
-pub fn initialize_panic_handler() {
-  let original_hook = std::panic::take_hook();
-  std::panic::set_hook(Box::new(move |panic_info| {
-    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen).unwrap();
-    crossterm::terminal::disable_raw_mode().unwrap();
-    original_hook(panic_info);
-  }));
-}
-
-fn main() -> Result<()> {
-  initialize_panic_handler();
-
-  // Startup
-  crossterm::terminal::enable_raw_mode()?;
-  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
-
-  let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
-  let mut model = Model { counter: 0, should_quit: false };
-
-  loop {
-    // Render the current view
-    terminal.draw(|f| {
-      view(&mut model, f);
-    })?;
-
-    // Handle events and map to a Message
-    let mut current_msg = handle_event(&model)?;
-
-    // Process updates as long as they return a non-None message
-    while current_msg != None {
-      current_msg = update(&mut model, current_msg.unwrap());
-    }
-
-    // Exit loop if quit flag is set
-    if model.should_quit {
-      break;
-    }
-  }
-
-  // Shutdown
-  crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
-  crossterm::terminal::disable_raw_mode()?;
-  Ok(())
-}
+{{ #include @code/the-elm-architecture/src/main.rs }}
 ```
