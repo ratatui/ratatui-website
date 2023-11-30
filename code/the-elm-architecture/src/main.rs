@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use crossterm::event::{self, KeyCode};
+use crossterm::event::{self, Event, KeyCode};
 // cargo add anyhow crossterm ratatui
 use ratatui::{prelude::*, widgets::*};
 
@@ -67,21 +67,23 @@ fn view(model: &mut Model, f: &mut Frame) {
 /// We don't need to pass in a `model` to this function in this example
 /// but you might need it as your project evolves
 fn handle_event(_: &Model) -> anyhow::Result<Option<Message>> {
-    let message = if event::poll(Duration::from_millis(250))? {
-        if let event::Event::Key(key) = event::read()? {
-            match key.code {
-                KeyCode::Char('j') => Message::Increment,
-                KeyCode::Char('k') => Message::Decrement,
-                KeyCode::Char('q') => Message::Quit,
-                _ => return Ok(None),
+    if event::poll(Duration::from_millis(250))? {
+        if let Event::Key(key) = event::read()? {
+            if key.kind == event::KeyEventKind::Press {
+                return Ok(handle_key(key));
             }
-        } else {
-            return Ok(None);
         }
-    } else {
-        return Ok(None);
-    };
-    Ok(Some(message))
+    }
+    Ok(None)
+}
+
+fn handle_key(key: event::KeyEvent) -> Option<Message> {
+    match key.code {
+        KeyCode::Char('j') => Some(Message::Increment),
+        KeyCode::Char('k') => Some(Message::Decrement),
+        KeyCode::Char('q') => Some(Message::Quit),
+        _ => None,
+    }
 }
 
 // ANCHOR: update
