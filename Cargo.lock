@@ -1581,6 +1581,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "the-elm-architecture"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "crossterm",
+ "ratatui",
+]
+
+[[package]]
 name = "thiserror"
 version = "1.0.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
