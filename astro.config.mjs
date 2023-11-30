@@ -258,4 +258,11 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
   ],
+  vite: {
+    server: {
+      watch: {
+        ignored: ["**/target/**/*"]
+      },
+    },
+  },
 });
