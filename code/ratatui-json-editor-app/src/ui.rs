@@ -24,7 +24,7 @@ pub fn ui(f: &mut Frame, app: &App) {
         .split(f.size());
     // ANCHOR_END: ui_layout
 
-    //ANCHOR: title_paragraph
+    // ANCHOR: title_paragraph
     let title_block = Block::default()
         .borders(Borders::ALL)
         .style(Style::default());
@@ -36,7 +36,7 @@ pub fn ui(f: &mut Frame, app: &App) {
     .block(title_block);
 
     f.render_widget(title, chunks[0]);
-    //ANCHOR_END: title_paragraph
+    // ANCHOR_END: title_paragraph
     // ANCHOR: key_value_list
     let mut list_items = Vec::<ListItem>::new();
 
