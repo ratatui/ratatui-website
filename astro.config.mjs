@@ -35,7 +35,6 @@ export default defineConfig({
       logo: {
         light: "./src/assets/logo.png",
         dark: "./src/assets/logo-dark.png",
-        replacesTitle: true,
       },
       favicon: "./src/assets/logo.png",
       components: {
