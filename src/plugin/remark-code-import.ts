@@ -66,9 +66,9 @@ const remarkIncludeCode = () => {
 
 export default remarkIncludeCode;
 
-function include(indludePath: string, anchor?: string): string {
+function include(includePath: string, anchor?: string): string {
   try {
-    let fileContent = fs.readFileSync(indludePath, "utf8");
+    let fileContent = fs.readFileSync(includePath, "utf8");
 
     // if the anchor is in the format "start:end", extract the lines between the start and end
     if (anchor && anchor.search(":") != -1) {
@@ -107,7 +107,7 @@ function include(indludePath: string, anchor?: string): string {
         ${endAnchorRegex}         // matches the end anchor
       `;
       const anchorContent = fileContent.match(anchorRegex)?.groups?.content;
-      if (!anchorContent) throw new Error(`Anchor '${anchor}' not found in ${indludePath}`);
+      if (!anchorContent) throw new Error(`Anchor '${anchor}' not found in ${includePath}`);
       fileContent = anchorContent;
     }
     // Remove lines containing start and end anchor comments
@@ -117,9 +117,9 @@ function include(indludePath: string, anchor?: string): string {
       .join("\n");
   } catch (err) {
     if (err instanceof Error) {
-      throw new Error(`Error reading file '${indludePath}': ${err.message}`);
+      throw new Error(`Error reading file '${includePath}': ${err.message}`);
     } else {
-      throw new Error(`Error reading file '${indludePath}': ${err}`);
+      throw new Error(`Error reading file '${includePath}': ${err}`);
     }
   }
 }
