@@ -33,8 +33,9 @@ export default defineConfig({
       title: "Ratatui",
       customCss: ["/src/tailwind.css"],
       logo: {
-        light: "./src/assets/logo.png",
-        dark: "./src/assets/logo-dark.png",
+        light: "./src/assets/ratatui-light.png",
+        dark: "./src/assets/ratatui-dark.png",
+        replacesTitle: true,
       },
       favicon: "./src/assets/logo.png",
       components: {
