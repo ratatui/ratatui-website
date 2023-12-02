@@ -43,6 +43,9 @@ export default defineConfig({
       social: {
         github: "https://github.com/ratatui-org/ratatui",
         discord: "https://discord.gg/pMCEU9hNEj",
+        mastodon: "https://fosstodon.org/@ratatui_rs",
+        twitter: "https://twitter.com/ratatui_rs",
+        linkedin: "https://www.linkedin.com/company/ratatui-rs",
       },
       sidebar: [
         { label: "Introduction", link: "/introduction/" },
