@@ -6,6 +6,7 @@ import { remarkKroki } from "remark-kroki";
 import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
 import remarkIncludeCode from "/src/plugin/remark-code-import";
+import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
@@ -257,6 +258,7 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
+    partytown()
   ],
   vite: {
     server: {
