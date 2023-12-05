@@ -226,7 +226,7 @@ use crossterm::{
   terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::{
-  prelude::{CrosstermBackend, Terminal},
+  prelude::{CrosstermBackend, Terminal, Frame},
   widgets::Paragraph,
 };
 
