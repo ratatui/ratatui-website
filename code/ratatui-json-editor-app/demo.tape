@@ -4,8 +4,6 @@ Set Height 900
 
 # setup
 Hide
-Type "cd ../../../code/ratatui-json-editor-app"
-Enter
 Type "cargo run"
 Enter
 Sleep 10s
