@@ -16,7 +16,7 @@
     "@astrojs/partytown": "^2.0.2",
     "@astrojs/starlight": "^0.14.0",
     "@astrojs/starlight-tailwind": "^2.0.1",
-    "@astrojs/tailwind": "^5.0.2",
+    "@astrojs/tailwind": "^5.0.3",
     "astro": "^3.2.3",
     "astro-diagram": "^0.7.0",
     "mermaid": "^10.6.1",
