@@ -1,4 +1,4 @@
-import { docsSchema, i18nSchema } from "@astrojs/starlight/schema";
+import { docsSchema } from "@astrojs/starlight/schema";
 import { defineCollection } from "astro:content";
 
 export const collections = {
