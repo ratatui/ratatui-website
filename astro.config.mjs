@@ -224,6 +224,7 @@ export default defineConfig({
                   link: "/how-to/develop-apps/terminal-and-event-handler/",
                 },
                 { label: "Setup Panic Hooks", link: "/how-to/develop-apps/panic-hooks/" },
+                { label: "Color_eyre Error Hooks", link: "/how-to/develop-apps/color-eyre/" },
                 { label: "Better Panic Hooks", link: "/how-to/develop-apps/better-panic/" },
                 { label: "Migrate from tui-rs", link: "/how-to/develop-apps/migrate-from-tui-rs/" },
               ],
