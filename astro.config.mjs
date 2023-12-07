@@ -44,6 +44,7 @@ export default defineConfig({
       social: {
         github: "https://github.com/ratatui-org/ratatui",
         discord: "https://discord.gg/pMCEU9hNEj",
+        matrix: "https://matrix.to/#/#ratatui:matrix.org",
         mastodon: "https://fosstodon.org/@ratatui_rs",
         twitter: "https://twitter.com/ratatui_rs",
         linkedin: "https://www.linkedin.com/company/ratatui-rs",
