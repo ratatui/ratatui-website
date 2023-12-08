@@ -747,7 +747,7 @@ dependencies = [
 name = "how-to-overwrite-regions"
 version = "0.0.0"
 dependencies = [
- "anyhow",
+ "color-eyre",
  "crossterm",
  "derive_setters",
  "lipsum",

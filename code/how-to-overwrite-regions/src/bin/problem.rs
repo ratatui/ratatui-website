@@ -20,7 +20,7 @@ struct Term {
     terminal: Terminal<CrosstermBackend<Stdout>>,
 }
 
-fn main() -> anyhow::Result<()> {
+fn main() -> color_eyre::Result<()> {
     let mut term = Term::init()?;
     loop {
         term.terminal.draw(ui)?;
@@ -62,13 +62,13 @@ fn ui(frame: &mut Frame) {
 }
 // ANCHOR_END: ui
 
-fn key_pressed() -> anyhow::Result<bool> {
+fn key_pressed() -> color_eyre::Result<bool> {
     Ok(event::poll(Duration::from_millis(16))?
         && matches!(event::read()?, Event::Key(_)))
 }
 
 impl Term {
-    fn init() -> anyhow::Result<Self> {
+    fn init() -> color_eyre::Result<Self> {
         stdout().execute(EnterAlternateScreen)?;
         enable_raw_mode()?;
         let terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
