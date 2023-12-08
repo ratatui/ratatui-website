@@ -30,7 +30,7 @@ enum Message {
 // ANCHOR_END: message
 
 // ANCHOR: main
-fn main() -> anyhow::Result<()> {
+fn main() -> color_eyre::Result<()> {
     tui::install_panic_hook();
     let mut terminal = tui::init_terminal()?;
     let mut model = Model::default();
@@ -66,7 +66,7 @@ fn view(model: &mut Model, f: &mut Frame) {
 ///
 /// We don't need to pass in a `model` to this function in this example
 /// but you might need it as your project evolves
-fn handle_event(_: &Model) -> anyhow::Result<Option<Message>> {
+fn handle_event(_: &Model) -> color_eyre::Result<Option<Message>> {
     if event::poll(Duration::from_millis(250))? {
         if let Event::Key(key) = event::read()? {
             if key.kind == event::KeyEventKind::Press {
@@ -122,14 +122,14 @@ mod tui {
     use ratatui::prelude::*;
     use std::{io::stdout, panic};
 
-    pub fn init_terminal() -> anyhow::Result<Terminal<impl Backend>> {
+    pub fn init_terminal() -> color_eyre::Result<Terminal<impl Backend>> {
         enable_raw_mode()?;
         stdout().execute(EnterAlternateScreen)?;
         let terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
         Ok(terminal)
     }
 
-    pub fn restore_terminal() -> anyhow::Result<()> {
+    pub fn restore_terminal() -> color_eyre::Result<()> {
         stdout().execute(LeaveAlternateScreen)?;
         disable_raw_mode()?;
         Ok(())

@@ -104,12 +104,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "anyhow"
-version = "1.0.75"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4668cab20f66d8d020e1fbc0ebe47217433c1b6c8f2040faf858554e394ace6"
-
-[[package]]
 name = "async-trait"
 version = "0.1.74"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1593,7 +1587,7 @@ dependencies = [
 name = "the-elm-architecture"
 version = "0.0.0"
 dependencies = [
- "anyhow",
+ "color-eyre",
  "crossterm",
  "ratatui",
 ]
