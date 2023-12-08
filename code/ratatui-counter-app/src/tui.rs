@@ -3,7 +3,7 @@
 ///// ANCHOR: tui_imports
 use std::{io, panic};
 
-use anyhow::Result;
+use color_eyre::Result;
 use crossterm::{
     event::{DisableMouseCapture, EnableMouseCapture},
     terminal::{self, EnterAlternateScreen, LeaveAlternateScreen},

@@ -16,8 +16,8 @@ pub mod tui;
 pub mod update;
 ///// ANCHOR_END: declare_mods
 
-use anyhow::Result;
 use app::App;
+use color_eyre::Result;
 use event::{Event, EventHandler};
 use ratatui::{backend::CrosstermBackend, Terminal};
 use tui::Tui;
