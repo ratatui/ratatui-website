@@ -256,7 +256,7 @@ Replace `// TODO handle events` with:
 
 Your application should look like:
 
-```rust title="main.rs"
+```rust collapsed title="main.rs (click to expand)"
 {{#include @code/hello-world-tutorial/src/main.rs:all}}
 ```
 
