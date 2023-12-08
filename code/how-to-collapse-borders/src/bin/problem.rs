@@ -3,7 +3,7 @@ use std::{
     time::Duration,
 };
 
-use anyhow::Result;
+use color_eyre::Result;
 use crossterm::{
     event::{self, Event},
     terminal::{
@@ -19,6 +19,7 @@ struct Term {
 }
 
 fn main() -> Result<()> {
+
     let mut term = Term::init()?;
     loop {
         term.terminal.draw(ui)?;
