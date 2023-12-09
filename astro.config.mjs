@@ -5,8 +5,10 @@ import emoji from "remark-emoji";
 import { remarkKroki } from "remark-kroki";
 import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
-import remarkIncludeCode from "/src/plugin/remark-code-import";
+import remarkIncludeCode from "/src/plugins/remark-code-import";
 import partytown from "@astrojs/partytown";
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
+import { collapsibleFrames } from "/src/plugins/collapsible-frames";
 
 // https://astro.build/config
 export default defineConfig({
@@ -40,6 +42,12 @@ export default defineConfig({
       favicon: "./src/assets/logo.png",
       components: {
         Header: "./src/components/Header.astro",
+      },
+      expressiveCode: {
+        plugins: [
+          pluginCollapsibleSections(),
+          collapsibleFrames(),
+        ]
       },
       social: {
         github: "https://github.com/ratatui-org/ratatui",
