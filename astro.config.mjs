@@ -252,7 +252,13 @@ export default defineConfig({
             { label: "v0.21", link: "/highlights/v021/" },
           ],
         },
-        { label: "Showcase", link: "/showcase/" },
+        {
+          label: "Showcase", collapsed: true, items: [
+            { label: "Showcase", link: "/showcase/" },
+            { label: "Apps", link: "/showcase/apps/" },
+            { label: "Widgets", link: "/showcase/widgets/" },
+          ],
+        },
         { label: "References", link: "/references/" },
         {
           label: "Developer Guide",
