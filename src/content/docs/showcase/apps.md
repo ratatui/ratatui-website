@@ -1,5 +1,5 @@
 ---
-title: Showcase
+title: App Showcase
 ---
 
 ## [`atuin`](https://github.com/atuinsh/atuin)

@@ -9,7 +9,7 @@ interface Props {
 const { href, text, variant = "default" } = Astro.props;
 ---
 
-<a href={href} class:list={["link-badge", "default"]} set:html={text} />
+<a href={href} class:list={["link-badge", variant]} set:html={text} />
 
 <style>
   .link-badge {
