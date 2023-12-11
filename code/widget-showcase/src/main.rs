@@ -14,7 +14,7 @@ use ratatui::{
         *,
     },
 };
-use time::Date;
+use time::{Date, Month};
 mod tui;
 
 #[derive(Debug, Parser)]
@@ -83,17 +83,22 @@ impl App {
         widget: Widget,
     ) -> color_eyre::Result<()> {
         while self.running_state != RunningState::Finished {
-            terminal.draw(|frame| self.render_frame(frame, widget))?;
+            terminal.draw(|frame| self.render_frame(frame, widget).unwrap())?;
             self.update().wrap_err("update failed")?;
         }
         Ok(())
     }
-    fn render_frame(&self, frame: &mut Frame, widget: Widget) {
+    fn render_frame(
+        &self,
+        frame: &mut Frame,
+        widget: Widget,
+    ) -> color_eyre::Result<()> {
         match widget {
             Widget::Block => render_block(frame),
             Widget::BarChart => render_bar_chart(frame),
-            Widget::Calendar => render_calendar(frame),
+            Widget::Calendar => render_calendar(frame)?,
         }
+        Ok(())
     }
 
     fn update(&mut self) -> color_eyre::Result<()> {
@@ -181,16 +186,47 @@ fn render_bar_chart(frame: &mut Frame) {
     frame.render_widget(barchart, frame.size());
 }
 
-fn render_calendar(frame: &mut Frame) {
-    let default_style = Style::default()
-        .add_modifier(Modifier::BOLD)
-        .bg(Color::Rgb(50, 50, 50));
-    let events = CalendarEventStore::default();
-    let calendar = Monthly::new(
-        Date::from_calendar_date(2023, time::Month::January, 1).unwrap(),
-        events,
-    )
-    .show_month_header(Style::default())
-    .default_style(default_style);
-    frame.render_widget(calendar, frame.size());
+fn render_calendar(frame: &mut Frame) -> color_eyre::Result<()> {
+    let default_style = Style::new().black().on_gray();
+
+    let january = Date::from_calendar_date(2023, Month::January, 1)?;
+    let new_years_day = Date::from_calendar_date(2023, Month::January, 2)?;
+    let mlk_day = Date::from_calendar_date(2023, Month::January, 16)?;
+    let australia_day = Date::from_calendar_date(2023, Month::January, 26)?;
+    let mut events = CalendarEventStore::default();
+    events.add(new_years_day, Style::new().on_blue());
+    events.add(mlk_day, Style::new().dark_gray().on_black());
+    events.add(
+        australia_day,
+        Style::new().not_bold().green().on_light_yellow(),
+    );
+
+    let january_calendar = Monthly::new(january, events)
+        .show_month_header(Style::default())
+        .default_style(default_style);
+
+    let february = Date::from_calendar_date(2023, Month::February, 1)?;
+    let washingtons_birthday =
+        Date::from_calendar_date(2023, Month::February, 20)?;
+    let mut events = CalendarEventStore::default();
+    events.add(
+        washingtons_birthday,
+        Style::new()
+            .red()
+            .on_white()
+            .underline_color(Color::Blue)
+            .underlined(),
+    );
+    let february_calendar = Monthly::new(february, events)
+        .show_weekdays_header(Style::default())
+        .show_surrounding(Style::new().dim())
+        .default_style(default_style);
+
+    let layout = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Length(23), Constraint::Min(0)])
+        .split(frame.size());
+    frame.render_widget(january_calendar, layout[0]);
+    frame.render_widget(february_calendar, layout[1]);
+    Ok(())
 }
