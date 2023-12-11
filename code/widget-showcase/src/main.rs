@@ -156,12 +156,14 @@ fn render_block(frame: &mut Frame) {
     );
 }
 
-fn title_block<'a>(title: &'a str) -> Block<'a> {
+#[allow(dead_code)]
+fn title_block<'a>(_title: &'a str) -> Block<'a> {
+    // Block::default()
+    //     .title(Title::from(title).alignment(Alignment::Center))
+    //     .borders(Borders::ALL)
+    //     .border_set(symbols::border::THICK)
+    //     .border_style(Style::new().dark_gray())
     Block::default()
-        .title(Title::from(title).alignment(Alignment::Center))
-        .borders(Borders::ALL)
-        .border_set(symbols::border::THICK)
-        .border_style(Style::new().dark_gray())
 }
 
 fn render_bar_chart(frame: &mut Frame) {
@@ -229,4 +231,12 @@ fn render_calendar(frame: &mut Frame) -> color_eyre::Result<()> {
     frame.render_widget(january_calendar, layout[0]);
     frame.render_widget(february_calendar, layout[1]);
     Ok(())
+}
+
+fn render_guage(frame: &mut Frame) {
+    let guage = Gauge::default()
+        .block(title_block("Gauge"))
+        .gauge_style(Style::default().fg(Color::Yellow))
+        .percent(42);
+    frame.render_widget(guage, frame.size());
 }
