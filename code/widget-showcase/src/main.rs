@@ -167,25 +167,37 @@ fn title_block<'a>(_title: &'a str) -> Block<'a> {
 }
 
 fn render_bar_chart(frame: &mut Frame) {
-    let barchart = BarChart::default()
-        .bar_width(3)
+    let data = BarGroup::default().bars(&[
+        Bar::default()
+            .label("Red".into())
+            .value(2)
+            .style(Style::new().red()),
+        Bar::default()
+            .label("Green".into())
+            .value(7)
+            .style(Style::new().green()),
+        Bar::default()
+            .label("Blue".into())
+            .value(11)
+            .style(Style::new().blue()),
+    ]);
+    let vertical = BarChart::default()
+        .bar_width(5)
         .bar_gap(1)
-        .data(&[
-            ("B1", 2),
-            ("B2", 5),
-            ("B3", 7),
-            ("B4", 9),
-            ("B5", 12),
-            ("B6", 8),
-            ("B7", 5),
-            ("B8", 2),
-            ("B9", 7),
-            ("B10", 9),
-            ("B11", 12),
-            ("B12", 8),
-        ])
+        .data(data.clone())
         .block(title_block("Bar Chart"));
-    frame.render_widget(barchart, frame.size());
+    let horizontal = BarChart::default()
+        .bar_width(1)
+        .bar_gap(1)
+        .data(data)
+        .direction(Direction::Horizontal)
+        .block(title_block("Horizontal Bar Chart"));
+    let layout = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Length(20), Constraint::Min(0)])
+        .split(frame.size());
+    frame.render_widget(vertical, layout[0]);
+    frame.render_widget(horizontal, layout[1]);
 }
 
 fn render_calendar(frame: &mut Frame) -> color_eyre::Result<()> {
@@ -231,12 +243,4 @@ fn render_calendar(frame: &mut Frame) -> color_eyre::Result<()> {
     frame.render_widget(january_calendar, layout[0]);
     frame.render_widget(february_calendar, layout[1]);
     Ok(())
-}
-
-fn render_guage(frame: &mut Frame) {
-    let guage = Gauge::default()
-        .block(title_block("Gauge"))
-        .gauge_style(Style::default().fg(Color::Yellow))
-        .percent(42);
-    frame.render_widget(guage, frame.size());
 }
