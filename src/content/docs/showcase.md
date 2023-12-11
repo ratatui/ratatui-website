@@ -68,6 +68,17 @@ A mine sweeping game written in Rust
 
 ---
 
+## [`oatmeal`](https://github.com/dustinblackman/oatmeal/)
+
+Oatmeal is a terminal UI chat application that speaks with LLMs, complete with slash commands and
+fancy chat bubbles. It features agnostic backends to allow switching between the powerhouse of
+ChatGPT, or keeping things private with Ollama. While Oatmeal works great as a stand alone terminal
+application, it works even better paired with an editor like Neovim!
+
+![oatmeal-demo](https://github.com/dustinblackman/oatmeal/assets/5246169/9ee5e910-4eff-4deb-8065-aeab8bfe6b00)
+
+---
+
 ## [`oha`](https://github.com/hatoo/oha/)
 
 oha is a tiny program that sends some load to a web application and show realtime tui
