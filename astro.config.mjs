@@ -40,6 +40,15 @@ export default defineConfig({
         dark: "./src/assets/logo-dark.png",
       },
       favicon: "./src/assets/logo.png",
+      head:[
+        {
+          tag:"meta",
+          attrs:{
+            property:"og:image",
+            content:"./src/assets/ratatui-og.png"
+          }
+        }
+      ],
       components: {
         Header: "./src/components/Header.astro",
       },
