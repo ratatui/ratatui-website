@@ -256,7 +256,8 @@ export default defineConfig({
           label: "Showcase", collapsed: true, items: [
             { label: "Showcase", link: "/showcase/" },
             { label: "Apps", link: "/showcase/apps/" },
-            { label: "Widgets", link: "/showcase/widgets/" },
+            { label: "Built-in Widgets", link: "/showcase/widgets/" },
+            { label: "Third Party Widgets", link: "/showcase/third-party-widgets/" },
           ],
         },
         { label: "References", link: "/references/" },
