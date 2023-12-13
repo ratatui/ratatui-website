@@ -169,7 +169,7 @@ serve different purposes and have distinct characteristics.
 | **Nature**       | Libraries are passive in nature. They wait for the application's code to invoke their methods.                                                                                                                             | Frameworks are active and have a predefined flow of their own. The developer fills in specific pieces of the framework with their own code.                                                                                                                                          |
 | **Example**      | Imagine you're building a house. A library would be like a toolbox with tools (functions) that you can use at will. You decide when and where to use each tool.                                                            | Using the house-building analogy, a framework would be like a prefabricated house where the main structure is already built. You're tasked with filling in the interiors and decor, but you have to follow the design and architecture already provided by the prefabricated design. |
 
-## What is the difference between a `ratatui` (a library) and a [`tui-realm`](https://github.com/veeso/tui-realm/) (a framework)?
+## What is the difference between `ratatui` (a library) and [`tui-realm`](https://github.com/veeso/tui-realm/) (a framework)?
 
 While `ratatui` provides tools (widgets) for building terminal UIs, it doesn't dictate or enforce a
 specific way to structure your application. You need to decide how to best use the library in your
