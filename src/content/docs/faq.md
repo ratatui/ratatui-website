@@ -395,7 +395,7 @@ let mut t = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
 let mut t = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
 ```
 
-Both of these will work fine for normal purposes. The question you have to ask if how would you like
+Both of these will work fine for normal purposes. The question you have to ask is how would you like
 your application to behave in non-TTY environments.
 
 For example, if you run `ratatui-application | grep foo` with `stdout`, your application won't
