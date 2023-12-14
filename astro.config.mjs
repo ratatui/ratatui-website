@@ -45,7 +45,7 @@ export default defineConfig({
           tag:"meta",
           attrs:{
             property:"og:image",
-            content:"./src/assets/ratatui-og.png"
+            content:"/src/assets/ratatui-og.png"
           }
         }
       ],
