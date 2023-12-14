@@ -1,7 +1,4 @@
-use ratatui::{
-    prelude::*,
-    widgets::{calendar::*, *},
-};
+use ratatui::{prelude::*, widgets::calendar::*};
 use time::{Date, Month};
 
 pub fn render(frame: &mut Frame) -> color_eyre::Result<()> {

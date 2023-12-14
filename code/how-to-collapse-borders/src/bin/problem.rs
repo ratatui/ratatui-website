@@ -19,7 +19,6 @@ struct Term {
 }
 
 fn main() -> Result<()> {
-
     let mut term = Term::init()?;
     loop {
         term.terminal.draw(ui)?;
