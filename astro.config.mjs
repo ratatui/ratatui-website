@@ -31,7 +31,6 @@ export default defineConfig({
     ],
   },
   integrations: [
-    starlightLinksValidator(),
     starlight({
       title: "Ratatui",
       customCss: ["/src/tailwind.css"],
@@ -44,6 +43,11 @@ export default defineConfig({
       components: {
         Header: "./src/components/Header.astro",
       },
+      plugins: [
+        starlightLinksValidator({
+          errorOnRelativeLinks: false,
+        }),
+      ],
       expressiveCode: {
         plugins: [
           pluginCollapsibleSections(),
