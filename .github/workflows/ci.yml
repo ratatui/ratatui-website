@@ -1,0 +1,61 @@
+name: Continuous Integration
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  merge_group:
+
+# ensure that the workflow is only triggered once per PR,  subsequent pushes to the PR will cancel
+# and restart the workflow. See https://docs.github.com/en/actions/using-jobs/using-concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+# lint, clippy and coverage jobs are intentionally early in the workflow to catch simple
+# formatting, typos, and missing tests as early as possible. This allows us to fix these and
+# resubmit the PR without having to wait for the comprehensive matrix of tests to complete.
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        if: github.event_name != 'pull_request'
+        uses: actions/checkout@v4
+      - name: Checkout
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install Rust nightly
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Check formatting
+        run: cargo fmt --all --check
+
+  typos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check typos
+        uses: crate-ci/typos@master
+
+  clippy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - name: Run cargo clippy
+        run: cargo clippy -- -D warnings
