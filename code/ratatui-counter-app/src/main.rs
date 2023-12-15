@@ -1,5 +1,5 @@
-///// ANCHOR: imports_main
-///// ANCHOR: declare_mods
+// ANCHOR: imports_main
+// ANCHOR: declare_mods
 /// Application.
 pub mod app;
 
@@ -14,17 +14,16 @@ pub mod tui;
 
 /// Application updater.
 pub mod update;
-///// ANCHOR_END: declare_mods
-
+// ANCHOR_END: declare_mods
 use app::App;
 use color_eyre::Result;
 use event::{Event, EventHandler};
 use ratatui::{backend::CrosstermBackend, Terminal};
 use tui::Tui;
 use update::update;
-///// ANCHOR_END: imports_main
+// ANCHOR_END: imports_main
 
-///// ANCHOR: main
+// ANCHOR: main
 fn main() -> Result<()> {
     // Create an application.
     let mut app = App::new();
@@ -53,4 +52,4 @@ fn main() -> Result<()> {
     tui.exit()?;
     Ok(())
 }
-///// ANCHOR_END: main
+// ANCHOR_END: main

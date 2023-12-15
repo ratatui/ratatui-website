@@ -7,7 +7,7 @@ use tracing::error;
 use tracing_error::ErrorLayer;
 use tracing_subscriber::{self, prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
 
-pub static GIT_COMMIT_HASH: &'static str = env!("RATATUI_COUNTER_GIT_INFO");
+pub static GIT_COMMIT_HASH: &str = env!("RATATUI_COUNTER_GIT_INFO");
 
 lazy_static! {
   pub static ref PROJECT_NAME: String = env!("CARGO_CRATE_NAME").to_uppercase().to_string();
@@ -144,7 +144,7 @@ macro_rules! trace_dbg {
 pub fn version() -> String {
   let author = clap::crate_authors!();
 
-  let commit_hash = GIT_COMMIT_HASH.clone();
+  let commit_hash = GIT_COMMIT_HASH;
 
   // let current_exe_path = PathBuf::from(clap::crate_name!()).display().to_string();
   let config_dir_path = get_config_dir().display().to_string();

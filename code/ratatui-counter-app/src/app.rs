@@ -1,4 +1,4 @@
-///// ANCHOR: action
+// ANCHOR: action
 pub enum Action {
     Tick,
     Increment,
@@ -6,9 +6,9 @@ pub enum Action {
     Quit,
     None,
 }
-///// ANCHOR_END: action
+// ANCHOR_END: action
 
-///// ANCHOR: application
+// ANCHOR: application
 /// Application.
 #[derive(Debug, Default)]
 pub struct App {
@@ -17,9 +17,9 @@ pub struct App {
     /// counter
     pub counter: u8,
 }
-///// ANCHOR_END: application
+// ANCHOR_END: application
 
-///// ANCHOR: application_impl
+// ANCHOR: application_impl
 impl App {
     /// Constructs a new instance of [`App`].
     pub fn new() -> Self {
@@ -46,9 +46,9 @@ impl App {
         }
     }
 }
-///// ANCHOR_END: application_impl
+// ANCHOR_END: application_impl
 
-///// ANCHOR: application_test
+// ANCHOR: application_test
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -66,4 +66,4 @@ mod tests {
         assert_eq!(app.counter, 0);
     }
 }
-///// ANCHOR_END: application_test
+// ANCHOR_END: application_test

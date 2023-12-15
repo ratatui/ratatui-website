@@ -94,25 +94,23 @@ impl Component for Home {
   }
 
   fn handle_key_events(&mut self, key: KeyEvent) -> Result<Option<Action>> {
-    self.last_events.push(key.clone());
+    self.last_events.push(key);
     let action = match self.mode {
       Mode::Normal | Mode::Processing => return Ok(None),
-      Mode::Insert => {
-        match key.code {
-          KeyCode::Esc => Action::EnterNormal,
-          KeyCode::Enter => {
-            if let Some(sender) = &self.action_tx {
-              if let Err(e) = sender.send(Action::CompleteInput(self.input.value().to_string())) {
-                error!("Failed to send action: {:?}", e);
-              }
+      Mode::Insert => match key.code {
+        KeyCode::Esc => Action::EnterNormal,
+        KeyCode::Enter => {
+          if let Some(sender) = &self.action_tx {
+            if let Err(e) = sender.send(Action::CompleteInput(self.input.value().to_string())) {
+              error!("Failed to send action: {:?}", e);
             }
-            Action::EnterNormal
-          },
-          _ => {
-            self.input.handle_event(&crossterm::event::Event::Key(key));
-            Action::Update
-          },
-        }
+          }
+          Action::EnterNormal
+        },
+        _ => {
+          self.input.handle_event(&crossterm::event::Event::Key(key));
+          Action::Update
+        },
       },
     };
     Ok(Some(action))
@@ -240,7 +238,7 @@ impl Component for Home {
         .title(
           ratatui::widgets::block::Title::from(format!(
             "{:?}",
-            &self.last_events.iter().map(|k| key_event_to_string(k)).collect::<Vec<_>>()
+            &self.last_events.iter().map(key_event_to_string).collect::<Vec<_>>()
           ))
           .alignment(Alignment::Right),
         )

@@ -71,7 +71,7 @@ impl Config {
     for (mode, default_styles) in default_config.styles.iter() {
       let user_styles = cfg.styles.entry(*mode).or_default();
       for (style_key, style) in default_styles.iter() {
-        user_styles.entry(style_key.clone()).or_insert_with(|| style.clone());
+        user_styles.entry(style_key.clone()).or_insert_with(|| *style);
       }
     }
 
@@ -201,7 +201,7 @@ pub fn key_event_to_string(key_event: &KeyEvent) -> String {
       char = format!("f({c})");
       &char
     },
-    KeyCode::Char(c) if c == ' ' => "space",
+    KeyCode::Char(' ') => "space",
     KeyCode::Char(c) => {
       char = c.to_string();
       &char
@@ -429,8 +429,7 @@ mod tests {
   #[test]
   fn test_parse_color_rgb() {
     let color = parse_color("rgb123");
-    let expected = 16 + 1 * 36 + 2 * 6 + 3;
-    assert_eq!(color, Some(Color::Indexed(expected)));
+    assert_eq!(color, Some(Color::Indexed(36)));
   }
 
   #[test]

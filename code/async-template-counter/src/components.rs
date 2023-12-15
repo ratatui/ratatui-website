@@ -9,10 +9,10 @@ use crate::{
   tui::{Event, Frame},
 };
 
-pub mod home;
 pub mod fps;
+pub mod home;
 
-//// ANCHOR: component
+// ANCHOR: component
 pub trait Component {
   #[allow(unused_variables)]
   fn register_action_handler(&mut self, tx: UnboundedSender<Action>) -> Result<()> {
@@ -47,4 +47,4 @@ pub trait Component {
   }
   fn draw(&mut self, f: &mut Frame<'_>, rect: Rect) -> Result<()>;
 }
-//// ANCHOR_END: component
+// ANCHOR_END: component
