@@ -14,7 +14,7 @@ This allows us to pass command line arguments to our terminal user interface if 
 
 ![](https://user-images.githubusercontent.com/1813121/252718163-ab1945d1-7d44-4b5b-928d-1164ac99f2c9.png)
 
-In addtion to command line arguments, we typically want the version of the command line program to
+In addition to command line arguments, we typically want the version of the command line program to
 show up on request. In the `clap` command, we pass in an argument called `version()`. This
 `version()` function (defined in `src/utils.rs`) uses a environment variable called
 `RATATUI_ASYNC_TEMPLATE_GIT_INFO` to get the version number with the git commit hash.
@@ -68,7 +68,7 @@ This puts the log files in the `RATATUI_ASYNC_TEMPLATE_DATA` folder, i.e. `.data
 current directory, and sets the log level to `RUST_LOG`, i.e. `debug` when I am prototyping and
 developing using `cargo run`.
 
-![Top half is a Iterm2 terminal with the TUI showing a Vertical split with `tui-logger` widget. Bottom half is a ITerm2 terminal showing the output of running `tail -f` on the log file.](https://user-images.githubusercontent.com/1813121/254093932-46d8c6fd-c572-4675-bcaf-45a36eed51ff.png)
+![Top half is a iTerm2 terminal with the TUI showing a Vertical split with `tui-logger` widget. Bottom half is a ITerm2 terminal showing the output of running `tail -f` on the log file.](https://user-images.githubusercontent.com/1813121/254093932-46d8c6fd-c572-4675-bcaf-45a36eed51ff.png)
 
 Using the `RATATUI_ASYNC_TEMPLATE_CONFIG` environment variable also allows me to have configuration
 data that I can use for testing when development that doesn't affect my local user configuration for
