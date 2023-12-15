@@ -10,9 +10,9 @@ A couple of projects in the wild use this approach
 - <https://github.com/TaKO8Ki/gobang>
 - <https://github.com/nomadiz/edma>
 
-We also have a `ratatui-async-template` that has an example of this `Component` based approach:
+We also have a `async-template` that has an example of this `Component` based approach:
 
-- <https://github.com/ratatui-org/ratatui-async-template>
+- <https://github.com/ratatui-org/async-template>
 
 We already covered [TEA](../the-elm-architecture/) in the previous section. The `Component`
 architecture takes a slightly more object oriented trait based approach.

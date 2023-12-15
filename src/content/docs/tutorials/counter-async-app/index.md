@@ -7,7 +7,7 @@ you may be interested in running IO operations or compute asynchronously.
 
 For this tutorial, we will build a single file version of an async TUI using
 [tokio](https://tokio.rs/). This tutorial section is a simplified version of the
-[`ratatui-async-template`](https://github.com/ratatui-org/ratatui-async-template) project.
+[`async-template`](https://github.com/ratatui-org/async-template) project.
 
 ## Installation
 

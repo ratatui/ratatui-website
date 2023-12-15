@@ -62,8 +62,8 @@ pub fn initialize_panic_handler() {
 }
 ```
 
-Now, let's say I added a `panic!` to
-[an application](https://github.com/ratatui-org/ratatui-async-template) as an example:
+Now, let's say I added a `panic!` to [an application](https://github.com/ratatui-org/async-template)
+as an example:
 
 ```diff
 diff --git a/src/components/app.rs b/src/components/app.rs
@@ -83,7 +83,7 @@ This is what a prettier stacktrace would look like with `better-panic`:
 
 ```
 Backtrace (most recent call last):
-  File "/Users/kd/gitrepos/ratatui-async-template/src/main.rs:46", in ratatui_async_template::main
+  File "/Users/kd/gitrepos/async-template/src/main.rs:46", in ratatui_async_template::main
     Ok(())
   File "/Users/kd/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokio-1.28.2/src/runtime/runtime.rs:304", in tokio::runtime::runtime::Runtime::block_on
     Scheduler::MultiThread(exec) => exec.block_on(&self.handle.inner, future),
@@ -99,13 +99,13 @@ Backtrace (most recent call last):
     f()
   File "/Users/kd/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tokio-1.28.2/src/runtime/park.rs:283", in tokio::runtime::park::CachedParkThread::block_on::{{closure}}
     if let Ready(v) = crate::runtime::coop::budget(|| f.as_mut().poll(&mut cx)) {
-  File "/Users/kd/gitrepos/ratatui-async-template/src/main.rs:44", in ratatui_async_template::main::{{closure}}
+  File "/Users/kd/gitrepos/async-template/src/main.rs:44", in ratatui_async_template::main::{{closure}}
     runner.run().await?;
-  File "/Users/kd/gitrepos/ratatui-async-template/src/runner.rs:80", in ratatui_async_template::runner::Runner::run::{{closure}}
+  File "/Users/kd/gitrepos/async-template/src/runner.rs:80", in ratatui_async_template::runner::Runner::run::{{closure}}
     if let Some(action) = component.update(action.clone())? {
-  File "/Users/kd/gitrepos/ratatui-async-template/src/components/app.rs:132", in <ratatui_async_template::components::app::App as ratatui_async_template::components::Component>::update
+  File "/Users/kd/gitrepos/async-template/src/components/app.rs:132", in <ratatui_async_template::components::app::App as ratatui_async_template::components::Component>::update
     Action::Increment(i) => self.increment(i),
-  File "/Users/kd/gitrepos/ratatui-async-template/src/components/app.rs:80", in ratatui_async_template::components::app::App::increment
+  File "/Users/kd/gitrepos/async-template/src/components/app.rs:80", in ratatui_async_template::components::app::App::increment
     panic!("At the disco");
 
 The application panicked (crashed).
@@ -163,9 +163,9 @@ of the box when users experience an unexpected panic:
 ```
 Well, this is embarrassing.
 
-ratatui-async-template had a problem and crashed. To help us diagnose the problem you can send us a crash report.
+async-template had a problem and crashed. To help us diagnose the problem you can send us a crash report.
 
-We have generated a report file at "/var/folders/l4/bnjjc6p15zd3jnty8c_qkrtr0000gn/T/report-ce1e29cb-c17c-4684-b9d4-92d9678242b7.toml". Submit an issue or email with the subject of "ratatui-async-template Crash Report" and include the report as an attachment.
+We have generated a report file at "/var/folders/l4/bnjjc6p15zd3jnty8c_qkrtr0000gn/T/report-ce1e29cb-c17c-4684-b9d4-92d9678242b7.toml". Submit an issue or email with the subject of "async-template Crash Report" and include the report as an attachment.
 
 - Authors: Dheepak Krishnamurthy
 
@@ -178,7 +178,7 @@ It generates a report where information relevant to the crash is logged. Here's 
 temporary report file that `human-panic` creates (with optimizations turned on):
 
 ```
-name = "ratatui-async-template"
+name = "async-template"
 operating_system = "Mac OS 13.5.2 [64-bit]"
 crate_version = "0.1.0"
 explanation = """
