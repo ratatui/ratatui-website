@@ -38,7 +38,7 @@ relatively fast, especially using the double buffer technique that only renders 
 uses. Creating of the widgets can also be done quite efficiently.
 
 So one question you may ask is can we make `terminal.draw(|f| ui(f))` `async` ourselves? Yes, we
-can. Check out <https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0> for an example.
+can. Check out <https://github.com/ratatui-org/async-template/tree/v0.1.0> for an example.
 
 The only other part related to `ratatui` that is beneficial to being `async` is reading the key
 event inputs from `stdin`, and that can be made `async` with `crossterm`'s event-stream.
@@ -101,10 +101,9 @@ In your `main` thread or `tokio` task, do you expect to be spawning more `tokio`
 more tasks do you plan to be spawning?
 
 The former can be done without any `async` code and the latter is the approach showcased in
-[`ratatui-async-template#v1.0`](https://github.com/ratatui-org/ratatui-async-template/tree/v0.1.0)
-with `tokio`.
+[`async-template#v1.0`](https://github.com/ratatui-org/async-template/tree/v0.1.0) with `tokio`.
 
-The most recent version of the `ratatui-async-template` uses this architecture instead with tokio:
+The most recent version of the `async-template` uses this architecture instead with tokio:
 
 ```kroki type=svgbob
        Event Thread             ┊     Main Thread

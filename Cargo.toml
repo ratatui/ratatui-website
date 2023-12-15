@@ -1,6 +1,9 @@
 # See https://doc.rust-lang.org/cargo/reference/workspaces.html
 [workspace]
 members = ["code/*"]
+exclude = [
+  "code/widget-showcase-third-party" # only contains VHS tape files
+] 
 resolver = "2"
 
 [workspace.package]

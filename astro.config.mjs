@@ -1,14 +1,14 @@
+import partytown from "@astrojs/partytown";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { defineConfig } from "astro/config";
 import emoji from "remark-emoji";
 import { remarkKroki } from "remark-kroki";
 import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
-import remarkIncludeCode from "/src/plugins/remark-code-import";
-import partytown from "@astrojs/partytown";
-import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { collapsibleFrames } from "/src/plugins/collapsible-frames";
+import remarkIncludeCode from "/src/plugins/remark-code-import";
 
 // https://astro.build/config
 export default defineConfig({
@@ -40,6 +40,15 @@ export default defineConfig({
         replacesTitle: true,
       },
       favicon: "/favicon.png",
+      head: [
+        {
+          tag: "meta",
+          attrs: {
+            property: "og:image",
+            content: "/ratatui-og.png",
+          },
+        },
+      ],
       components: {
         Header: "./src/components/Header.astro",
       },
@@ -49,10 +58,7 @@ export default defineConfig({
         }),
       ],
       expressiveCode: {
-        plugins: [
-          pluginCollapsibleSections(),
-          collapsibleFrames(),
-        ]
+        plugins: [pluginCollapsibleSections(), collapsibleFrames()],
       },
       social: {
         github: "https://github.com/ratatui-org/ratatui",
@@ -258,7 +264,9 @@ export default defineConfig({
           ],
         },
         {
-          label: "Showcase", collapsed: true, items: [
+          label: "Showcase",
+          collapsed: true,
+          items: [
             { label: "Showcase", link: "/showcase/" },
             { label: "Apps", link: "/showcase/apps/" },
             { label: "Built-in Widgets", link: "/showcase/widgets/" },
@@ -283,12 +291,12 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
-    partytown()
+    partytown(),
   ],
   vite: {
     server: {
       watch: {
-        ignored: ["**/target/**/*"]
+        ignored: ["**/target/**/*"],
       },
     },
   },

@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import type { Node } from "unist";
 import { visit } from "unist-util-visit";
+import { rx } from "verbose-regexp"; // https://www.npmjs.com/package/verbose-regexp
 import type { VFile } from "vfile";
-import { rx } from 'verbose-regexp' // https://www.npmjs.com/package/verbose-regexp
 
 interface CodeNode extends Node {
   lang?: string;
@@ -18,7 +18,7 @@ interface CodeNode extends Node {
 // - {{#include path/to/file:anchorName}} - Matches "path/to/file" as the filepath and "anchorName" as the anchor.
 // - {{#include ../../path/to/file}} - relative path to file from current markdown file
 // - {{#include @path/to/file}} - path to file from root directory
-const pathRegex = rx`(?<path>.+?)`;         // Matches at least one character, but as few as possible
+const pathRegex = rx`(?<path>.+?)`; // Matches at least one character, but as few as possible
 const anchorNameRegex = rx`(?<anchor>.*?)`; // Matches at least one character, but as few as possible
 const includeRegex = rx.g`  // global (matches all instances in the file)
   \{\{                      // literal "{{"
@@ -43,7 +43,9 @@ const remarkIncludeCode = () => {
         try {
           const includePath = match.groups?.path;
           const anchor = match.groups?.anchor;
-          if (!includePath) { throw new Error("No file path specified"); }
+          if (!includePath) {
+            throw new Error("No file path specified");
+          }
           // Inspired by astro aliases: https://docs.astro.build/en/guides/aliases/
           // Allows for specifying path from root directory
           let fullPath = includePath.startsWith("@")
