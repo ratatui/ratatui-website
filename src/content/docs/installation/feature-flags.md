@@ -44,6 +44,9 @@ cargo add ratatui --features widget-calendar
 
 ## Serde
 
+Enables serialization and deserialization of style and color types using the Serde crate. This is
+useful if you want to save themes to a file.
+
 ```shell
 cargo add ratatui --features serde
 ```
