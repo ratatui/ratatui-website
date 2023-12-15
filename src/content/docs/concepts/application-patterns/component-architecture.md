@@ -10,7 +10,7 @@ A couple of projects in the wild use this approach
 - <https://github.com/TaKO8Ki/gobang>
 - <https://github.com/nomadiz/edma>
 
-We also have a `async-template` that has an example of this `Component` based approach:
+We also have an `async-template` that has an example of this `Component` based approach:
 
 - <https://github.com/ratatui-org/async-template>
 
