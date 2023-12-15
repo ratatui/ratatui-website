@@ -273,6 +273,28 @@ export default defineConfig({
             { label: "Third Party Widgets", link: "/showcase/third-party-widgets/" },
           ],
         },
+        {
+          label: "Templates",
+          collapsed: true,
+          items: [
+            { label: "Templates", link: "/templates/" },
+            {
+              label: "Async",
+              collapsed: true,
+              items: [
+                { label: "Async", link: "/templates/async/" },
+                { label: "Project Structure", link: "/templates/async/project-structure/" },
+                { label: "Main.rs", link: "/templates/async/main-rs/" },
+                { label: "Tui.rs", link: "/templates/async/tui-rs/" },
+                { label: "Action.rs", link: "/templates/async/action-rs/" },
+                { label: "Components.rs", link: "/templates/async/components-rs/" },
+                { label: "Components/home.rs", link: "/templates/async/components-home-rs/" },
+                { label: "Config.rs", link: "/templates/async/config-rs/" },
+                { label: "Utils.rs", link: "/templates/async/utils-rs/" },
+              ],
+            },
+          ],
+        },
         { label: "References", link: "/references/" },
         {
           label: "Developer Guide",
