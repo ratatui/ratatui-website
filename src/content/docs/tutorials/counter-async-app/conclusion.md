@@ -7,10 +7,9 @@ We touched on the basic framework for building an `async` application with Ratat
 `Render` variants. We also saw how we could use `tokio` channels to send `Action`s to run domain
 specific async operations concurrently.
 
-There's more information in
-[`ratatui-async-template`](https://github.com/ratatui-org/ratatui-async-template) about structuring
-an `async` application. The template also covers setting up a
+There's more information in [`async-template`](https://github.com/ratatui-org/async-template) about
+structuring an `async` application. The template also covers setting up a
 [`Component` based architecture](/concepts/application-patterns/component-architecture/).
 
 For more information, refer to the documentation for the template:
-<https://ratatui-org.github.io/ratatui-async-template/>
+<https://ratatui-org.github.io/async-template/>
