@@ -11,7 +11,7 @@ title: async-template
   - Supports suspend signal hooks
 - Logs using [tracing](https://github.com/tokio-rs/tracing)
 - [better-panic](https://github.com/mitsuhiko/better-panic)
-- [color-eyre](https://github.com/eyre/color-eyre)
+- [color-eyre](https://github.com/eyre-rs/color-eyre)
 - [human-panic](https://github.com/rust-cli/human-panic)
 - Clap for command line argument parsing
 - `Component` trait with
@@ -175,11 +175,11 @@ You may also want to check out the following links (roughly in order of increasi
 
 - <https://github.com/ratatui-org/ratatui/tree/main/examples>: Simple one-off examples to illustrate
   various widgets and features in `ratatui`.
-- <https://github.com/ratatui-org/rust-tui-template>: Starter kit for using `ratatui`
-- <https://github.com/ratatui-org/ratatui-book/tree/main/ratatui-book-tutorial-project>: Tutorial
-  project that the user a simple interface to enter key-value pairs, which will printed in json.
-- <https://github.com/ratatui-org/async-template>: Async tokio crossterm based opinionated starter
-  kit for using `ratatui`.
+- <https://github.com/ratatui-org/templates/tree/main/simple>: Starter kit for using `ratatui`
+- <https://github.com/ratatui-org/website/tree/main/code/ratatui-json-editor-app>: Tutorial project
+  that the user a simple interface to enter key-value pairs, which will printed in json.
+- <https://github.com/ratatui-org/templates/tree/main/async/template>: Async tokio crossterm based
+  opinionated starter kit for using `ratatui`.
 - <https://github.com/veeso/tui-realm/>: A framework for `tui.rs` to simplify the implementation of
   terminal user interfaces adding the possibility to work with re-usable components with properties
   and states.
