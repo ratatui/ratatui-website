@@ -734,7 +734,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.24.0",
 ]
 
 [[package]]
@@ -743,7 +743,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.24.0",
 ]
 
 [[package]]
@@ -754,7 +754,7 @@ dependencies = [
  "crossterm",
  "derive_setters",
  "lipsum",
- "ratatui",
+ "ratatui 0.24.0",
 ]
 
 [[package]]
@@ -1168,7 +1168,7 @@ dependencies = [
 name = "quickstart-ratatui"
 version = "0.1.0"
 dependencies = [
- "ratatui",
+ "ratatui 0.24.0",
 ]
 
 [[package]]
@@ -1207,6 +1207,24 @@ checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
 
 [[package]]
 name = "ratatui"
+version = "0.23.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2e2e4cd95294a85c3b4446e63ef054eea43e0205b1fd60120c16b74ff7ff96ad"
+dependencies = [
+ "bitflags 2.4.1",
+ "cassowary",
+ "crossterm",
+ "indoc",
+ "itertools 0.11.0",
+ "paste",
+ "serde",
+ "strum",
+ "unicode-segmentation",
+ "unicode-width",
+]
+
+[[package]]
+name = "ratatui"
 version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ebc917cfb527a566c37ecb94c7e3fd098353516fb4eb6bea17015ade0182425"
@@ -1226,12 +1244,44 @@ dependencies = [
 ]
 
 [[package]]
+name = "ratatui-counter"
+version = "0.1.0"
+dependencies = [
+ "better-panic",
+ "clap",
+ "color-eyre",
+ "config",
+ "crossterm",
+ "derive_deref",
+ "directories",
+ "futures",
+ "human-panic",
+ "json5",
+ "lazy_static",
+ "libc",
+ "log",
+ "pretty_assertions",
+ "ratatui 0.23.0",
+ "serde",
+ "serde_json",
+ "signal-hook",
+ "strip-ansi-escapes",
+ "strum",
+ "tokio",
+ "tokio-util",
+ "tracing",
+ "tracing-error",
+ "tracing-subscriber",
+ "tui-input",
+]
+
+[[package]]
 name = "ratatui-counter-app"
 version = "0.1.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.24.0",
 ]
 
 [[package]]
@@ -1252,7 +1302,7 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui",
+ "ratatui 0.24.0",
  "serde",
  "serde_json",
  "signal-hook",
@@ -1269,7 +1319,7 @@ name = "ratatui-hello-world-tutorial"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui",
+ "ratatui 0.24.0",
 ]
 
 [[package]]
@@ -1277,7 +1327,7 @@ name = "ratatui-json-editor-app"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui",
+ "ratatui 0.24.0",
  "serde",
  "serde_json",
 ]
@@ -1294,7 +1344,7 @@ dependencies = [
  "itertools 0.12.0",
  "libc",
  "log",
- "ratatui",
+ "ratatui 0.24.0",
  "strip-ansi-escapes",
  "strum",
  "tokio",
@@ -1614,7 +1664,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.24.0",
 ]
 
 [[package]]
@@ -1833,7 +1883,18 @@ dependencies = [
  "derive_builder",
  "font8x8",
  "itertools 0.11.0",
- "ratatui",
+ "ratatui 0.24.0",
+]
+
+[[package]]
+name = "tui-input"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3e785f863a3af4c800a2a669d0b64c879b538738e352607e2624d03f868dc01"
+dependencies = [
+ "crossterm",
+ "serde",
+ "unicode-width",
 ]
 
 [[package]]
@@ -1935,7 +1996,7 @@ dependencies = [
  "clap",
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.24.0",
  "time",
 ]
 

@@ -2,6 +2,8 @@
 
 [default.extend-words]
 ratatui = "ratatui"
+iterm2 = "iTerm2"
+iterm = "iTerm2"
 
 [type.md]
 extend-ignore-re = [
