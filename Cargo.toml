@@ -1,6 +1,21 @@
 # See https://doc.rust-lang.org/cargo/reference/workspaces.html
 [workspace]
 members = ["code/*"]
+exclude = [
+  "code/widget-showcase-third-party" # only contains VHS tape files
+] 
+  "code/hello-world-tutorial",
+  "code/how-to-collapse-borders",
+  "code/how-to-color_eyre",
+  "code/how-to-overwrite-regions",
+  "code/quickstart-ratatui",
+  "code/ratatui-counter-app",
+  "code/ratatui-counter-async-app",
+  "code/ratatui-json-editor-app",
+  "code/ratatui-stopwatch-app",
+  "code/the-elm-architecture",
+  "code/widget-showcase",
+]
 resolver = "2"
 
 [workspace.package]

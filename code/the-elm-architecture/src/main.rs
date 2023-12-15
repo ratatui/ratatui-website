@@ -43,7 +43,7 @@ fn main() -> color_eyre::Result<()> {
         let mut current_msg = handle_event(&model)?;
 
         // Process updates as long as they return a non-None message
-        while current_msg != None {
+        while current_msg.is_some() {
             current_msg = update(&mut model, current_msg.unwrap());
         }
     }

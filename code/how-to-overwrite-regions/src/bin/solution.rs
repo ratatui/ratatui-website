@@ -91,7 +91,7 @@ fn ui(frame: &mut Frame) {
 }
 // ANCHOR_END: ui
 
-fn key_pressed() ->  color_eyre::Result<bool> {
+fn key_pressed() -> color_eyre::Result<bool> {
     Ok(event::poll(Duration::from_millis(16))?
         && matches!(event::read()?, Event::Key(_)))
 }

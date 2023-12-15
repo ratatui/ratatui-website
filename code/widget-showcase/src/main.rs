@@ -104,18 +104,18 @@ impl App {
         if !event::poll(Duration::from_secs(3))? {
             self.running_state = RunningState::Finished;
         }
-        match event::read()? {
-            Event::Key(KeyEvent {
-                code,
-                kind: KeyEventKind::Press,
-                ..
-            }) => match code {
+        if let Event::Key(KeyEvent {
+            code,
+            kind: KeyEventKind::Press,
+            ..
+        }) = event::read()?
+        {
+            match code {
                 KeyCode::Char('q') | KeyCode::Char('Q') => {
                     self.running_state = RunningState::Finished;
                 }
                 _ => {}
-            },
-            _ => {}
+            }
         }
         Ok(())
     }
