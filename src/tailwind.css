@@ -3,17 +3,16 @@
 @tailwind utilities;
 
 @media (min-width: 50rem) {
+  /* Move the logo to the left side  */
 
-    /* Move the logo to the left side  */
+  .hero {
+    grid-template-columns: 4fr 7fr;
+    gap: 6%;
+  }
 
-    .hero {
-        grid-template-columns: 4fr 7fr;
-        gap: 6%;
-    }
-
-    .hero>img,
-    .hero>.hero-html {
-        order: 0;
-        width: min(100%, 25rem);
-    }
+  .hero > img,
+  .hero > .hero-html {
+    order: 0;
+    width: min(100%, 25rem);
+  }
 }
