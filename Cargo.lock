@@ -734,7 +734,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -743,7 +743,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -754,7 +754,7 @@ dependencies = [
  "crossterm",
  "derive_setters",
  "lipsum",
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1168,7 +1168,7 @@ dependencies = [
 name = "quickstart-ratatui"
 version = "0.1.0"
 dependencies = [
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1204,24 +1204,6 @@ name = "rand_core"
 version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
-
-[[package]]
-name = "ratatui"
-version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e2e4cd95294a85c3b4446e63ef054eea43e0205b1fd60120c16b74ff7ff96ad"
-dependencies = [
- "bitflags 2.4.1",
- "cassowary",
- "crossterm",
- "indoc",
- "itertools 0.11.0",
- "paste",
- "serde",
- "strum",
- "unicode-segmentation",
- "unicode-width",
-]
 
 [[package]]
 name = "ratatui"
@@ -1261,7 +1243,7 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui 0.23.0",
+ "ratatui",
  "serde",
  "serde_json",
  "signal-hook",
@@ -1281,7 +1263,7 @@ version = "0.1.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1302,7 +1284,7 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui 0.24.0",
+ "ratatui",
  "serde",
  "serde_json",
  "signal-hook",
@@ -1319,7 +1301,7 @@ name = "ratatui-hello-world-tutorial"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1327,7 +1309,7 @@ name = "ratatui-json-editor-app"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui 0.24.0",
+ "ratatui",
  "serde",
  "serde_json",
 ]
@@ -1344,7 +1326,7 @@ dependencies = [
  "itertools 0.12.0",
  "libc",
  "log",
- "ratatui 0.24.0",
+ "ratatui",
  "strip-ansi-escapes",
  "strum",
  "tokio",
@@ -1664,7 +1646,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1883,7 +1865,7 @@ dependencies = [
  "derive_builder",
  "font8x8",
  "itertools 0.11.0",
- "ratatui 0.24.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1996,7 +1978,7 @@ dependencies = [
  "clap",
  "color-eyre",
  "crossterm",
- "ratatui 0.24.0",
+ "ratatui",
  "time",
 ]
 

@@ -4,7 +4,7 @@ use color_eyre::eyre::Result;
 use ratatui::{prelude::*, widgets::*};
 
 use super::Component;
-use crate::{action::Action, tui::Frame};
+use crate::action::Action;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Ticker {

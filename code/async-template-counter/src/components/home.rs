@@ -8,7 +8,7 @@ use tokio::sync::mpsc::UnboundedSender;
 use tracing::trace;
 use tui_input::{backend::crossterm::EventHandler, Input};
 
-use super::{Component, Frame};
+use super::Component;
 use crate::{action::Action, config::key_event_to_string};
 
 #[derive(Default, Copy, Clone, PartialEq, Eq)]
