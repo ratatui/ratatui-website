@@ -40,6 +40,15 @@ export default defineConfig({
         replacesTitle: true,
       },
       favicon: "./src/assets/logo.png",
+      head:[
+        {
+          tag:"meta",
+          attrs:{
+            property:"og:image",
+            content:"/ratatui-og.png"
+          }
+        }
+      ],
       components: {
         Header: "./src/components/Header.astro",
       },
