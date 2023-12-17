@@ -4,14 +4,14 @@ title: Showcase
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
-    {/* I have no idea why vscode chose this mangled formatting */}
-
-    <CardGrid>
-                <Card title="<a href='./apps/'>Apps</a>" icon="rocket">
-                            <p>Apps built with Ratatui</p>
-                            </Card>
-
+<CardGrid>
+  <Card title="<a href='./apps/'>Apps</a>" icon="rocket">
+    <p>Apps built with Ratatui</p>
+  </Card>
   <Card title="<a href='./widgets/'>Widgets</a>" icon="puzzle">
-                  <p>Built-in and Third party widgets for building Ratatui apps</p>
-                            </Card>
-                    </CardGrid>
+    <p>Built-in widgets for building Ratatui apps</p>
+  </Card>
+  <Card title="<a href='./third-party-widgets/'>Third Party Widgets</a>" icon="puzzle">
+    <p>Third party widgets for building Ratatui apps</p>
+  </Card>
+</CardGrid>
