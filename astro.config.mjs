@@ -257,6 +257,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { label: "Highlights", link: "/highlights/" },
+            { label: "v0.25", link: "/highlights/v025/" },
             { label: "v0.24", link: "/highlights/v024/" },
             { label: "v0.23", link: "/highlights/v023/" },
             { label: "v0.22", link: "/highlights/v022/" },
