@@ -7,5 +7,6 @@
       "@assets/*": ["src/assets/*"],
       "@code/*": ["src/code/*"]
     }
-  }
+  },
+  "exclude": ["dist"]
 }
