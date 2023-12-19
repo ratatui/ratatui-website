@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/check": "^0.3.3",
     "@astrojs/partytown": "^2.0.2",
-    "@astrojs/starlight": "^0.15.0",
+    "@astrojs/starlight": "^0.15.1",
     "@astrojs/starlight-tailwind": "^2.0.1",
     "@astrojs/tailwind": "^5.0.3",
     "@expressive-code/plugin-collapsible-sections": "^0.30.1",
