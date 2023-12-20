@@ -15,11 +15,14 @@ To read this content online, visit:
 
 To build and run the site locally:
 
-```shel
-npm install
-```
-
 ```shell
+git clone https://github.com/ratatui-org/website/
+cd website
+
+git lfs install
+git lfs pull
+
+npm install
 npm run dev
 ```
 
