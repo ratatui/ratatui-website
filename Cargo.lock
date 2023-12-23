@@ -734,7 +734,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.25.0",
 ]
 
 [[package]]
@@ -743,7 +743,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.25.0",
 ]
 
 [[package]]
@@ -754,7 +754,7 @@ dependencies = [
  "crossterm",
  "derive_setters",
  "lipsum",
- "ratatui",
+ "ratatui 0.25.0",
 ]
 
 [[package]]
@@ -1168,7 +1168,7 @@ dependencies = [
 name = "quickstart-ratatui"
 version = "0.1.0"
 dependencies = [
- "ratatui",
+ "ratatui 0.25.0",
 ]
 
 [[package]]
@@ -1218,7 +1218,26 @@ dependencies = [
  "itertools 0.11.0",
  "lru",
  "paste",
+ "strum",
+ "unicode-segmentation",
+ "unicode-width",
+]
+
+[[package]]
+name = "ratatui"
+version = "0.25.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a5659e52e4ba6e07b2dad9f1158f578ef84a73762625ddb51536019f34d180eb"
+dependencies = [
+ "bitflags 2.4.1",
+ "cassowary",
+ "crossterm",
+ "indoc",
+ "itertools 0.12.0",
+ "lru",
+ "paste",
  "serde",
+ "stability",
  "strum",
  "time",
  "unicode-segmentation",
@@ -1243,7 +1262,7 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui",
+ "ratatui 0.25.0",
  "serde",
  "serde_json",
  "signal-hook",
@@ -1263,7 +1282,7 @@ version = "0.1.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.25.0",
 ]
 
 [[package]]
@@ -1284,7 +1303,7 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui",
+ "ratatui 0.25.0",
  "serde",
  "serde_json",
  "signal-hook",
@@ -1301,7 +1320,7 @@ name = "ratatui-hello-world-tutorial"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui",
+ "ratatui 0.25.0",
 ]
 
 [[package]]
@@ -1309,7 +1328,7 @@ name = "ratatui-json-editor-app"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui",
+ "ratatui 0.25.0",
  "serde",
  "serde_json",
 ]
@@ -1326,7 +1345,7 @@ dependencies = [
  "itertools 0.12.0",
  "libc",
  "log",
- "ratatui",
+ "ratatui 0.25.0",
  "strip-ansi-escapes",
  "strum",
  "tokio",
@@ -1572,6 +1591,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "stability"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ebd1b177894da2a2d9120208c3386066af06a488255caabc5de8ddca22dbc3ce"
+dependencies = [
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "strip-ansi-escapes"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1646,7 +1675,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.25.0",
 ]
 
 [[package]]
@@ -1865,7 +1894,7 @@ dependencies = [
  "derive_builder",
  "font8x8",
  "itertools 0.11.0",
- "ratatui",
+ "ratatui 0.24.0",
 ]
 
 [[package]]
@@ -1978,7 +2007,7 @@ dependencies = [
  "clap",
  "color-eyre",
  "crossterm",
- "ratatui",
+ "ratatui 0.25.0",
  "time",
 ]
 
