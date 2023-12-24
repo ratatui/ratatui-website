@@ -1,5 +1,5 @@
 ---
-title: async-template
+title: Async Template
 ---
 
 ![](https://user-images.githubusercontent.com/1813121/277114001-0d25a09c-f24e-4ffc-8763-cd258828cec0.gif)
@@ -15,9 +15,9 @@ title: async-template
 - [human-panic](https://github.com/rust-cli/human-panic)
 - Clap for command line argument parsing
 - `Component` trait with
-  [`Home`](https://github.com/ratatui-org/async-template/blob/main/template/src/components/home.rs)
+  [`Home`](https://github.com/ratatui-org/async-template/blob/main/async/template/src/components/home.rs)
   and
-  [`Fps`](https://github.com/ratatui-org/async-template/blob/main/template/src/components/fps.rs)
+  [`Fps`](https://github.com/ratatui-org/async-template/blob/main/async/template/src/components/fps.rs)
   components as examples
 
 ## Usage
@@ -26,7 +26,7 @@ You can start by using `cargo-generate`:
 
 ```bash
 cargo install cargo-generate
-cargo generate --git https://github.com/ratatui-org/async-template --name ratatui-hello-world
+cargo generate --git https://github.com/ratatui-org/templates async --name ratatui-hello-world
 cd ratatui-hello-world
 ```
 
@@ -35,9 +35,11 @@ You can also use a
 file to skip the prompts:
 
 ```bash
-$ cargo generate --git https://github.com/ratatui-org/async-template --template-values-file .github/workflows/template.toml --name ratatui-hello-world
+$ cargo generate --git https://github.com/ratatui-org/templates async --template-values-file ./path/to/template.toml --name ratatui-hello-world
 # OR generate from local clone
-$ cargo generate --path . --template-values-file .github/workflows/template.toml --name ratatui-hello-world
+$ git clone https://github.com/ratatui-org/templates
+$ cd templates
+$ cargo generate --path ./async --template-values-file ./.github/workflows/template.toml --name ratatui-hello-world
 ```
 
 ### Run
@@ -103,8 +105,7 @@ Data directory: /Users/kd/gitrepos/async-template/ratatui-hello-world/.data
 
 ### Documentation
 
-Read documentation on design decisions in the template here:
-<https://ratatui-org.github.io/async-template/>
+Read documentation on design decisions in the template here: <https://ratatui.rs/templates/async/>
 
 ### Counter + Text Input Demo
 
@@ -113,9 +114,8 @@ run a demo without using `cargo generate`, you can run the counter + text input 
 the instructions below:
 
 ```bash
-git clone https://github.com/ratatui-org/async-template
-cd async-template
-cd ratatui-counter # counter + text input demo
+git clone https://github.com/ratatui-org/templates
+cd templates/async/ratatui-counter # counter + text input demo
 
 export RATATUI_COUNTER_CONFIG=`pwd`/.config
 export RATATUI_COUNTER_DATA=`pwd`/.data
@@ -136,9 +136,9 @@ You should see a demo like this:
 interfaces (TUIs) and dashboards. It is a community fork of the original
 [`tui-rs`](https://github.com/fdehau/tui-rs) created to maintain and improve the project.
 
-The [source code of this project](https://github.com/ratatui-org/async-template) is an opinionated
-template for getting up and running with `ratatui`. You can pick and choose the pieces of this
-`async-template` to suit your needs and sensibilities. This rest of this documentation is a
+The [source code of this project](https://github.com/ratatui-org/templates/tree/main/async) is an
+opinionated template for getting up and running with `ratatui`. You can pick and choose the pieces
+of this `async-template` to suit your needs and sensibilities. This rest of this documentation is a
 walk-through of why the code is structured the way it is, so that you are aided in modifying it as
 you require.
 
@@ -152,7 +152,7 @@ those events and figuring out which widgets best reflect the view of the state o
 is on you.
 
 The `ratatui-org` project has added a template that covers the basics, and you find that here:
-<https://github.com/ratatui-org/rust-tui-template>.
+<https://github.com/ratatui-org/templates/tree/main/simple>.
 
 I wanted to take another stab at a template, one that uses `tokio` and organizes the code a little
 differently. This is an opinionated view on how to organize a `ratatui` project.
