@@ -111,8 +111,7 @@ Data directory: /Users/kd/gitrepos/async-template/ratatui-hello-world/.data
 
 ### Documentation
 
-Read documentation on design decisions in the template here:
-<https://ratatui.rs/templates/async/>
+Read documentation on design decisions in the template here: <https://ratatui.rs/templates/async/>
 
 ### Counter + Text Input Demo
 
@@ -143,9 +142,9 @@ You should see a demo like this:
 interfaces (TUIs) and dashboards. It is a community fork of the original
 [`tui-rs`](https://github.com/fdehau/tui-rs) created to maintain and improve the project.
 
-The [source code of this project](https://github.com/ratatui-org/templates/tree/main/async) is an opinionated
-template for getting up and running with `ratatui`. You can pick and choose the pieces of this
-`async-template` to suit your needs and sensibilities. This rest of this documentation is a
+The [source code of this project](https://github.com/ratatui-org/templates/tree/main/async) is an
+opinionated template for getting up and running with `ratatui`. You can pick and choose the pieces
+of this `async-template` to suit your needs and sensibilities. This rest of this documentation is a
 walk-through of why the code is structured the way it is, so that you are aided in modifying it as
 you require.
 
