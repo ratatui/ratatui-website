@@ -16,7 +16,7 @@
     "@astrojs/partytown": "^2.0.2",
     "@astrojs/starlight": "^0.15.1",
     "@astrojs/starlight-tailwind": "^2.0.1",
-    "@astrojs/tailwind": "^5.0.4",
+    "@astrojs/tailwind": "^5.1.0",
     "@expressive-code/plugin-collapsible-sections": "^0.30.1",
     "astro": "^4.0.7",
     "astro-diagram": "^0.7.0",
