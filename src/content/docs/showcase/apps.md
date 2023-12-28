@@ -60,6 +60,14 @@ gpg-tui is a Terminal User Interface for GnuPG.
 
 ---
 
+## [`material`](https://crates.io/crates/material)
+
+A material design color palette for the terminal.
+
+![material demo](https://camo.githubusercontent.com/92cd9a40d68173168c9901c1709fcb80c57eaf73098a567bf7d074ebc9a6723b/68747470733a2f2f692e6962622e636f2f324d444b6d68372f53637265656e73686f742d323032322d30382d30322d61742d31362d34332d31322e706e67)
+
+---
+
 ## [`minesweep-rs`](https://github.com/cpcloud/minesweep-rs)
 
 A mine sweeping game written in Rust
