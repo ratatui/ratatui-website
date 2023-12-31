@@ -1,5 +1,4 @@
-# This requires vhs installed from source for the updated theme and screenshot command
-# go install github.com/charmbracelet/vhs@main
+# A VHS tape. See https://github.com/charmbracelet/vhs
 
 # for running against the tui-textarea git repo https://github.com/rhysd/tui-textarea
 Output "tui-textarea.gif"

@@ -1,5 +1,4 @@
-# This requires vhs installed from source for the updated theme and screenshot command
-# go install github.com/charmbracelet/vhs@main
+# A VHS tape. See https://github.com/charmbracelet/vhs
 
 # for running against the tui-tree-widget git repo https://git.sr.ht/~jaxter184/tui-nodes
 Output "tui-nodes.gif"

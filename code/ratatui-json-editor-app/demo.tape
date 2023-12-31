@@ -1,3 +1,4 @@
+# A VHS tape. See https://github.com/charmbracelet/vhs
 Output demo.gif
 Set Width 1600
 Set Height 900
