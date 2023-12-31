@@ -27,6 +27,8 @@ enum Widget {
     BarChart,
     Calendar,
     Chart,
+    Gauge,
+    LineGauge,
 }
 
 fn main() -> color_eyre::Result<()> {
@@ -95,6 +97,8 @@ impl App {
             Widget::BarChart => bar_chart::render(frame),
             Widget::Calendar => crate::calendar::render(frame)?,
             Widget::Chart => chart::render(frame),
+            Widget::Gauge => gauge::render(frame),
+            Widget::LineGauge => line_gauge::render(frame),
         }
         Ok(())
     }
