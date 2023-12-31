@@ -20,7 +20,7 @@ IP/hostname
 
 ---
 
-## [`bottom`](https://github.com/ClementTsang/bottom/)
+## [`bottom`](https://github.com/ClementTsang/bottom)
 
 A customizable cross-platform graphical process/system monitor for the terminal
 
@@ -28,9 +28,20 @@ A customizable cross-platform graphical process/system monitor for the terminal
 
 ---
 
+## [`csvlens`](https://github.com/YS-L/csvlens)
+
+`csvlens` is A command line CSV file viewer. It is like less but made for CSV.
+
+<!-- This is in the public folder not the app folder as it causes astro to crash during processing
+See https://github.com/withastro/astro/issues/8886 -->
+
+![csvlens demo](/csvlens.gif)
+
+---
+
 ## [`joshuto`](https://github.com/kamiyaa/joshuto)
 
-ranger-like terminal file manager written in Rust
+Ranger-like terminal file manager written in Rust
 
 ![joshuto demo](https://github.com/kamiyaa/joshuto/raw/main/screenshot.png?raw=true)
 
