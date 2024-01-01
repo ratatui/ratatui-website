@@ -39,6 +39,14 @@ See https://github.com/withastro/astro/issues/8886 -->
 
 ---
 
+## [`dua`](https://github.com/Byron/dua-cli)
+
+`dua` is a disk space analysis tool designed for speed, leveraging parallel processing to quickly provide detailed disk usage information and allowing for faster deletion of unnecessary data compared to the standard 'rm' command.
+
+[![dua demo](https://asciinema.org/a/316444.svg)](https://asciinema.org/a/316444)
+
+---
+
 ## [`joshuto`](https://github.com/kamiyaa/joshuto)
 
 Ranger-like terminal file manager written in Rust
