@@ -32,12 +32,12 @@ Common styling attributes include:
    ```rust
    let bold_text = Span::styled(
        "This is bold",
-       Style::default().modifier(Modifier::BOLD)
+       Style::default().add_modifier(Modifier::BOLD)
    );
 
    let italic_text = Span::styled(
        "This is italic",
-       Style::default().modifier(Modifier::ITALIC)
+       Style::default().add_modifier(Modifier::ITALIC)
    );
    ```
 
@@ -46,7 +46,7 @@ Common styling attributes include:
    ```rust
    let bold_italic_text = Span::styled(
        "This is bold and italic",
-       Style::default().modifier(Modifier::BOLD | Modifier::ITALIC)
+       Style::default().add_modifier(Modifier::BOLD | Modifier::ITALIC)
    );
    ```
 
