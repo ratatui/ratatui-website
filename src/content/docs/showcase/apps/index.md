@@ -41,7 +41,9 @@ See https://github.com/withastro/astro/issues/8886 -->
 
 ## [`dua`](https://github.com/Byron/dua-cli)
 
-`dua` is a disk space analysis tool designed for speed, leveraging parallel processing to quickly provide detailed disk usage information and allowing for faster deletion of unnecessary data compared to the standard 'rm' command.
+`dua` is a disk space analysis tool designed for speed, leveraging parallel processing to quickly
+provide detailed disk usage information and allowing for faster deletion of unnecessary data
+compared to the standard 'rm' command.
 
 [![dua demo](https://asciinema.org/a/kDnXUOeqBxZVMoWuFNqzfpeey.svg)](https://asciinema.org/a/kDnXUOeqBxZVMoWuFNqzfpeey)
 
@@ -138,8 +140,13 @@ A hackable, minimal, fast TUI file explorer
 
 ---
 
-## [`yazi`](https://yazi-rs.github.io/docs)
+## [`yazi`](https://yazi-rs.github.io)
 
 Blazing fast terminal file manager written in Rust, based on async I/O
 
-[Showcase](https://yazi-rs.github.io/features)
+[Features](https://yazi-rs.github.io/features)
+
+<video controls>
+  <source src="https://github.com/sxyazi/yazi/assets/17523360/92ff23fa-0cd5-4f04-b387-894c12265cc7" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
