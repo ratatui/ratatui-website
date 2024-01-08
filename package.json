@@ -36,7 +36,7 @@
     "prettier-plugin-astro": "^0.12.3",
     "prettier-plugin-organize-imports": "^3.2.4",
     "prettier-plugin-svelte": "^3.1.2",
-    "prettier-plugin-tailwindcss": "^0.5.10",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "remark": "^15.0.1",
     "remark-emoji": "^4.0.1",
     "remark-kroki": "^0.3.1",
