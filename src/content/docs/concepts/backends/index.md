@@ -12,7 +12,7 @@ Ratatui supports the following backends:
 
 - [Crossterm] via [`CrosstermBackend`] and the `crossterm` (enabled by default).
 - [Termion] via [`TermionBackend`] and the `termion` feature.
-- [Termwiz] via [`TermwizBackend`] and the `termion` feature.
+- [Termwiz] via [`TermwizBackend`] and the `termwiz` feature.
 - A [`TestBackend`] which can be useful to unit test your application's UI
 
 For information on how to choose a backend see: [Comparison](./comparison/)
