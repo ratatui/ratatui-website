@@ -29,6 +29,7 @@ enum Widget {
     Chart,
     Gauge,
     LineGauge,
+    List,
     Table,
 }
 
@@ -100,6 +101,7 @@ impl App {
             Widget::Chart => chart::render(frame),
             Widget::Gauge => gauge::render(frame),
             Widget::LineGauge => line_gauge::render(frame),
+            Widget::List => list::render(frame),
             Widget::Table => table::render(frame),
         }
         Ok(())
