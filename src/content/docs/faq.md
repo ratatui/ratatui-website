@@ -103,7 +103,7 @@ more tasks do you plan to be spawning?
 The former can be done without any `async` code and the latter is the approach showcased in
 [`async-template#v1.0`](https://github.com/ratatui-org/async-template/tree/v0.1.0) with `tokio`.
 
-The most recent version of the `async-template` uses this architecture instead with tokio:
+The `simple-async` uses this architecture instead with tokio:
 
 ```kroki type=svgbob
        Event Thread             ┊     Main Thread
@@ -421,9 +421,10 @@ easily make `stderr` buffered too by wrapping it in a [`BufWriter`] like so:
 let mut terminal = Terminal::new(CrosstermBackend::new(BufWriter::new(std::io::stderr())))?;
 ```
 
-Our recommendation is to use `stdout`. If you really need `stderr`, then accept the performance
-loss (which is unnoticeable in most applications) or make it buffered.
+Our recommendation is to use `stdout`. If you really need `stderr`, then accept the performance loss
+(which is unnoticeable in most applications) or make it buffered.
 
-If you want to know more, we recommend reading [this excellent article by @orhun](https://blog.orhun.dev/stdout-vs-stderr/).
+If you want to know more, we recommend reading
+[this excellent article by @orhun](https://blog.orhun.dev/stdout-vs-stderr/).
 
 [`BufWriter`]: https://doc.rust-lang.org/std/io/struct.BufWriter.html

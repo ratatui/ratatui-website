@@ -69,8 +69,6 @@ This 4 minute talk about `IMGUI` is also tangentially relevant.
 
 - **Architecture design considerations**: With `ratatui`, out of the box, there's little to no help
   in organizing large applications. Ultimately, the decision on structure and discipline rests with
-  the developer to be principled. However, we do provide a [template] and an [async template] to
-  help you get started.
+  the developer to be principled. However, we do provide [templates] to help you get started.
 
-[template]: https://github.com/ratatui-org/template
-[async template]: https://github.com/ratatui-org/async-template
+[templates]: https://github.com/ratatui-org/templates

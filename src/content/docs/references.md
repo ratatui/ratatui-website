@@ -3,8 +3,7 @@ title: References
 ---
 
 - [Crate Docs](https://docs.rs/ratatui/latest/ratatui/)
-- [Starter Template](https://github.com/ratatui-org/rust-tui-template)
-- [Starter Async Tokio Template](https://github.com/ratatui-org/async-template)
+- [Starter Templates](https://github.com/ratatui-org/templates)
 
 ## [Apps using `ratatui`](https://github.com/ratatui-org/ratatui/wiki/Apps-using-Ratatui)
 
