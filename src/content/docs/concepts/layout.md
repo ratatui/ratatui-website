@@ -218,10 +218,10 @@ the screen space.
 By default, the split method allocates any remaining space in the area to the last area of the
 layout. To avoid this, add an unused `Min(0)` constraint as the last constraint.
 
-Ratatui uses a constraint solver algorithm called Casssowary in order to determine the right size
-for the rects. In some cases, not every constraint will be possible to achieve, and the solver can
-return an arbitrary solution that is close to fulfilling the constraints. The specific result is
-non-deterministic when this occurs.
+Ratatui uses a constraint solver algorithm called [Cassowary](https://crates.io/crates/cassowary) in
+order to determine the right size for the rects. In some cases, not every constraint will be
+possible to achieve, and the solver can return an arbitrary solution that is close to fulfilling the
+constraints. The specific result is non-deterministic when this occurs.
 
 ## Other Layout approaches
 
