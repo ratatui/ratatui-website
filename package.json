@@ -22,7 +22,7 @@
     "astro-diagram": "^0.7.0",
     "hast-util-select": "^6.0.2",
     "hastscript": "^8.0.0",
-    "mermaid": "^10.6.1",
+    "mermaid": "^10.7.0",
     "sharp": "^0.33.2",
     "starlight-links-validator": "^0.5.1",
     "tailwindcss": "^3.4.1",
