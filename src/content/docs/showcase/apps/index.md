@@ -11,12 +11,12 @@ for your commands.
 
 ---
 
-## [`bandwich`](https://github.com/imsnif/bandwhich)
+## [`bandwhich`](https://github.com/imsnif/bandwhich)
 
 This is a CLI utility for displaying current network utilization by process, connection and remote
 IP/hostname
 
-![bandwich demo](https://github.com/imsnif/bandwhich/blob/main/res/demo.gif?raw=true)
+![bandwhich demo](https://github.com/imsnif/bandwhich/blob/main/res/demo.gif?raw=true)
 
 ---
 
