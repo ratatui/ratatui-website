@@ -9,7 +9,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky install",
-    "format": "prettier --write . --plugin=prettier-plugin-astro --plugin=prettier-plugin-svelte --plugin=prettier-plugin-organize-imports --plugin=prettier-plugin-tailwindcss"
+    "_format": "prettier . --plugin=prettier-plugin-astro --plugin=prettier-plugin-svelte --plugin=prettier-plugin-organize-imports --plugin=prettier-plugin-tailwindcss",
+    "format": "npm run _format -- --write",
+    "format:check": "npm run _format -- --check"
   },
   "dependencies": {
     "@astrojs/check": "^0.4.1",
