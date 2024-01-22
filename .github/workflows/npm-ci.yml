@@ -1,4 +1,4 @@
-name: Npm Continuous Integration
+name: Npm CI
 
 on:
   # Allows you to run this workflow manually from the Actions tab
