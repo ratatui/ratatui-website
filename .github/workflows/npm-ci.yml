@@ -1,0 +1,53 @@
+name: Npm CI
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  merge_group:
+
+# ensure that the workflow is only triggered once per PR,  subsequent pushes to the PR will cancel
+# and restart the workflow. See https://docs.github.com/en/actions/using-jobs/using-concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: Check
+        run: npm run astro check
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # We use this action because github counts LFS bandwidth from CI.
+      # This action caches LFS downloads.
+      # See https://github.com/actions/checkout/issues/165
+      # If it ends up using too much bandwidth anyway, just delete this check.
+      - name: Checkout
+        uses: nschloe/action-cached-lfs-checkout@v1
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run astro build
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: Check format
+        run: npm run format:check
