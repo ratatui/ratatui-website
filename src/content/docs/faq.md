@@ -421,9 +421,10 @@ easily make `stderr` buffered too by wrapping it in a [`BufWriter`] like so:
 let mut terminal = Terminal::new(CrosstermBackend::new(BufWriter::new(std::io::stderr())))?;
 ```
 
-Our recommendation is to use `stdout`. If you really need `stderr`, then accept the performance
-loss (which is unnoticeable in most applications) or make it buffered.
+Our recommendation is to use `stdout`. If you really need `stderr`, then accept the performance loss
+(which is unnoticeable in most applications) or make it buffered.
 
-If you want to know more, we recommend reading [this excellent article by @orhun](https://blog.orhun.dev/stdout-vs-stderr/).
+If you want to know more, we recommend reading
+[this excellent article by @orhun](https://blog.orhun.dev/stdout-vs-stderr/).
 
 [`BufWriter`]: https://doc.rust-lang.org/std/io/struct.BufWriter.html
