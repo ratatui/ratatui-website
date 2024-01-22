@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Npm Continuous Integration
 
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -18,36 +18,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  fmt:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install Rust nightly
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt
+      - name: Install
+        run: npm ci
+      - name: Check & build
+        run: npm run build
 
-      - name: Check formatting
-        run: cargo fmt --all --check
-
-  typos:
+  format:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Check typos
-        uses: crate-ci/typos@master
-
-  clippy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy
-
-      - name: Run cargo clippy
-        run: cargo clippy -- -D warnings
+      - name: Install
+        run: npm ci
+      - name: Check format
+        run: npm run format:check
