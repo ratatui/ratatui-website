@@ -18,15 +18,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install
         run: npm ci
-      - name: Check & build
-        run: npm run build
+      - name: Check
+        run: npm run astro check
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # We use this action because github counts LFS bandwidth from CI.
+      # This action caches LFS downloads.
+      # See https://github.com/actions/checkout/issues/165
+      # If it ends up using too much bandwidth anyway, just delete this check.
+      - name: Checkout
+        uses: nschloe/action-cached-lfs-checkout@v1
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run astro build
 
   format:
     runs-on: ubuntu-latest
