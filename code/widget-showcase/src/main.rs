@@ -31,6 +31,7 @@ enum Widget {
     LineGauge,
     List,
     Table,
+    Paragraph,
 }
 
 fn main() -> color_eyre::Result<()> {
@@ -103,6 +104,7 @@ impl App {
             Widget::LineGauge => line_gauge::render(frame),
             Widget::List => list::render(frame),
             Widget::Table => table::render(frame),
+            Widget::Paragraph => paragraph::render(frame),
         }
         Ok(())
     }
