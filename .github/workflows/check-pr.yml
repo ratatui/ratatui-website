@@ -1,11 +1,6 @@
 name: Check PR
 
 on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -22,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: nschloe/action-cached-lfs-checkout@v1
       - name: Get images
         run:
           find . -regextype posix-awk -regex ".*\.(png|gif)" -type f | cut -d"/" -f2- | sort >
@@ -30,4 +25,4 @@ jobs:
       - name: Get lfs files
         run: git lfs ls-files | cut -d" " -f3 | sort > /tmp/lfs-files
       - name: Diff
-        run: diff --color /tmp/images /tmp/lfs-files
+        run: diff --color=always /tmp/images /tmp/lfs-files
