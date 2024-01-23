@@ -31,6 +31,7 @@ enum Widget {
     LineGauge,
     List,
     Table,
+    Tabs,
     Paragraph,
 }
 
@@ -105,6 +106,7 @@ impl App {
             Widget::List => list::render(frame),
             Widget::Table => table::render(frame),
             Widget::Paragraph => paragraph::render(frame),
+            Widget::Tabs => tabs::render(frame),
         }
         Ok(())
     }

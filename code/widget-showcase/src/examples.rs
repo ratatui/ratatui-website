@@ -7,3 +7,4 @@ pub mod line_gauge;
 pub mod list;
 pub mod paragraph;
 pub mod table;
+pub mod tabs;
