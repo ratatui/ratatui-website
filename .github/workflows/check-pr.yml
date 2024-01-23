@@ -1,0 +1,33 @@
+name: Check PR
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  merge_group:
+
+# ensure that the workflow is only triggered once per PR,  subsequent pushes to the PR will cancel
+# and restart the workflow. See https://docs.github.com/en/actions/using-jobs/using-concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  check-lfs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Get images
+        run:
+          find . -regextype posix-awk -regex ".*\.(png|gif)" -type f | cut -d"/" -f2- | sort >
+          /tmp/images
+      - name: Get lfs files
+        run: git lfs ls-files | cut -d" " -f3 | sort > /tmp/lfs-files
+      - name: Diff
+        run: diff --color /tmp/images /tmp/lfs-files
