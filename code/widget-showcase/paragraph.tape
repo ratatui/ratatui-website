@@ -2,7 +2,7 @@
 Output "../../src/content/docs/showcase/widgets/paragraph.gif"
 Set Theme "Aardvark Blue"
 Set Width 800
-Set Height 320
+Set Height 220
 Type "cargo run -- -w paragraph" Enter
 Sleep 5s
 Screenshot "../../src/content/docs/showcase/widgets/paragraph.png"
