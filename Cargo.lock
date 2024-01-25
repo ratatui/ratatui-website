@@ -1860,9 +1860,9 @@ dependencies = [
 
 [[package]]
 name = "tui-big-text"
-version = "0.3.2"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b7f41b04acbe3f904983309ec312155c92755c3c70c9976cfb691f62cadd78e0"
+checksum = "99a0144a6fac89dc00c0123dfcf70e01c914b682b16d48bdefdf68cf113e8107"
 dependencies = [
  "derive_builder",
  "font8x8",
