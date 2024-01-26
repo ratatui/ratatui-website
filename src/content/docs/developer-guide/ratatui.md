@@ -5,7 +5,29 @@ title: Ratatui
 Check out the [CONTRIBUTING GUIDE](https://github.com/ratatui-org/ratatui/blob/main/CONTRIBUTING.md)
 for more information.
 
-## Keep PRs small, intentional and focused
+# Contribution guidelines
+
+First off, thank you for considering contributing to Ratatui.
+
+If your contribution is not straightforward, please first discuss the change you wish to make by
+creating a new issue before making the change, or starting a discussion on
+[discord](https://discord.gg/pMCEU9hNEj).
+
+## Reporting issues
+
+Before reporting an issue on the [issue tracker](https://github.com/ratatui-org/ratatui/issues),
+please check that it has not already been reported by searching for some related keywords. Please
+also check [`tui-rs` issues](https://github.com/fdehau/tui-rs/issues/) and link any related issues
+found.
+
+## Pull requests
+
+All contributions are obviously welcome. Please include as many details as possible in your PR
+description to help the reviewer (follow the provided template). Make sure to highlight changes
+which may need additional attention or you are uncertain about. Any idea with a large scale impact
+on the crate or its users should ideally be discussed in a "Feature Request" issue beforehand.
+
+### Keep PRs small, intentional and focused
 
 Try to do one pull request per change. The time taken to review a PR grows exponential with the size
 of the change. Small focused PRs will generally be much more faster to review. PRs that include both
@@ -14,7 +36,12 @@ change becomes a place where a bug may have been introduced. Consider splitting 
 reformatting changes into a separate PR from those that make a behavioral change, as the tests help
 guarantee that the behavior is unchanged.
 
-## Search `tui-rs` for similar work
+### Code formatting
+
+Run `cargo make format` before committing to ensure that code is consistently formatted with
+rustfmt. Configuration is in [rustfmt.toml](./rustfmt.toml).
+
+### Search `tui-rs` for similar work
 
 The original fork of Ratatui, [`tui-rs`](https://github.com/fdehau/tui-rs/), has a large amount of
 history of the project. Please search, read, link, and summarize any relevant
@@ -22,18 +49,19 @@ history of the project. Please search, read, link, and summarize any relevant
 [discussions](https://github.com/fdehau/tui-rs/discussions/) and
 [pull requests](https://github.com/fdehau/tui-rs/pulls).
 
-## Use conventional commits
+### Use conventional commits
 
 We use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) and check for them as
 a lint build step. To help adhere to the format, we recommend to install
 [Commitizen](https://commitizen-tools.github.io/commitizen/). By using this tool you automatically
-follow the configuration defined in .cz.toml. Your commit messages should have enough information to
-help someone reading the CHANGELOG understand what is new just from the title. The summary helps
-expand on that to provide information that helps provide more context, describes the nature of the
-problem that the commit is solving and any unintuitive effects of the change. It's rare that code
-changes can easily communicate intent, so make sure this is clearly documented.
+follow the configuration defined in [.cz.toml](.cz.toml). Your commit messages should have enough
+information to help someone reading the [CHANGELOG](./CHANGELOG.md) understand what is new just from
+the title. The summary helps expand on that to provide information that helps provide more context,
+describes the nature of the problem that the commit is solving and any unintuitive effects of the
+change. It's rare that code changes can easily communicate intent, so make sure this is clearly
+documented.
 
-## Clean up your commits
+### Clean up your commits
 
 The final version of your PR that will be committed to the repository should be rebased and tested
 against main. Every commit will end up as a line in the changelog, so please squash commits that are
@@ -42,7 +70,7 @@ commit (unless there is a strong reason to stack the commits). See
 [Git Best Practices - On Sausage Making](https://sethrobertson.github.io/GitBestPractices/#sausage)
 for more on this.
 
-## Run CI tests before pushing a PR
+### Run CI tests before pushing a PR
 
 We're using [cargo-husky](https://github.com/rhysd/cargo-husky) to automatically run git hooks,
 which will run `cargo make ci` before each push. To initialize the hook run `cargo test`. If
@@ -50,14 +78,16 @@ which will run `cargo make ci` before each push. To initialize the hook run `car
 that your code is formatted, compiles and passes all tests before you push. If you need to skip this
 check, you can use `git push --no-verify`.
 
-## Sign your commits
+### Sign your commits
 
 We use commit signature verification, which will block commits from being merged via the UI unless
 they are signed. To set up your machine to sign commits, see
 [managing commit signature verification](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
 in GitHub docs.
 
-## Setup
+## Implementation Guidelines
+
+### Setup
 
 Clone the repo and build it using [cargo-make](https://sagiegurari.github.io/cargo-make/)
 
@@ -72,14 +102,14 @@ cd ratatui
 cargo make build
 ```
 
-## Tests
+### Tests
 
 The [test coverage](https://app.codecov.io/gh/ratatui-org/ratatui) of the crate is reasonably good,
 but this can always be improved. Focus on keeping the tests simple and obvious and write unit tests
 for all new or modified code. Beside the usual doc and unit tests, one of the most valuable test you
 can write for Ratatui is a test against the `TestBackend`. It allows you to assert the content of
 the output buffer that would have been flushed to the terminal after a given draw call. See
-`widgets_block_renders` in tests/widgets_block.rs for an example.
+`widgets_block_renders` in [tests/widgets_block.rs](./tests/widget_block.rs) for an example.
 
 When writing tests, generally prefer to write unit tests and doc tests directly in the code file
 being tested rather than integration tests in the `tests/` folder.
@@ -96,9 +126,102 @@ exist to show coverage directly in your editor. E.g.:
 - <https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters>
 - <https://github.com/alepez/vim-llvmcov>
 
-## Use of unsafe for optimization purposes
+### Documentation
+
+Here are some guidelines for writing documentation in Ratatui. Every public API **must** be
+documented.
+
+Keep in mind that Ratatui tends to attract beginner Rust users that may not be familiar with Rust
+concepts.
+
+#### Content
+
+The main doc comment should talk about the general features that the widget supports and introduce
+the concepts pointing to the various methods. Focus on interaction with various features and giving
+enough information that helps understand why you might want something.
+
+Examples should help users understand a particular usage, not test a feature. They should be as
+simple as possible. Prefer hiding imports and using wildcards to keep things concise. Some imports
+may still be shown to demonstrate a particular non-obvious import (e.g. `Stylize` trait to use style
+methods). Speaking of `Stylize`, you should use it over the more verbose style setters:
+
+```rust
+let style = Style::new().red().bold();
+// not
+let style = Style::default().fg(Color::Red).add_modifier(Modifiers::BOLD);
+```
+
+#### Format
+
+- First line is summary, second is blank, third onward is more detail
+
+```rust
+/// Summary
+///
+/// A detailed description
+/// with examples.
+fn foo() {}
+```
+
+- Max line length is 100 characters See
+  [vscode rewrap extension](https://marketplace.visualstudio.com/items?itemName=stkb.rewrap)
+
+- Doc comments are above macros i.e.
+
+```rust
+/// doc comment
+#[derive(Debug)]
+struct Foo {}
+```
+
+- Code items should be between backticks i.e. ``[`Block`]``, **NOT** `[Block]`
+
+### Deprecation notice
+
+We generally want to wait at least two versions before removing deprecated items so users have time
+to update. However, if a deprecation is blocking for us to implement a new feature we may _consider_
+removing it in a one version notice.
+
+### Use of unsafe for optimization purposes
 
 We don't currently use any unsafe code in Ratatui, and would like to keep it that way. However there
 may be specific cases that this becomes necessary in order to avoid slowness. Please see
 [this discussion](https://github.com/ratatui-org/ratatui/discussions/66) for more about the
 decision.
+
+## Continuous Integration
+
+We use Github Actions for the CI where we perform the following checks:
+
+- The code should compile on `stable` and the Minimum Supported Rust Version (MSRV).
+- The tests (docs, lib, tests and examples) should pass.
+- The code should conform to the default format enforced by `rustfmt`.
+- The code should not contain common style issues `clippy`.
+
+You can also check most of those things yourself locally using `cargo make ci` which will offer you
+a shorter feedback loop than pushing to github.
+
+## Relationship with `tui-rs`
+
+This project was forked from [`tui-rs`](https://github.com/fdehau/tui-rs/) in February 2023, with
+the [blessing of the original author](https://github.com/fdehau/tui-rs/issues/654), Florian Dehau
+([@fdehau](https://github.com/fdehau)).
+
+The original repository contains all the issues, PRs and discussion that were raised originally, and
+it is useful to refer to when contributing code, documentation, or issues with Ratatui.
+
+We imported all the PRs from the original repository and implemented many of the smaller ones and
+made notes on the leftovers. These are marked as draft PRs and labelled as
+[imported from tui](https://github.com/ratatui-org/ratatui/pulls?q=is%3Apr+is%3Aopen+label%3A%22imported+from+tui%22).
+We have documented the current state of those PRs, and anyone is welcome to pick them up and
+continue the work on them.
+
+We have not imported all issues opened on the previous repository. For that reason, anyone wanting
+to **work on or discuss** an issue will have to follow the following workflow:
+
+- Recreate the issue
+- Start by referencing the **original issue**:
+  `Referencing issue #[<issue number>](<original issue link>)`
+- Then, paste the original issues **opening** text
+
+You can then resume the conversation by replying to this new issue you have created.
