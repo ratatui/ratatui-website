@@ -96,6 +96,17 @@ fn ui(_: &App, f: &mut Frame) {
 }
 ```
 
+Finally, you can also align it using `alignment()` or the shorthand methods `left_aligned()`,
+`centered()` and `right_aligned()`. Widgets using `Line` internally will generally respect this.
+
+```rust
+fn ui(_: &App, f: &mut Frame) {
+    let line = Line::from("hello world").alignment(Alignment::Center);
+    let line = Line::from("hello world").centered(); // shorthand
+    // --snip--
+}
+```
+
 ## `Text`
 
 `Text` is the final building block of outputting text. A `Text` object represents a collection of
@@ -109,7 +120,7 @@ fn ui(_: &App, f: &mut Frame) {
     let span2 = "world".red().bold();
     let line = Line::from(vec![span1, " ".into(), span2]);
     let text = Text::from(line);
-    f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.size());
+    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.size());
 }
 ```
 
@@ -129,11 +140,11 @@ fn ui(_: &App, f: &mut Frame) {
         " ".into(),
         "world".red().bold()
     ].into();
-    f.render_widget(Paragraph::new(line).block(Block::default().borders(Borders::ALL)), f.size());
+    f.render_widget(Paragraph::new(line).block(Block::bordered()), f.size());
 }
 ```
 
-This is because in this case, Rust is able to infer the types and convert them into appropriately.
+This is because in this case, Rust is able to infer the types and convert them appropriately.
 
 `Text` instances can be created using the `raw` or `styled` constructors too.
 
@@ -146,9 +157,8 @@ fn ui(_: &App, f: &mut Frame) {
         "hello world 1".into(),
         "hello world 2".blue().into(),
         Line::from(vec!["hello".green(), " ".into(), "world".green().bold(), "3".into()]),
-    ]
-    .into();
-    f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.size());
+    ];
+    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.size());
 }
 ```
 
@@ -166,3 +176,24 @@ fn ui(_: &App, f: &mut Frame) {
 </div>
 
 We will talk more about styling in the next section.
+
+As with `Line`, a `Text` can be aligned with `alignment()` or the shorthand methods
+`left_aligned()`, `centered()` and `right_aligned()`. Widgets using `Text` internally will generally
+respect this. Note in the example below, you can override the alignment for a particular line.
+
+```rust
+fn ui(_: &App, f: &mut Frame) {
+    let text= Text::from(vec![
+        Line::from("hello world 1").left_aligned(),
+        Line::from("hello world 2"),
+        Line::from("hello world 3").right_aligned(),
+    ]).centered();
+    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.size());
+}
+```
+
+<div style="border: 1px solid black; display: inline-block; padding: 5px; width: 100%">
+    <p style="text-align: left;">hello world 1</p>
+    <p style="text-align: center;">hello world 2</p>
+    <p style="text-align: right;">hello world 3</p>
+</div>
