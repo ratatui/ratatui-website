@@ -13,7 +13,7 @@ or by adding the following to your `Cargo.toml` file:
 ```toml
 [dependencies]
 crossterm = "0.27.0"
-ratatui = "0.25.0"
+ratatui = "0.26.0"
 ```
 
 :::tip
@@ -30,7 +30,7 @@ or by adding the following to your `Cargo.toml` file:
 ```toml
 [dependencies]
 crossterm = "0.27.0"
-ratatui = { version = "0.25.0", features = ["all-widgets"]}
+ratatui = { version = "0.26.0", features = ["all-widgets"]}
 ```
 
 You can learn more about available widgets from the
@@ -53,7 +53,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.25", default-features = false, features = ["termion"] }
+ratatui = { version = "0.26", default-features = false, features = ["termion"] }
 termion = "2.0.1"
 ```
 
@@ -68,7 +68,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.25", default-features = false, features = ["termwiz"] }
+ratatui = { version = "0.26", default-features = false, features = ["termwiz"] }
 termwiz = "0.20.0"
 ```
 
