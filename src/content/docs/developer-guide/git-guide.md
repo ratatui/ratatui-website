@@ -66,9 +66,11 @@ With the `git rebase` command you can move your branch along the history of the 
 git rebase origin/main
 ```
 
-It's important to note that `origin/main` has to be up to date with `ratatui/main`. This can be done in a number of ways, including by [setting `ratatui/main` as the upstream for your repo](#upstream), or through the GitHub interface.
+It's important to note that `origin/main` has to be up to date with `ratatui/main`. This can be done in a number of ways, including by [setting `ratatui/main` as the `upstream` for your repo](#solving-upstream-issues), or through the GitHub interface.
 
 ![Updating a branch on Github](./update.png)
+
+### Squashing commits
 
 Rebasing is very straightforward in theory. However, you may run into conflicts that have to be resolved before you can rebase your branch. One of the main causes for rebase conflicts is the presence of many small commits in your branch history. This is where squashing commits is useful.
 
@@ -86,17 +88,17 @@ And then:
 git rebase -i HEAD~x
 ```
 
-In this scenario, `HEAD` refers to the latest commit of the main branch, and `x` represents the number of commits that are on the branch. To find out what this number is you will need to run:
+In this scenario, `HEAD` refers to the latest commit of `your-branch`, and `x` represents the number of commits that are on the branch. To find out what this number is you will need to run:
 
 ```sh
-git log --branches[=<branch>]
+git log origin/main..HEAD
 ```
 
-The `--branches` flag is useful when you’re working on a project that has a lot of commits. It allows you to check only the commits made on your branch.
+This command is useful because it allows you to check only the commits made on your branch.
 
 Now when you run the interactive rebase command, `git` will return a file that contains all of your commits. 
 
-```sh
+```git-rebase
 pick f7bae90 commit-4
 pick 6b70439 commit-5
 
@@ -145,7 +147,7 @@ Learn more about `commit` [here](https://git-scm.com/docs/git-commit).
 ### git push
 
 #### Solving upstream issues
-<a name="upstream"></a>
+
 When you fork a repository, you can avoid a lot of issues by using the following command:
 
 ```sh
