@@ -757,7 +757,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.26.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -766,7 +766,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.26.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -777,7 +777,7 @@ dependencies = [
  "crossterm",
  "derive_setters",
  "lipsum",
- "ratatui 0.26.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1182,7 +1182,7 @@ dependencies = [
 name = "quickstart-ratatui"
 version = "0.1.0"
 dependencies = [
- "ratatui 0.26.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1221,25 +1221,6 @@ checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
 
 [[package]]
 name = "ratatui"
-version = "0.25.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a5659e52e4ba6e07b2dad9f1158f578ef84a73762625ddb51536019f34d180eb"
-dependencies = [
- "bitflags 2.4.1",
- "cassowary",
- "crossterm",
- "indoc",
- "itertools",
- "lru",
- "paste",
- "stability",
- "strum 0.25.0",
- "unicode-segmentation",
- "unicode-width",
-]
-
-[[package]]
-name = "ratatui"
 version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "154b85ef15a5d1719bcaa193c3c81fe645cd120c156874cd660fe49fd21d1373"
@@ -1254,7 +1235,7 @@ dependencies = [
  "paste",
  "serde",
  "stability",
- "strum 0.26.1",
+ "strum",
  "time",
  "unicode-segmentation",
  "unicode-width",
@@ -1278,12 +1259,12 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui 0.26.0",
+ "ratatui",
  "serde",
  "serde_json",
  "signal-hook",
  "strip-ansi-escapes",
- "strum 0.26.1",
+ "strum",
  "tokio",
  "tokio-util",
  "tracing",
@@ -1298,7 +1279,7 @@ version = "0.1.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.26.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1319,7 +1300,7 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui 0.26.0",
+ "ratatui",
  "serde",
  "serde_json",
  "signal-hook",
@@ -1336,7 +1317,7 @@ name = "ratatui-hello-world-tutorial"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui 0.26.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1344,7 +1325,7 @@ name = "ratatui-json-editor-app"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui 0.26.0",
+ "ratatui",
  "serde",
  "serde_json",
 ]
@@ -1361,9 +1342,9 @@ dependencies = [
  "itertools",
  "libc",
  "log",
- "ratatui 0.26.0",
+ "ratatui",
  "strip-ansi-escapes",
- "strum 0.26.1",
+ "strum",
  "tokio",
  "tokio-util",
  "tui-big-text",
@@ -1639,33 +1620,11 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "strum"
-version = "0.25.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "290d54ea6f91c969195bdbcd7442c8c2a2ba87da8bf60a7ee86a235d4bc1e125"
-dependencies = [
- "strum_macros 0.25.3",
-]
-
-[[package]]
-name = "strum"
 version = "0.26.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "723b93e8addf9aa965ebe2d11da6d7540fa2283fcea14b3371ff055f7ba13f5f"
 dependencies = [
- "strum_macros 0.26.1",
-]
-
-[[package]]
-name = "strum_macros"
-version = "0.25.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "23dc1fa9ac9c169a78ba62f0b841814b7abae11bdd047b9c58f893439e309ea0"
-dependencies = [
- "heck",
- "proc-macro2",
- "quote",
- "rustversion",
- "syn 2.0.46",
+ "strum_macros",
 ]
 
 [[package]]
@@ -1719,7 +1678,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.26.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1931,14 +1890,14 @@ dependencies = [
 
 [[package]]
 name = "tui-big-text"
-version = "0.3.5"
+version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3a40714aa0038257a165bcb2292ca393716aa77138031a2615e96deeeafc6f5b"
+checksum = "cd71532f612eeb8ea652cff38f4517771b8c90c39a2242e637145cc6668616b0"
 dependencies = [
  "derive_builder",
  "font8x8",
  "itertools",
- "ratatui 0.25.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -2051,7 +2010,7 @@ dependencies = [
  "clap",
  "color-eyre",
  "crossterm",
- "ratatui 0.26.0",
+ "ratatui",
  "time",
 ]
 
