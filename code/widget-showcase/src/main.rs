@@ -26,12 +26,13 @@ enum Widget {
     Block,
     BarChart,
     Calendar,
+    Canvas,
     Chart,
     Gauge,
     LineGauge,
     List,
-    Table,
     Paragraph,
+    Table,
 }
 
 fn main() -> color_eyre::Result<()> {
@@ -99,12 +100,13 @@ impl App {
             Widget::Block => block::render(frame),
             Widget::BarChart => bar_chart::render(frame),
             Widget::Calendar => crate::calendar::render(frame)?,
+            Widget::Canvas => canvas::render(frame),
             Widget::Chart => chart::render(frame),
             Widget::Gauge => gauge::render(frame),
             Widget::LineGauge => line_gauge::render(frame),
             Widget::List => list::render(frame),
-            Widget::Table => table::render(frame),
             Widget::Paragraph => paragraph::render(frame),
+            Widget::Table => table::render(frame),
         }
         Ok(())
     }
