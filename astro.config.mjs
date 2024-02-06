@@ -305,6 +305,7 @@ export default defineConfig({
             { label: "Developer Guide", link: "/developer-guide/" },
             { label: "Contributing", link: "/developer-guide/ratatui/" },
             { label: "This Website", link: "/developer-guide/website/" },
+            { label: "Git guide", link: "/developer-guide/git-guide/" },
           ],
         },
       ],
