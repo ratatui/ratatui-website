@@ -5,8 +5,8 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
-      "@code/*": ["src/code/*"],
-    },
+      "@code/*": ["src/code/*"]
+    }
   },
-  "exclude": ["dist"],
+  "exclude": ["dist"]
 }
