@@ -1,5 +1,5 @@
 ---
-title: Async Template
+title: Component Template
 ---
 
 ![](https://user-images.githubusercontent.com/1813121/277114001-0d25a09c-f24e-4ffc-8763-cd258828cec0.gif)
@@ -15,9 +15,9 @@ title: Async Template
 - [human-panic](https://github.com/rust-cli/human-panic)
 - Clap for command line argument parsing
 - `Component` trait with
-  [`Home`](https://github.com/ratatui-org/async-template/blob/main/async/template/src/components/home.rs)
+  [`Home`](https://github.com/ratatui-org/templates/blob/main/component/template/src/components/home.rs)
   and
-  [`Fps`](https://github.com/ratatui-org/async-template/blob/main/async/template/src/components/fps.rs)
+  [`Fps`](https://github.com/ratatui-org/templates/blob/main/component/template/src/components/fps.rs)
   components as examples
 
 ## Usage
@@ -26,20 +26,20 @@ You can start by using `cargo-generate`:
 
 ```bash
 cargo install cargo-generate
-cargo generate --git https://github.com/ratatui-org/templates async --name ratatui-hello-world
+cargo generate --git https://github.com/ratatui-org/templates component --name ratatui-hello-world
 cd ratatui-hello-world
 ```
 
 You can also use a
-[`template.toml`](https://github.com/ratatui-org/async-template/blob/main/.github/workflows/template.toml)
+[`template.toml`](https://github.com/ratatui-org/templates/blob/main/.github/workflows/template.toml)
 file to skip the prompts:
 
 ```bash
-$ cargo generate --git https://github.com/ratatui-org/templates async --template-values-file ./path/to/template.toml --name ratatui-hello-world
+$ cargo generate --git https://github.com/ratatui-org/templates component --template-values-file ./path/to/template.toml --name ratatui-hello-world
 # OR generate from local clone
 $ git clone https://github.com/ratatui-org/templates
 $ cd templates
-$ cargo generate --path ./async --template-values-file ./.github/workflows/template.toml --name ratatui-hello-world
+$ cargo generate --path ./component --template-values-file ./.github/workflows/template.toml --name ratatui-hello-world
 ```
 
 ### Run
@@ -83,7 +83,7 @@ With direnv variables:
 
 ```bash
 $ direnv allow
-direnv: loading ~/gitrepos/async-template/ratatui-hello-world/.envrc
+direnv: loading ~/gitrepos/component-template/ratatui-hello-world/.envrc
 direnv: export +RATATUI_HELLO_WORLD_CONFIG +RATATUI_HELLO_WORLD_DATA +RATATUI_HELLO_WORLD_LOG_LEVEL
 
 $ # OR
@@ -99,13 +99,14 @@ ratatui-hello-world v0.1.0-47-eb0a31a
 
 Authors: Dheepak Krishnamurthy
 
-Config directory: /Users/kd/gitrepos/async-template/ratatui-hello-world/.config
-Data directory: /Users/kd/gitrepos/async-template/ratatui-hello-world/.data
+Config directory: /Users/kd/gitrepos/component-template/ratatui-hello-world/.config
+Data directory: /Users/kd/gitrepos/component-template/ratatui-hello-world/.data
 ```
 
 ### Documentation
 
-Read documentation on design decisions in the template here: <https://ratatui.rs/templates/async/>
+Read documentation on design decisions in the template here:
+<https://ratatui.rs/templates/component/>
 
 ### Counter + Text Input Demo
 
@@ -115,7 +116,7 @@ the instructions below:
 
 ```bash
 git clone https://github.com/ratatui-org/templates
-cd templates/async/ratatui-counter # counter + text input demo
+cd templates/component/ratatui-counter # counter + text input demo
 
 export RATATUI_COUNTER_CONFIG=`pwd`/.config
 export RATATUI_COUNTER_DATA=`pwd`/.data
@@ -136,9 +137,9 @@ You should see a demo like this:
 interfaces (TUIs) and dashboards. It is a community fork of the original
 [`tui-rs`](https://github.com/fdehau/tui-rs) created to maintain and improve the project.
 
-The [source code of this project](https://github.com/ratatui-org/templates/tree/main/async) is an
-opinionated template for getting up and running with `ratatui`. You can pick and choose the pieces
-of this `async-template` to suit your needs and sensibilities. This rest of this documentation is a
+The [source code of this project](https://github.com/ratatui-org/templates/tree/main/component) is
+an opinionated template for getting up and running with `ratatui`. You can pick and choose the
+pieces of this template to suit your needs and sensibilities. This rest of this documentation is a
 walk-through of why the code is structured the way it is, so that you are aided in modifying it as
 you require.
 
@@ -176,10 +177,12 @@ You may also want to check out the following links (roughly in order of increasi
 - <https://github.com/ratatui-org/ratatui/tree/main/examples>: Simple one-off examples to illustrate
   various widgets and features in `ratatui`.
 - <https://github.com/ratatui-org/templates/tree/main/simple>: Starter kit for using `ratatui`
+- <https://github.com/ratatui-org/templates/tree/main/async>: Starter kit for using `ratatui` with
+  `async` using `tokio`
 - <https://github.com/ratatui-org/website/tree/main/code/ratatui-json-editor-app>: Tutorial project
   that the user a simple interface to enter key-value pairs, which will printed in json.
-- <https://github.com/ratatui-org/templates/tree/main/async/template>: Async tokio crossterm based
-  opinionated starter kit for using `ratatui`.
+- <https://github.com/ratatui-org/templates/tree/main/component>: Async tokio crossterm based
+  opinionated starter kit with "components" for using `ratatui`.
 - <https://github.com/veeso/tui-realm/>: A framework for `tui.rs` to simplify the implementation of
   terminal user interfaces adding the possibility to work with re-usable components with properties
   and states.

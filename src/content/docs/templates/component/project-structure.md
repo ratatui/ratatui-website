@@ -2,7 +2,7 @@
 title: Project Structure
 ---
 
-The rust files in the `async-template` project are organized as follows:
+The rust files in the `component` project are organized as follows:
 
 ```bash
 $ tree

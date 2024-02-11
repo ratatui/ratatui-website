@@ -103,7 +103,7 @@ more tasks do you plan to be spawning?
 The former can be done without any `async` code and the latter is the approach showcased in
 [`async-template#v1.0`](https://github.com/ratatui-org/async-template/tree/v0.1.0) with `tokio`.
 
-The most recent version of the `async-template` uses this architecture instead with tokio:
+The `simple-async` uses this architecture instead with tokio:
 
 ```kroki type=svgbob
        Event Thread             ┊     Main Thread

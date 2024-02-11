@@ -7,7 +7,7 @@ you may be interested in running IO operations or compute asynchronously.
 
 For this tutorial, we will build a single file version of an async TUI using
 [tokio](https://tokio.rs/). This tutorial section is a simplified version of the
-[`async-template`](https://github.com/ratatui-org/async-template) project.
+[async ratatui counter app](https://github.com/ratatui-org/templates/tree/main/component/ratatui-counter).
 
 ## Installation
 
