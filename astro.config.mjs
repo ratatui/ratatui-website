@@ -238,7 +238,7 @@ export default defineConfig({
                   label: "Configuration Directories",
                   link: "/how-to/develop-apps/config-directories/",
                 },
-                { label: "Logging with Tracing", link: "/how-to/develop-apps/setup-logging/" },
+                { label: "Logging with Tracing", link: "/how-to/develop-apps/log-with-tracing/" },
                 {
                   label: "Terminal and Event handler",
                   link: "/how-to/develop-apps/terminal-and-event-handler/",
