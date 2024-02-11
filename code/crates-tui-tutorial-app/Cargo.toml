@@ -1,0 +1,17 @@
+[package]
+name = "crates-tui"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+color-eyre = "0.6.2"
+crates_io_api = "0.9.0"
+crossterm = { version = "0.27.0", features = ["serde", "event-stream"] }
+futures = "0.3.28"
+itertools = "0.12.0"
+ratatui = { version = "0.26.1", features = ["serde", "macros"] }
+tokio = { version = "1.36.0", features = ["full"] }
+tokio-stream = "0.1.14"
+tui-input = "0.8.0"

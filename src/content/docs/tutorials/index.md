@@ -10,8 +10,6 @@ title: Tutorials
   organizing its structure for a `ratatui`-based application to edit json key value pairs. JSON
   Editor TUI will provide an interface for users to input key-value pairs, which are then converted
   into correct JSON format and printed to stdout.
-- [Async Counter App](./counter-async-app/): This tutorial, expands on the Counter app to build a an
-  async TUI using [tokio](https://tokio.rs/).
 
 :::note
 

@@ -174,9 +174,7 @@ This gives us a `sender` and `receiver` pair. The `sender` can be used to send e
 
 Notice that we are using `std::thread::spawn` in this `EventHandler`. This thread is spawned to
 handle events and runs in the background and is responsible for polling and sending events to our
-main application through the channel. In the
-[async counter tutorial](/tutorials/counter-async-app/async-event-stream/) we will use
-`tokio::task::spawn` instead.
+main application through the channel.
 
 In this background thread, we continuously poll for events with `event::poll(timeout)`. If an event
 is available, it's read and sent through the sender channel. The types of events we handle include,
