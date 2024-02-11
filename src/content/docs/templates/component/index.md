@@ -39,7 +39,7 @@ $ cargo generate --git https://github.com/ratatui-org/templates component --temp
 # OR generate from local clone
 $ git clone https://github.com/ratatui-org/templates
 $ cd templates
-$ cargo generate --path ./async --template-values-file ./.github/workflows/template.toml --name ratatui-hello-world
+$ cargo generate --path ./component --template-values-file ./.github/workflows/template.toml --name ratatui-hello-world
 ```
 
 ### Run
@@ -105,7 +105,8 @@ Data directory: /Users/kd/gitrepos/component-template/ratatui-hello-world/.data
 
 ### Documentation
 
-Read documentation on design decisions in the template here: <https://ratatui.rs/templates/async/>
+Read documentation on design decisions in the template here:
+<https://ratatui.rs/templates/component/>
 
 ### Counter + Text Input Demo
 
@@ -115,7 +116,7 @@ the instructions below:
 
 ```bash
 git clone https://github.com/ratatui-org/templates
-cd templates/async/ratatui-counter # counter + text input demo
+cd templates/component/ratatui-counter # counter + text input demo
 
 export RATATUI_COUNTER_CONFIG=`pwd`/.config
 export RATATUI_COUNTER_DATA=`pwd`/.data
@@ -136,9 +137,9 @@ You should see a demo like this:
 interfaces (TUIs) and dashboards. It is a community fork of the original
 [`tui-rs`](https://github.com/fdehau/tui-rs) created to maintain and improve the project.
 
-The [source code of this project](https://github.com/ratatui-org/templates/tree/main/async) is an
-opinionated template for getting up and running with `ratatui`. You can pick and choose the pieces
-of this template to suit your needs and sensibilities. This rest of this documentation is a
+The [source code of this project](https://github.com/ratatui-org/templates/tree/main/component) is
+an opinionated template for getting up and running with `ratatui`. You can pick and choose the
+pieces of this template to suit your needs and sensibilities. This rest of this documentation is a
 walk-through of why the code is structured the way it is, so that you are aided in modifying it as
 you require.
 
@@ -176,8 +177,8 @@ You may also want to check out the following links (roughly in order of increasi
 - <https://github.com/ratatui-org/ratatui/tree/main/examples>: Simple one-off examples to illustrate
   various widgets and features in `ratatui`.
 - <https://github.com/ratatui-org/templates/tree/main/simple>: Starter kit for using `ratatui`
-- <https://github.com/ratatui-org/templates/tree/main/simple-async>: Starter kit for using `ratatui`
-  with `async` using `tokio`
+- <https://github.com/ratatui-org/templates/tree/main/async>: Starter kit for using `ratatui` with
+  `async` using `tokio`
 - <https://github.com/ratatui-org/website/tree/main/code/ratatui-json-editor-app>: Tutorial project
   that the user a simple interface to enter key-value pairs, which will printed in json.
 - <https://github.com/ratatui-org/templates/tree/main/component>: Async tokio crossterm based
