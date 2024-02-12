@@ -14,7 +14,7 @@
     "format:check": "npm run _format -- --check"
   },
   "dependencies": {
-    "@astrojs/check": "^0.4.1",
+    "@astrojs/check": "^0.5.3",
     "@astrojs/partytown": "^2.0.4",
     "@astrojs/starlight": "^0.17.2",
     "@astrojs/starlight-tailwind": "^2.0.1",
