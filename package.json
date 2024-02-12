@@ -19,7 +19,7 @@
     "@astrojs/starlight": "^0.17.2",
     "@astrojs/starlight-tailwind": "^2.0.1",
     "@astrojs/tailwind": "^5.1.0",
-    "@expressive-code/plugin-collapsible-sections": "^0.32.2",
+    "@expressive-code/plugin-collapsible-sections": "^0.32.4",
     "astro": "^4.3.5",
     "astro-diagram": "^0.7.0",
     "hast-util-select": "^6.0.2",
