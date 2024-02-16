@@ -41,6 +41,18 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run astro build
+      - name: Link Checker
+        id: lychee
+        uses: lycheeverse/lychee-action@v1.9.0
+        with:
+          args: --verbose --exclude-path node_modules --no-progress dist
+      - name: Create Issue From File
+        if: env.lychee_exit_code != 0
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: Link Checker Report
+          content-filepath: ./lychee/out.md
+          labels: report, automated issue
 
   format:
     runs-on: ubuntu-latest
