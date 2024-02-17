@@ -12,3 +12,12 @@ title: Tutorials
   into correct JSON format and printed to stdout.
 - [Async Counter App](./counter-async-app/): This tutorial, expands on the Counter app to build a an
   async TUI using [tokio](https://tokio.rs/).
+
+:::note
+
+If you want to jump right into coding yourself, we provide templates for that. See the
+[template section](/templates).  
+We also have some [examples](https://github.com/ratatui-org/ratatui/tree/main/examples) that might
+help you get started on Github.
+
+:::
