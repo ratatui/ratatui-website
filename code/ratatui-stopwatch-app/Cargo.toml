@@ -17,7 +17,7 @@ human-panic = "1.2.3"
 itertools = "0.12.1"
 libc = "0.2.153"
 log = "0.4.20"
-ratatui = "0.26.0"
+ratatui = "0.26.1"
 strip-ansi-escapes = "0.2.0"
 strum = "0.26.1"
 tokio = { version = "1.36.0", features = ["full"] }
