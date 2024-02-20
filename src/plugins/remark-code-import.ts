@@ -20,7 +20,7 @@ interface CodeNode extends Node {
 // - {{#include @path/to/file}} - path to file from root directory
 const pathRegex = rx`(?<path>.+?)`; // Matches at least one character, but as few as possible
 const anchorNameRegex = rx`(?<anchor>.*?)`; // Matches at least one character, but as few as possible
-const includeRegex = rx.g`  // global (matches all instances in the file)
+const includeRegex = rx`    // global (matches all instances in the file)
   \{\{                      // literal "{{"
   \s*                       // optional whitespace
   #include                  // literal "#include"
