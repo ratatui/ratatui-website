@@ -26,7 +26,7 @@ const includeRegex = rx`    // global (matches all instances in the file)
   #include                  // literal "#include"
   \s*                       // optional whitespace
   ${pathRegex}              // filepath
-  (:${anchorNameRegex})?  // optional anchor name
+  (:${anchorNameRegex})?    // optional anchor name
   \s*                       // optional whitespace after anchor
   \}\}                      // literal "}}"
 `;
