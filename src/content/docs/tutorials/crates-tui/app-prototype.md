@@ -186,13 +186,10 @@ any child struct by sending an `Action` over `tx`.
 
 Here's the full `./src/app.rs` file for your reference:
 
-<details>
-
-<summary>Copy the following into <code>src/app.rs</code></summary>
-
-```rust title="src/app.rs"
-use color_eyre::eyre::Result;
+```rust collapsed title="src/app.rs (click to expand)"
+use color_eyre::Result;
 use itertools::Itertools;
+use ratatui::layout::Position;
 use ratatui::prelude::*;
 use ratatui::widgets::*;
 
@@ -203,8 +200,6 @@ use crate::{
 
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:full_app}}
 ```
-
-</details>
 
 This is what our app currently looks like:
 

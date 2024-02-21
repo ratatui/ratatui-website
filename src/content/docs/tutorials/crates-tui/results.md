@@ -28,12 +28,6 @@ And the implementation of the stateful widget render looks like this:
 
 Here's the full code for reference:
 
-<details>
-
-<summary>Copy the following into <code>src/widgets/search_results.rs</code></summary>
-
-```rust title="src/widgets/search_results.rs"
+```rust collapsed title="src/widgets/search_results.rs (click to expand)"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_results.rs}}
 ```
-
-</details>

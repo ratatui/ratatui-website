@@ -12,6 +12,8 @@ to get async events.
 
 [`tokio_stream`]: https://docs.rs/tokio-stream/latest/tokio_stream/
 
+## Event enum
+
 First, create a `Event` enum, like before:
 
 ```rust title="src/events.rs"
@@ -19,6 +21,8 @@ First, create a `Event` enum, like before:
 ```
 
 This will represent all possible events you can receive from the `Events` stream.
+
+## Crossterm stream
 
 Next create a `crossterm_stream` function:
 
@@ -28,11 +32,15 @@ Next create a `crossterm_stream` function:
 {{#include @code/crates-tui-tutorial-app/src/events.rs:crossterm}}
 ```
 
+## Render stream
+
 You can create stream using an `IntervalStream` for generating `Event::Render` events.
 
 ```rust title="src/events.rs"
 {{#include @code/crates-tui-tutorial-app/src/events.rs:render}}
 ```
+
+## Event stream
 
 Putting it all together, make a `Events` struct like so:
 
@@ -45,15 +53,11 @@ the stream using `Events::next().await`.
 
 Here's the full `./src/events.rs` for your reference:
 
-<details>
-
-<summary>Copy the following into <code>src/events.rs</code></summary>
-
-```rust title="src/events.rs"
+```rust collapsed title="src/events.rs (click to expand)"
 {{#include @code/crates-tui-tutorial-app/src/events.rs}}
 ```
 
-</details>
+## Demo
 
 Let's make a very simple event loop TUI using this `events` module. Update `main.rs` to the
 following:

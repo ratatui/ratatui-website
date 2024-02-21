@@ -27,15 +27,11 @@ impl App {
 }
 ```
 
-<details>
+Here's the full code for your reference:
 
-<summary>Copy the following into <code>src/app.rs</code></summary>
-
-```rust title="src/app.rs"
+```rust collapsed title="src/app.rs (click to expand)"
 {{#include @code/crates-tui-tutorial-app/src/app.rs}}
 ```
-
-</details>
 
 Your final folder structure will look like this:
 

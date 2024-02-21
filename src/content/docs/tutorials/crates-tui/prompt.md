@@ -30,12 +30,6 @@ appropriately.
 
 Here's the full code for reference:
 
-<details>
-
-<summary>Copy the following into <code>src/widgets/search_prompt.rs</code></summary>
-
-```rust title="src/widgets/search_prompt.rs"
+```rust collapsed title="src/widgets/search_prompt.rs (click to expand)"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_prompt.rs}}
 ```
-
-</details>

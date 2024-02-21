@@ -76,11 +76,7 @@ If you run it, you should see something like this:
 
 Here's the full `./src/app.rs` file for your reference:
 
-<details>
-
-<summary>Copy the following into <code>src/app.rs</code></summary>
-
-```rust title="src/app.rs"
+```rust collapsed title="src/app.rs (click to expand)"
 use color_eyre::eyre::Result;
 use itertools::Itertools;
 use ratatui::prelude::*;
@@ -93,5 +89,3 @@ use crate::{
 
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-mode.rs:full_app}}
 ```
-
-</details>

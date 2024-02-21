@@ -100,11 +100,7 @@ struct AppWidget;
 
 Here's the full `./src/app.rs` file for your reference:
 
-<details>
-
-<summary>Copy the following into <code>src/app.rs</code></summary>
-
-```rust title="src/app.rs"
+```rust collapsed title="src/app.rs (click to expand)"
 use color_eyre::eyre::Result;
 use ratatui::prelude::*;
 use ratatui::widgets::*;
@@ -116,8 +112,6 @@ use crate::{
 
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-basics.rs:full_app}}
 ```
-
-</details>
 
 Now, run your application with a modified `main.rs` that uses the `App` struct you just created:
 

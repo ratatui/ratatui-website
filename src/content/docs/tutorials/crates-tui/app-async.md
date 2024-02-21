@@ -122,3 +122,20 @@ the prompt `Rect`, which is only known during render.
 ```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_statefulwidget}}
 ```
+
+Here's the full app for your reference:
+
+```rust collapsed title="src/app.rs (click to expand)"
+use color_eyre::Result;
+use itertools::Itertools;
+use ratatui::layout::Position;
+use ratatui::prelude::*;
+use ratatui::widgets::*;
+
+use crate::{
+    events::{Event, Events},
+    tui::Tui
+};
+
+{{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:full_app}}
+```

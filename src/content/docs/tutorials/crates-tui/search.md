@@ -47,12 +47,6 @@ method on the `StatefulWidget` trait to render both the prompt and the results:
 
 Here is the search page widget in its entirety:
 
-<details>
-
-<summary>Copy the following into <code>src/widgets/search_page.rs</code></summary>
-
-```rust title="src/widgets/search_page.rs"
+```rust collapsed title="src/widgets/search_page.rs (click to expand)"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_page.rs}}
 ```
-
-</details>

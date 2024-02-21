@@ -218,15 +218,11 @@ look like this:
 
 You can now use this helper module to make `async` requests from the `app`.
 
-<details>
+Here's the full code in `src/crates_io_api_helper.rs` for your reference:
 
-<summary>Here's the code in <code>src/crates_io_api_helper.rs</code> for your reference</summary>
-
-```rust title="src/crates_io_api_helper.rs"
+```rust collapsed title="src/crates_io_api_helper.rs (click to expand)"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-helper.rs:helper}}
 ```
-
-</details>
 
 With the refactor, your test code should look like this:
 
