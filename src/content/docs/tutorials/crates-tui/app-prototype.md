@@ -28,7 +28,7 @@ instance to update its state.
 
 The variants of the `Action` enum you will be using for this tutorial are:
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:action}}
 ```
 
@@ -36,7 +36,7 @@ The variants of the `Action` enum you will be using for this tutorial are:
 
 Define the following fields in the `App` struct:
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:app}}
 ```
 
@@ -59,7 +59,7 @@ still propagate information up from child to parent structs using the `tx` trans
 
 Setup a `App::new()` function to construct an `App` instance like so:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:app_new}}
 }
@@ -67,7 +67,7 @@ impl App {
 
 Let's also update the `async run` method now:
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:app_run}}
 ```
 
@@ -76,7 +76,7 @@ Let's also update the `async run` method now:
 Update `handle_event` to delegate to `Mode` to figure out which `Action` should be generated based
 on the key event and the `Mode`.
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:app_handle_event}}
 }
@@ -85,7 +85,7 @@ impl App {
 Most of the work in deciding which `Action` should be taken is done in `Mode::handle_key`. Since
 this is oriented around `Mode`, implement the `handle_key` method on `Mode` in the following manner:
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:mode}}
 ```
 
@@ -103,7 +103,7 @@ If the `maybe_action` is a `Some` variant, it is sent over the `tx` channel:
 
 Now implement the `handle_action` method like so:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:app_handle_action}}
 }
@@ -173,7 +173,7 @@ For example, you can send an `Action::UpdateSearchResults` from inside the task 
 complete, when can make sure that the first time is selected after the results are loaded (by
 scrolling down):
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:app_submit_search_query}}
 
@@ -190,7 +190,7 @@ Here's the full `./src/app.rs` file for your reference:
 
 <summary>Copy the following into <code>src/app.rs</code></summary>
 
-```rust
+```rust title="src/app.rs"
 use color_eyre::eyre::Result;
 use itertools::Itertools;
 use ratatui::prelude::*;

@@ -25,9 +25,9 @@ Run the following to setup a new project:
 cargo new crates-tui-tutorial --bin
 ```
 
-Here's all the dependencies in the `Cargo.toml` file required for this tutorial:
+Here's all the dependencies required for this tutorial:
 
-```toml
+```toml title="Cargo.toml"
 {{#include @code/crates-tui-tutorial-app/Cargo.toml:7:}}
 ```
 

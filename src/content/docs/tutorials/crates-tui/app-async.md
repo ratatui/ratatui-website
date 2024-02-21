@@ -6,7 +6,7 @@ We are finally ready to incorporate the helper module into the `App` struct.
 
 Define the the following fields in the `App` struct:
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app}}
 ```
 
@@ -34,7 +34,7 @@ For the application, we want to be able to:
 
 Expand the `handle_events` to the match on mode and change the app state accordingly:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_handle_event}}
 }
@@ -51,7 +51,7 @@ query that the user has typed in, i.e. `self.prompt.value() -> &str`.
 
 Implement the following method:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_submit_search_query}}
 }
@@ -71,7 +71,7 @@ results to select the new index.
 
 Implement the following for wrapped scrolling:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_scroll}}
 }
@@ -84,7 +84,7 @@ explicitly. We only want to show the cursor when the prompt is in focus.
 
 Implement the following to show the cursor conditionally:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_draw}}
 
@@ -99,7 +99,7 @@ impl App {
 Finally, you can update the render the methods in `App` to replace placeholder data with the data
 from the results or the prompt value:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_results_table_widget}}
 }
@@ -109,7 +109,7 @@ Note the use `highlight_symbol` here to show the cursor when scrolling.
 
 Update the prompt widget to show the text from `tui-input::Input` in a `Paragraph` widget:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_prompt_widget}}
 }
@@ -119,6 +119,6 @@ And in the render function for the `StatefulWidget`, make sure you create a stat
 table results instead. You have to also call the function that updates the cursor position based on
 the prompt `Rect`, which is only known during render.
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_statefulwidget}}
 ```

@@ -8,7 +8,7 @@ Add the `#[tokio::main]` macro to the `main` function and make the function `asy
 to use `async` and `await` inside `main`. You can also now spawn tokio tasks within your
 application.
 
-```rust
+```rust title="src/main.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-main.rs}}
 ```
 
@@ -49,7 +49,7 @@ In this case, it took `5.262` seconds to run `cargo run`.
 
 Try to predicate what happens if you spawn multiple tokio tasks? e.g.
 
-```rust
+```rust title="src/main.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-main-tasks-concurrent.rs}}
 ```
 
@@ -69,7 +69,7 @@ behaves the way it does?
 
 Now, what happens if you run the following instead?
 
-```rust
+```rust title="src/main.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-main-tasks-sequential.rs}}
 ```
 

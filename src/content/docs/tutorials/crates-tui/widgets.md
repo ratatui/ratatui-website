@@ -6,7 +6,7 @@ In this section we will discuss implementing widgets.
 
 Create a new file `./src/widgets.rs` with the following content:
 
-```rust
+```rust title="src/widgets.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets.rs}}
 ```
 

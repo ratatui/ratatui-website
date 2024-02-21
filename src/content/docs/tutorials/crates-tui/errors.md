@@ -37,7 +37,7 @@ to you for further investigation.
 Here's the code using color_eyre to set a panic hook. Put the contents of this file into
 `src/errors.rs`:
 
-```rust
+```rust title="src/errors.rs"
 {{#include @code/crates-tui-tutorial-app/src/errors.rs}}
 ```
 
@@ -45,7 +45,7 @@ Here's the code using color_eyre to set a panic hook. Put the contents of this f
 
 Let's update `main.rs` to the following:
 
-```diff lang="rust"
+```diff lang="rust" title="src/main.rs"
   mod crates_io_api_helper;
 + mod errors;
   mod tui;

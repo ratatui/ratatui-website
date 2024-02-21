@@ -4,7 +4,7 @@ title: App
 
 Finally, let's make a field in the app struct that uses the `SearchPage` widget:
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/app.rs:imports_core}}
 
 {{#include @code/crates-tui-tutorial-app/src/app.rs:app}}
@@ -13,7 +13,7 @@ Finally, let's make a field in the app struct that uses the `SearchPage` widget:
 With this refactor, now `./src/app.rs` becomes a lot simpler. For example, app now delegates to the
 search page widget for all core functionality.
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/app.rs:app_handle_action}}
 }
@@ -21,7 +21,7 @@ impl App {
 
 And rendering delegates to `SearchPageWidget`:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/app.rs:app_statefulwidget}}
 }
@@ -31,7 +31,7 @@ impl App {
 
 <summary>Copy the following into <code>src/app.rs</code></summary>
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/app.rs}}
 ```
 

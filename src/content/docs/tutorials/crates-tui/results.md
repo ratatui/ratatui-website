@@ -4,7 +4,7 @@ title: Results
 
 Here is the search results state:
 
-```rust
+```rust title="src/widgets/search_results.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_results.rs:state}}
 ```
 
@@ -16,13 +16,13 @@ Here is the search results state:
 
 Here is the search results widget:
 
-```rust
+```rust title="src/widgets/search_results.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_results.rs:widget}}
 ```
 
 And the implementation of the stateful widget render looks like this:
 
-```rust
+```rust title="src/widgets/search_results.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_results.rs:render}}
 ```
 
@@ -32,7 +32,7 @@ Here's the full code for reference:
 
 <summary>Copy the following into <code>src/widgets/search_results.rs</code></summary>
 
-```rust
+```rust title="src/widgets/search_results.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_results.rs}}
 ```
 

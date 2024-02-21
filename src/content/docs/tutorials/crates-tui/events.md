@@ -14,7 +14,7 @@ to get async events.
 
 First, create a `Event` enum, like before:
 
-```rust
+```rust title="src/events.rs"
 {{#include @code/crates-tui-tutorial-app/src/events.rs:event}}
 ```
 
@@ -22,7 +22,7 @@ This will represent all possible events you can receive from the `Events` stream
 
 Next create a `crossterm_stream` function:
 
-```rust
+```rust title="src/events.rs"
 {{#include @code/crates-tui-tutorial-app/src/events.rs:stream}}
 
 {{#include @code/crates-tui-tutorial-app/src/events.rs:crossterm}}
@@ -30,13 +30,13 @@ Next create a `crossterm_stream` function:
 
 You can create stream using an `IntervalStream` for generating `Event::Render` events.
 
-```rust
+```rust title="src/events.rs"
 {{#include @code/crates-tui-tutorial-app/src/events.rs:render}}
 ```
 
 Putting it all together, make a `Events` struct like so:
 
-```rust
+```rust title="src/events.rs"
 {{#include @code/crates-tui-tutorial-app/src/events.rs:events}}
 ```
 
@@ -49,7 +49,7 @@ Here's the full `./src/events.rs` for your reference:
 
 <summary>Copy the following into <code>src/events.rs</code></summary>
 
-```rust
+```rust title="src/events.rs"
 {{#include @code/crates-tui-tutorial-app/src/events.rs}}
 ```
 
@@ -58,7 +58,7 @@ Here's the full `./src/events.rs` for your reference:
 Let's make a very simple event loop TUI using this `events` module. Update `main.rs` to the
 following:
 
-```rust
+```rust title="src/main.rs"
 mod crates_io_api_helper;
 mod errors;
 mod events;

@@ -4,13 +4,13 @@ title: Prompt
 
 The state of the search prompt is represented by this struct:
 
-```rust
+```rust title="src/widgets/search_prompt.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_prompt.rs:state}}
 ```
 
 Here is the search prompt widget:
 
-```rust
+```rust title="src/widgets/search_prompt.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_prompt.rs:widget}}
 ```
 
@@ -24,7 +24,7 @@ To render the prompt, you can
 Finally you have to update the cursor state so that the `app` chooses to show the cursor
 appropriately.
 
-```rust
+```rust title="src/widgets/search_prompt.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_prompt.rs:render}}
 ```
 
@@ -34,7 +34,7 @@ Here's the full code for reference:
 
 <summary>Copy the following into <code>src/widgets/search_prompt.rs</code></summary>
 
-```rust
+```rust title="src/widgets/search_prompt.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_prompt.rs}}
 ```
 

@@ -7,13 +7,13 @@ to scale up. We are going to move the event loop into a method on the `App` stru
 
 Create a new file `./src/app.rs`:
 
-```rust
+```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-basics.rs:app}}
 ```
 
 Define some helper functions for initializing the `App`:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-basics.rs:app_new}}
 }
@@ -23,7 +23,7 @@ impl App {
 
 Now define a `run` method for `App`:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-basics.rs:app_run}}
 }
@@ -39,7 +39,7 @@ you created earlier.
 The `run` method uses a `should_quit` method (and a corresponding `quit` method) that you can define
 like this:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-basics.rs:app_quit}}
 }
@@ -47,7 +47,7 @@ impl App {
 
 This `run` method also uses a `handle_event` method that you can define like so:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-basics.rs:app_handle_event}}
 }
@@ -55,7 +55,7 @@ impl App {
 
 Finally, for the `draw` method, you could define it like this:
 
-```rust
+```rust title="src/app.rs"
 use ratatui::widgets::*;
 
 impl App {
@@ -78,7 +78,7 @@ But let's go one step further and set ourselves up for using the `StatefulWidget
 
 Define the `draw` method like this:
 
-```rust
+```rust title="src/app.rs"
 impl App {
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-basics.rs:app_draw}}
 }
@@ -90,7 +90,7 @@ the `App` struct as its state.
 [unit-like struct]:
   https://doc.rust-lang.org/book/ch05-01-defining-structs.html#unit-like-structs-without-any-fields
 
-```rust
+```rust title="src/app.rs"
 use ratatui::widgets::{StatefulWidget, Paragraph};
 
 struct AppWidget;
@@ -104,7 +104,7 @@ Here's the full `./src/app.rs` file for your reference:
 
 <summary>Copy the following into <code>src/app.rs</code></summary>
 
-```rust
+```rust title="src/app.rs"
 use color_eyre::eyre::Result;
 use ratatui::prelude::*;
 use ratatui::widgets::*;
@@ -121,7 +121,7 @@ use crate::{
 
 Now, run your application with a modified `main.rs` that uses the `App` struct you just created:
 
-```rust
+```rust title="src/main.rs"
 pub mod app;
 pub mod errors;
 pub mod events;

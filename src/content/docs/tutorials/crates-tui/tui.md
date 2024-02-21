@@ -10,7 +10,7 @@ In order for your application to present as a terminal user interface, you need 
 
 Define a couple of functions to `init` and `restore` the terminal state:
 
-```rust
+```rust title="src/tui.rs"
 {{#include @code/crates-tui-tutorial-app/src/tui.rs}}
 ```
 
@@ -21,7 +21,7 @@ as a TUI application. Just have to make sure we call `tui::restore()` at the end
 
 Let's update `main.rs` to the following:
 
-```rust
+```rust title="src/main.rs"
 mod crates_io_api_helper;
 mod tui;
 
@@ -38,7 +38,7 @@ state.
 
 What happens if you comment out this line from `init`?
 
-```rust
+```rust title="src/tui.rs"
     // crossterm::execute!(std::io::stdout(), EnterAlternateScreen)?;
 ```
 
