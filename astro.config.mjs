@@ -13,6 +13,14 @@ import remarkIncludeCode from "/src/plugins/remark-code-import";
 // https://astro.build/config
 export default defineConfig({
   site: "https://ratatui.rs",
+  image: {
+    service: {
+      entrypoint: "astro/assets/services/sharp",
+      config: {
+        limitInputPixels: false,
+      },
+    },
+  },
   prefetch: {
     prefetchAll: true,
   },
