@@ -1,3 +1,5 @@
+use std::sync::{Arc, Mutex};
+
 use crates_io_api::Crate;
 use itertools::Itertools;
 use ratatui::{prelude::*, widgets::*};
@@ -5,19 +7,30 @@ use ratatui::{prelude::*, widgets::*};
 // ANCHOR: state
 #[derive(Debug, Default)]
 pub struct SearchResults {
-    pub crates: Vec<crates_io_api::Crate>,
+    pub crates: Arc<Mutex<Vec<crates_io_api::Crate>>>,
     pub table_state: TableState,
     pub scrollbar_state: ScrollbarState,
 }
-// ANCHOR_END: state
 
-const TABLE_HEADER_HEIGHT: u16 = 2;
-const COLUMN_SPACING: u16 = 3;
-const ROW_HEIGHT: u16 = 2;
+impl SearchResults {
+    pub fn new(crates: Arc<Mutex<Vec<crates_io_api::Crate>>>) -> Self {
+        Self {
+            crates,
+            table_state: Default::default(),
+            scrollbar_state: Default::default(),
+        }
+    }
+}
+// ANCHOR_END: state
 
 impl SearchResults {
     fn rows(&self) -> Vec<Row<'static>> {
-        self.crates.iter().map(row_from_crate).collect_vec()
+        self.crates
+            .lock()
+            .unwrap()
+            .iter()
+            .map(row_from_crate)
+            .collect_vec()
     }
 
     fn header(&self) -> Row<'static> {
@@ -26,20 +39,14 @@ impl SearchResults {
             .map(vertical_pad);
         Row::new(header_cells).height(TABLE_HEADER_HEIGHT)
     }
-}
 
-impl SearchResults {
-    pub fn content_length(&mut self, content_length: usize) {
-        self.scrollbar_state =
-            self.scrollbar_state.content_length(content_length)
+    pub fn clear_selection(&mut self) {
+        self.table_state.select(None)
     }
 
-    pub fn select(&mut self, index: Option<usize>) {
-        self.table_state.select(index)
-    }
-
+    // ANCHOR: scroll
     pub fn scroll_next(&mut self) {
-        let wrap_index = self.crates.len().max(1);
+        let wrap_index = self.crates.lock().unwrap().len().max(1);
         let next = self
             .table_state
             .selected()
@@ -48,8 +55,8 @@ impl SearchResults {
     }
 
     pub fn scroll_previous(&mut self) {
-        let last = self.crates.len().saturating_sub(1);
-        let wrap_index = self.crates.len().max(1);
+        let last = self.crates.lock().unwrap().len().saturating_sub(1);
+        let wrap_index = self.crates.lock().unwrap().len().max(1);
         let previous = self
             .table_state
             .selected()
@@ -58,14 +65,27 @@ impl SearchResults {
     }
 
     fn scroll_to(&mut self, index: usize) {
-        if self.crates.is_empty() {
+        if self.crates.lock().unwrap().is_empty() {
             self.table_state.select(None)
         } else {
             self.table_state.select(Some(index));
             self.scrollbar_state = self.scrollbar_state.position(index);
         }
     }
+
+    pub fn update_search_results(&mut self) {
+        self.table_state.select(None);
+        self.scrollbar_state = self
+            .scrollbar_state
+            .content_length(self.crates.lock().unwrap().len())
+    }
+
+    // ANCHOR_END: scroll
 }
+
+const TABLE_HEADER_HEIGHT: u16 = 2;
+const COLUMN_SPACING: u16 = 3;
+const ROW_HEIGHT: u16 = 2;
 
 // ANCHOR: widget
 pub struct SearchResultsWidget {

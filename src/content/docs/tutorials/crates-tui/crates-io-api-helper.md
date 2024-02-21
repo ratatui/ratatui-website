@@ -195,7 +195,7 @@ Run the test again now:
 $ cargo test -- crates_io_api_helper::tests::test_crates_io --nocapture
 ```
 
-You should get results like so:
+You should get results like below (only the first three results are shown here for brevity):
 
 ```plain
 running 1 test
@@ -213,17 +213,14 @@ name: ratatui-macros
 description: Macros for Ratatui
 downloads: 525
 
+...
+...
+...
+
 test crates_io_api_helper::tests::test_crates_io ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
 ```
-
-:::note
-
-We set the `page_size` to `3` for testing purposes in the constructor for `SearchParameters`. Change
-that to the maximum value of `100`.
-
-:::
 
 ## Refactor
 

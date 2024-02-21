@@ -1,15 +1,21 @@
+use std::sync::{atomic::AtomicBool, Arc, Mutex};
+
 // ANCHOR: imports_all
 // ANCHOR: imports_external
 use color_eyre::eyre::Result;
 use crossterm::event::KeyEvent;
-use ratatui::{prelude::*, widgets::Paragraph};
+use ratatui::prelude::*;
 // ANCHOR: imports_external
 
 // ANCHOR: imports_core
 use crate::{
     events::{Event, Events},
     tui::Tui,
-    widgets::{search_page::SearchPage, search_page::SearchPageWidget},
+    widgets::{
+        search_prompt::{SearchPrompt, SearchPromptWidget},
+        search_results::{SearchResults, SearchResultsWidget},
+        status_bar::{StatusBar, StatusBarWidget},
+    },
 };
 // ANCHOR_END: imports_core
 // ANCHOR_END: imports_all
@@ -63,30 +69,39 @@ pub enum Action {
 #[derive(Debug)]
 pub struct App {
     quit: bool,
-    last_key_event: Option<crossterm::event::KeyEvent>,
     mode: Mode,
     rx: tokio::sync::mpsc::UnboundedReceiver<Action>,
     tx: tokio::sync::mpsc::UnboundedSender<Action>,
 
-    search_page: SearchPage, // new
+    status_bar: StatusBar,
+    results: SearchResults,
+    prompt: SearchPrompt,
 }
 // ANCHOR_END: app
 
 impl App {
     // ANCHOR: app_new
     pub fn new() -> Self {
+        let loading_status = Arc::new(AtomicBool::default());
         let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
-        let search_page = SearchPage::new(tx.clone());
+        let crates: Arc<Mutex<Vec<crates_io_api::Crate>>> = Default::default();
+        let results = SearchResults::new(crates.clone());
+        let prompt = SearchPrompt::new(
+            tx.clone(),
+            loading_status.clone(),
+            crates.clone(),
+        );
+        let status_bar = StatusBar::new(loading_status);
         let mode = Mode::default();
         let quit = false;
-        let last_key_event = None;
         Self {
             quit,
-            last_key_event,
             mode,
             rx,
             tx,
-            search_page,
+            status_bar,
+            results,
+            prompt,
         }
     }
     // ANCHOR_END: app_new
@@ -120,7 +135,7 @@ impl App {
     fn handle_event(&mut self, e: Event) -> Result<()> {
         use crossterm::event::Event as CrosstermEvent;
         if let Event::Crossterm(CrosstermEvent::Key(key)) = e {
-            self.last_key_event = Some(key);
+            self.status_bar.last_key_event = Some(key);
             self.handle_key(key)
         };
         Ok(())
@@ -131,7 +146,7 @@ impl App {
     fn handle_key(&mut self, key: KeyEvent) {
         let maybe_action = self.mode.handle_key(key);
         if maybe_action.is_none() && matches!(self.mode, Mode::Prompt) {
-            self.search_page.handle_key(key);
+            self.prompt.handle_key(key);
         }
         maybe_action.map(|action| self.tx.send(action));
     }
@@ -142,12 +157,13 @@ impl App {
         match action {
             Action::Quit => self.quit(),
             Action::SwitchMode(mode) => self.switch_mode(mode),
-            Action::ScrollUp => self.search_page.scroll_up(),
-            Action::ScrollDown => self.search_page.scroll_down(),
-            Action::SubmitSearchQuery => self.search_page.submit_query(),
-            Action::UpdateSearchResults => {
-                self.search_page.update_search_results()
+            Action::ScrollUp => self.results.scroll_previous(),
+            Action::ScrollDown => self.results.scroll_next(),
+            Action::SubmitSearchQuery => {
+                self.results.clear_selection();
+                self.prompt.submit_query();
             }
+            Action::UpdateSearchResults => self.results.update_search_results(),
         }
         Ok(())
     }
@@ -183,14 +199,17 @@ impl App {
         self.quit
     }
 
+    // ANCHOR: loading
     fn set_cursor(&mut self, frame: &mut Frame<'_>) {
         if matches!(self.mode, Mode::Prompt) {
-            if let Some(cursor_position) = self.search_page.cursor_position() {
+            if let Some(cursor_position) = self.prompt.cursor_position {
                 frame.set_cursor(cursor_position.x, cursor_position.y)
             }
         }
     }
 }
+
+const PROMPT_HEIGHT: u16 = 5;
 
 // ANCHOR: app_widget
 struct AppWidget;
@@ -201,24 +220,25 @@ impl StatefulWidget for AppWidget {
     type State = App;
 
     fn render(self, area: Rect, buf: &mut Buffer, state: &mut Self::State) {
-        let [status_bar, search_page] =
-            Layout::vertical([Constraint::Length(1), Constraint::Fill(0)])
-                .areas(area);
+        let [status_bar, main, prompt] = Layout::vertical([
+            Constraint::Length(1),
+            Constraint::Min(0),
+            Constraint::Length(PROMPT_HEIGHT),
+        ])
+        .areas(area);
 
-        if let Some(key) = state.last_key_event {
-            Paragraph::new(format!("last key event: {:?}", key.code))
-                .right_aligned()
-                .render(status_bar, buf);
-        }
+        StatusBarWidget.render(status_bar, buf, &mut state.status_bar);
 
-        if state.search_page.loading() {
-            Line::from("Loading...").render(status_bar, buf);
-        }
-
-        SearchPageWidget { mode: state.mode }.render(
-            search_page,
+        SearchResultsWidget::new(matches!(state.mode, Mode::Results)).render(
+            main,
             buf,
-            &mut state.search_page,
+            &mut state.results,
+        );
+
+        SearchPromptWidget::new(matches!(state.mode, Mode::Prompt)).render(
+            prompt,
+            buf,
+            &mut state.prompt,
         );
     }
 }

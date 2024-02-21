@@ -3,7 +3,7 @@ title: App Basic Structure
 ---
 
 Before we proceed any further, we are going to refactor the code we already have to make it easier
-to scale up. We are going to move the event loop into a method on the `App` struct.
+to scale up in the future. We are going to move the event loop into a method on the `App` struct.
 
 ## App
 

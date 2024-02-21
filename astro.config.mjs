@@ -170,7 +170,6 @@ export default defineConfig({
                   collapsed: true,
                   items: [
                     { label: "Widgets", link: "/tutorials/crates-tui/widgets" },
-                    { label: "Search", link: "/tutorials/crates-tui/search" },
                     { label: "Prompt", link: "/tutorials/crates-tui/prompt" },
                     { label: "Results", link: "/tutorials/crates-tui/results" },
                     { label: "App", link: "/tutorials/crates-tui/app" },

@@ -1,10 +1,7 @@
 use std::sync::{Arc, Mutex};
 
-use crates_io_api::CratesQuery;
-use tokio::sync::mpsc::UnboundedSender;
-
-use crate::app::Action;
 use color_eyre::{eyre::Context, Result};
+use crates_io_api::CratesQuery;
 
 // ANCHOR: search_parameters
 /// Represents the parameters needed for fetching crates asynchronously.
@@ -19,7 +16,6 @@ pub struct SearchParameters {
     pub crates: Arc<Mutex<Vec<crates_io_api::Crate>>>,
 
     // Additional
-    pub tx: Option<UnboundedSender<Action>>,
     pub fake_delay: u64,
 }
 // ANCHOR_END: search_parameters
@@ -28,7 +24,6 @@ impl SearchParameters {
     pub fn new(
         search: String,
         crates: Arc<Mutex<Vec<crates_io_api::Crate>>>,
-        tx: Option<UnboundedSender<Action>>,
     ) -> SearchParameters {
         SearchParameters {
             search,
@@ -36,7 +31,6 @@ impl SearchParameters {
             page_size: 100,
             sort: crates_io_api::Sort::Relevance,
             crates,
-            tx,
             fake_delay: 0,
         }
     }
@@ -106,14 +100,6 @@ fn update_state_with_fetched_crates(
     let mut app_crates = params.crates.lock().unwrap();
     app_crates.clear();
     app_crates.extend(crates);
-
-    // After a successful fetch, send relevant actions based on the result
-    if !app_crates.is_empty() {
-        let _ = params
-            .tx
-            .clone()
-            .map(|tx| tx.send(Action::UpdateSearchResults));
-    }
 }
 
 // ANCHOR: test
@@ -127,7 +113,7 @@ mod tests {
         let crates: Arc<Mutex<Vec<crates_io_api::Crate>>> = Default::default();
 
         let search_params =
-            SearchParameters::new("ratatui".into(), crates.clone(), None);
+            SearchParameters::new("ratatui".into(), crates.clone());
 
         tokio::spawn(async move {
             let _ = request_search_results(&search_params).await;

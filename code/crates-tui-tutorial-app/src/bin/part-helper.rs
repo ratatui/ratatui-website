@@ -45,7 +45,7 @@ impl SearchParameters {
         SearchParameters {
             search,
             page: 1,
-            page_size: 3, // TODO: set it to 100 later
+            page_size: 100,
             sort: crates_io_api::Sort::Relevance,
             crates,
         }

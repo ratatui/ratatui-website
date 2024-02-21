@@ -201,14 +201,15 @@ use crate::{
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-prototype.rs:full_app}}
 ```
 
+## Conclusion
+
 This is what our app currently looks like:
 
 ![](./crates-tui-tutorial-part-app-prototype.gif)
 
-## Conclusion
-
-With everything in one file, the `App` struct can get a little unwieldy. Moreover, if we want to add
-more features or more widgets, this approach isn't going to scale very well.
+However, currently everything is in a single file, and the `App` struct is starting to get a little
+unwieldy. If we want to add more features or more widgets, this approach isn't going to scale very
+well.
 
 In the rest of the tutorial, we are going to refactor the app into `StatefulWidget`s and add more
 polish.
