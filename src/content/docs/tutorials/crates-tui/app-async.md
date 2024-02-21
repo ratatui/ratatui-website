@@ -94,10 +94,12 @@ impl App {
 }
 ```
 
-## StatefulWidget
+## Draw
 
-Finally, you can update the render the methods in `App` to replace placeholder data with the data
-from the results or the prompt value:
+Finally, you can update the render using the new information to replace placeholder data with the
+data from the results or the prompt value.
+
+### Results
 
 ```rust title="src/app.rs"
 impl App {
@@ -107,6 +109,8 @@ impl App {
 
 Note the use `highlight_symbol` here to show the cursor when scrolling.
 
+### Prompt
+
 Update the prompt widget to show the text from `tui-input::Input` in a `Paragraph` widget:
 
 ```rust title="src/app.rs"
@@ -115,6 +119,8 @@ impl App {
 }
 ```
 
+### Render
+
 And in the render function for the `StatefulWidget`, make sure you create a stateful widget for the
 table results instead. You have to also call the function that updates the cursor position based on
 the prompt `Rect`, which is only known during render.
@@ -122,6 +128,8 @@ the prompt `Rect`, which is only known during render.
 ```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-async.rs:app_statefulwidget}}
 ```
+
+## Conclusion
 
 Here's the full app for your reference:
 

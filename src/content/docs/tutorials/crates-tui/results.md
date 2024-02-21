@@ -2,6 +2,8 @@
 title: Results
 ---
 
+## Search Results State
+
 Here is the search results state:
 
 ```rust title="src/widgets/search_results.rs"
@@ -13,6 +15,8 @@ Here is the search results state:
 - name: `String`
 - description: `Option<String>`
 - downloads: `u64`
+
+## Search Results Widget
 
 Here is the search results widget:
 

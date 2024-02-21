@@ -2,20 +2,18 @@
 title: Crates TUI
 ---
 
-In the previous tutorials, we were building a purely sequentially operational applications. However,
-there are times when you may be interested in running IO operations or heavy computations in between
-rendering frames. And when you do this, you don't want to block rendering. You can achieve a
-consistent frame rate for rendering by running these blocking operations in a background thread or
-task.
+In the previous tutorials, we were building purely sequentially operating applications. However,
+there are times when you may be interested in running IO operations or heavy computations _in
+between_ drawing 2 frames. You can achieve a consistent frame rate for rendering by running these
+blocking operations in a background thread or task.
 
-This tutorial will lead you through creating an `async` TUI app that lists crates from crates.io
-based on a user search request in an `async` manner.
-
-![](./crates-tui-demo-1.png)
-
-This tutorial is a simplified version of the [crates-tui] application.
+This tutorial will walk you through creating an `async` TUI app that makes an `async` request to
+crates.io and lists the results based on a user prompt. This tutorial is a simplified version of the
+[crates-tui] application.
 
 [crates-tui]: https://github.com/ratatui-org/crates-tui
+
+![](./crates-tui-demo-1.png)
 
 ## Dependencies
 

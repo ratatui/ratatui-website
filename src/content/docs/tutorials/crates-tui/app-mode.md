@@ -4,11 +4,15 @@ title: App Mode
 
 In this section, you are going to expand on the `App` struct to add a `Mode`.
 
+## App
+
 Define the following fields in the `App` struct:
 
 ```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-mode.rs:app}}
 ```
+
+## Mode
 
 Our app is going to have two focus modes:
 
@@ -30,7 +34,10 @@ The reason you want to do this is because you may want to do different things wh
 same event in different modes. For example, `ESC` when the prompt is in focus should switch the mode
 to results, but `ESC` when the results are in focus should exit the app.
 
-Change the `handle_event` function to use the `Mode` to do different things when `Esc` is pressed:
+## App::handle_event
+
+Change the `handle_event` function to do different things when `Esc` is pressed and different
+`Mode`s are active:
 
 ```rust title="src/app.rs"
 impl App {
@@ -46,7 +53,13 @@ impl App {
 }
 ```
 
-Let's make our view a little more interesting with some placeholder text for the results:
+## Draw
+
+Let's make our view a little more interesting with some placeholder widgets.
+
+### Results
+
+For the results, use a `Table` with some mock data
 
 ```rust title="src/app.rs"
 use itertools::Itertools;
@@ -56,7 +69,9 @@ impl App {
 }
 ```
 
-We will also make a prompt that changes border color based on the mode:
+### Prompt
+
+For the prompt, make a `Block` that changes border color based on the mode:
 
 ```rust title="src/app.rs"
 impl App {
@@ -64,11 +79,15 @@ impl App {
 }
 ```
 
+### Render
+
 And in the render function for the `StatefulWidget` we can call these widget constructors:
 
 ```rust title="src/app.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-app-mode.rs:app_statefulwidget}}
 ```
+
+## Conclusion
 
 If you run it, you should see something like this:
 

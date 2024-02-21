@@ -9,6 +9,8 @@ retrieve results from a search query to crates.io.
 [`AsyncClient`]:
   https://docs.rs/crates_io_api/latest/crates_io_api/struct.AsyncClient.html#method.new
 
+## Async test
+
 Before you proceed, create a file `src/crates_io_api_helper.rs` with a `async` test block so you can
 experiment with the API.
 
@@ -41,6 +43,8 @@ You can test this `async` function by running the following in the command line:
 ```bash
 $ cargo test -- crates_io_api_helper::tests::test_crates_io --nocapture
 ```
+
+## Client
 
 To initialize the `crates_io_api::AsyncClient`, you have to provide an email to use as the user
 agent.
@@ -84,6 +88,8 @@ let email = std::env::var("CRATES_TUI_TUTORIAL_APP_MYEMAIL")
 
 :::
 
+## Crates Query
+
 Once you have created a client, you can make a query using the [`AsyncClient::crates`] function.
 This `crates` method takes a [`CratesQuery`] object that you will need to construct.
 
@@ -97,6 +103,8 @@ We can build this `CratesQuery` object using the following parameters:
 - Page number: `u64`
 - Page size: `u64`
 - Sort order: `crates_io_api::Sort`
+
+### Search Parameters
 
 To make the code easier to manage, let's store everything we need to construct a `CratesQuery` in a
 `SearchParameters` struct:
@@ -112,6 +120,8 @@ You'll notice that we also added a `crates` field to the `SearchParameters`.
 This `crates` field will hold a clone of `Arc<Mutex<Vec<crates_io_api::Crate>>>` that will be passed
 into the `async` task. Inside the `async` task, it will be populated with the results from the
 response of the query once the query is completed.
+
+### Constructor
 
 Create a `new` constructor to make it easier to create a `SearchParameter` instance:
 
@@ -129,6 +139,8 @@ like so:
     // ...
 ```
 
+### Crates Query Builder
+
 Construct the query using `crates_io_api`'s [`CratesQueryBuilder`]:
 
 [`CratesQueryBuilder`]:
@@ -139,6 +151,8 @@ Construct the query using `crates_io_api`'s [`CratesQueryBuilder`]:
 {{#include @code/crates-tui-tutorial-app/src/bin/part-helper.rs:create_query}}
     // ...
 ```
+
+## Request Crates
 
 Once you have created the `client` and `query`, you can call the `.crates()` method on the client
 and `await` the response.
@@ -151,12 +165,16 @@ and `await` the response.
 Once the request is completed, you get a response in `page_result` that has a field called `.crates`
 which is a `Vec<crates_io_api::Crate>`.
 
+## Results
+
 Clear the existing results in the `search_params.crates` field and update the
 `Arc<Mutex<Vec<crates_io_api::Crate>>>` with the response:
 
 ```rust title="src/crates_io_api_helper.rs (tests::test_crates_io)"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-helper.rs:update_state}}
 ```
+
+## Print
 
 Finally, add a `println!` for every element in the response to test that it worked:
 
@@ -229,6 +247,8 @@ With the refactor, your test code should look like this:
 ```rust title="src/crates_io_api_helper.rs"
 {{#include @code/crates-tui-tutorial-app/src/bin/part-helper.rs:test}}
 ```
+
+## Conclusion
 
 With this `crates_io_api_helper` module set up, you can spawn a task using `tokio` to fill the
 results of the query into the `Arc<Mutex<Vec<Crate>>>` like so:

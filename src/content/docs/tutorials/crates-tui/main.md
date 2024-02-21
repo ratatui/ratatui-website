@@ -145,6 +145,8 @@ And when it is awaited on, it blocks the current thread.
 
 -->
 
+## Conclusion
+
 We will expand on `main.rs` in the following sections. Right now, your project should look like
 this:
 

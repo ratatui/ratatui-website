@@ -159,7 +159,7 @@ export default defineConfig({
                   label: "App",
                   collapsed: true,
                   items: [
-                    { label: "App", link: "/tutorials/crates-tui/app-basics" },
+                    { label: "App Basics", link: "/tutorials/crates-tui/app-basics" },
                     { label: "App Mode", link: "/tutorials/crates-tui/app-mode" },
                     { label: "App Async", link: "/tutorials/crates-tui/app-async" },
                     { label: "App Prototype", link: "/tutorials/crates-tui/app-prototype" },

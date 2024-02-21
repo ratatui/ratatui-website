@@ -2,11 +2,15 @@
 title: Prompt
 ---
 
+## Search Prompt State
+
 The state of the search prompt is represented by this struct:
 
 ```rust title="src/widgets/search_prompt.rs"
 {{#include @code/crates-tui-tutorial-app/src/widgets/search_prompt.rs:state}}
 ```
+
+## Search Prompt Widget
 
 Here is the search prompt widget:
 

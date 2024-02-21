@@ -2,6 +2,8 @@
 title: App
 ---
 
+## SearchPage
+
 Finally, let's make a field in the app struct that uses the `SearchPage` widget:
 
 ```rust title="src/app.rs"
@@ -19,6 +21,8 @@ impl App {
 }
 ```
 
+## SearchPageWidget
+
 And rendering delegates to `SearchPageWidget`:
 
 ```rust title="src/app.rs"
@@ -26,6 +30,8 @@ impl App {
 {{#include @code/crates-tui-tutorial-app/src/app.rs:app_statefulwidget}}
 }
 ```
+
+## Conclusion
 
 Here's the full code for your reference:
 
@@ -53,8 +59,14 @@ Your final folder structure will look like this:
    └── widgets.rs
 ```
 
-If you put all of it together, you should be able run the TUI.
+If you put all of it together, you should be able run the TUI again:
 
-![](./crates-tui-demo.gif)
+```bash
+cargo run
+```
 
-Search for your favorite crates and explore crates.io.
+:::note[Homework]
+
+Search for your favorite crates and explore crates.io using what you built!
+
+:::

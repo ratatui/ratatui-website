@@ -2,6 +2,8 @@
 title: Search
 ---
 
+## Search Page State
+
 Create a new file, `./src/widgets/search_page.rs` with the following contents:
 
 ```rust title="src/widgets/search_page.rs"
@@ -37,6 +39,8 @@ This struct also contains methods for managing the prompt state using `tui_input
 ```
 
 These methods are called from the `app` in the corresponding `Action`s.
+
+## Search Page Widget
 
 For the search page widget, create struct with just one field. You can then implement the render
 method on the `StatefulWidget` trait to render both the prompt and the results:
