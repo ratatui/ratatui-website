@@ -2,16 +2,21 @@
 title: Counter App Error Handling
 ---
 
-## Overview
+A full copy of the code for this page is available in the github repository for the website at:
 
-You can find a full copy of the code for this tutorial at:
+:::caution
+
+Fix this link to point at main before merging branch
+
 <https://github.com/ratatui-org/website/tree/counter-tutorial-rewrite/code/counter-app-error-handling>.
 
-In the previous section, you created a basic counter app that responds to the user pressing a the
-**Left** and **Right** arrow keys to control the value of a counter. This tutorial will start with
-that code and add error and panic handling.
+:::
 
-A quick reminder of where we left off:
+In the previous section, you created a [basic counter app](../basic-app/) that responds to the user
+pressing a the **Left** and **Right** arrow keys to control the value of a counter. This tutorial
+will start with that code and add error and panic handling.
+
+A quick reminder of where we left off in the basic app:
 
 <!-- Note: these includes are correct - they link to the basic app as it's the starting point -->
 
@@ -50,35 +55,46 @@ may need to restart the console.
 
 ## Setup Hooks
 
-There are two ways that an application can fail - panics and errors.
+There are two ways that a rust application can fail. The rust book chapter on
+[error handling](https://doc.rust-lang.org/book/ch09-00-error-handling.html) explains this in better
+detail.
 
-To make the application properly handle errors, it needs to setup color_eyre. It also needs to
-restore the terminal before displaying the errors. Rust provides panic hooks that applications can
-use to handle errors.
+> Rust groups errors into two major categories: _recoverable_ and _unrecoverable_ errors. For a
+> recoverable error, such as a _file not found error_, we most likely just want to report the
+> problem to the user and retry the operation. Unrecoverable errors are always symptoms of bugs,
+> like trying to access a location beyond the end of an array, and so we want to immediately stop
+> the program. -- <https://doc.rust-lang.org/book/ch09-00-error-handling.html>
 
-Add the following imports to `main.rs`.
+One approach that makes it easy to show unhandled errors is to use the `color_eyre` crate to augment
+the error reporting hooks. In a ratatui application that's running on the alternate screen in raw
+mode, it's important to restore the terminal before displaying these errors to the user.
+
+Add a new module nameds errors to `main.rs`.
 
 ```rust
 // main.rs
-{{ #include @code/counter-app-error-handling/src/main.rs:new imports }}
+{{ #include @code/counter-app-error-handling/src/main.rs:modules }}
 ```
 
-Create a new function named `install_hooks` in `main.rs`
+Create a new function named `install_hooks` in `errors.rs`
 
 ```rust
-// main.rs
-{{ #include @code/counter-app-error-handling/src/main.rs:install_hooks }}
+// errors.rs
+{{ #include @code/counter-app-error-handling/src/errors.rs }}
 ```
 
 This function will replace the application's existing panic hook with one that first restores the
 terminal state back to normal and then runs the existing hook. It does the same for the color_eyre
 hook, which handles errors (i.e. any `Result::Err`s that are not otherwise handled)
 
-Update your the main function's return value to `color_eyre::Result<()>` and call the the new
+Update the `main` function's return value to `color_eyre::Result<()>` and call the the new
 `install_hooks` function.
 
-```rust {2} ins={3}
+```rust {8} ins={9}
 // main.rs
+
+{{#include @code/counter-app-error-handling/src/main.rs:new imports }}
+
 {{#include @code/counter-app-error-handling/src/main.rs:main }}
 ```
 
@@ -93,7 +109,7 @@ calling `wrap_err` (defined on the `color_eyre::eyre::WrapErr` trait).
 Update the `App::run function to add some information about the update function failing and change
 the return value.
 
-```rust {6,9}
+```rust {4,7}
 // main.rs
 impl App {
 {{#include @code/counter-app-error-handling/src/main.rs:run }}
@@ -106,46 +122,106 @@ impl App {
 concise. Your app might choose to provide more detail than this convention as the errors are usually
 user-facing instead of developer-facing.
 
-[Good Rust API error messages]: https://rust-lang.github.io/api-guidelines/interoperability.html#c-good-err
+[Good Rust API error messages]:
+  https://rust-lang.github.io/api-guidelines/interoperability.html#c-good-err
 
 :::
 
-## Creating a new error
+## Creating a recoverable error
 
-The tutorial needs a synthetic error to show how the error handling looks, so change
-`handle_key_event` to return an error when the counter is above 2. You can use the `bail!` macro for
-this. Also change the method return type.
+The tutorial needs a synthetic error to show how we can handle recoverable errors. Change
+`handle_key_event` to return a `color_eyre::Result` and make sure the calls to increment and
+decrement calls have the `?` operator to propogate the error to the caller.
 
-```rust {6} ins={19-21} collapse={11-16}
+```rust {3,6,7}
 // main.rs
 impl App {
 {{#include @code/counter-app-error-handling/src/main.rs:handle_key_event }}
 }
 ```
 
-In the update method, add some extra information about which key caused the failure and update the
-return value.
+Let's add an error that occurs when the counter is above 2. Also change both methods' return types.
+Add the new error to the `increment_counter` method. You can use the `bail!` macro for this:
 
-```rust {3, 6-8}
+```rust {3,8} ins={10-12}
 // main.rs
 impl App {
-{{#include @code/counter-app-error-handling/src/main.rs:update }}
+{{#include @code/counter-app-error-handling/src/main.rs:increment_decrement }}
 }
 ```
 
-Update the tests for this method to use the new result types and to check that the anticipated
-errors actually occur.
+In the `handle_events` method, add some extra information about which key caused the failure and
+update the return value.
 
-```rust {4} ins={19-24,26-37} collapse={5-16}
+```rust {4, 9-11}
 // main.rs
 impl App {
+{{#include @code/counter-app-error-handling/src/main.rs:handle_events }}
+}
+```
+
+Update the tests for this method to unwrap the calls to handle_key_events. This will cause the test
+to fail if an error is returned.
+
+```rust {6,9,13}
+// main.rs
+mod tests {
 {{#include @code/counter-app-error-handling/src/main.rs:handle_key_event test }}
 }
 ```
 
+Add tests for the panic and overflow conditions
+
+```rust
+// main.rs
+mod tests {
+{{#include @code/counter-app-error-handling/src/main.rs:handle_key_event_panic }}
+
+{{#include @code/counter-app-error-handling/src/main.rs:handle_key_event_overflow }}
+}
+```
+
+Run the tests:
+
+```shell title="run tests"
+cargo test
+```
+
+```text collapse={8-27}
+running 4 tests
+thread 'tests::handle_key_event_panic' panicked at code/counter-app-error-handling/src/main.rs:94:9:
+attempt to subtract with overflow
+test tests::handle_key_event ... okstack backtrace:
+
+test tests::handle_key_event_overflow ... ok
+test tests::render ... ok
+   0: rust_begin_unwind
+             at /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/std/src/panicking.rs:645:5
+   1: core::panicking::panic_fmt
+             at /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/core/src/panicking.rs:72:14
+   2: core::panicking::panic
+             at /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/core/src/panicking.rs:144:5
+   3: counter_app_error_handling::App::decrement_counter
+             at ./src/main.rs:94:9
+   4: counter_app_error_handling::App::handle_key_event
+             at ./src/main.rs:79:30
+   5: counter_app_error_handling::tests::handle_key_event_panic
+             at ./src/main.rs:200:17
+   6: counter_app_error_handling::tests::handle_key_event_panic::{{closure}}
+             at ./src/main.rs:198:32
+   7: core::ops::function::FnOnce::call_once
+             at /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/core/src/ops/function.rs:250:5
+   8: core::ops::function::FnOnce::call_once
+             at /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/core/src/ops/function.rs:250:5
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+test tests::handle_key_event_panic - should panic ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+```
+
 ## The Finished App
 
-Putting this altogether, you should now have the following two files.
+Putting this altogether, you should now have the following files.
 
 ```rust collapsed title="main.rs (click to expand)"
 {{#include @code/counter-app-error-handling/src/main.rs }}
@@ -153,6 +229,10 @@ Putting this altogether, you should now have the following two files.
 
 ```rust collapsed title="tui.rs (click to expand)"
 {{#include @code/counter-app-error-handling/src/tui.rs }}
+```
+
+```rust collapsed title="errors.rs (click to expand)"
+{{#include @code/counter-app-error-handling/src/errors.rs }}
 ```
 
 ## Handling Panics

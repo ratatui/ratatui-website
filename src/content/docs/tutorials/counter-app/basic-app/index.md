@@ -348,11 +348,13 @@ You will see the following UI:
 
 Press the **Left** and **Right** arrow keys to interact with the counter. Press **Q** to quit.
 
-Note what happens when you press **Left** when the counter is 0. On a Mac / Linux console you can
-run `reset` to fix the console. On a Windows console, you may need to restart the console to clear
-the problem. We will properly handle this in the next section of this tutorial on [Error Handling].
+Note what happens when you press **Left** when the counter is 0.
 
 ![basic-app demo](./basic-app-error.png)
+
+On a Mac / Linux console you can run `reset` to fix the console. On a Windows console, you may need
+to restart the console to clear the problem. We will properly handle this in the next section of
+this tutorial on [Error Handling].
 
 ## Conclusion
 
