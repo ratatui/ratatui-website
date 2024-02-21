@@ -311,5 +311,5 @@ export default defineConfig({
         ignored: ["**/target/**/*"],
       },
     },
-  }
+  },
 });

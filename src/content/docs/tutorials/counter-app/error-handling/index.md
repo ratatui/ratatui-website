@@ -131,7 +131,7 @@ user-facing instead of developer-facing.
 
 The tutorial needs a synthetic error to show how we can handle recoverable errors. Change
 `handle_key_event` to return a `color_eyre::Result` and make sure the calls to increment and
-decrement calls have the `?` operator to propogate the error to the caller.
+decrement calls have the `?` operator to propagate the error to the caller.
 
 ```rust {3,6,7}
 // main.rs

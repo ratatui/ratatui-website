@@ -59,7 +59,7 @@ etc. make sure these are in place.
 A common pattern found in most Ratatui apps is that they:
 
 1. Initialize the terminal
-2. Run the application in a loop until the user exits tha app
+2. Run the application in a loop until the user exits the app
 3. Restore the terminal back to its original state
 
 The `main` function sets up the terminal by calling methods in the `tui` module (defined next), and
