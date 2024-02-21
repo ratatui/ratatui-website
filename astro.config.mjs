@@ -12,6 +12,14 @@ import remarkIncludeCode from "/src/plugins/remark-code-import";
 
 // https://astro.build/config
 export default defineConfig({
+  image: {
+    service: {
+      entrypoint: "astro/assets/services/sharp",
+      config: {
+        limitInputPixels: false,
+      },
+    },
+  },
   site: "https://ratatui.rs",
   image: {
     service: {
@@ -135,21 +143,39 @@ export default defineConfig({
               ],
             },
             {
-              label: "Async Counter App",
+              label: "Crates TUI App",
               collapsed: true,
               items: [
-                { label: "Async Counter App", link: "/tutorials/counter-async-app/" },
+                { label: "Crates TUI", link: "/tutorials/crates-tui/" },
+                { label: "Main", link: "/tutorials/crates-tui/main" },
                 {
-                  label: "Async KeyEvents",
-                  link: "/tutorials/counter-async-app/async-event-stream/",
+                  label: "Helper",
+                  link: "/tutorials/crates-tui/crates-io-api-helper",
                 },
-                { label: "Async Render", link: "/tutorials/counter-async-app/full-async-events/" },
-                { label: "Introducing Actions", link: "/tutorials/counter-async-app/actions/" },
+                { label: "Tui", link: "/tutorials/crates-tui/tui" },
+                { label: "Errors", link: "/tutorials/crates-tui/errors" },
+                { label: "Events", link: "/tutorials/crates-tui/events" },
                 {
-                  label: "Async Actions",
-                  link: "/tutorials/counter-async-app/full-async-actions/",
+                  label: "App",
+                  collapsed: true,
+                  items: [
+                    { label: "App Basics", link: "/tutorials/crates-tui/app-basics" },
+                    { label: "App Mode", link: "/tutorials/crates-tui/app-mode" },
+                    { label: "App Async", link: "/tutorials/crates-tui/app-async" },
+                    { label: "App Prototype", link: "/tutorials/crates-tui/app-prototype" },
+                  ],
                 },
-                { label: "Conclusion", link: "/tutorials/counter-async-app/conclusion/" },
+                {
+                  label: "Widgets",
+                  collapsed: true,
+                  items: [
+                    { label: "Widgets", link: "/tutorials/crates-tui/widgets" },
+                    { label: "Prompt", link: "/tutorials/crates-tui/prompt" },
+                    { label: "Results", link: "/tutorials/crates-tui/results" },
+                    { label: "App", link: "/tutorials/crates-tui/app" },
+                  ],
+                },
+                { label: "Conclusion", link: "/tutorials/crates-tui/conclusion" },
               ],
             },
           ],
