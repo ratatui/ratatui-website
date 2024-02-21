@@ -353,7 +353,7 @@ name = "counter-app-basic"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui 0.24.0",
+ "ratatui 0.26.1",
 ]
 
 [[package]]

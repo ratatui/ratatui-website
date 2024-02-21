@@ -1,28 +1,29 @@
+// ANCHOR: all
 // ANCHOR: imports
-use std::io::{self, stdout};
+use std::io::{self, stdout, Stdout};
 
-use crossterm::{
-    terminal::{
-        disable_raw_mode, enable_raw_mode, EnterAlternateScreen,
-        LeaveAlternateScreen,
-    },
-    ExecutableCommand,
-};
+use crossterm::{execute, terminal::*};
 use ratatui::prelude::*;
 // ANCHOR_END: imports
 
 // ANCHOR: init
-pub fn init() -> io::Result<Terminal<impl Backend>> {
-    stdout().execute(EnterAlternateScreen)?;
+/// A type alias for the terminal type used in this application
+pub type Tui = Terminal<CrosstermBackend<Stdout>>;
+
+/// Initialize the terminal
+pub fn init() -> io::Result<Tui> {
+    execute!(stdout(), EnterAlternateScreen)?;
     enable_raw_mode()?;
     Terminal::new(CrosstermBackend::new(stdout()))
 }
 // ANCHOR_END: init
 
 // ANCHOR: restore
+/// Restore the terminal to its original state
 pub fn restore() -> io::Result<()> {
-    stdout().execute(LeaveAlternateScreen)?;
+    execute!(stdout(), LeaveAlternateScreen)?;
     disable_raw_mode()?;
     Ok(())
 }
 // ANCHOR_END: restore
+// ANCHOR_END: all

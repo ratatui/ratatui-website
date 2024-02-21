@@ -5,10 +5,7 @@ use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
     prelude::*,
     symbols::border,
-    widgets::{
-        block::{Position, Title},
-        *,
-    },
+    widgets::{block::*, *},
 };
 // ANCHOR_END: imports
 
@@ -16,23 +13,8 @@ use ratatui::{
 mod tui;
 // ANCHOR_END: modules
 
-// ANCHOR: app
-#[derive(Debug, Default)]
-pub struct App {
-    counter: u8,
-    running_state: RunningState,
-}
-
-#[derive(Debug, Default, PartialEq, Eq)]
-enum RunningState {
-    #[default]
-    Running,
-    Finished,
-}
-// ANCHOR_END: app
-
 // ANCHOR: main
-fn main() -> std::io::Result<()> {
+fn main() -> io::Result<()> {
     let mut terminal = tui::init()?;
     let app_result = App::default().run(&mut terminal);
     tui::restore()?;
@@ -40,33 +22,78 @@ fn main() -> std::io::Result<()> {
 }
 // ANCHOR_END: main
 
+// ANCHOR: app
+#[derive(Debug, Default)]
+pub struct App {
+    counter: u8,
+    exit: bool,
+}
+// ANCHOR_END: app
+
 // ANCHOR: impl App
 impl App {
     // ANCHOR: run
     /// runs the application's main loop until the user quits
-    pub fn run(
-        &mut self,
-        terminal: &mut Terminal<impl Backend>,
-    ) -> io::Result<()> {
-        while !self.is_finished() {
+    pub fn run(&mut self, terminal: &mut tui::Tui) -> io::Result<()> {
+        while !self.exit {
             terminal.draw(|frame| self.render_frame(frame))?;
-            self.update()?;
+            self.handle_events()?;
         }
         Ok(())
-    }
-
-    fn is_finished(&mut self) -> bool {
-        self.running_state == RunningState::Finished
-    }
-
-    fn finish(&mut self) {
-        self.running_state = RunningState::Finished;
     }
     // ANCHOR_END: run
 
     // ANCHOR: render_frame
-    /// renders a single frame of the application to the terminal
     fn render_frame(&self, frame: &mut Frame) {
+        frame.render_widget(self, frame.size());
+    }
+    // ANCHOR_END: render_frame
+
+    // ANCHOR: handle_events
+    /// updates the application's state based on user input
+    fn handle_events(&mut self) -> io::Result<()> {
+        match event::read()? {
+            // it's important to check that the event is a key press event as
+            // crossterm also emits key release and repeat events on Windows.
+            Event::Key(key_event) if key_event.kind == KeyEventKind::Press => {
+                self.handle_key_event(key_event)
+            }
+            _ => {}
+        };
+        Ok(())
+    }
+    // ANCHOR_END: handle_events
+
+    // ANCHOR: handle_key_event
+    fn handle_key_event(&mut self, key_event: KeyEvent) {
+        match key_event.code {
+            KeyCode::Char('q') => self.exit(),
+            KeyCode::Left => self.increment_counter(),
+            KeyCode::Right => self.decrement_counter(),
+            _ => {}
+        }
+    }
+    // ANCHOR_END: handle_key_event
+
+    // ANCHOR: methods
+    fn exit(&mut self) {
+        self.exit = true;
+    }
+
+    fn decrement_counter(&mut self) {
+        self.counter += 1;
+    }
+
+    fn increment_counter(&mut self) {
+        self.counter -= 1;
+    }
+    // ANCHOR_END: methods
+}
+// ANCHOR_END: impl App
+
+// ANCHOR: impl Widget
+impl Widget for &App {
+    fn render(self, area: Rect, buf: &mut Buffer) {
         let title = Title::from(" Counter App Tutorial ".bold());
         let instructions = Title::from(Line::from(vec![
             " Decrement ".into(),
@@ -80,76 +107,37 @@ impl App {
             .title(title.alignment(Alignment::Center))
             .title(
                 instructions
-                    .position(Position::Bottom)
-                    .alignment(Alignment::Center),
+                    .alignment(Alignment::Center)
+                    .position(Position::Bottom),
             )
             .borders(Borders::ALL)
             .border_set(border::THICK);
 
-        let text = Text::from(vec![Line::from(vec![
+        let counter_text = Text::from(vec![Line::from(vec![
             "Value: ".into(),
             self.counter.to_string().yellow(),
         ])]);
-        frame.render_widget(
-            Paragraph::new(text)
-                .alignment(Alignment::Center)
-                .block(block),
-            frame.size(),
-        );
-    }
-    // ANCHOR_END: render_frame
 
-    // ANCHOR: update
-    /// updates the application's state based on user input
-    fn update(&mut self) -> io::Result<()> {
-        match event::read()? {
-            Event::Key(key_event) => self.handle_key_event(key_event),
-            _ => {}
-        };
-        Ok(())
+        Paragraph::new(counter_text)
+            .centered()
+            .block(block)
+            .render(area, buf);
     }
-    // ANCHOR_END: update
-
-    // ANCHOR: handle_key_event
-    fn handle_key_event(&mut self, key_event: KeyEvent) {
-        if key_event.kind != KeyEventKind::Press {
-            return;
-        }
-        match key_event.code {
-            KeyCode::Char('q') | KeyCode::Char('Q') => self.finish(),
-            KeyCode::Left => self.increment(),
-            KeyCode::Right => self.decrement(),
-            _ => {}
-        }
-    }
-
-    fn decrement(&mut self) {
-        self.counter += 1;
-    }
-
-    fn increment(&mut self) {
-        self.counter -= 1;
-    }
-    // ANCHOR_END: handle_key_event
 }
-// ANCHOR_END: impl App
+// ANCHOR_END: impl Widget
 
 // ANCHOR: tests
 #[cfg(test)]
 mod tests {
-    // ANCHOR: render_frame test
+    // ANCHOR: render test
     use super::*;
-    use ratatui::backend::TestBackend;
 
     #[test]
-    fn render_frame() {
+    fn render() {
         let app = App::default();
-        let backend = TestBackend::new(50, 4);
-        let mut terminal = Terminal::new(backend).expect("terminal");
+        let mut buf = Buffer::empty(Rect::new(0, 0, 50, 4));
 
-        terminal
-            .draw(|frame| app.render_frame(frame))
-            .expect("draw");
+        app.render(buf.area, &mut buf);
 
         let mut expected = Buffer::with_lines(vec![
             "┏━━━━━━━━━━━━━ Counter App Tutorial ━━━━━━━━━━━━━┓",
@@ -166,9 +154,11 @@ mod tests {
         expected.set_style(Rect::new(30, 3, 7, 1), key_style);
         expected.set_style(Rect::new(43, 3, 4, 1), key_style);
 
-        terminal.backend().assert_buffer(&expected);
+        // note ratatui also has an assert_buffer_eq! macro that can be used to
+        // compare buffers and display the differences in a more readable way
+        assert_eq!(buf, expected);
     }
-    // ANCHOR_END: render_frame test
+    // ANCHOR_END: render test
 
     // ANCHOR: handle_key_event test
     #[test]
@@ -182,7 +172,7 @@ mod tests {
 
         let mut app = App::default();
         app.handle_key_event(KeyCode::Char('q').into());
-        assert_eq!(app.running_state, RunningState::Finished);
+        assert_eq!(app.exit, true);
 
         Ok(())
     }
