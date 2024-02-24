@@ -10,8 +10,7 @@ create the appearance of a popup.
 ## Popup area and title
 
 The first thing we will do, is draw the `Block` that will contain the popup. We will give this
-`Block` a title to display as well to explain to the user what it is. (We will cover `centered_rect`
-below)
+`Block` a title to display as well to explain to the user what it is.
 
 ```rust
 {{#include @code/ratatui-json-editor-app/src/ui.rs:editing_popup}}
