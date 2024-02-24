@@ -108,29 +108,6 @@ Data directory: /Users/kd/gitrepos/component-template/ratatui-hello-world/.data
 Read documentation on design decisions in the template here:
 <https://ratatui.rs/templates/component/>
 
-### Counter + Text Input Demo
-
-This repo contains a `ratatui-counter` folder that is a working demo as an example. If you wish to
-run a demo without using `cargo generate`, you can run the counter + text input demo by following
-the instructions below:
-
-```bash
-git clone https://github.com/ratatui-org/templates
-cd templates/component/ratatui-counter # counter + text input demo
-
-export RATATUI_COUNTER_CONFIG=`pwd`/.config
-export RATATUI_COUNTER_DATA=`pwd`/.data
-export RATATUI_COUNTER_LOG_LEVEL=debug
-# OR
-direnv allow
-
-cargo run
-```
-
-You should see a demo like this:
-
-![](https://github.com/ratatui-org/async-template/assets/1813121/057a0fe9-9f6d-4f8c-963c-ca2725721bdd)
-
 ## Background
 
 [`ratatui`](https://github.com/ratatui-org/ratatui) is a Rust library to build rich terminal user
