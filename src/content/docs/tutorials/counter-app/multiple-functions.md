@@ -143,13 +143,13 @@ fn run() -> Result<()> {
   let mut app = App { counter: 0, should_quit: false };
 
   loop {
+    // application update
+    update(&mut app)?;
+
     // application render
     t.draw(|f| {
       ui(&app, f);
     })?;
-
-    // application update
-    update(&mut app)?;
 
     // application exit
     if app.should_quit {
