@@ -50,6 +50,34 @@ See [starlight] for more information on how to author content in markdown.
 The website uses custom components and features to make it easier to generate high quality
 documentation that is more maintainable.
 
+### LinkBadge
+
+Use the `LinkBadge` component:
+
+```markdown
+import LinkBadge from "/src/components/LinkBadge.astro";
+
+<LinkBadge text="default" href="" variant="default" />
+<LinkBadge text="outline" href="" variant="outline" />
+<LinkBadge text="note" href="" variant="note" />
+<LinkBadge text="danger" href="" variant="danger" />
+<LinkBadge text="success" href="" variant="success" />
+<LinkBadge text="caution" href="" variant="caution" />
+<LinkBadge text="tip" href="" variant="tip" />
+```
+
+This renders as:
+
+import LinkBadge from "/src/components/LinkBadge.astro";
+
+<LinkBadge text="default" href="" variant="default" />
+<LinkBadge text="outline" href="" variant="outline" />
+<LinkBadge text="note" href="" variant="note" />
+<LinkBadge text="danger" href="" variant="danger" />
+<LinkBadge text="success" href="" variant="success" />
+<LinkBadge text="caution" href="" variant="caution" />
+<LinkBadge text="tip" href="" variant="tip" />
+
 ### Code include
 
 Use the `remark-include-code` plugin to include code from a test file:
