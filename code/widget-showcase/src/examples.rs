@@ -7,4 +7,5 @@ pub mod gauge;
 pub mod line_gauge;
 pub mod list;
 pub mod paragraph;
+pub mod sparkline;
 pub mod table;

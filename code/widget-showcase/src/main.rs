@@ -32,6 +32,7 @@ enum Widget {
     LineGauge,
     List,
     Paragraph,
+    Sparkline,
     Table,
 }
 
@@ -106,6 +107,7 @@ impl App {
             Widget::LineGauge => line_gauge::render(frame),
             Widget::List => list::render(frame),
             Widget::Paragraph => paragraph::render(frame),
+            Widget::Sparkline => sparkline::render(frame),
             Widget::Table => table::render(frame),
         }
         Ok(())
