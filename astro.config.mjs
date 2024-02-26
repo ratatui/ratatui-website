@@ -96,22 +96,9 @@ export default defineConfig({
               label: "Counter App",
               collapsed: true,
               items: [
-                { label: "Counter App", link: "/tutorials/counter-app/" },
-                { label: "Single Function", link: "/tutorials/counter-app/single-function/" },
-                { label: "Multiple Functions", link: "/tutorials/counter-app/multiple-functions/" },
-                {
-                  label: "Multiple Files",
-                  collapsed: true,
-                  items: [
-                    { label: "Multiple Files", link: "/tutorials/counter-app/multiple-files/" },
-                    { label: "app.rs", link: "/tutorials/counter-app/multiple-files/app/" },
-                    { label: "ui.rs", link: "/tutorials/counter-app/multiple-files/ui/" },
-                    { label: "event.rs", link: "/tutorials/counter-app/multiple-files/event/" },
-                    { label: "tui.rs", link: "/tutorials/counter-app/multiple-files/tui/" },
-                    { label: "update.rs", link: "/tutorials/counter-app/multiple-files/update/" },
-                    { label: "main.rs", link: "/tutorials/counter-app/multiple-files/main/" },
-                  ],
-                },
+                { label: "Overview", link: "/tutorials/counter-app/" },
+                { label: "Basic App", link: "/tutorials/counter-app/basic-app/" },
+                { label: "Error Handling", link: "/tutorials/counter-app/error-handling/" },
               ],
             },
             {
