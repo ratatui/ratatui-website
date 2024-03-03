@@ -68,8 +68,8 @@ impl App {
     fn handle_key_event(&mut self, key_event: KeyEvent) {
         match key_event.code {
             KeyCode::Char('q') => self.exit(),
-            KeyCode::Left => self.increment_counter(),
-            KeyCode::Right => self.decrement_counter(),
+            KeyCode::Left => self.decrement_counter(),
+            KeyCode::Right => self.increment_counter(),
             _ => {}
         }
     }
@@ -80,11 +80,11 @@ impl App {
         self.exit = true;
     }
 
-    fn decrement_counter(&mut self) {
+    fn increment_counter(&mut self) {
         self.counter += 1;
     }
 
-    fn increment_counter(&mut self) {
+    fn decrement_counter(&mut self) {
         self.counter -= 1;
     }
     // ANCHOR_END: methods
