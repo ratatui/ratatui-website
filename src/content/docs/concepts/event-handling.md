@@ -23,11 +23,12 @@ separate locations.
 ## Centralized catching, message passing
 
 This way of handling events involves polling for events in one place, and then sending
-messages/calling sub functions with the event that was caught. Pros: This has a similar appeal to
-the first method in its simplicity. With this paradigm, you can easily split extensive pattern
-matching into sub functions that can go in separate files. This way is also the idea often used in
-basic multi-threaded applications because message channels are used to pass multi-threaded safe
-messages.
+messages/calling sub functions with the event that was caught.
+
+Pros: This has a similar appeal to the first method in its simplicity. With this paradigm, you can
+easily split extensive pattern matching into sub functions that can go in separate files. This way
+is also the idea often used in basic multi-threaded applications because message channels are used
+to pass multi-threaded safe messages.
 
 Cons: This method requires a main loop to be running to consistently poll for events in a
 centralized place.
@@ -36,8 +37,10 @@ centralized place.
 
 In this style, control of the `Terminal` and the main loop to a sub-module. In this case, the entire
 rendering and event handling responsibilities can be safely passed to the sub-module. In theory, an
-application built like this doesn't need a centralized event listener. Pros: There is no centralized
-event loop that you need to update whenever a new sub-module is created.
+application built like this doesn't need a centralized event listener.
+
+Pros: There is no centralized event loop that you need to update whenever a new sub-module is
+created.
 
 Cons: However, if several sub-modules in your application have similar event handling loops, this
 way could lead to a lot of duplicated code.
