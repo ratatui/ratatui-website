@@ -20,22 +20,29 @@ interface CodeNode extends Node {
 // - {{#include @path/to/file}} - path to file from root directory
 const pathRegex = rx`(?<path>.+?)`; // Matches at least one character, but as few as possible
 const anchorNameRegex = rx`(?<anchor>.*?)`; // Matches at least one character, but as few as possible
-const includeRegex = rx.g`  // global (matches all instances in the file)
+const includeRegex = rx`    // global (matches all instances in the file)
   \{\{                      // literal "{{"
   \s*                       // optional whitespace
   #include                  // literal "#include"
   \s*                       // optional whitespace
   ${pathRegex}              // filepath
-  (:${anchorNameRegex})?  // optional anchor name
+  (:${anchorNameRegex})?    // optional anchor name
   \s*                       // optional whitespace after anchor
   \}\}                      // literal "}}"
 `;
+
+interface MetaNode extends CodeNode {
+  meta?: string;
+}
 
 const remarkIncludeCode = () => {
   // The plugin function, working with a Markdown tree and associated file
   return (tree: Node, markdownFile: VFile) => {
     // Visit each 'code' node in the Markdown AST
-    visit(tree, "code", (node: CodeNode) => {
+    visit(tree, "code", (node: MetaNode) => {
+      if (node.lang === "markdown" && node.meta == "include=ignore") {
+        return;
+      }
       let match;
       // There can be multiple includes in a code block
       // Perform matches one by one, replacing text in AST along the way

@@ -13,6 +13,14 @@ import remarkIncludeCode from "/src/plugins/remark-code-import";
 // https://astro.build/config
 export default defineConfig({
   site: "https://ratatui.rs",
+  image: {
+    service: {
+      entrypoint: "astro/assets/services/sharp",
+      config: {
+        limitInputPixels: false,
+      },
+    },
+  },
   prefetch: {
     prefetchAll: true,
   },
@@ -88,22 +96,9 @@ export default defineConfig({
               label: "Counter App",
               collapsed: true,
               items: [
-                { label: "Counter App", link: "/tutorials/counter-app/" },
-                { label: "Single Function", link: "/tutorials/counter-app/single-function/" },
-                { label: "Multiple Functions", link: "/tutorials/counter-app/multiple-functions/" },
-                {
-                  label: "Multiple Files",
-                  collapsed: true,
-                  items: [
-                    { label: "Multiple Files", link: "/tutorials/counter-app/multiple-files/" },
-                    { label: "app.rs", link: "/tutorials/counter-app/multiple-files/app/" },
-                    { label: "ui.rs", link: "/tutorials/counter-app/multiple-files/ui/" },
-                    { label: "event.rs", link: "/tutorials/counter-app/multiple-files/event/" },
-                    { label: "tui.rs", link: "/tutorials/counter-app/multiple-files/tui/" },
-                    { label: "update.rs", link: "/tutorials/counter-app/multiple-files/update/" },
-                    { label: "main.rs", link: "/tutorials/counter-app/multiple-files/main/" },
-                  ],
-                },
+                { label: "Overview", link: "/tutorials/counter-app/" },
+                { label: "Basic App", link: "/tutorials/counter-app/basic-app/" },
+                { label: "Error Handling", link: "/tutorials/counter-app/error-handling/" },
               ],
             },
             {
@@ -238,7 +233,7 @@ export default defineConfig({
                   label: "Configuration Directories",
                   link: "/how-to/develop-apps/config-directories/",
                 },
-                { label: "Logging with Tracing", link: "/how-to/develop-apps/tracing/" },
+                { label: "Logging with Tracing", link: "/how-to/develop-apps/log-with-tracing/" },
                 {
                   label: "Terminal and Event handler",
                   link: "/how-to/develop-apps/terminal-and-event-handler/",
@@ -257,6 +252,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { label: "Highlights", link: "/highlights/" },
+            { label: "v0.26", link: "/highlights/v026/" },
             { label: "v0.25", link: "/highlights/v025/" },
             { label: "v0.24", link: "/highlights/v024/" },
             { label: "v0.23", link: "/highlights/v023/" },
@@ -280,18 +276,18 @@ export default defineConfig({
           items: [
             { label: "Templates", link: "/templates/" },
             {
-              label: "Async",
+              label: "Component",
               collapsed: true,
               items: [
-                { label: "Async", link: "/templates/async/" },
-                { label: "Project Structure", link: "/templates/async/project-structure/" },
-                { label: "Main.rs", link: "/templates/async/main-rs/" },
-                { label: "Tui.rs", link: "/templates/async/tui-rs/" },
-                { label: "Action.rs", link: "/templates/async/action-rs/" },
-                { label: "Components.rs", link: "/templates/async/components-rs/" },
-                { label: "Components/home.rs", link: "/templates/async/components-home-rs/" },
-                { label: "Config.rs", link: "/templates/async/config-rs/" },
-                { label: "Utils.rs", link: "/templates/async/utils-rs/" },
+                { label: "Component", link: "/templates/component/" },
+                { label: "Project Structure", link: "/templates/component/project-structure/" },
+                { label: "Main.rs", link: "/templates/component/main-rs/" },
+                { label: "Tui.rs", link: "/templates/component/tui-rs/" },
+                { label: "Action.rs", link: "/templates/component/action-rs/" },
+                { label: "Components.rs", link: "/templates/component/components-rs/" },
+                { label: "Components/home.rs", link: "/templates/component/components-home-rs/" },
+                { label: "Config.rs", link: "/templates/component/config-rs/" },
+                { label: "Utils.rs", link: "/templates/component/utils-rs/" },
               ],
             },
           ],
@@ -302,8 +298,9 @@ export default defineConfig({
           collapsed: true,
           items: [
             { label: "Developer Guide", link: "/developer-guide/" },
-            { label: "Contributing", link: "/developer-guide/ratatui/" },
-            { label: "This Website", link: "/developer-guide/website/" },
+            { label: "Contributing to Ratatui", link: "/developer-guide/ratatui/" },
+            { label: "Contributing to Website", link: "/developer-guide/website/" },
+            { label: "Git guide", link: "/developer-guide/git-guide/" },
           ],
         },
       ],

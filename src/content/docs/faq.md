@@ -103,7 +103,7 @@ more tasks do you plan to be spawning?
 The former can be done without any `async` code and the latter is the approach showcased in
 [`async-template#v1.0`](https://github.com/ratatui-org/async-template/tree/v0.1.0) with `tokio`.
 
-The most recent version of the `async-template` uses this architecture instead with tokio:
+The `simple-async` uses this architecture instead with tokio:
 
 ```kroki type=svgbob
        Event Thread             ┊     Main Thread
@@ -346,6 +346,29 @@ Additionally you can use [`figlet`](https://docs.rs/figlet-rs/latest/figlet_rs/)
 lines. Here's an example using [`tui-big-text`](https://github.com/joshka/tui-big-text/):
 
 ![[tui-big-text](https://github.com/joshka/tui-big-text/)](https://camo.githubusercontent.com/3a738ce21da3ae67660181538ef27473b86bebca73f42944e8012d52f86e500d/68747470733a2f2f7668732e636861726d2e73682f7668732d3364545474724c6b79553534684e61683232504152392e676966)
+
+## Some characters appear to be missing / look weird
+
+`ratatui`, and TUIs in general, use special drawing characters like [box-drawing characters],
+[braille characters] or even icons. If your font doesn't support such features, it may display a
+white square (□) or a replacement character (�).
+
+[box-drawing characters]: https://en.wikipedia.org/wiki/Box-drawing_character
+[braille characters]: https://en.wikipedia.org/wiki/Braille_Patterns#Block
+
+To fix this, we recommend you use a [nerd font], this is generally what works the best. [Kreative
+Square] is also a good alternative. Though note that some characters may render a bit differently
+from font to font.
+
+[nerd font]: https://www.nerdfonts.com/
+[Kreative Square]: http://www.kreativekorp.com/software/fonts/ksquare/
+
+In addition, some terminals such as [Alacritty (see `builtin_box_drawing`)] or [ITerm2] can use a
+special, separate font to render box drawing characters correctly.
+
+[Alacritty (see `builtin_box_drawing`)]:
+  https://github.com/alacritty/alacritty/blob/master/extra/man/alacritty.5.scd#font
+[ITerm2]: https://iterm2.com/documentation-fonts.html
 
 ## Can you use multiple `terminal.draw()` calls consequently?
 

@@ -16,7 +16,7 @@ termwiz
 cargo add ratatui
 
 # For termion, unset the default crossterm feature and select the termion feature
-cargo add ratatui --no-default-features --features=terminon
+cargo add ratatui --no-default-features --features=termion
 cargo add termion
 
 # For termwiz, unset the default crossterm feature and select the termwiz feature
