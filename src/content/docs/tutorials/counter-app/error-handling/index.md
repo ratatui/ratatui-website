@@ -63,7 +63,13 @@ One approach that makes it easy to show unhandled errors is to use the `color_ey
 the error reporting hooks. In a ratatui application that's running on the alternate screen in raw
 mode, it's important to restore the terminal before displaying these errors to the user.
 
-Add a new module nameds errors to `main.rs`.
+Add the `color-eyre` crate
+
+```shell title="add color-eyre"
+cargo add color-eyre
+```
+
+Add a new module named errors to `main.rs`.
 
 ```rust
 // main.rs
