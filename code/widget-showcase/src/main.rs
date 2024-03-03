@@ -34,6 +34,7 @@ enum Widget {
     Paragraph,
     Sparkline,
     Table,
+    Tabs,
 }
 
 fn main() -> color_eyre::Result<()> {
@@ -109,6 +110,7 @@ impl App {
             Widget::Paragraph => paragraph::render(frame),
             Widget::Sparkline => sparkline::render(frame),
             Widget::Table => table::render(frame),
+            Widget::Tabs => tabs::render(frame),
         }
         Ok(())
     }
