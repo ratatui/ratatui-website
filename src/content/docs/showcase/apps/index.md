@@ -150,3 +150,12 @@ Blazing fast terminal file manager written in Rust, based on async I/O
   <source src="https://github.com/sxyazi/yazi/assets/17523360/92ff23fa-0cd5-4f04-b387-894c12265cc7" type="video/mp4">
   Your browser does not support the video tag.
 </video>
+
+---
+
+## [`openapi-tui`](https://github.com/zaghaghi/openapi-tui)
+
+Unlock the power of APIs with simplicity and speed, right from your terminal. View OpenAPI
+documentations in your terminal.
+
+![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
