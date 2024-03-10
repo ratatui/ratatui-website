@@ -7,7 +7,7 @@ we should discuss the process of a TUI.
 
 Most TUIs are single process, single threaded applications.
 
-```kroki type=svgbob
+```svgbob
  ,-------------.
  |Get Key Event|
  `-----+-------'
@@ -285,7 +285,7 @@ impl App {
 
 Now our final architecture would look like this:
 
-```kroki type=svgbob
+```svgbob
     Render Thread               Event Thread                  Main Thread
 
                              ,------------------.
@@ -314,7 +314,7 @@ You can change around when "thread" or "task" does what in your application if y
 It is up to you to decide is this pattern is worth it. In this template, we are going to keep things
 a little simpler. We are going to use just one thread or task to handle all the `Event`s.
 
-```kroki type=svgbob
+```svgbob
        Event Thread                            Main Thread
 
     ,------------------.
