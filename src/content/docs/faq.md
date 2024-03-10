@@ -48,7 +48,7 @@ If the answer is not much, maybe it is simpler to not use `async` and avoiding `
 
 Another way to think about it is, do you think your app would work better with 1 thread like this?
 
-```kroki type=svgbob
+```svgbob
  ,-------------.
  |Get Key Event|
  `-----+-------'
@@ -73,7 +73,7 @@ up on the work done by those tasks in the next iteration.
 
 Or would it work with 3 threads / `tokio` tasks like this:
 
-```kroki type=svgbob
+```svgbob
     Render Thread       ┊         Event Thread             ┊     Main Thread
                         ┊                                  ┊
                         ┊      ,------------------.        ┊
@@ -105,7 +105,7 @@ The former can be done without any `async` code and the latter is the approach s
 
 The `simple-async` uses this architecture instead with tokio:
 
-```kroki type=svgbob
+```svgbob
        Event Thread             ┊     Main Thread
                                 ┊
     ,------------------.        ┊

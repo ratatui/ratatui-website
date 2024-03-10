@@ -49,7 +49,7 @@ In the example above, you can read the instructions aloud like this:
 
 For those visual learners, I have the following graphic:
 
-```kroki type=svgbob
+```svgbob
 +--------------------------------------------+
 |          Top segment always                | Constraint::Length  == 3
 |          remains 3 lines                   |

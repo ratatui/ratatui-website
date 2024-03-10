@@ -80,7 +80,7 @@ Finally, we are going to create our first nested layout. Because the `Layout.spl
 requires a `Rect`, and not a `Frame`, we can pass one of our chunks from the previous layout as the
 space for the new layout. If you remember the bottom most section from the above graphic:
 
-```kroki type=svgbob
+```svgbob
 +----------------------------------+ Constraint::Length  == 3
 |       This section should        |
 |     always be 3 lines tall       |
@@ -96,7 +96,7 @@ We will create a new layout in this space by passing it (`chunks[2]`) as the par
 
 This code is the visual equivalent of this:
 
-```kroki type=svgbob
+```svgbob
 +---------------------------------+ Constraint::Length  == 3
 |                |                |
 | Length == 50%  | Length == 50%  |

@@ -6,7 +6,7 @@ The coordinate system in Ratatui runs left to right, top to bottom, with the ori
 top left corner of the terminal. The x and y coordinates are represented by u16 values and are
 generally listed in that order in most places.
 
-```kroki type=svgbob
+```svgbob
 "(0,0)"-------------> x "(columns)"
 
    |
@@ -76,7 +76,7 @@ frame.render_widget(
 
 This might look something like:
 
-```kroki type=svgbob
+```svgbob
 ┌───────────────────────────────────┐
 │Top                                │
 │                                   │
@@ -143,7 +143,7 @@ frame.render_widget(
     inner_layout[1]);
 ```
 
-```kroki type=svgbob
+```svgbob
 ┌───────────────────────────────────┐
 │outer 0                            │
 │                                   │

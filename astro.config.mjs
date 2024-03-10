@@ -4,7 +4,7 @@ import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { defineConfig } from "astro/config";
 import emoji from "remark-emoji";
-import { remarkKroki } from "remark-kroki";
+import remarkMermaid from "remark-mermaidjs";
 import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
 import { collapsibleFrames } from "/src/plugins/collapsible-frames";
@@ -25,18 +25,7 @@ export default defineConfig({
     prefetchAll: true,
   },
   markdown: {
-    remarkPlugins: [
-      remarkIncludeCode,
-      emoji,
-      [
-        remarkKroki,
-        {
-          server: "https://kroki.io/",
-          output: "inline-svg",
-        },
-      ],
-      remarkYoutube,
-    ],
+    remarkPlugins: [remarkIncludeCode, emoji, remarkMermaid, remarkYoutube],
   },
   integrations: [
     starlight({

@@ -19,7 +19,7 @@ colors and other features. As of now, `ratatui` supports three backends:
 Selecting a backend does influence your project's structure, but the core functionalities remain
 consistent across all options. Here's a flowchart that can help you make your decision.
 
-```kroki type=mermaid
+```mermaid
 graph TD;
     Q1[Is the TUI only for Wezterm users?]
     Q2[Is Windows compatibility important?]
