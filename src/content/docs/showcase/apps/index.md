@@ -155,7 +155,8 @@ Blazing fast terminal file manager written in Rust, based on async I/O
 
 ## [`openapi-tui`](https://github.com/zaghaghi/openapi-tui)
 
-Unlock the power of APIs with simplicity and speed, right from your terminal. View OpenAPI documentations in your terminal.
+Unlock the power of APIs with simplicity and speed, right from your terminal. View OpenAPI
+documentations in your terminal.
 
 ![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
 
