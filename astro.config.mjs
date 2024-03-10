@@ -5,6 +5,7 @@ import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-s
 import { defineConfig } from "astro/config";
 import emoji from "remark-emoji";
 import remarkMermaid from "remark-mermaidjs";
+import remarkSvgBob from "remark-svgbob";
 import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
 import { collapsibleFrames } from "/src/plugins/collapsible-frames";
@@ -25,7 +26,7 @@ export default defineConfig({
     prefetchAll: true,
   },
   markdown: {
-    remarkPlugins: [remarkIncludeCode, emoji, remarkMermaid, remarkYoutube],
+    remarkPlugins: [remarkIncludeCode, emoji, remarkMermaid, remarkYoutube, remarkSvgBob],
   },
   integrations: [
     starlight({
