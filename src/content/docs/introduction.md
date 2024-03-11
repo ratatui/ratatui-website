@@ -68,9 +68,9 @@ If you see something that could be better written, feel free to [create an issue
 thread] or even contribute a [Pull Request]. We're also often active in the `#doc-discussion`
 channel on [Discord] and [Matrix]
 
-[create an issue]: https://github.com/ratatui-org/website/issues
-[discussion thread]: https://github.com/ratatui-org/website/discussions
-[Pull Request]: https://github.com/ratatui-org/website/pulls
+[create an issue]: https://github.com/ratatui-org/ratatui-website/issues
+[discussion thread]: https://github.com/ratatui-org/ratatui-website/discussions
+[Pull Request]: https://github.com/ratatui-org/ratatui-website/pulls
 [Discord]: https://discord.gg/pMCEU9hNEj
 [Matrix]: https://matrix.to/#/#ratatui:matrix.org
 

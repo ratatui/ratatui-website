@@ -5,7 +5,7 @@ description: This tutorial covers a basic counter application with Ratatui
 
 A full copy of the code for this page is available in the github repository for the website at:
 
-<https://github.com/ratatui-org/website/tree/main/code/counter-app-basic>.
+<https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-basic>.
 
 ## Create a new project
 

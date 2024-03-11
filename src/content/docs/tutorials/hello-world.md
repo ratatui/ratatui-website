@@ -10,10 +10,10 @@ understanding of the terminal, and have a text editor or Rust IDE. If you don't 
 
 You're going to build the following:
 
-![hello](https://github.com/ratatui-org/website/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387)
+![hello](https://github.com/ratatui-org/ratatui-website/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387)
 
 The full code for this tutorial is available to view at
-<https://github.com/ratatui-org/website/tree/main/code/hello-world-tutorial>
+<https://github.com/ratatui-org/ratatui-website/tree/main/code/hello-world-tutorial>
 
 ## Install Rust
 
@@ -269,7 +269,7 @@ cargo run
 You should see a TUI app with `Hello Ratatui! (press 'q' to quit)` show up in your terminal as a TUI
 app.
 
-![hello](https://github.com/ratatui-org/website/assets/381361/98eee556-6283-4aa5-a068-99392e1a5dda)
+![hello](https://github.com/ratatui-org/ratatui-website/assets/381361/98eee556-6283-4aa5-a068-99392e1a5dda)
 
 You can press `q` to exit and go back to your terminal as it was before.
 
