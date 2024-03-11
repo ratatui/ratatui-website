@@ -295,7 +295,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: "https://github.com/ratatui-org/website/edit/main/",
+        baseUrl: "https://github.com/ratatui-org/ratatui-website/edit/main/",
       },
     }),
     tailwind({

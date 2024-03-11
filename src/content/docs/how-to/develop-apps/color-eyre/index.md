@@ -3,7 +3,7 @@ title: How to use color_eyre with Ratatui
 ---
 
 Full source code for this how to article is available at:
-<https://github.com/ratatui-org/website/tree/main/code/how-to-color_eyre/>
+<https://github.com/ratatui-org/ratatui-website/tree/main/code/how-to-color_eyre/>
 
 The [`color_eyre`] crate provides error report handlers for panics and errors. It displays the
 reports formatted and in color. To use these handlers, a Ratatui app needs to restore the terminal

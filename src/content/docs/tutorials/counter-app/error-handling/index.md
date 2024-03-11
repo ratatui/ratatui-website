@@ -4,7 +4,7 @@ title: Counter App Error Handling
 
 A full copy of the code for this page is available in the github repository for the website at:
 
-<https://github.com/ratatui-org/website/tree/main/code/counter-app-error-handling>.
+<https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-error-handling>.
 
 In the previous section, you created a [basic counter app](../basic-app/) that responds to the user
 pressing a the **Left** and **Right** arrow keys to control the value of a counter. This tutorial

@@ -16,7 +16,7 @@ To read this content online, visit:
 To build and run the site locally:
 
 ```shell
-git clone https://github.com/ratatui-org/website/
+git clone https://github.com/ratatui-org/ratatui-website/
 cd website
 
 git lfs install
