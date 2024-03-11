@@ -9,7 +9,7 @@ authors = ["Dheepak Krishnamurthy"]
 
 [dependencies]
 better-panic = "0.3.0"
-clap = { version = "4.5.1", features = ["std", "color", "help", "usage", "error-context", "suggestions", "derive", "cargo", "wrap_help", "unicode", "string", "unstable-styles"] }
+clap = { version = "4.5.2", features = ["std", "color", "help", "usage", "error-context", "suggestions", "derive", "cargo", "wrap_help", "unicode", "string", "unstable-styles"] }
 color-eyre = "0.6.2"
 config = "0.14.0"
 crossterm = { version = "0.27.0", features = ["serde", "event-stream"] }
