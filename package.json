@@ -27,7 +27,7 @@
     "hastscript": "^9.0.0",
     "remark-svgbob": "^1.0.6",
     "sharp": "^0.33.2",
-    "starlight-links-validator": "^0.5.3",
+    "starlight-links-validator": "^0.6.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.2",
     "verbose-regexp": "^3.0.0"
