@@ -15,7 +15,7 @@
     "preinstall": "npx playwright install"
   },
   "dependencies": {
-    "@astrojs/check": "^0.5.4",
+    "@astrojs/check": "^0.5.9",
     "@astrojs/partytown": "^2.0.4",
     "@astrojs/starlight": "^0.21.1",
     "@astrojs/starlight-tailwind": "^2.0.1",
