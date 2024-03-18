@@ -17,5 +17,5 @@ publish.workspace = true
 color-eyre = "0.6.3"
 derive_setters = "0.1.6"
 crossterm = "0.27.0"
-lipsum = "0.9.0"
+lipsum = "0.9.1"
 ratatui = "0.26.1"
