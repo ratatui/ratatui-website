@@ -33,9 +33,23 @@
 }
 
 /* Fix for Mermaid diagrams on dark mode */
-svg[aria-roledescription="flowchart-v2"] .flowchart-link {
+svg[aria-roledescription="sequence"] .messageText {
+  fill: currentColor !important;
+}
+svg[aria-roledescription="sequence"] line,
+svg[aria-roledescription="sequence"] path,
+svg[aria-roledescription="sequence"] .flowchart-link {
   stroke: currentColor !important;
 }
 svg[aria-roledescription="flowchart-v2"] .arrowMarkerPath {
   fill: currentColor;
+}
+svg[aria-roledescription="flowchart-v2"] line,
+svg[aria-roledescription="flowchart-v2"] path,
+svg[aria-roledescription="flowchart-v2"] .flowchart-link {
+  stroke: currentColor !important;
+}
+marker#arrowhead path {
+  fill: currentColor !important;
+  stroke: currentColor !important;
 }
