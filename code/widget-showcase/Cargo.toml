@@ -15,7 +15,7 @@ publish.workspace = true
 
 [dependencies]
 clap = { version = "4.5.2", features = ["derive"] }
-color-eyre = "0.6.2"
+color-eyre = "0.6.3"
 crossterm = "0.27.0"
 ratatui = { version = "0.26.1", features = ["all-widgets"] }
 time = "0.3.34"
