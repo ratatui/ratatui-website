@@ -16,3 +16,26 @@
     width: min(100%, 25rem);
   }
 }
+
+/* Fix for SVGBob diagrams on dark mode */
+.content-panel svg text,
+.content-panel svg .filled {
+  fill: currentColor;
+}
+.content-panel svg .solid,
+.content-panel svg polygon {
+  stroke: currentColor;
+}
+
+/* Fix for SVGBob styles leaking into other SVGs */
+:not(.sl-markdown-content span > svg path) {
+  stroke: none;
+}
+
+/* Fix for Mermaid diagrams on dark mode */
+svg[aria-roledescription="flowchart-v2"] .flowchart-link {
+  stroke: currentColor !important;
+}
+svg[aria-roledescription="flowchart-v2"] .arrowMarkerPath {
+  fill: currentColor;
+}
