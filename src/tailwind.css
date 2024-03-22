@@ -18,18 +18,13 @@
 }
 
 /* Fix for SVGBob diagrams on dark mode */
-.content-panel svg text,
-.content-panel svg .filled {
+svg.svgbob text,
+svg.svgbob .filled {
   fill: currentColor;
 }
-.content-panel svg .solid,
-.content-panel svg polygon {
+svg.svgbob .solid,
+svg.svgbob polygon {
   stroke: currentColor;
-}
-
-/* Fix for SVGBob styles leaking into other SVGs */
-:not(.sl-markdown-content span > svg path) {
-  stroke: none;
 }
 
 /* Fix for Mermaid diagrams on dark mode */
