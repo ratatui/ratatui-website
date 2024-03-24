@@ -137,17 +137,17 @@ impl App {
 
 ### Render a Frame
 
-Every application needs to render the state to the screen by calling `Terminal::draw()` with a
-closure that accepts a `Frame`. The application will call methods on the `Frame` to render the state
-of the application (and update the cursor if needed).
+To render the UI, an application calls`Terminal::draw()` with a closure that accepts a `Frame`. The
+most important method on `Frame` is `render_widget()` which renders any type that implements the
+[`Widget` trait](/concepts/widgets) such as `Paragraph`, `List` etc., We will implement the `Widget`
+for the `App` struct so that the code related to rendering is organized in a single place. This
+allows us to call `Frame::render_widget()` with the app in the closure passed to `Terminal::draw`.
 
-In the interests of composability, it can be convenient to implement the `Widget` trait on your app
-type instead of directly calling methods on frame.
-
-First, add a new `impl Widget for &App` block. The render function will create a block with a title,
-instruction text on the bottom, and some borders. Render a `Paragraph` widget with the application's
-state (the value of the `App`s counter field) inside the block. The block and paragraph will take up
-the entire size of the widget:
+First, add a new `impl Widget for &App` block. We implement this on a reference to the App type, as
+the render function will not mutate any state, and we want to be able to use the app after the call
+to draw. The render function will create a block with a title, instruction text on the bottom, and
+some borders. Render a `Paragraph` widget with the application's state (the value of the `App`s
+counter field) inside the block. The block and paragraph will take up the entire size of the widget:
 
 ```rust title="src/main.rs"
 {{ #include @code/counter-app-basic/src/main.rs:impl Widget }}
