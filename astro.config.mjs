@@ -136,6 +136,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { label: "Concepts", link: "/concepts/" },
+            { label: "Widgets", link: "/concepts/widgets/" },
             { label: "Layout", link: "/concepts/layout/" },
             { label: "Event Handling", link: "/concepts/event-handling/" },
             {
