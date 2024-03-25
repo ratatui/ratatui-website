@@ -79,7 +79,7 @@ export default defineConfig({
         },
         {
           label: "Tutorials",
-          collapsed: true,
+          collapsed: false,
           items: [
             { label: "Tutorials", link: "/tutorials/" },
             { label: "Hello World", link: "/tutorials/hello-world/" },
@@ -102,7 +102,7 @@ export default defineConfig({
         },
         {
           label: "Concepts",
-          collapsed: true,
+          collapsed: false,
           items: [
             { label: "Concepts", link: "/concepts/" },
             { label: "Widgets", link: "/concepts/widgets/" },
@@ -127,7 +127,7 @@ export default defineConfig({
         },
         {
           label: "How To",
-          collapsed: true,
+          collapsed: false,
           items: [
             { label: "How To", link: "/how-to/" },
             {
