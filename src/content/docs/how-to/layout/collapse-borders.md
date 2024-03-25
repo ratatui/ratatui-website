@@ -1,5 +1,8 @@
 ---
 title: "How to: Collapse borders in a layout"
+sidebar:
+  order: 3
+  label: Collapse Borders
 ---
 
 A common layout for applications is to split up the screen into panes, with borders around each

@@ -1,5 +1,7 @@
 ---
-title: main.rs
+title: Main.rs
+sidebar:
+  order: 2
 ---
 
 In this section, let's just cover the contents of `main.rs`, `build.rs` and `utils.rs`.

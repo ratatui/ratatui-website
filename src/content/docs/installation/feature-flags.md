@@ -1,5 +1,7 @@
 ---
 title: Feature Flags
+sidebar:
+  order: 1
 ---
 
 As ratatui grows and evolves, this list may change, so make sure to check the

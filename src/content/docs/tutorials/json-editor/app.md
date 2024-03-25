@@ -1,5 +1,7 @@
 ---
 title: App.rs
+sidebar:
+  order: 1
 ---
 
 As we saw in the previous section, a common model for smaller `ratatui` applications is to have one

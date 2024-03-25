@@ -1,5 +1,7 @@
 ---
-title: components/mod.rs
+title: Components.rs
+sidebar:
+  order: 5
 ---
 
 In `components/mod.rs`, we implement a `trait` called `Component`:

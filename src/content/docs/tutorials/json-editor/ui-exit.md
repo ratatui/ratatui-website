@@ -1,5 +1,7 @@
 ---
-title: The Exit Popup
+title: UI - Exit Popup
+sidebar:
+  order: 6
 ---
 
 We have a way for the user to view their already entered key-value pairs, and we have a way for the

@@ -1,5 +1,7 @@
 ---
-title: config.rs
+title: Config.rs
+sidebar:
+  order: 7
 ---
 
 At the moment, our keys are hard coded into the app.

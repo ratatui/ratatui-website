@@ -1,5 +1,7 @@
 ---
 title: Installation
+sidebar:
+  order: 0
 ---
 
 `ratatui` is a standard rust crate and can be installed into your app using the following command:

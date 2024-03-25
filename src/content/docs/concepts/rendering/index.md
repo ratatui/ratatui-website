@@ -1,5 +1,7 @@
 ---
 title: Rendering
+sidebar:
+  order: 0
 ---
 
 The world of UI development consists mainly of two dominant paradigms: retained mode and immediate

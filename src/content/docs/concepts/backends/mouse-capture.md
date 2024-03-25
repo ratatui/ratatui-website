@@ -1,5 +1,7 @@
 ---
 title: Mouse Capture
+sidebar:
+  order: 4
 ---
 
 Mouse capture is a mode where the terminal captures mouse events such as clicks, scrolls, and

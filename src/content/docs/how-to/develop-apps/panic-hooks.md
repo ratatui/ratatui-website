@@ -1,5 +1,7 @@
 ---
 title: Setup Panic Hooks
+sidebar:
+  order: 5
 ---
 
 When building TUIs with `ratatui`, it's vital to ensure that if your application encounters a panic,

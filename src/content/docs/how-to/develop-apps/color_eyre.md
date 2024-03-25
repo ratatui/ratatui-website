@@ -1,5 +1,8 @@
 ---
-title: How to use color_eyre with Ratatui
+title: How to use `color_eyre` with Ratatui
+sidebar:
+  order: 6
+  label: color_eyre Error Hooks
 ---
 
 Full source code for this how to article is available at:
@@ -79,23 +82,23 @@ Call wrap_err from methods that can fail with an error.
 
 ### Panic
 
-![Panic](./panic.png)
+![Panic](./color-eyre/panic.png)
 
 With `RUST_BACKTRACE=full`:
 
-![Panic Full](./panic-full.png)
+![Panic Full](./color-eyre/panic-full.png)
 
 ### Error
 
-![Error](./error.png)
+![Error](./color-eyre/error.png)
 
 With `RUST_BACKTRACE=full`:
 
-![Error Full](./error-full.png)
+![Error Full](./color-eyre/error-full.png)
 
 ### Normal exit
 
-![Quit](./quit.png)
+![Quit](./color-eyre/quit.png)
 
 ## Further Steps
 

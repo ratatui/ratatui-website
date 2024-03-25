@@ -1,5 +1,8 @@
 ---
 title: Full Async Events
+sidebar:
+  order: 2
+  label: Async Render
 ---
 
 There are a number of ways to make our application work more in an `async` manner. The easiest way

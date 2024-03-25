@@ -1,5 +1,7 @@
 ---
 title: Application Patterns
+sidebar:
+  order: 0
 ---
 
 This page covers several patterns one can use for their application and acts as a top-level page for

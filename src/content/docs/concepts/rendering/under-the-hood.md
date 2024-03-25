@@ -1,5 +1,8 @@
 ---
 title: Rendering under the hood
+sidebar:
+  order: 1
+  label: Under the hood
 ---
 
 You may have read in previous sections that Ratatui is a immediate mode rendering library. But what

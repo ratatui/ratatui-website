@@ -1,5 +1,7 @@
 ---
-title: "Better Panic Hooks"
+title: Better Panic Hooks
+sidebar:
+  order: 7
 ---
 
 Your application may panic for a number of reasons (e.g. when you call `.unwrap()` on a `None`). And

@@ -1,5 +1,7 @@
 ---
 title: Render UIs
+sidebar:
+  order: 0
 ---
 
 - [Display Text](./display-text/)

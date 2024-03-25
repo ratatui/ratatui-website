@@ -1,5 +1,7 @@
 ---
-title: action.rs
+title: Action.rs
+sidebar:
+  order: 4
 ---
 
 Now that we have created a `Tui` and `EventHandler`, we are also going to introduce the `Command`

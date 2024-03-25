@@ -1,5 +1,7 @@
 ---
 title: Raw Mode
+sidebar:
+  order: 2
 ---
 
 Raw mode is a mode where the terminal does not perform any processing or handling of the input and

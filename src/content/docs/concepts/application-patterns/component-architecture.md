@@ -1,5 +1,7 @@
 ---
 title: Component Architecture
+sidebar:
+  order: 2
 ---
 
 If you are interested in a more object oriented approach to organizing TUIs, you can use a

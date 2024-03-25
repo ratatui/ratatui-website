@@ -1,5 +1,7 @@
 ---
-title: Ratatui
+title: Contributing to Ratatui
+sidebar:
+  order: 1
 ---
 
 Check out the [CONTRIBUTING GUIDE](https://github.com/ratatui-org/ratatui/blob/main/CONTRIBUTING.md)

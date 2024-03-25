@@ -1,5 +1,7 @@
 ---
 title: Project Structure
+sidebar:
+  order: 1
 ---
 
 The rust files in the `component` project are organized as follows:

@@ -1,5 +1,7 @@
 ---
 title: Async Increment & Decrement
+sidebar:
+  order: 6
 ---
 
 Finally we can schedule increments and decrements using `tokio::spawn`.

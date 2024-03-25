@@ -1,5 +1,7 @@
 ---
 title: Migrate from tui-rs
+sidebar:
+  order: 8
 ---
 
 [Ratatui](https://github.com/tui-rs-revival/ratatui) is a fork of

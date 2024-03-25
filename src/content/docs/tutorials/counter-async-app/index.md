@@ -1,5 +1,7 @@
 ---
 title: Async Counter App
+sidebar:
+  order: 0
 ---
 
 In the previous counter app, we had a purely sequential blocking application. There are times when

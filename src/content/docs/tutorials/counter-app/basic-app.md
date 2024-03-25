@@ -1,6 +1,9 @@
 ---
 title: Basic Counter App
 description: This tutorial covers a basic counter application with Ratatui
+sidebar:
+  order: 1
+  label: Basic App
 ---
 
 A full copy of the code for this page is available in the github repository for the website at:

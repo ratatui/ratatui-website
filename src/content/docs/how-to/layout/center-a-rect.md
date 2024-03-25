@@ -1,5 +1,8 @@
 ---
 title: "How to: Center a `Rect`"
+sidebar:
+  order: 2
+  label: Center a Rect
 ---
 
 You can use a `Vertical` layout followed by a `Horizontal` layout to get a centered `Rect`.

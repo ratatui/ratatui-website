@@ -1,5 +1,7 @@
 ---
-title: tui.rs
+title: Tui.rs
+sidebar:
+  order: 3
 ---
 
 ## Terminal

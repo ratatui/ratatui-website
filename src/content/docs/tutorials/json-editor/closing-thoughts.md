@@ -1,5 +1,7 @@
 ---
 title: Closing Thoughts
+sidebar:
+  order: 7
 ---
 
 This tutorial should get you started with a basic understanding of the flow of a `ratatui` program.

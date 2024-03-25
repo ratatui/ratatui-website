@@ -1,5 +1,7 @@
 ---
 title: Alternate Screen
+sidebar:
+  order: 3
 ---
 
 The alternate screen is a separate buffer that some terminals provide, distinct from the main

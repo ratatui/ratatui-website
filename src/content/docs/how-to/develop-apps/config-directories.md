@@ -1,5 +1,8 @@
 ---
 title: Handle XDG Directories
+sidebar:
+  order: 2
+  label: Configuration Directories
 ---
 
 Handling files and directories correctly in a command-line or TUI application ensures that the

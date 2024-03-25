@@ -1,5 +1,7 @@
 ---
-title: app.rs
+title: App.rs
+sidebar:
+  order: 9
 ---
 
 Finally, putting all the pieces together, we are almost ready to get the `Run` struct. Before we do,

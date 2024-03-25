@@ -1,5 +1,8 @@
 ---
 title: Setup Logging with tracing
+sidebar:
+  order: 3
+  label: Logging with Tracing
 ---
 
 You'll need to install `tracing` and a few related dependencies:

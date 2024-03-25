@@ -1,5 +1,7 @@
 ---
-title: components/home.rs
+title: Components/home.rs
+sidebar:
+  order: 6
 ---
 
 Here's an example of the `Home` component with additional state:
