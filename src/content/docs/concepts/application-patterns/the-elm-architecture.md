@@ -1,5 +1,8 @@
 ---
 title: The Elm Architecture (TEA)
+sidebar:
+  order: 1
+  label: The Elm Architecture
 ---
 
 When building terminal user interfaces (TUI) with `ratatui`, it's helpful to have a solid structure

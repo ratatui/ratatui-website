@@ -1,5 +1,7 @@
 ---
 title: Conclusion
+sidebar:
+  order: 7
 ---
 
 We touched on the basic framework for building an `async` application with Ratatui, namely using

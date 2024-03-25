@@ -1,5 +1,8 @@
 ---
 title: "How to: Overwrite regions"
+sidebar:
+  order: 3
+  label: Overwrite Regions
 ---
 
 :::tip[TLDR]

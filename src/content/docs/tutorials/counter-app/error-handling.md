@@ -1,5 +1,8 @@
 ---
 title: Counter App Error Handling
+sidebar:
+  order: 2
+  label: Error Handling
 ---
 
 A full copy of the code for this page is available in the github repository for the website at:

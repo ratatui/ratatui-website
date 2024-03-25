@@ -1,5 +1,8 @@
 ---
 title: Counter App with Actions
+sidebar:
+  order: 3
+  label: Introducing Actions
 ---
 
 One of the first steps to building truly `async` TUI applications is to use the `Command`, `Action`,

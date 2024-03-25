@@ -67,14 +67,15 @@ export default defineConfig({
         linkedin: "https://www.linkedin.com/company/ratatui-rs",
       },
       sidebar: [
+        // note that the need to order items and name the groups in the sidebar prevents
+        // autogeneration except for the leaf level of the sidebar hierarchy.
+        // See https://github.com/withastro/starlight/discussions/972
+        // and https://github.com/withastro/starlight/issues/1223
         { label: "Introduction", link: "/introduction/" },
         {
           label: "Installation",
           collapsed: true,
-          items: [
-            { label: "Installation", link: "/installation/" },
-            { label: "Feature Flags", link: "/installation/feature-flags/" },
-          ],
+          autogenerate: { directory: "installation" },
         },
         {
           label: "Tutorials",
@@ -85,49 +86,17 @@ export default defineConfig({
             {
               label: "Counter App",
               collapsed: true,
-              items: [
-                { label: "Overview", link: "/tutorials/counter-app/" },
-                { label: "Basic App", link: "/tutorials/counter-app/basic-app/" },
-                { label: "Error Handling", link: "/tutorials/counter-app/error-handling/" },
-              ],
+              autogenerate: { directory: "tutorials/counter-app" },
             },
             {
               label: "JSON Editor",
               collapsed: true,
-              items: [
-                { label: "JSON Editor", link: "/tutorials/json-editor/" },
-                { label: "App.rs", link: "/tutorials/json-editor/app/" },
-                { label: "Main.rs", link: "/tutorials/json-editor/main/" },
-                {
-                  label: "Ui.rs",
-                  collapsed: true,
-                  items: [
-                    { label: "UI", link: "/tutorials/json-editor/ui/" },
-                    { label: "Ui.rs - Main", link: "/tutorials/json-editor/ui-main/" },
-                    { label: "Ui.rs - Editing", link: "/tutorials/json-editor/ui-editing/" },
-                    { label: "Ui.rs - Exit", link: "/tutorials/json-editor/ui-exit/" },
-                  ],
-                },
-                { label: "Conclusion", link: "/tutorials/json-editor/closing-thoughts/" },
-              ],
+              autogenerate: { directory: "tutorials/json-editor" },
             },
             {
               label: "Async Counter App",
               collapsed: true,
-              items: [
-                { label: "Async Counter App", link: "/tutorials/counter-async-app/" },
-                {
-                  label: "Async KeyEvents",
-                  link: "/tutorials/counter-async-app/async-event-stream/",
-                },
-                { label: "Async Render", link: "/tutorials/counter-async-app/full-async-events/" },
-                { label: "Introducing Actions", link: "/tutorials/counter-async-app/actions/" },
-                {
-                  label: "Async Actions",
-                  link: "/tutorials/counter-async-app/full-async-actions/",
-                },
-                { label: "Conclusion", link: "/tutorials/counter-async-app/conclusion/" },
-              ],
+              autogenerate: { directory: "tutorials/counter-async-app" },
             },
           ],
         },
@@ -142,40 +111,17 @@ export default defineConfig({
             {
               label: "Rendering",
               collapsed: true,
-              items: [
-                { label: "Rendering", link: "/concepts/rendering/" },
-                { label: "Under the hood", link: "/concepts/rendering/under-the-hood/" },
-              ],
+              autogenerate: { directory: "concepts/rendering" },
             },
             {
               label: "Application Patterns",
               collapsed: true,
-              items: [
-                { label: "Application Patterns", link: "/concepts/application-patterns/" },
-                {
-                  label: "The Elm Architecture",
-                  link: "/concepts/application-patterns/the-elm-architecture/",
-                },
-                {
-                  label: "Component Architecture",
-                  link: "/concepts/application-patterns/component-architecture/",
-                },
-                {
-                  label: "Flux Architecture",
-                  link: "/concepts/application-patterns/flux-architecture/",
-                },
-              ],
+              autogenerate: { directory: "concepts/application-patterns" },
             },
             {
               label: "Backends",
               collapsed: true,
-              items: [
-                { label: "Backends", link: "/concepts/backends/" },
-                { label: "Comparison", link: "/concepts/backends/comparison/" },
-                { label: "Raw Mode", link: "/concepts/backends/raw-mode/" },
-                { label: "Alternate Screen", link: "/concepts/backends/alternate-screen/" },
-                { label: "Mouse Capture", link: "/concepts/backends/mouse-capture/" },
-              ],
+              autogenerate: { directory: "concepts/backends" },
             },
           ],
         },
@@ -187,53 +133,22 @@ export default defineConfig({
             {
               label: "Layout UIs",
               collapsed: true,
-              items: [
-                { label: "Layout UIs", link: "/how-to/layout/" },
-                { label: "Create Dynamic Layouts", link: "/how-to/layout/dynamic/" },
-                { label: "Center a Rect", link: "/how-to/layout/center-a-rect/" },
-                { label: "Collapse Borders", link: "/how-to/layout/collapse-borders/" },
-              ],
+              autogenerate: { directory: "how-to/layout" },
             },
             {
               label: "Render UIs",
               collapsed: true,
-              items: [
-                { label: "Render UIs", link: "/how-to/render/" },
-                { label: "Display Text", link: "/how-to/render/display-text/" },
-                { label: "Style Text", link: "/how-to/render/style-text/" },
-                { label: "Overwrite Regions", link: "/how-to/render/overwrite-regions/" },
-              ],
+              autogenerate: { directory: "how-to/render" },
             },
             {
               label: "Use Widgets",
               collapsed: true,
-              items: [
-                { label: "Use Widgets", link: "/how-to/widgets/" },
-                { label: "Block", link: "/how-to/widgets/block/" },
-                { label: "Paragraph", link: "/how-to/widgets/paragraph/" },
-                { label: "Create Custom Widgets", link: "/how-to/widgets/custom/" },
-              ],
+              autogenerate: { directory: "how-to/widgets" },
             },
             {
               label: "Develop Applications",
               collapsed: true,
-              items: [
-                { label: "Develop Applications", link: "/how-to/develop-apps/" },
-                { label: "CLI arguments", link: "/how-to/develop-apps/cli-arguments/" },
-                {
-                  label: "Configuration Directories",
-                  link: "/how-to/develop-apps/config-directories/",
-                },
-                { label: "Logging with Tracing", link: "/how-to/develop-apps/log-with-tracing/" },
-                {
-                  label: "Terminal and Event handler",
-                  link: "/how-to/develop-apps/terminal-and-event-handler/",
-                },
-                { label: "Setup Panic Hooks", link: "/how-to/develop-apps/panic-hooks/" },
-                { label: "Color_eyre Error Hooks", link: "/how-to/develop-apps/color-eyre/" },
-                { label: "Better Panic Hooks", link: "/how-to/develop-apps/better-panic/" },
-                { label: "Migrate from tui-rs", link: "/how-to/develop-apps/migrate-from-tui-rs/" },
-              ],
+              autogenerate: { directory: "how-to/develop-apps" },
             },
           ],
         },
@@ -241,25 +156,12 @@ export default defineConfig({
         {
           label: "Highlights",
           collapsed: true,
-          items: [
-            { label: "Highlights", link: "/highlights/" },
-            { label: "v0.26", link: "/highlights/v026/" },
-            { label: "v0.25", link: "/highlights/v025/" },
-            { label: "v0.24", link: "/highlights/v024/" },
-            { label: "v0.23", link: "/highlights/v023/" },
-            { label: "v0.22", link: "/highlights/v022/" },
-            { label: "v0.21", link: "/highlights/v021/" },
-          ],
+          autogenerate: { directory: "highlights" },
         },
         {
           label: "Showcase",
           collapsed: true,
-          items: [
-            { label: "Showcase", link: "/showcase/" },
-            { label: "Apps", link: "/showcase/apps/" },
-            { label: "Built-in Widgets", link: "/showcase/widgets/" },
-            { label: "Third Party Widgets", link: "/showcase/third-party-widgets/" },
-          ],
+          autogenerate: { directory: "showcase" },
         },
         {
           label: "Templates",
@@ -269,17 +171,7 @@ export default defineConfig({
             {
               label: "Component",
               collapsed: true,
-              items: [
-                { label: "Component", link: "/templates/component/" },
-                { label: "Project Structure", link: "/templates/component/project-structure/" },
-                { label: "Main.rs", link: "/templates/component/main-rs/" },
-                { label: "Tui.rs", link: "/templates/component/tui-rs/" },
-                { label: "Action.rs", link: "/templates/component/action-rs/" },
-                { label: "Components.rs", link: "/templates/component/components-rs/" },
-                { label: "Components/home.rs", link: "/templates/component/components-home-rs/" },
-                { label: "Config.rs", link: "/templates/component/config-rs/" },
-                { label: "Utils.rs", link: "/templates/component/utils-rs/" },
-              ],
+              autogenerate: { directory: "templates/component" },
             },
           ],
         },
@@ -287,12 +179,7 @@ export default defineConfig({
         {
           label: "Developer Guide",
           collapsed: true,
-          items: [
-            { label: "Developer Guide", link: "/developer-guide/" },
-            { label: "Contributing to Ratatui", link: "/developer-guide/ratatui/" },
-            { label: "Contributing to Website", link: "/developer-guide/website/" },
-            { label: "Git guide", link: "/developer-guide/git-guide/" },
-          ],
+          autogenerate: { directory: "developer-guide" },
         },
       ],
       editLink: {

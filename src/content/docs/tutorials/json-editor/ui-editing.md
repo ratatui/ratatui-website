@@ -1,5 +1,7 @@
 ---
-title: The Editing Popup
+title: UI - Editing Popup
+sidebar:
+  order: 5
 ---
 
 Now that the `Main` screen is rendered, we now need to check if the `Editing` popup needs to be

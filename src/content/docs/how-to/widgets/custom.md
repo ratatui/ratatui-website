@@ -1,5 +1,7 @@
 ---
-title: Create a custom widget
+title: Create custom widgets
+sidebar:
+  order: 3
 ---
 
 While Ratatui offers a rich set of pre-built widgets, there may be scenarios where you require a

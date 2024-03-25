@@ -1,5 +1,8 @@
 ---
 title: "How to: Create Dynamic layouts"
+sidebar:
+  order: 1
+  label: Dynamic Layouts
 ---
 
 With real world applications, the content can often be dynamic. For example, a chat application may

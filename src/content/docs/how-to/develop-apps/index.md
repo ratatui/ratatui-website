@@ -1,5 +1,7 @@
 ---
 title: Develop Applications
+sidebar:
+  order: 0
 ---
 
 This section covers topics on how to develop applications:

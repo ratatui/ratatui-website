@@ -1,5 +1,8 @@
 ---
 title: App Showcase
+sidebar:
+  order: 0
+  label: Apps
 ---
 
 ## [`atuin`](https://github.com/atuinsh/atuin)

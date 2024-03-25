@@ -1,5 +1,7 @@
 ---
-title: utils.rs
+title: Utils.rs
+sidebar:
+  order: 8
 ---
 
 ### Command Line Argument Parsing (`clap`)

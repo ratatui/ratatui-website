@@ -1,5 +1,8 @@
 ---
 title: Async Event Stream
+sidebar:
+  order: 1
+  label: Async Key Events
 ---
 
 In this section, we are going to create an `EventHandler` with "green" threads or tasks, i.e. rust's

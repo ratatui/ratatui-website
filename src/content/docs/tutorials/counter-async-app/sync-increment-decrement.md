@@ -1,5 +1,7 @@
 ---
 title: Sync Increment & Decrement
+sidebar:
+  order: 5
 ---
 
 In order to set up an `async` application, it is important to make the generation of `Action`s

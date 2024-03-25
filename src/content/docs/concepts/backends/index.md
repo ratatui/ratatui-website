@@ -1,5 +1,7 @@
 ---
 title: Backends
+sidebar:
+  order: 0
 ---
 
 Ratatui interfaces with the terminal emulator through a backend. These libraries enable Ratatui via

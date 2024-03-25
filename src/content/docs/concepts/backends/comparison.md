@@ -1,5 +1,8 @@
 ---
 title: Comparison of Backends
+sidebar:
+  order: 1
+  label: Comparison
 ---
 
 :::tip[TLDR]

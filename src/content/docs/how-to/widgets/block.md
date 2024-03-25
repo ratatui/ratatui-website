@@ -1,5 +1,7 @@
 ---
 title: Block
+sidebar:
+  order: 1
 ---
 
 The `Block` widget serves as a foundational building block for structuring and framing other

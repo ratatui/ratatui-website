@@ -1,5 +1,7 @@
 ---
-title: The Main screen
+title: UI - Main screen
+sidebar:
+  order: 4
 ---
 
 Because we want the `Main` screen to be rendered behind the editing popup, we will draw it first,

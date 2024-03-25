@@ -1,5 +1,7 @@
 ---
 title: Main.rs
+sidebar:
+  order: 1
 ---
 
 The `main` file in many ratatui applications is simply a place to store the startup loop, and

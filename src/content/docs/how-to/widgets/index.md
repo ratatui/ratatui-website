@@ -1,5 +1,7 @@
 ---
 title: Use Widgets
+sidebar:
+  order: 0
 ---
 
 Widgets are types that implement the [`Widget`] or [`StatefulWidget`] trait which allows

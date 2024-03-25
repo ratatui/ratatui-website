@@ -1,5 +1,7 @@
 ---
 title: Flux Architecture
+sidebar:
+  order: 3
 ---
 
 [Flux](https://facebookarchive.github.io/flux/docs/in-depth-overview/) is a design pattern

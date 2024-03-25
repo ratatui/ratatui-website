@@ -1,5 +1,8 @@
 ---
 title: Handle CLI arguments
+sidebar:
+  order: 1
+  label: CLI Arguments
 ---
 
 Command Line Interface (CLI) tools often require input parameters to dictate their behavior.

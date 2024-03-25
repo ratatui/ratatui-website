@@ -1,5 +1,7 @@
 ---
 title: JSON Editor
+sidebar:
+  order: 0
 ---
 
 Now that we have covered some of the basics of a "hello world" and "counter" app, we are ready to

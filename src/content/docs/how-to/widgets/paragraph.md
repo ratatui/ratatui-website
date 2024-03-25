@@ -1,5 +1,7 @@
 ---
 title: Paragraph
+sidebar:
+  order: 2
 ---
 
 The `Paragraph` widget provides a way to display text content in your terminal user interface. It

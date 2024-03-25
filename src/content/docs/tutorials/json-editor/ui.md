@@ -1,5 +1,7 @@
 ---
 title: UI.rs
+sidebar:
+  order: 3
 ---
 
 Finally we come to the last piece of the puzzle, and also the hardest part when you are just

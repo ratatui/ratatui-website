@@ -1,5 +1,8 @@
 ---
 title: "How to: Style Text"
+sidebar:
+  order: 2
+  label: Style Text
 ---
 
 Styling enhances user experience by adding colors, emphasis, and other visual aids. In `ratatui`,

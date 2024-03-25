@@ -1,5 +1,8 @@
 ---
 title: Tui with Terminal and EventHandler
+sidebar:
+  order: 4
+  label: Terminal and Event Handler
 ---
 
 If you want a `Tui` struct:

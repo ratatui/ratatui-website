@@ -1,5 +1,7 @@
 ---
 title: Git guide
+sidebar:
+  order: 3
 ---
 
 So you’ve decided to become a contributor (Thank you!), and you are having some trouble with `git`.

@@ -1,5 +1,8 @@
 ---
 title: Full Async Actions
+sidebar:
+  order: 4
+  label: Async Actions
 ---
 
 Now that we have introduced `Event`s and `Action`s, we are going introduce a new `mpsc::channel` for
