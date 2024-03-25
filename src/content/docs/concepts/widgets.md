@@ -88,7 +88,7 @@ pub trait WidgetRef {
 
 pub trait StatefulWidgetRef {
     type State;
-    fn render(&self, area: Rect, buf: &mut Buffer, state: &mut Self::State);
+    fn render_ref(&self, area: Rect, buf: &mut Buffer, state: &mut Self::State);
 }
 ```
 
@@ -120,15 +120,37 @@ terminal.draw(|frame| {
 ```
 
 These methods internally call the `render` function on the [`Widget`] or [`StatefulWidget`] trait,
-which will then call the `render` function on the specific Widget or StatefulWidget that you have
-implemented.
+which will then call the `render` function on the specific [`WidgetRef`] or [`StatefulWidgetRef`]
+that you have implemented.
 
-A common compositional pattern is to only have a single Root widget (perhaps your application or
-similar) that is passed to `Frame::render_widget()` and then within that and other widgets, you call
+A common compositional pattern is to only have a single root widget (the `App` struct in the example
+below) that is passed to `Frame::render_widget()` and then within that and other widgets, you call
 the render methods directly passing in the area which you want to render the widgets to.
 
 ```rust
-MyHeaderWidget::new("Header text").render(Rect::new(0, 0, area.width, 1), buf);
+#[derive(Default)]
+struct App {
+    // ...
+    should_quit: bool
+}
+
+fn main() {
+    let app = App::default();
+    // ...
+    while app.should_quit {
+        terminal.draw(|frame| {
+            frame.render_widget(&app, frame.size())
+        })
+    }
+}
+
+impl Widget for &App {
+    fn render(self, area: Rect, buf: &mut Buffer) {
+        // ...
+        MyHeaderWidget::new("Header text")
+            .render(Rect::new(0, 0, area.width, 1), buf);
+    }
+}
 ```
 
 ## Implementing Widgets
@@ -197,13 +219,13 @@ struct FrameCountWidget {
     style: Style,
 }
 
-impl StatefulWidget for CounterWidget {
+impl StatefulWidget for FrameCountWidget {
     type State = i32;
 
     fn render(self, area: Rect, buf: &mut Buffer, state: &mut i32) {
         *state += 1;
         let text = format!("Frame count: {state}");
-        Line::styled(text, style).render(area, buf);
+        Line::styled(text, self.style).render(area, buf);
     }
 }
 ```
@@ -219,8 +241,12 @@ widget which can be rendered multiple times instead of constructing it on every 
 makes it easy to create dynamic collections of widgets (e.g. Panes in a layout) by boxing the
 widgets using `Box<dyn T>`.
 
-Note: this requires the `unstable-widget-ref` feature flag to be enabled (though this should be
-stabilized soon).
+:::note
+
+This requires the `unstable-widget-ref` feature flag to be enabled (though this should be stabilized
+soon).
+
+:::
 
 Implementing `WidgetRef` / `StatefulWidgetRef` is similar to implementing the consuming versions of
 the traits (with the difference being that the method name is `render_ref` and self is a reference).
