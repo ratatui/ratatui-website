@@ -61,10 +61,9 @@ fn main() -> Result<()> {
 We used `crossterm` for panic handling. If you are using `termion` you can do something like the
 following:
 
-:::caution 
+:::caution
 
-These instructions are incorrect. See
-<https://github.com/ratatui-org/ratatui/issues/1005> and
+These instructions are incorrect. See <https://github.com/ratatui-org/ratatui/issues/1005> and
 <https://gitlab.redox-os.org/redox-os/termion/-/issues/176> for more discussion on this.
 
 :::
