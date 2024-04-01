@@ -451,3 +451,48 @@ If you want to know more, we recommend reading
 [this excellent article by @orhun](https://blog.orhun.dev/stdout-vs-stderr/).
 
 [`BufWriter`]: https://doc.rust-lang.org/std/io/struct.BufWriter.html
+
+## How do I avoid panics due to out of range calls on the Buffer?
+
+In general, most of the code in tui-rs and hence Ratatui was not designed around using `Result`s to
+prevent panics. We have an
+[Issue to address the panics](https://github.com/ratatui-org/ratatui/issues/1011), but for now there
+are some easy approaches that can help avoid them.
+
+A one liner that will mostly fix this for pretty much any widget is to avoid rendering stuff outside
+of the buffer is to reassign the area to the intersection of the area and the buffer's area. If you
+are calling a widget that has an out of bounds problem, you can call this code just before calling a
+that widget.
+
+```rust
+fn render_ref(&self, area: Rect, buf: &mut Buffer) {
+    let area = area.intersection(buf.area);
+
+    // -- snip --
+}
+```
+
+This breaks down on edge cases where you want to handle this inside the implementation logic, but
+that should be fairly rare (I don't know of any cases where widgets would need this edge case).
+
+Another general rule to follow if you're calculating layouts, is to make sure the math can't
+generate locations outside of the buffer. Any manual calculations on coordinates should be suspect.
+The code in `Layout` is programmed to always lie within the input constraints, but we know that
+there's a few places in the Ratatui code bases where this isn't quite as robust. (Please report
+these as bugs if you do encounter them!).
+
+Make sure to use methods built-in to the std library (e.g. `u16::min()` and `u16::clamp()` when
+doing calculations on coordinates). We have also provided `Rect::intersection()` and `Rect::clamp()`
+methods that can help ensure similar constraints.
+
+Additionally, for widgets that work in terms of rows or columns of text we have created iterators:
+`Rect::columns()` and `Rect::rows()` that help ensure that can be used instead of incremental
+offsets and calculations that may cause out of bounds values. It can be useful to combine these with
+the `Iterator::zip()` method to generate tuples of valid data and areas. E.g. this code in
+`Text::render()`:
+
+```rust
+for (line, row) in self.iter().zip(area.rows()) {
+    // -- snip
+}
+```
