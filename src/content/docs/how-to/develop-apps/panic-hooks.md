@@ -8,50 +8,72 @@ When building TUIs with `ratatui`, it's vital to ensure that if your application
 it gracefully returns to the original terminal state. This prevents the terminal from getting stuck
 in a modified state, which can be quite disruptive for users.
 
-Here's an example `initialize_panic_handler` that works with `crossterm` and with the Rust standard
+## Crossterm
+
+Here's an example `init_panic_handler` that works with `crossterm` and with the Rust standard
 library functionality and no external dependencies.
 
-```rust
-pub fn initialize_panic_handler() {
+```rust collapse={1-9}
+// main.rs
+use crossterm::{
+    execute,
+    terminal::{
+        enable_raw_mode, disable_raw_mode, EnterAlternateScreen,
+        LeaveAlternateScreen
+    }
+};
+
+pub fn init_panic_handler() {
     let original_hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |panic_info| {
-        crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen).unwrap();
-        crossterm::terminal::disable_raw_mode().unwrap();
+        execute!(std::io::stderr(), LeaveAlternateScreen).unwrap();
+        disable_raw_mode().unwrap();
         original_hook(panic_info);
     }));
 }
 ```
 
-With this function, all your need to do is call `initialize_panic_handler()` in `main()` before
-running any terminal initialization code:
+With this function, all your need to do is call `init_panic_handler()` in `main()` before running
+any terminal initialization code:
 
 ```rust
+// main.rs
 fn main() -> Result<()> {
-    initialize_panic_handler();
+    init_panic_handler();
 
     // Startup
-    crossterm::terminal::enable_raw_mode()?;
-    crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
+    enable_raw_mode()?;
+    execute!(std::io::stdout(), EnterAlternateScreen)?;
 
-    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
+    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
 
     // ...
 
     // Shutdown
-    crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
-    crossterm::terminal::disable_raw_mode()?;
+    execute!(std::io::stdout(), LeaveAlternateScreen)?;
+    disable_raw_mode()?;
     Ok(())
 }
 ```
 
+## Termion
+
 We used `crossterm` for panic handling. If you are using `termion` you can do something like the
 following:
 
-```rust
+:::caution These instructions are incorrect. See
+<https://github.com/ratatui-org/ratatui/issues/1005> and
+<https://gitlab.redox-os.org/redox-os/termion/-/issues/176> for more discussion on this :::
+
+```rust collapsed
+// main.rs
 use std::panic;
 use std::error::Error;
 
-pub fn initialize_panic_handler() {
+/// Incorrect implementation
+///
+/// See <https://github.com/ratatui-org/ratatui/issues/1005> for more info
+pub fn init_panic_handler() {
     let panic_hook = panic::take_hook();
     panic::set_hook(Box::new(move |panic| {
         let panic_cleanup = || -> Result<(), Box<dyn Error>> {
@@ -72,6 +94,8 @@ pub fn initialize_panic_handler() {
     }));
 }
 ```
+
+## Conclusion
 
 As a general rule, you want to take the original panic hook and execute it after cleaning up the
 terminal. In the next sections we will discuss some third party packages that can help give better
