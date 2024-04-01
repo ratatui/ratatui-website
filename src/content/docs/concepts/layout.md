@@ -231,6 +231,10 @@ in to Ratatui (yet). See
 [taffy in ratatui](https://github.com/search?q=repo%3Aratatui-org%2Fratatui%20taffy&type=code) for
 more details.
 
+## See Also
+
+- [FAQ: How do I avoid panics due to out of range calls on the Buffer?][faq-avoid-panics]
+
 [`Layout`]: https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html
 [`Layout::split`]: https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html#method.split
 [`Frame::size()`]: https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.size
@@ -239,3 +243,4 @@ more details.
 [`Frame::render_stateful_widget`]:
   https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_stateful_widget
 [`Constraint`]: https://docs.rs/ratatui/latest/ratatui/layout/enum.Constraint.html
+[faq-avoid-panics]: /faq#how-do-i-avoid-panics-due-to-out-of-range-calls-on-the-buffer
