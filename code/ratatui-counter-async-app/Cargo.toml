@@ -32,7 +32,7 @@ log = "0.4.21"
 pretty_assertions = "1.4.0"
 ratatui = { version = "0.26.1", features = ["serde", "macros"] }
 serde = { version = "1.0.196", features = ["derive"] }
-serde_json = "1.0.113"
+serde_json = "1.0.115"
 signal-hook = "0.3.17"
 strip-ansi-escapes = "0.2.0"
 tokio = { version = "1.37.0", features = ["full"] }
