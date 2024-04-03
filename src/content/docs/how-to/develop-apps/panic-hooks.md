@@ -77,6 +77,9 @@ use std::error::Error;
 ///
 /// See <https://github.com/ratatui-org/ratatui/issues/1005> for more info
 pub fn init_panic_handler() {
+    let raw_output = io::stderr().into_raw_mode()?;
+    raw_output.suspend_raw_mode()?;
+
     let panic_hook = panic::take_hook();
     panic::set_hook(Box::new(move |panic| {
         let panic_cleanup = || -> Result<(), Box<dyn Error>> {
@@ -88,8 +91,8 @@ pub fn init_panic_handler() {
                 termion::screen::ToMainScreen,
                 termion::cursor::Show
             )?;
-            output.into_raw_mode()?.suspend_raw_mode()?;
-            io::stderr().flush()?;
+            raw_output.suspend_raw_mode()?;
+            output.flush()?;
             Ok(())
         };
         panic_cleanup().expect("failed to clean up for panic");
