@@ -39,7 +39,7 @@ Each component encapsulates its own state, event handlers, and rendering logic.
 Here's an example of the `Component` trait implementation you might use:
 
 ```rust
-use anyhow::Result;
+use color_eyre::eyre::Result;
 use crossterm::event::{KeyEvent, MouseEvent};
 use ratatui::layout::Rect;
 
