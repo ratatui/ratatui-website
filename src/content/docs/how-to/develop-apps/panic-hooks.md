@@ -50,6 +50,11 @@ method to leave the alternate screen except when dropped. Apps should use `ToAlt
 {{ #include @code/how-to-panic-hooks/src/bin/termion.rs }}
 ```
 
+For more discussion on this, see:
+
+- <https://github.com/ratatui-org/ratatui/issues/1005>
+- <https://gitlab.redox-os.org/redox-os/termion/-/issues/176>
+
 ## Termwiz
 
 Termwiz is a little more difficult as the methods to disable raw mode and exit the alternate screen
