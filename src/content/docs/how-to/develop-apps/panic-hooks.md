@@ -8,101 +8,59 @@ When building TUIs with `ratatui`, it's vital to ensure that if your application
 it gracefully returns to the original terminal state. This prevents the terminal from getting stuck
 in a modified state, which can be quite disruptive for users.
 
-## Crossterm
+The rust standard library allows applications to setup a panic hook that runs whenever a panic
+occurs. Ratatui applications should use this to disable raw mode and return the main screen.
 
-Here's an example `init_panic_handler` that works with `crossterm` and with the Rust standard
-library functionality and no external dependencies.
+Given the following application that panics after a 1 second delay as a basis, we can implement the
+hooks for each backend.
 
-```rust collapse={1-9}
-// main.rs
-use crossterm::{
-    execute,
-    terminal::{
-        enable_raw_mode, disable_raw_mode, EnterAlternateScreen,
-        LeaveAlternateScreen
-    }
-};
-
-pub fn init_panic_handler() {
-    let original_hook = std::panic::take_hook();
-    std::panic::set_hook(Box::new(move |panic_info| {
-        execute!(std::io::stderr(), LeaveAlternateScreen).unwrap();
-        disable_raw_mode().unwrap();
-        original_hook(panic_info);
-    }));
-}
+```rust title=main.rs
+{{ #include @code/how-to-panic-hooks/src/bin/crossterm.rs:main }}
 ```
 
-With this function, all your need to do is call `init_panic_handler()` in `main()` before running
-any terminal initialization code:
+## Crossterm
 
-```rust
-// main.rs
-fn main() -> Result<()> {
-    init_panic_handler();
+Restoring the terminal state in an app that uses the `CrosstermBackend` is pretty simple. The
+`init_panic_hook` method saves a copy of the current hook, and then sets up a new hook that restores
+the terminal to the original state before calling the original hook. It's important to avoid
+panicking while restoring the terminal state, otherwise the original panic reason might be lost. In
+your own app, this might be supplemented with logging to a file or similar.
 
-    // Startup
-    enable_raw_mode()?;
-    execute!(std::io::stdout(), EnterAlternateScreen)?;
-
-    let mut terminal = Terminal::new(CrosstermBackend::new(std::io::stdout()))?;
-
-    // ...
-
-    // Shutdown
-    execute!(std::io::stdout(), LeaveAlternateScreen)?;
-    disable_raw_mode()?;
-    Ok(())
-}
+```rust collapse={1-26} title=main.rs
+{{ #include @code/how-to-panic-hooks/src/bin/crossterm.rs }}
 ```
 
 ## Termion
 
-We used `crossterm` for panic handling. If you are using `termion` you can do something like the
-following:
+Termion requires a bit more effort, as the code for enabling and disabling raw mode is only
+available on the `RawTerminal` type. The type stores a copy of the terminal state when constructed
+and then restores that when dropped. It has a `suspend_raw_mode` function that temporarily restores
+the terminal state.
 
-:::caution
+To make it possible for the `init_tui` method to see the terminal in a cooked state (the opposite of
+raw), the `init_panic_hook` method needs to create a `RawTerminal` which will be used in the panic
+hook, and immediately suspend raw mode.
 
-These instructions are incorrect. See <https://github.com/ratatui-org/ratatui/issues/1005> and
-<https://gitlab.redox-os.org/redox-os/termion/-/issues/176> for more discussion on this.
+Termion provides a similar wrapper type for the alternate screen, but this type doesn't implement a
+method to leave the alternate screen except when dropped. Apps should use `ToAlternateScreen` /
+`ToMainScreen` instead of the `IntoAlternateScreen` wrapper. Also make sure to call
+`stdout().flush`, to make this change take effect.
 
-:::
+```rust collapse={1-23} title=main.rs
+{{ #include @code/how-to-panic-hooks/src/bin/termion.rs }}
+```
 
-```rust collapsed
-// main.rs
-use std::panic;
-use std::error::Error;
+## Termwiz
 
-/// Incorrect implementation
-///
-/// See <https://github.com/ratatui-org/ratatui/issues/1005> for more info
-pub fn init_panic_handler() {
-    let raw_output = io::stderr().into_raw_mode()?;
-    raw_output.suspend_raw_mode()?;
+Termwiz is a little more difficult as the methods to disable raw mode and exit the alternate screen
+require mutable access to the terminal instance.
 
-    let panic_hook = panic::take_hook();
-    panic::set_hook(Box::new(move |panic| {
-        let panic_cleanup = || -> Result<(), Box<dyn Error>> {
-            let mut output = io::stderr();
-            write!(
-                output,
-                "{}{}{}",
-                termion::clear::All,
-                termion::screen::ToMainScreen,
-                termion::cursor::Show
-            )?;
-            raw_output.suspend_raw_mode()?;
-            output.flush()?;
-            Ok(())
-        };
-        panic_cleanup().expect("failed to clean up for panic");
-        panic_hook(panic);
-    }));
-}
+```rust
+// TODO
 ```
 
 ## Conclusion
 
 As a general rule, you want to take the original panic hook and execute it after cleaning up the
 terminal. In the next sections we will discuss some third party packages that can help give better
-stacktraces.
+output for handling errors and panics.

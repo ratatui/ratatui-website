@@ -1,0 +1,28 @@
+[package]
+name = "how-to-panic-hooks"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+repository.workspace = true
+keywords.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+crossterm = "0.27.0"
+ratatui = "0.26.1"
+termion = "3.0.0"
+termwiz = "0.22.0"
+
+[[bin]]
+name = "crossterm"
+required-features = ["ratatui/crossterm"]
+
+[[bin]]
+name = "termion"
+required-features = ["ratatui/termion"]
