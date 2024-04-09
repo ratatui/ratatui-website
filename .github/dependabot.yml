@@ -14,16 +14,12 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      npm-dev-deps:
-        dependency-type: development
-      npm-prod-deps:
-        dependency-type: production
+      npm-dependencies:
+        patterns: ["*"]
   - package-ecosystem: "cargo"
     directory: "/"
     schedule:
       interval: "weekly"
     groups:
-      cargo-dev-deps:
-        dependency-type: development
-      cargo-prod-deps:
-        dependency-type: production
+      cargo-dependencies:
+        patterns: ["*"]
