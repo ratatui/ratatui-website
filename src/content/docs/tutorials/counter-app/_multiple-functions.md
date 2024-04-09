@@ -47,7 +47,7 @@ type Result<T> = std::result::Result<T, Err>;
 you can simply import `Result` from `anyhow`:
 
 ```rust
-use anyhow::Result;
+use color_eyre::eyre::Result;
 ```
 
 You will need to run `cargo add anyhow` for this to work.
@@ -219,7 +219,7 @@ understand and work with but also set the stage for future enhancements and exte
 Here's the full code for reference:
 
 ```rust
-use anyhow::Result;
+use color_eyre::eyre::Result;
 use crossterm::{
   event::{self, Event::Key, KeyCode::Char},
   execute,

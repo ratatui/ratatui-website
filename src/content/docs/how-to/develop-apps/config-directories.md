@@ -44,27 +44,27 @@ Here's an example `get_data_dir()` and `get_config_dir()` functions for your ref
 ```rust
 use std::path::PathBuf;
 
-use anyhow::{anyhow, Context, Result};
+use color_eyre::eyre::{self, WrapErr};
 use directories::ProjectDirs;
 
-pub fn get_data_dir() -> Result<PathBuf> {
+pub fn get_data_dir() -> eyre::Result<PathBuf> {
   let directory = if let Ok(s) = std::env::var("RATATUI_TEMPLATE_DATA") {
     PathBuf::from(s)
   } else if let Some(proj_dirs) = ProjectDirs::from("com", "kdheepak", "ratatui-template") {
     proj_dirs.data_local_dir().to_path_buf()
   } else {
-    return Err(anyhow!("Unable to find data directory for ratatui-template"));
+    return Err(eyre::eyre!("Unable to find data directory for ratatui-template"));
   };
   Ok(directory)
 }
 
-pub fn get_config_dir() -> Result<PathBuf> {
+pub fn get_config_dir() -> eyre::Result<PathBuf> {
   let directory = if let Ok(s) = std::env::var("RATATUI_TEMPLATE_CONFIG") {
     PathBuf::from(s)
   } else if let Some(proj_dirs) = ProjectDirs::from("com", "kdheepak", "ratatui-template") {
     proj_dirs.config_local_dir().to_path_buf()
   } else {
-    return Err(anyhow!("Unable to find config directory for ratatui-template"));
+    return Err(eyre::eyre!("Unable to find config directory for ratatui-template"));
   };
   Ok(directory)
 }

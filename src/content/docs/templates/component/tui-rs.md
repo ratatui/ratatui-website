@@ -54,7 +54,7 @@ We can reorganize the setup and teardown functions into an `enter()` and `exit()
 struct.
 
 ```rust
-use color_eyre::eyre::{anyhow, Context, Result};
+use color_eyre::eyre::Result;
 use crossterm::{
   cursor,
   event::{DisableMouseCapture, EnableMouseCapture},

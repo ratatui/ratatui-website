@@ -81,7 +81,7 @@ Here's the full code for your reference:
 ```rust
 use std::time::Duration;
 
-use anyhow::Result;
+use color_eyre::eyre::Result;
 use ratatui::{prelude::*, widgets::*};
 use tokio::sync::mpsc;
 

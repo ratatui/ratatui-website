@@ -1,7 +1,7 @@
 use std::time::Duration;
 
 use crossterm::event::{self, Event, KeyCode};
-// cargo add anyhow crossterm ratatui
+// cargo add color_eyre crossterm ratatui
 use ratatui::{prelude::*, widgets::*};
 
 // ANCHOR: model
