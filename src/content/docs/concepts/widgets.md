@@ -332,4 +332,3 @@ for widget in widgets {
 [`render_stateful_widget`]:
   https://docs.rs/ratatui/latest/ratatui/struct.Frame.html#method.render_stateful_widget
 [Awesome Ratatui]: https://github.com/ratatui-org/awesome-ratatui
-
