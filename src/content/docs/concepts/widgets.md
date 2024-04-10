@@ -306,8 +306,8 @@ for widget in widgets {
 [`StatefulWidgetRef`]: https://docs.rs/ratatui/latest/ratatui/widgets/trait.StatefulWidgetRef.html
 [`Block`]: https://docs.rs/ratatui/latest/ratatui/widgets/block/struct.Block.html
 [`BarChart`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.BarChart.html
-[`Calendar`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Calendar.html
-[`Canvas`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Canvas.html
+[`Calendar`]: https://docs.rs/ratatui/latest/ratatui/widgets/calendar/struct.Monthly.html
+[`Canvas`]: https://docs.rs/ratatui/latest/ratatui/widgets/canvas/struct.Canvas.html
 [`Chart`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Chart.html
 [`Clear`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Clear.html
 [`Gauge`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Gauge.html
@@ -332,3 +332,4 @@ for widget in widgets {
 [`render_stateful_widget`]:
   https://docs.rs/ratatui/latest/ratatui/struct.Frame.html#method.render_stateful_widget
 [Awesome Ratatui]: https://github.com/ratatui-org/awesome-ratatui
+
