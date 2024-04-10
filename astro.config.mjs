@@ -108,6 +108,7 @@ export default defineConfig({
             { label: "Widgets", link: "/concepts/widgets/" },
             { label: "Layout", link: "/concepts/layout/" },
             { label: "Event Handling", link: "/concepts/event-handling/" },
+            { label: "Builder Lite Pattern", link: "/concepts/builder-lite-pattern/" },
             {
               label: "Rendering",
               collapsed: true,
