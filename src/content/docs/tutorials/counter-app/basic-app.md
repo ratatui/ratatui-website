@@ -60,7 +60,7 @@ A common pattern found in most Ratatui apps is that they:
 3. Restore the terminal back to its original state
 
 The `main` function sets up the terminal by calling methods in the `tui` module (defined next), and
-then creates and runs the App (defined later). It defers evaluating the result of of calling
+then creates and runs the App (defined later). It defers evaluating the result of calling
 `App::run()` until after the terminal is restored to ensure that any `Error` results will be
 displayed to the user after the application exits.
 
