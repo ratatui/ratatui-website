@@ -28,12 +28,12 @@ based on components, Flux and The Elm Architecture.
 
 Ratatui is designed for developers and enthusiasts who:
 
-- want a lightweight alternative to graphical user interfaces (GUIs),
-- need applications that are to be deployed in constrained environments, like on servers with
-  limited resources, and
+- want a lightweight alternative to graphical user interfaces (GUIs)
+- need applications that are to be deployed in constrained environments (e.g. on servers with
+  limited resources)
 - prefer to have full control over input and events, allowing for a more customized and tailored
-  user experience.
-- appreciate the retro aesthetic of the terminal,
+  user experience
+- appreciate the retro aesthetic of the terminal
 
 ## Who is this book for?
 
