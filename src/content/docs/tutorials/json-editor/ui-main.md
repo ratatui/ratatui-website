@@ -10,7 +10,7 @@ and then have additional logic about our popups
 ## Our layout
 
 Now that we have our `Frame`, we can actually begin drawing widgets onto it. We will begin by
-creating out layout.
+creating our layout.
 
 ```rust
 {{#include @code/ratatui-json-editor-app/src/ui.rs:ui_layout}}
