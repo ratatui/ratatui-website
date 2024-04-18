@@ -42,7 +42,7 @@ method.
             }
           }
         }
-      })
+      });
 
       EventHandler { rx }
     }
