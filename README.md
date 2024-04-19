@@ -17,7 +17,7 @@ To build and run the site locally:
 
 ```shell
 git clone https://github.com/ratatui-org/ratatui-website/
-cd website
+cd ratatui-website
 
 git lfs install
 git lfs pull
