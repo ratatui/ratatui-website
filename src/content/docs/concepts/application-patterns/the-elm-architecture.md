@@ -118,7 +118,7 @@ For example, it would be perfectly valid to do the following:
 fn update(model: &mut Model, msg: Message) {
     match msg {
         // Match each possible message and decide how the model should change
-        // Modify existing mode reflecting those changes
+        // Modify existing model reflecting those changes
     };
 }
 ```
