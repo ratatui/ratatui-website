@@ -24,15 +24,15 @@ crossterm = { version = "0.27.0", features = ["serde", "event-stream"] }
 derive_deref = "1.1.1"
 directories = "5.0.1"
 futures = "0.3.30"
-human-panic = "1.2.3"
+human-panic = "2.0.0"
 json5 = "0.4.1"
 lazy_static = "1.4.0"
 libc = "0.2.153"
 log = "0.4.21"
 pretty_assertions = "1.4.0"
-ratatui = { version = "0.26.1", features = ["serde", "macros"] }
-serde = { version = "1.0.196", features = ["derive"] }
-serde_json = "1.0.115"
+ratatui = { version = "0.26.2", features = ["serde", "macros"] }
+serde = { version = "1.0.198", features = ["derive"] }
+serde_json = "1.0.116"
 signal-hook = "0.3.17"
 strip-ansi-escapes = "0.2.0"
 tokio = { version = "1.37.0", features = ["full"] }
