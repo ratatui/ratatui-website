@@ -10,7 +10,6 @@ use crossterm::{
 };
 use ratatui::{
     prelude::{CrosstermBackend, Stylize, Terminal},
-    widgets::Paragraph,
 };
 use std::io::{stdout, Result};
 // ANCHOR_END: imports
@@ -28,7 +27,7 @@ fn main() -> Result<()> {
         terminal.draw(|frame| {
             let area = frame.size();
             frame.render_widget(
-                Paragraph::new("Hello Ratatui! (press 'q' to quit)")
+                "Hello Ratatui! (press 'q' to quit)"
                     .white()
                     .on_blue(),
                 area,
