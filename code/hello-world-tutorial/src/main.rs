@@ -8,9 +8,7 @@ use crossterm::{
     },
     ExecutableCommand,
 };
-use ratatui::{
-    prelude::{CrosstermBackend, Stylize, Terminal},
-};
+use ratatui::prelude::{CrosstermBackend, Stylize, Terminal};
 use std::io::{stdout, Result};
 // ANCHOR_END: imports
 
@@ -27,9 +25,7 @@ fn main() -> Result<()> {
         terminal.draw(|frame| {
             let area = frame.size();
             frame.render_widget(
-                "Hello Ratatui! (press 'q' to quit)"
-                    .white()
-                    .on_blue(),
+                "Hello Ratatui! (press 'q' to quit)".white().on_blue(),
                 area,
             );
         })?;
