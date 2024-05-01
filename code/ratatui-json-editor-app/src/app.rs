@@ -1,10 +1,5 @@
 use std::collections::HashMap;
 
-// ANCHOR: all
-// ANCHOR: imports
-use serde_json::Result;
-// ANCHOR_END: imports
-
 // ANCHOR: screen_modes
 pub enum CurrentScreen {
     Main,
@@ -72,7 +67,7 @@ impl App {
     // ANCHOR_END: toggle_editing
 
     // ANCHOR: print_json
-    pub fn print_json(&self) -> Result<()> {
+    pub fn print_json(&self) -> serde_json::Result<()> {
         let output = serde_json::to_string(&self.pairs)?;
         println!("{}", output);
         Ok(())
