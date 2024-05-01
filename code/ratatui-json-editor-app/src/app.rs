@@ -1,6 +1,6 @@
+// ANCHOR: all
 use std::collections::HashMap;
 
-// ANCHOR: all
 // ANCHOR: screen_modes
 pub enum CurrentScreen {
     Main,
