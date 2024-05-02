@@ -149,11 +149,11 @@ frame.render_widget(
 │                                   │
 │                                   │
 └───────────────────────────────────┘
-┌────────────────┐┌─────────────────┐
-│inner 0         ││inner 1          │
-│                ││                 │
-│                ││                 │
-└────────────────┘└─────────────────┘
+┌────────┐┌─────────────────────────┐
+│inner 0 ││inner 1                  │
+│        ││                         │
+│        ││                         │
+└────────┘└─────────────────────────┘
 ```
 
 This enables you to divide the terminal window into multiple sections of varying sizes, giving you
