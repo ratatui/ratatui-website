@@ -127,6 +127,14 @@ A simple oscilloscope/vectorscope/spectroscope for your terminal
 
 ---
 
+## [`slumber`](https://github.com/LucasPickering/slumber)
+
+Terminal HTTP/REST client
+
+![slumber demo](https://media.githubusercontent.com/media/LucasPickering/slumber/master/static/demo.gif)
+
+---
+
 ## [`taskwarrior-tui`](https://github.com/kdheepak/taskwarrior-tui)
 
 A terminal user interface for taskwarrior
