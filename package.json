@@ -15,13 +15,13 @@
     "preinstall": "npx playwright install"
   },
   "dependencies": {
-    "@astrojs/check": "^0.5.10",
+    "@astrojs/check": "^0.6.0",
     "@astrojs/partytown": "^2.1.0",
-    "@astrojs/starlight": "^0.22.1",
+    "@astrojs/starlight": "^0.22.2",
     "@astrojs/starlight-tailwind": "^2.0.2",
     "@astrojs/tailwind": "^5.1.0",
     "@expressive-code/plugin-collapsible-sections": "^0.35.3",
-    "astro": "^4.7.1",
+    "astro": "^4.8.2",
     "astro-diagram": "^0.7.0",
     "hast-util-select": "^6.0.2",
     "hastscript": "^9.0.0",
@@ -35,7 +35,7 @@
   "devDependencies": {
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "playwright": "^1.43.1",
+    "playwright": "^1.44.0",
     "prettier": "3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "prettier-plugin-organize-imports": "^3.2.4",
