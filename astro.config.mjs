@@ -93,11 +93,13 @@ export default defineConfig({
               collapsed: true,
               autogenerate: { directory: "tutorials/json-editor" },
             },
-            {
-              label: "Async Counter App",
-              collapsed: true,
-              autogenerate: { directory: "tutorials/counter-async-app" },
-            },
+            // // This material is expected to be revised significantly.
+            // // Until then, it might be best to hide to avoid confusing new users.
+            // {
+            //   label: "Async Counter App",
+            //   collapsed: true,
+            //   autogenerate: { directory: "tutorials/counter-async-app" },
+            // },
           ],
         },
         {
