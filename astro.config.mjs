@@ -93,11 +93,11 @@ export default defineConfig({
               collapsed: true,
               autogenerate: { directory: "tutorials/json-editor" },
             },
-            {
-              label: "Async Counter App",
-              collapsed: true,
-              autogenerate: { directory: "tutorials/counter-async-app" },
-            },
+            // {
+            //   label: "Async Counter App",
+            //   collapsed: true,
+            //   autogenerate: { directory: "tutorials/counter-async-app" },
+            // },
           ],
         },
         {
