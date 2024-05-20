@@ -73,8 +73,7 @@ pub fn initialize_logging() -> Result<()> {
 /// Similar to the `std::dbg!` macro, but generates `tracing` events rather
 /// than printing to stdout.
 ///
-/// By default, the verbosity level for the generated events is `DEBUG`, but
-/// this can be customized.
+/// https://github.com/tokio-rs/tracing/blob/baeba47cdaac9ed32d5ef3f6f1d7b0cc71ffdbdf/tracing-macros/src/lib.rs#L4
 #[macro_export]
 macro_rules! trace_dbg {
     (target: $target:expr, level: $level:expr, $ex:expr) => {{
@@ -98,7 +97,77 @@ macro_rules! trace_dbg {
 
 ```
 
-Call `initialize_logging()?` in your `main()` function.
+
+Let's say you had code like this and you want to see the value of `data`:
+
+```rust
+let table = Table::new(
+    data_vec
+    .iter()
+    .enumerate()
+    .map(|(i, data)| { // <- on this line
+        let color = match i % 2 {
+            0 => colors.normal_row_color,
+            _ => colors.alt_row_color,
+        };
+        let item = data.ref_array();
+        item.into_iter()
+            .map(|content| Cell::from(Text::from(format!("\n{content}\n"))))
+            .collect::<Row>()
+            .style(Style::new().fg(colors.row_fg).bg(color))
+            .height(4)
+    })
+    .collect(),
+    [
+        // + 1 is for padding.
+        Constraint::Length(longest_item_lens.0 + 1),
+        Constraint::Min(longest_item_lens.1 + 1),
+        Constraint::Min(longest_item_lens.2),
+    ],
+)
+```
+
+You could do
+
+```rust
+    .map(|(i, data)| { // <- to log data on this line
+        tracing::info!("data = {:?}", data.clone()); // you have to add this line
+        let color = match i % 2 {
+            0 => colors.normal_row_color,
+            _ => colors.alt_row_color,
+        };
+        let item = data.ref_array();
+        item.into_iter()
+            .map(|content| Cell::from(Text::from(format!("\n{content}\n"))))
+            .collect::<Row>()
+            .style(Style::new().fg(colors.row_fg).bg(color))
+            .height(4)
+    })
+```
+
+But that requires adding code and removing code during debugging. Also, there are some instances where it 
+is a lot more painful to do and you'll have to refactor your code just to print a value.
+
+With the macro you can do this:
+
+```rust
+    .map(|(i, trace_dbg!(data))| { // <- on this line
+        let color = match i % 2 {
+            0 => colors.normal_row_color,
+            _ => colors.alt_row_color,
+        };
+        let item = data.ref_array();
+        item.into_iter()
+            .map(|content| Cell::from(Text::from(format!("\n{content}\n"))))
+            .collect::<Row>()
+            .style(Style::new().fg(colors.row_fg).bg(color))
+            .height(4)
+    })
+```
+
+i.e. `trace_dbg!(data)` is like `dbg!(data)` but uses logging with `tracing` instead of `stdout`.
+
+Make sure you call `initialize_logging()?` in your `main()` function.
 
 The log level is decided by the `${YOUR_CRATE_NAME}_LOGLEVEL` environment variable (default =
 `log::LevelFilter::Info`).
