@@ -1,5 +1,5 @@
 ---
-title: "How to: Create Dynamic layouts"
+title: "Create Dynamic layouts"
 sidebar:
   order: 1
   label: Dynamic Layouts

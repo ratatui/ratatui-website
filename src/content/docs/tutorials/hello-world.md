@@ -188,10 +188,10 @@ screen and disabling raw mode.
 
 If your app doesn't disable raw mode before exit, terminals can act weirdly when the mouse or
 navigation keys are pressed. To fix this, on a Linux / macOS terminal type `reset`. On Windows,
-you'll have to close the tab and open a new terminal. See the [panic hooks how-to] for more
+you'll have to close the tab and open a new terminal. See the [panic hooks recipe] for more
 information
 
-[panic hooks how-to]: /how-to/develop-apps/panic-hooks/
+[panic hooks recipe]: /recipes/apps/panic-hooks/
 
 :::
 

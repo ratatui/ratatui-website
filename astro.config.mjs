@@ -71,27 +71,42 @@ export default defineConfig({
         // autogeneration except for the leaf level of the sidebar hierarchy.
         // See https://github.com/withastro/starlight/discussions/972
         // and https://github.com/withastro/starlight/issues/1223
-        { label: "Introduction", link: "/introduction/" },
+        {
+          label: "Introduction",
+          link: "/introduction/",
+        },
         {
           label: "Installation",
           collapsed: true,
-          autogenerate: { directory: "installation" },
+          autogenerate: {
+            directory: "installation",
+          },
         },
         {
           label: "Tutorials",
           collapsed: false,
           items: [
-            { label: "Tutorials", link: "/tutorials/" },
-            { label: "Hello World", link: "/tutorials/hello-world/" },
+            {
+              label: "Tutorials",
+              link: "/tutorials/",
+            },
+            {
+              label: "Hello World",
+              link: "/tutorials/hello-world/",
+            },
             {
               label: "Counter App",
               collapsed: true,
-              autogenerate: { directory: "tutorials/counter-app" },
+              autogenerate: {
+                directory: "tutorials/counter-app",
+              },
             },
             {
               label: "JSON Editor",
               collapsed: true,
-              autogenerate: { directory: "tutorials/json-editor" },
+              autogenerate: {
+                directory: "tutorials/json-editor",
+              },
             },
             // // This material is expected to be revised significantly.
             // // Until then, it might be best to hide to avoid confusing new users.
@@ -106,83 +121,132 @@ export default defineConfig({
           label: "Concepts",
           collapsed: false,
           items: [
-            { label: "Concepts", link: "/concepts/" },
-            { label: "Widgets", link: "/concepts/widgets/" },
-            { label: "Layout", link: "/concepts/layout/" },
-            { label: "Event Handling", link: "/concepts/event-handling/" },
-            { label: "Builder Lite Pattern", link: "/concepts/builder-lite-pattern/" },
+            {
+              label: "Concepts",
+              link: "/concepts/",
+            },
+            {
+              label: "Widgets",
+              link: "/concepts/widgets/",
+            },
+            {
+              label: "Layout",
+              link: "/concepts/layout/",
+            },
+            {
+              label: "Event Handling",
+              link: "/concepts/event-handling/",
+            },
+            {
+              label: "Builder Lite Pattern",
+              link: "/concepts/builder-lite-pattern/",
+            },
             {
               label: "Rendering",
               collapsed: true,
-              autogenerate: { directory: "concepts/rendering" },
+              autogenerate: {
+                directory: "concepts/rendering",
+              },
             },
             {
               label: "Application Patterns",
               collapsed: true,
-              autogenerate: { directory: "concepts/application-patterns" },
+              autogenerate: {
+                directory: "concepts/application-patterns",
+              },
             },
             {
               label: "Backends",
               collapsed: true,
-              autogenerate: { directory: "concepts/backends" },
+              autogenerate: {
+                directory: "concepts/backends",
+              },
             },
           ],
         },
         {
-          label: "How To",
+          label: "Recipes",
           collapsed: false,
           items: [
-            { label: "How To", link: "/how-to/" },
             {
-              label: "Layout UIs",
-              collapsed: true,
-              autogenerate: { directory: "how-to/layout" },
+              label: "Recipes",
+              link: "/recipes/",
             },
             {
-              label: "Render UIs",
+              label: "Layout",
               collapsed: true,
-              autogenerate: { directory: "how-to/render" },
+              autogenerate: {
+                directory: "recipes/layout",
+              },
             },
             {
-              label: "Use Widgets",
+              label: "Rendering",
               collapsed: true,
-              autogenerate: { directory: "how-to/widgets" },
+              autogenerate: {
+                directory: "recipes/render",
+              },
             },
             {
-              label: "Develop Applications",
+              label: "Widgets",
               collapsed: true,
-              autogenerate: { directory: "how-to/develop-apps" },
+              autogenerate: {
+                directory: "recipes/widgets",
+              },
+            },
+            {
+              label: "Applications",
+              collapsed: true,
+              autogenerate: {
+                directory: "recipes/apps",
+              },
             },
           ],
         },
-        { label: "FAQ", link: "/faq/" },
+        {
+          label: "FAQ",
+          link: "/faq/",
+        },
         {
           label: "Highlights",
           collapsed: true,
-          autogenerate: { directory: "highlights" },
+          autogenerate: {
+            directory: "highlights",
+          },
         },
         {
           label: "Showcase",
           collapsed: true,
-          autogenerate: { directory: "showcase" },
+          autogenerate: {
+            directory: "showcase",
+          },
         },
         {
           label: "Templates",
           collapsed: true,
           items: [
-            { label: "Templates", link: "/templates/" },
+            {
+              label: "Templates",
+              link: "/templates/",
+            },
             {
               label: "Component",
               collapsed: true,
-              autogenerate: { directory: "templates/component" },
+              autogenerate: {
+                directory: "templates/component",
+              },
             },
           ],
         },
-        { label: "References", link: "/references/" },
+        {
+          label: "References",
+          link: "/references/",
+        },
         {
           label: "Developer Guide",
           collapsed: true,
-          autogenerate: { directory: "developer-guide" },
+          autogenerate: {
+            directory: "developer-guide",
+          },
         },
       ],
       editLink: {
@@ -194,6 +258,43 @@ export default defineConfig({
     }),
     partytown(),
   ],
+  redirects: {
+    // lots of manual redirects because dynamic redirects don't work with starlight / cloudflare
+    // See https://discord.com/channels/830184174198718474/1242301878994468916/1242301878994468916
+    "/how-to": "/recipes",
+    "/how-to/develop-apps/better-panic": "/recipes/apps/better-panic",
+    "/how-to/develop-apps/cli-arguments": "/recipes/apps/cli-arguments",
+    "/how-to/develop-apps/color-eyre/demo.gif": "/recipes/apps/color-eyre/demo.gif",
+    "/how-to/develop-apps/color-eyre/error-full.gif": "/recipes/apps/color-eyre/error-full.gif",
+    "/how-to/develop-apps/color-eyre/error-full.png": "/recipes/apps/color-eyre/error-full.png",
+    "/how-to/develop-apps/color-eyre/error.gif": "/recipes/apps/color-eyre/error.gif",
+    "/how-to/develop-apps/color-eyre/error.png": "/recipes/apps/color-eyre/error.png",
+    "/how-to/develop-apps/color-eyre/panic-full.gif": "/recipes/apps/color-eyre/panic-full.gif",
+    "/how-to/develop-apps/color-eyre/panic-full.png": "/recipes/apps/color-eyre/panic-full.png",
+    "/how-to/develop-apps/color-eyre/panic.gif": "/recipes/apps/color-eyre/panic.gif",
+    "/how-to/develop-apps/color-eyre/panic.png": "/recipes/apps/color-eyre/panic.png",
+    "/how-to/develop-apps/color-eyre/quit.gif": "/recipes/apps/color-eyre/quit.gif",
+    "/how-to/develop-apps/color-eyre/quit.png": "/recipes/apps/color-eyre/quit.png",
+    "/how-to/develop-apps/color_eyre": "/recipes/apps/color-eyre",
+    "/how-to/develop-apps/config-directories": "/recipes/apps/config-directories",
+    "/how-to/develop-apps": "/recipes/apps",
+    "/how-to/develop-apps/log-with-tracing": "/recipes/apps/log-with-tracing",
+    "/how-to/develop-apps/migrate-from-tui-rs": "/recipes/apps/migrate-from-tui-rs",
+    "/how-to/develop-apps/panic-hooks": "/recipes/apps/panic-hooks",
+    "/how-to/develop-apps/terminal-and-event-handler": "/recipes/apps/terminal-and-event-handler",
+    "/how-to/layout/center-a-rect": "/recipes/layout/center-a-rect",
+    "/how-to/layout/collapse-borders": "/recipes/layout/collapse-borders",
+    "/how-to/layout/dynamic": "/recipes/layout/dynamic",
+    "/how-to/layout": "/recipes/layout",
+    "/how-to/render/display-text": "/recipes/render/display-text",
+    "/how-to/render": "/recipes/render",
+    "/how-to/render/overwrite-regions": "/recipes/render/overwrite-regions",
+    "/how-to/render/style-text": "/recipes/render/style-text",
+    "/how-to/widgets/block": "/recipes/widgets/block",
+    "/how-to/widgets/custom": "/recipes/widgets/custom",
+    "/how-to/widgets": "/recipes/widgets",
+    "/how-to/widgets/paragraph": "/recipes/widgets/paragraph",
+  },
   vite: {
     server: {
       watch: {

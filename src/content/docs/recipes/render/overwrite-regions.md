@@ -1,8 +1,8 @@
 ---
-title: "How to: Overwrite regions"
+title: "Popups (overwrite regions)"
 sidebar:
   order: 3
-  label: Overwrite Regions
+  label: Popups (overwrite regions)
 ---
 
 :::tip[TLDR]
