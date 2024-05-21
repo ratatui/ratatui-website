@@ -27,11 +27,11 @@ futures = "0.3.30"
 human-panic = "2.0.0"
 json5 = "0.4.1"
 lazy_static = "1.4.0"
-libc = "0.2.154"
+libc = "0.2.155"
 log = "0.4.21"
 pretty_assertions = "1.4.0"
 ratatui = { version = "0.26.2", features = ["serde", "macros"] }
-serde = { version = "1.0.201", features = ["derive"] }
+serde = { version = "1.0.202", features = ["derive"] }
 serde_json = "1.0.117"
 signal-hook = "0.3.17"
 strip-ansi-escapes = "0.2.0"
