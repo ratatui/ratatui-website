@@ -1,8 +1,8 @@
 ---
-title: "How to: Display Text"
+title: "Displaying Text"
 sidebar:
   order: 1
-  label: Display Text
+  label: Displaying Text
 ---
 
 This page covers how text displaying works. It will cover `Span`, `Line`, and `Text`, and how these

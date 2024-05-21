@@ -1,8 +1,8 @@
 ---
-title: "How-to: Layout UIs"
+title: "Recipes: UI Layout"
 sidebar:
   order: 0
-  label: Layout UIs
+  label: UI Layout
 ---
 
 In this section we will cover layout basics and advanced techniques.

@@ -1,5 +1,5 @@
 ---
-title: "How to: Center a `Rect`"
+title: "Centering a `Rect`"
 sidebar:
   order: 2
   label: Center a Rect

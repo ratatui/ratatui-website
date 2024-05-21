@@ -1,5 +1,5 @@
 ---
-title: "How to: Collapse borders in a layout"
+title: "Collapse borders in a layout"
 sidebar:
   order: 3
   label: Collapse Borders

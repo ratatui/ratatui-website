@@ -4,7 +4,7 @@ sidebar:
   order: 0
 ---
 
-This section covers topics on how to develop applications:
+This section covers recipes for developing applications:
 
 - [CLI arguments](./cli-arguments/)
 - [Configuration Directories](./config-directories/)

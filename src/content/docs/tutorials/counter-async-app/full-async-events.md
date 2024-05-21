@@ -26,8 +26,8 @@ are also going to include a few more `Event` variants for making our application
 
 Below is the relevant snippet of an updated `Tui` struct. You can click on the "Show hidden lines"
 button at the top right of the code block or check out
-[this section of the book](/how-to/develop-apps/terminal-and-event-handler/) for the full version
-this struct.
+[this section of the book](/recipes/apps/terminal-and-event-handler/) for the full version this
+struct.
 
 The key things to note are that we create a `tick_interval`, `render_interval` and `reader` stream
 that can be polled using `tokio::select!`. This means that even while waiting for a key press, we
