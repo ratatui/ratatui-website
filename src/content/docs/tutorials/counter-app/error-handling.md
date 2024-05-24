@@ -10,8 +10,8 @@ A full copy of the code for this page is available in the github repository for 
 <https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-error-handling>.
 
 In the previous section, you created a [basic counter app](../basic-app/) that responds to the user
-pressing a the **Left** and **Right** arrow keys to control the value of a counter. This tutorial
-will start with that code and add error and panic handling.
+pressing the **Left** and **Right** arrow keys to control the value of a counter. This tutorial will
+start with that code and add error and panic handling.
 
 A quick reminder of where we left off in the basic app:
 
@@ -41,7 +41,7 @@ the main function does not have a chance to restore the terminal state before it
 {{#include @code/counter-app-basic/src/main.rs:main }}
 ```
 
-The application's default panic handler runs by displays the details messed up. This is because raw
+The application's default panic handler runs and displays the details messed up. This is because raw
 mode stops the terminal from interpreting newlines in the usual way. The shell prompt is also
 rendered at the wrong place.
 
@@ -109,7 +109,7 @@ restoring the terminal. The eyre hook now automatically handles this.
 Color eyre works by adding extra information to Results. You can add context to the errors by
 calling `wrap_err` (defined on the `color_eyre::eyre::WrapErr` trait).
 
-Update the `App::run function to add some information about the update function failing and change
+Update the `App::run` function to add some information about the update function failing and change
 the return value.
 
 ```rust {4,7}

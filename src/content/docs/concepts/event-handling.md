@@ -13,8 +13,10 @@ is the one that works for you and your current application.
 
 This is the simplest way to handle events because it handles all of the events as they appear. It is
 often simply a match on the results of `event::read()?` (in crossterm) on the different supported
-keys. Pros: This has the advantage of requiring no message passing, and allows the programmer to
-edit all of the possible keyboard events in one place.
+keys.
+
+Pros: This has the advantage of requiring no message passing, and allows the programmer to edit all
+of the possible keyboard events in one place.
 
 Cons: However, this particular way of handling events simply does not scale well. Because _all_
 events are handled in one place, you will be unable to split different groups of keybinds out into

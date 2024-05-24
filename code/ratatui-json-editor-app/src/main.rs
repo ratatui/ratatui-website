@@ -39,7 +39,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     // create app and run it
     let mut app = App::new();
     let res = run_app(&mut terminal, &mut app);
-
     // ANCHOR_END: application_startup
 
     // ANCHOR: ending_boilerplate

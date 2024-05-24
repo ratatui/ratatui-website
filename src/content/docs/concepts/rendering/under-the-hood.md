@@ -144,14 +144,14 @@ These methods allow any implementation of the `Widget` trait to write into diffe
 Every time your application calls `terminal.draw(|frame| ...)`, Ratatui passes into the closure a
 new instance of [`Frame`] which contains a mutable reference to an instance of `Buffer`. Ratatui
 widgets render to this intermediate buffer before any information is written to the terminal and any
-content rendered to a `Buffer` is only stored in `Buffer` that is attached to the frame during the
-`draw` call. This is in contrast to using a library like `crossterm` directly, where writing text to
-terminal can occur immediately.
+content rendered to a `Buffer` is only stored in the `Buffer` that is attached to the frame during
+the `draw` call. This is in contrast to using a library like `crossterm` directly, where writing
+text to terminal can occur immediately.
 
 :::note
 
 ANSI Escape sequences for color and style that are stored in the cell's string content are not
-rendered as the style information is stored separately in the cell. If your text has ANSI styling
+rendered, as the style information is stored separately in the cell. If your text has ANSI styling
 info, consider using the [`ansi-to-tui`](https://crates.io/crates/ansi-to-tui) crate to convert it
 to a `Text` value before rendering. You can learn more about the text related Ratatui features and
 displaying text [here](/recipes/render/display-text/).

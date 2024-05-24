@@ -140,11 +140,12 @@ impl App {
 
 ### Render a Frame
 
-To render the UI, an application calls`Terminal::draw()` with a closure that accepts a `Frame`. The
+To render the UI, an application calls `Terminal::draw()` with a closure that accepts a `Frame`. The
 most important method on `Frame` is `render_widget()` which renders any type that implements the
-[`Widget` trait](/concepts/widgets) such as `Paragraph`, `List` etc., We will implement the `Widget`
-for the `App` struct so that the code related to rendering is organized in a single place. This
-allows us to call `Frame::render_widget()` with the app in the closure passed to `Terminal::draw`.
+[`Widget` trait](/concepts/widgets) such as `Paragraph`, `List` etc. We will implement the `Widget`
+trait for the `App` struct so that the code related to rendering is organized in a single place.
+This allows us to call `Frame::render_widget()` with the app in the closure passed to
+`Terminal::draw`.
 
 First, add a new `impl Widget for &App` block. We implement this on a reference to the App type, as
 the render function will not mutate any state, and we want to be able to use the app after the call
@@ -208,7 +209,7 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 The application needs to accept events that come from the user via the standard input. The only
 events this application needs to worry about are key events. For information on other available
-events, see the [Crossterm events module] docs. These include window resize and focus, paste and
+events, see the [Crossterm events module] docs. These include window resize and focus, paste, and
 mouse events.
 
 In more advanced applications, events might come from the system, over the network, or from other

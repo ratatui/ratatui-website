@@ -181,7 +181,7 @@ specified coordinates in the buffer.
 Widgets are not restricted to just calling methods on `Buffer`. They can also create and render
 other widgets within their `render` method. For example, instead of directly calling methods on
 `buf`, a Widget can create a `Line` widget with a vector of `Span`s, where the `Span` for the name
-is style. This `Line` widget can then be rendered within the Widget's `render` method.
+is styled. This `Line` widget can then be rendered within the Widget's `render` method.
 
 Here's the same greeting example using nested widgets:
 
@@ -200,8 +200,8 @@ impl Widget for GreetingWidget {
 }
 ```
 
-This approach allows for composing and and reusing widgets. For example, the `Line` widget can be
-used in other widgets or even in other parts of the application. Additionally, it allows for easier
+This approach allows for composing and reusing widgets. For example, the `Line` widget can be used
+in other widgets or even in other parts of the application. Additionally, it allows for easier
 testing and maintenance of widgets as the code related to rendering is organized in a consistent
 place (the `impl Widget` blocks).
 
