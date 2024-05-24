@@ -40,9 +40,9 @@ You can learn more about available widgets from the
 
 :::
 
-By default, `ratatui` enables the `crossterm`, but it's possible to alternatively use `termion`, or
-`termwiz` instead by enabling the appropriate feature and disabling the default features. See
-[Backend] for more information.
+By default, `ratatui` enables the `crossterm` feature, but it's possible to alternatively use
+`termion`, or `termwiz` instead by enabling the appropriate feature and disabling the default
+features. See [Backend] for more information.
 
 For Termion:
 

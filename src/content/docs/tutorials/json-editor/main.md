@@ -45,8 +45,8 @@ For more information, please read the
 
 Now that we have prepared the terminal for our application to run, it is time to actually run it.
 
-First, we need to create an instance of our `ApplicationState` or `app`, to hold all of the
-program's state, and then we will call our function which handles the event and draw loop.
+First, we need to create an instance of our `App` to hold all of the program's state, and then we
+will call our function which handles the event and draw loop.
 
 ```rust
     // --snip--
@@ -164,8 +164,8 @@ if let Event::Key(key) = event::read()? {
 
 and then match the results.
 
-Alternatively, we can set up a thread to run in the background to poll and send `Event`s (as we did
-in the "counter" tutorial). Let's keep things simple here for the sake of illustration.
+Alternatively, we can set up a thread to run in the background to poll and send `Event`s, but let's
+keep things simple here for the sake of illustration.
 
 Note that the process for polling events will vary on the backend you are utilizing, and you will
 need to refer to the documentation of that backend for more information.
@@ -197,7 +197,7 @@ The next handler we will prepare, will handle events while the application is on
 outputting the json. It is simply a `y/n` question, so that is all we listen for. We also add an
 alternate exit key with `q`. If the user chooses to output the json, we return an `Ok(true)` that
 indicates that our `main` function should call `app.print_json()` to perform the serialization and
-printing for us after resetting the terminal to normal
+printing for us after resetting the terminal to normal.
 
 ```rust
                 // --snip--

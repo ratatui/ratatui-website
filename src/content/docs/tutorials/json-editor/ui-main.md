@@ -59,9 +59,9 @@ formatted key-value pairs. Finally, we create the `List` widget, and render it.
 
 ## The bottom navigational bar
 
-It can help new users of your application, to see hints about what keys they can press. For this, we
+It can help new users of your application to see hints about what keys they can press. For this, we
 are going to implement two bars, and another layout. These two bars will contain information on 1)
-The current screen (`Main`, `Editing`, and `Exiting`), and 2) what keybinds are available.
+the current screen (`Main`, `Editing`, and `Exiting`), and 2) what keybinds are available.
 
 Here, we will create a `Vec` of `Span` which will be converted later into a single line by the
 `Paragraph`. (A `Span` is different from a `Line`, because a `Span` indicates a section of `Text`
@@ -96,7 +96,7 @@ We will create a new layout in this space by passing it (`chunks[2]`) as the par
 {{#include @code/ratatui-json-editor-app/src/ui.rs:lower_navigation_layout}}
 ```
 
-This code is the visual equivalent of this:
+The visual equivalent of this code is:
 
 ```svgbob
 +---------------------------------+ Constraint::Length  == 3
