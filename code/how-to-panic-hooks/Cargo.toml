@@ -15,7 +15,7 @@ publish.workspace = true
 
 [dependencies]
 crossterm = "0.27.0"
-ratatui = "0.26.2"
+ratatui = "0.26.3"
 termion = "4.0.0"
 termwiz = "0.22.0"
 
