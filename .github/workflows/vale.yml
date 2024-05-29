@@ -10,3 +10,4 @@ jobs:
       - uses: errata-ai/vale-action@reviewdog
         with:
           files: src/content/docs
+          vale_flags: "--glob=*.md"
