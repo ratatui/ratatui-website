@@ -232,7 +232,7 @@ Replace `// TODO draw` with:
 {{#include @code/hello-world-tutorial/src/main.rs:draw}}
 ```
 
-If you're curious about where to find the the `white()` and `on_blue()` methods in the Ratatui doc,
+If you're curious about where to find the `white()` and `on_blue()` methods in the Ratatui doc,
 these are defined in the [`Stylize`] extension trait as [style shorthands], rather than on the
 [`Paragraph`] widget.
 
