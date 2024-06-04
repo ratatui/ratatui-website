@@ -62,6 +62,7 @@ export default defineConfig({
         github: "https://github.com/ratatui-org/ratatui",
         discord: "https://discord.gg/pMCEU9hNEj",
         matrix: "https://matrix.to/#/#ratatui:matrix.org",
+        discourse: "https://forum.ratatui.rs",
         mastodon: "https://fosstodon.org/@ratatui_rs",
         "x.com": "https://twitter.com/ratatui_rs",
         linkedin: "https://www.linkedin.com/company/ratatui-rs",
