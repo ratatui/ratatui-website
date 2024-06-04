@@ -48,3 +48,7 @@ marker#arrowhead path {
   fill: currentColor !important;
   stroke: currentColor !important;
 }
+
+:root {
+  --sl-content-width: 60rem;
+}
