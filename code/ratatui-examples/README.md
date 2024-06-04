@@ -18,8 +18,8 @@ To update the examples in the future:
 # This first command should only need to be run once
 git remote add --fetch --track latest --no-tags ratatui https://github.com/ratatui-org/ratatui.git
 
-git merge --strategy ours --no-commit ratatui/latest
+git merge --strategy ours --no-commit ratatui/latest --squash
 git rm -rf code/ratatui-examples/examples
-git read-tree --code/ratatui-examples/examples/ -u ratatui/latest:examples
+git read-tree --prefix=code/ratatui-examples/examples/ -u ratatui/latest:examples
 git commit -m 'Update examples'
 ```
