@@ -11,8 +11,8 @@ This folder might use unreleased code. View the examples for the latest release 
 >
 > - View the examples as they were when the latest version was release by selecting the tag that
 >   matches that version. E.g. <https://github.com/ratatui-org/ratatui/tree/v0.26.1/examples>.
-> - If you're viewing this file on GitHub, there is a combo box at the top of this page  which
->   allows you to select any previous tagged version.
+> - If you're viewing this file on GitHub, there is a combo box at the top of this page which allows
+>   you to select any previous tagged version.
 > - To view the code locally, checkout the tag. E.g. `git switch --detach v0.26.1`.
 > - Use the latest [alpha version of Ratatui] in your app. These are released weekly on Saturdays.
 > - Compile your code against the main branch either locally by adding e.g. `path = "../ratatui"` to
@@ -35,8 +35,8 @@ cargo run --example=demo2 --features="crossterm widget-calendar"
 
 ## Demo
 
-This is the previous demo example from the main README. It is available for each of the backends. Source:
-[demo.rs](./demo/).
+This is the previous demo example from the main README. It is available for each of the backends.
+Source: [demo.rs](./demo/).
 
 ```shell
 cargo run --example=demo --features=crossterm
@@ -48,8 +48,8 @@ cargo run --example=demo --no-default-features --features=termwiz
 
 ## Hello World
 
-This is a pretty boring example, but it contains some good documentation
-on writing tui apps. Source: [hello_world.rs](./hello_world.rs).
+This is a pretty boring example, but it contains some good documentation on writing tui apps.
+Source: [hello_world.rs](./hello_world.rs).
 
 ```shell
 cargo run --example=hello_world --features=crossterm
@@ -179,7 +179,7 @@ cargo run --example=inline --features=crossterm
 ## Layout
 
 Demonstrates the [`Layout`](https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html) and
-interaction between each constraint. Source:  [layout.rs](./layout.rs).
+interaction between each constraint. Source: [layout.rs](./layout.rs).
 
 ```shell
 cargo run --example=layout --features=crossterm
@@ -239,6 +239,7 @@ Demonstrates how to render a widget over the top of previously rendered widgets 
 [popup.rs](./popup.rs).
 
 >
+
 ```shell
 cargo run --example=popup --features=crossterm
 ```
@@ -247,10 +248,10 @@ cargo run --example=popup --features=crossterm
 
 ## Ratatui-logo
 
-A fun example of using half blocks to render graphics Source:
-[ratatui-logo.rs](./ratatui-logo.rs).
+A fun example of using half blocks to render graphics Source: [ratatui-logo.rs](./ratatui-logo.rs).
 
 >
+
 ```shell
 cargo run --example=ratatui-logo --features=crossterm
 ```
@@ -305,8 +306,7 @@ cargo run --example=tabs --features=crossterm
 
 Demonstrates one approach to accepting user input. Source [user_input.rs](./user_input.rs).
 
-> [!NOTE]
-> Consider using [`tui-textarea`](https://crates.io/crates/tui-textarea) or
+> [!NOTE] Consider using [`tui-textarea`](https://crates.io/crates/tui-textarea) or
 > [`tui-input`](https://crates.io/crates/tui-input) crates for more functional text entry UIs.
 
 ```shell
@@ -338,11 +338,13 @@ examples/vhs/generate.bash
 [canvas.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/canvas.gif?raw=true
 [chart.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/chart.gif?raw=true
 [colors.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/colors.gif?raw=true
-[custom_widget.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/custom_widget.gif?raw=true
+[custom_widget.gif]:
+  https://github.com/ratatui-org/ratatui/blob/images/examples/custom_widget.gif?raw=true
 [demo.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/demo.gif?raw=true
 [demo2.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/demo2.gif?raw=true
 [gauge.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/gauge.gif?raw=true
-[hello_world.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/hello_world.gif?raw=true
+[hello_world.gif]:
+  https://github.com/ratatui-org/ratatui/blob/images/examples/hello_world.gif?raw=true
 [inline.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/inline.gif?raw=true
 [layout.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/layout.gif?raw=true
 [list.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/list.gif?raw=true
@@ -350,12 +352,13 @@ examples/vhs/generate.bash
 [panic.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/panic.gif?raw=true
 [paragraph.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/paragraph.gif?raw=true
 [popup.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/popup.gif?raw=true
-[ratatui-logo.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/ratatui-logo.gif?raw=true
+[ratatui-logo.gif]:
+  https://github.com/ratatui-org/ratatui/blob/images/examples/ratatui-logo.gif?raw=true
 [scrollbar.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/scrollbar.gif?raw=true
 [sparkline.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/sparkline.gif?raw=true
-[table.gif]:  https://vhs.charm.sh/vhs-6njXBytDf0rwPufUtmSSpI.gif
+[table.gif]: https://vhs.charm.sh/vhs-6njXBytDf0rwPufUtmSSpI.gif
 [tabs.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/tabs.gif?raw=true
-[user_input.gif]: https://github.com/ratatui-org/ratatui/blob/images/examples/user_input.gif?raw=true
-
+[user_input.gif]:
+  https://github.com/ratatui-org/ratatui/blob/images/examples/user_input.gif?raw=true
 [alpha version of Ratatui]: https://crates.io/crates/ratatui/versions
 [BREAKING-CHANGES.md]: https://github.com/ratatui-org/ratatui/blob/main/BREAKING-CHANGES.md
