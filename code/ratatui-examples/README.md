@@ -1,5 +1,8 @@
 # Ratatui Examples
 
+Note: Edits to the examples in this folder will be overwritten on each release. To update these
+examples, do so in the main [Ratatui](https://github.com/ratatui-org/ratatui) repo.
+
 This folder contains a copy of the examples from the latest release version of Ratatui. It is
 generated using directly from <https://github.com/ratatui-org/ratatui/tree/latest/examples> using
 git read-tree as suggested by a
