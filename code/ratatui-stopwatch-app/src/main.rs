@@ -81,8 +81,9 @@ impl StopwatchApp {
             Event::Key(key) => match key.code {
                 crossterm::event::KeyCode::Char('q') => Message::Quit,
                 crossterm::event::KeyCode::Char(' ') => Message::StartOrSplit,
-                crossterm::event::KeyCode::Char('s')
-                | crossterm::event::KeyCode::Enter => Message::Stop,
+                crossterm::event::KeyCode::Char('s') | crossterm::event::KeyCode::Enter => {
+                    Message::Stop
+                }
                 _ => Message::Tick,
             },
             _ => Message::Tick,
@@ -201,9 +202,7 @@ impl StopwatchApp {
             .copied()
             .tuple_windows()
             .enumerate()
-            .map(|(index, (prev, current))| {
-                self.format_split(index, start, prev, current)
-            })
+            .map(|(index, (prev, current))| self.format_split(index, start, prev, current))
             .collect::<Vec<_>>();
         splits.reverse();
         Paragraph::new(splits)
@@ -291,8 +290,7 @@ struct Tui {
 
 impl Tui {
     fn new() -> Result<Tui> {
-        let mut terminal =
-            ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
+        let mut terminal = ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
         terminal.clear()?;
         let (event_tx, event_rx) = tokio::sync::mpsc::unbounded_channel();
         let cancellation_token = tokio_util::sync::CancellationToken::new();

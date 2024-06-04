@@ -14,9 +14,7 @@ use termion::{
 pub fn main() -> io::Result<()> {
     init_panic_hook()?;
     let mut tui = init_tui()?;
-    tui.draw(|frame| {
-        frame.render_widget(Span::from("Hello, world!"), frame.size())
-    })?;
+    tui.draw(|frame| frame.render_widget(Span::from("Hello, world!"), frame.size()))?;
     sleep(Duration::from_secs(1));
     panic!("This is a panic!");
 }

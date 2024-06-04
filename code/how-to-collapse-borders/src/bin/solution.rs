@@ -6,10 +6,7 @@ use std::{
 use color_eyre::Result;
 use crossterm::{
     event::{self, Event},
-    terminal::{
-        disable_raw_mode, enable_raw_mode, EnterAlternateScreen,
-        LeaveAlternateScreen,
-    },
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
     ExecutableCommand,
 };
 // ANCHOR: imports
@@ -103,8 +100,7 @@ fn ui(frame: &mut Frame) {
 // ANCHOR_END: ui
 
 fn key_pressed() -> Result<bool> {
-    Ok(event::poll(Duration::from_millis(16))?
-        && matches!(event::read()?, Event::Key(_)))
+    Ok(event::poll(Duration::from_millis(16))? && matches!(event::read()?, Event::Key(_)))
 }
 
 impl Term {

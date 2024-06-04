@@ -21,8 +21,7 @@ pub fn render(frame: &mut Frame) -> color_eyre::Result<()> {
         .default_style(default_style);
 
     let february = Date::from_calendar_date(2023, Month::February, 1)?;
-    let washingtons_birthday =
-        Date::from_calendar_date(2023, Month::February, 20)?;
+    let washingtons_birthday = Date::from_calendar_date(2023, Month::February, 20)?;
     let mut events = CalendarEventStore::default();
     events.add(
         washingtons_birthday,

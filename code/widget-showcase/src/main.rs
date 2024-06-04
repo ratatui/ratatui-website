@@ -93,11 +93,7 @@ impl App {
         }
         Ok(())
     }
-    fn render_frame(
-        &self,
-        frame: &mut Frame,
-        widget: Widget,
-    ) -> color_eyre::Result<()> {
+    fn render_frame(&self, frame: &mut Frame, widget: Widget) -> color_eyre::Result<()> {
         match widget {
             Widget::Block => block::render(frame),
             Widget::BarChart => bar_chart::render(frame),

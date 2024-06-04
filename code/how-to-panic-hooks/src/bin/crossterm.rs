@@ -7,10 +7,7 @@ use std::{
 
 use crossterm::{
     execute,
-    terminal::{
-        disable_raw_mode, enable_raw_mode, EnterAlternateScreen,
-        LeaveAlternateScreen,
-    },
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::prelude::*;
 
@@ -18,9 +15,7 @@ use ratatui::prelude::*;
 pub fn main() -> io::Result<()> {
     init_panic_hook();
     let mut tui = init_tui()?;
-    tui.draw(|frame| {
-        frame.render_widget(Span::from("Hello, world!"), frame.size())
-    })?;
+    tui.draw(|frame| frame.render_widget(Span::from("Hello, world!"), frame.size()))?;
     sleep(Duration::from_secs(1));
     panic!("This is a panic!");
 }
