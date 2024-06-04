@@ -66,12 +66,8 @@ impl EventHandler {
                                     Ok(()) // ignore KeyEventKind::Release on windows
                                 }
                             }
-                            CrosstermEvent::Mouse(e) => {
-                                sender.send(Event::Mouse(e))
-                            }
-                            CrosstermEvent::Resize(w, h) => {
-                                sender.send(Event::Resize(w, h))
-                            }
+                            CrosstermEvent::Mouse(e) => sender.send(Event::Mouse(e)),
+                            CrosstermEvent::Resize(w, h) => sender.send(Event::Resize(w, h)),
                             _ => unimplemented!(),
                         }
                         .expect("failed to send terminal event")
@@ -79,9 +75,7 @@ impl EventHandler {
                     // ANCHOR_END: eventhandler_poll
 
                     if last_tick.elapsed() >= tick_rate {
-                        sender
-                            .send(Event::Tick)
-                            .expect("failed to send tick event");
+                        sender.send(Event::Tick).expect("failed to send tick event");
                         last_tick = Instant::now();
                     }
                 }

@@ -2,7 +2,3 @@
 # rather than configuring specific values. This is because the defaults are generally fairly good,
 # and they will align with what people see in the wild. We should only add config options if they
 # make the code more readable, and if they are available in rust stable.
-
-# Use 80 to make things easier to read in code blocks in docs over the default of 100
-# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#max_width
-max_width = 80

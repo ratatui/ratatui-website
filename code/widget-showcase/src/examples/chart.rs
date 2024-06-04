@@ -58,9 +58,7 @@ pub fn render(frame: &mut Frame) {
                 .title(Span::styled("Y", Style::default().fg(Color::Red)))
                 .style(Style::default().fg(Color::White))
                 .bounds([0.0, 10.0])
-                .labels(
-                    ["0.0", "10.0"].iter().cloned().map(Span::from).collect(),
-                ),
+                .labels(["0.0", "10.0"].iter().cloned().map(Span::from).collect()),
         );
     frame.render_widget(chart, frame.size());
 }

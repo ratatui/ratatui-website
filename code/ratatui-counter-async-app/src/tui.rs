@@ -7,9 +7,8 @@ use color_eyre::eyre::Result;
 use crossterm::{
     cursor,
     event::{
-        DisableBracketedPaste, DisableMouseCapture, EnableBracketedPaste,
-        EnableMouseCapture, Event as CrosstermEvent, KeyEvent, KeyEventKind,
-        MouseEvent,
+        DisableBracketedPaste, DisableMouseCapture, EnableBracketedPaste, EnableMouseCapture,
+        Event as CrosstermEvent, KeyEvent, KeyEventKind, MouseEvent,
     },
     terminal::{EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -96,10 +95,8 @@ impl Tui {
     }
 
     pub fn start(&mut self) {
-        let tick_delay =
-            std::time::Duration::from_secs_f64(1.0 / self.tick_rate);
-        let render_delay =
-            std::time::Duration::from_secs_f64(1.0 / self.frame_rate);
+        let tick_delay = std::time::Duration::from_secs_f64(1.0 / self.tick_rate);
+        let render_delay = std::time::Duration::from_secs_f64(1.0 / self.frame_rate);
         self.cancel();
         self.cancellation_token = CancellationToken::new();
         let _cancellation_token = self.cancellation_token.clone();
@@ -179,11 +176,7 @@ impl Tui {
 
     pub fn enter(&mut self) -> Result<()> {
         crossterm::terminal::enable_raw_mode()?;
-        crossterm::execute!(
-            std::io::stderr(),
-            EnterAlternateScreen,
-            cursor::Hide
-        )?;
+        crossterm::execute!(std::io::stderr(), EnterAlternateScreen, cursor::Hide)?;
         if self.mouse {
             crossterm::execute!(std::io::stderr(), EnableMouseCapture)?;
         }
@@ -204,11 +197,7 @@ impl Tui {
             if self.mouse {
                 crossterm::execute!(std::io::stderr(), DisableMouseCapture)?;
             }
-            crossterm::execute!(
-                std::io::stderr(),
-                LeaveAlternateScreen,
-                cursor::Show
-            )?;
+            crossterm::execute!(std::io::stderr(), LeaveAlternateScreen, cursor::Show)?;
             crossterm::terminal::disable_raw_mode()?;
         }
         Ok(())
