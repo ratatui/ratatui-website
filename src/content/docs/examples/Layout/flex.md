@@ -11,7 +11,7 @@ cd ratatui
 cargo run --example=flex --features=crossterm
 ```
 
-<!-- ![flex](flex.gif) -->
+![flex](flex.gif)
 
 ```rust title=flex.rs
 {{ #include @code/ratatui-examples/examples/flex.rs }}

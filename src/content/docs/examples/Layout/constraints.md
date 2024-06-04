@@ -12,7 +12,7 @@ cd ratatui
 cargo run --example=constraints --features=crossterm
 ```
 
-<!-- ![constraints](constraints.gif) -->
+![constraints](constraints.gif)
 
 ```rust title=constraints.rs
 {{ #include @code/ratatui-examples/examples/constraints.rs }}
