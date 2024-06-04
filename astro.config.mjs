@@ -118,6 +118,13 @@ export default defineConfig({
           ],
         },
         {
+          label: "Examples",
+          collapsed: true,
+          autogenerate: {
+            directory: "examples",
+          },
+        },
+        {
           label: "Concepts",
           collapsed: false,
           items: [

@@ -1,0 +1,47 @@
+[package]
+name = "ratatui-examples"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+repository.workspace = true
+keywords.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[features]
+default = ["crossterm"]
+crossterm = ["dep:crossterm", "ratatui/crossterm"]
+termion = ["dep:termion", "ratatui/termion"]
+termwiz = ["dep:termwiz", "ratatui/termwiz"]
+
+[dependencies]
+ratatui = { version = "0.26.3", features = ["widget-calendar"] }
+# when 0.27.0 is released we can remove these optional dependencies as they are re-exported by
+# ratatui
+crossterm = { version = "0.27.0", optional = true }
+termion = { version = "3.0", optional = true }
+termwiz = { version = "0.22.0", optional = true }
+
+[dev-dependencies]
+anyhow = "1.0.71"
+argh = "0.1.12"
+better-panic = "0.3.0"
+color-eyre = "0.6.2"
+criterion = { version = "0.5.1", features = ["html_reports"] }
+derive_builder = "0.20.0"
+fakeit = "1.1"
+font8x8 = "0.3.1"
+indoc = "2"
+palette = "0.7.3"
+pretty_assertions = "1.4.0"
+rand = "0.8.5"
+rand_chacha = "0.3.1"
+rstest = "0.21.0"
+serde_json = "1.0.109"
+itertools = "0.12"
+strum = { version = "0.26", features = ["derive"] }
+time = { version = "0.3.11", features = ["local-offset"] }
+unicode-width = "0.1"
