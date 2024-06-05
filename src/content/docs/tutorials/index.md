@@ -19,3 +19,9 @@ We also have some [examples](https://github.com/ratatui-org/ratatui/tree/main/ex
 help you get started on GitHub.
 
 :::
+
+:::note
+
+You can also check out [videos](/tutorials/videos) created by Ratatui users.
+
+:::

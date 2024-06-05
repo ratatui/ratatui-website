@@ -109,6 +109,10 @@ export default defineConfig({
                 directory: "tutorials/json-editor",
               },
             },
+            {
+              label: "Videos",
+              link: "/tutorials/videos/",
+            },
             // // This material is expected to be revised significantly.
             // // Until then, it might be best to hide to avoid confusing new users.
             // {
