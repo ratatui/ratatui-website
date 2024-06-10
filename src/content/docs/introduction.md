@@ -8,9 +8,9 @@ title: Introduction
 lightweight library that provides a set of widgets and utilities to build simple or complex rust
 TUIs.
 
-Ratatui is an [immediate mode] graphics library. Applications imperatively declare how to render
-each frame in full by combining widgets and layout. Ratatui then draws the described UI widgets
-efficiently to the terminal.
+Ratatui is an [immediate mode] graphics library. Applications imperatively declare how to render each
+frame in full by combining widgets and layout. Ratatui then draws the described UI widgets efficiently
+to the terminal.
 
 Applications built with Ratatui use the features of their chosen [backend] ([Crossterm], [Termion],
 or [Termwiz] to handle:

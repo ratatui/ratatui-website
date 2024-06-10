@@ -14,8 +14,8 @@ The following pages document how to use the following widgets:
 - [Custom Widgets](./custom/)
 
 There are more widgets available than just the above list. The crate docs document all the built-in
-widgets. See the [`widgets` module] for a list. There are also [Third Party Crates] that implement
-more widgets.
+widgets. See the [`widgets` module] for a list. There are also [Third Party Crates] that implement more
+widgets.
 
 [`Widget`]: https://docs.rs/ratatui/latest/ratatui/widgets/trait.Widget.html
 [`StatefulWidget`]: https://docs.rs/ratatui/latest/ratatui/widgets/trait.StatefulWidget.html
