@@ -72,10 +72,10 @@ Fill out the main function:
 
 ### TUI module
 
-The counter app will be displayed on the [alternate screen]. This is a secondary buffer that allows
-the application to avoid messing up the user's current shell. The app also enables [raw mode] so
-that the app can process keys immediately without having to wait for a newline and so that the keys
-are not echoed to the user's screen when pressed.
+The counter app will be displayed on the [alternate screen]. This is a secondary buffer that allows the
+application to avoid messing up the user's current shell. The app also enables [raw mode] so that
+the app can process keys immediately without having to wait for a newline and so that the keys are
+not echoed to the user's screen when pressed.
 
 Let's implement this by creating a new module named `tui` to encapsulate this functionality into an
 init and a restore functions.
