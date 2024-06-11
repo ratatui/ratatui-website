@@ -134,7 +134,7 @@ ratatui = "0.24.0"
 ## Create a TUI application
 
 Let's replace the default console application code which `cargo new` created with a Ratatui
-application which displays a colored message the middle of the screen and waits for the user to
+application which displays a colored message in the middle of the screen and waits for the user to
 press a key to exit.
 
 Note: a full copy of the code is available below in the
