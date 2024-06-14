@@ -44,6 +44,15 @@ svg[aria-roledescription="flowchart-v2"] path,
 svg[aria-roledescription="flowchart-v2"] .flowchart-link {
   stroke: currentColor !important;
 }
+svg[aria-roledescription="stateDiagram"] {
+  line-height: normal;
+}
+svg[aria-roledescription="stateDiagram"] line,
+svg[aria-roledescription="stateDiagram"] path,
+svg[aria-roledescription="stateDiagram"] circle {
+  stroke: currentColor !important;
+}
+
 marker#arrowhead path {
   fill: currentColor !important;
   stroke: currentColor !important;
