@@ -152,25 +152,27 @@ Here's a state transition diagram of the counter example from above:
 
 ```mermaid
 stateDiagram-v2
-    state Model {
-        counter : counter = 0
-        should_quit : should_quit = false
+    [*] --> Running
+    state Running {
+        state Increment <<choice>>
+        state Decrement <<choice>>
+        [*] --> Counting
+        Counting --> Increment: Increment
+        Increment --> Reset: if counter > 50 Reset
+        Increment --> Up: if counter <= 50
+        Up: counter += 1
+        Up --> Counting
+        Counting --> Decrement: Decrement
+        Decrement --> Down: if counter >= -50
+        Down: counter -= 1
+        Decrement --> Reset: if counter < -50 Reset
+
+        Reset: counter = 0
+        Reset --> Counting
+        Counting --> [*]: Quit
     }
-
-    Model --> Increment
-    Model --> Decrement
-    Model --> Reset
-    Model --> Quit
-
-    Increment --> Model: counter += 1
-    Increment --> Reset: if > 50
-
-    Decrement --> Model: counter -= 1
-    Decrement --> Reset: if < -50
-
-    Reset --> Model: counter = 0
-
-    Quit --> break: should_quit = true
+    Running --> Done
+    Done --> [*]
 ```
 
 While TEA doesn't use the Finite State Machine terminology or strictly enforce that paradigm,
