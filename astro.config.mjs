@@ -3,8 +3,8 @@ import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { defineConfig } from "astro/config";
+import rehypeMermaid from "rehype-mermaid";
 import emoji from "remark-emoji";
-import remarkMermaid from "remark-mermaidjs";
 import remarkSvgBob from "remark-svgbob";
 import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
@@ -26,7 +26,8 @@ export default defineConfig({
     prefetchAll: true,
   },
   markdown: {
-    remarkPlugins: [remarkIncludeCode, emoji, remarkMermaid, remarkYoutube, remarkSvgBob],
+    remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob],
+    rehypePlugins: [rehypeMermaid],
   },
   integrations: [
     starlight({
