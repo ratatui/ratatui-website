@@ -27,6 +27,7 @@
     "hast-util-select": "^6.0.2",
     "hastscript": "^9.0.0",
     "marked": "^12.0.2",
+    "rehype-mermaid": "^2.1.0",
     "remark-svgbob": "^1.1.1",
     "sharp": "^0.33.4",
     "starlight-links-validator": "^0.9.0",
@@ -45,7 +46,6 @@
     "prettier-plugin-tailwindcss": "^0.6.2",
     "remark": "^15.0.1",
     "remark-emoji": "^5.0.0",
-    "remark-mermaidjs": "^6.0.0",
     "remark-youtube": "^1.3.2",
     "tailwindcss-animate": "^1.0.7",
     "unist-util-visit": "^5.0.0"
