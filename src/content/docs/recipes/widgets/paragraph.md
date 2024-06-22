@@ -57,7 +57,7 @@ f.render_widget(p, chunks[0]);
 `Paragraph` supports rich text through `Span`, `Line`, and `Text`:
 
 ```rust
-let lines = vec![];
+let mut lines = vec![];
 lines.push(Line::from(vec![
     Span::styled("Hello ", Style::default().fg(Color::Yellow)),
     Span::styled("World", Style::default().fg(Color::Blue).bg(Color::White)),
