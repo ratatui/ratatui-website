@@ -6,10 +6,12 @@ sidebar:
 ---
 
 :::tip
-See [`tui.rs`](https://github.com/ratatui-org/crates-tui/blob/main/src/tui.rs) and 
-[`events.rs`](https://github.com/ratatui-org/crates-tui/blob/main/src/events.rs)
-in the [`crates-tui`](https://github.com/ratatui-org/crates-tui/) repository
-for a more simpler and modular approach to the terminal and event handler code.
+
+See [`tui.rs`](https://github.com/ratatui-org/crates-tui/blob/main/src/tui.rs) and
+[`events.rs`](https://github.com/ratatui-org/crates-tui/blob/main/src/events.rs) in the
+[`crates-tui`](https://github.com/ratatui-org/crates-tui/) repository for a more simpler and modular
+approach to the terminal and event handler code.
+
 :::
 
 If you want a `Tui` struct:
