@@ -27,7 +27,7 @@ then you can copy-paste this `Tui` struct into your project.
 Add the following dependencies:
 
 ```bash
-cargo add ratatui crossterm tokio tokio_util futures # required
+cargo add ratatui tokio tokio_util futures # required
 cargo add color_eyre serde serde_derive # optional
 ```
 
@@ -40,7 +40,10 @@ use std::{
 };
 
 use color_eyre::eyre::Result;
-use crossterm::{
+
+use futures::{FutureExt, StreamExt};
+use ratatui::backend::CrosstermBackend as Backend;
+use ratatui::crossterm::{
   cursor,
   event::{
     DisableBracketedPaste, DisableMouseCapture, EnableBracketedPaste, EnableMouseCapture, Event as CrosstermEvent,
@@ -48,8 +51,6 @@ use crossterm::{
   },
   terminal::{EnterAlternateScreen, LeaveAlternateScreen},
 };
-use futures::{FutureExt, StreamExt};
-use ratatui::backend::CrosstermBackend as Backend;
 use serde::{Deserialize, Serialize};
 use tokio::{
   sync::mpsc::{self, UnboundedReceiver, UnboundedSender},

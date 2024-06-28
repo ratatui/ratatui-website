@@ -4,12 +4,14 @@ use std::{
     time::{Duration, Instant},
 };
 
-use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
-    execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+use ratatui::{
+    crossterm::{
+        event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
+        execute,
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    },
+    prelude::*,
 };
-use ratatui::prelude::*;
 
 use crate::{app::App, ui};
 
@@ -51,7 +53,7 @@ fn run_app<B: Backend>(
         terminal.draw(|f| ui::draw(f, &mut app))?;
 
         let timeout = tick_rate.saturating_sub(last_tick.elapsed());
-        if crossterm::event::poll(timeout)? {
+        if event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
                 if key.kind == KeyEventKind::Press {
                     match key.code {

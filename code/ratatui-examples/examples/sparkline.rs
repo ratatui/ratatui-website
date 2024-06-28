@@ -19,16 +19,16 @@ use std::{
     time::{Duration, Instant},
 };
 
-use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
-    execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-};
 use rand::{
     distributions::{Distribution, Uniform},
     rngs::ThreadRng,
 };
 use ratatui::{
+    crossterm::{
+        event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
+        execute,
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    },
     prelude::*,
     widgets::{Block, Borders, Sparkline},
 };
@@ -128,7 +128,7 @@ fn run_app<B: Backend>(
         terminal.draw(|f| ui(f, &app))?;
 
         let timeout = tick_rate.saturating_sub(last_tick.elapsed());
-        if crossterm::event::poll(timeout)? {
+        if event::poll(timeout)? {
             if let Event::Key(key) = event::read()? {
                 if key.code == KeyCode::Char('q') {
                     return Ok(());

@@ -24,7 +24,7 @@ edition = "2021"
 [dependencies]
 color-eyre = "0.6.2"
 crossterm = { version = "0.27.0", features = ["event-stream"] }
-ratatui = "0.24.0"
+ratatui = "0.27.0"
 tokio = { version = "1.32.0", features = ["full"] }
 tokio-util = "0.7.9"
 futures = "0.3.28"
@@ -38,7 +38,7 @@ If you were already using `crossterm` before, note that now you'll need to add
 You can use `cargo add` from the command line to add the above dependencies in one go:
 
 ```bash
-cargo add ratatui crossterm color-eyre tokio tokio-util futures --features tokio/full,crossterm/event-stream
+cargo add ratatui color-eyre tokio tokio-util futures --features tokio/full,crossterm/event-stream
 ```
 
 :::

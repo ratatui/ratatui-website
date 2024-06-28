@@ -7,7 +7,7 @@ use std::{
 };
 
 use color_eyre::Result;
-use crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
+use ratatui::crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
 // ANCHOR_END: event_import
 
 // ANCHOR: event

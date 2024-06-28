@@ -1,9 +1,15 @@
 use std::{collections::HashMap, time::Duration};
 
 use color_eyre::eyre::Result;
-use crossterm::event::{KeyCode, KeyEvent};
 use log::error;
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+  crossterm::event::{KeyCode, KeyEvent},
+  layout::{Alignment, Constraint, Layout, Margin, Rect},
+  style::{Color, Modifier, Style, Stylize},
+  text::{Line, Span},
+  widgets::{block, Block, BorderType, Borders, Clear, Paragraph, Row, Table},
+  Frame,
+};
 use tokio::sync::mpsc::UnboundedSender;
 use tracing::trace;
 use tui_input::{backend::crossterm::EventHandler, Input};
@@ -210,7 +216,7 @@ impl Component for Home {
     }
 
     if self.show_help {
-      let rect = rect.inner(&Margin { horizontal: 4, vertical: 2 });
+      let rect = rect.inner(Margin { horizontal: 4, vertical: 2 });
       f.render_widget(Clear, rect);
       let block = Block::default()
         .title(Line::from(vec![Span::styled("Key Bindings", Style::default().add_modifier(Modifier::BOLD))]))
@@ -229,7 +235,7 @@ impl Component for Home {
       let table = Table::new(rows, [Constraint::Percentage(10), Constraint::Percentage(90)])
         .header(Row::new(vec!["Key", "Action"]).bottom_margin(1).style(Style::default().add_modifier(Modifier::BOLD)))
         .column_spacing(1);
-      f.render_widget(table, rect.inner(&Margin { vertical: 4, horizontal: 2 }));
+      f.render_widget(table, rect.inner(Margin { vertical: 4, horizontal: 2 }));
     };
 
     f.render_widget(

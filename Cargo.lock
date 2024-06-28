@@ -488,7 +488,6 @@ dependencies = [
 name = "counter-app-basic"
 version = "0.0.0"
 dependencies = [
- "crossterm",
  "ratatui",
 ]
 
@@ -497,7 +496,6 @@ name = "counter-app-error-handling"
 version = "0.0.0"
 dependencies = [
  "color-eyre",
- "crossterm",
  "ratatui",
 ]
 
@@ -1093,7 +1091,6 @@ name = "how-to-collapse-borders"
 version = "0.0.0"
 dependencies = [
  "color-eyre",
- "crossterm",
  "ratatui",
 ]
 
@@ -1102,7 +1099,6 @@ name = "how-to-color_eyre"
 version = "0.0.0"
 dependencies = [
  "color-eyre",
- "crossterm",
  "ratatui",
 ]
 
@@ -1111,7 +1107,6 @@ name = "how-to-overwrite-regions"
 version = "0.0.0"
 dependencies = [
  "color-eyre",
- "crossterm",
  "derive_setters",
  "lipsum",
  "ratatui",
@@ -1121,10 +1116,7 @@ dependencies = [
 name = "how-to-panic-hooks"
 version = "0.0.0"
 dependencies = [
- "crossterm",
  "ratatui",
- "termion 4.0.2",
- "termwiz",
 ]
 
 [[package]]
@@ -1985,21 +1977,22 @@ dependencies = [
 
 [[package]]
 name = "ratatui"
-version = "0.26.3"
+version = "0.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f44c9e68fd46eda15c646fbb85e1040b657a58cdc8c98db1d97a55930d991eef"
+checksum = "d16546c5b5962abf8ce6e2881e722b4e0ae3b6f1a08a26ae3573c55853ca68d3"
 dependencies = [
  "bitflags 2.5.0",
  "cassowary",
  "compact_str",
  "crossterm",
- "itertools 0.12.1",
+ "itertools 0.13.0",
  "lru",
  "paste",
  "serde",
  "stability",
  "strum",
- "termion 3.0.0",
+ "strum_macros",
+ "termion",
  "termwiz",
  "time",
  "unicode-segmentation",
@@ -2044,7 +2037,6 @@ name = "ratatui-counter-app"
 version = "0.1.0"
 dependencies = [
  "color-eyre",
- "crossterm",
  "ratatui",
 ]
 
@@ -2087,7 +2079,6 @@ dependencies = [
  "better-panic",
  "color-eyre",
  "criterion",
- "crossterm",
  "derive_builder",
  "fakeit",
  "font8x8",
@@ -2101,8 +2092,6 @@ dependencies = [
  "rstest",
  "serde_json",
  "strum",
- "termion 4.0.2",
- "termwiz",
  "time",
  "unicode-width",
 ]
@@ -2111,7 +2100,6 @@ dependencies = [
 name = "ratatui-hello-world-tutorial"
 version = "0.0.0"
 dependencies = [
- "crossterm",
  "ratatui",
 ]
 
@@ -2119,7 +2107,6 @@ dependencies = [
 name = "ratatui-json-editor-app"
 version = "0.0.0"
 dependencies = [
- "crossterm",
  "ratatui",
  "serde",
  "serde_json",
@@ -2629,18 +2616,6 @@ dependencies = [
 
 [[package]]
 name = "termion"
-version = "3.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "417813675a504dfbbf21bfde32c03e5bf9f2413999962b479023c02848c1c7a5"
-dependencies = [
- "libc",
- "libredox 0.0.2",
- "numtoa",
- "redox_termios",
-]
-
-[[package]]
-name = "termion"
 version = "4.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1ccce68e518d1173e80876edd54760b60b792750d0cab6444a79101c6ea03848"
@@ -2709,7 +2684,6 @@ name = "the-elm-architecture"
 version = "0.0.0"
 dependencies = [
  "color-eyre",
- "crossterm",
  "ratatui",
 ]
 
@@ -2945,9 +2919,9 @@ dependencies = [
 
 [[package]]
 name = "tui-big-text"
-version = "0.4.4"
+version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "74f00a38fc1cb36f4670db0dafdbd021ab6e67198896ad4c46546c0acd8fd7d8"
+checksum = "bc9699f14558a8b6abaae5cb5691033379a4b86f6b26555f8168ec5c6b4029e3"
 dependencies = [
  "derive_builder",
  "font8x8",
@@ -3239,7 +3213,6 @@ version = "0.0.0"
 dependencies = [
  "clap",
  "color-eyre",
- "crossterm",
  "ratatui",
  "time",
 ]

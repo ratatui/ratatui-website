@@ -17,12 +17,18 @@
 
 use std::{error::Error, io};
 
-use crossterm::{
-    event::{self, Event, KeyCode},
-    execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+use ratatui::{
+    backend::CrosstermBackend,
+    crossterm::{
+        event::{self, Event, KeyCode},
+        execute,
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    },
+    layout::{Constraint, Layout, Rect},
+    style::{Color, Modifier, Style},
+    widgets::calendar::{CalendarEventStore, DateStyler, Monthly},
+    Frame, Terminal,
 };
-use ratatui::{prelude::*, widgets::calendar::*};
 use time::{Date, Month, OffsetDateTime};
 
 fn main() -> Result<(), Box<dyn Error>> {

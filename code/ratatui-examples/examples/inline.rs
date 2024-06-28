@@ -25,7 +25,18 @@ use std::{
 };
 
 use rand::distributions::{Distribution, Uniform};
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    crossterm::{
+        self,
+        event::{self, KeyEvent},
+    },
+    prelude::{
+        symbols, Alignment, Backend, Color, Constraint, CrosstermBackend, Frame, Layout, Line,
+        Modifier, Rect, Span, Style, Terminal, Widget,
+    },
+    widgets::{block, Block, Gauge, LineGauge, List, ListItem, Paragraph},
+    TerminalOptions, Viewport,
+};
 
 const NUM_DOWNLOADS: usize = 10;
 
@@ -33,7 +44,7 @@ type DownloadId = usize;
 type WorkerId = usize;
 
 enum Event {
-    Input(crossterm::event::KeyEvent),
+    Input(KeyEvent),
     Tick,
     Resize,
     DownloadUpdate(WorkerId, DownloadId, f64),
@@ -116,10 +127,10 @@ fn input_handling(tx: mpsc::Sender<Event>) {
         loop {
             // poll for tick rate duration, if no events, sent tick event.
             let timeout = tick_rate.saturating_sub(last_tick.elapsed());
-            if crossterm::event::poll(timeout).unwrap() {
-                match crossterm::event::read().unwrap() {
-                    crossterm::event::Event::Key(key) => tx.send(Event::Input(key)).unwrap(),
-                    crossterm::event::Event::Resize(_, _) => tx.send(Event::Resize).unwrap(),
+            if event::poll(timeout).unwrap() {
+                match event::read().unwrap() {
+                    event::Event::Key(key) => tx.send(Event::Input(key)).unwrap(),
+                    event::Event::Resize(_, _) => tx.send(Event::Resize).unwrap(),
                     _ => {}
                 };
             }
@@ -187,7 +198,7 @@ fn run_app<B: Backend>(
 
         match rx.recv()? {
             Event::Input(event) => {
-                if event.code == crossterm::event::KeyCode::Char('q') {
+                if event.code == event::KeyCode::Char('q') {
                     break;
                 }
             }
@@ -248,7 +259,7 @@ fn ui(f: &mut Frame, downloads: &Downloads) {
     let done = NUM_DOWNLOADS - downloads.pending.len() - downloads.in_progress.len();
     #[allow(clippy::cast_precision_loss)]
     let progress = LineGauge::default()
-        .gauge_style(Style::default().fg(Color::Blue))
+        .filled_style(Style::default().fg(Color::Blue))
         .label(format!("{done}/{NUM_DOWNLOADS}"))
         .ratio(done as f64 / NUM_DOWNLOADS as f64);
     f.render_widget(progress, progress_area);

@@ -4,12 +4,15 @@ use std::{
 };
 
 use color_eyre::{eyre::WrapErr, Result};
-use crossterm::{
-    event::{self, Event},
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-    ExecutableCommand,
-};
 use ratatui::prelude::*;
+use ratatui::{
+    crossterm::{
+        event::{self, Event},
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+        ExecutableCommand,
+    },
+    TerminalOptions, Viewport,
+};
 
 pub fn init() -> Result<Terminal<impl Backend>> {
     // this size is to match the size of the terminal when running the demo

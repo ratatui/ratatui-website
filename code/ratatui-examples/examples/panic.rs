@@ -31,11 +31,12 @@
 
 use std::{error::Error, io};
 
-use crossterm::{
-    event::{self, Event, KeyCode},
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-};
 use ratatui::{
+    crossterm::{
+        event::{self, Event, KeyCode},
+        execute,
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    },
     prelude::*,
     widgets::{Block, Paragraph},
 };
@@ -77,7 +78,7 @@ fn main() -> Result<()> {
 
 /// Initializes the terminal.
 fn init_terminal() -> Result<Terminal<CrosstermBackend<io::Stdout>>> {
-    crossterm::execute!(io::stdout(), EnterAlternateScreen)?;
+    execute!(io::stdout(), EnterAlternateScreen)?;
     enable_raw_mode()?;
 
     let backend = CrosstermBackend::new(io::stdout());
@@ -91,7 +92,7 @@ fn init_terminal() -> Result<Terminal<CrosstermBackend<io::Stdout>>> {
 /// Resets the terminal.
 fn reset_terminal() -> Result<()> {
     disable_raw_mode()?;
-    crossterm::execute!(io::stdout(), LeaveAlternateScreen)?;
+    execute!(io::stdout(), LeaveAlternateScreen)?;
 
     Ok(())
 }

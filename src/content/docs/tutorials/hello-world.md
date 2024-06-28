@@ -92,7 +92,7 @@ First up, you need install the Ratatui crate into your project. You will also ne
 systems. To install the latest version of the `ratatui` and `crossterm` crates into the project run:
 
 ```shell title="install ratatui and crossterm"
-cargo add ratatui crossterm
+cargo add ratatui
 ```
 
 Cargo will output the following (note the exact versions may be later than the ones in this
@@ -110,15 +110,6 @@ Updating crates.io index
           - termion
           - termwiz
           - widget-calendar
-  Adding crossterm v0.27.0 to dependencies.
-          Features:
-          + bracketed-paste
-          + events
-          + windows
-          - event-stream
-          - filedescriptor
-          - serde
-          - use-dev-tty
 Updating crates.io index
 ```
 
@@ -127,8 +118,7 @@ dependencies section:
 
 ```toml title="Cargo.toml"
 [dependencies]
-crossterm = "0.27.0"
-ratatui = "0.24.0"
+ratatui = "0.27.0"
 ```
 
 ## Create a TUI application
@@ -144,8 +134,8 @@ Note: a full copy of the code is available below in the
 
 First let's add the module imports necessary to run your application.
 
-- From `crossterm` import modules, types, methods and traits to handle [events], [raw mode], and the
-  [alternate screen]. See the [Crossterm docs] for more information on these types.
+- From `ratatui::crossterm` import modules, types, methods and traits to handle [events], [raw
+  mode], and the [alternate screen]. See the [Crossterm docs] for more information on these types.
 - From `ratatui` import:
   - [`CrosstermBackend`], a [backend] implementation for Crossterm
   - [`Terminal`] which provides the means to output to the terminal

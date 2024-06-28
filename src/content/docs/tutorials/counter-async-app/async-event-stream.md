@@ -81,7 +81,7 @@ Here's what the `EventHandler` looks like with the `select!` macro:
 
 ```rust
 use color_eyre::eyre::Result;
-use crossterm::event::KeyEvent;
+use ratatui::crossterm::event::KeyEvent;
 use futures::{FutureExt, StreamExt};
 use tokio::{sync::mpsc, task::JoinHandle};
 

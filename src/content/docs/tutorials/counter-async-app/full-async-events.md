@@ -118,7 +118,7 @@ Here's the code for the fully async application:
 mod tui;
 
 use color_eyre::eyre::Result;
-use crossterm::event::KeyCode::Char;
+use ratatui::crossterm::event::KeyCode::Char;
 use ratatui::{prelude::CrosstermBackend, widgets::Paragraph};
 use tui::Event;
 

@@ -40,7 +40,7 @@ Here's an example of the `Component` trait implementation you might use:
 
 ```rust
 use color_eyre::eyre::Result;
-use crossterm::event::{KeyEvent, MouseEvent};
+use ratatui::crossterm::event::{KeyEvent, MouseEvent};
 use ratatui::layout::Rect;
 
 use crate::{action::Action, event::Event, terminal::Frame};

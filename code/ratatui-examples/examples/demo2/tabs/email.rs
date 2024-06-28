@@ -1,5 +1,6 @@
 use itertools::Itertools;
 use ratatui::{prelude::*, widgets::*};
+use style::Styled;
 use unicode_width::UnicodeWidthStr;
 
 use crate::{RgbSwatch, THEME};
@@ -59,7 +60,7 @@ impl EmailTab {
 impl Widget for EmailTab {
     fn render(self, area: Rect, buf: &mut Buffer) {
         RgbSwatch.render(area, buf);
-        let area = area.inner(&Margin {
+        let area = area.inner(Margin {
             vertical: 1,
             horizontal: 2,
         });

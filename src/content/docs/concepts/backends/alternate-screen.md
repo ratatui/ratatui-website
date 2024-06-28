@@ -26,7 +26,7 @@ use std::{ // hide_line
   time::Duration, // hide_line
 }; // hide_line
 // hide_line
-use crossterm::{ // hide_line
+use ratatui::crossterm::{ // hide_line
   terminal::{EnterAlternateScreen, LeaveAlternateScreen}, // hide_line
   ExecutableCommand, // hide_line
 }; // hide_line

@@ -17,13 +17,16 @@
 
 use std::{error::Error, io};
 
-use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
-    execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-};
 use itertools::Itertools;
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    crossterm::{
+        event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEventKind},
+        execute,
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    },
+    prelude::*,
+    widgets::*,
+};
 use style::palette::tailwind;
 use unicode_width::UnicodeWidthStr;
 
@@ -318,7 +321,7 @@ fn render_scrollbar(f: &mut Frame, app: &mut App, area: Rect) {
             .orientation(ScrollbarOrientation::VerticalRight)
             .begin_symbol(None)
             .end_symbol(None),
-        area.inner(&Margin {
+        area.inner(Margin {
             vertical: 1,
             horizontal: 1,
         }),

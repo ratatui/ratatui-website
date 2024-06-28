@@ -2,8 +2,14 @@
 // ANCHOR: imports
 use std::io::{self, stdout, Stdout};
 
-use crossterm::{execute, terminal::*};
-use ratatui::prelude::*;
+use ratatui::{
+    backend::CrosstermBackend,
+    crossterm::{
+        execute,
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    },
+    terminal::Terminal,
+};
 // ANCHOR_END: imports
 
 // ANCHOR: init

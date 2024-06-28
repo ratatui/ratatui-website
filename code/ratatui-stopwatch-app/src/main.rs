@@ -1,10 +1,20 @@
 // ANCHOR: app
-use std::time::{Duration, Instant};
+use std::{
+    io::Stderr,
+    time::{Duration, Instant},
+};
 
 use color_eyre::eyre::{eyre, Result};
 use futures::{FutureExt, StreamExt};
 use itertools::Itertools;
-use ratatui::{backend::CrosstermBackend as Backend, prelude::*, widgets::*};
+use ratatui::{
+    backend::CrosstermBackend,
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    style::{Style, Stylize},
+    text::{Line, Span},
+    widgets::Paragraph,
+    Frame, Terminal,
+};
 use strum::EnumIs;
 use tui_big_text::BigText;
 
@@ -281,7 +291,7 @@ impl StopwatchApp {
 // ANCHOR_END: app
 
 struct Tui {
-    pub terminal: Terminal<Backend<std::io::Stderr>>,
+    pub terminal: Terminal<CrosstermBackend<Stderr>>,
     pub task: tokio::task::JoinHandle<()>,
     pub cancellation_token: tokio_util::sync::CancellationToken,
     pub event_rx: tokio::sync::mpsc::UnboundedReceiver<Event>,
@@ -290,7 +300,7 @@ struct Tui {
 
 impl Tui {
     fn new() -> Result<Tui> {
-        let mut terminal = ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
+        let mut terminal = ratatui::Terminal::new(CrosstermBackend::new(std::io::stderr()))?;
         terminal.clear()?;
         let (event_tx, event_rx) = tokio::sync::mpsc::unbounded_channel();
         let cancellation_token = tokio_util::sync::CancellationToken::new();
@@ -391,7 +401,7 @@ impl Tui {
 }
 
 impl std::ops::Deref for Tui {
-    type Target = ratatui::Terminal<Backend<std::io::Stderr>>;
+    type Target = ratatui::Terminal<CrosstermBackend<Stderr>>;
 
     fn deref(&self) -> &Self::Target {
         &self.terminal

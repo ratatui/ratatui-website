@@ -16,6 +16,5 @@ publish.workspace = true
 # ANCHOR: dependencies
 [dependencies]
 color-eyre = { version = "0.6.3" }
-crossterm = "0.27.0"
-ratatui = "0.26.3"
+ratatui = "0.27.0"
 # ANCHOR_END: dependencies

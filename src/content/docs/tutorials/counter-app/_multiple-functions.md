@@ -14,7 +14,7 @@ previous functionality into separate functions.
 The first thing you might consider doing is reorganizing imports with qualified names.
 
 ```rust
-use crossterm::{
+use ratatui::crossterm::{
   event::{self, Event::Key, KeyCode::Char},
   execute,
   terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -220,7 +220,7 @@ Here's the full code for reference:
 
 ```rust
 use color_eyre::eyre::Result;
-use crossterm::{
+use ratatui::crossterm::{
   event::{self, Event::Key, KeyCode::Char},
   execute,
   terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},

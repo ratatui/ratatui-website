@@ -19,9 +19,12 @@ use std::{
     time::Duration,
 };
 
-use crossterm::terminal::{disable_raw_mode, enable_raw_mode};
 use indoc::indoc;
 use itertools::izip;
+use ratatui::{
+    crossterm::terminal::{disable_raw_mode, enable_raw_mode},
+    TerminalOptions, Viewport,
+};
 use ratatui::{prelude::*, widgets::Paragraph};
 
 /// A fun example of using half block characters to draw a logo

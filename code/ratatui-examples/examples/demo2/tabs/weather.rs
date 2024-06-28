@@ -28,14 +28,14 @@ impl WeatherTab {
 impl Widget for WeatherTab {
     fn render(self, area: Rect, buf: &mut Buffer) {
         RgbSwatch.render(area, buf);
-        let area = area.inner(&Margin {
+        let area = area.inner(Margin {
             vertical: 1,
             horizontal: 2,
         });
         Clear.render(area, buf);
         Block::new().style(THEME.content).render(area, buf);
 
-        let area = area.inner(&Margin {
+        let area = area.inner(Margin {
             horizontal: 2,
             vertical: 1,
         });
@@ -151,7 +151,7 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
         .ratio(percent / 100.0)
         .label(label)
         .style(Style::new().light_blue())
-        .gauge_style(Style::new().fg(fg).bg(bg))
+        .filled_style(Style::new().fg(fg).bg(bg))
         .line_set(symbols::line::THICK)
         .render(area, buf);
 }

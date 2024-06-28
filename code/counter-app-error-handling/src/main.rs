@@ -4,14 +4,18 @@ use color_eyre::{
     Result,
 };
 // ANCHOR_END: new imports
-use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
-    prelude::*,
+    buffer::Buffer,
+    crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind},
+    layout::{Alignment, Rect},
+    style::Stylize,
     symbols::border,
+    text::{Line, Text},
     widgets::{
         block::{Position, Title},
-        *,
+        Block, Borders, Paragraph, Widget,
     },
+    Frame,
 };
 
 // ANCHOR: modules
@@ -143,6 +147,8 @@ impl Widget for &App {
 // ANCHOR: tests
 #[cfg(test)]
 mod tests {
+    use ratatui::style::Style;
+
     // ANCHOR: render test
     use super::*;
 

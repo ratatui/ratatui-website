@@ -3,16 +3,24 @@ use std::{
     time::Duration,
 };
 
-use crossterm::{
-    event::{self, Event},
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-    ExecutableCommand,
-};
-
 // ANCHOR: imports
 use derive_setters::Setters;
 use lipsum::lipsum;
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    backend::CrosstermBackend,
+    buffer::Buffer,
+    crossterm::{
+        event::{self, Event},
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+        ExecutableCommand,
+    },
+    layout::Rect,
+    style::{Style, Stylize},
+    terminal::Frame,
+    text::{Line, Text},
+    widgets::{Block, Borders, Clear, Paragraph, Widget, Wrap},
+    Terminal,
+};
 // ANCHOR_END: imports
 
 struct Term {
