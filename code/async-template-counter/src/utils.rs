@@ -5,7 +5,7 @@ use directories::ProjectDirs;
 use lazy_static::lazy_static;
 use tracing::error;
 use tracing_error::ErrorLayer;
-use tracing_subscriber::{self, prelude::__tracing_subscriber_SubscriberExt, util::SubscriberInitExt, Layer};
+use tracing_subscriber::{self, prelude::*};
 
 pub static GIT_COMMIT_HASH: &str = env!("RATATUI_COUNTER_GIT_INFO");
 

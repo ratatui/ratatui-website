@@ -7,8 +7,12 @@ use color_eyre::eyre;
 use color_eyre::eyre::WrapErr;
 // ANCHOR_END: error_imports
 use color_eyre::eyre::bail;
-use crossterm::event::{self, Event, KeyCode, KeyEvent};
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    backend::Backend,
+    crossterm::event::{self, Event, KeyCode, KeyEvent},
+    widgets::Paragraph,
+    Terminal,
+};
 
 // ANCHOR: modules
 mod tui;

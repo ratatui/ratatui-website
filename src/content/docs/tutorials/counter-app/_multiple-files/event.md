@@ -117,7 +117,7 @@ background" and send them over a channel. We will then receive these events on t
 Let's create an `Event` enum to handle the different kinds of events that can occur:
 
 ```rust
-use crossterm::event::{KeyEvent, MouseEvent};
+use ratatui::crossterm::event::{KeyEvent, MouseEvent};
 {{#include @code/ratatui-counter-app/src/event.rs:event}}
 ```
 

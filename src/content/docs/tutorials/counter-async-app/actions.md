@@ -96,7 +96,7 @@ Here's the full single file version of the counter app using the `Action` enum f
 mod tui;
 
 use color_eyre::eyre::Result;
-use crossterm::{
+use ratatui::crossterm::{
   event::{self, Event::Key, KeyCode::Char},
   execute,
   terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},

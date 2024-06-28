@@ -5,13 +5,19 @@ use color_eyre::{
     config::HookBuilder,
     eyre::{self, WrapErr},
 };
-use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
-use ratatui::prelude::*;
+use ratatui::{
+    backend::Backend,
+    crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind},
+    Frame, Terminal,
+};
 
 mod examples;
 mod tui;
 
-use examples::*;
+use examples::{
+    bar_chart, block, calendar, canvas, chart, gauge, line_gauge, list, paragraph, sparkline,
+    table, tabs,
+};
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]

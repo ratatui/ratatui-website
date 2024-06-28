@@ -1,6 +1,5 @@
 use color_eyre::Result;
-use crossterm::event::KeyEvent;
-use ratatui::prelude::Rect;
+use ratatui::{crossterm::event::KeyEvent, layout::Rect};
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc;
 

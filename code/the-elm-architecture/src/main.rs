@@ -1,8 +1,10 @@
 use std::time::Duration;
 
-use crossterm::event::{self, Event, KeyCode};
-// cargo add color_eyre crossterm ratatui
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    crossterm::event::{self, Event, KeyCode},
+    widgets::Paragraph,
+    Frame,
+};
 
 // ANCHOR: model
 #[derive(Debug, Default)]
@@ -112,11 +114,16 @@ fn update(model: &mut Model, msg: Message) -> Option<Message> {
 // ANCHOR_END: update
 
 mod tui {
-    use crossterm::{
-        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-        ExecutableCommand,
+    use ratatui::{
+        backend::{Backend, CrosstermBackend},
+        crossterm::{
+            terminal::{
+                disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen,
+            },
+            ExecutableCommand,
+        },
+        Terminal,
     };
-    use ratatui::prelude::*;
     use std::{io::stdout, panic};
 
     pub fn init_terminal() -> color_eyre::Result<Terminal<impl Backend>> {

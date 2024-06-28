@@ -55,7 +55,7 @@ struct.
 
 ```rust
 use color_eyre::eyre::Result;
-use crossterm::{
+use ratatui::crossterm::{
   cursor,
   event::{DisableMouseCapture, EnableMouseCapture},
   terminal::{EnterAlternateScreen, LeaveAlternateScreen},
@@ -429,7 +429,7 @@ Here's what the completed `EventHandler` code now looks like:
 
 ```rust
 use color_eyre::eyre::Result;
-use crossterm::{
+use ratatui::crossterm::{
   cursor,
   event::{Event as CrosstermEvent, KeyEvent, KeyEventKind, MouseEvent},
 };

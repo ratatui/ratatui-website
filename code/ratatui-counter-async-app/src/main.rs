@@ -4,8 +4,13 @@ mod tui;
 use std::time::Duration;
 
 use color_eyre::eyre::Result;
-use crossterm::event::KeyCode::Char;
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    crossterm::event::KeyCode::Char,
+    layout::Alignment,
+    style::{Color, Style},
+    widgets::{Block, BorderType, Borders, Paragraph},
+    Frame,
+};
 use tokio::sync::mpsc::{self, UnboundedSender};
 use tui::Event;
 

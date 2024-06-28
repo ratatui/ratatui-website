@@ -22,9 +22,9 @@ Because a `ratatui` application takes the whole screen, and captures all of the 
 need some boilerplate at the beginning of our `main` function.
 
 ```rust
-use crossterm::event::EnableMouseCapture;
-use crossterm::execute;
-use crossterm::terminal::{enable_raw_mode, EnterAlternateScreen};
+use ratatui::crossterm::event::EnableMouseCapture;
+use ratatui::crossterm::execute;
+use ratatui::crossterm::terminal::{enable_raw_mode, EnterAlternateScreen};
 use std::io;
 ```
 
@@ -63,8 +63,8 @@ terminal back to the way we found it.
 Most of these functions will simply be the inverse of what we have done above.
 
 ```rust
-use crossterm::event::DisableMouseCapture;
-use crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};
+use ratatui::crossterm::event::DisableMouseCapture;
+use ratatui::crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};
 ```
 
 ```rust

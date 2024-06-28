@@ -1,7 +1,12 @@
 use std::time::Instant;
 
 use color_eyre::eyre::Result;
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+  layout::{Alignment, Constraint, Direction, Layout, Rect},
+  style::Stylize,
+  widgets::{block, Block},
+  Frame,
+};
 
 use super::Component;
 use crate::action::Action;

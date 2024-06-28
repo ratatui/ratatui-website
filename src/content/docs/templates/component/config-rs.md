@@ -67,7 +67,7 @@ We can set up a `Config` struct using
 use std::collections::HashMap;
 
 use color_eyre::eyre::Result;
-use crossterm::event::KeyEvent;
+use ratatui::crossterm::event::KeyEvent;
 use serde_derive::Deserialize;
 
 use crate::action::Action;

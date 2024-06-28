@@ -1,11 +1,18 @@
 // ANCHOR: imports
 use std::io;
 
-use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
-    prelude::*,
+    buffer::Buffer,
+    crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind},
+    layout::{Alignment, Rect},
+    style::Stylize,
     symbols::border,
-    widgets::{block::*, *},
+    text::{Line, Text},
+    widgets::{
+        block::{Position, Title},
+        Block, Paragraph, Widget,
+    },
+    Frame,
 };
 // ANCHOR_END: imports
 
@@ -103,14 +110,13 @@ impl Widget for &App {
             " Quit ".into(),
             "<Q> ".blue().bold(),
         ]));
-        let block = Block::default()
+        let block = Block::bordered()
             .title(title.alignment(Alignment::Center))
             .title(
                 instructions
                     .alignment(Alignment::Center)
                     .position(Position::Bottom),
             )
-            .borders(Borders::ALL)
             .border_set(border::THICK);
 
         let counter_text = Text::from(vec![Line::from(vec![
@@ -129,6 +135,8 @@ impl Widget for &App {
 // ANCHOR: tests
 #[cfg(test)]
 mod tests {
+    use ratatui::style::Style;
+
     // ANCHOR: render test
     use super::*;
 

@@ -7,15 +7,14 @@ sidebar:
 `ratatui` is a standard rust crate and can be installed into your app using the following command:
 
 ```shell
-cargo add ratatui crossterm
+cargo add ratatui
 ```
 
 or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-crossterm = "0.27.0"
-ratatui = "0.26.0"
+ratatui = "0.27.0"
 ```
 
 :::tip
@@ -24,15 +23,13 @@ Additionally, you can use the `all-widgets` feature, which enables additional wi
 
 ```shell
 cargo add ratatui --features all-widgets
-cargo add crossterm
 ```
 
 or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-crossterm = "0.27.0"
-ratatui = { version = "0.26.0", features = ["all-widgets"]}
+ratatui = { version = "0.27.0", features = ["all-widgets"]}
 ```
 
 You can learn more about available widgets from the
@@ -44,34 +41,38 @@ By default, `ratatui` enables the `crossterm` feature, but it's possible to alte
 `termion`, or `termwiz` instead by enabling the appropriate feature and disabling the default
 features. See [Backend] for more information.
 
+::: note
+
+Before Ratatui 0.27.0, it was necessary to import a backend crate that matched the backend feature.
+In 0.27.0 Ratatui now exports the backend crates at the root to make it easier to ensure a matching
+version of the backend crate is used.
+
+:::
+
 For Termion:
 
 ```shell
 cargo add ratatui --no-default-features --features termion
-cargo add termion
 ```
 
 or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.26", default-features = false, features = ["termion"] }
-termion = "2.0.1"
+ratatui = { version = "0.27.0", default-features = false, features = ["termion"] }
 ```
 
 For Termwiz:
 
 ```shell
 cargo add ratatui --no-default-features --features termwiz
-cargo add termwiz
 ```
 
 or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.26", default-features = false, features = ["termwiz"] }
-termwiz = "0.20.0"
+ratatui = { version = "0.27.0", default-features = false, features = ["termwiz"] }
 ```
 
 [Backend]: /concepts/backends/

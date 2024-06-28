@@ -5,11 +5,15 @@ use std::{
     time::Duration,
 };
 
-use crossterm::{
-    execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+use ratatui::{
+    backend::{Backend, CrosstermBackend},
+    crossterm::{
+        execute,
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    },
+    text::Span,
+    Terminal,
 };
-use ratatui::prelude::*;
 
 // ANCHOR: main
 pub fn main() -> io::Result<()> {

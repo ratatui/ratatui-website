@@ -5,10 +5,14 @@ use std::{
     time::Duration,
 };
 
-use ratatui::prelude::*;
-use termion::{
-    raw::IntoRawMode,
-    screen::{ToAlternateScreen, ToMainScreen},
+use ratatui::{
+    backend::{Backend, TermionBackend},
+    termion::{
+        raw::IntoRawMode,
+        screen::{ToAlternateScreen, ToMainScreen},
+    },
+    text::Span,
+    Terminal,
 };
 
 pub fn main() -> io::Result<()> {

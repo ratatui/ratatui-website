@@ -17,7 +17,7 @@ pub fn render(frame: &mut Frame) {
     frame.render_widget(
         LineGauge::default()
             .ratio(0.5)
-            .gauge_style(Style::new().light_red().on_red()),
+            .filled_style(Style::new().light_red().on_red()),
         layout[0],
     );
     frame.render_widget(
@@ -25,7 +25,7 @@ pub fn render(frame: &mut Frame) {
             .ratio(0.5)
             .label("0.5")
             .line_set(symbols::line::DOUBLE)
-            .gauge_style(Style::new().light_green().on_green()),
+            .filled_style(Style::new().light_green().on_green()),
         layout[2],
     );
     frame.render_widget(
@@ -33,14 +33,14 @@ pub fn render(frame: &mut Frame) {
             .ratio(0.5)
             .label("10/20")
             .line_set(symbols::line::THICK)
-            .gauge_style(Style::new().light_blue().on_blue())
+            .filled_style(Style::new().light_blue().on_blue())
             .style(Style::new().blue()),
         layout[4],
     );
     frame.render_widget(
         LineGauge::default()
             .ratio(0.50)
-            .gauge_style(Style::new().white().on_black())
+            .filled_style(Style::new().white().on_black())
             .line_set(symbols::line::Set {
                 horizontal: symbols::DOT,
                 ..Default::default()

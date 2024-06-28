@@ -4,13 +4,19 @@ use std::{
 };
 
 use color_eyre::Result;
-use crossterm::{
-    event::{self, Event},
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-    ExecutableCommand,
-};
 // ANCHOR: imports
-use ratatui::{prelude::*, symbols, widgets::*};
+use ratatui::{
+    backend::CrosstermBackend,
+    crossterm::{
+        event::{self, Event},
+        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+        ExecutableCommand,
+    },
+    layout::{Constraint, Direction, Layout},
+    symbols,
+    widgets::{Block, Borders},
+    Frame, Terminal,
+};
 // ANCHOR_END: imports
 
 struct Term {

@@ -1,16 +1,19 @@
 use std::{
+  io::{stderr, Stderr},
   ops::{Deref, DerefMut},
   time::Duration,
 };
 
 use color_eyre::eyre::Result;
-use crossterm::{
-  cursor,
-  event::{Event as CrosstermEvent, KeyEvent, KeyEventKind, MouseEvent},
-  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-};
 use futures::{FutureExt, StreamExt};
-use ratatui::backend::CrosstermBackend as Backend;
+use ratatui::{
+  backend::CrosstermBackend,
+  crossterm::{
+    cursor,
+    event::{Event as CrosstermEvent, KeyEvent, KeyEventKind, MouseEvent},
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+  },
+};
 use serde::{Deserialize, Serialize};
 use tokio::{
   sync::mpsc::{self, UnboundedReceiver, UnboundedSender},
@@ -35,7 +38,7 @@ pub enum Event {
 }
 
 pub struct Tui {
-  pub terminal: ratatui::Terminal<Backend<std::io::Stderr>>,
+  pub terminal: ratatui::Terminal<CrosstermBackend<Stderr>>,
   pub task: JoinHandle<()>,
   pub cancellation_token: CancellationToken,
   pub event_rx: UnboundedReceiver<Event>,
@@ -48,7 +51,7 @@ impl Tui {
   pub fn new() -> Result<Self> {
     let tick_rate = 4.0;
     let frame_rate = 60.0;
-    let terminal = ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
+    let terminal = ratatui::Terminal::new(CrosstermBackend::new(stderr()))?;
     let (event_tx, event_rx) = mpsc::unbounded_channel();
     let cancellation_token = CancellationToken::new();
     let task = tokio::spawn(async {});
@@ -182,7 +185,7 @@ impl Tui {
 }
 
 impl Deref for Tui {
-  type Target = ratatui::Terminal<Backend<std::io::Stderr>>;
+  type Target = ratatui::Terminal<CrosstermBackend<Stderr>>;
 
   fn deref(&self) -> &Self::Target {
     &self.terminal

@@ -23,7 +23,7 @@ $EDITOR .
 Add the Ratatui and Crossterm crates (See [backends] for more info on why we use Crossterm).
 
 ```shell title="add dependencies"
-cargo add ratatui crossterm
+cargo add ratatui
 ```
 
 The Cargo.toml will now have the following in the dependencies section:

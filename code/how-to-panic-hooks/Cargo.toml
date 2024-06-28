@@ -14,10 +14,7 @@ publish.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-crossterm = "0.27.0"
-ratatui = "0.26.3"
-termion = "4.0.2"
-termwiz = "0.22.0"
+ratatui = "0.27.0"
 
 [[bin]]
 name = "crossterm"
