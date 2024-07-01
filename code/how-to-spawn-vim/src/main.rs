@@ -15,15 +15,15 @@ use std::process::Command;
 // ANCHOR_END: imports
 
 // ANCHOR: action_enum
-// Define actions
 enum Action {
     Quit,
     EditFile,
 }
 // ANCHOR_END: action_enum
 
-// ANCHOR: setup
+// ANCHOR: main
 fn main() -> Result<()> {
+    // ANCHOR: setup
     stdout().execute(EnterAlternateScreen)?;
     enable_raw_mode()?;
     let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
@@ -53,10 +53,10 @@ fn main() -> Result<()> {
                         _ => None,
                     };
 
-                    // Handle the action
                     if let Some(action) = action {
                         match action {
                             Action::Quit => break,
+                            // ANCHOR: action-handler_EditFile
                             Action::EditFile => {
                                 stdout().execute(LeaveAlternateScreen)?;
                                 disable_raw_mode()?;
@@ -68,6 +68,7 @@ fn main() -> Result<()> {
                                 // re-init tui
                                 terminal = ratatui::Terminal::new(CrosstermBackend::new(stdout()))?;
                             }
+                            // ANCHOR_END: action-handler_EditFile
                         }
                     }
                 }
@@ -80,6 +81,7 @@ fn main() -> Result<()> {
     stdout().execute(LeaveAlternateScreen)?;
     disable_raw_mode()?;
     Ok(())
+    // ANCHOR_END: restore
 }
-// ANCHOR_END: restore
+// ANCHOR: main
 // ANCHOR_END: all
