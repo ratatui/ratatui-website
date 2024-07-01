@@ -13,3 +13,4 @@ This section covers recipes for developing applications:
 - [Setup Panic Hooks](./panic-hooks/)
 - [Use Better Panic](./better-panic/)
 - [Migrate from TUI-rs](./migrate-from-tui-rs/)
+- [Spawn Vim][./spawn-vim/]
