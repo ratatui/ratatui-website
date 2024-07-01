@@ -53,10 +53,10 @@ fn main() -> Result<()> {
                         _ => None,
                     };
 
+                    // ANCHOR: action-handler
                     if let Some(action) = action {
                         match action {
                             Action::Quit => break,
-                            // ANCHOR: action-handler_EditFile
                             Action::EditFile => {
                                 stdout().execute(LeaveAlternateScreen)?;
                                 disable_raw_mode()?;
@@ -65,12 +65,12 @@ fn main() -> Result<()> {
                                 Command::new("vim").arg("/tmp/a.txt").status()?;
                                 stdout().execute(EnterAlternateScreen)?;
                                 enable_raw_mode()?;
-                                // re-init tui
-                                terminal = ratatui::Terminal::new(CrosstermBackend::new(stdout()))?;
+                                // Clear the terminal and force a full redraw on the next draw call.
+                                terminal.clear()?;
                             }
-                            // ANCHOR_END: action-handler_EditFile
                         }
                     }
+                    // ANCHOR: action-handler
                 }
             }
         }
