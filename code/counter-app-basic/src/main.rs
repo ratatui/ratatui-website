@@ -135,10 +135,10 @@ impl Widget for &App {
 // ANCHOR: tests
 #[cfg(test)]
 mod tests {
-    use ratatui::style::Style;
 
     // ANCHOR: render test
     use super::*;
+    use ratatui::style::Style;
 
     #[test]
     fn render() {
