@@ -10,7 +10,7 @@ publish.workspace = true
 
 [dependencies]
 better-panic = "0.3.0"
-clap = { version = "4.5.8", features = [
+clap = { version = "4.5.9", features = [
     "derive",
     "cargo",
     "wrap_help",
