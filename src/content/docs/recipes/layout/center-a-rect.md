@@ -7,68 +7,14 @@ sidebar:
 
 You can use a `Vertical` layout followed by a `Horizontal` layout to get a centered `Rect`.
 
-````rust
-/// # Usage
-///
-/// ```rust
-/// let rect = centered_rect(f.size(), 50, 50);
-/// ```
-fn centered_rect(r: Rect, percent_x: u16, percent_y: u16) -> Rect {
-  let popup_layout = Layout::default()
-    .direction(Direction::Vertical)
-    .constraints([
-      Constraint::Percentage((100 - percent_y) / 2),
-      Constraint::Percentage(percent_y),
-      Constraint::Percentage((100 - percent_y) / 2),
-    ])
-    .split(r);
-
-  Layout::default()
-    .direction(Direction::Horizontal)
-    .constraints([
-      Constraint::Percentage((100 - percent_x) / 2),
-      Constraint::Percentage(percent_x),
-      Constraint::Percentage((100 - percent_x) / 2),
-    ])
-    .split(popup_layout[1])[1]
-}
-````
-
-Then you can use it to draw any widget like this:
-
-```rust
-terminal.draw(|f| {
-    f.render_widget(Block::default().borders(Borders::all()).title("Main"), centered_rect(f.size(), 35, 35));
-})?;
+```rust title=layout.rs collapse={1-13}
+{{ #include @code/recipes/src/layout.rs:center }}
 ```
 
-```text
+Then you can use this method to draw any widget centered on the containing area.
 
-
-
-
-
-
-                    ┌Main────────────────────────────────┐
-                    │                                    │
-                    │                                    │
-                    │                                    │
-                    │                                    │
-                    │                                    │
-                    │                                    │
-                    │                                    │
-                    │                                    │
-                    └────────────────────────────────────┘
-
-
-
-
-
-
-
-
-
-
+```rust
+{{ #include @code/recipes/src/layout.rs:render }}
 ```
 
 A common use case for this feature is to create a popup style dialog block. For this, typically,
@@ -76,9 +22,24 @@ you'll want to `Clear` the popup area before rendering your content to it. The f
 example of how you might do that:
 
 ```rust
-terminal.draw(|f| {
-    let popup_area = centered_rect(f.size(), 35, 35);
-    f.render_widget(Clear, popup_area);
-    f.render_widget(Block::default().borders(Borders::all()).title("Main"), popup_area);
-})?;
+{{ #include @code/recipes/src/layout.rs:render_popup }}
 ```
+
+:::note
+
+There is no method for vertically aligning text within an area yet. We recommend prewrap the text
+using the [textwrap crate] and then use the line count to work out where to render the text.
+
+:::
+
+[textwrap crate]: https://crates.io/crates/textwrap
+
+Full code for this recipe is available in the website repo at:
+<https://github.com/ratatui-org/ratatui-website/blob/main/code/recipes/src/layout.rs>
+
+## See also
+
+There are several third party widget libraries for making popups easy to use:
+
+- [tui-popup](https://crates.io/crates/tui-popup)
+- [tui-confirm-dialog](https://crates.io/crates/tui-confirm-dialog)
