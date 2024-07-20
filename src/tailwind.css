@@ -6,14 +6,27 @@
   /* Move the logo to the left side  */
 
   .hero {
-    grid-template-columns: 4fr 7fr;
+    grid-template-columns: 3fr 7fr;
     gap: 6%;
+    padding-block: 1.5rem;
   }
 
   .hero > img,
   .hero > .hero-html {
     order: 0;
-    width: min(100%, 25rem);
+    width: min(100%, 15rem);
+  }
+}
+
+.three-cols {
+  display: grid;
+  padding-top: 1rem;
+  @media (min-width: 50rem) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  gap: 2.5rem;
+  h3 {
+    margin-bottom: 0rem;
   }
 }
 

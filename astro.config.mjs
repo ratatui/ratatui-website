@@ -74,11 +74,7 @@ export default defineConfig({
         // See https://github.com/withastro/starlight/discussions/972
         // and https://github.com/withastro/starlight/issues/1223
         {
-          label: "Introduction",
-          link: "/introduction/",
-        },
-        {
-          label: "Installation",
+          label: "Getting Started",
           collapsed: true,
           autogenerate: {
             directory: "installation",
