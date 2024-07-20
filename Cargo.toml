@@ -2,8 +2,8 @@
 [workspace]
 members = ["code/*"]
 exclude = [
-  "code/widget-showcase-third-party" # only contains VHS tape files
-] 
+  "code/widget-showcase-third-party", # only contains VHS tape files
+]
 resolver = "2"
 
 [workspace.package]
