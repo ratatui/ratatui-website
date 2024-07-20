@@ -1,7 +1,7 @@
 ---
 title: Ratatui
 description: "Ratatui: A Rust crate for cooking up Terminal User Interfaces"
-template: splash
+tableOfContents: false
 hero:
   tagline: A Rust crate for cooking up Terminal User Interfaces
   image:
@@ -9,12 +9,12 @@ hero:
     dark: ../../assets/hero-dark.png
     light: ../../assets/hero-light.png
   actions:
-    - text: Introduction
-      link: /introduction/
+    - text: Hello World Tutorial
+      link: /tutorials/hello-world/
       icon: right-arrow
       variant: primary
-    - text: Hello World
-      link: /tutorials/hello-world/
+    - text: <code>cargo add ratatui</code>
+      link: /installation/
       icon: right-arrow
       variant: secondary
 banner:
@@ -25,22 +25,86 @@ banner:
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
-[![Demo 2](https://github.com/ratatui-org/ratatui/blob/images/examples/demo2.gif?raw=true)](https://github.com/ratatui-org/ratatui/tree/main/examples/demo2)
+[![Demo image]][Demo source]
 
-## Next steps
+[Demo image]: https://raw.githubusercontent.com/ratatui-org/ratatui/images/examples/demo2.gif
+[Demo source]: https://github.com/ratatui-org/ratatui/tree/main/examples/demo2
 
-<CardGrid stagger>
-  <Card title="<a href='/introduction/'>Introduction</a>" icon="rocket" />
-  <Card title="<a href='/installation/'>Installation</a>" icon="approve-check" />
-  <Card title="<a href='/tutorials/hello-world/'>Hello World Tutorial</a>" icon="pencil" />
-  <Card title="<a href='/tutorials/counter-app/'>Counter App Tutorial</a>" icon="document" />
-  <Card title="<a href='/concepts/layout/'>Advanced Concepts</a>" icon="open-book" />
-  <Card title="<a href='/recipes/'>Recipes (How to guides)</a>" icon="magnifier" />
-  <Card title="<a href='https://docs.rs/ratatui/latest/ratatui/'>API Reference</a>" icon="puzzle" />
-  <Card title="<a href='/showcase/'>Community Showcase</a>" icon="list-format" />
-  <Card
-    title="<a href='https://github.com/ratatui-org/ratatui'>GitHub Repository</a>"
-    icon="github"
-  />
-  <Card title="<a href='https://github.com/sponsors/ratatui-org'>Donate</a>" icon="star" />
-</CardGrid>
+<div class="three-cols not-content">
+  <div>
+    <h3>What is Ratatui?</h3>
+    <p>
+      Ratatui is a Rust library for cooking up delicious TUIs (terminal user interfaces). It is a
+      lightweight library that provides a set of widgets and utilities to build simple or complex
+      rust TUIs.
+    </p>
+  </div>
+  <div>
+    <h3>Why Ratatui?</h3>
+    <p>
+      Ratatui is designed for developers and enthusiasts who want a lightweight alternative to
+      graphical user interfaces and need applications that are to be deployed in constrained
+      environments.
+    </p>
+  </div>
+  <div>
+    <h3>Who is this website for?</h3>
+    <p>
+      This website is for developers who want to learn how to build terminal user interfaces using
+      Ratatui. We cover beginner guides to advanced patterns for developing terminal user
+      interfaces.
+    </p>
+  </div>
+  <div>
+    <h3>Next Steps</h3>
+    <p>
+      Get started with Ratatui by following the [installation guide]. If you're already set up, you
+      can jump straight into the [Hello World tutorial].
+
+      [installation guide]: /installation/
+      [Hello World tutorial]: /tutorials/hello-world/
+    </p>
+
+  </div>
+  <div>
+    <h3>Showcase</h3>
+    <p>
+      Check out the [community showcase] to see the [apps] and [widgets] that have been built using
+      Ratatui.
+
+      [community showcase]: /showcase/
+      [apps]: /showcase/apps/
+      [widgets]: /showcase/third-party-widgets/
+    </p>
+
+  </div>
+  <div>
+    <h3>Contribute</h3>
+    <p>
+      Help us improve Ratatui by contributing to the project. You can contribute by reporting bugs,
+      suggesting features, or even contributing code.
+    </p>
+  </div>
+</div>
+
+:::note
+
+Help us improve!
+
+We've designed this website to aid you throughout your journey with our open-source project.
+However, the beauty of open source is that it's not just about receiving, but also contributing. We
+highly encourage you to contribute to our project and help improve it even further. If you have
+innovative ideas, helpful feedback, or useful suggestions, please don't hesitate to share them with
+us.
+
+If you see something that could be better written, feel free to [create an issue], a [discussion
+thread] or even contribute a [Pull Request]. We're also often active in the `#doc-discussion`
+channel on [Discord] and [Matrix]
+
+[create an issue]: https://github.com/ratatui-org/ratatui-website/issues
+[discussion thread]: https://github.com/ratatui-org/ratatui-website/discussions
+[Pull Request]: https://github.com/ratatui-org/ratatui-website/pulls
+[Discord]: https://discord.gg/pMCEU9hNEj
+[Matrix]: https://matrix.to/#/#ratatui:matrix.org
+
+:::
