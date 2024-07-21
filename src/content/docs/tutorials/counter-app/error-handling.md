@@ -88,7 +88,8 @@ Create a new function named `install_hooks` in `errors.rs`
 
 This function will replace the application's existing panic hook with one that first restores the
 terminal state back to normal and then runs the existing hook. It does the same for the color_eyre
-hook, which handles errors (i.e. any `Result::Err`s that are not otherwise handled)
+hook, which handles errors (i.e. any `Result::Err`s that bubble up to the top level of the main
+function).
 
 Update the `main` function's return value to `color_eyre::Result<()>` and call the the new
 `install_hooks` function.
