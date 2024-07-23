@@ -121,7 +121,7 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
-application to manage markdown notes from your terminal and compile them to HTML
+An application to manage markdown notes from your terminal and compile them to HTML
 
 ![rucola demo](https://github.com/Linus-Mussmaecher/rucola/blob/main/readme-images/readme-image-select.png)
 
