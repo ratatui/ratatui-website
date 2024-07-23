@@ -119,6 +119,14 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 ---
 
+## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
+
+An application to manage markdown notes from your terminal and compile them to HTML
+
+![rucola demo](https://github.com/Linus-Mussmaecher/rucola/blob/main/readme-images/readme-image-select.png)
+
+---
+
 ## [`scope-tui`](https://github.com/alemidev/scope-tui)
 
 A simple oscilloscope/vectorscope/spectroscope for your terminal
