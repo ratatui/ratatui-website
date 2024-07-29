@@ -35,7 +35,7 @@ pretty_assertions = "1.4.0"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
 rstest = "0.21.0"
-serde_json = "1.0.120"
+serde_json = "1.0.121"
 itertools = "0.13"
 strum = { version = "0.26.3", features = ["derive"] }
 time = { version = "0.3.11", features = ["local-offset"] }
