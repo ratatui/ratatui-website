@@ -195,7 +195,6 @@ impl StopwatchApp {
             .lines(lines)
             .style(style)
             .build()
-            .unwrap()
     }
 
     /// Renders the splits as a list of lines.

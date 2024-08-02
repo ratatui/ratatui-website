@@ -192,7 +192,7 @@ mod tests {
 
         let mut app = App::default();
         app.handle_key_event(KeyCode::Char('q').into()).unwrap();
-        assert_eq!(app.exit, true);
+        assert!(app.exit);
     }
     // ANCHOR_END: handle_key_event test
 
