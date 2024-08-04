@@ -5,9 +5,8 @@ sidebar:
   label: Error Handling
 ---
 
-A full copy of the code for this page is available in the github repository for the website at:
-
-<https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-error-handling>.
+:::note[Source Code] Full source code is available at: <https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-error-handling>.
+:::
 
 In the previous section, you created a [basic counter app](../basic-app/) that responds to the user
 pressing the **Left** and **Right** arrow keys to control the value of a counter. This tutorial will
@@ -52,9 +51,10 @@ may need to restart the console.
 
 ## Setup Hooks
 
-There are two ways that a rust application can fail. The rust book chapter on
-[error handling](https://doc.rust-lang.org/book/ch09-00-error-handling.html) explains this in better
-detail.
+There are two ways that a rust application can fail. The rust book chapter on [error handling] explains
+this in better detail.
+
+[error handling]: https://doc.rust-lang.org/book/ch09-00-error-handling.html
 
 > Rust groups errors into two major categories: _recoverable_ and _unrecoverable_ errors. For a
 > recoverable error, such as a _file not found error_, we most likely just want to report the
@@ -62,9 +62,16 @@ detail.
 > like trying to access a location beyond the end of an array, and so we want to immediately stop
 > the program. -- <https://doc.rust-lang.org/book/ch09-00-error-handling.html>
 
-One approach that makes it easy to show unhandled errors is to use the `color_eyre` crate to augment
-the error reporting hooks. In a ratatui application that's running on the alternate screen in raw
-mode, it's important to restore the terminal before displaying these errors to the user.
+One approach that makes it easy to show unhandled errors is to use the [color-eyre] crate to augment
+the error reporting hooks. In a ratatui application that's running on the [alternate screen] in [raw
+mode],
+it's important to restore the terminal before displaying these errors to the user.
+
+[color-eyre]: https://crates.io/crates/color-eyre
+[alternate screen]: /concepts/backends/alternate-screen/
+[raw mode]: /concepts/backends/raw-mode/
+
+---
 
 Add the `color-eyre` crate
 
@@ -72,38 +79,29 @@ Add the `color-eyre` crate
 cargo add color-eyre
 ```
 
-Add a new module named errors to `main.rs`.
+Update the `main` function's return value to [`color_eyre::Result<()>`] and call the the
+[`color_eyre::install`] function. We can also add an error message that helps your app user
+understand what to do if restoring the terminal does fail.
 
-```rust
-// main.rs
-{{ #include @code/counter-app-error-handling/src/main.rs:modules }}
-```
+[`color_eyre::Result<()>`]: https://docs.rs/eyre/latest/eyre/type.Result.html
+[`color_eyre::install`]: https://docs.rs/color-eyre/latest/color_eyre/fn.install.html
 
-Create a new function named `install_hooks` in `errors.rs`
-
-```rust
-// errors.rs
-{{ #include @code/counter-app-error-handling/src/errors.rs }}
-```
-
-This function will replace the application's existing panic hook with one that first restores the
-terminal state back to normal and then runs the existing hook. It does the same for the color_eyre
-hook, which handles errors (i.e. any `Result::Err`s that bubble up to the top level of the main
-function).
-
-Update the `main` function's return value to `color_eyre::Result<()>` and call the the new
-`install_hooks` function.
-
-```rust {8} ins={9}
+```rust {8,12} ins={9,13-17}
 // main.rs
 
-{{#include @code/counter-app-error-handling/src/main.rs:new imports }}
+{{#include @code/counter-app-error-handling/src/main.rs:new-imports }}
 
 {{#include @code/counter-app-error-handling/src/main.rs:main }}
 ```
 
-Previously the main function needed to store the result of calling `run()` and evaluate it after
-restoring the terminal. The eyre hook now automatically handles this.
+Next, update the `tui::init()` function to replace the panic hook with one that first restores the
+terminal before printing the panic information. This will ensure that both panics and unhandled
+errors (i.e. any `Result::Err`s that bubble up to the top level of the main function) are both
+displayed on the terminal correctly when the application exits.
+
+```rust title=tui.rs ins={5,9-15}
+{{#include @code/counter-app-error-handling/src/tui.rs:init }}
+```
 
 ## Using color_eyre
 
@@ -233,10 +231,6 @@ Putting this altogether, you should now have the following files.
 
 ```rust collapsed title="tui.rs (click to expand)"
 {{#include @code/counter-app-error-handling/src/tui.rs }}
-```
-
-```rust collapsed title="errors.rs (click to expand)"
-{{#include @code/counter-app-error-handling/src/errors.rs }}
 ```
 
 ## Handling Panics
