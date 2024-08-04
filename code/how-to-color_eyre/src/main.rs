@@ -1,8 +1,5 @@
 use std::panic;
 
-// ANCHOR: imports
-use color_eyre::eyre;
-// ANCHOR_END: imports
 // ANCHOR: error_imports
 use color_eyre::eyre::WrapErr;
 // ANCHOR_END: error_imports
@@ -20,12 +17,16 @@ mod tui;
 
 // ANCHOR: main
 fn main() -> color_eyre::Result<()> {
-    install_hooks()?;
+    color_eyre::install()?;
     let terminal = tui::init()?;
-    run(terminal).wrap_err("run failed")?;
-    tui::restore()?;
-    println!("user triggered quit");
-    Ok(())
+    let result = run(terminal).wrap_err("run failed");
+    if let Err(err) = tui::restore() {
+        eprintln!(
+            "failed to restore terminal. Run `reset` or restart your terminal to recover: {}",
+            err
+        );
+    }
+    result
 }
 // ANCHOR_END: main
 
@@ -55,29 +56,3 @@ fn run(mut terminal: Terminal<impl Backend>) -> color_eyre::Result<()> {
     Ok(())
 }
 // ANCHOR_END: run
-
-// ANCHOR: install_hooks
-/// This replaces the standard color_eyre panic and error hooks with hooks that
-/// restore the terminal before printing the panic or error.
-pub fn install_hooks() -> color_eyre::Result<()> {
-    // add any extra configuration you need to the hook builder
-    let hook_builder = color_eyre::config::HookBuilder::default();
-    let (panic_hook, eyre_hook) = hook_builder.into_hooks();
-
-    // convert from a color_eyre PanicHook to a standard panic hook
-    let panic_hook = panic_hook.into_panic_hook();
-    panic::set_hook(Box::new(move |panic_info| {
-        let _ = tui::restore(); // ignore any errors as we are already failing
-        panic_hook(panic_info);
-    }));
-
-    // convert from a color_eyre EyreHook to a eyre ErrorHook
-    let eyre_hook = eyre_hook.into_eyre_hook();
-    eyre::set_hook(Box::new(move |error| {
-        let _ = tui::restore(); // ignore any errors as we are already failing
-        eyre_hook(error)
-    }))?;
-
-    Ok(())
-}
-// ANCHOR_END: install_hooks

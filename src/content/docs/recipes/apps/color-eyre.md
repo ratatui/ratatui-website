@@ -5,8 +5,8 @@ sidebar:
   label: color_eyre Error Hooks
 ---
 
-Full source code for this recipe is available at:
-<https://github.com/ratatui-org/ratatui-website/tree/main/code/how-to-color_eyre/>
+:::note[Source Code] Full source code is available at: <https://github.com/ratatui-org/ratatui-website/tree/main/code/how-to-color_eyre/>
+:::
 
 The [`color_eyre`] crate provides error report handlers for panics and errors. It displays the
 reports formatted and in color. To use these handlers, a Ratatui app needs to restore the terminal
@@ -20,28 +20,22 @@ First add the crate to your `Cargo.toml`
 cargo add color_eyre
 ```
 
-Add the following imports to `main.rs`
+Call the [`color_eyre::install`] method from your main function and update the return value to
+[`color_eyre::Result<()>`].
 
-```rust
-// main.rs
-{{ #include @code/how-to-color_eyre/src/main.rs:imports }}
+[`color_eyre::install`]: https://docs.rs/color-eyre/latest/color_eyre/fn.install.html
+[`color_eyre::Result<()>`]: https://docs.rs/eyre/latest/eyre/type.Result.html
+
+```rust title=main.rs {1} ins={2} collapse={3-11}
+{{ #include @code/how-to-color_eyre/src/main.rs:main }}
 ```
 
-Create a new function `install_hooks()` which will ensure your app calls `tui::restore()` before
-exiting with a panic or an error.
+In your terminal initialization function, add some new code that replaces rusts default panic
+handler with one that restores the terminal before displaying the panic details. This will be used
+by both panics and unhandled errors that fall through to the end of the program.
 
-```rust
-// main.rs
-{{ #include @code/how-to-color_eyre/src/main.rs:install_hooks }}
-```
-
-This example assumes that you have a `tui` module in your app with `init` and `restore` functions
-
-<details><summary>Example tui.rs module</summary>
-
-```rust
-// tui.rs
-{{ #include @code/how-to-color_eyre/src/tui.rs }}
+```rust title=tui.rs ins={5, 9-15}
+{{ #include @code/how-to-color_eyre/src/tui.rs:init }}
 ```
 
 </details>

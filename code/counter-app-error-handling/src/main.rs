@@ -1,9 +1,9 @@
-// ANCHOR: new imports
+// ANCHOR: new-imports
 use color_eyre::{
     eyre::{bail, WrapErr},
     Result,
 };
-// ANCHOR_END: new imports
+// ANCHOR_END: new-imports
 use ratatui::{
     buffer::Buffer,
     crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind},
@@ -18,18 +18,20 @@ use ratatui::{
     Frame,
 };
 
-// ANCHOR: modules
-mod errors;
 mod tui;
-// ANCHOR_END: modules
 
 // ANCHOR: main
 fn main() -> Result<()> {
-    errors::install_hooks()?;
+    color_eyre::install()?;
     let mut terminal = tui::init()?;
-    App::default().run(&mut terminal)?;
-    tui::restore()?;
-    Ok(())
+    let app_result = App::default().run(&mut terminal);
+    if let Err(err) = tui::restore() {
+        eprintln!(
+            "failed to restore terminal. Run `reset` or restart your terminal to recover: {}",
+            err
+        );
+    }
+    app_result
 }
 // ANCHOR_END: main
 
