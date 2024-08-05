@@ -9,7 +9,7 @@ authors = ["Dheepak Krishnamurthy"]
 
 [dependencies]
 better-panic = "0.3.0"
-clap = { version = "4.5.11", features = [
+clap = { version = "4.5.13", features = [
     "std",
     "color",
     "help",
@@ -25,7 +25,7 @@ clap = { version = "4.5.11", features = [
 ] }
 color-eyre = "0.6.3"
 config = "0.14.0"
-crossterm = { version = "0.27.0", features = ["serde", "event-stream"] }
+crossterm = { version = "0.28.1", features = ["serde", "event-stream"] }
 derive_deref = "1.1.1"
 directories = "5.0.1"
 futures = "0.3.30"
@@ -37,7 +37,7 @@ log = "0.4.22"
 pretty_assertions = "1.4.0"
 ratatui = { version = "0.27.0", features = ["serde", "macros"] }
 serde = { version = "1.0.204", features = ["derive"] }
-serde_json = "1.0.121"
+serde_json = "1.0.122"
 signal-hook = "0.3.17"
 strip-ansi-escapes = "0.2.0"
 strum = { version = "0.26.3", features = ["derive"] }
