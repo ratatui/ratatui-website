@@ -5,7 +5,11 @@ sidebar:
   label: color_eyre Error Hooks
 ---
 
-:::note[Source Code] Full source code is available at: <https://github.com/ratatui-org/ratatui-website/tree/main/code/how-to-color_eyre/>
+:::note[Source Code]
+
+Full source code is available at:
+<https://github.com/ratatui-org/ratatui-website/tree/main/code/how-to-color_eyre/>
+
 :::
 
 The [`color_eyre`] crate provides error report handlers for panics and errors. It displays the
