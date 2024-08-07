@@ -5,7 +5,11 @@ sidebar:
   label: Error Handling
 ---
 
-:::note[Source Code] Full source code is available at: <https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-error-handling>.
+:::note[Source Code]
+
+Full source code is available at:
+<https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-error-handling>.
+
 :::
 
 In the previous section, you created a [basic counter app](../basic-app/) that responds to the user
