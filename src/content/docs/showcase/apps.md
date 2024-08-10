@@ -151,6 +151,14 @@ A terminal user interface for taskwarrior
 
 ---
 
+# [`tgt`](https://github.com/FedericoBruzzone/tgt)
+
+A terminal user interface for Telegrm
+
+![tgt demo](https://raw.githubusercontent.com/FedericoBruzzone/tgt/main/imgs/example.png)
+
+---
+
 ## [`xplr`](https://github.com/sayanarijit/xplr)
 
 A hackable, minimal, fast TUI file explorer
