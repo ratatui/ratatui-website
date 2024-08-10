@@ -35,7 +35,7 @@ fn run(mut terminal: Terminal<impl Backend>) -> color_eyre::Result<()> {
     loop {
         terminal.draw(|frame| {
             let message = "Press <Q> to quit, <P> to panic, or <E> to error";
-            frame.render_widget(Paragraph::new(message), frame.size());
+            frame.render_widget(Paragraph::new(message), frame.area());
         })?;
         match event::read()? {
             Event::Key(KeyEvent {

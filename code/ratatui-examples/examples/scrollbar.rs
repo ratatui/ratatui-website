@@ -115,8 +115,8 @@ fn run_app<B: Backend>(
 }
 
 #[allow(clippy::too_many_lines, clippy::cast_possible_truncation)]
-fn ui(f: &mut Frame, app: &mut App) {
-    let size = f.size();
+fn ui(frame: &mut Frame, app: &mut App) {
+    let size = frame.area();
 
     // Words made "loooong" to demonstrate line breaking.
     let s = "Veeeeeeeeeeeeeeeery    loooooooooooooooooong   striiiiiiiiiiiiiiiiiiiiiiiiiing.   ";
@@ -162,14 +162,14 @@ fn ui(f: &mut Frame, app: &mut App) {
     let title = Block::new()
         .title_alignment(Alignment::Center)
         .title("Use h j k l or ◄ ▲ ▼ ► to scroll ".bold());
-    f.render_widget(title, chunks[0]);
+    frame.render_widget(title, chunks[0]);
 
     let paragraph = Paragraph::new(text.clone())
         .gray()
         .block(create_block("Vertical scrollbar with arrows"))
         .scroll((app.vertical_scroll as u16, 0));
-    f.render_widget(paragraph, chunks[1]);
-    f.render_stateful_widget(
+    frame.render_widget(paragraph, chunks[1]);
+    frame.render_stateful_widget(
         Scrollbar::new(ScrollbarOrientation::VerticalRight)
             .begin_symbol(Some("↑"))
             .end_symbol(Some("↓")),
@@ -183,8 +183,8 @@ fn ui(f: &mut Frame, app: &mut App) {
             "Vertical scrollbar without arrows, without track symbol and mirrored",
         ))
         .scroll((app.vertical_scroll as u16, 0));
-    f.render_widget(paragraph, chunks[2]);
-    f.render_stateful_widget(
+    frame.render_widget(paragraph, chunks[2]);
+    frame.render_stateful_widget(
         Scrollbar::new(ScrollbarOrientation::VerticalLeft)
             .symbols(scrollbar::VERTICAL)
             .begin_symbol(None)
@@ -203,8 +203,8 @@ fn ui(f: &mut Frame, app: &mut App) {
             "Horizontal scrollbar with only begin arrow & custom thumb symbol",
         ))
         .scroll((0, app.horizontal_scroll as u16));
-    f.render_widget(paragraph, chunks[3]);
-    f.render_stateful_widget(
+    frame.render_widget(paragraph, chunks[3]);
+    frame.render_stateful_widget(
         Scrollbar::new(ScrollbarOrientation::HorizontalBottom)
             .thumb_symbol("🬋")
             .end_symbol(None),
@@ -221,8 +221,8 @@ fn ui(f: &mut Frame, app: &mut App) {
             "Horizontal scrollbar without arrows & custom thumb and track symbol",
         ))
         .scroll((0, app.horizontal_scroll as u16));
-    f.render_widget(paragraph, chunks[4]);
-    f.render_stateful_widget(
+    frame.render_widget(paragraph, chunks[4]);
+    frame.render_stateful_widget(
         Scrollbar::new(ScrollbarOrientation::HorizontalBottom)
             .thumb_symbol("░")
             .track_symbol(Some("─")),

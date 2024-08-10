@@ -82,8 +82,8 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
     }
 }
 
-fn ui(f: &mut Frame, app: &App) {
-    let area = f.size();
+fn ui(frame: &mut Frame, app: &App) {
+    let area = frame.area();
 
     let vertical = Layout::vertical([Constraint::Percentage(20), Constraint::Percentage(80)]);
     let [instructions, content] = vertical.areas(area);
@@ -96,16 +96,16 @@ fn ui(f: &mut Frame, app: &App) {
     let paragraph = Paragraph::new(text.slow_blink())
         .centered()
         .wrap(Wrap { trim: true });
-    f.render_widget(paragraph, instructions);
+    frame.render_widget(paragraph, instructions);
 
     let block = Block::bordered().title("Content").on_blue();
-    f.render_widget(block, content);
+    frame.render_widget(block, content);
 
     if app.show_popup {
         let block = Block::bordered().title("Popup");
         let area = centered_rect(60, 20, area);
-        f.render_widget(Clear, area); //this clears out the background
-        f.render_widget(block, area);
+        frame.render_widget(Clear, area); //this clears out the background
+        frame.render_widget(block, area);
     }
 }
 

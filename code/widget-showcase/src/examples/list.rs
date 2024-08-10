@@ -22,5 +22,5 @@ pub fn render(frame: &mut Frame) {
 
     let mut state = ListState::default().with_selected(Some(5));
 
-    frame.render_stateful_widget(list, frame.size(), &mut state);
+    frame.render_stateful_widget(list, frame.area(), &mut state);
 }

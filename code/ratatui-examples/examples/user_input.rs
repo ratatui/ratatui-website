@@ -199,13 +199,13 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
     }
 }
 
-fn ui(f: &mut Frame, app: &App) {
+fn ui(frame: &mut Frame, app: &App) {
     let vertical = Layout::vertical([
         Constraint::Length(1),
         Constraint::Length(3),
         Constraint::Min(1),
     ]);
-    let [help_area, input_area, messages_area] = vertical.areas(f.size());
+    let [help_area, input_area, messages_area] = vertical.areas(frame.area());
 
     let (msg, style) = match app.input_mode {
         InputMode::Normal => (
@@ -231,7 +231,7 @@ fn ui(f: &mut Frame, app: &App) {
     };
     let text = Text::from(Line::from(msg)).patch_style(style);
     let help_message = Paragraph::new(text);
-    f.render_widget(help_message, help_area);
+    frame.render_widget(help_message, help_area);
 
     let input = Paragraph::new(app.input.as_str())
         .style(match app.input_mode {
@@ -239,7 +239,7 @@ fn ui(f: &mut Frame, app: &App) {
             InputMode::Editing => Style::default().fg(Color::Yellow),
         })
         .block(Block::bordered().title("Input"));
-    f.render_widget(input, input_area);
+    frame.render_widget(input, input_area);
     match app.input_mode {
         InputMode::Normal =>
             // Hide the cursor. `Frame` does this by default, so we don't need to do anything here
@@ -249,13 +249,13 @@ fn ui(f: &mut Frame, app: &App) {
             // Make the cursor visible and ask ratatui to put it at the specified coordinates after
             // rendering
             #[allow(clippy::cast_possible_truncation)]
-            f.set_cursor(
+            frame.set_cursor_position(Position {
                 // Draw the cursor at the current position in the input field.
                 // This position is can be controlled via the left and right arrow key
-                input_area.x + app.character_index as u16 + 1,
+                x: input_area.x + app.character_index as u16 + 1,
                 // Move one line down, from the border to the input line
-                input_area.y + 1,
-            );
+                y: input_area.y + 1,
+            });
         }
     }
 
@@ -269,5 +269,5 @@ fn ui(f: &mut Frame, app: &App) {
         })
         .collect();
     let messages = List::new(messages).block(Block::bordered().title("Messages"));
-    f.render_widget(messages, messages_area);
+    frame.render_widget(messages, messages_area);
 }

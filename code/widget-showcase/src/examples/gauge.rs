@@ -13,7 +13,7 @@ pub fn render(frame: &mut Frame) {
             Constraint::Length(3),
             Constraint::Min(0),
         ])
-        .split(frame.size());
+        .split(frame.area());
     frame.render_widget(
         Gauge::default()
             .percent(50)

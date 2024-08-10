@@ -10,7 +10,7 @@ use ratatui::{
 use crate::app::{App, CurrentScreen, CurrentlyEditing};
 
 // ANCHOR: method_sig
-pub fn ui(f: &mut Frame, app: &App) {
+pub fn ui(frame: &mut Frame, app: &App) {
     // ANCHOR_END: method_sig
     // Create the layout sections.
     // ANCHOR: ui_layout
@@ -21,7 +21,7 @@ pub fn ui(f: &mut Frame, app: &App) {
             Constraint::Min(1),
             Constraint::Length(3),
         ])
-        .split(f.size());
+        .split(frame.area());
     // ANCHOR_END: ui_layout
 
     // ANCHOR: title_paragraph
@@ -35,7 +35,7 @@ pub fn ui(f: &mut Frame, app: &App) {
     ))
     .block(title_block);
 
-    f.render_widget(title, chunks[0]);
+    frame.render_widget(title, chunks[0]);
     // ANCHOR_END: title_paragraph
     // ANCHOR: key_value_list
     let mut list_items = Vec::<ListItem>::new();
@@ -49,7 +49,7 @@ pub fn ui(f: &mut Frame, app: &App) {
 
     let list = List::new(list_items);
 
-    f.render_widget(list, chunks[1]);
+    frame.render_widget(list, chunks[1]);
     // ANCHOR_END: key_value_list
     // ANCHOR: lower_navigation_current_screen
     let current_navigation_text = vec![
@@ -115,8 +115,8 @@ pub fn ui(f: &mut Frame, app: &App) {
     // ANCHOR_END: lower_navigation_layout
 
     // ANCHOR: lower_navigation_rendering
-    f.render_widget(mode_footer, footer_chunks[0]);
-    f.render_widget(key_notes_footer, footer_chunks[1]);
+    frame.render_widget(mode_footer, footer_chunks[0]);
+    frame.render_widget(key_notes_footer, footer_chunks[1]);
     // ANCHOR_END: lower_navigation_rendering
 
     // ANCHOR: editing_popup
@@ -126,8 +126,8 @@ pub fn ui(f: &mut Frame, app: &App) {
             .borders(Borders::NONE)
             .style(Style::default().bg(Color::DarkGray));
 
-        let area = centered_rect(60, 25, f.size());
-        f.render_widget(popup_block, area);
+        let area = centered_rect(60, 25, frame.area());
+        frame.render_widget(popup_block, area);
         // ANCHOR_END: editing_popup
 
         // ANCHOR: popup_layout
@@ -150,16 +150,16 @@ pub fn ui(f: &mut Frame, app: &App) {
         };
 
         let key_text = Paragraph::new(app.key_input.clone()).block(key_block);
-        f.render_widget(key_text, popup_chunks[0]);
+        frame.render_widget(key_text, popup_chunks[0]);
 
         let value_text = Paragraph::new(app.value_input.clone()).block(value_block);
-        f.render_widget(value_text, popup_chunks[1]);
+        frame.render_widget(value_text, popup_chunks[1]);
     }
     // ANCHOR_END: key_value_blocks
 
     // ANCHOR: exit_screen
     if let CurrentScreen::Exiting = app.current_screen {
-        f.render_widget(Clear, f.size()); //this clears the entire screen and anything already drawn
+        frame.render_widget(Clear, frame.area()); //this clears the entire screen and anything already drawn
         let popup_block = Block::default()
             .title("Y/N")
             .borders(Borders::NONE)
@@ -174,8 +174,8 @@ pub fn ui(f: &mut Frame, app: &App) {
             .block(popup_block)
             .wrap(Wrap { trim: false });
 
-        let area = centered_rect(60, 25, f.size());
-        f.render_widget(exit_paragraph, area);
+        let area = centered_rect(60, 25, frame.area());
+        frame.render_widget(exit_paragraph, area);
     }
     // ANCHOR_END: exit_screen
 }

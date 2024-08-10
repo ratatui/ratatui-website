@@ -147,7 +147,7 @@ fn run_app<B: Backend>(
 }
 
 fn ui(frame: &mut Frame, app: &App) {
-    let area = frame.size();
+    let area = frame.area();
 
     let vertical = Layout::vertical([Constraint::Percentage(40), Constraint::Percentage(60)]);
     let horizontal = Layout::horizontal([Constraint::Ratio(1, 2), Constraint::Ratio(1, 2)]);
@@ -275,14 +275,14 @@ fn render_scatter(f: &mut Frame, area: Rect) {
                 .title("Year")
                 .bounds([1960., 2020.])
                 .style(Style::default().fg(Color::Gray))
-                .labels(vec!["1960".into(), "1990".into(), "2020".into()]),
+                .labels(["1960", "1990", "2020"]),
         )
         .y_axis(
             Axis::default()
                 .title("Cost")
                 .bounds([0., 75000.])
                 .style(Style::default().fg(Color::Gray))
-                .labels(vec!["0".into(), "37 500".into(), "75 000".into()]),
+                .labels(["0", "37 500", "75 000"]),
         )
         .hidden_legend_constraints((Constraint::Ratio(1, 2), Constraint::Ratio(1, 2)));
 

@@ -9,5 +9,5 @@ pub fn render(frame: &mut Frame) {
         .divider(symbols::DOT)
         .padding(" ", " ");
 
-    frame.render_widget(tabs, frame.size());
+    frame.render_widget(tabs, frame.area());
 }

@@ -15,7 +15,10 @@
 
 #![allow(clippy::enum_glob_use, clippy::wildcard_imports)]
 
-use std::io::{self, stdout};
+use std::{
+    io::{self, stdout},
+    num::NonZero,
+};
 
 use color_eyre::{config::HookBuilder, Result};
 use ratatui::{
@@ -148,7 +151,7 @@ enum SelectedTab {
 
 fn main() -> Result<()> {
     // assuming the user changes spacing about a 100 times or so
-    Layout::init_cache(EXAMPLE_DATA.len() * SelectedTab::iter().len() * 100);
+    Layout::init_cache(NonZero::new(EXAMPLE_DATA.len() * SelectedTab::iter().len() * 100).unwrap());
     init_error_hooks()?;
     let terminal = init_terminal()?;
     App::default().run(terminal)?;
@@ -172,7 +175,7 @@ impl App {
     }
 
     fn draw(self, terminal: &mut Terminal<impl Backend>) -> io::Result<()> {
-        terminal.draw(|frame| frame.render_widget(self, frame.size()))?;
+        terminal.draw(|frame| frame.render_widget(self, frame.area()))?;
         Ok(())
     }
 
@@ -334,7 +337,7 @@ impl App {
         for (i, cell) in visible_content.enumerate() {
             let x = i as u16 % area.width;
             let y = i as u16 / area.width;
-            *buf.get_mut(area.x + x, area.y + y) = cell;
+            buf[(area.x + x, area.y + y)] = cell;
         }
 
         if scrollbar_needed {

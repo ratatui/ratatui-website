@@ -36,7 +36,7 @@ fn main() -> color_eyre::Result<()> {
 
 // ANCHOR: ui
 fn ui(frame: &mut Frame) {
-    let area = frame.size();
+    let area = frame.area();
     let background_text = Paragraph::new(lipsum(1000))
         .wrap(Wrap { trim: true })
         .light_blue()

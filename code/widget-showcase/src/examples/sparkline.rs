@@ -12,5 +12,5 @@ pub fn render(frame: &mut Frame) {
         .direction(RenderDirection::LeftToRight)
         .style(Style::default().yellow());
 
-    frame.render_widget(sparkline, frame.size());
+    frame.render_widget(sparkline, frame.area());
 }

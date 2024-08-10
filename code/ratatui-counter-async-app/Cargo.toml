@@ -30,7 +30,7 @@ lazy_static = "1.5.0"
 libc = "0.2.155"
 log = "0.4.22"
 pretty_assertions = "1.4.0"
-ratatui = { version = "0.27.0", features = ["serde", "macros"] }
+ratatui = { version = "0.28.0", features = ["serde", "macros"] }
 serde = { version = "1.0.204", features = ["derive"] }
 serde_json = "1.0.122"
 signal-hook = "0.3.17"

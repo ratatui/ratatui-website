@@ -56,10 +56,10 @@ fn main() -> color_eyre::Result<()> {
 // ANCHOR_END: main
 
 // ANCHOR: view
-fn view(model: &mut Model, f: &mut Frame) {
-    f.render_widget(
+fn view(model: &mut Model, frame: &mut Frame) {
+    frame.render_widget(
         Paragraph::new(format!("Counter: {}", model.counter)),
-        f.size(),
+        frame.area(),
     );
 }
 // ANCHOR_END: view

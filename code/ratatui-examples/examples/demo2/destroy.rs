@@ -19,7 +19,7 @@ pub fn destroy(frame: &mut Frame<'_>) {
         return;
     }
 
-    let area = frame.size();
+    let area = frame.area();
     let buf = frame.buffer_mut();
 
     drip(frame_count, area, buf);
@@ -45,7 +45,7 @@ fn drip(frame_count: usize, area: Rect, buf: &mut Buffer) {
     for _ in 0..pixel_count {
         let src_x = rng.gen_range(0..area.width);
         let src_y = rng.gen_range(1..area.height - 2);
-        let src = buf.get_mut(src_x, src_y).clone();
+        let src = buf[(src_x, src_y)].clone();
         // 1% of the time, move a blank or pixel (10:1) to the top line of the screen
         if rng.gen_ratio(1, 100) {
             let dest_x = rng
@@ -53,21 +53,19 @@ fn drip(frame_count: usize, area: Rect, buf: &mut Buffer) {
                 .clamp(area.left(), area.right() - 1);
             let dest_y = area.top() + 1;
 
-            let dest = buf.get_mut(dest_x, dest_y);
             // copy the cell to the new location about 1/10 of the time blank out the cell the rest
             // of the time. This has the effect of gradually removing the pixels from the screen.
-            if rng.gen_ratio(1, 10) {
-                *dest = src;
+            buf[(dest_x, dest_y)] = if rng.gen_ratio(1, 10) {
+                src
             } else {
-                *dest = Cell::default();
+                Cell::default()
             }
         } else {
             // move the pixel down one row
             let dest_x = src_x;
             let dest_y = src_y.saturating_add(1).min(area.bottom() - 2);
             // copy the cell to the new location
-            let dest = buf.get_mut(dest_x, dest_y);
-            *dest = src;
+            buf[(dest_x, dest_y)] = src;
         }
     }
 }
@@ -98,8 +96,8 @@ fn text(frame_count: usize, area: Rect, buf: &mut Buffer) {
 
     for row in area.rows() {
         for col in row.columns() {
-            let cell = buf.get_mut(col.x, col.y);
-            let mask_cell = mask_buf.get(col.x, col.y);
+            let cell = &mut buf[(col.x, col.y)];
+            let mask_cell = &mask_buf[(col.x, col.y)];
             cell.set_symbol(mask_cell.symbol());
 
             // blend the mask cell color with the cell color

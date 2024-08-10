@@ -6,8 +6,8 @@ use ratatui::{
 
 use crate::app::App;
 
-pub fn draw(f: &mut Frame, app: &mut App) {
-    let chunks = Layout::vertical([Constraint::Length(3), Constraint::Min(0)]).split(f.size());
+pub fn draw(frame: &mut Frame, app: &mut App) {
+    let chunks = Layout::vertical([Constraint::Length(3), Constraint::Min(0)]).split(frame.area());
     let tabs = app
         .tabs
         .titles
@@ -17,11 +17,11 @@ pub fn draw(f: &mut Frame, app: &mut App) {
         .block(Block::bordered().title(app.title))
         .highlight_style(Style::default().fg(Color::Yellow))
         .select(app.tabs.index);
-    f.render_widget(tabs, chunks[0]);
+    frame.render_widget(tabs, chunks[0]);
     match app.tabs.index {
-        0 => draw_first_tab(f, app, chunks[1]),
-        1 => draw_second_tab(f, app, chunks[1]),
-        2 => draw_third_tab(f, app, chunks[1]),
+        0 => draw_first_tab(frame, app, chunks[1]),
+        1 => draw_second_tab(frame, app, chunks[1]),
+        2 => draw_third_tab(frame, app, chunks[1]),
         _ => {}
     };
 }

@@ -58,8 +58,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn draw(f: &mut Frame) {
-    let app_area = f.size();
+fn draw(frame: &mut Frame) {
+    let app_area = frame.area();
 
     let calarea = Rect {
         x: app_area.x + 1,
@@ -86,7 +86,7 @@ fn draw(f: &mut Frame) {
     });
     for col in cols {
         let cal = cals::get_cal(start.month(), start.year(), &list);
-        f.render_widget(cal, col);
+        frame.render_widget(cal, col);
         start = start.replace_month(start.month().next()).unwrap();
     }
 }

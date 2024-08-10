@@ -112,9 +112,9 @@ impl App {
           Action::Resume => self.should_suspend = false,
           Action::Resize(w, h) => {
             tui.resize(Rect::new(0, 0, w, h))?;
-            tui.draw(|f| {
+            tui.draw(|frame| {
               for component in self.components.iter_mut() {
-                let r = component.draw(f, f.size());
+                let r = component.draw(frame, frame.area());
                 if let Err(e) = r {
                   action_tx.send(Action::Error(format!("Failed to draw: {:?}", e))).unwrap();
                 }
@@ -122,9 +122,9 @@ impl App {
             })?;
           },
           Action::Render => {
-            tui.draw(|f| {
+            tui.draw(|frame| {
               for component in self.components.iter_mut() {
-                let r = component.draw(f, f.size());
+                let r = component.draw(frame, frame.area());
                 if let Err(e) = r {
                   action_tx.send(Action::Error(format!("Failed to draw: {:?}", e))).unwrap();
                 }

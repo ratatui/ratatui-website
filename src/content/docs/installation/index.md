@@ -14,7 +14,7 @@ or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-ratatui = "0.27.0"
+ratatui = "0.28.0"
 ```
 
 :::tip
@@ -29,7 +29,7 @@ or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.27.0", features = ["all-widgets"]}
+ratatui = { version = "0.28.0", features = ["all-widgets"]}
 ```
 
 You can learn more about available widgets from the
@@ -59,7 +59,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.27.0", default-features = false, features = ["termion"] }
+ratatui = { version = "0.28.0", default-features = false, features = ["termion"] }
 ```
 
 For Termwiz:
@@ -72,7 +72,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.27.0", default-features = false, features = ["termwiz"] }
+ratatui = { version = "0.28.0", default-features = false, features = ["termwiz"] }
 ```
 
 [Backend]: /concepts/backends/
