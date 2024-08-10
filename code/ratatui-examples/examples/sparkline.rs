@@ -142,13 +142,13 @@ fn run_app<B: Backend>(
     }
 }
 
-fn ui(f: &mut Frame, app: &App) {
+fn ui(frame: &mut Frame, app: &App) {
     let chunks = Layout::vertical([
         Constraint::Length(3),
         Constraint::Length(3),
         Constraint::Min(0),
     ])
-    .split(f.size());
+    .split(frame.area());
     let sparkline = Sparkline::default()
         .block(
             Block::new()
@@ -157,7 +157,7 @@ fn ui(f: &mut Frame, app: &App) {
         )
         .data(&app.data1)
         .style(Style::default().fg(Color::Yellow));
-    f.render_widget(sparkline, chunks[0]);
+    frame.render_widget(sparkline, chunks[0]);
     let sparkline = Sparkline::default()
         .block(
             Block::new()
@@ -166,7 +166,7 @@ fn ui(f: &mut Frame, app: &App) {
         )
         .data(&app.data2)
         .style(Style::default().bg(Color::Green));
-    f.render_widget(sparkline, chunks[1]);
+    frame.render_widget(sparkline, chunks[1]);
     // Multiline
     let sparkline = Sparkline::default()
         .block(
@@ -176,5 +176,5 @@ fn ui(f: &mut Frame, app: &App) {
         )
         .data(&app.data3)
         .style(Style::default().fg(Color::Red));
-    f.render_widget(sparkline, chunks[2]);
+    frame.render_widget(sparkline, chunks[2]);
 }

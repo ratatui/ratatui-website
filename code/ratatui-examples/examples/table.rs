@@ -229,16 +229,16 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
     }
 }
 
-fn ui(f: &mut Frame, app: &mut App) {
-    let rects = Layout::vertical([Constraint::Min(5), Constraint::Length(3)]).split(f.size());
+fn ui(frame: &mut Frame, app: &mut App) {
+    let rects = Layout::vertical([Constraint::Min(5), Constraint::Length(3)]).split(frame.area());
 
     app.set_colors();
 
-    render_table(f, app, rects[0]);
+    render_table(frame, app, rects[0]);
 
-    render_scrollbar(f, app, rects[0]);
+    render_scrollbar(frame, app, rects[0]);
 
-    render_footer(f, app, rects[1]);
+    render_footer(frame, app, rects[1]);
 }
 
 fn render_table(f: &mut Frame, app: &mut App, area: Rect) {

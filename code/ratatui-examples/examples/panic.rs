@@ -121,7 +121,7 @@ fn run_tui<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<
 }
 
 /// Render the TUI.
-fn ui(f: &mut Frame, app: &App) {
+fn ui(frame: &mut Frame, app: &App) {
     let text = vec![
         if app.hook_enabled {
             Line::from("HOOK IS CURRENTLY **ENABLED**")
@@ -147,5 +147,5 @@ fn ui(f: &mut Frame, app: &App) {
         .block(Block::bordered().title("Panic Handler Demo"))
         .centered();
 
-    f.render_widget(paragraph, f.size());
+    frame.render_widget(paragraph, frame.area());
 }

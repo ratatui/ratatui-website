@@ -12,5 +12,5 @@ pub fn render(frame: &mut Frame) {
         .white()
         .alignment(Alignment::Center);
 
-    frame.render_widget(paragraph, frame.size());
+    frame.render_widget(paragraph, frame.area());
 }

@@ -118,7 +118,7 @@ dependencies section:
 
 ```toml title="Cargo.toml"
 [dependencies]
-ratatui = "0.27.0"
+ratatui = "0.28.0"
 ```
 
 ## Create a TUI application

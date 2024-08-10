@@ -4,7 +4,7 @@ use color_eyre::eyre::Result;
 use log::error;
 use ratatui::{
   crossterm::event::{KeyCode, KeyEvent},
-  layout::{Alignment, Constraint, Layout, Margin, Rect},
+  layout::{Alignment, Constraint, Layout, Margin, Position, Rect},
   style::{Color, Modifier, Style, Stylize},
   text::{Line, Span},
   widgets::{block, Block, BorderType, Borders, Clear, Paragraph, Row, Table},
@@ -114,7 +114,7 @@ impl Component for Home {
           Action::EnterNormal
         },
         _ => {
-          self.input.handle_event(&crossterm::event::Event::Key(key));
+          self.input.handle_event(&ratatui::crossterm::event::Event::Key(key));
           Action::Update
         },
       },
@@ -212,7 +212,11 @@ impl Component for Home {
       ])));
     f.render_widget(input, rects[1]);
     if self.mode == Mode::Insert {
-      f.set_cursor((rects[1].x + 1 + self.input.cursor() as u16).min(rects[1].x + rects[1].width - 2), rects[1].y + 1)
+      let position = Position {
+        x: (rects[1].x + 1 + self.input.cursor() as u16).min(rects[1].x + rects[1].width - 2),
+        y: rects[1].y + 1,
+      };
+      f.set_cursor_position(position)
     }
 
     if self.show_help {

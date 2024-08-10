@@ -7,8 +7,8 @@ use ratatui::{
 
 use crate::app::App;
 
-pub fn render(app: &mut App, f: &mut Frame) {
-    f.render_widget(
+pub fn render(app: &mut App, frame: &mut Frame) {
+    frame.render_widget(
         Paragraph::new(format!(
             "
         Press `Esc`, `Ctrl-C` or `q` to stop running.\n\
@@ -26,6 +26,6 @@ pub fn render(app: &mut App, f: &mut Frame) {
         )
         .style(Style::default().fg(Color::Yellow))
         .alignment(Alignment::Center),
-        f.size(),
+        frame.area(),
     )
 }

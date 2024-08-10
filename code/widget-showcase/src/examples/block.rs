@@ -32,6 +32,6 @@ pub fn render(frame: &mut Frame) {
             .block(block)
             .alignment(Alignment::Center)
             .wrap(Wrap { trim: true }),
-        frame.size(),
+        frame.area(),
     );
 }

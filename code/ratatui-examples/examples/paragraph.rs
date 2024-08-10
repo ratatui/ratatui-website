@@ -97,8 +97,8 @@ fn run_app<B: Backend>(
     }
 }
 
-fn ui(f: &mut Frame, app: &App) {
-    let size = f.size();
+fn ui(frame: &mut Frame, app: &App) {
+    let size = frame.area();
 
     // Words made "loooong" to demonstrate line breaking.
     let s = "Veeeeeeeeeeeeeeeery    loooooooooooooooooong   striiiiiiiiiiiiiiiiiiiiiiiiiing.   ";
@@ -106,7 +106,7 @@ fn ui(f: &mut Frame, app: &App) {
     long_line.push('\n');
 
     let block = Block::new().black();
-    f.render_widget(block, size);
+    frame.render_widget(block, size);
 
     let layout = Layout::vertical([Constraint::Ratio(1, 4); 4]).split(size);
 
@@ -138,20 +138,20 @@ fn ui(f: &mut Frame, app: &App) {
     let paragraph = Paragraph::new(text.clone())
         .style(Style::default().fg(Color::Gray))
         .block(create_block("Default alignment (Left), no wrap"));
-    f.render_widget(paragraph, layout[0]);
+    frame.render_widget(paragraph, layout[0]);
 
     let paragraph = Paragraph::new(text.clone())
         .style(Style::default().fg(Color::Gray))
         .block(create_block("Default alignment (Left), with wrap"))
         .wrap(Wrap { trim: true });
-    f.render_widget(paragraph, layout[1]);
+    frame.render_widget(paragraph, layout[1]);
 
     let paragraph = Paragraph::new(text.clone())
         .style(Style::default().fg(Color::Gray))
         .block(create_block("Right alignment, with wrap"))
         .right_aligned()
         .wrap(Wrap { trim: true });
-    f.render_widget(paragraph, layout[2]);
+    frame.render_widget(paragraph, layout[2]);
 
     let paragraph = Paragraph::new(text)
         .style(Style::default().fg(Color::Gray))
@@ -159,5 +159,5 @@ fn ui(f: &mut Frame, app: &App) {
         .centered()
         .wrap(Wrap { trim: true })
         .scroll((app.scroll, 0));
-    f.render_widget(paragraph, layout[3]);
+    frame.render_widget(paragraph, layout[3]);
 }

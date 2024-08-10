@@ -48,7 +48,7 @@ fn ui(frame: &mut Frame) {
         // side of the screen. This is important because the right side of the screen is
         // where the borders are collapsed.
         .constraints([Constraint::Percentage(49), Constraint::Percentage(51)])
-        .split(frame.size());
+        .split(frame.area());
     let sub_layout = Layout::default()
         .direction(Direction::Vertical)
         // use a 49/51 split to ensure that any extra space is on the bottom

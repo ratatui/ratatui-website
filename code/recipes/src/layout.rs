@@ -35,7 +35,7 @@ fn center(area: Rect, horizontal: Constraint, vertical: Constraint) -> Rect {
 fn render(frame: &mut Frame) {
     let text = Text::raw("Hello world!");
     let area = center(
-        frame.size(),
+        frame.area(),
         Constraint::Length(text.width() as u16),
         Constraint::Length(1),
     );
@@ -46,7 +46,7 @@ fn render(frame: &mut Frame) {
 // ANCHOR: render_popup
 fn render_popup(frame: &mut Frame) {
     let area = center(
-        frame.size(),
+        frame.area(),
         Constraint::Percentage(20),
         Constraint::Length(3), // top and bottom border + content
     );

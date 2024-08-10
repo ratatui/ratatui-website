@@ -16,10 +16,9 @@ use ratatui::{
     },
     layout::Rect,
     style::{Style, Stylize},
-    terminal::Frame,
     text::{Line, Text},
     widgets::{Block, Borders, Clear, Paragraph, Widget, Wrap},
-    Terminal,
+    Frame, Terminal,
 };
 // ANCHOR_END: imports
 
@@ -70,7 +69,7 @@ fn main() -> color_eyre::Result<()> {
 
 // ANCHOR: ui
 fn ui(frame: &mut Frame) {
-    let area = frame.size();
+    let area = frame.area();
     let background_text = Paragraph::new(lipsum(1000))
         .wrap(Wrap { trim: true })
         .light_blue()

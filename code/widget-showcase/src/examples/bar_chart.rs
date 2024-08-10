@@ -27,7 +27,7 @@ pub fn render(frame: &mut Frame) {
     let layout = Layout::default()
         .direction(Direction::Horizontal)
         .constraints([Constraint::Length(20), Constraint::Min(0)])
-        .split(frame.size());
+        .split(frame.area());
     frame.render_widget(vertical, layout[0]);
     frame.render_widget(horizontal, layout[1]);
 }

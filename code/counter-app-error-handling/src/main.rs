@@ -58,7 +58,7 @@ impl App {
 
     // ANCHOR: render_frame
     fn render_frame(&self, frame: &mut Frame) {
-        frame.render_widget(self, frame.size());
+        frame.render_widget(self, frame.area());
     }
     // ANCHOR_END: render_frame
 

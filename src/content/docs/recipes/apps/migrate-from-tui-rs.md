@@ -19,8 +19,8 @@ Most new code should use the following. To take this approach to migration requi
 `tui::`->`ratatui::` on the entire codebase.
 
 ```toml
-ratatui = { version = "0.24.0" }
-crossterm = { version = "0.27.0" }
+ratatui = { version = "0.28.0" }
+crossterm = { version = "0.28.0" }
 ```
 
 ## Drop in replacement
@@ -29,8 +29,8 @@ The simplest approach to migrating to `ratatui` is to use it as drop in replacem
 update the terminal libraries used (`crossterm` / `termion`). E.g.:
 
 ```toml
-tui = { package = "ratatui", version = "0.24.0", features = ["crossterm"] }
-crossterm = { version = "0.27.0" }
+tui = { package = "ratatui", version = "0.28.0", features = ["crossterm"] }
+crossterm = { version = "0.28.0" }
 ```
 
 ## Support both tui and ratatui

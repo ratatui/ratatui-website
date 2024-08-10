@@ -3,13 +3,13 @@ use ratatui::{
     widgets::canvas::{self, Canvas, Circle, Context, Rectangle},
 };
 
-pub fn render(f: &mut Frame) {
+pub fn render(frame: &mut Frame) {
     let canvas = Canvas::default()
         .x_bounds([0., 40.])
         .y_bounds([0., 20.])
         .paint(draw);
 
-    f.render_widget(canvas, f.size());
+    frame.render_widget(canvas, frame.area());
 }
 
 fn draw(ctx: &mut Context) {

@@ -65,5 +65,5 @@ pub fn render(frame: &mut Frame) {
 
     let mut state = TableState::new().with_selected(Some(4));
 
-    frame.render_stateful_widget(table, frame.size(), &mut state);
+    frame.render_stateful_widget(table, frame.area(), &mut state);
 }

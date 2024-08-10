@@ -39,7 +39,7 @@ pub fn render(frame: &mut Frame) -> color_eyre::Result<()> {
     let layout = Layout::default()
         .direction(Direction::Horizontal)
         .constraints([Constraint::Length(23), Constraint::Min(0)])
-        .split(frame.size());
+        .split(frame.area());
     frame.render_widget(january_calendar, layout[0]);
     frame.render_widget(february_calendar, layout[1]);
     Ok(())

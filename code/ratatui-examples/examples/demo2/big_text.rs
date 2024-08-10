@@ -33,7 +33,7 @@
 //!             "~~~~~".into(),
 //!         ])
 //!         .build()?;
-//!     frame.render_widget(big_text, frame.size());
+//!     frame.render_widget(big_text, frame.area());
 //!     Ok(())
 //! }
 //! ```
@@ -245,7 +245,6 @@ fn render_glyph(glyph: [u8; 8], area: Rect, buf: &mut Buffer, pixel_size: PixelS
             .clone()
             .zip(area.left()..area.right())
         {
-            let cell = buf.get_mut(x, y);
             let symbol_character = match pixel_size {
                 PixelSize::Full => match glyph[row] & (1 << col) {
                     0 => ' ',
@@ -269,7 +268,7 @@ fn render_glyph(glyph: [u8; 8], area: Rect, buf: &mut Buffer, pixel_size: PixelS
                     get_symbol_half_size(top_left, top_right, bottom_left, bottom_right)
                 }
             };
-            cell.set_char(symbol_character);
+            buf[(x, y)].set_char(symbol_character);
         }
     }
 }

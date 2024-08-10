@@ -69,7 +69,7 @@ also requires the `futures` crate. Naturally you'll also need `tokio`.
 If you haven't already, add the following to your `Cargo.toml`:
 
 ```toml
-crossterm = { version = "0.27.0", features = ["event-stream"] }
+crossterm = { version = "0.28.0", features = ["event-stream"] }
 futures = "0.3.28"
 tokio = { version = "1.32.0", features = ["full"] }
 tokio-util = "0.7.9" # required for `CancellationToken` introduced in the next section

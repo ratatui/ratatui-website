@@ -45,20 +45,14 @@ pub fn render(frame: &mut Frame) {
                 .title(Span::styled("X", Style::default().fg(Color::Red)))
                 .style(Style::default().fg(Color::White))
                 .bounds([0.0, 10.0])
-                .labels(
-                    ["0.0", "5.0", "10.0"]
-                        .iter()
-                        .cloned()
-                        .map(Span::from)
-                        .collect(),
-                ),
+                .labels(["0.0", "5.0", "10.0"]),
         )
         .y_axis(
             Axis::default()
                 .title(Span::styled("Y", Style::default().fg(Color::Red)))
                 .style(Style::default().fg(Color::White))
                 .bounds([0.0, 10.0])
-                .labels(["0.0", "10.0"].iter().cloned().map(Span::from).collect()),
+                .labels(["0.0", "10.0"]),
         );
-    frame.render_widget(chart, frame.size());
+    frame.render_widget(chart, frame.area());
 }
