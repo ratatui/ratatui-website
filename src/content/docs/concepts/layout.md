@@ -228,8 +228,8 @@ constraints. The specific result is non-deterministic when this occurs.
 There are a few PoCs of using [Taffy](https://crates.io/crates/taffy) for creating layouts that use
 flexbox / grid algorithms (similar to CSS) to layout rects. This can work nicely, but is not built
 in to Ratatui (yet). See
-[taffy in ratatui](https://github.com/search?q=repo%3Aratatui-org%2Fratatui%20taffy&type=code) for
-more details.
+[taffy in ratatui](https://github.com/search?q=repo%3Aratatui%2Fratatui%20taffy&type=code) for more
+details.
 
 ## See Also
 

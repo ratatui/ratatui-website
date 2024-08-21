@@ -8,7 +8,7 @@ in any style field. Source: [colors_rgb.rs](./colors_rgb.rs). Uses a half block 
 two square-ish pixels in the space of a single rectangular terminal cell.
 
 ```shell title=run example
-git clone https://github.com/ratatui-org/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
 cargo run --example=colors_rgb --features=crossterm
 ```

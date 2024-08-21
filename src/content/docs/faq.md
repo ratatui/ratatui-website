@@ -38,7 +38,7 @@ relatively fast, especially using the double buffer technique that only renders 
 uses. Creating of the widgets can also be done quite efficiently.
 
 So one question you may ask is can we make `terminal.draw(|f| ui(f))` `async` ourselves? Yes, we
-can. Check out <https://github.com/ratatui-org/async-template/tree/v0.1.0> for an example.
+can. Check out <https://github.com/ratatui/async-template/tree/v0.1.0> for an example.
 
 The only other part related to `ratatui` that is beneficial to being `async` is reading the key
 event inputs from `stdin`, and that can be made `async` with `crossterm`'s event-stream.
@@ -101,7 +101,7 @@ In your `main` thread or `tokio` task, do you expect to be spawning more `tokio`
 more tasks do you plan to be spawning?
 
 The former can be done without any `async` code and the latter is the approach showcased in
-[`async-template#v1.0`](https://github.com/ratatui-org/async-template/tree/v0.1.0) with `tokio`.
+[`async-template#v1.0`](https://github.com/ratatui/async-template/tree/v0.1.0) with `tokio`.
 
 The `simple-async` uses this architecture instead with tokio:
 
@@ -142,7 +142,7 @@ it is useful to refer to when contributing code, documentation, or issues with R
 
 We imported all the PRs from the original repository and implemented many of the smaller ones and
 made notes on the leftovers. These are marked as draft PRs and labelled as
-[imported from tui](https://github.com/ratatui-org/ratatui/pulls?q=is%3Apr+is%3Aopen+label%3A%22imported+from+tui%22).
+[imported from tui](https://github.com/ratatui/ratatui/pulls?q=is%3Apr+is%3Aopen+label%3A%22imported+from+tui%22).
 We have documented the current state of those PRs, and anyone is welcome to pick them up and
 continue the work on them.
 
@@ -457,8 +457,8 @@ If you want to know more, we recommend reading
 ## How do I avoid panics due to out of range calls on the Buffer?
 
 In general, most of the code in Ratatui was not designed around using `Result`s to prevent panics.
-We have an [Issue to address the panics](https://github.com/ratatui-org/ratatui/issues/1011), but
-for now there are some easy approaches that can help avoid them.
+We have an [Issue to address the panics](https://github.com/ratatui/ratatui/issues/1011), but for
+now there are some easy approaches that can help avoid them.
 
 A one liner that will mostly fix this for pretty much any widget is to avoid rendering stuff outside
 of the buffer is to reassign the area to the intersection of the area and the buffer's area. If you

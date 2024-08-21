@@ -5,7 +5,7 @@ title: Panic Hooks
 Demonstrates the setting up panic hooks
 
 ```shell title=run example
-git clone https://github.com/ratatui-org/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
 cargo run --example=panic --features=crossterm
 ```

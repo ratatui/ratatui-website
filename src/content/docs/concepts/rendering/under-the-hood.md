@@ -34,12 +34,12 @@ method. At the end of the `draw` method (after the closure returns), Ratatui per
 the buffer to the terminal. Let's walk through more specifics in the following sections.
 
 [`Terminal::draw()`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L325-L360
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L325-L360
 [closure]: https://doc.rust-lang.org/stable/book/ch13-01-closures.html
 [`Frame::render_widget()`]:
-  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596
+  https://github.com/ratatui/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L596
 [`Frame::render_stateful_widget()`]:
-  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L628
+  https://github.com/ratatui/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L628
 
 ## `Widget` trait
 
@@ -54,7 +54,7 @@ pub trait Widget {
 ```
 
 [`Widget`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets.rs#L107-L112
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets.rs#L107-L112
 
 Any struct (inside Ratatui or third party crates) can implement the `Widget` trait, making an
 instance of that struct renderable to the terminal. The `Widget::render()` method is the only method
@@ -66,7 +66,7 @@ In the `Paragraph` example above, `frame.render_widget()` calls the
 `render` methods for examples of how to draw content.
 
 [`Widget::render()` method implemented for `Paragraph`]:
-  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/widgets/paragraph.rs#L213-L214
+  https://github.com/ratatui/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/widgets/paragraph.rs#L213-L214
 
 As a simple example, let's take a look at the builtin `Clear` widget. The `Clear` widget resets the
 style information of every cell in the buffer back to the defaults. Here is the full implementation
@@ -221,24 +221,24 @@ sequenceDiagram
 ```
 
 [`Cell`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L15-L26
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L15-L26
 [`Buffer`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/buffer.rs#L149-L157
 [`Viewport`]:
-  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L41-L65
+  https://github.com/ratatui/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/terminal.rs#L41-L65
 [`Text`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/text/text.rs#L30-L33
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/text/text.rs#L30-L33
 [`Line`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/text/line.rs#L6-L10
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/text/line.rs#L6-L10
 [`Span`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/text/span.rs#L55-L61
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/text/span.rs#L55-L61
 [`render` method for `Block`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets/block.rs#L752-L760
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/widgets/block.rs#L752-L760
 [`Frame`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L566-L578
 [`Terminal::flush()`]:
-  https://github.com/ratatui-org/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L253-L263
+  https://github.com/ratatui/ratatui/blob/e5caf170c8c304b952cbff7499fd4da17ab154ea/src/terminal.rs#L253-L263
 [`get_mut`]:
-  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/buffer.rs#L207-L211
+  https://github.com/ratatui/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/buffer.rs#L207-L211
 [`set_string`]:
-  https://github.com/ratatui-org/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/buffer.rs#L289-L294
+  https://github.com/ratatui/ratatui/blob/88ae3485c2c540b4ee630ab13e613e84efa7440a/src/buffer.rs#L289-L294

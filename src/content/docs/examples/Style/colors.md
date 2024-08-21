@@ -6,7 +6,7 @@ Demonstrates the available [`Color`](https://docs.rs/ratatui/latest/ratatui/styl
 options. These can be used in any style field.
 
 ```shell title=run example
-git clone https://github.com/ratatui-org/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
 cargo run --example=colors --features=crossterm
 ```

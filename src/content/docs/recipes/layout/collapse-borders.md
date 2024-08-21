@@ -69,12 +69,12 @@ space to the last layout item (e.g. by using 49/51 or 33/33/34).
 :::note
 
 If this sounds too complex, we're looking for some help to make this easier in
-<https://github.com/ratatui-org/ratatui/issues/605>.
+<https://github.com/ratatui/ratatui/issues/605>.
 
 :::
 
 The full code for this example is available at
-<https://github.com/ratatui-org/ratatui-website/blob/main/code/how-to-collapse-borders>
+<https://github.com/ratatui/ratatui-website/blob/main/code/how-to-collapse-borders>
 
 Full `ui()` function:
 
