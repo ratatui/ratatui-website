@@ -2,7 +2,7 @@
 
 <img align="right" src="https://avatars.githubusercontent.com/u/125200832?s=128&v=4" alt="ratatui logo">
 
-This is the website for [Ratatui](https://github.com/ratatui-org/ratatui), a Rust crate for cooking
+This is the website for [Ratatui](https://github.com/ratatui/ratatui), a Rust crate for cooking
 up rich Terminal User Interfaces.
 
 [![License](https://img.shields.io/crates/l/ratatui?style=for-the-badge)](./LICENSE.md)
@@ -16,7 +16,7 @@ To read this content online, visit:
 To build and run the site locally:
 
 ```shell
-git clone https://github.com/ratatui-org/ratatui-website/
+git clone https://github.com/ratatui/ratatui-website/
 cd ratatui-website
 
 git lfs install

@@ -8,7 +8,7 @@ sidebar:
 :::note[Source Code]
 
 Full source code is available at:
-<https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-error-handling>.
+<https://github.com/ratatui/ratatui-website/tree/main/code/counter-app-error-handling>.
 
 :::
 

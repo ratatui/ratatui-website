@@ -60,7 +60,7 @@ export default defineConfig({
         plugins: [pluginCollapsibleSections(), collapsibleFrames()],
       },
       social: {
-        github: "https://github.com/ratatui-org/ratatui",
+        github: "https://github.com/ratatui/ratatui",
         discord: "https://discord.gg/pMCEU9hNEj",
         matrix: "https://matrix.to/#/#ratatui:matrix.org",
         discourse: "https://forum.ratatui.rs",
@@ -259,7 +259,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: "https://github.com/ratatui-org/ratatui-website/edit/main/",
+        baseUrl: "https://github.com/ratatui/ratatui-website/edit/main/",
       },
     }),
     tailwind({

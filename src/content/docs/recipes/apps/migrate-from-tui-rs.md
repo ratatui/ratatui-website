@@ -42,7 +42,7 @@ approach.
 
 ## Backwards compatibility and breaking changes
 
-- [BREAKING-CHANGES.md](https://github.com/ratatui-org/ratatui/blob/main/BREAKING-CHANGES.md)
+- [BREAKING-CHANGES.md](https://github.com/ratatui/ratatui/blob/main/BREAKING-CHANGES.md)
 - PRs tagged with the
-  [breaking changes](https://github.com/ratatui-org/ratatui/pulls?q=is%3Apr+label%3A%22breaking+change%22+is%3Aclosed)
+  [breaking changes](https://github.com/ratatui/ratatui/pulls?q=is%3Apr+label%3A%22breaking+change%22+is%3Aclosed)
   label

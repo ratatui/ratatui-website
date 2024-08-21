@@ -7,7 +7,7 @@ Demonstrates how various
 other in a layout.
 
 ```shell title=run example
-git clone https://github.com/ratatui-org/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
 cargo run --example=constraints --features=crossterm
 ```

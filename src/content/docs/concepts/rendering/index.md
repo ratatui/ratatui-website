@@ -73,4 +73,4 @@ This 4 minute talk about `IMGUI` is also tangentially relevant.
   in organizing large applications. Ultimately, the decision on structure and discipline rests with
   the developer to be principled. However, we do provide [templates] to help you get started.
 
-[templates]: https://github.com/ratatui-org/templates
+[templates]: https://github.com/ratatui/templates

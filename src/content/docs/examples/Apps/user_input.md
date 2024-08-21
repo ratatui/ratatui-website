@@ -8,7 +8,7 @@ Demonstrates one approach to accepting user input. Source [user_input.rs](./user
 [`tui-input`](https://crates.io/crates/tui-input) crates for more functional text entry UIs. :::
 
 ```shell title=run example
-git clone https://github.com/ratatui-org/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
 cargo run --example=user_input --features=crossterm
 ```

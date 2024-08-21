@@ -5,7 +5,7 @@ title: Demo
 This is the original demo example from the main README. It is available for each of the backends.
 
 ```shell title=run example
-git clone https://github.com/ratatui-org/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
 cargo run --example=demo --features=crossterm
 cargo run --example=demo --no-default-features --features=termion

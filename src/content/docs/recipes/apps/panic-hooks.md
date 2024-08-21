@@ -52,7 +52,7 @@ method to leave the alternate screen except when dropped. Apps should use `ToAlt
 
 For more discussion on this, see:
 
-- <https://github.com/ratatui-org/ratatui/issues/1005>
+- <https://github.com/ratatui/ratatui/issues/1005>
 - <https://gitlab.redox-os.org/redox-os/termion/-/issues/176>
 
 ## Termwiz

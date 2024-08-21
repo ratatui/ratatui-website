@@ -17,9 +17,9 @@ sidebar:
 - [human-panic](https://github.com/rust-cli/human-panic)
 - Clap for command line argument parsing
 - `Component` trait with
-  [`Home`](https://github.com/ratatui-org/templates/blob/main/component/template/src/components/home.rs)
+  [`Home`](https://github.com/ratatui/templates/blob/main/component/template/src/components/home.rs)
   and
-  [`Fps`](https://github.com/ratatui-org/templates/blob/main/component/template/src/components/fps.rs)
+  [`Fps`](https://github.com/ratatui/templates/blob/main/component/template/src/components/fps.rs)
   components as examples
 
 ## Usage
@@ -28,18 +28,18 @@ You can start by using `cargo-generate`:
 
 ```bash
 cargo install cargo-generate
-cargo generate --git https://github.com/ratatui-org/templates component --name ratatui-hello-world
+cargo generate --git https://github.com/ratatui/templates component --name ratatui-hello-world
 cd ratatui-hello-world
 ```
 
 You can also use a
-[`template.toml`](https://github.com/ratatui-org/templates/blob/main/.github/workflows/template.toml)
+[`template.toml`](https://github.com/ratatui/templates/blob/main/.github/workflows/template.toml)
 file to skip the prompts:
 
 ```bash
-$ cargo generate --git https://github.com/ratatui-org/templates component --template-values-file ./path/to/template.toml --name ratatui-hello-world
+$ cargo generate --git https://github.com/ratatui/templates component --template-values-file ./path/to/template.toml --name ratatui-hello-world
 # OR generate from local clone
-$ git clone https://github.com/ratatui-org/templates
+$ git clone https://github.com/ratatui/templates
 $ cd templates
 $ cargo generate --path ./component --template-values-file ./.github/workflows/template.toml --name ratatui-hello-world
 ```
@@ -112,11 +112,11 @@ Read documentation on design decisions in the template here:
 
 ## Background
 
-[`ratatui`](https://github.com/ratatui-org/ratatui) is a Rust library to build rich terminal user
+[`ratatui`](https://github.com/ratatui/ratatui) is a Rust library to build rich terminal user
 interfaces (TUIs) and dashboards. It is a community fork of the original
 [`tui-rs`](https://github.com/fdehau/tui-rs) created to maintain and improve the project.
 
-The [source code of this project](https://github.com/ratatui-org/templates/tree/main/component) is
+The [source code of this project](https://github.com/ratatui/templates/tree/main/component) is
 an opinionated template for getting up and running with `ratatui`. You can pick and choose the
 pieces of this template to suit your needs and sensibilities. This rest of this documentation is a
 walk-through of why the code is structured the way it is, so that you are aided in modifying it as
@@ -131,8 +131,8 @@ responsibility of getting keyboard input events, modifying the state of your app
 those events and figuring out which widgets best reflect the view of the state of your application
 is on you.
 
-The `ratatui-org` project has added a template that covers the basics, and you find that here:
-<https://github.com/ratatui-org/templates/tree/main/simple>.
+The `ratatui` project has added a template that covers the basics, and you find that here:
+<https://github.com/ratatui/templates/tree/main/simple>.
 
 I wanted to take another stab at a template, one that uses `tokio` and organizes the code a little
 differently. This is an opinionated view on how to organize a `ratatui` project.
@@ -153,14 +153,14 @@ and choose the parts you like.
 
 You may also want to check out the following links (roughly in order of increasing complexity):
 
-- <https://github.com/ratatui-org/ratatui/tree/main/examples>: Simple one-off examples to illustrate
+- <https://github.com/ratatui/ratatui/tree/main/examples>: Simple one-off examples to illustrate
   various widgets and features in `ratatui`.
-- <https://github.com/ratatui-org/templates/tree/main/simple>: Starter kit for using `ratatui`
-- <https://github.com/ratatui-org/templates/tree/main/async>: Starter kit for using `ratatui` with
+- <https://github.com/ratatui/templates/tree/main/simple>: Starter kit for using `ratatui`
+- <https://github.com/ratatui/templates/tree/main/async>: Starter kit for using `ratatui` with
   `async` using `tokio`
-- <https://github.com/ratatui-org/ratatui-website/tree/main/code/ratatui-json-editor-app>: Tutorial
+- <https://github.com/ratatui/ratatui-website/tree/main/code/ratatui-json-editor-app>: Tutorial
   project that the user a simple interface to enter key-value pairs, which will printed in json.
-- <https://github.com/ratatui-org/templates/tree/main/component>: Async tokio crossterm based
+- <https://github.com/ratatui/templates/tree/main/component>: Async tokio crossterm based
   opinionated starter kit with "components" for using `ratatui`.
 - <https://github.com/veeso/tui-realm/>: A framework for `tui.rs` to simplify the implementation of
   terminal user interfaces adding the possibility to work with re-usable components with properties

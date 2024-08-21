@@ -8,9 +8,9 @@ To use these, [install Cargo Generate] and then create a new app using the chose
 
 ```shell
 cargo install cargo-generate
-cargo generate ratatui-org/templates
+cargo generate ratatui/templates
 ```
 
-[templates]: https://github.com/ratatui-org/templates
+[templates]: https://github.com/ratatui/templates
 [Cargo Generate]: https://cargo-generate.github.io/cargo-generate/
 [install Cargo Generate]: https://cargo-generate.github.io/cargo-generate/installation.html
