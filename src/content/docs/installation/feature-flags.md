@@ -5,7 +5,7 @@ sidebar:
 ---
 
 As ratatui grows and evolves, this list may change, so make sure to check the
-[main repo](https://github.com/ratatui-org/ratatui) if you are unsure.
+[main repo](https://github.com/ratatui/ratatui) if you are unsure.
 
 ## Backend Selection
 

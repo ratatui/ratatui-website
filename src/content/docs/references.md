@@ -3,9 +3,9 @@ title: References
 ---
 
 - [Crate Docs](https://docs.rs/ratatui/latest/ratatui/)
-- [Starter Templates](https://github.com/ratatui-org/templates)
+- [Starter Templates](https://github.com/ratatui/templates)
 
-## [Apps using `ratatui`](https://github.com/ratatui-org/ratatui/wiki/Apps-using-Ratatui)
+## [Apps using `ratatui`](https://github.com/ratatui/ratatui/wiki/Apps-using-Ratatui)
 
 Here you will find a list of TUI applications that are made using `ratatui` and `tui`.
 
@@ -24,7 +24,7 @@ dependencies on crates.io and GitHub:
 
 - <https://crates.io/crates/ratatui/reverse_dependencies>
 - <https://crates.io/crates/tui/reverse_dependencies>
-- <https://github.com/ratatui-org/ratatui/network/dependents>
+- <https://github.com/ratatui/ratatui/network/dependents>
 - <https://github.com/fdehau/tui-rs/network/dependents?package_id=UGFja2FnZS0zMjE3MzkzMDMx>
 
 ### 💻 Development Tools
@@ -128,13 +128,13 @@ dependencies on crates.io and GitHub:
 - [termchat](https://github.com/lemunozm/termchat): Terminal chat through the LAN with video
   streaming and file transfer
 
-## [Third Party Crates](https://github.com/ratatui-org/ratatui#third-party-libraries-bootstrapping-templates-and-widgets)
+## [Third Party Crates](https://github.com/ratatui/ratatui#third-party-libraries-bootstrapping-templates-and-widgets)
 
 - [ansi-to-tui](https://github.com/uttarayan21/ansi-to-tui) — Convert ansi colored text to
   `ratatui::text::Text`
 - [color-to-tui](https://github.com/uttarayan21/color-to-tui) — Parse hex colors to
   `ratatui::style::Color`
-- [rust-tui-template](https://github.com/ratatui-org/rust-tui-template) — A template for
+- [rust-tui-template](https://github.com/ratatui/rust-tui-template) — A template for
   bootstrapping a Rust TUI application with Tui-rs & crossterm
 - [simple-tui-rs](https://github.com/pmsanford/simple-tui-rs) — A simple example tui-rs app
 - [tui-builder](https://github.com/jkelleyrtp/tui-builder) — Batteries-included MVC framework for

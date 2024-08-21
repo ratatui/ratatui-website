@@ -35,7 +35,7 @@ using the [textwrap crate] and then use the line count to work out where to rend
 [textwrap crate]: https://crates.io/crates/textwrap
 
 Full code for this recipe is available in the website repo at:
-<https://github.com/ratatui-org/ratatui-website/blob/main/code/recipes/src/layout.rs>
+<https://github.com/ratatui/ratatui-website/blob/main/code/recipes/src/layout.rs>
 
 ## See also
 

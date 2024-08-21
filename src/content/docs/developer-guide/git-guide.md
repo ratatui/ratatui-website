@@ -204,7 +204,7 @@ Learn more about `commit` [here](https://git-scm.com/docs/git-commit).
 When you fork a repository, you can avoid a lot of issues by using the following command:
 
 ```sh
-git remote add upstream https://github.com/ratatui-org/ratatui.git
+git remote add upstream https://github.com/ratatui/ratatui.git
 ```
 
 To keep your branch up to date with the changes in the main repo, simply run:

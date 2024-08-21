@@ -14,7 +14,7 @@ A couple of projects in the wild use this approach
 
 We also have an `component` template that has an example of this `Component` based approach:
 
-- <https://github.com/ratatui-org/templates/tree/main/component>
+- <https://github.com/ratatui/templates/tree/main/component>
 
 We already covered [TEA](../the-elm-architecture/) in the previous section. The `Component`
 architecture takes a slightly more object oriented trait based approach.

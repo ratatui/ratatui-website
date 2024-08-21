@@ -8,7 +8,7 @@ sidebar:
 
 A full copy of the code for this page is available in the github repository for the website at:
 
-<https://github.com/ratatui-org/ratatui-website/tree/main/code/counter-app-basic>.
+<https://github.com/ratatui/ratatui-website/tree/main/code/counter-app-basic>.
 
 ## Create a new project
 
@@ -96,7 +96,7 @@ and `restore`:
 There is a PR to [simplify this boilerplate code], but for now it's most convenient to write a small
 helper module to handle this.
 
-[simplify this boilerplate code]: https://github.com/ratatui-org/ratatui/pull/280
+[simplify this boilerplate code]: https://github.com/ratatui/ratatui/pull/280
 
 ### Application State
 
