@@ -49,6 +49,7 @@ export default defineConfig({
         },
       ],
       components: {
+        Head: "./src/components/Head.astro",
         Header: "./src/components/Header.astro",
       },
       plugins: [
