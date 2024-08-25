@@ -4,8 +4,8 @@ Note: Edits to the examples in this folder will be overwritten on each release. 
 examples, do so in the main [Ratatui](https://github.com/ratatui/ratatui) repo.
 
 This folder contains a copy of the examples from the latest release version of Ratatui. It is
-generated using directly from <https://github.com/ratatui/ratatui/tree/latest/examples> using
-git read-tree as suggested by a
+generated using directly from <https://github.com/ratatui/ratatui/tree/latest/examples> using git
+read-tree as suggested by a
 [stackoverflow answer](https://stackoverflow.com/questions/23937436/add-subdirectory-of-remote-repo-with-git-subtree):
 
 ```shell

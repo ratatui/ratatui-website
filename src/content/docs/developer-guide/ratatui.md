@@ -4,8 +4,8 @@ sidebar:
   order: 1
 ---
 
-Check out the [CONTRIBUTING GUIDE](https://github.com/ratatui/ratatui/blob/main/CONTRIBUTING.md)
-for more information.
+Check out the [CONTRIBUTING GUIDE](https://github.com/ratatui/ratatui/blob/main/CONTRIBUTING.md) for
+more information.
 
 # Contribution guidelines
 
@@ -17,10 +17,9 @@ creating a new issue before making the change, or starting a discussion on
 
 ## Reporting issues
 
-Before reporting an issue on the [issue tracker](https://github.com/ratatui/ratatui/issues),
-please check that it has not already been reported by searching for some related keywords. Please
-also check [`tui-rs` issues](https://github.com/fdehau/tui-rs/issues/) and link any related issues
-found.
+Before reporting an issue on the [issue tracker](https://github.com/ratatui/ratatui/issues), please
+check that it has not already been reported by searching for some related keywords. Please also
+check [`tui-rs` issues](https://github.com/fdehau/tui-rs/issues/) and link any related issues found.
 
 ## Pull requests
 
@@ -106,11 +105,11 @@ cargo make build
 
 ### Tests
 
-The [test coverage](https://app.codecov.io/gh/ratatui/ratatui) of the crate is reasonably good,
-but this can always be improved. Focus on keeping the tests simple and obvious and write unit tests
-for all new or modified code. Beside the usual doc and unit tests, one of the most valuable test you
-can write for Ratatui is a test against the `TestBackend`. It allows you to assert the content of
-the output buffer that would have been flushed to the terminal after a given draw call. See
+The [test coverage](https://app.codecov.io/gh/ratatui/ratatui) of the crate is reasonably good, but
+this can always be improved. Focus on keeping the tests simple and obvious and write unit tests for
+all new or modified code. Beside the usual doc and unit tests, one of the most valuable test you can
+write for Ratatui is a test against the `TestBackend`. It allows you to assert the content of the
+output buffer that would have been flushed to the terminal after a given draw call. See
 `widgets_block_renders` in [tests/widgets_block.rs](./tests/widget_block.rs) for an example.
 
 When writing tests, generally prefer to write unit tests and doc tests directly in the code file
@@ -188,8 +187,7 @@ removing it in a one version notice.
 
 We don't currently use any unsafe code in Ratatui, and would like to keep it that way. However there
 may be specific cases that this becomes necessary in order to avoid slowness. Please see
-[this discussion](https://github.com/ratatui/ratatui/discussions/66) for more about the
-decision.
+[this discussion](https://github.com/ratatui/ratatui/discussions/66) for more about the decision.
 
 ## Continuous Integration
 

@@ -15,8 +15,8 @@ title: Tutorials
 
 If you want to jump right into coding yourself, we provide templates for that. See the
 [template section](/templates).  
-We also have some [examples](https://github.com/ratatui/ratatui/tree/main/examples) that might
-help you get started on GitHub.
+We also have some [examples](https://github.com/ratatui/ratatui/tree/main/examples) that might help
+you get started on GitHub.
 
 :::
 

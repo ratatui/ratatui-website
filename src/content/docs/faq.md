@@ -457,8 +457,8 @@ If you want to know more, we recommend reading
 ## How do I avoid panics due to out of range calls on the Buffer?
 
 In general, most of the code in Ratatui was not designed around using `Result`s to prevent panics.
-We have an [Issue to address the panics](https://github.com/ratatui/ratatui/issues/1011), but
-for now there are some easy approaches that can help avoid them.
+We have an [Issue to address the panics](https://github.com/ratatui/ratatui/issues/1011), but for
+now there are some easy approaches that can help avoid them.
 
 A one liner that will mostly fix this for pretty much any widget is to avoid rendering stuff outside
 of the buffer is to reassign the area to the intersection of the area and the buffer's area. If you
