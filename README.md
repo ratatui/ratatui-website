@@ -2,8 +2,8 @@
 
 <img align="right" src="https://avatars.githubusercontent.com/u/125200832?s=128&v=4" alt="ratatui logo">
 
-This is the website for [Ratatui](https://github.com/ratatui/ratatui), a Rust crate for cooking
-up rich Terminal User Interfaces.
+This is the website for [Ratatui](https://github.com/ratatui/ratatui), a Rust crate for cooking up
+rich Terminal User Interfaces.
 
 [![License](https://img.shields.io/crates/l/ratatui?style=for-the-badge)](./LICENSE.md)
 [![Read the documentation](https://img.shields.io/badge/Read-Documentation-blue?style=for-the-badge)](https://ratatui.rs/)

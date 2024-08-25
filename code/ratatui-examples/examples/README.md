@@ -343,8 +343,7 @@ examples/vhs/generate.bash
 [demo.gif]: https://github.com/ratatui/ratatui/blob/images/examples/demo.gif?raw=true
 [demo2.gif]: https://github.com/ratatui/ratatui/blob/images/examples/demo2.gif?raw=true
 [gauge.gif]: https://github.com/ratatui/ratatui/blob/images/examples/gauge.gif?raw=true
-[hello_world.gif]:
-  https://github.com/ratatui/ratatui/blob/images/examples/hello_world.gif?raw=true
+[hello_world.gif]: https://github.com/ratatui/ratatui/blob/images/examples/hello_world.gif?raw=true
 [inline.gif]: https://github.com/ratatui/ratatui/blob/images/examples/inline.gif?raw=true
 [layout.gif]: https://github.com/ratatui/ratatui/blob/images/examples/layout.gif?raw=true
 [list.gif]: https://github.com/ratatui/ratatui/blob/images/examples/list.gif?raw=true
@@ -358,7 +357,6 @@ examples/vhs/generate.bash
 [sparkline.gif]: https://github.com/ratatui/ratatui/blob/images/examples/sparkline.gif?raw=true
 [table.gif]: https://vhs.charm.sh/vhs-6njXBytDf0rwPufUtmSSpI.gif
 [tabs.gif]: https://github.com/ratatui/ratatui/blob/images/examples/tabs.gif?raw=true
-[user_input.gif]:
-  https://github.com/ratatui/ratatui/blob/images/examples/user_input.gif?raw=true
+[user_input.gif]: https://github.com/ratatui/ratatui/blob/images/examples/user_input.gif?raw=true
 [alpha version of Ratatui]: https://crates.io/crates/ratatui/versions
 [BREAKING-CHANGES.md]: https://github.com/ratatui/ratatui/blob/main/BREAKING-CHANGES.md

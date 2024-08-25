@@ -134,8 +134,8 @@ dependencies on crates.io and GitHub:
   `ratatui::text::Text`
 - [color-to-tui](https://github.com/uttarayan21/color-to-tui) — Parse hex colors to
   `ratatui::style::Color`
-- [rust-tui-template](https://github.com/ratatui/rust-tui-template) — A template for
-  bootstrapping a Rust TUI application with Tui-rs & crossterm
+- [rust-tui-template](https://github.com/ratatui/rust-tui-template) — A template for bootstrapping a
+  Rust TUI application with Tui-rs & crossterm
 - [simple-tui-rs](https://github.com/pmsanford/simple-tui-rs) — A simple example tui-rs app
 - [tui-builder](https://github.com/jkelleyrtp/tui-builder) — Batteries-included MVC framework for
   Tui-rs + Crossterm apps
