@@ -14,5 +14,5 @@ cargo run --example=barchart --features=crossterm
 ![Barchart](barchart.gif)
 
 ```rust title=barchart.rs
-{{ #include @code/ratatui-examples/examples/barchart.rs }}
+{{ #include @code/examples/ratatui-examples/examples/barchart.rs }}
 ```

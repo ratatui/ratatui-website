@@ -15,7 +15,7 @@ Given the following application that panics after a 1 second delay as a basis, w
 hooks for each backend.
 
 ```rust title=main.rs
-{{ #include @code/how-to-panic-hooks/src/bin/crossterm.rs:main }}
+{{ #include @code/recipes/how-to-panic-hooks/src/bin/crossterm.rs:main }}
 ```
 
 ## Crossterm
@@ -27,7 +27,7 @@ panicking while restoring the terminal state, otherwise the original panic reaso
 your own app, this might be supplemented with logging to a file or similar.
 
 ```rust collapse={1-26} title=main.rs
-{{ #include @code/how-to-panic-hooks/src/bin/crossterm.rs }}
+{{ #include @code/recipes/how-to-panic-hooks/src/bin/crossterm.rs }}
 ```
 
 ## Termion
@@ -47,7 +47,7 @@ method to leave the alternate screen except when dropped. Apps should use `ToAlt
 `stdout().flush`, to make this change take effect.
 
 ```rust collapse={1-23} title=main.rs
-{{ #include @code/how-to-panic-hooks/src/bin/termion.rs }}
+{{ #include @code/recipes/how-to-panic-hooks/src/bin/termion.rs }}
 ```
 
 For more discussion on this, see:

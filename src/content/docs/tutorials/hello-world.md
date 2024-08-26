@@ -13,7 +13,7 @@ You're going to build the following:
 ![hello](https://github.com/ratatui/ratatui-website/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387)
 
 The full code for this tutorial is available to view at
-<https://github.com/ratatui/ratatui-website/tree/main/code/hello-world-tutorial>
+<https://github.com/ratatui/ratatui-website/tree/main/code/hello-world>
 
 ## Install Rust
 
@@ -155,7 +155,7 @@ your application's imports.
 In your editor, open `src/main.rs` and add the following at the top of the file.
 
 ```rust title="main.rs"
-{{#include @code/hello-world-tutorial/src/main.rs:imports}}
+{{#include @code/tutorials/hello-world/src/main.rs:imports}}
 ```
 
 ### Setting up and restoring the terminal
@@ -188,11 +188,11 @@ information
 Replace the existing `main` function with code to setup and restore the terminal:
 
 ```rust title="main.rs"
-{{#include @code/hello-world-tutorial/src/main.rs:setup}}
+{{#include @code/tutorials/hello-world/src/main.rs:setup}}
 
     // TODO main loop
 
-{{#include @code/hello-world-tutorial/src/main.rs:restore}}
+{{#include @code/tutorials/hello-world/src/main.rs:restore}}
 ```
 
 ### Add a main loop
@@ -219,7 +219,7 @@ render a new Paragraph with white foreground text and a blue background.
 Replace `// TODO draw` with:
 
 ```rust title="main.rs"
-{{#include @code/hello-world-tutorial/src/main.rs:draw}}
+{{#include @code/tutorials/hello-world/src/main.rs:draw}}
 ```
 
 If you're curious about where to find the `white()` and `on_blue()` methods in the Ratatui doc,
@@ -239,7 +239,7 @@ whether there are events pending (16ms is ~60fps). It's important to check that 
 Replace `// TODO handle events` with:
 
 ```rust title="main.rs"
-{{#include @code/hello-world-tutorial/src/main.rs:handle-events}}
+{{#include @code/tutorials/hello-world/src/main.rs:handle-events}}
 ```
 
 ## Running the Application
@@ -247,7 +247,7 @@ Replace `// TODO handle events` with:
 Your application should look like:
 
 ```rust collapsed title="main.rs (click to expand)"
-{{#include @code/hello-world-tutorial/src/main.rs:all}}
+{{#include @code/tutorials/hello-world/src/main.rs:all}}
 ```
 
 Make sure you save the file! Now you can run the app using:

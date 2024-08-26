@@ -14,5 +14,5 @@ cargo run --example=inline --features=crossterm
 ![inline](inline.gif)
 
 ```rust title=inline.rs
-{{ #include @code/ratatui-examples/examples/inline.rs }}
+{{ #include @code/examples/ratatui-examples/examples/inline.rs }}
 ```

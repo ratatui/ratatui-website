@@ -13,5 +13,5 @@ cargo run --example=panic --features=crossterm
 ![panic](panic.gif)
 
 ```rust title=panic.rs
-{{ #include @code/ratatui-examples/examples/panic.rs }}
+{{ #include @code/examples/ratatui-examples/examples/panic.rs }}
 ```

@@ -1,8 +1,13 @@
 # See https://doc.rust-lang.org/cargo/reference/workspaces.html
 [workspace]
-members = ["code/*"]
+members = [
+  "code/examples/*",
+  "code/recipes/*",
+  "code/showcase/*",
+  "code/tutorials/*",
+]
 exclude = [
-  "code/widget-showcase-third-party", # only contains VHS tape files
+  "code/showcase/widget-showcase-third-party", # only contains VHS tape files
 ]
 resolver = "2"
 

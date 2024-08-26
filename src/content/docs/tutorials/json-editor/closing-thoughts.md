@@ -14,7 +14,7 @@ inspiration for what model will work best for your application.
 ## Finished Files
 
 You can find the finished project used for the tutorial on
-[GitHub](https://github.com/ratatui/ratatui-website/tree/main/code/ratatui-json-editor-app). The
+[GitHub](https://github.com/ratatui/ratatui-website/tree/main/code/json-editor). The
 code is also shown at the bottom of this page.
 
 You can test this application by yourself by running:
@@ -28,17 +28,17 @@ and double checking the output.
 ### Main.rs
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/main.rs:all}}
+{{#include @code/tutorials/json-editor/src/main.rs:all}}
 ```
 
 ### App.rs
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/app.rs:all}}
+{{#include @code/tutorials/json-editor/src/app.rs:all}}
 ```
 
 ### UI.rs
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/ui.rs:all}}
+{{#include @code/tutorials/json-editor/src/ui.rs:all}}
 ```

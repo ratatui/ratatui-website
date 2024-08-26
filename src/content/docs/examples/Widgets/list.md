@@ -13,5 +13,5 @@ cargo run --example=list --features=crossterm
 ![list](list.gif)
 
 ```rust title=list.rs
-{{ #include @code/ratatui-examples/examples/list.rs }}
+{{ #include @code/examples/ratatui-examples/examples/list.rs }}
 ```

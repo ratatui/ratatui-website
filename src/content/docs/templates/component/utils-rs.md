@@ -9,7 +9,7 @@ sidebar:
 In this file, we define a [`clap`](https://docs.rs/clap/latest/clap/) `Args` struct.
 
 ```rust
-{{#include @code/async-template-counter/src/cli.rs}}
+{{#include @code/templates/async-template-counter/src/cli.rs}}
 ```
 
 This allows us to pass command line arguments to our terminal user interface if we need to.
@@ -63,7 +63,7 @@ I tend to use `.envrc` and `direnv` for development purposes, and I have the fol
 `.envrc`:
 
 ```bash
-{{#include @code/async-template-counter/.envrc}}
+{{#include @code/templates/async-template-counter/.envrc}}
 ```
 
 This puts the log files in the `RATATUI_ASYNC_TEMPLATE_DATA` folder, i.e. `.data` folder in the

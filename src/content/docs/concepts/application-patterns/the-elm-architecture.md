@@ -61,7 +61,7 @@ struct Model {
 For a counter app, our model may look like this:
 
 ```rust
-{{ #include @code/the-elm-architecture/src/main.rs:model }}
+{{ #include @code/concepts/the-elm-architecture/src/main.rs:model }}
 ```
 
 ### 2. Handling Updates
@@ -83,7 +83,7 @@ enum Message {
 For a counter app, our `Message` enum may look like this:
 
 ```rust
-{{ #include @code/the-elm-architecture/src/main.rs:message }}
+{{ #include @code/concepts/the-elm-architecture/src/main.rs:message }}
 ```
 
 **`update()` function**
@@ -132,7 +132,7 @@ or have an update lead to another update.
 For example, this is what the `update()` function may look like for a counter app:
 
 ```rust
-{{ #include @code/the-elm-architecture/src/main.rs:update }}
+{{ #include @code/concepts/the-elm-architecture/src/main.rs:update }}
 ```
 
 :::attention
@@ -199,7 +199,7 @@ accurately in the terminal UI.
 A view for a simple counter app might look like:
 
 ```rust
-{{ #include @code/the-elm-architecture/src/main.rs:view }}
+{{ #include @code/concepts/the-elm-architecture/src/main.rs:view }}
 ```
 
 In TEA, you are expected to ensure that your view function is side-effect free. The `view()`
@@ -282,5 +282,5 @@ The notable difference from before is that we have an `Model` struct that captur
 and a `Message` enum that captures the various actions your app can take.
 
 ```rust
-{{ #include @code/the-elm-architecture/src/main.rs }}
+{{ #include @code/concepts/the-elm-architecture/src/main.rs }}
 ```

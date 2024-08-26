@@ -14,5 +14,5 @@ cargo run --example=modifiers --features=crossterm
 ![modifiers](modifiers.gif)
 
 ```rust title=modifiers.rs
-{{ #include @code/ratatui-examples/examples/modifiers.rs }}
+{{ #include @code/examples/ratatui-examples/examples/modifiers.rs }}
 ```

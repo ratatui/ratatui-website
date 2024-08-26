@@ -29,7 +29,7 @@ Now, envision a scenario where we wish to divide our renderable `Rect` area into
 areas. For this, we can use the `Layout` functionality in `ratatui`.
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/ui.rs:ui_layout}}
+{{#include @code/tutorials/json-editor/src/ui.rs:ui_layout}}
 ```
 
 This can be likened to partitioning a large rectangle into smaller sections.
@@ -78,7 +78,7 @@ the size of the terminal at render time (this is important, because it allows us
 terminals into account), and the application state.
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/ui.rs:method_sig}}
+{{#include @code/tutorials/json-editor/src/ui.rs:method_sig}}
 ```
 
 Before we proceed, let's implement a `centered_rect` helper function. This code is adapted from the
@@ -86,7 +86,7 @@ Before we proceed, let's implement a `centered_rect` helper function. This code 
 official repo.
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/ui.rs:centered_rect}}
+{{#include @code/tutorials/json-editor/src/ui.rs:centered_rect}}
 ```
 
 This will be useful for the later subsections.

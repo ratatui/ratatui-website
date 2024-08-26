@@ -533,7 +533,7 @@ I personally like to combine the `EventHandler` and the `Tui` struct into one st
 example of that `Tui` struct for your reference.
 
 ```rust
-{{#include @code/async-template-counter/src/tui.rs}}
+{{#include @code/templates/async-template-counter/src/tui.rs}}
 ```
 
 In the next section, we will introduce a `Command` pattern to bridge handling the effect of an

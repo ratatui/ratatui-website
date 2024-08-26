@@ -14,5 +14,5 @@ cargo run --example=scrollbar --features=crossterm
 ![scrollbar](scrollbar.gif)
 
 ```rust title=scrollbar.rs
-{{ #include @code/ratatui-examples/examples/scrollbar.rs }}
+{{ #include @code/examples/ratatui-examples/examples/scrollbar.rs }}
 ```

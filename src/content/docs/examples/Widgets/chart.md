@@ -13,5 +13,5 @@ cargo run --example=chart --features=crossterm
 ![chart](chart.gif)
 
 ```rust title=chart.rs
-{{ #include @code/ratatui-examples/examples/chart.rs }}
+{{ #include @code/examples/ratatui-examples/examples/chart.rs }}
 ```

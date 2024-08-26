@@ -16,5 +16,5 @@ cargo run --example=user_input --features=crossterm
 ![user_input](user_input.gif)
 
 ```rust title=user_input.rs
-{{ #include @code/ratatui-examples/examples/user_input.rs }}
+{{ #include @code/examples/ratatui-examples/examples/user_input.rs }}
 ```

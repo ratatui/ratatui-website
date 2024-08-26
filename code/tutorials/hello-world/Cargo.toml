@@ -1,5 +1,5 @@
 [package]
-name = "ratatui-json-editor-app"
+name = "hello-world"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -10,5 +10,3 @@ publish.workspace = true
 
 [dependencies]
 ratatui = "0.28.1"
-serde = { version = "1.0.209", features = ["derive"] }
-serde_json = "1.0.127"

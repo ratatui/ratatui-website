@@ -14,5 +14,5 @@ cargo run --example=popup --features=crossterm
 ![popup](popup.gif)
 
 ```rust title=popup.rs
-{{ #include @code/ratatui-examples/examples/popup.rs }}
+{{ #include @code/examples/ratatui-examples/examples/popup.rs }}
 ```

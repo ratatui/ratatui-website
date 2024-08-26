@@ -15,5 +15,5 @@ cargo run --example=custom_widget --features=crossterm
 ![custom_widget](custom_widget.gif)
 
 ```rust title=custom_widget.rs
-{{ #include @code/ratatui-examples/examples/custom_widget.rs }}
+{{ #include @code/examples/ratatui-examples/examples/custom_widget.rs }}
 ```

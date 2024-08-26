@@ -15,25 +15,25 @@ cargo run --example=demo --no-default-features --features=termwiz
 ![demo](demo.gif)
 
 ```rust title=demo/main.rs
-{{ #include @code/ratatui-examples/examples/demo/main.rs }}
+{{ #include @code/examples/ratatui-examples/examples/demo/main.rs }}
 ```
 
 ```rust title=demo/app.rs
-{{ #include @code/ratatui-examples/examples/demo/app.rs }}
+{{ #include @code/examples/ratatui-examples/examples/demo/app.rs }}
 ```
 
 ```rust title=demo/ui.rs
-{{ #include @code/ratatui-examples/examples/demo/ui.rs }}
+{{ #include @code/examples/ratatui-examples/examples/demo/ui.rs }}
 ```
 
 ```rust title=demo/crossterm.rs
-{{ #include @code/ratatui-examples/examples/demo/crossterm.rs }}
+{{ #include @code/examples/ratatui-examples/examples/demo/crossterm.rs }}
 ```
 
 ```rust title=demo/termion.rs
-{{ #include @code/ratatui-examples/examples/demo/termion.rs }}
+{{ #include @code/examples/ratatui-examples/examples/demo/termion.rs }}
 ```
 
 ```rust title=demo/termwiz.rs
-{{ #include @code/ratatui-examples/examples/demo/termwiz.rs }}
+{{ #include @code/examples/ratatui-examples/examples/demo/termwiz.rs }}
 ```

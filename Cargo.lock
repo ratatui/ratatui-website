@@ -1174,6 +1174,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
+name = "hello-world"
+version = "0.0.0"
+dependencies = [
+ "ratatui",
+]
+
+[[package]]
 name = "hermit-abi"
 version = "0.3.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1474,6 +1481,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "29c15563dc2726973df627357ce0c9ddddbea194836909d655df6a75d2cf296d"
 dependencies = [
  "wasm-bindgen",
+]
+
+[[package]]
+name = "json-editor"
+version = "0.0.0"
+dependencies = [
+ "ratatui",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -2370,38 +2386,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ratatui-counter"
-version = "0.1.0"
-dependencies = [
- "better-panic",
- "clap",
- "color-eyre",
- "config",
- "crossterm",
- "derive_deref",
- "directories",
- "futures",
- "human-panic",
- "json5",
- "lazy_static",
- "libc",
- "log",
- "pretty_assertions",
- "ratatui",
- "serde",
- "serde_json",
- "signal-hook",
- "strip-ansi-escapes",
- "strum",
- "tokio",
- "tokio-util",
- "tracing",
- "tracing-error",
- "tracing-subscriber",
- "tui-input",
-]
-
-[[package]]
 name = "ratatui-counter-app"
 version = "0.1.0"
 dependencies = [
@@ -2470,22 +2454,6 @@ dependencies = [
  "tracing-appender",
  "tracing-subscriber",
  "unicode-width",
-]
-
-[[package]]
-name = "ratatui-hello-world-tutorial"
-version = "0.0.0"
-dependencies = [
- "ratatui",
-]
-
-[[package]]
-name = "ratatui-json-editor-app"
-version = "0.0.0"
-dependencies = [
- "ratatui",
- "serde",
- "serde_json",
 ]
 
 [[package]]
@@ -3241,14 +3209,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "the-elm-architecture"
-version = "0.0.0"
-dependencies = [
- "color-eyre",
- "ratatui",
-]
-
-[[package]]
 name = "thiserror"
 version = "1.0.63"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3593,17 +3553,6 @@ dependencies = [
  "font8x8",
  "itertools 0.13.0",
  "ratatui",
-]
-
-[[package]]
-name = "tui-input"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd137780d743c103a391e06fe952487f914b299a4fe2c3626677f6a6339a7c6b"
-dependencies = [
- "ratatui",
- "serde",
- "unicode-width",
 ]
 
 [[package]]

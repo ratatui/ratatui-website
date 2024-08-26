@@ -248,5 +248,5 @@ accordingly to handle that:
 Here's the JSON configuration we use for the counter application:
 
 ```json
-{{#include @code/async-template-counter/.config/config.json5}}
+{{#include @code/templates/async-template-counter/.config/config.json5}}
 ```

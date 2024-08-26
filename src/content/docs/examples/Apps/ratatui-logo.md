@@ -13,5 +13,5 @@ cargo run --example=ratatui-logo --features=crossterm
 ![ratatui-logo](ratatui-logo.gif)
 
 ```rust title=ratatui-logo.rs
-{{ #include @code/ratatui-examples/examples/ratatui-logo.rs }}
+{{ #include @code/examples/ratatui-examples/examples/ratatui-logo.rs }}
 ```

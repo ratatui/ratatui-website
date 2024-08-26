@@ -14,5 +14,5 @@ cargo run --example=paragraph --features=crossterm
 ![paragraph](paragraph.gif)
 
 ```rust title=paragraph.rs
-{{ #include @code/ratatui-examples/examples/paragraph.rs }}
+{{ #include @code/examples/ratatui-examples/examples/paragraph.rs }}
 ```

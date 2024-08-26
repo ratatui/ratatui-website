@@ -7,7 +7,7 @@ sidebar:
 In `components/mod.rs`, we implement a `trait` called `Component`:
 
 ```rust
-{{#include @code/async-template-counter/src/components.rs:component}}
+{{#include @code/templates/async-template-counter/src/components.rs:component}}
 ```
 
 I personally like keeping the functions for `handle_events` (i.e. event -> action mapping),
