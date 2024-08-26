@@ -14,18 +14,14 @@
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
 use std::{
-    io::{self, stdout},
+    io::{self},
     thread::sleep,
     time::Duration,
 };
 
 use indoc::indoc;
 use itertools::izip;
-use ratatui::{
-    crossterm::terminal::{disable_raw_mode, enable_raw_mode},
-    TerminalOptions, Viewport,
-};
-use ratatui::{prelude::*, widgets::Paragraph};
+use ratatui::{widgets::Paragraph, TerminalOptions, Viewport};
 
 /// A fun example of using half block characters to draw a logo
 #[allow(clippy::many_single_char_names)]
@@ -62,25 +58,12 @@ fn logo() -> String {
 }
 
 fn main() -> io::Result<()> {
-    let mut terminal = init()?;
-    terminal.draw(|frame| {
-        frame.render_widget(Paragraph::new(logo()), frame.area());
-    })?;
-    sleep(Duration::from_secs(5));
-    restore()?;
-    println!();
-    Ok(())
-}
-
-fn init() -> io::Result<Terminal<impl Backend>> {
-    enable_raw_mode()?;
-    let options = TerminalOptions {
+    let mut terminal = ratatui::init_with_options(TerminalOptions {
         viewport: Viewport::Inline(3),
-    };
-    Terminal::with_options(CrosstermBackend::new(stdout()), options)
-}
-
-fn restore() -> io::Result<()> {
-    disable_raw_mode()?;
+    });
+    terminal.draw(|frame| frame.render_widget(Paragraph::new(logo()), frame.area()))?;
+    sleep(Duration::from_secs(5));
+    ratatui::restore();
+    println!();
     Ok(())
 }

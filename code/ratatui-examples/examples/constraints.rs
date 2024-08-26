@@ -13,21 +13,22 @@
 //! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
-#![allow(clippy::enum_glob_use, clippy::wildcard_imports)]
-
-use std::io::{self, stdout};
-
-use color_eyre::{config::HookBuilder, Result};
+use color_eyre::Result;
 use ratatui::{
-    crossterm::{
-        event::{self, Event, KeyCode, KeyEventKind},
-        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-        ExecutableCommand,
+    buffer::Buffer,
+    crossterm::event::{self, Event, KeyCode, KeyEventKind},
+    layout::{
+        Constraint::{self, Fill, Length, Max, Min, Percentage, Ratio},
+        Layout, Rect,
     },
-    layout::Constraint::*,
-    prelude::*,
-    style::palette::tailwind,
-    widgets::*,
+    style::{palette::tailwind, Color, Modifier, Style, Stylize},
+    symbols,
+    text::Line,
+    widgets::{
+        Block, Padding, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState, StatefulWidget,
+        Tabs, Widget,
+    },
+    DefaultTerminal,
 };
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 
@@ -44,6 +45,14 @@ const PERCENTAGE_COLOR: Color = tailwind::SLATE.c800;
 const RATIO_COLOR: Color = tailwind::SLATE.c900;
 // priority 4
 const FILL_COLOR: Color = tailwind::SLATE.c950;
+
+fn main() -> Result<()> {
+    color_eyre::install()?;
+    let terminal = ratatui::init();
+    let app_result = App::default().run(terminal);
+    ratatui::restore();
+    app_result
+}
 
 #[derive(Default, Clone, Copy)]
 struct App {
@@ -74,22 +83,11 @@ enum AppState {
     Quit,
 }
 
-fn main() -> Result<()> {
-    init_error_hooks()?;
-    let terminal = init_terminal()?;
-
-    App::default().run(terminal)?;
-
-    restore_terminal()?;
-
-    Ok(())
-}
-
 impl App {
-    fn run(&mut self, mut terminal: Terminal<impl Backend>) -> Result<()> {
+    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
         self.update_max_scroll_offset();
         while self.is_running() {
-            self.draw(&mut terminal)?;
+            terminal.draw(|frame| frame.render_widget(self, frame.area()))?;
             self.handle_events()?;
         }
         Ok(())
@@ -103,25 +101,19 @@ impl App {
         self.state == AppState::Running
     }
 
-    fn draw(self, terminal: &mut Terminal<impl Backend>) -> io::Result<()> {
-        terminal.draw(|frame| frame.render_widget(self, frame.area()))?;
-        Ok(())
-    }
-
     fn handle_events(&mut self) -> Result<()> {
         if let Event::Key(key) = event::read()? {
-            use KeyCode::*;
             if key.kind != KeyEventKind::Press {
                 return Ok(());
             }
             match key.code {
-                Char('q') | Esc => self.quit(),
-                Char('l') | Right => self.next(),
-                Char('h') | Left => self.previous(),
-                Char('j') | Down => self.down(),
-                Char('k') | Up => self.up(),
-                Char('g') | Home => self.top(),
-                Char('G') | End => self.bottom(),
+                KeyCode::Char('q') | KeyCode::Esc => self.quit(),
+                KeyCode::Char('l') | KeyCode::Right => self.next(),
+                KeyCode::Char('h') | KeyCode::Left => self.previous(),
+                KeyCode::Char('j') | KeyCode::Down => self.down(),
+                KeyCode::Char('k') | KeyCode::Up => self.up(),
+                KeyCode::Char('g') | KeyCode::Home => self.top(),
+                KeyCode::Char('G') | KeyCode::End => self.bottom(),
                 _ => (),
             }
         }
@@ -410,33 +402,4 @@ impl Example {
             .style(Style::default().fg(fg).bg(color));
         Paragraph::new(text).centered().block(block)
     }
-}
-
-fn init_error_hooks() -> Result<()> {
-    let (panic, error) = HookBuilder::default().into_hooks();
-    let panic = panic.into_panic_hook();
-    let error = error.into_eyre_hook();
-    color_eyre::eyre::set_hook(Box::new(move |e| {
-        let _ = restore_terminal();
-        error(e)
-    }))?;
-    std::panic::set_hook(Box::new(move |info| {
-        let _ = restore_terminal();
-        panic(info);
-    }));
-    Ok(())
-}
-
-fn init_terminal() -> Result<Terminal<impl Backend>> {
-    enable_raw_mode()?;
-    stdout().execute(EnterAlternateScreen)?;
-    let backend = CrosstermBackend::new(stdout());
-    let terminal = Terminal::new(backend)?;
-    Ok(terminal)
-}
-
-fn restore_terminal() -> Result<()> {
-    disable_raw_mode()?;
-    stdout().execute(LeaveAlternateScreen)?;
-    Ok(())
 }

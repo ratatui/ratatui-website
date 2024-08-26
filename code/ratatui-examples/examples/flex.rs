@@ -13,27 +13,35 @@
 //! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
-#![allow(clippy::enum_glob_use, clippy::wildcard_imports)]
+use std::num::NonZeroUsize;
 
-use std::{
-    io::{self, stdout},
-    num::NonZero,
-};
-
-use color_eyre::{config::HookBuilder, Result};
+use color_eyre::Result;
 use ratatui::{
-    crossterm::{
-        event::{self, Event, KeyCode, KeyEventKind},
-        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-        ExecutableCommand,
+    buffer::Buffer,
+    crossterm::event::{self, Event, KeyCode, KeyEventKind},
+    layout::{
+        Alignment,
+        Constraint::{self, Fill, Length, Max, Min, Percentage, Ratio},
+        Flex, Layout, Rect,
     },
-    layout::{Constraint::*, Flex},
-    prelude::*,
-    style::palette::tailwind,
-    symbols::line,
-    widgets::{block::Title, *},
+    style::{palette::tailwind, Color, Modifier, Style, Stylize},
+    symbols::{self, line},
+    text::{Line, Text},
+    widgets::{
+        block::Title, Block, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState,
+        StatefulWidget, Tabs, Widget,
+    },
+    DefaultTerminal,
 };
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
+
+fn main() -> Result<()> {
+    color_eyre::install()?;
+    let terminal = ratatui::init();
+    let app_result = App::default().run(terminal);
+    ratatui::restore();
+    app_result
+}
 
 const EXAMPLE_DATA: &[(&str, &[Constraint])] = &[
     (
@@ -149,23 +157,18 @@ enum SelectedTab {
     SpaceBetween,
 }
 
-fn main() -> Result<()> {
-    // assuming the user changes spacing about a 100 times or so
-    Layout::init_cache(NonZero::new(EXAMPLE_DATA.len() * SelectedTab::iter().len() * 100).unwrap());
-    init_error_hooks()?;
-    let terminal = init_terminal()?;
-    App::default().run(terminal)?;
-
-    restore_terminal()?;
-    Ok(())
-}
-
 impl App {
-    fn run(&mut self, mut terminal: Terminal<impl Backend>) -> Result<()> {
-        self.draw(&mut terminal)?;
+    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
+        // increase the layout cache to account for the number of layout events. This ensures that
+        // layout is not generally reprocessed on every frame (which would lead to possible janky
+        // results when there are more than one possible solution to the requested layout). This
+        // assumes the user changes spacing about a 100 times or so.
+        let cache_size = EXAMPLE_DATA.len() * SelectedTab::iter().len() * 100;
+        Layout::init_cache(NonZeroUsize::new(cache_size).unwrap());
+
         while self.is_running() {
+            terminal.draw(|frame| frame.render_widget(self, frame.area()))?;
             self.handle_events()?;
-            self.draw(&mut terminal)?;
         }
         Ok(())
     }
@@ -174,24 +177,18 @@ impl App {
         self.state == AppState::Running
     }
 
-    fn draw(self, terminal: &mut Terminal<impl Backend>) -> io::Result<()> {
-        terminal.draw(|frame| frame.render_widget(self, frame.area()))?;
-        Ok(())
-    }
-
     fn handle_events(&mut self) -> Result<()> {
-        use KeyCode::*;
         match event::read()? {
             Event::Key(key) if key.kind == KeyEventKind::Press => match key.code {
-                Char('q') | Esc => self.quit(),
-                Char('l') | Right => self.next(),
-                Char('h') | Left => self.previous(),
-                Char('j') | Down => self.down(),
-                Char('k') | Up => self.up(),
-                Char('g') | Home => self.top(),
-                Char('G') | End => self.bottom(),
-                Char('+') => self.increment_spacing(),
-                Char('-') => self.decrement_spacing(),
+                KeyCode::Char('q') | KeyCode::Esc => self.quit(),
+                KeyCode::Char('l') | KeyCode::Right => self.next(),
+                KeyCode::Char('h') | KeyCode::Left => self.previous(),
+                KeyCode::Char('j') | KeyCode::Down => self.down(),
+                KeyCode::Char('k') | KeyCode::Up => self.up(),
+                KeyCode::Char('g') | KeyCode::Home => self.top(),
+                KeyCode::Char('G') | KeyCode::End => self.bottom(),
+                KeyCode::Char('+') => self.increment_spacing(),
+                KeyCode::Char('-') => self.decrement_spacing(),
                 _ => (),
             },
             _ => {}
@@ -367,7 +364,7 @@ impl SelectedTab {
 
     /// Convert a `SelectedTab` into a `Line` to display it by the `Tabs` widget.
     fn to_tab_title(value: Self) -> Line<'static> {
-        use tailwind::*;
+        use tailwind::{INDIGO, ORANGE, SKY};
         let text = value.to_string();
         let color = match value {
             Self::Legacy => ORANGE.c400,
@@ -512,7 +509,7 @@ impl Example {
 }
 
 const fn color_for_constraint(constraint: Constraint) -> Color {
-    use tailwind::*;
+    use tailwind::{BLUE, SLATE};
     match constraint {
         Constraint::Min(_) => BLUE.c900,
         Constraint::Max(_) => BLUE.c800,
@@ -521,35 +518,6 @@ const fn color_for_constraint(constraint: Constraint) -> Color {
         Constraint::Ratio(_, _) => SLATE.c900,
         Constraint::Fill(_) => SLATE.c950,
     }
-}
-
-fn init_error_hooks() -> Result<()> {
-    let (panic, error) = HookBuilder::default().into_hooks();
-    let panic = panic.into_panic_hook();
-    let error = error.into_eyre_hook();
-    color_eyre::eyre::set_hook(Box::new(move |e| {
-        let _ = restore_terminal();
-        error(e)
-    }))?;
-    std::panic::set_hook(Box::new(move |info| {
-        let _ = restore_terminal();
-        panic(info);
-    }));
-    Ok(())
-}
-
-fn init_terminal() -> Result<Terminal<impl Backend>> {
-    enable_raw_mode()?;
-    stdout().execute(EnterAlternateScreen)?;
-    let backend = CrosstermBackend::new(stdout());
-    let terminal = Terminal::new(backend)?;
-    Ok(terminal)
-}
-
-fn restore_terminal() -> Result<()> {
-    disable_raw_mode()?;
-    stdout().execute(LeaveAlternateScreen)?;
-    Ok(())
 }
 
 #[allow(clippy::cast_possible_truncation)]

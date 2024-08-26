@@ -1,13 +1,15 @@
+#![allow(dead_code)]
 use std::{error::Error, io, sync::mpsc, thread, time::Duration};
 
 use ratatui::{
-    prelude::*,
+    backend::{Backend, TermionBackend},
     termion::{
         event::Key,
         input::{MouseTerminal, TermRead},
         raw::IntoRawMode,
         screen::IntoAlternateScreen,
     },
+    Terminal,
 };
 
 use crate::{app::App, ui};
@@ -37,7 +39,7 @@ fn run_app<B: Backend>(
 ) -> Result<(), Box<dyn Error>> {
     let events = events(tick_rate);
     loop {
-        terminal.draw(|f| ui::draw(f, &mut app))?;
+        terminal.draw(|frame| ui::draw(frame, &mut app))?;
 
         match events.recv()? {
             Event::Input(key) => match key {

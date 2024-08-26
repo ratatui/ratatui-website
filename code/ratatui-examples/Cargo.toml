@@ -16,8 +16,10 @@ default = ["crossterm"]
 crossterm = ["ratatui/crossterm"]
 termion = ["ratatui/termion"]
 termwiz = ["ratatui/termwiz"]
+unstable-widget-ref = ["ratatui/unstable-widget-ref"]
 
 [dependencies]
+crossterm = "0.28.1"
 ratatui = { version = "0.28.1", features = ["widget-calendar"] }
 
 [dev-dependencies]
@@ -29,7 +31,9 @@ criterion = { version = "0.5.1", features = ["html_reports"] }
 derive_builder = "0.20.0"
 fakeit = "1.1"
 font8x8 = "0.3.1"
+futures = "0.3.30"
 indoc = "2"
+octocrab = "0.39.0"
 palette = "0.7.3"
 pretty_assertions = "1.4.0"
 rand = "0.8.5"
@@ -39,4 +43,12 @@ serde_json = "1.0.127"
 itertools = "0.13"
 strum = { version = "0.26.3", features = ["derive"] }
 time = { version = "0.3.11", features = ["local-offset"] }
+tokio = { version = "1.39.3" }
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+tracing-appender = "0.2.3"
 unicode-width = "0.1"
+
+[[example]]
+name = "widget_impl"
+required-features = ["unstable-widget-ref"]

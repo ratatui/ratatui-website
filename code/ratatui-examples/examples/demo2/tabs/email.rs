@@ -1,6 +1,14 @@
 use itertools::Itertools;
-use ratatui::{prelude::*, widgets::*};
-use style::Styled;
+use ratatui::{
+    buffer::Buffer,
+    layout::{Constraint, Layout, Margin, Rect},
+    style::{Styled, Stylize},
+    text::Line,
+    widgets::{
+        Block, BorderType, Borders, Clear, List, ListItem, ListState, Padding, Paragraph,
+        Scrollbar, ScrollbarState, StatefulWidget, Tabs, Widget,
+    },
+};
 use unicode_width::UnicodeWidthStr;
 
 use crate::{RgbSwatch, THEME};
