@@ -13,44 +13,60 @@
 //! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
-#![allow(clippy::wildcard_imports)]
-
 use std::{
     collections::{BTreeMap, VecDeque},
-    error::Error,
-    io,
     sync::mpsc,
     thread,
     time::{Duration, Instant},
 };
 
+use color_eyre::Result;
 use rand::distributions::{Distribution, Uniform};
 use ratatui::{
-    crossterm::{
-        self,
-        event::{self, KeyEvent},
-    },
-    prelude::{
-        symbols, Alignment, Backend, Color, Constraint, CrosstermBackend, Frame, Layout, Line,
-        Modifier, Rect, Span, Style, Terminal, Widget,
-    },
-    widgets::{block, Block, Gauge, LineGauge, List, ListItem, Paragraph},
-    TerminalOptions, Viewport,
+    backend::Backend,
+    crossterm::event,
+    layout::{Alignment, Constraint, Layout, Rect},
+    style::{Color, Modifier, Style},
+    symbols,
+    text::{Line, Span},
+    widgets::{block, Block, Gauge, LineGauge, List, ListItem, Paragraph, Widget},
+    Frame, Terminal, TerminalOptions, Viewport,
 };
+
+fn main() -> Result<()> {
+    color_eyre::install()?;
+    let mut terminal = ratatui::init_with_options(TerminalOptions {
+        viewport: Viewport::Inline(8),
+    });
+
+    let (tx, rx) = mpsc::channel();
+    input_handling(tx.clone());
+    let workers = workers(tx);
+    let mut downloads = downloads();
+
+    for w in &workers {
+        let d = downloads.next(w.id).unwrap();
+        w.tx.send(d).unwrap();
+    }
+
+    let app_result = run(&mut terminal, workers, downloads, rx);
+
+    ratatui::restore();
+
+    app_result
+}
 
 const NUM_DOWNLOADS: usize = 10;
 
 type DownloadId = usize;
 type WorkerId = usize;
-
 enum Event {
-    Input(KeyEvent),
+    Input(event::KeyEvent),
     Tick,
     Resize,
     DownloadUpdate(WorkerId, DownloadId, f64),
     DownloadDone(WorkerId, DownloadId),
 }
-
 struct Downloads {
     pending: VecDeque<Download>,
     in_progress: BTreeMap<WorkerId, DownloadInProgress>,
@@ -74,50 +90,18 @@ impl Downloads {
         }
     }
 }
-
 struct DownloadInProgress {
     id: DownloadId,
     started_at: Instant,
     progress: f64,
 }
-
 struct Download {
     id: DownloadId,
     size: usize,
 }
-
 struct Worker {
     id: WorkerId,
     tx: mpsc::Sender<Download>,
-}
-
-fn main() -> Result<(), Box<dyn Error>> {
-    crossterm::terminal::enable_raw_mode()?;
-    let stdout = io::stdout();
-    let backend = CrosstermBackend::new(stdout);
-    let mut terminal = Terminal::with_options(
-        backend,
-        TerminalOptions {
-            viewport: Viewport::Inline(8),
-        },
-    )?;
-
-    let (tx, rx) = mpsc::channel();
-    input_handling(tx.clone());
-    let workers = workers(tx);
-    let mut downloads = downloads();
-
-    for w in &workers {
-        let d = downloads.next(w.id).unwrap();
-        w.tx.send(d).unwrap();
-    }
-
-    run_app(&mut terminal, workers, downloads, rx)?;
-
-    crossterm::terminal::disable_raw_mode()?;
-    terminal.clear()?;
-
-    Ok(())
 }
 
 fn input_handling(tx: mpsc::Sender<Event>) {
@@ -183,16 +167,16 @@ fn downloads() -> Downloads {
 }
 
 #[allow(clippy::needless_pass_by_value)]
-fn run_app<B: Backend>(
-    terminal: &mut Terminal<B>,
+fn run(
+    terminal: &mut Terminal<impl Backend>,
     workers: Vec<Worker>,
     mut downloads: Downloads,
     rx: mpsc::Receiver<Event>,
-) -> Result<(), Box<dyn Error>> {
+) -> Result<()> {
     let mut redraw = true;
     loop {
         if redraw {
-            terminal.draw(|f| ui(f, &downloads))?;
+            terminal.draw(|frame| draw(frame, &downloads))?;
         }
         redraw = true;
 
@@ -244,7 +228,7 @@ fn run_app<B: Backend>(
     Ok(())
 }
 
-fn ui(frame: &mut Frame, downloads: &Downloads) {
+fn draw(frame: &mut Frame, downloads: &Downloads) {
     let area = frame.area();
 
     let block = Block::new().title(block::Title::from("Progress").alignment(Alignment::Center));

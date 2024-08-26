@@ -26,22 +26,27 @@
 // is useful when the state is only used by the widget and doesn't need to be shared with
 // other widgets.
 
-use std::{
-    io::stdout,
-    panic,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
-use color_eyre::{config::HookBuilder, eyre, Result};
+use color_eyre::Result;
 use palette::{convert::FromColorUnclamped, Okhsv, Srgb};
 use ratatui::{
-    crossterm::{
-        event::{self, Event, KeyCode, KeyEventKind},
-        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-        ExecutableCommand,
-    },
-    prelude::*,
+    buffer::Buffer,
+    crossterm::event::{self, Event, KeyCode, KeyEventKind},
+    layout::{Constraint, Layout, Position, Rect},
+    style::Color,
+    text::Text,
+    widgets::Widget,
+    DefaultTerminal,
 };
+
+fn main() -> Result<()> {
+    color_eyre::install()?;
+    let terminal = ratatui::init();
+    let app_result = App::default().run(terminal);
+    ratatui::restore();
+    app_result
+}
 
 #[derive(Debug, Default)]
 struct App {
@@ -93,19 +98,11 @@ struct ColorsWidget {
     frame_count: usize,
 }
 
-fn main() -> Result<()> {
-    install_error_hooks()?;
-    let terminal = init_terminal()?;
-    App::default().run(terminal)?;
-    restore_terminal()?;
-    Ok(())
-}
-
 impl App {
     /// Run the app
     ///
     /// This is the main event loop for the app.
-    pub fn run(mut self, mut terminal: Terminal<impl Backend>) -> Result<()> {
+    pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
         while self.is_running() {
             terminal.draw(|frame| frame.render_widget(&mut self, frame.area()))?;
             self.handle_events()?;
@@ -143,8 +140,7 @@ impl App {
 /// to update the colors to render.
 impl Widget for &mut App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        #[allow(clippy::enum_glob_use)]
-        use Constraint::*;
+        use Constraint::{Length, Min};
         let [top, colors] = Layout::vertical([Length(1), Min(0)]).areas(area);
         let [title, fps] = Layout::horizontal([Min(0), Length(8)]).areas(top);
         Text::from("colors_rgb example. Press q to quit")
@@ -219,7 +215,7 @@ impl Widget for &mut ColorsWidget {
                 // pixel below it
                 let fg = colors[yi * 2][xi];
                 let bg = colors[yi * 2 + 1][xi];
-                buf[(x, y)].set_char('▀').set_fg(fg).set_bg(bg);
+                buf[Position::new(x, y)].set_char('▀').set_fg(fg).set_bg(bg);
             }
         }
         self.frame_count += 1;
@@ -257,37 +253,4 @@ impl ColorsWidget {
             self.colors.push(row);
         }
     }
-}
-
-/// Install `color_eyre` panic and error hooks
-///
-/// The hooks restore the terminal to a usable state before printing the error message.
-fn install_error_hooks() -> Result<()> {
-    let (panic, error) = HookBuilder::default().into_hooks();
-    let panic = panic.into_panic_hook();
-    let error = error.into_eyre_hook();
-    eyre::set_hook(Box::new(move |e| {
-        let _ = restore_terminal();
-        error(e)
-    }))?;
-    panic::set_hook(Box::new(move |info| {
-        let _ = restore_terminal();
-        panic(info);
-    }));
-    Ok(())
-}
-
-fn init_terminal() -> Result<Terminal<impl Backend>> {
-    enable_raw_mode()?;
-    stdout().execute(EnterAlternateScreen)?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
-    terminal.clear()?;
-    terminal.hide_cursor()?;
-    Ok(terminal)
-}
-
-fn restore_terminal() -> Result<()> {
-    disable_raw_mode()?;
-    stdout().execute(LeaveAlternateScreen)?;
-    Ok(())
 }
