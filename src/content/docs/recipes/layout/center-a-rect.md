@@ -8,13 +8,13 @@ sidebar:
 You can use a `Vertical` layout followed by a `Horizontal` layout to get a centered `Rect`.
 
 ```rust title=layout.rs collapse={1-13}
-{{ #include @code/recipes/src/layout.rs:center }}
+{{ #include @code/recipes/how-to-misc/src/layout.rs:center }}
 ```
 
 Then you can use this method to draw any widget centered on the containing area.
 
 ```rust
-{{ #include @code/recipes/src/layout.rs:render }}
+{{ #include @code/recipes/how-to-misc/src/layout.rs:render }}
 ```
 
 A common use case for this feature is to create a popup style dialog block. For this, typically,
@@ -22,7 +22,7 @@ you'll want to `Clear` the popup area before rendering your content to it. The f
 example of how you might do that:
 
 ```rust
-{{ #include @code/recipes/src/layout.rs:render_popup }}
+{{ #include @code/recipes/how-to-misc/src/layout.rs:render_popup }}
 ```
 
 :::note

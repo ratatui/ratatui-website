@@ -13,5 +13,5 @@ cargo run --example=docsrs --features=crossterm
 ![docsrs](docsrs.gif)
 
 ```rust title=docsrs.rs
-{{ #include @code/ratatui-examples/examples/docsrs.rs }}
+{{ #include @code/examples/ratatui-examples/examples/docsrs.rs }}
 ```

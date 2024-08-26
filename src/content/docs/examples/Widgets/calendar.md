@@ -13,5 +13,5 @@ cargo run --example=calendar --features=crossterm,widget-calendar
 ![Calendar](calendar.gif)
 
 ```rust title=calendar.rs
-{{ #include @code/ratatui-examples/examples/calendar.rs }}
+{{ #include @code/examples/ratatui-examples/examples/calendar.rs }}
 ```

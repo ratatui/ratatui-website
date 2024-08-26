@@ -239,7 +239,7 @@ You are free to reorganize the code as you see fit!
 You can also add more actions as required. For example, here's all the actions in the template:
 
 ```rust
-{{#include @code/async-template-counter/src/action.rs:action_enum}}
+{{#include @code/templates/async-template-counter/src/action.rs:action_enum}}
 ```
 
 :::note

@@ -13,7 +13,7 @@ pane. Often this leads to making UIs that look disconnected. E.g., the following
 Created by the following code:
 
 ```rust
-{{#include @code/how-to-collapse-borders/src/bin/problem.rs:ui}}
+{{#include @code/recipes/how-to-collapse-borders/src/bin/problem.rs:ui}}
 ```
 
 We can do better though, by collapsing borders. E.g.:
@@ -27,13 +27,13 @@ rendered by the top left and bottom left blocks rather than the right block.
 We need to use the symbols module to achieve this so we add this to the imports:
 
 ```rust
-{{#include @code/how-to-collapse-borders/src/bin/solution.rs:imports}}
+{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:imports}}
 ```
 
 Our first change is to the left block where we remove the right border:
 
 ```rust
-{{#include @code/how-to-collapse-borders/src/bin/solution.rs:left_block}}
+{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:left_block}}
 ```
 
 Next, we see that the top left corner of the top right block joins with the top right corner of the
@@ -44,7 +44,7 @@ this.
 [`symbols::border::Set`]: https://docs.rs/ratatui/latest/ratatui/symbols/border/struct.Set.html
 
 ```rust
-{{#include @code/how-to-collapse-borders/src/bin/solution.rs:top_right_block}}
+{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:top_right_block}}
 ```
 
 In the bottom right block, we see that the top right corner joins the left block's right border and
@@ -52,7 +52,7 @@ so we need to rend this with a horizontal T shape pointing to the right. We need
 the top right corner and the bottom left corner.
 
 ```rust
-{{#include @code/how-to-collapse-borders/src/bin/solution.rs:bottom_right_block}}
+{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:bottom_right_block}}
 ```
 
 If we left it here, then we'd be mostly fine, but in small areas we'd notice that the 50/50 split no
@@ -63,7 +63,7 @@ the collapsed block. We can easily work around this issue by allocating a small 
 space to the last layout item (e.g. by using 49/51 or 33/33/34).
 
 ```rust
-{{#include @code/how-to-collapse-borders/src/bin/solution.rs:layout}}
+{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:layout}}
 ```
 
 :::note
@@ -79,5 +79,5 @@ The full code for this example is available at
 Full `ui()` function:
 
 ```rust
-{{#include @code/how-to-collapse-borders/src/bin/solution.rs:ui}}
+{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:ui}}
 ```

@@ -14,5 +14,5 @@ cargo run --example=sparkline --features=crossterm
 ![sparkline](sparkline.gif)
 
 ```rust title=sparkline.rs
-{{ #include @code/ratatui-examples/examples/sparkline.rs }}
+{{ #include @code/examples/ratatui-examples/examples/sparkline.rs }}
 ```

@@ -13,5 +13,5 @@ cargo run --example=layout --features=crossterm
 ![layout](layout.gif)
 
 ```rust title=layout.rs
-{{ #include @code/ratatui-examples/examples/layout.rs }}
+{{ #include @code/examples/ratatui-examples/examples/layout.rs }}
 ```

@@ -21,11 +21,11 @@ top of those cells.
 The following code exhibits this problem:
 
 ```rust
-{{#include @code/how-to-overwrite-regions/src/bin/problem.rs:imports}}
+{{#include @code/recipes/how-to-overwrite-regions/src/bin/problem.rs:imports}}
 
 // -- snip --
 
-{{#include @code/how-to-overwrite-regions/src/bin/problem.rs:ui}}
+{{#include @code/recipes/how-to-overwrite-regions/src/bin/problem.rs:ui}}
 ```
 
 ![problem](https://github.com/ratatui/ratatui-website/assets/381361/a32bd6e2-9704-4054-b41d-a34715fc217f)
@@ -39,15 +39,15 @@ Here is an example of how to use this technique to create a `Popup` widget:
 [`Clear`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Clear.html
 
 ```rust
-{{#include @code/how-to-overwrite-regions/src/bin/solution.rs:imports}}
+{{#include @code/recipes/how-to-overwrite-regions/src/bin/solution.rs:imports}}
 
-{{#include @code/how-to-overwrite-regions/src/bin/solution.rs:popup}}
+{{#include @code/recipes/how-to-overwrite-regions/src/bin/solution.rs:popup}}
 ```
 
 We can use the new `Popup` widget with the following code:
 
 ```rust
-{{#include @code/how-to-overwrite-regions/src/bin/solution.rs:solution}}
+{{#include @code/recipes/how-to-overwrite-regions/src/bin/solution.rs:solution}}
 ```
 
 Which results in the following:

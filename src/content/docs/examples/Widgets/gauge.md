@@ -13,5 +13,5 @@ cargo run --example=gauge --features=crossterm
 ![gauge](gauge.gif)
 
 ```rust title=gauge.rs
-{{ #include @code/ratatui-examples/examples/gauge.rs }}
+{{ #include @code/examples/ratatui-examples/examples/gauge.rs }}
 ```

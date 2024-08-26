@@ -18,5 +18,5 @@ cargo run --example=colors_rgb --features=crossterm
 ![colors_rgb](colors_rgb.gif)
 
 ```rust title=colors_rgb.rs
-{{ #include @code/ratatui-examples/examples/colors_rgb.rs }}
+{{ #include @code/examples/ratatui-examples/examples/colors_rgb.rs }}
 ```

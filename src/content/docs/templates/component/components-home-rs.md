@@ -13,7 +13,7 @@ This `Home` component also adds fields for `input: Input`, and stores a referenc
 `action_tx: mpsc::UnboundedSender<Action>`
 
 ```rust
-{{#include @code/async-template-counter/src/components/home.rs}}
+{{#include @code/templates/async-template-counter/src/components/home.rs}}
 ```
 
 The `render` function takes a `Frame` and draws a paragraph to display a counter as well as a text

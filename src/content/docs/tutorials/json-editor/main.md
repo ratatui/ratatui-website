@@ -29,7 +29,7 @@ use std::io;
 ```
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/main.rs:setup_boilerplate}}
+{{#include @code/tutorials/json-editor/src/main.rs:setup_boilerplate}}
     // --snip--
 ```
 
@@ -50,7 +50,7 @@ will call our function which handles the event and draw loop.
 
 ```rust
     // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:application_startup}}
+{{#include @code/tutorials/json-editor/src/main.rs:application_startup}}
     // --snip--
 ```
 
@@ -69,7 +69,7 @@ use ratatui::crossterm::terminal::{disable_raw_mode, LeaveAlternateScreen};
 
 ```rust
     // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:ending_boilerplate}}
+{{#include @code/tutorials/json-editor/src/main.rs:ending_boilerplate}}
     // --snip--
 ```
 
@@ -79,7 +79,7 @@ important that we handle our error in such a way that we can call this last piec
 
 ```rust
     // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:final_print}}
+{{#include @code/tutorials/json-editor/src/main.rs:final_print}}
 ```
 
 The if statement at the end of boilerplate checks if the `run_app` function errored, or if it
@@ -93,7 +93,7 @@ how this works, read the
 So, altogether, our finished function should looks like this:
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/main.rs:main_all}}
+{{#include @code/tutorials/json-editor/src/main.rs:main_all}}
 ```
 
 ## `run_app`
@@ -105,7 +105,7 @@ In this function, we will start to do the actual logic.
 Let's start with the method signature:
 
 ```rust
-{{#include @code/ratatui-json-editor-app/src/main.rs:run_method_signature}}
+{{#include @code/tutorials/json-editor/src/main.rs:run_method_signature}}
     // --snip--
 ```
 
@@ -130,7 +130,7 @@ code to update our main loop.
 
 ```rust
     // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:ui_loop}}
+{{#include @code/tutorials/json-editor/src/main.rs:ui_loop}}
         // --snip--
 ```
 
@@ -176,7 +176,7 @@ We will start with the keybinds and event handling for the `CurrentScreen::Main`
 
 ```rust
         // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:main_screen}}
+{{#include @code/tutorials/json-editor/src/main.rs:main_screen}}
                 // --snip--
 ```
 
@@ -201,7 +201,7 @@ printing for us after resetting the terminal to normal.
 
 ```rust
                 // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:exiting_screen}}
+{{#include @code/tutorials/json-editor/src/main.rs:exiting_screen}}
                 // --snip--
 ```
 
@@ -216,7 +216,7 @@ currently edited, `Enter` will save the key-value pair, and return to the `Main`
 
 ```rust
                 // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:editing_enter}}
+{{#include @code/tutorials/json-editor/src/main.rs:editing_enter}}
                         // --snip--
 ```
 
@@ -225,7 +225,7 @@ then `pop()` the endings of those strings accordingly.
 
 ```rust
                         // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:backspace_editing}}
+{{#include @code/tutorials/json-editor/src/main.rs:backspace_editing}}
                         // --snip--
 ```
 
@@ -233,7 +233,7 @@ When `Escape` is pressed, we want to quit editing.
 
 ```rust
                         // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:escape_editing}}
+{{#include @code/tutorials/json-editor/src/main.rs:escape_editing}}
                         // --snip--
 ```
 
@@ -241,7 +241,7 @@ When `Tab` is pressed, we want the currently editing selection to switch.
 
 ```rust
                         // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:tab_editing}}
+{{#include @code/tutorials/json-editor/src/main.rs:tab_editing}}
                         // --snip--
 ```
 
@@ -250,7 +250,7 @@ that is the final key or value.
 
 ```rust
                         // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:character_editing}}
+{{#include @code/tutorials/json-editor/src/main.rs:character_editing}}
                         // --snip--
 ```
 
@@ -258,6 +258,6 @@ Altogether, the event loop should look like this:
 
 ```rust
         // --snip--
-{{#include @code/ratatui-json-editor-app/src/main.rs:event_poll}}
+{{#include @code/tutorials/json-editor/src/main.rs:event_poll}}
         // --snip--
 ```

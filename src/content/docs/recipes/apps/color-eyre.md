@@ -31,7 +31,7 @@ Call the [`color_eyre::install`] method from your main function and update the r
 [`color_eyre::Result<()>`]: https://docs.rs/eyre/latest/eyre/type.Result.html
 
 ```rust title=main.rs {1} ins={2} collapse={3-11}
-{{ #include @code/how-to-color_eyre/src/main.rs:main }}
+{{ #include @code/recipes/how-to-color_eyre/src/main.rs:main }}
 ```
 
 In your terminal initialization function, add some new code that replaces rusts default panic
@@ -39,7 +39,7 @@ handler with one that restores the terminal before displaying the panic details.
 by both panics and unhandled errors that fall through to the end of the program.
 
 ```rust title=tui.rs ins={5, 9-15}
-{{ #include @code/how-to-color_eyre/src/tui.rs:init }}
+{{ #include @code/recipes/how-to-color_eyre/src/tui.rs:init }}
 ```
 
 </details>
@@ -52,14 +52,14 @@ Add the following import:
 
 ```rust
 // main.rs
-{{ #include @code/how-to-color_eyre/src/main.rs:error_imports}}
+{{ #include @code/recipes/how-to-color_eyre/src/main.rs:error_imports}}
 ```
 
 Call wrap_err from methods that can fail with an error.
 
 ```rust
 // main.rs
-{{ #include @code/how-to-color_eyre/src/main.rs:main}}
+{{ #include @code/recipes/how-to-color_eyre/src/main.rs:main}}
 ```
 
 ## Demo
@@ -68,12 +68,12 @@ Call wrap_err from methods that can fail with an error.
 
 ```rust
 // main.rs
-{{ #include @code/how-to-color_eyre/src/main.rs }}
+{{ #include @code/recipes/how-to-color_eyre/src/main.rs }}
 ```
 
 ```rust
 // tui.rs
-{{ #include @code/how-to-color_eyre/src/tui.rs }}
+{{ #include @code/recipes/how-to-color_eyre/src/tui.rs }}
 ```
 
 </details>

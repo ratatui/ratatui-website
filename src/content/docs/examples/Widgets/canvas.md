@@ -15,5 +15,5 @@ cargo run --example=canvas --features=crossterm
 ![canvas](canvas.gif)
 
 ```rust title=canvas.rs
-{{ #include @code/ratatui-examples/examples/canvas.rs }}
+{{ #include @code/examples/ratatui-examples/examples/canvas.rs }}
 ```

@@ -23,15 +23,15 @@ A quick reminder of where we left off in the basic app:
 ```toml collapsed title="Cargo.toml (click to expand)"
 # -- snip --
 
-{{#include @code/counter-app-basic/Cargo.toml:dependencies }}
+{{#include @code/tutorials/counter-app-basic/Cargo.toml:dependencies }}
 ```
 
 ```rust collapsed title="main.rs (click to expand)"
-{{#include @code/counter-app-basic/src/main.rs }}
+{{#include @code/tutorials/counter-app-basic/src/main.rs }}
 ```
 
 ```rust collapsed title="tui.rs (click to expand)"
-{{#include @code/counter-app-basic/src/tui.rs }}
+{{#include @code/tutorials/counter-app-basic/src/tui.rs }}
 ```
 
 ## The problem
@@ -41,7 +41,7 @@ when the user presses the **Left** arrow key when the Counter is already at 0. W
 the main function does not have a chance to restore the terminal state before it exits.
 
 ```rust title="src/main.rs (from basic app)" {3,5}
-{{#include @code/counter-app-basic/src/main.rs:main }}
+{{#include @code/tutorials/counter-app-basic/src/main.rs:main }}
 ```
 
 The application's default panic handler runs and displays the details messed up. This is because raw
@@ -93,9 +93,9 @@ understand what to do if restoring the terminal does fail.
 ```rust {8,12} ins={9,13-17}
 // main.rs
 
-{{#include @code/counter-app-error-handling/src/main.rs:new-imports }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:new-imports }}
 
-{{#include @code/counter-app-error-handling/src/main.rs:main }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:main }}
 ```
 
 Next, update the `tui::init()` function to replace the panic hook with one that first restores the
@@ -104,7 +104,7 @@ errors (i.e. any `Result::Err`s that bubble up to the top level of the main func
 displayed on the terminal correctly when the application exits.
 
 ```rust title=tui.rs ins={5,9-15}
-{{#include @code/counter-app-error-handling/src/tui.rs:init }}
+{{#include @code/tutorials/counter-app-error-handling/src/tui.rs:init }}
 ```
 
 ## Using color_eyre
@@ -118,7 +118,7 @@ the return value.
 ```rust {4,7}
 // main.rs
 impl App {
-{{#include @code/counter-app-error-handling/src/main.rs:run }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:run }}
 }
 ```
 
@@ -142,7 +142,7 @@ decrement calls have the `?` operator to propagate the error to the caller.
 ```rust {3,6,7}
 // main.rs
 impl App {
-{{#include @code/counter-app-error-handling/src/main.rs:handle_key_event }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:handle_key_event }}
 }
 ```
 
@@ -152,7 +152,7 @@ Add the new error to the `increment_counter` method. You can use the `bail!` mac
 ```rust {3,8} ins={10-12}
 // main.rs
 impl App {
-{{#include @code/counter-app-error-handling/src/main.rs:increment_decrement }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:increment_decrement }}
 }
 ```
 
@@ -162,7 +162,7 @@ update the return value.
 ```rust {4, 9-11}
 // main.rs
 impl App {
-{{#include @code/counter-app-error-handling/src/main.rs:handle_events }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:handle_events }}
 }
 ```
 
@@ -172,7 +172,7 @@ to fail if an error is returned.
 ```rust {6,9,13}
 // main.rs
 mod tests {
-{{#include @code/counter-app-error-handling/src/main.rs:handle_key_event test }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:handle_key_event test }}
 }
 ```
 
@@ -181,9 +181,9 @@ Add tests for the panic and overflow conditions
 ```rust
 // main.rs
 mod tests {
-{{#include @code/counter-app-error-handling/src/main.rs:handle_key_event_panic }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:handle_key_event_panic }}
 
-{{#include @code/counter-app-error-handling/src/main.rs:handle_key_event_overflow }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs:handle_key_event_overflow }}
 }
 ```
 
@@ -230,11 +230,11 @@ test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 Putting this altogether, you should now have the following files.
 
 ```rust collapsed title="main.rs (click to expand)"
-{{#include @code/counter-app-error-handling/src/main.rs }}
+{{#include @code/tutorials/counter-app-error-handling/src/main.rs }}
 ```
 
 ```rust collapsed title="tui.rs (click to expand)"
-{{#include @code/counter-app-error-handling/src/tui.rs }}
+{{#include @code/tutorials/counter-app-error-handling/src/tui.rs }}
 ```
 
 ## Handling Panics

@@ -15,5 +15,5 @@ cargo run --example=constraints --features=crossterm
 ![constraints](constraints.gif)
 
 ```rust title=constraints.rs
-{{ #include @code/ratatui-examples/examples/constraints.rs }}
+{{ #include @code/examples/ratatui-examples/examples/constraints.rs }}
 ```

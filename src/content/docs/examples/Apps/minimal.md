@@ -13,5 +13,5 @@ cargo run --example=minimal --features=crossterm
 ![minimal](minimal.gif)
 
 ```rust title=minimal.rs
-{{ #include @code/ratatui-examples/examples/minimal.rs }}
+{{ #include @code/examples/ratatui-examples/examples/minimal.rs }}
 ```

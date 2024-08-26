@@ -27,7 +27,7 @@ If you want to explore the code on your own, you can check out the completed sou
 Let's go ahead and declare these files as modules in `src/main.rs`
 
 ```rust
-{{#include @code/ratatui-counter-app/src/main.rs:declare_mods}}
+{{#include @code/tutorials/ratatui-counter-app/src/main.rs:declare_mods}}
 ```
 
 We are going to use `anyhow` in this section of the tutorial.

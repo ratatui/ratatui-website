@@ -13,5 +13,5 @@ cargo run --example=hello_world --features=crossterm
 ![hello_world](hello_world.gif)
 
 ```rust title=hello_world.rs
-{{ #include @code/ratatui-examples/examples/hello_world.rs }}
+{{ #include @code/examples/ratatui-examples/examples/hello_world.rs }}
 ```

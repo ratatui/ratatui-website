@@ -29,7 +29,7 @@ cargo add ratatui
 The Cargo.toml will now have the following in the dependencies section:
 
 ```toml title="Cargo.toml"
-{{ #include @code/counter-app-basic/Cargo.toml:dependencies }}
+{{ #include @code/tutorials/counter-app-basic/Cargo.toml:dependencies }}
 ```
 
 ## Application Setup
@@ -41,7 +41,7 @@ tutorial. In the tutorials, we generally use wildcard imports to simplify the co
 welcome to use explicit imports if that is your preferred style.
 
 ```rust title="src/main.rs"
-{{ #include @code/counter-app-basic/src/main.rs:imports }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:imports }}
 ```
 
 :::caution
@@ -67,7 +67,7 @@ displayed to the user after the application exits.
 Fill out the main function:
 
 ```rust title="src/main.rs"
-{{ #include @code/counter-app-basic/src/main.rs:main }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:main }}
 ```
 
 ### TUI module
@@ -83,14 +83,14 @@ init and a restore functions.
 Add a module to `main.rs` after the imports section:
 
 ```rust title="src/main.rs"
-{{ #include @code/counter-app-basic/src/main.rs:modules }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:modules }}
 ```
 
 Create a new file named `src/tui.rs` for the module. Add the imports, and two new functions, `init`
 and `restore`:
 
 ```rust title="src/tui.rs"
-{{ #include @code/counter-app-basic/src/tui.rs }}
+{{ #include @code/tutorials/counter-app-basic/src/tui.rs }}
 ```
 
 There is a PR to [simplify this boilerplate code], but for now it's most convenient to write a small
@@ -108,7 +108,7 @@ represent this flag.
 Create an `App` struct to represent your application's state:
 
 ```rust title="src/main.rs"
-{{ #include @code/counter-app-basic/src/main.rs:app }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:app }}
 ```
 
 Calling `App::default()` will create an `App` initialized with `counter` set to 0, and `exit` set to
@@ -124,7 +124,7 @@ loop:
 
 ```rust title="src/main.rs"
 impl App {
-{{ #include @code/counter-app-basic/src/main.rs:run }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:run }}
 
     fn render_frame(&self, frame: &mut Frame) {
         todo!()
@@ -154,7 +154,7 @@ some borders. Render a `Paragraph` widget with the application's state (the valu
 counter field) inside the block. The block and paragraph will take up the entire size of the widget:
 
 ```rust title="src/main.rs"
-{{ #include @code/counter-app-basic/src/main.rs:impl Widget }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:impl Widget }}
 ```
 
 Next, render the app as a widget:
@@ -164,7 +164,7 @@ impl App {
 
     // -- snip --
 
-{{ #include @code/counter-app-basic/src/main.rs:render_frame }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:render_frame }}
 }
 ```
 
@@ -186,7 +186,7 @@ Add the following `tests` module to `main.rs`:
 ```rust title="src/main.rs"
 #[cfg(test)]
 mod tests {
-{{ #include @code/counter-app-basic/src/main.rs:render test }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:render test }}
 }
 ```
 
@@ -227,7 +227,7 @@ impl App {
 
     // -- snip --
 
-{{ #include @code/counter-app-basic/src/main.rs:handle_events }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_events }}
 }
 ```
 
@@ -256,7 +256,7 @@ impl App {
 
     // -- snip --
 
-{{ #include @code/counter-app-basic/src/main.rs:handle_key_event }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event }}
 }
 ```
 
@@ -269,7 +269,7 @@ impl App {
 
     // -- snip --
 
-{{ #include @code/counter-app-basic/src/main.rs:methods }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:methods }}
 }
 ```
 
@@ -295,7 +295,7 @@ mod tests {
 
     // -- snip --
 
-{{ #include @code/counter-app-basic/src/main.rs:handle_key_event test }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event test }}
 }
 ```
 
@@ -320,11 +320,11 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 Putting this altogether, you should now have the following files:
 
 ```rust collapsed title="main.rs (click to expand)"
-{{#include @code/counter-app-basic/src/main.rs }}
+{{#include @code/tutorials/counter-app-basic/src/main.rs }}
 ```
 
 ```rust collapsed title="tui.rs (click to expand)"
-{{#include @code/counter-app-basic/src/tui.rs }}
+{{#include @code/tutorials/counter-app-basic/src/tui.rs }}
 ```
 
 ### Running the app
