@@ -16,5 +16,5 @@ publish.workspace = true
 # ANCHOR: dependencies
 [dependencies]
 color-eyre = "0.6.3"
-ratatui = "0.28.0"
+ratatui = "0.28.1"
 # ANCHOR_END: dependencies
