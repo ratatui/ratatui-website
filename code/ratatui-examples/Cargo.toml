@@ -18,7 +18,7 @@ termion = ["ratatui/termion"]
 termwiz = ["ratatui/termwiz"]
 
 [dependencies]
-ratatui = { version = "0.28.0", features = ["widget-calendar"] }
+ratatui = { version = "0.28.1", features = ["widget-calendar"] }
 
 [dev-dependencies]
 anyhow = "1.0.86"
@@ -35,7 +35,7 @@ pretty_assertions = "1.4.0"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
 rstest = "0.22.0"
-serde_json = "1.0.125"
+serde_json = "1.0.127"
 itertools = "0.13"
 strum = { version = "0.26.3", features = ["derive"] }
 time = { version = "0.3.11", features = ["local-offset"] }
