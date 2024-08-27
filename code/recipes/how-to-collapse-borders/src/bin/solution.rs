@@ -1,70 +1,61 @@
-use std::{
-    io::{stdout, Stdout},
-    time::Duration,
-};
+use std::time::Duration;
 
 use color_eyre::Result;
+use crossterm::event::{self, Event};
 // ANCHOR: imports
 use ratatui::{
-    backend::CrosstermBackend,
-    crossterm::{
-        event::{self, Event},
-        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-        ExecutableCommand,
-    },
-    layout::{Constraint, Direction, Layout},
+    layout::{Constraint, Layout},
     symbols,
     widgets::{Block, Borders},
-    Frame, Terminal,
+    DefaultTerminal, Frame,
 };
 // ANCHOR_END: imports
-
-struct Term {
-    terminal: Terminal<CrosstermBackend<Stdout>>,
-}
 
 /// This example shows how to use custom borders to collapse borders between widgets.
 /// See https://ratatui.rs/how-to/layout/collapse-borders for more info
 fn main() -> Result<()> {
-    let mut term = Term::init()?;
-    loop {
-        term.terminal.draw(ui)?;
-        if key_pressed()? {
-            break;
-        }
-    }
-    Ok(())
+    color_eyre::install()?;
+    let terminal = ratatui::init();
+    let result = run(terminal);
+    ratatui::restore();
+    result
 }
 
-// ANCHOR: ui
-fn ui(frame: &mut Frame) {
+fn run(mut terminal: DefaultTerminal) -> Result<()> {
+    loop {
+        terminal.draw(draw)?;
+        if key_pressed()? {
+            return Ok(());
+        }
+    }
+}
+
+fn key_pressed() -> Result<bool> {
+    Ok(event::poll(Duration::from_millis(16))? && matches!(event::read()?, Event::Key(_)))
+}
+
+// ANCHOR: draw
+fn draw(frame: &mut Frame) {
     // create a layout that splits the screen into 2 equal columns and the right column
     // into 2 equal rows
 
     // ANCHOR: layout
-    let layout = Layout::default()
-        .direction(Direction::Horizontal)
-        // use a 49/51 split instead of 50/50 to ensure that any extra space is on the right
-        // side of the screen. This is important because the right side of the screen is
-        // where the borders are collapsed.
-        .constraints([Constraint::Percentage(49), Constraint::Percentage(51)])
-        .split(frame.area());
-    let sub_layout = Layout::default()
-        .direction(Direction::Vertical)
-        // use a 49/51 split to ensure that any extra space is on the bottom
-        .constraints([Constraint::Percentage(49), Constraint::Percentage(51)])
-        .split(layout[1]);
+    // use a 49/51 split instead of 50/50 to ensure that any extra space is on the right
+    // side of the screen. This is important because the right side of the screen is
+    // where the borders are collapsed.
+    let [left, right] =
+        Layout::horizontal([Constraint::Percentage(49), Constraint::Percentage(51)])
+            .areas(frame.area());
+    // use a 49/51 split to ensure that any extra space is on the bottom
+    let [top_right, bottom_right] =
+        Layout::vertical([Constraint::Percentage(49), Constraint::Percentage(51)]).areas(right);
     // ANCHOR_END: layout
 
     // ANCHOR: left_block
-    frame.render_widget(
-        Block::new()
-            // don't render the right border because it will be rendered by the right block
-            .border_set(symbols::border::PLAIN)
-            .borders(Borders::TOP | Borders::LEFT | Borders::BOTTOM)
-            .title("Left Block"),
-        layout[0],
-    );
+    let left_block = Block::new()
+        // don't render the right border because it will be rendered by the right block
+        .borders(Borders::TOP | Borders::LEFT | Borders::BOTTOM)
+        .title("Left Block");
     // ANCHOR_END: left_block
 
     // ANCHOR: top_right_block
@@ -73,14 +64,11 @@ fn ui(frame: &mut Frame) {
         top_left: symbols::line::NORMAL.horizontal_down,
         ..symbols::border::PLAIN
     };
-    frame.render_widget(
-        Block::new()
-            .border_set(top_right_border_set)
-            // don't render the bottom border because it will be rendered by the bottom block
-            .borders(Borders::TOP | Borders::LEFT | Borders::RIGHT)
-            .title("Top Right Block"),
-        sub_layout[0],
-    );
+    let top_right_block = Block::new()
+        .border_set(top_right_border_set)
+        // don't render the bottom border because it will be rendered by the bottom block
+        .borders(Borders::TOP | Borders::LEFT | Borders::RIGHT)
+        .title("Top Right Block");
     // ANCHOR_END: top_right_block
 
     // ANCHOR: bottom_right_block
@@ -94,33 +82,16 @@ fn ui(frame: &mut Frame) {
         bottom_left: symbols::line::NORMAL.horizontal_up,
         ..symbols::border::PLAIN
     };
-    frame.render_widget(
-        Block::new()
-            .border_set(collapsed_top_and_left_border_set)
-            .borders(Borders::ALL)
-            .title("Bottom Right Block"),
-        sub_layout[1],
-    );
+    let bottom_right_block = Block::new()
+        .border_set(collapsed_top_and_left_border_set)
+        .borders(Borders::ALL)
+        .title("Bottom Right Block");
     // ANCHOR_END: bottom_right_block
-}
-// ANCHOR_END: ui
 
-fn key_pressed() -> Result<bool> {
-    Ok(event::poll(Duration::from_millis(16))? && matches!(event::read()?, Event::Key(_)))
+    // ANCHOR: render
+    frame.render_widget(left_block, left);
+    frame.render_widget(top_right_block, top_right);
+    frame.render_widget(bottom_right_block, bottom_right);
+    // ANCHOR_END: render
 }
-
-impl Term {
-    fn init() -> Result<Self> {
-        stdout().execute(EnterAlternateScreen)?;
-        enable_raw_mode()?;
-        let terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
-        Ok(Self { terminal })
-    }
-}
-
-impl Drop for Term {
-    fn drop(&mut self) {
-        disable_raw_mode().unwrap();
-        stdout().execute(LeaveAlternateScreen).unwrap();
-    }
-}
+// ANCHOR_END: draw
