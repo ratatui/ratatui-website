@@ -14,8 +14,8 @@ inspiration for what model will work best for your application.
 ## Finished Files
 
 You can find the finished project used for the tutorial on
-[GitHub](https://github.com/ratatui/ratatui-website/tree/main/code/json-editor). The
-code is also shown at the bottom of this page.
+[GitHub](https://github.com/ratatui/ratatui-website/tree/main/code/json-editor). The code is also
+shown at the bottom of this page.
 
 You can test this application by yourself by running:
 

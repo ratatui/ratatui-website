@@ -137,8 +137,8 @@ Let's replace the default console application code which `cargo new` created wit
 application which displays a colored message in the middle of the screen and waits for the user to
 press a key to exit.
 
-Note: a full copy of the code is available below in the
-[Run the application](#run-the-application) section.
+Note: a full copy of the code is available below in the [Run the application](#run-the-application)
+section.
 
 ### Add Imports
 
@@ -220,8 +220,8 @@ Add the following code to the main method to the `run` method:
 ```
 
 If you're wondering where to find the `white()` and `on_blue()` methods in the Ratatui doc, these
-are defined in the [`Stylize`] extension trait as [style shorthands], rather than on the
-[`Paragraph`] widget.
+are defined in the [`Stylize`] extension trait as [style shorthands], rather than on the [`Paragraph`]
+widget.
 
 ### Handle Keyboard Events
 
@@ -266,8 +266,8 @@ into more detail about how Ratatui works.
 
 :::tip
 
-Before Ratatui 0.28.1, the setup of an app was quite a bit more complex. You will likely see this
-in existing applications for some time.
+Before Ratatui 0.28.1, the setup of an app was quite a bit more complex. You will likely see this in
+existing applications for some time.
 
 :::
 
