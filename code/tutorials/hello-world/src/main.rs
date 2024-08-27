@@ -1,56 +1,41 @@
 // ANCHOR: all
 // ANCHOR: imports
-use std::io::{stdout, Result};
+use std::io;
 
 use ratatui::{
-    backend::CrosstermBackend,
-    crossterm::{
-        event::{self, KeyCode, KeyEventKind},
-        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-        ExecutableCommand,
-    },
+    crossterm::event::{self, KeyCode, KeyEventKind},
     style::Stylize,
     widgets::Paragraph,
-    Terminal,
+    DefaultTerminal,
 };
 // ANCHOR_END: imports
 
-// ANCHOR: setup
-fn main() -> Result<()> {
-    stdout().execute(EnterAlternateScreen)?;
-    enable_raw_mode()?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
+// ANCHOR: main
+fn main() -> io::Result<()> {
+    let mut terminal = ratatui::init();
     terminal.clear()?;
-    // ANCHOR_END: setup
+    let app_result = run(terminal);
+    ratatui::restore();
+    app_result
+}
+// ANCHOR_END: main
 
+// ANCHOR: run
+fn run(mut terminal: DefaultTerminal) -> io::Result<()> {
     loop {
-        // ANCHOR: draw
         terminal.draw(|frame| {
-            let area = frame.area();
-            frame.render_widget(
-                Paragraph::new("Hello Ratatui! (press 'q' to quit)")
-                    .white()
-                    .on_blue(),
-                area,
-            );
+            let greeting = Paragraph::new("Hello Ratatui! (press 'q' to quit)")
+                .white()
+                .on_blue();
+            frame.render_widget(greeting, frame.area());
         })?;
-        // ANCHOR_END: draw
 
-        // ANCHOR: handle-events
-        if event::poll(std::time::Duration::from_millis(16))? {
-            if let event::Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') {
-                    break;
-                }
+        if let event::Event::Key(key) = event::read()? {
+            if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') {
+                return Ok(());
             }
         }
-        // ANCHOR_END: handle-events
     }
-
-    // ANCHOR: restore
-    stdout().execute(LeaveAlternateScreen)?;
-    disable_raw_mode()?;
-    Ok(())
 }
-// ANCHOR_END: restore
+// ANCHOR_END: run
 // ANCHOR_END: all

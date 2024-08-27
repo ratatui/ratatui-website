@@ -30,10 +30,10 @@ rustc --version
 You should see output similar to the following (the exact version, date and commit hash will vary):
 
 ```text
-rustc 1.74.0 (79e9716c9 2023-11-13)
+rustc 1.80.1 (3f5fd8dd4 2024-08-06)
 ```
 
-## Create a new project
+## Create a New Project
 
 Let's create a new Rust project. In the terminal, navigate to a folder where you will store your
 projects and run:
@@ -92,25 +92,35 @@ First up, you need install the Ratatui crate into your project. You will also ne
 systems. To install the latest version of the `ratatui` and `crossterm` crates into the project run:
 
 ```shell title="install ratatui and crossterm"
-cargo add ratatui
+cargo add ratatui crossterm
 ```
 
 Cargo will output the following (note the exact versions may be later than the ones in this
 tutorial).
 
 ```text
-Updating crates.io index
-  Adding ratatui v0.24.0 to dependencies.
-          Features:
-          + crossterm
-          - all-widgets
-          - document-features
-          - macros
-          - serde
-          - termion
-          - termwiz
-          - widget-calendar
-Updating crates.io index
+    Updating crates.io index
+      Adding ratatui v0.28.1 to dependencies
+             Features:
+             + crossterm
+             + underline-color
+             - all-widgets
+             - document-features
+             - macros
+             - palette
+             - serde
+             - termion
+             - termwiz
+             - unstable
+             - unstable-rendered-line-info
+             - unstable-widget-ref
+             - widget-calendar
+    Updating crates.io index
+     Locking 66 packages to latest compatible versions
+      Adding hermit-abi v0.3.9 (latest: v0.4.0)
+      Adding linux-raw-sys v0.4.14 (latest: v0.6.5)
+      Adding wasi v0.11.0+wasi-snapshot-preview1 (latest: v0.13.2+wasi-0.2.1)
+      Adding windows-sys v0.52.0 (latest: v0.59.0)
 ```
 
 If you examine the `Cargo.toml` file, you should see the new crates have been added to the
@@ -118,39 +128,29 @@ dependencies section:
 
 ```toml title="Cargo.toml"
 [dependencies]
-ratatui = "0.28.0"
+ratatui = "0.28.1"
 ```
 
-## Create a TUI application
+## Create a TUI Application
 
 Let's replace the default console application code which `cargo new` created with a Ratatui
 application which displays a colored message in the middle of the screen and waits for the user to
 press a key to exit.
 
 Note: a full copy of the code is available below in the
-[Running the application](#running-the-application) section.
+[Run the application](#run-the-application) section.
 
-### Imports
+### Add Imports
 
 First let's add the module imports necessary to run your application.
 
-- From `ratatui::crossterm` import modules, types, methods and traits to handle [events], [raw
-  mode], and the [alternate screen]. See the [Crossterm docs] for more information on these types.
+- From `std` import the `io` module.
 - From `ratatui` import:
-  - [`CrosstermBackend`], a [backend] implementation for Crossterm
-  - [`Terminal`] which provides the means to output to the terminal
-  - [`Stylize`], an extension trait which adds [style shorthands] to other types
-  - [`Paragraph`] widget, which is used to display text
-- From `std` import the `io::Result` which most of the backend methods return, and the `stdout()`
-  method.
-
-:::tip
-
-Ratatui has a [`prelude`](https://docs.rs/ratatui/latest/ratatui/prelude/index.html) module which
-re-exports the most used types and traits. Importing this module with a wildcard import can simplify
-your application's imports.
-
-:::
+  - the [`crossterm::event`] module (and the KeyEvent and KeyEventKind types). See the [Crossterm
+    docs] for more information on these types. This is re-exported from the [Crossterm] crate.
+  - [`Stylize`], an extension trait which adds [style shorthands] to other types.
+  - [`Paragraph`] widget, which is used to display text.
+  - [`DefaultTerminal`] which provides the means to output to the terminal.
 
 In your editor, open `src/main.rs` and add the following at the top of the file.
 
@@ -158,7 +158,7 @@ In your editor, open `src/main.rs` and add the following at the top of the file.
 {{#include @code/tutorials/hello-world/src/main.rs:imports}}
 ```
 
-### Setting up and restoring the terminal
+### Initialize the Terminal
 
 Next, add code to the main function to setup and restore the terminal state.
 
@@ -187,62 +187,58 @@ information
 
 Replace the existing `main` function with code to setup and restore the terminal:
 
-```rust title="main.rs"
-{{#include @code/tutorials/hello-world/src/main.rs:setup}}
-
-    // TODO main loop
-
-{{#include @code/tutorials/hello-world/src/main.rs:restore}}
+```rust title="main.rs" collapse={4-4,6-6}
+{{#include @code/tutorials/hello-world/src/main.rs:main}}
 ```
 
-### Add a main loop
+### Run a Main Loop
 
 The main part of an application is the main loop. The application repeatedly draws the ui and then
 handles any events which have occurred.
 
-Replace `// TODO main loop` with a loop:
+Create a method named `run()` and call it from the main function.
 
-```rust title="main.rs"
-    loop {
-        // TODO draw the UI
-        // TODO handle events
-    }
+```rust ins={4-4,6-6} title="main.rs"
+{{#include @code/tutorials/hello-world/src/main.rs:main}}
 ```
 
-### Draw to the terminal
+```rust title="main.rs" collapse={3-14}
+{{#include @code/tutorials/hello-world/src/main.rs:run}}
+```
 
-The `draw` method on [`terminal`] is the main interaction point an app has with Ratatui. The `draw`
+### Draw to the Terminal
+
+The [`Terminal::draw`] method is the main interaction point an app has with Ratatui. The `draw`
 method accepts a closure (an anonymous method) with a single [`Frame`] parameter, and renders the
 entire screen. Your application will create an area that is the full size of the terminal window and
 render a new Paragraph with white foreground text and a blue background.
 
-Replace `// TODO draw` with:
+Add the following code to the main method to the `run` method:
 
-```rust title="main.rs"
-{{#include @code/tutorials/hello-world/src/main.rs:draw}}
+```rust title="main.rs" collapse={9-14} ins={3-8}
+{{#include @code/tutorials/hello-world/src/main.rs:run}}
 ```
 
-If you're curious about where to find the `white()` and `on_blue()` methods in the Ratatui doc,
-these are defined in the [`Stylize`] extension trait as [style shorthands], rather than on the [`Paragraph`]
-widget.
+If you're wondering where to find the `white()` and `on_blue()` methods in the Ratatui doc, these
+are defined in the [`Stylize`] extension trait as [style shorthands], rather than on the
+[`Paragraph`] widget.
 
-### Handle events
+### Handle Keyboard Events
 
 After Ratatui has drawn a frame, your application needs to check to see if any events have occurred.
 These are things like keyboard presses, mouse events, resizes, etc. If the user has pressed the `q`
 key, the app should break out of the loop.
 
-Add a small timeout to the event polling to ensure that the UI remains responsive regardless of
-whether there are events pending (16ms is ~60fps). It's important to check that the event kind is
-`Press` otherwise Windows terminals will see each key twice.
+It's important to check that the event kind is `Press` otherwise Windows terminals will see each key
+twice.
 
-Replace `// TODO handle events` with:
+Add the following code to the `run` method:
 
-```rust title="main.rs"
-{{#include @code/tutorials/hello-world/src/main.rs:handle-events}}
+```rust title="main.rs" collapse={3-9} ins={10-13}
+{{#include @code/tutorials/hello-world/src/main.rs:run}}
 ```
 
-## Running the Application
+## Run the Application
 
 Your application should look like:
 
@@ -268,23 +264,35 @@ Congratulations! :tada:
 You have written a "hello world" terminal user interface with Ratatui. The next sections will go
 into more detail about how Ratatui works.
 
+:::tip
+
+Before Ratatui 0.28.1, the setup of an app was quite a bit more complex. You will likely see this
+in existing applications for some time.
+
+:::
+
 :::note[Homework]
 
 Can you modify the example above to exit when pressing `q` _or_ when pressing `Q`?
 
 :::
 
+## Next Steps
+
+The next tutorial, [Counter App](./counter-app/), introduces some more interactivity, and a more
+robust approach to arranging your application code.
+
 [VSCode]: https://code.visualstudio.com/
 [Installation]: https://doc.rust-lang.org/book/ch01-01-installation.html
-[events]: /concepts/event-handling/
 [raw mode]: /concepts/backends/raw-mode
 [alternate screen]: /concepts/backends/alternate-screen
 [backend]: /concepts/backends/comparison
 [Crossterm]: https://crates.io/crates/crossterm
 [Crossterm docs]: https://docs.rs/crossterm/0.27.0/crossterm/
-[`CrosstermBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.CrosstermBackend.html
-[`Terminal`]: https://docs.rs/ratatui/latest/ratatui/terminal/index.html
-[`Frame`]: https://docs.rs/ratatui/latest/ratatui/struct.Frame.html
+[`crossterm::event`]: https://docs.rs/crossterm/0.28.1/crossterm/event/index.html
+[`DefaultTerminal`]: https://docs.rs/ratatui/latest/ratatui/type.DefaultTerminal.html
 [`Stylize`]: https://docs.rs/ratatui/latest/ratatui/style/trait.Stylize.html
 [`Paragraph`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Paragraph.html
+[`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
+[`Frame`]: https://docs.rs/ratatui/latest/ratatui/struct.Frame.html
 [style shorthands]: https://docs.rs/ratatui/latest/ratatui/style/#using-style-shorthands
