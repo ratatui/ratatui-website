@@ -1,84 +1,43 @@
-use std::{
-    io::{stdout, Stdout},
-    time::Duration,
-};
+use std::time::Duration;
 
 use color_eyre::Result;
+use crossterm::event::{self, Event};
 use ratatui::{
-    backend::CrosstermBackend,
-    crossterm::{
-        event::{self, Event},
-        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-        ExecutableCommand,
-    },
-    layout::{Constraint, Direction, Layout},
-    widgets::{Block, Borders},
-    Frame, Terminal,
+    layout::{Constraint, Layout},
+    widgets::Block,
+    DefaultTerminal, Frame,
 };
 
-struct Term {
-    terminal: Terminal<CrosstermBackend<Stdout>>,
+fn main() -> Result<()> {
+    color_eyre::install()?;
+    let terminal = ratatui::init();
+    let result = run(terminal);
+    ratatui::restore();
+    result
 }
 
-fn main() -> Result<()> {
-    let mut term = Term::init()?;
+fn run(mut terminal: DefaultTerminal) -> Result<()> {
     loop {
-        term.terminal.draw(ui)?;
+        terminal.draw(draw)?;
         if key_pressed()? {
-            break;
+            return Ok(());
         }
     }
-    Ok(())
 }
-
-// ANCHOR: ui
-fn ui(frame: &mut Frame) {
-    // create a layout that splits the screen into 2 equal columns and the right column
-    // into 2 equal rows
-    let layout = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
-        .split(frame.area());
-    let sub_layout = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
-        .split(layout[1]);
-
-    frame.render_widget(
-        Block::new().borders(Borders::ALL).title("Left Block"),
-        layout[0],
-    );
-
-    frame.render_widget(
-        Block::new().borders(Borders::ALL).title("Top Right Block"),
-        sub_layout[0],
-    );
-
-    frame.render_widget(
-        Block::new()
-            .borders(Borders::ALL)
-            .title("Bottom Right Block"),
-        sub_layout[1],
-    );
-}
-// ANCHOR_END: ui
 
 fn key_pressed() -> Result<bool> {
     Ok(event::poll(Duration::from_millis(16))? && matches!(event::read()?, Event::Key(_)))
 }
 
-impl Term {
-    fn init() -> Result<Self> {
-        stdout().execute(EnterAlternateScreen)?;
-        enable_raw_mode()?;
-        let terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
-        Ok(Self { terminal })
-    }
-}
+// ANCHOR: draw
+fn draw(frame: &mut Frame) {
+    // create a layout that splits the screen into 2 equal columns and the right column
+    // into 2 equal rows
+    let [left, right] = Layout::horizontal([Constraint::Fill(1); 2]).areas(frame.area());
+    let [top_right, bottom_right] = Layout::vertical([Constraint::Fill(1); 2]).areas(right);
 
-impl Drop for Term {
-    fn drop(&mut self) {
-        disable_raw_mode().unwrap();
-        stdout().execute(LeaveAlternateScreen).unwrap();
-    }
+    frame.render_widget(Block::bordered().title("Left Block"), left);
+    frame.render_widget(Block::bordered().title("Top Right Block"), top_right);
+    frame.render_widget(Block::bordered().title("Bottom Right Block"), bottom_right);
 }
+// ANCHOR_END: draw

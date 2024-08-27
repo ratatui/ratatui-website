@@ -13,7 +13,7 @@ pane. Often this leads to making UIs that look disconnected. E.g., the following
 Created by the following code:
 
 ```rust
-{{#include @code/recipes/how-to-collapse-borders/src/bin/problem.rs:ui}}
+{{#include @code/recipes/how-to-collapse-borders/src/bin/problem.rs:draw}}
 ```
 
 We can do better though, by collapsing borders. E.g.:
@@ -26,7 +26,7 @@ rendered by the top left and bottom left blocks rather than the right block.
 
 We need to use the symbols module to achieve this so we add this to the imports:
 
-```rust
+```rust ins={3}
 {{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:imports}}
 ```
 
@@ -55,6 +55,12 @@ the top right corner and the bottom left corner.
 {{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:bottom_right_block}}
 ```
 
+Finally, render the blocks:
+
+```rust
+{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:render}}
+```
+
 If we left it here, then we'd be mostly fine, but in small areas we'd notice that the 50/50 split no
 longer looks right. This is due to the fact that by default we round up when splitting an odd number
 of rows or columns in 2 (e.g. 5 rows => 2.5/2.5 => 3/2). This is fine normally, but when we collapse
@@ -76,8 +82,6 @@ If this sounds too complex, we're looking for some help to make this easier in
 The full code for this example is available at
 <https://github.com/ratatui/ratatui-website/blob/main/code/how-to-collapse-borders>
 
-Full `ui()` function:
-
-```rust
-{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:ui}}
+```rust collapsed title="collapse-borders.rs"
+{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs}}
 ```
