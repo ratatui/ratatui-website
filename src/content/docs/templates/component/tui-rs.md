@@ -53,6 +53,12 @@ about how terminal user interfaces work.
 We can reorganize the setup and teardown functions into an `enter()` and `exit()` methods on a `Tui`
 struct.
 
+:::note[Wondering whether to use `stdout` or `stderr`?]
+
+See the [FAQ](/faq/#should-i-use-stdout-or-stderr) for more details.
+
+:::
+
 ```rust
 use color_eyre::eyre::Result;
 use ratatui::crossterm::{
