@@ -270,6 +270,12 @@ impl Drop for Tui {
 }
 ```
 
+:::note[Wondering why use `stderr`?]
+
+See the [FAQ](/faq/#should-i-use-stdout-or-stderr) for more details.
+
+:::
+
 Then you'll be able write code like this:
 
 ```rust
