@@ -279,7 +279,7 @@ Can you modify the example above to exit when pressing `q` _or_ when pressing `Q
 
 ## Next Steps
 
-The next tutorial, [Counter App](./counter-app/), introduces some more interactivity, and a more
+The next tutorial, [Counter App](../counter-app/), introduces some more interactivity, and a more
 robust approach to arranging your application code.
 
 [VSCode]: https://code.visualstudio.com/
