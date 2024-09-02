@@ -213,7 +213,7 @@ method accepts a closure (an anonymous method) with a single [`Frame`] parameter
 entire screen. Your application will create an area that is the full size of the terminal window and
 render a new Paragraph with white foreground text and a blue background.
 
-Add the following code to the main method to the `run` method:
+Add the following code to the `run` method:
 
 ```rust title="main.rs" collapse={9-14} ins={3-8}
 {{#include @code/tutorials/hello-world/src/main.rs:run}}
