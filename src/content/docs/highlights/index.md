@@ -5,13 +5,4 @@ title: Highlights
 This section highlights the main changes in each major release of Ratatui (from v0.21.0 through the
 latest version).
 
-- [v0.28](./v028/)
-- [v0.27](./v027/)
-- [v0.26.3](./v0263/)
-- [v0.26.2](./v0262/)
-- [v0.26](./v026/)
-- [v0.25](./v025/)
-- [v0.24](./v024/)
-- [v0.23](./v023/)
-- [v0.22](./v022/)
-- [v0.21](./v021/)
+Follow the links in the sidebar to see the full highlights for each version.

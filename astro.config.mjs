@@ -219,9 +219,52 @@ export default defineConfig({
         {
           label: "Highlights",
           collapsed: true,
-          autogenerate: {
-            directory: "highlights",
-          },
+          items: [
+            {
+              label: "Highlights",
+              link: "/highlights/",
+            },
+            {
+              label: "v0.28",
+              link: "/highlights/v028/",
+            },
+            {
+              label: "v0.27",
+              link: "/highlights/v027/",
+            },
+            {
+              label: "v0.26.3",
+              link: "/highlights/v0263/",
+            },
+            {
+              label: "v0.26.2",
+              link: "/highlights/v0262/",
+            },
+            {
+              label: "v0.26",
+              link: "/highlights/v026/",
+            },
+            {
+              label: "v0.25",
+              link: "/highlights/v025/",
+            },
+            {
+              label: "v0.24",
+              link: "/highlights/v024/",
+            },
+            {
+              label: "v0.23",
+              link: "/highlights/v023/",
+            },
+            {
+              label: "v0.22",
+              link: "/highlights/v022/",
+            },
+            {
+              label: "v0.21",
+              link: "/highlights/v021/",
+            },
+          ],
         },
         {
           label: "Showcase",
