@@ -24,12 +24,15 @@ First, let's look at the main function and the event handling logic:
 
 {{ #include @code/recipes/how-to-spawn-vim/src/main.rs:main }}
 
+{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:run }}
+
 {{ #include @code/recipes/how-to-spawn-vim/src/main.rs:handle-events }}
 ```
 
-In the `main` function, we initialize the terminal and enter a loop where we draw the UI and handle
-events. The `handle_events` function listens for key events and returns an `Action` based on the key
-pressed.
+After initializing the terminal in `main` function, we enter a loop in `run` function where we draw
+the UI and handle events. The `handle_events` function listens for key events and returns an
+`Action` based on the key pressed. Here, we are calling `run_editor` function on `Action::EditFile`
+which we will define in next section.
 
 ## Spawning Vim
 
@@ -44,13 +47,13 @@ to have full control over the terminal.
 
 The `run_editor` function handles the logic for spawning vim. First, we leave the alternate screen
 and disable raw mode to restore terminal to it's original state. This part is similar to what
-`restore_terminal` function does in the
-[full code](https://github.com/ratatui-org/ratatui-website/tree/main/code/how-to-spawn-vim/src/main.rs).
-Next, we spawn a child process with `Command::new("vim").arg("/tmp/a.txt").status()` which launches
-`vim` to edit the given file. At this point, we have given up control of our TUI app to vim. Our TUI
-app will now wait for the exit status of the child process. Once the user exits Vim, our TUI app
-regains control over the terminal by re-entering alternate screen and enabling raw mode. Lastly, we
-clear the terminal to ensure the TUI is displayed correctly.
+[`ratatui::restore`](https://docs.rs/ratatui/latest/ratatui/fn.restore.html) function does in
+the `main` function. Next, we spawn a child process with
+`Command::new("vim").arg("/tmp/a.txt").status()` which launches `vim` to edit the given file. At
+this point, we have given up control of our TUI app to vim. Our TUI app will now wait for the exit
+status of the child process. Once the user exits Vim, our TUI app regains control over the terminal
+by re-entering alternate screen and enabling raw mode. Lastly, we clear the terminal to ensure the
+TUI is displayed correctly.
 
 :::note
 

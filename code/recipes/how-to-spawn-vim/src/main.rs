@@ -8,6 +8,7 @@ use ratatui::{
         ExecutableCommand,
     },
     widgets::Paragraph,
+    DefaultTerminal, Frame,
 };
 use std::io::{stdout, Result};
 use std::process::Command;
@@ -25,18 +26,26 @@ enum Action {
 
 // ANCHOR: main
 fn main() -> Result<()> {
-    let mut terminal = init_terminal()?;
+    let terminal = ratatui::init();
+    let app_result = run(terminal);
+    ratatui::restore();
+    app_result
+}
+// ANCHOR_END: main
+
+// ANCHOR: run
+fn run(mut terminal: DefaultTerminal) -> Result<()> {
     loop {
-        draw(&mut terminal)?;
+        terminal.draw(draw)?;
         match handle_events()? {
             Action::EditFile => run_editor(&mut terminal)?,
             Action::Quit => break,
             Action::None => {}
         }
     }
-    restore_terminal()
+    Ok(())
 }
-// ANCHOR_END: main
+// ANCHOR_END: run
 
 // ANCHOR: handle-events
 fn handle_events() -> Result<Action> {
@@ -66,33 +75,12 @@ fn run_editor(terminal: &mut Terminal) -> Result<()> {
 }
 // ANCHOR_END: run_editor
 
-// ANCHOR: init
-fn init_terminal() -> Result<Terminal> {
-    stdout().execute(EnterAlternateScreen)?;
-    enable_raw_mode()?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
-    terminal.clear()?;
-    Ok(terminal)
-}
-// ANCHOR_END: init
-
-// ANCHOR: restore
-fn restore_terminal() -> Result<()> {
-    stdout().execute(LeaveAlternateScreen)?;
-    disable_raw_mode()?;
-    Ok(())
-}
-// ANCHOR_END: restore
-
 // ANCHOR: draw
-fn draw(terminal: &mut Terminal) -> Result<()> {
-    terminal.draw(|frame| {
-        frame.render_widget(
-            Paragraph::new("Hello ratatui! (press 'q' to quit, 'e' to edit a file)"),
-            frame.area(),
-        );
-    })?;
-    Ok(())
+fn draw(frame: &mut Frame) {
+    frame.render_widget(
+        Paragraph::new("Hello ratatui! (press 'q' to quit, 'e' to edit a file)"),
+        frame.area(),
+    );
 }
 // ANCHOR_END: draw
 // ANCHOR_END: all
