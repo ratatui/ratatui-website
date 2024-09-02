@@ -89,7 +89,7 @@ fn draw(terminal: &mut Terminal) -> Result<()> {
     terminal.draw(|frame| {
         frame.render_widget(
             Paragraph::new("Hello ratatui! (press 'q' to quit, 'e' to edit a file)"),
-            frame.size(),
+            frame.area(),
         );
     })?;
     Ok(())

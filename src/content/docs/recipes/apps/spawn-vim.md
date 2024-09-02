@@ -12,7 +12,7 @@ to our TUI app.
 Full code:
 
 ```rust collapsed title="main.rs (click to expand)"
-{{ #include @code/how-to-spawn-vim/src/main.rs }}
+{{ #include @code/recipes/how-to-spawn-vim/src/main.rs }}
 ```
 
 ## Setup
@@ -20,23 +20,23 @@ Full code:
 First, let's look at the main function and the event handling logic:
 
 ```rust title="main.rs"
-{{ #include @code/how-to-spawn-vim/src/main.rs:action_enum }}
+{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:action_enum }}
 
-{{ #include @code/how-to-spawn-vim/src/main.rs:main }}
+{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:main }}
 
-{{ #include @code/how-to-spawn-vim/src/main.rs:handle-events }}
+{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:handle-events }}
 ```
 
 In the `main` function, we initialize the terminal and enter a loop where we draw the UI and handle
 events. The `handle_events` function listens for key events and returns an `Action` based on the key
 pressed.
 
-## Spawning vim
+## Spawning Vim
 
-Now, lets define the function `run_editor` function attached to `Action::EditFile` action.
+Now, let's define the function `run_editor` function attached to `Action::EditFile` action.
 
 ```rust title="main.rs"
-{{ #include @code/how-to-spawn-vim/src/main.rs:run_editor }}
+{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:run_editor }}
 ```
 
 To spawn Vim from our TUI app, we first need to relinquish control of input and output, allowing Vim
@@ -48,9 +48,9 @@ and disable raw mode to restore terminal to it's original state. This part is si
 [full code](https://github.com/ratatui-org/ratatui-website/tree/main/code/how-to-spawn-vim/src/main.rs).
 Next, we spawn a child process with `Command::new("vim").arg("/tmp/a.txt").status()` which launches
 `vim` to edit the given file. At this point, we have given up control of our TUI app to vim. Our TUI
-app will now wait for the exit status of the child process (i.e., Vim). Once the user exits Vim, our
-TUI app regains control over the terminal by re-entering alternate screen and enabling raw mode.
-Lastly, we clear the terminal to ensure the TUI is displayed correctly.
+app will now wait for the exit status of the child process. Once the user exits Vim, our TUI app
+regains control over the terminal by re-entering alternate screen and enabling raw mode. Lastly, we
+clear the terminal to ensure the TUI is displayed correctly.
 
 :::note
 
@@ -80,6 +80,13 @@ Action::EditFile => {
 }
 ```
 
+One more thing to note is that when attempting to start an external process without using the
+pattern in the component template, issues can arise such as ANSI RGB values being printed into the
+TUI on returning back from external process. If you encounter such issues, please refer to
+[orhun/rattler-build@84ea16a](https://github.com/orhun/rattler-build/commit/84ea16a4f5af33e2703b6330fcb977065263cef6)
+and [kdheepak/taskwarrior-tui#46](https://github.com/kdheepak/taskwarrior-tui/issues/46). Using
+`select!` + `cancellation_token` + `tokio` as in the component template avoids this problem.
+
 :::
 
 ## Running code
@@ -96,5 +103,8 @@ command in the `Action::EditFile` arm.
 If you prefer to launch the user-specified `$EDITOR` and retrieve the buffer (edited content) back
 into your application, you can use the [`edit`](https://crates.io/crates/edit) crate. This can be
 particularly useful if you need to capture the changes made by the user in the editor.
+
+Alternatively, you may use the [`edtui`](https://github.com/preiter93/edtui) crate from ratatui's
+ecosystem, which provides text editor widget inspired by vim.
 
 :::
