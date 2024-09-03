@@ -1227,6 +1227,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "how-to-spawn-vim"
+version = "0.0.0"
+dependencies = [
+ "ratatui",
+]
+
+[[package]]
 name = "http"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
