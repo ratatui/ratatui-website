@@ -119,6 +119,14 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 ---
 
+## [`radar`](https://github.com/rsadsb/adsb_deku)
+
+Radar is a terminal interface to view airplane positions from your sky
+
+![radar demo](https://github.com/rsadsb/adsb_deku/blob/master/media/peek_2022_08_19.gif?raw=true)
+
+---
+
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
 An application to manage markdown notes from your terminal and compile them to HTML
