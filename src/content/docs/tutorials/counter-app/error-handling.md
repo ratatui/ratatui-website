@@ -5,6 +5,16 @@ sidebar:
   label: Error Handling
 ---
 
+:::caution
+
+This tutorial is outdated since Ratatui 0.28.1.
+
+We introduced the `ratatui::init` and `ratatui::restore` methods in Ratatui 0.28.1, which
+automatically setup panic hooks. That removes the need for the `tui` module here. We will
+update the tutorial soon.
+
+:::
+
 :::note[Source Code]
 
 Full source code is available at:
@@ -30,10 +40,6 @@ A quick reminder of where we left off in the basic app:
 {{#include @code/tutorials/counter-app-basic/src/main.rs }}
 ```
 
-```rust collapsed title="tui.rs (click to expand)"
-{{#include @code/tutorials/counter-app-basic/src/tui.rs }}
-```
-
 ## The problem
 
 The app you built in the previous section has an intentional error in that causes the app to panic
@@ -41,7 +47,7 @@ when the user presses the **Left** arrow key when the Counter is already at 0. W
 the main function does not have a chance to restore the terminal state before it exits.
 
 ```rust title="src/main.rs (from basic app)" {3,5}
-{{#include @code/tutorials/counter-app-basic/src/main.rs:main }}
+{{#include @code/tutorials/counter-app-basic/src/main.rs:main() }}
 ```
 
 The application's default panic handler runs and displays the details messed up. This is because raw

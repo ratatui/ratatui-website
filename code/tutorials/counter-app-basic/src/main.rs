@@ -1,9 +1,9 @@
 // ANCHOR: imports
 use std::io;
 
+use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
     buffer::Buffer,
-    crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind},
     layout::{Alignment, Rect},
     style::Stylize,
     symbols::border,
@@ -12,22 +12,16 @@ use ratatui::{
         block::{Position, Title},
         Block, Paragraph, Widget,
     },
-    Frame,
+    DefaultTerminal, Frame,
 };
 // ANCHOR_END: imports
 
-// ANCHOR: modules
-mod tui;
-// ANCHOR_END: modules
-
-// ANCHOR: main
 fn main() -> io::Result<()> {
-    let mut terminal = tui::init()?;
+    let mut terminal = ratatui::init();
     let app_result = App::default().run(&mut terminal);
-    tui::restore()?;
+    ratatui::restore();
     app_result
 }
-// ANCHOR_END: main
 
 // ANCHOR: app
 #[derive(Debug, Default)]
@@ -39,24 +33,19 @@ pub struct App {
 
 // ANCHOR: impl App
 impl App {
-    // ANCHOR: run
     /// runs the application's main loop until the user quits
-    pub fn run(&mut self, terminal: &mut tui::Tui) -> io::Result<()> {
+    pub fn run(&mut self, terminal: &mut DefaultTerminal) -> io::Result<()> {
         while !self.exit {
-            terminal.draw(|frame| self.render_frame(frame))?;
+            terminal.draw(|frame| self.draw(frame))?;
             self.handle_events()?;
         }
         Ok(())
     }
-    // ANCHOR_END: run
 
-    // ANCHOR: render_frame
-    fn render_frame(&self, frame: &mut Frame) {
+    fn draw(&self, frame: &mut Frame) {
         frame.render_widget(self, frame.area());
     }
-    // ANCHOR_END: render_frame
 
-    // ANCHOR: handle_events
     /// updates the application's state based on user input
     fn handle_events(&mut self) -> io::Result<()> {
         match event::read()? {
@@ -69,9 +58,7 @@ impl App {
         };
         Ok(())
     }
-    // ANCHOR_END: handle_events
 
-    // ANCHOR: handle_key_event
     fn handle_key_event(&mut self, key_event: KeyEvent) {
         match key_event.code {
             KeyCode::Char('q') => self.exit(),
@@ -80,9 +67,7 @@ impl App {
             _ => {}
         }
     }
-    // ANCHOR_END: handle_key_event
 
-    // ANCHOR: methods
     fn exit(&mut self) {
         self.exit = true;
     }
@@ -94,7 +79,6 @@ impl App {
     fn decrement_counter(&mut self) {
         self.counter -= 1;
     }
-    // ANCHOR_END: methods
 }
 // ANCHOR_END: impl App
 

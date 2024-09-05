@@ -23,7 +23,7 @@ $EDITOR .
 Add the Ratatui and Crossterm crates (See [backends] for more info on why we use Crossterm).
 
 ```shell title="add dependencies"
-cargo add ratatui
+cargo add ratatui crossterm
 ```
 
 The Cargo.toml will now have the following in the dependencies section:
@@ -59,44 +59,16 @@ A common pattern found in most Ratatui apps is that they:
 2. Run the application in a loop until the user exits the app
 3. Restore the terminal back to its original state
 
-The `main` function sets up the terminal by calling methods in the `tui` module (defined next), and
-then creates and runs the App (defined later). It defers evaluating the result of calling
-`App::run()` until after the terminal is restored to ensure that any `Error` results will be
+The `main` function sets up the terminal by calling the `ratatui::init` and `ratatui::restore`
+methods and then creates and runs the App (defined later). It defers evaluating the result of
+calling `App::run()` until after the terminal is restored to ensure that any `Error` results will be
 displayed to the user after the application exits.
 
 Fill out the main function:
 
 ```rust title="src/main.rs"
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:main }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:main() }}
 ```
-
-### TUI module
-
-The counter app will be displayed on the [alternate screen]. This is a secondary buffer that allows the
-application to avoid messing up the user's current shell. The app also enables [raw mode] so that
-the app can process keys immediately without having to wait for a newline and so that the keys are
-not echoed to the user's screen when pressed.
-
-Let's implement this by creating a new module named `tui` to encapsulate this functionality into an
-init and a restore functions.
-
-Add a module to `main.rs` after the imports section:
-
-```rust title="src/main.rs"
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:modules }}
-```
-
-Create a new file named `src/tui.rs` for the module. Add the imports, and two new functions, `init`
-and `restore`:
-
-```rust title="src/tui.rs"
-{{ #include @code/tutorials/counter-app-basic/src/tui.rs }}
-```
-
-There is a PR to [simplify this boilerplate code], but for now it's most convenient to write a small
-helper module to handle this.
-
-[simplify this boilerplate code]: https://github.com/ratatui/ratatui/pull/280
 
 ### Application State
 
@@ -124,9 +96,9 @@ loop:
 
 ```rust title="src/main.rs"
 impl App {
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:run }}
+    {{ #include @code/tutorials/counter-app-basic/src/main.rs:run() }}
 
-    fn render_frame(&self, frame: &mut Frame) {
+    fn draw(&self, frame: &mut Frame) {
         todo!()
     }
 
@@ -161,10 +133,7 @@ Next, render the app as a widget:
 
 ```rust title="src/main.rs"
 impl App {
-
-    // -- snip --
-
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:render_frame }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:draw() }}
 }
 ```
 
@@ -226,8 +195,7 @@ Update the `handle_events` method that you defined earlier:
 impl App {
 
     // -- snip --
-
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_events }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_events() }}
 }
 ```
 
@@ -256,7 +224,7 @@ impl App {
 
     // -- snip --
 
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event() }}
 }
 ```
 
@@ -269,7 +237,11 @@ impl App {
 
     // -- snip --
 
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:methods }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:exit() }}
+
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:increment_counter() }}
+
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:decrement_counter() }}
 }
 ```
 
@@ -323,10 +295,6 @@ Putting this altogether, you should now have the following files:
 {{#include @code/tutorials/counter-app-basic/src/main.rs }}
 ```
 
-```rust collapsed title="tui.rs (click to expand)"
-{{#include @code/tutorials/counter-app-basic/src/tui.rs }}
-```
-
 ### Running the app
 
 Make sure you save all the files and that the [imports] listed above are still at the top of the
@@ -361,8 +329,6 @@ up to explore crafting more intricate terminal-based interfaces using `ratatui`.
 
 [Error Handling]: /tutorials/counter-app/error-handling/
 [backends]: /concepts/backends/
-[alternate screen]: /concepts/backends/alternate-screen/
-[raw mode]: /concepts/backends/raw-mode/
 [Crossterm events module]: https://docs.rs/crossterm/latest/crossterm/event/index.html
 [`event::read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html
 [`event::poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html

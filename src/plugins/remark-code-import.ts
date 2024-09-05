@@ -1,9 +1,13 @@
 import fs from "fs";
 import path from "path";
+import Parser, { Query } from "tree-sitter";
+import Rust from "tree-sitter-rust";
 import type { Node } from "unist";
 import { visit } from "unist-util-visit";
 import { rx } from "verbose-regexp"; // https://www.npmjs.com/package/verbose-regexp
 import type { VFile } from "vfile";
+
+export default remarkIncludeCode;
 
 interface CodeNode extends Node {
   lang?: string;
@@ -81,45 +85,21 @@ function include(includePath: string, anchor?: string): string {
   try {
     let fileContent = fs.readFileSync(includePath, "utf8");
 
-    // if the anchor is in the format "start:end", extract the lines between the start and end
-    if (anchor && anchor.search(":") != -1) {
-      const [start, end] = anchor.split(":");
-      const lines = fileContent.split("\n");
-      const startIndex = start ? parseInt(start) - 1 : 0;
-      const endIndex = end ? parseInt(end) : lines.length;
-      fileContent = lines.slice(startIndex, endIndex).join("\n");
-    } else if (anchor) {
-      // If an anchor is specified, extract the relevant section from the file between
-      // the start and end anchor comments. This is done using a
-      const commentRegex = rx`
-        \s*         // optional whitespace
-        (/{2,}|#)   // two or more forward slashes or a #
-      `;
-      const startAnchorRegex = rx`
-        ${commentRegex} // two or more forward slashes or a #
-        \s*             // optional whitespace
-        ANCHOR:         // the literal string "ANCHOR:" which precedes the anchor name
-        \s*             // optional whitespace characters
-        ${anchor}       // the anchor name
-        \n{1,}          // one or more newline characters, accommodating variations in line breaks
-      `;
-      const endAnchorRegex = rx`
-        \n{1,}          // one or more newline characters before the end anchor comment
-        ${commentRegex} // two or more forward slashes or a #
-        \s*             // optional whitespace
-        ANCHOR_END:     // the literal string "ANCHOR_END:" which precedes the anchor name
-        \s*             // optional whitespace characters
-        ${anchor}       // the anchor name
-      `;
-      // The "m" flag (multiline) allows the regex to match across multiple lines.
-      const anchorRegex = rx.m`   // multiline (matches across multiple lines)
-        ${startAnchorRegex}       // matches the start anchor
-        (?<content>\s*[\s\S]*?)   // a non-greedy match for any characters (including newlines), capturing the content
-        ${endAnchorRegex}         // matches the end anchor
-      `;
-      const anchorContent = fileContent.match(anchorRegex)?.groups?.content;
-      if (!anchorContent) throw new Error(`Anchor '${anchor}' not found`);
-      fileContent = anchorContent;
+    if (anchor) {
+      if (anchor.search(":") != -1) {
+        // if the anchor is in the format "start:end", extract the lines between the start and end
+        const [start, end] = anchor.split(":");
+        fileContent = extractLines(fileContent, start, end);
+      } else if (anchor.endsWith("()")) {
+        // If an anchor is specified with a function call, extract the relevant section from the file between
+        // the start of the function and the end of the function.
+        const name = anchor.slice(0, -2);
+        fileContent = extractFunction(fileContent, name);
+      } else {
+        // If an anchor is specified, extract the relevant section from the file between
+        // the start and end anchor comments. This is done using a
+        fileContent = extractBetweenComments(fileContent, anchor);
+      }
     }
     // Remove lines containing start and end anchor comments
     return fileContent
@@ -132,4 +112,79 @@ function include(includePath: string, anchor?: string): string {
   }
 }
 
-export default remarkIncludeCode;
+function extractLines(content: string, start: string, end: string) {
+  const lines = content.split("\n");
+  const startIndex = start ? parseInt(start) - 1 : 0;
+  const endIndex = end ? parseInt(end) : lines.length;
+  content = lines.slice(startIndex, endIndex).join("\n");
+  return content;
+}
+
+function extractFunction(content: string, name: string) {
+  const parser = new Parser();
+  parser.setLanguage(Rust);
+  const tree = parser.parse(content);
+  let query = new Query(
+    Rust,
+    `
+    (
+      (line_comment (doc_comment))+?
+      .
+      (attribute_item)+?
+      .
+      (function_item name: (identifier) @name (#eq? @name "${name}"))
+    ) @fn
+    `,
+  );
+  const captures = query.captures(tree.rootNode);
+  if (captures.length == 0) {
+    throw new Error(`Function '${name}' not found`);
+  }
+  return captures
+    .map((capture) => {
+      if (capture.name !== "fn") {
+        return "";
+      }
+      let indent = capture.node.startPosition.column;
+      if (capture.node.type === "line_comment") {
+        // line comments include the newline character in their range
+        return content.slice(capture.node.startIndex - indent - 1, capture.node.endIndex - 1);
+      }
+      return content.slice(capture.node.startIndex - indent, capture.node.endIndex);
+    })
+    .join("\n")
+    .trimEnd();
+}
+
+function extractBetweenComments(content: string, name: string) {
+  const commentRegex = rx`
+        \s*         // optional whitespace
+        (/{2,}|#)   // two or more forward slashes or a #
+      `;
+  const startAnchorRegex = rx`
+        ${commentRegex} // two or more forward slashes or a #
+        \s*             // optional whitespace
+        ANCHOR:         // the literal string "ANCHOR:" which precedes the anchor name
+        \s*             // optional whitespace characters
+        ${name}       // the anchor name
+        \n{1,}          // one or more newline characters, accommodating variations in line breaks
+      `;
+  const endAnchorRegex = rx`
+        \n{1,}          // one or more newline characters before the end anchor comment
+        ${commentRegex} // two or more forward slashes or a #
+        \s*             // optional whitespace
+        ANCHOR_END:     // the literal string "ANCHOR_END:" which precedes the anchor name
+        \s*             // optional whitespace characters
+        ${name}       // the anchor name
+      `;
+  // The "m" flag (multiline) allows the regex to match across multiple lines.
+  const anchorRegex = rx.m`   // multiline (matches across multiple lines)
+        ${startAnchorRegex}       // matches the start anchor
+        (?<content>\s*[\s\S]*?)   // a non-greedy match for any characters (including newlines), capturing the content
+        ${endAnchorRegex}         // matches the end anchor
+      `;
+  const anchorContent = content.match(anchorRegex)?.groups?.content;
+  if (!anchorContent) throw new Error(`Anchor '${name}' not found`);
+  content = anchorContent;
+  return content;
+}

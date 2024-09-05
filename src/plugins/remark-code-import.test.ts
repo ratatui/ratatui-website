@@ -1,6 +1,7 @@
 import fs from "fs";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
+import dedent from "ts-dedent";
 import { unified } from "unified";
 import { VFile } from "vfile";
 import { beforeEach, describe, expect, test, vi } from "vitest";
@@ -8,6 +9,8 @@ import remarkIncludeCode from "./remark-code-import";
 
 vi.mock("fs");
 
+const start = "```markdown";
+const end = "```\n";
 const markdownFile = new VFile({ path: "/Users/ratatui/test.md" });
 
 describe("remarkIncludeCode", () => {
@@ -21,8 +24,14 @@ describe("remarkIncludeCode", () => {
     const mockFileContent = "This is the content of the included file.";
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
-    const markdown = "```markdown\n{{#include ./included-file.md}}\n```";
-    const expected = "```markdown\nThis is the content of the included file.\n```\n";
+    const markdown = dedent`
+      ${start}
+      {{#include ./included-file.md}}
+      ${end}`;
+    const expected = dedent`
+      ${start}
+      This is the content of the included file.
+      ${end}`;
 
     const result = processor.processSync(markdown).toString();
     expect(result).toBe(expected);
@@ -32,8 +41,14 @@ describe("remarkIncludeCode", () => {
     const mockFileContent = "This is the content of the included file.";
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
-    markdownFile.value = "```markdown\n{{#include ./included-file.md}}\n```";
-    const expected = "```markdown\nThis is the content of the included file.\n```\n";
+    markdownFile.value = dedent`
+      ${start}
+      {{#include ./included-file.md}}
+      ${end}`;
+    const expected = dedent`
+      ${start}
+      This is the content of the included file.
+      ${end}`;
 
     const result = processor.processSync(markdownFile).toString();
     expect(result).toBe(expected);
@@ -43,36 +58,82 @@ describe("remarkIncludeCode", () => {
     const mockFileContent = "This is the content of the included file.";
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
-    markdownFile.value =
-      "```markdown\n{{#include ./included-file.md}}\n{{#include ./included-file.md}}\n```";
-    const expected =
-      "```markdown\nThis is the content of the included file.\nThis is the content of the included file.\n```\n";
+    markdownFile.value = dedent`
+      ${start}
+      {{#include ./included-file.md}}
+      {{#include ./included-file.md}}
+      ${end}`;
+    const expected = dedent`
+      ${start}
+      This is the content of the included file.
+      This is the content of the included file.
+      ${end}`;
 
     const result = processor.processSync(markdownFile).toString();
     expect(result).toBe(expected);
   });
 
   test("should include file content with line range anchor", () => {
-    const mockFileContent = "Line 1\nLine 2\nLine 3\nLine 4\nLine 5";
+    const mockFileContent = dedent`
+      Line 1
+      Line 2
+      Line 3
+      Line 4
+      Line 5`;
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
-    markdownFile.value = "```markdown\n{{#include ./included-file.md:2:4}}\n```";
-    const expected = "```markdown\nLine 2\nLine 3\nLine 4\n```\n";
+    markdownFile.value = dedent`
+      ${start}
+      {{#include ./included-file.md:2:4}}
+      ${end}`;
+    const expected = dedent`
+      ${start}
+      Line 2
+      Line 3
+      Line 4
+      ${end}`;
 
     const result = processor.processSync(markdownFile).toString();
     expect(result).toBe(expected);
   });
 
   test("should include file content with named anchor", () => {
-    const mockFileContent = `
+    const mockFileContent = dedent`
       // ANCHOR: start
       This is the content of the included file.
-      // ANCHOR_END: start
-    `;
+      // ANCHOR_END: start`;
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
-    markdownFile.value = "```markdown\n{{#include ./included-file.md:start}}\n```";
-    const expected = "```markdown\n      This is the content of the included file.\n```\n";
+    markdownFile.value = dedent`
+      ${start}
+      {{#include ./included-file.md:start}}
+      ${end}`;
+    const expected = dedent`
+      ${start}
+      This is the content of the included file.
+      ${end}`;
+
+    const result = processor.processSync(markdownFile).toString();
+    expect(result).toBe(expected);
+  });
+
+  test("should include file content with function anchor", () => {
+    const mockFileContent = dedent`
+      fn exampleFunction() {
+        println("foo");
+      }`;
+    vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
+
+    markdownFile.value = dedent`
+      ${start}
+      {{#include ./included-file.md:exampleFunction()}}
+      ${end}`;
+    const expected = dedent`
+      ${start}
+      fn exampleFunction() {
+        println("foo");
+      }
+      ${end}`;
 
     const result = processor.processSync(markdownFile).toString();
     expect(result).toBe(expected);
@@ -83,7 +144,10 @@ describe("remarkIncludeCode", () => {
       throw new Error("File not found");
     });
 
-    markdownFile.value = "```markdown\n{{#include ./invalid-file.md}}\n```";
+    markdownFile.value = dedent`
+      ${start}
+      {{#include ./invalid-file.md}}
+      ${end}`;
 
     expect(() => processor.processSync(markdownFile)).toThrow(
       "Unable to process includes for /Users/ratatui/test.md. Unable to include file '/Users/ratatui/invalid-file.md'. File not found",
@@ -94,7 +158,10 @@ describe("remarkIncludeCode", () => {
     const mockFileContent = "This is the content of the included file.";
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
-    markdownFile.value = "```markdown\n{{#include ./included-file.md:missingAnchor}}\n```";
+    markdownFile.value = dedent`
+      ${start}
+      {{#include ./included-file.md:missingAnchor}}
+      ${end}`;
 
     expect(() => processor.processSync(markdownFile)).toThrow(
       "Unable to process includes for /Users/ratatui/test.md. Unable to include file '/Users/ratatui/included-file.md'. Anchor 'missingAnchor' not found",
@@ -105,8 +172,14 @@ describe("remarkIncludeCode", () => {
     const mockFileContent = "This is the content of the included file.";
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
-    markdownFile.value = "```markdown\n{{#include @/included-file.md}}\n```";
-    const expected = "```markdown\nThis is the content of the included file.\n```\n";
+    markdownFile.value = dedent`
+      ${start}
+      {{#include @/included-file.md}}
+      ${end}`;
+    const expected = dedent`
+      ${start}
+      This is the content of the included file.
+      ${end}`;
 
     const result = processor.processSync(markdownFile).toString();
     expect(result).toBe(expected);

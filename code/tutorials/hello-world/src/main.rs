@@ -1,4 +1,3 @@
-// ANCHOR: all
 // ANCHOR: imports
 use std::io;
 
@@ -10,7 +9,6 @@ use ratatui::{
 };
 // ANCHOR_END: imports
 
-// ANCHOR: main
 fn main() -> io::Result<()> {
     let mut terminal = ratatui::init();
     terminal.clear()?;
@@ -18,9 +16,7 @@ fn main() -> io::Result<()> {
     ratatui::restore();
     app_result
 }
-// ANCHOR_END: main
 
-// ANCHOR: run
 fn run(mut terminal: DefaultTerminal) -> io::Result<()> {
     loop {
         terminal.draw(|frame| {
@@ -37,5 +33,3 @@ fn run(mut terminal: DefaultTerminal) -> io::Result<()> {
         }
     }
 }
-// ANCHOR_END: run
-// ANCHOR_END: all
