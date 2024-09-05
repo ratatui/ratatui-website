@@ -35,45 +35,47 @@ interface MetaNode extends CodeNode {
   meta?: string;
 }
 
-const remarkIncludeCode = () => {
+function remarkIncludeCode() {
   // The plugin function, working with a Markdown tree and associated file
   return (tree: Node, markdownFile: VFile) => {
     // Visit each 'code' node in the Markdown AST
-    visit(tree, "code", (node: MetaNode) => {
-      if (node.lang === "markdown" && node.meta == "include=ignore") {
-        return;
-      }
-      let match;
-      // There can be multiple includes in a code block
-      // Perform matches one by one, replacing text in AST along the way
-      while ((match = includeRegex.exec(node.value)) !== null) {
-        try {
-          const includePath = match.groups?.path;
-          const anchor = match.groups?.anchor;
-          if (!includePath) {
-            throw new Error("No file path specified");
-          }
-          // Inspired by astro aliases: https://docs.astro.build/en/guides/aliases/
-          // Allows for specifying path from root directory
-          let fullPath = includePath.startsWith("@")
-            ? includePath.replace("@", "./")
-            : path.resolve(path.dirname(markdownFile.path), includePath);
-          let content = include(fullPath, anchor);
-          // Replace the include directive with the file content
-          node.value = node.value.replace(match[0], content);
-        } catch (err) {
-          if (err instanceof Error) {
-            throw new Error(`${err.message}`);
-          } else {
-            throw new Error(`Error including file: ${err}`);
-          }
-        }
-      }
-    });
+    visit(tree, "code", (node: MetaNode) => visitNode(node, markdownFile));
   };
-};
+}
 
-export default remarkIncludeCode;
+function visitNode(node: MetaNode, markdownFile: VFile) {
+  if (node.lang === "markdown" && node.meta == "include=ignore") {
+    return;
+  }
+  let match;
+  // There can be multiple includes in a code block
+  // Perform matches one by one, replacing text in AST along the way
+  while ((match = includeRegex.exec(node.value)) !== null) {
+    try {
+      const includePath = match.groups!.path;
+      const anchor = match.groups!.anchor;
+
+      let fullPath = relativePath(markdownFile, includePath);
+      let content = include(fullPath, anchor);
+      // Replace the include directive with the file content
+      node.value = node.value.replace(match[0], content);
+    } catch (err) {
+      let message = (err as Error).message;
+      let file = markdownFile.path ? markdownFile.path : "unknown file";
+      throw new Error(`Unable to process includes for ${file}. ${message}`);
+    }
+  }
+}
+
+// Inspired by astro aliases: https://docs.astro.build/en/guides/aliases/
+// Allows for specifying path from root directory using @
+function relativePath(markdownFile: VFile, includePath: string): string {
+  if (includePath.startsWith("@")) {
+    return includePath.replace("@", "./");
+  }
+  let root = markdownFile.path ? path.dirname(markdownFile.path) : "";
+  return path.resolve(root, includePath);
+}
 
 function include(includePath: string, anchor?: string): string {
   try {
@@ -116,7 +118,7 @@ function include(includePath: string, anchor?: string): string {
         ${endAnchorRegex}         // matches the end anchor
       `;
       const anchorContent = fileContent.match(anchorRegex)?.groups?.content;
-      if (!anchorContent) throw new Error(`Anchor '${anchor}' not found in ${includePath}`);
+      if (!anchorContent) throw new Error(`Anchor '${anchor}' not found`);
       fileContent = anchorContent;
     }
     // Remove lines containing start and end anchor comments
@@ -125,10 +127,9 @@ function include(includePath: string, anchor?: string): string {
       .filter((line) => !line.includes("// ANCHOR: ") && !line.includes("// ANCHOR_END: "))
       .join("\n");
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(`Error reading file '${includePath}': ${err.message}`);
-    } else {
-      throw new Error(`Error reading file '${includePath}': ${err}`);
-    }
+    let message = (err as Error).message;
+    throw new Error(`Unable to include file '${includePath}'. ${message}`);
   }
 }
+
+export default remarkIncludeCode;

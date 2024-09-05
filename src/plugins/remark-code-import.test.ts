@@ -17,12 +17,36 @@ describe("remarkIncludeCode", () => {
     vi.clearAllMocks();
   });
 
+  test("should include file for raw markdown content", () => {
+    const mockFileContent = "This is the content of the included file.";
+    vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
+
+    const markdown = "```markdown\n{{#include ./included-file.md}}\n```";
+    const expected = "```markdown\nThis is the content of the included file.\n```\n";
+
+    const result = processor.processSync(markdown).toString();
+    expect(result).toBe(expected);
+  });
+
   test("should include file content without anchor", () => {
     const mockFileContent = "This is the content of the included file.";
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
     markdownFile.value = "```markdown\n{{#include ./included-file.md}}\n```";
     const expected = "```markdown\nThis is the content of the included file.\n```\n";
+
+    const result = processor.processSync(markdownFile).toString();
+    expect(result).toBe(expected);
+  });
+
+  test("should include multiple includes in a code block", () => {
+    const mockFileContent = "This is the content of the included file.";
+    vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
+
+    markdownFile.value =
+      "```markdown\n{{#include ./included-file.md}}\n{{#include ./included-file.md}}\n```";
+    const expected =
+      "```markdown\nThis is the content of the included file.\nThis is the content of the included file.\n```\n";
 
     const result = processor.processSync(markdownFile).toString();
     expect(result).toBe(expected);
@@ -62,7 +86,7 @@ describe("remarkIncludeCode", () => {
     markdownFile.value = "```markdown\n{{#include ./invalid-file.md}}\n```";
 
     expect(() => processor.processSync(markdownFile)).toThrow(
-      "Error reading file '/Users/ratatui/invalid-file.md': File not found",
+      "Unable to process includes for /Users/ratatui/test.md. Unable to include file '/Users/ratatui/invalid-file.md'. File not found",
     );
   });
 
@@ -73,7 +97,7 @@ describe("remarkIncludeCode", () => {
     markdownFile.value = "```markdown\n{{#include ./included-file.md:missingAnchor}}\n```";
 
     expect(() => processor.processSync(markdownFile)).toThrow(
-      "Error reading file '/Users/ratatui/included-file.md': Anchor 'missingAnchor' not found in /Users/ratatui/included-file.md",
+      "Unable to process includes for /Users/ratatui/test.md. Unable to include file '/Users/ratatui/included-file.md'. Anchor 'missingAnchor' not found",
     );
   });
 
