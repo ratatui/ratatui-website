@@ -78,6 +78,22 @@ describe("remarkIncludeCode", () => {
     expect(result).toBe(expected);
   });
 
+  test("should include file content with function anchor", () => {
+    const mockFileContent = `
+      fn exampleFunction() {
+        println("foo");
+      }
+    `;
+    vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
+
+    markdownFile.value = "```markdown\n{{#include ./included-file.md:exampleFunction()}}\n```";
+    const expected =
+      '```markdown\n\n      fn exampleFunction() {\n        println("foo");\n      }\n```\n';
+
+    const result = processor.processSync(markdownFile).toString();
+    expect(result).toBe(expected);
+  });
+
   test("should throw error for file path", () => {
     vi.spyOn(fs, "readFileSync").mockImplementation(() => {
       throw new Error("File not found");

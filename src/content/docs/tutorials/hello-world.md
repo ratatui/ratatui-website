@@ -188,7 +188,7 @@ information
 Replace the existing `main` function with code to setup and restore the terminal:
 
 ```rust title="main.rs" collapse={4-4,6-6}
-{{#include @code/tutorials/hello-world/src/main.rs:main}}
+{{#include @code/tutorials/hello-world/src/main.rs:main()}}
 ```
 
 ### Run a Main Loop
@@ -199,11 +199,11 @@ handles any events which have occurred.
 Create a method named `run()` and call it from the main function.
 
 ```rust ins={4-4,6-6} title="main.rs"
-{{#include @code/tutorials/hello-world/src/main.rs:main}}
+{{#include @code/tutorials/hello-world/src/main.rs:main()}}
 ```
 
 ```rust title="main.rs" collapse={3-14}
-{{#include @code/tutorials/hello-world/src/main.rs:run}}
+{{#include @code/tutorials/hello-world/src/main.rs:run()}}
 ```
 
 ### Draw to the Terminal
@@ -216,7 +216,7 @@ render a new Paragraph with white foreground text and a blue background.
 Add the following code to the `run` method:
 
 ```rust title="main.rs" collapse={9-14} ins={3-8}
-{{#include @code/tutorials/hello-world/src/main.rs:run}}
+{{#include @code/tutorials/hello-world/src/main.rs:run()}}
 ```
 
 If you're wondering where to find the `white()` and `on_blue()` methods in the Ratatui doc, these
@@ -235,7 +235,7 @@ twice.
 Add the following code to the `run` method:
 
 ```rust title="main.rs" collapse={3-9} ins={10-13}
-{{#include @code/tutorials/hello-world/src/main.rs:run}}
+{{#include @code/tutorials/hello-world/src/main.rs:run()}}
 ```
 
 ## Run the Application
@@ -243,7 +243,7 @@ Add the following code to the `run` method:
 Your application should look like:
 
 ```rust collapsed title="main.rs (click to expand)"
-{{#include @code/tutorials/hello-world/src/main.rs:all}}
+{{#include @code/tutorials/hello-world/src/main.rs}}
 ```
 
 Make sure you save the file! Now you can run the app using:
