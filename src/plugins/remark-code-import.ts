@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import type { Node } from "unist";
 import { visit } from "unist-util-visit";
 import { rx } from "verbose-regexp"; // https://www.npmjs.com/package/verbose-regexp
@@ -36,7 +37,7 @@ interface MetaNode extends CodeNode {
 
 const remarkIncludeCode = () => {
   // The plugin function, working with a Markdown tree and associated file
-  return (tree: Node, _markdownFile: VFile) => {
+  return (tree: Node, markdownFile: VFile) => {
     // Visit each 'code' node in the Markdown AST
     visit(tree, "code", (node: MetaNode) => {
       if (node.lang === "markdown" && node.meta == "include=ignore") {
@@ -54,7 +55,9 @@ const remarkIncludeCode = () => {
           }
           // Inspired by astro aliases: https://docs.astro.build/en/guides/aliases/
           // Allows for specifying path from root directory
-          let fullPath = includePath.startsWith("@") ? includePath.replace("@", "./") : includePath;
+          let fullPath = includePath.startsWith("@")
+            ? includePath.replace("@", "./")
+            : path.resolve(path.dirname(markdownFile.path), includePath);
           let content = include(fullPath, anchor);
           // Replace the include directive with the file content
           node.value = node.value.replace(match[0], content);
