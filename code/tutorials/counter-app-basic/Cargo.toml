@@ -16,4 +16,5 @@ publish.workspace = true
 # ANCHOR: dependencies
 [dependencies]
 ratatui = "0.28.1"
+crossterm = "0.28.1"
 # ANCHOR_END: dependencies
