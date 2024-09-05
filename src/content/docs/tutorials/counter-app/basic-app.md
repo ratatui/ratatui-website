@@ -96,7 +96,7 @@ loop:
 
 ```rust title="src/main.rs"
 impl App {
-   {{ #include @code/tutorials/counter-app-basic/src/main.rs:run() }}
+    {{ #include @code/tutorials/counter-app-basic/src/main.rs:run() }}
 
     fn draw(&self, frame: &mut Frame) {
         todo!()
@@ -223,6 +223,7 @@ Add a `handle_key_event` method to `App`, to handle the key events.
 impl App {
 
     // -- snip --
+
 {{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event() }}
 }
 ```
@@ -235,8 +236,11 @@ test the application's behavior separately to the events.
 impl App {
 
     // -- snip --
+
 {{ #include @code/tutorials/counter-app-basic/src/main.rs:exit() }}
+
 {{ #include @code/tutorials/counter-app-basic/src/main.rs:increment_counter() }}
+
 {{ #include @code/tutorials/counter-app-basic/src/main.rs:decrement_counter() }}
 }
 ```

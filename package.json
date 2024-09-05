@@ -33,6 +33,8 @@
     "sharp": "^0.33.5",
     "starlight-links-validator": "^0.11.0",
     "tailwindcss": "^3.4.10",
+    "tree-sitter": "^0.21.1",
+    "tree-sitter-rust": "^0.23.0",
     "typescript": "^5.5.4",
     "verbose-regexp": "^3.0.0"
   },

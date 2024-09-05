@@ -1,5 +1,7 @@
 import fs from "fs";
 import path from "path";
+import Parser, { Query } from "tree-sitter";
+import Rust from "tree-sitter-rust";
 import type { Node } from "unist";
 import { visit } from "unist-util-visit";
 import { rx } from "verbose-regexp"; // https://www.npmjs.com/package/verbose-regexp
@@ -119,23 +121,39 @@ function extractLines(content: string, start: string, end: string) {
 }
 
 function extractFunction(content: string, name: string) {
-  const functionRegex = new RegExp(`\\s*(fn)\\s+${name}\\s*\\(.*?\\).*?{`, "s");
-  const match = functionRegex.exec(content);
-  if (match) {
-    const startIndex = match.index + match[0].length + 1;
-    let braceCount = 1;
-    let endIndex = startIndex;
-    for (let i = startIndex; i < content.length; i++) {
-      if (content[i] === "{") braceCount++;
-      if (content[i] === "}") braceCount--;
-      if (braceCount === 0) {
-        endIndex = i + 1;
-        break;
-      }
-    }
-    return content.substring(match.index, endIndex);
+  const parser = new Parser();
+  parser.setLanguage(Rust);
+  const tree = parser.parse(content);
+  let query = new Query(
+    Rust,
+    `
+    (
+      (line_comment (doc_comment))+?
+      .
+      (attribute_item)+?
+      .
+      (function_item name: (identifier) @name (#eq? @name "${name}"))
+    ) @fn
+    `,
+  );
+  const captures = query.captures(tree.rootNode);
+  if (captures.length == 0) {
+    throw new Error(`Function '${name}' not found`);
   }
-  throw new Error(`Function '${name}' not found`);
+  return captures
+    .map((capture) => {
+      if (capture.name !== "fn") {
+        return "";
+      }
+      let indent = capture.node.startPosition.column;
+      if (capture.node.type === "line_comment") {
+        // line comments include the newline character in their range
+        return content.slice(capture.node.startIndex - indent - 1, capture.node.endIndex - 1);
+      }
+      return content.slice(capture.node.startIndex - indent, capture.node.endIndex);
+    })
+    .join("\n")
+    .trimEnd();
 }
 
 function extractBetweenComments(content: string, name: string) {
