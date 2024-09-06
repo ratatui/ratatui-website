@@ -86,6 +86,13 @@ hello-ratatui/
 └── README.md
 ```
 
+The `Cargo.toml` file is filled with some default values and the necessary dependencies (Ratatui
+and Crossterm), and one useful dependency (Color-eyre) for nicer error handling.
+
+```rust title="cargo.toml"
+{{#include @code/tutorials/hello-ratatui/Cargo.toml}}
+```
+
 The generate command created a default `main.rs` that runs the app:
 
 ```rust title="main.rs"
@@ -94,8 +101,35 @@ The generate command created a default `main.rs` that runs the app:
 
 And an `App` struct in `app.rs` that contains the main logic:
 
-```rust title="main.rs"
-{{#include @code/tutorials/hello-ratatui/src/app.rs}}
+```rust title="app.rs"
+{{#include @code/tutorials/hello-ratatui/src/app.rs:1:14}}
+```
+
+The App implementation contains methods to create the app and run the main application loop. The
+loop runs until the running field is set to false.
+
+```rust title="app.rs"
+impl App {
+{{#include @code/tutorials/hello-ratatui/src/app.rs:17:30}}
+}
+```
+
+The draw method controls what is drawn to the screen. The template draws a paragraph of text
+surrounded by a borderd block with a title to the entire screen (frame) area.
+
+```rust title="app.rs"
+impl App {
+{{#include @code/tutorials/hello-ratatui/src/app.rs:32:51}}
+}
+```
+
+The app has methods for interacting with the user. These set the running field to false when
+the user presses `q`, `Esc`, or `Ctrl+C`
+
+```rust title="app.rs"
+impl App {
+{{#include @code/tutorials/hello-ratatui/src/app.rs:53:81}}
+}
 ```
 
 Let's build and execute the project. Run:
