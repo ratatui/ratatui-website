@@ -13,7 +13,7 @@ You're going to build the following:
 ![hello](https://github.com/ratatui/ratatui-website/assets/381361/b324807e-915f-45b3-a4a2-d3b419eec387)
 
 The full code for this tutorial is available to view at
-<https://github.com/ratatui/ratatui-website/tree/main/code/hello-world>
+<https://github.com/ratatui/ratatui-website/tree/main/code/tutorials/hello-world>
 
 ## Install Rust
 
