@@ -10,8 +10,8 @@ sidebar:
 This tutorial is outdated since Ratatui 0.28.1.
 
 We introduced the `ratatui::init` and `ratatui::restore` methods in Ratatui 0.28.1, which
-automatically setup panic hooks. That removes the need for the `tui` module here. We will
-update the tutorial soon.
+automatically setup panic hooks. That removes the need for the `tui` module here. We will update the
+tutorial soon.
 
 :::
 
