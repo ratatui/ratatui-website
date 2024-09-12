@@ -8,7 +8,7 @@ sidebar:
 
 A full copy of the code for this page is available in the github repository for the website at:
 
-<https://github.com/ratatui/ratatui-website/tree/main/code/counter-app-basic>.
+<https://github.com/ratatui/ratatui-website/tree/main/code/tutorials/counter-app-basic>.
 
 ## Create a new project
 
