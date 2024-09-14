@@ -22,13 +22,13 @@ As an example, here is the `terminal.draw()` call for a simple "hello world" wit
 
 ```rust
 terminal.draw(|frame| {
-    frame.render_widget(Paragraph::new("Hello World!"), frame.size());
+    frame.render_widget(Paragraph::new("Hello World!"), frame.area());
 });
 ```
 
 The closure gets an argument `frame` of type `&mut Frame`.
 
-`frame.size()` returns a `Rect` that represents the total renderable area. `Frame` also holds a
+`frame.area()` returns a `Rect` that represents the total renderable area. `Frame` also holds a
 reference to an intermediate buffer which it can render widgets to using the `render_widget()`
 method. At the end of the `draw` method (after the closure returns), Ratatui persists the content of
 the buffer to the terminal. Let's walk through more specifics in the following sections.
@@ -177,9 +177,9 @@ to the terminal:
 
 ```rust
 terminal.draw(|frame| {
-    frame.render_widget(Paragraph::new("content1"), frame.size());
-    frame.render_widget(Paragraph::new("content2"), frame.size());
-    frame.render_widget(Paragraph::new("content3"), frame.size());
+    frame.render_widget(Paragraph::new("content1"), frame.area());
+    frame.render_widget(Paragraph::new("content2"), frame.area());
+    frame.render_widget(Paragraph::new("content3"), frame.area());
 })
 ```
 
