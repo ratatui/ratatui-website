@@ -107,7 +107,7 @@ Here's an example of using the `render_widget` method to draw a Widget:
 
 ```rust
 terminal.draw(|frame| {
-    frame.render_widget(some_widget, frame.size());
+    frame.render_widget(some_widget, frame.area());
 });
 ```
 
@@ -115,7 +115,7 @@ And here's an example of using the `render_stateful_widget` method to draw a Sta
 
 ```rust
 terminal.draw(|frame| {
-    frame.render_stateful_widget(some_stateful_widget, frame.size(), &mut some_state);
+    frame.render_stateful_widget(some_stateful_widget, frame.area(), &mut some_state);
 });
 ```
 
@@ -139,7 +139,7 @@ fn main() {
     // ...
     while app.should_quit {
         terminal.draw(|frame| {
-            frame.render_widget(&app, frame.size())
+            frame.render_widget(&app, frame.area())
         })
     }
 }

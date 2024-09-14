@@ -33,7 +33,7 @@ within.
 
 ```rust
 for i in 0..10 {
-    let area = Rect::new(0, i, frame.size().width, 1);
+    let area = Rect::new(0, i, frame.area().width, 1);
     frame.render_widget(Paragraph::new("Hello world!"), area);
 }
 ```
@@ -51,7 +51,7 @@ let layout = Layout::default()
         Constraint::Percentage(50),
         Constraint::Percentage(50),
     ])
-    .split(frame.size());
+    .split(frame.area());
 ```
 
 In this example, we have indicated that we want to split the available space vertically into two
@@ -205,7 +205,7 @@ let layout = Layout::default()
         Constraint::Min(5),
     ]
     .into_iter())
-    .split(frame.size());
+    .split(frame.area());
 ```
 
 In this example, the initial `Length` constraint cause the first rectangle to have a width of 10
