@@ -61,8 +61,8 @@ A common pattern found in most Ratatui apps is that they:
 
 The `main` function sets up the terminal by calling the `ratatui::init` and `ratatui::restore`
 methods and then creates and runs the App (defined later). It defers propagating the return of
-`App::run()`'s result until after the terminal is restored to ensure that any `Error` results will be
-displayed to the user after the application exits.
+`App::run()`'s result until after the terminal is restored to ensure that any `Error` results will
+be displayed to the user after the application exits.
 
 Fill out the main function:
 
