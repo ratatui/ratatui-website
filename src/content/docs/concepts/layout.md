@@ -56,7 +56,7 @@ let layout = Layout::default()
 
 In this example, we have indicated that we want to split the available space vertically into two
 equal parts, allocating 50% of the screen height to each. The [`Layout::split`] function takes the
-total size of the terminal window as an argument, returned by the [`Frame::size()`] method, and then
+total size of the terminal window as an argument, returned by the [`Frame::area()`] method, and then
 calculates the appropriate size and placement for each rectangle based on the specified constraints.
 
 Once you have defined your layout (or a set of nested layouts), you can use one of the rectangle
