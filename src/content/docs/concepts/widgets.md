@@ -137,7 +137,7 @@ struct App {
 fn main() {
     let app = App::default();
     // ...
-    while app.should_quit {
+    while !app.should_quit {
         terminal.draw(|frame| {
             frame.render_widget(&app, frame.area())
         })
