@@ -15,7 +15,7 @@ sidebar:
 - [better-panic](https://github.com/mitsuhiko/better-panic)
 - [color-eyre](https://github.com/eyre-rs/color-eyre)
 - [human-panic](https://github.com/rust-cli/human-panic)
-- Clap for command line argument parsing
+- [Clap](https://github.com/clap-rs/clap) for command line argument parsing
 - `Component` trait with
   [`Home`](https://github.com/ratatui/templates/blob/main/component/template/src/components/home.rs)
   and
