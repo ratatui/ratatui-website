@@ -84,6 +84,14 @@ gpg-tui is a Terminal User Interface for GnuPG.
 
 ---
 
+## [`kty`](https://kty.dev)
+
+The terminal for Kubernetes. An SSH server that delivers a TUI for interacting with your cluster.
+
+![kty demo](https://kty.dev/demo.gif)
+
+---
+
 ## [`material`](https://crates.io/crates/material)
 
 A material design color palette for the terminal.
