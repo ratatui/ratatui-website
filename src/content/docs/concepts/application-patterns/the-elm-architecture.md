@@ -234,7 +234,7 @@ were interested in rendering a `List`, your `view` function may look like this:
 ```rust
 fn view(model: &mut Model, f: &mut Frame) {
     let items = app.items.items.iter().map(|element| ListItem::new(element)).collect();
-    f.render_stateful_widget(List::new(items), f.size(), &mut app.items.state);
+    f.render_stateful_widget(List::new(items), f.area(), &mut app.items.state);
 }
 
 fn main() {
@@ -253,7 +253,7 @@ might have a `view` that looks like this:
 
 ```rust
 fn view(model: &mut Model, f: &mut Frame) {
-    let area = f.size();
+    let area = f.area();
     let input = Paragraph::new(app.input.value());
     f.render_widget(input, area);
     if app.mode == Mode::Insert {
