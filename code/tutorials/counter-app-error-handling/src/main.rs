@@ -176,8 +176,6 @@ mod tests {
         expected.set_style(Rect::new(30, 3, 7, 1), key_style);
         expected.set_style(Rect::new(43, 3, 4, 1), key_style);
 
-        // note ratatui also has an assert_buffer_eq! macro that can be used to
-        // compare buffers and display the differences in a more readable way
         assert_eq!(buf, expected);
     }
     // ANCHOR_END: render test
