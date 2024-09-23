@@ -229,7 +229,7 @@ pub fn initialize_panic_handler() -> Result<()> {
     let msg = format!("{}", panic_hook.panic_report(panic_info));
     #[cfg(not(debug_assertions))]
     {
-        eprintln!("{}", msg);
+        eprintln!("{msg}");
         use human_panic::{handle_dump, print_msg, Metadata};
         let author = format!("authored by {}", env!("CARGO_PKG_AUTHORS"));
         let support = format!(
