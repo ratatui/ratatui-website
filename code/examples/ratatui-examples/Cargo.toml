@@ -47,7 +47,7 @@ tokio = { version = "1.40.0" }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 tracing-appender = "0.2.3"
-unicode-width = "0.1"
+unicode-width = "0.2"
 
 [[example]]
 name = "widget_impl"
