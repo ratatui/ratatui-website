@@ -227,7 +227,7 @@ pub fn initialize_panic_handler() -> Result<()> {
     }
 
     let msg = format!("{}", panic_hook.panic_report(panic_info));
-   #[cfg(not(debug_assertions))]
+    #[cfg(not(debug_assertions))]
     {
         eprintln!("{}", msg);
         use human_panic::{handle_dump, print_msg, Metadata};
