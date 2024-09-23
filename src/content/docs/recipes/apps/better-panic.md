@@ -229,18 +229,19 @@ pub fn initialize_panic_handler() -> Result<()> {
     let msg = format!("{}", panic_hook.panic_report(panic_info));
     #[cfg(not(debug_assertions))]
     {
-      eprintln!("{}", msg); // prints color-eyre stack trace to stderr
-      use human_panic::{handle_dump, print_msg, Metadata};
-      let meta = Metadata {
-        version: env!("CARGO_PKG_VERSION").into(),
-        name: env!("CARGO_PKG_NAME").into(),
-        authors: env!("CARGO_PKG_AUTHORS").replace(':', ", ").into(),
-        homepage: env!("CARGO_PKG_HOMEPAGE").into(),
-      };
+        eprintln!("{msg}");
+        use human_panic::{handle_dump, print_msg, Metadata};
+        let author = format!("authored by {}", env!("CARGO_PKG_AUTHORS"));
+        let support = format!(
+            "You can open a support request at {}",
+            env!("CARGO_PKG_REPOSITORY")
+        );
+        let meta = Metadata::new(env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"))
+            .authors(author)
+            .support(support);
 
-      let file_path = handle_dump(&meta, panic_info);
-      // prints human-panic message
-      print_msg(file_path, &meta).expect("human-panic: printing error message to console failed");
+        let file_path = handle_dump(&meta, panic_info);
+        print_msg(file_path, &meta).expect("human-panic: printing error message to console failed");
     }
     log::error!("Error: {}", strip_ansi_escapes::strip_str(msg));
 
