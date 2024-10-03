@@ -1,0 +1,140 @@
+---
+title: Testing with insta snapshots
+sidebar:
+  order: 1
+---
+
+When building terminal user interfaces (TUIs) with Ratatui, it's crucial to ensure your application
+renders as expected across different scenarios. One powerful tool for achieving this is
+[`cargo-insta`]. It allows you to capture and compare the terminal output over time, making it ideal
+for testing visual output like TUIs.
+
+In this guide, we'll show you how to set up snapshot testing for Ratatui-based applications.
+
+:::note[Why Snapshot Testing?]
+
+Snapshot testing captures a rendered "snapshot" of your TUI at a given point and compares it to an
+expected snapshot stored in your test suite. If there's a mismatch, the test fails, highlighting
+changes in your TUI's rendering, whether intentional or accidental.
+
+:::
+
+## Setting Up Snapshot Testing
+
+Here's how to structure your Ratatui application to use insta snapshots effectively.
+
+### 1. Add Dependencies
+
+First, make sure to include [`insta`] crate in your `Cargo.toml`:
+
+```toml
+[dev-dependencies]
+insta = "1.40"
+```
+
+### 2. Structuring Your Application
+
+Let's assume you have a simple application that implements the `App` struct, which is responsible
+for your TUI's core logic and rendering. To test this with insta snapshots, you'll use a
+[`TestBackend`] from Ratatui to capture the output in a test environment.
+
+Here's the structure of your app and test:
+
+```rust
+// main.rs or lib.rs
+pub struct App;
+
+impl Default for App {
+    fn default() -> Self {
+        App
+    }
+}
+
+// Now in tests module:
+#[cfg(test)]
+mod tests {
+    use super::App;
+    use insta::assert_snapshot;
+    use ratatui::{backend::TestBackend, Terminal};
+
+    #[test]
+    fn test_render_app() {
+        let app = App::default();
+        let mut terminal = Terminal::new(TestBackend::new(80, 20)).unwrap();
+        terminal
+            .draw(|frame| frame.render_widget(&app, frame.area()))
+            .unwrap();
+        assert_snapshot!(terminal.backend());
+    }
+}
+```
+
+### 3. Running the Test
+
+When you run the test (`cargo test`), the output of the `Terminal::draw()` method will be compared
+against a snapshot. If this is the first time running the test or the output has changed, [`insta`]
+will create a snapshot file under the `snapshots/` directory.
+
+For example, after running the test, a new snapshot file might be created at:
+
+```
+snapshots/demo2__tests__render_app.snap
+```
+
+This file will store the visual representation of your terminal as a string:
+
+```text
+---
+source: examples/demo2/main.rs
+expression: terminal.backend()
+---
+"Ratatui                               Recipe  Email  Traceroute  Weather        "
+"▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄▄███▄▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄███████▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄█████████▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀████████████▄▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀                              ▀▀▀▀▀▀▀▀▀▀▀▀▀███████████▀▀▀▀▄▄██████▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀  ──────── Ratatui ─────────  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀███▀▄█▀▀████████▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀  - cooking up terminal user  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄▄▄▄▀▄████████████▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀  interfaces -                ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀████████████████▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀                              ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀███▀██████████▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀  Ratatui is a Rust crate     ▀▀▀▀▀▀▀▀▀▀▀▀▀▄▀▀▄▀▀▀█████████▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀  that provides widgets       ▀▀▀▀▀▀▀▀▀▀▀▄▀ ▄  ▀▄▀█████████▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀  (e.g. Paragraph, Table)     ▀▀▀▀▀▀▀▀▀▄▀  ▀▀    ▀▄▀███████▄▄▄▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀  and draws them to the       ▀▀▀▀▀▀▀▄▀      ▄▄    ▀▄▀█████████▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀                              ▀▀▀▀▀▄▀         ▀▀     ▀▄▀██▀▀▀███▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█                    ▀▄▀▀▀▄██▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄                    ▀▄▀█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+"     H/←  Left  L/→  Right  K/↑  Up  J/↓  Down  D/Del  Destroy  Q/Esc  Quit     "
+```
+
+In the snapshot, each line represents a row of the terminal, capturing the rendered state of your
+TUI. The next time you run your tests, the output will be compared to this file to detect any
+unintentional changes.
+
+### 4. Handling Snapshot Changes
+
+When changes to the UI are intentional, you can update the snapshot by running:
+
+```bash
+cargo insta review
+```
+
+This command allows you to review the differences and accept the new snapshot if desired.
+
+:::tip
+
+- If your UI changes often, consider reviewing snapshots after significant updates to avoid constant
+  failures in CI/CD pipelines.
+- Use a consistent terminal size (`80x20` in this example) to ensure reproducible results.
+
+Check out the [cargo-insta documentation] for more details on managing snapshot tests.
+
+:::
+
+[`TestBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TestBackend.html
+[`insta`]: https://crates.io/crates/insta
+[`cargo-insta`]: https://github.com/mitsuhiko/insta
+[cargo-insta documentation]: https://insta.rs/docs/

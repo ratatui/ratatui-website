@@ -204,6 +204,13 @@ export default defineConfig({
               },
             },
             {
+              label: "Testing",
+              collapsed: true,
+              autogenerate: {
+                directory: "recipes/testing",
+              },
+            },
+            {
               label: "Applications",
               collapsed: true,
               autogenerate: {
