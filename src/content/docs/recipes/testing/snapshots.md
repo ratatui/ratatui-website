@@ -4,7 +4,10 @@ sidebar:
   order: 1
 ---
 
-Snapshot tests allow you to skip the tedious process of writing exact tests by capturing reference values once. and then using them in all future tests runs. It's easy to use [insta](https://insta.rs/) and [cargo-insta](https://crates.io/crates/cargo-insta) to write snapshot tests for Ratatui apps and widgets.
+Snapshot tests allow you to skip the tedious process of writing exact tests by capturing reference
+values once. and then using them in all future tests runs. It's easy to use
+[insta](https://insta.rs/) and [cargo-insta](https://crates.io/crates/cargo-insta) to write snapshot
+tests for Ratatui apps and widgets.
 
 ### 1. Add Dependencies
 
@@ -13,6 +16,7 @@ First, make sure to install cargo-insta and the include [`insta`] crate in your 
 ```shell
 cargo install cargo-insta
 cargo add insta
+```
 
 ### 2. Structuring Your Application
 
