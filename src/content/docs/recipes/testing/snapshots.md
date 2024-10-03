@@ -27,14 +27,10 @@ for your TUI's core logic and rendering. To test this with insta snapshots, you'
 Here's the structure of your app and test:
 
 ```rust
-// main.rs or lib.rs
-pub struct App;
+#[derive(Default)]
+pub struct App { /* Your app struct */ }
 
-impl Default for App {
-    fn default() -> Self {
-        App
-    }
-}
+impl Widget for App { /* Implement the Widget trait */ }
 
 // Now in tests module:
 #[cfg(test)]
