@@ -4,24 +4,7 @@ sidebar:
   order: 1
 ---
 
-When building terminal user interfaces (TUIs) with Ratatui, it's crucial to ensure your application
-renders as expected across different scenarios. One powerful tool for achieving this is
-[`cargo-insta`]. It allows you to capture and compare the terminal output over time, making it ideal
-for testing visual output like TUIs.
-
-In this guide, we'll show you how to set up snapshot testing for Ratatui-based applications.
-
-:::note[Why Snapshot Testing?]
-
-Snapshot testing captures a rendered "snapshot" of your TUI at a given point and compares it to an
-expected snapshot stored in your test suite. If there's a mismatch, the test fails, highlighting
-changes in your TUI's rendering, whether intentional or accidental.
-
-:::
-
-## Setting Up Snapshot Testing
-
-Here's how to structure your Ratatui application to use insta snapshots effectively.
+Snapshot tests allow you to skip the tedious process of writing exact tests by capturing reference values once. and then using them in all future tests runs. It's easy to use [insta](https://insta.rs/) and [cargo-insta](https://crates.io/crates/cargo-insta) to write snapshot tests for Ratatui apps and widgets.
 
 ### 1. Add Dependencies
 
