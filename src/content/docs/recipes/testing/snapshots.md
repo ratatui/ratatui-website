@@ -8,12 +8,11 @@ Snapshot tests allow you to skip the tedious process of writing exact tests by c
 
 ### 1. Add Dependencies
 
-First, make sure to include [`insta`] crate in your `Cargo.toml`:
+First, make sure to install cargo-insta and the include [`insta`] crate in your `Cargo.toml`:
 
-```toml
-[dev-dependencies]
-insta = "1.40"
-```
+```shell
+cargo install cargo-insta
+cargo add insta
 
 ### 2. Structuring Your Application
 
