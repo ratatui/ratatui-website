@@ -1,7 +1,4 @@
-use ratatui::{
-    prelude::*,
-    widgets::{block::*, *},
-};
+use ratatui::{prelude::*, widgets::*};
 
 pub fn render(frame: &mut Frame) {
     // intentionally mismatched border types to show how they look
@@ -17,13 +14,9 @@ pub fn render(frame: &mut Frame) {
     };
     let block = Block::default()
         .title("Left Title".yellow())
-        .title(Title::from("Center title".blue()).alignment(Alignment::Center))
-        .title(Title::from("Right Title".green()).alignment(Alignment::Right))
-        .title(
-            Title::from("Bottom Center title".blue())
-                .alignment(Alignment::Center)
-                .position(block::Position::Bottom),
-        )
+        .title(Line::from("Center title".blue()).alignment(Alignment::Center))
+        .title(Line::from("Right Title".green()).alignment(Alignment::Right))
+        .title_bottom(Line::from("Bottom Center title".blue()).alignment(Alignment::Center))
         .borders(Borders::ALL)
         .border_set(border_set)
         .border_style(Style::default().fg(Color::Red));

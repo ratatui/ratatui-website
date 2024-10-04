@@ -11,10 +11,7 @@ use ratatui::{
     style::Stylize,
     symbols::border,
     text::{Line, Text},
-    widgets::{
-        block::{Position, Title},
-        Block, Borders, Paragraph, Widget,
-    },
+    widgets::{Block, Borders, Paragraph, Widget},
     Frame,
 };
 
@@ -114,22 +111,18 @@ impl App {
 // ANCHOR: impl Widget
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let title = Title::from(" Counter App Tutorial ".bold());
-        let instructions = Title::from(Line::from(vec![
+        let title = Line::from(" Counter App Tutorial ".bold());
+        let instructions = Line::from(vec![
             " Decrement ".into(),
             "<Left>".blue().bold(),
             " Increment ".into(),
             "<Right>".blue().bold(),
             " Quit ".into(),
             "<Q> ".blue().bold(),
-        ]));
+        ]);
         let block = Block::default()
             .title(title.alignment(Alignment::Center))
-            .title(
-                instructions
-                    .alignment(Alignment::Center)
-                    .position(Position::Bottom),
-            )
+            .title_bottom(instructions.alignment(Alignment::Center))
             .borders(Borders::ALL)
             .border_set(border::THICK);
 

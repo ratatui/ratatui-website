@@ -30,13 +30,13 @@ let b = Block::default()
 f.render_widget(b, chunks[0]);
 ```
 
-You can also use the `Title` struct for better positioning or multiple titles.
+You can also use the `Line` struct for better positioning or multiple titles.
 
 ```rust
 let b = Block::default()
-    .title(block::Title::from("Left Title").alignment(Alignment::Left))
-    .title(block::Title::from("Middle Title").alignment(Alignment::Center))
-    .title(block::Title::from("Right Title").alignment(Alignment::Right))
+    .title(Line::from("Left Title").alignment(Alignment::Left))
+    .title(Line::from("Middle Title").alignment(Alignment::Center))
+    .title(Line::from("Right Title").alignment(Alignment::Right))
     .borders(Borders::ALL);
 f.render_widget(b, chunks[0]);
 ```
