@@ -96,6 +96,13 @@ In the snapshot, each line represents a row of the terminal, capturing the rende
 TUI. The next time you run your tests, the output will be compared to this file to detect any
 unintentional changes.
 
+:::note
+
+Asserting with color is not supported as of now. See
+<https://github.com/ratatui/ratatui/issues/1402>
+
+:::
+
 ### 4. Handling Snapshot Changes
 
 When changes to the UI are intentional, you can update the snapshot by running:
