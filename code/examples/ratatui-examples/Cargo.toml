@@ -31,14 +31,14 @@ criterion = { version = "0.5.1", features = ["html_reports"] }
 derive_builder = "0.20.1"
 fakeit = "1.1"
 font8x8 = "0.3.1"
-futures = "0.3.30"
+futures = "0.3.31"
 indoc = "2"
-octocrab = "0.39.0"
+octocrab = "0.41.0"
 palette = "0.7.3"
 pretty_assertions = "1.4.1"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
-rstest = "0.22.0"
+rstest = "0.23.0"
 serde_json = "1.0.128"
 itertools = "0.13"
 strum = { version = "0.26.3", features = ["derive"] }
@@ -47,7 +47,7 @@ tokio = { version = "1.40.0" }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 tracing-appender = "0.2.3"
-unicode-width = "0.1"
+unicode-width = "0.2"
 
 [[example]]
 name = "widget_impl"

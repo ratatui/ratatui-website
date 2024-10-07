@@ -12,10 +12,10 @@ publish.workspace = true
 color-eyre = "0.6.3"
 crossterm = { version = "0.28.1", features = ["event-stream"] }
 directories = "5.0.1"
-futures = "0.3.30"
+futures = "0.3.31"
 human-panic = "2.0.1"
 itertools = "0.13.0"
-libc = "0.2.158"
+libc = "0.2.159"
 log = "0.4.22"
 ratatui = "0.28.1"
 strip-ansi-escapes = "0.2.0"
