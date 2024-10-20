@@ -15,7 +15,7 @@ First, make sure to install cargo-insta and the include [`insta`] crate in your 
 
 ```shell
 cargo install cargo-insta
-cargo add insta
+cargo add insta --dev
 ```
 
 ### 2. Structuring Your Application
