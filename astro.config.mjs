@@ -232,6 +232,10 @@ export default defineConfig({
               link: "/highlights/",
             },
             {
+              label: "v0.29",
+              link: "/highlights/v029/",
+            },
+            {
               label: "v0.28",
               link: "/highlights/v028/",
             },
