@@ -7,7 +7,7 @@ use ratatui::{
   layout::{Alignment, Constraint, Layout, Margin, Position, Rect},
   style::{Color, Modifier, Style, Stylize},
   text::{Line, Span},
-  widgets::{block, Block, BorderType, Borders, Clear, Paragraph, Row, Table},
+  widgets::{Block, BorderType, Borders, Clear, Paragraph, Row, Table},
   Frame,
 };
 use tokio::sync::mpsc::UnboundedSender;
@@ -245,7 +245,7 @@ impl Component for Home {
     f.render_widget(
       Block::default()
         .title(
-          ratatui::widgets::block::Title::from(format!(
+          Line::from(format!(
             "{:?}",
             &self.last_events.iter().map(key_event_to_string).collect::<Vec<_>>()
           ))
