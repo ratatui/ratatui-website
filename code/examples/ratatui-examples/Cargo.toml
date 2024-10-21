@@ -23,7 +23,7 @@ crossterm = "0.28.1"
 ratatui = { version = "0.28.1", features = ["widget-calendar"] }
 
 [dev-dependencies]
-anyhow = "1.0.89"
+anyhow = "1.0.90"
 argh = "0.1.12"
 better-panic = "0.3.0"
 color-eyre = "0.6.2"
@@ -33,13 +33,13 @@ fakeit = "1.1"
 font8x8 = "0.3.1"
 futures = "0.3.31"
 indoc = "2"
-octocrab = "0.41.1"
+octocrab = "0.41.2"
 palette = "0.7.3"
 pretty_assertions = "1.4.1"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
 rstest = "0.23.0"
-serde_json = "1.0.128"
+serde_json = "1.0.132"
 itertools = "0.13"
 strum = { version = "0.26.3", features = ["derive"] }
 time = { version = "0.3.11", features = ["local-offset"] }
