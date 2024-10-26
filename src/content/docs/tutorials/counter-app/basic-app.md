@@ -224,7 +224,7 @@ impl App {
 
     // -- snip --
 
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event() }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event fn }}
 }
 ```
 
