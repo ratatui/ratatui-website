@@ -94,7 +94,7 @@ impl Component for FpsCounter {
     let rect = rects[0];
 
     let s = format!("{:.2} fps (app) {:.2} fps (render)", self.app_fps, self.render_fps);
-    let block = Block::default().title(Line::from(s.dim()).alignment(Alignment::Right));
+    let block = Block::default().title(Line::from(s).dim().right_aligned());
     f.render_widget(block, rect);
     Ok(())
   }
