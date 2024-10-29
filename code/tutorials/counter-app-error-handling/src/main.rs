@@ -122,7 +122,7 @@ impl Widget for &App {
         ]);
         let block = Block::default()
             .title(title.alignment(Alignment::Center))
-            .title_bottom(instructions.alignment(Alignment::Center))
+            .title_bottom(instructions.centered())
             .borders(Borders::ALL)
             .border_set(border::THICK);
 
