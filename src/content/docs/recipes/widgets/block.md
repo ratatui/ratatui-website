@@ -34,9 +34,9 @@ You can also use the `Line` struct for better positioning or multiple titles.
 
 ```rust
 let b = Block::default()
-    .title(Line::from("Left Title").alignment(Alignment::Left))
-    .title(Line::from("Middle Title").alignment(Alignment::Center))
-    .title(Line::from("Right Title").alignment(Alignment::Right))
+    .title(Line::from("Left Title").left_aligned())
+    .title(Line::from("Middle Title").centered())
+    .title(Line::from("Right Title").right_aligned())
     .borders(Borders::ALL);
 f.render_widget(b, chunks[0]);
 ```
