@@ -23,23 +23,23 @@ crossterm = "0.28.1"
 ratatui = { version = "0.28.1", features = ["widget-calendar"] }
 
 [dev-dependencies]
-anyhow = "1.0.89"
+anyhow = "1.0.90"
 argh = "0.1.12"
 better-panic = "0.3.0"
 color-eyre = "0.6.2"
 criterion = { version = "0.5.1", features = ["html_reports"] }
-derive_builder = "0.20.1"
+derive_builder = "0.20.2"
 fakeit = "1.1"
 font8x8 = "0.3.1"
-futures = "0.3.30"
+futures = "0.3.31"
 indoc = "2"
-octocrab = "0.39.0"
+octocrab = "0.41.2"
 palette = "0.7.3"
 pretty_assertions = "1.4.1"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
-rstest = "0.22.0"
-serde_json = "1.0.128"
+rstest = "0.23.0"
+serde_json = "1.0.132"
 itertools = "0.13"
 strum = { version = "0.26.3", features = ["derive"] }
 time = { version = "0.3.11", features = ["local-offset"] }
@@ -47,7 +47,7 @@ tokio = { version = "1.40.0" }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 tracing-appender = "0.2.3"
-unicode-width = "0.1"
+unicode-width = "0.2"
 
 [[example]]
 name = "widget_impl"

@@ -61,12 +61,12 @@ Before running another application from your app, you must relinquish control of
 allowing the other app to function correctly.
 
 In the example above, we use a simple event-handling setup. However, if you are using advanced
-setups like [component template](https://github.com/ratatui-org/templates), you will need to pause
-input events before spawning an external process like Vim. Otherwise, Vim won't have full control
-over keybindings and it won't work properly.
+setups like [component template](https://github.com/ratatui/templates), you will need to pause input
+events before spawning an external process like Vim. Otherwise, Vim won't have full control over
+keybindings and it won't work properly.
 
 Using the
-[`tui` module](https://github.com/ratatui-org/templates/blob/5e823efc871107345d59e5deff9284235c1f0bbc/component/template/src/tui.rs)
+[`tui` module](https://github.com/ratatui/templates/blob/5e823efc871107345d59e5deff9284235c1f0bbc/component/template/src/tui.rs)
 of the component template, you can do something like this to pause and resume event handlers:
 
 ```rust

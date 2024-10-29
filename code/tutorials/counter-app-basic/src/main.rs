@@ -56,6 +56,7 @@ impl App {
         Ok(())
     }
 
+    // ANCHOR: handle_key_event fn
     fn handle_key_event(&mut self, key_event: KeyEvent) {
         match key_event.code {
             KeyCode::Char('q') => self.exit(),
@@ -64,6 +65,7 @@ impl App {
             _ => {}
         }
     }
+    // ANCHOR_END: handle_key_event fn
 
     fn exit(&mut self) {
         self.exit = true;
