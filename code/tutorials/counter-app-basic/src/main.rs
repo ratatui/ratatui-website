@@ -93,7 +93,7 @@ impl Widget for &App {
         ]);
         let block = Block::bordered()
             .title(title.alignment(Alignment::Center))
-            .title_bottom(instructions.alignment(Alignment::Center))
+            .title_bottom(instructions.centered())
             .border_set(border::THICK);
 
         let counter_text = Text::from(vec![Line::from(vec![
