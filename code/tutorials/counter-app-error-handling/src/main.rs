@@ -7,7 +7,7 @@ use color_eyre::{
 use ratatui::{
     buffer::Buffer,
     crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind},
-    layout::{Alignment, Rect},
+    layout::Rect,
     style::Stylize,
     symbols::border,
     text::{Line, Text},
@@ -121,7 +121,7 @@ impl Widget for &App {
             "<Q> ".blue().bold(),
         ]);
         let block = Block::default()
-            .title(title.alignment(Alignment::Center))
+            .title(title.centered())
             .title_bottom(instructions.centered())
             .borders(Borders::ALL)
             .border_set(border::THICK);

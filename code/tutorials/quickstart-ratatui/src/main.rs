@@ -1,7 +1,7 @@
 use ratatui::{
     backend::CrosstermBackend,
-    layout::{Alignment, Margin},
-    widgets::{Block, Borders, Paragraph},
+    layout::Margin,
+    widgets::{Block, Paragraph},
     Terminal,
 };
 
@@ -10,8 +10,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     terminal.draw(|frame| {
         let widget = Paragraph::new("Hello world!")
-            .alignment(Alignment::Center)
-            .block(Block::new().borders(Borders::ALL));
+            .centered()
+            .block(Block::bordered());
 
         let area = frame.area().inner(Margin {
             horizontal: 2,

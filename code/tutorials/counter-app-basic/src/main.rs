@@ -4,7 +4,7 @@ use std::io;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
     buffer::Buffer,
-    layout::{Alignment, Rect},
+    layout::Rect,
     style::Stylize,
     symbols::border,
     text::{Line, Text},
@@ -94,7 +94,7 @@ impl Widget for &App {
             "<Q> ".blue().bold(),
         ]);
         let block = Block::bordered()
-            .title(title.alignment(Alignment::Center))
+            .title(title.centered())
             .title_bottom(instructions.centered())
             .border_set(border::THICK);
 
