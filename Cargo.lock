@@ -116,9 +116,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.90"
+version = "1.0.93"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "37bf3594c4c988a53154954629820791dde498571819ae4ca50ca811e060cc95"
+checksum = "4c95c10ba0b00a02636238b814946408b1322d5ac4760326e6fb8ec956d85775"
 
 [[package]]
 name = "approx"
@@ -165,6 +165,12 @@ checksum = "5693f39141bda5760ecc4111ab08da40565d1771038c4a0250f03457ec707531"
 dependencies = [
  "serde",
 ]
+
+[[package]]
+name = "arraydeque"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7d902e3d592a523def97af8f317b08ce16b7ab854c1985a0c671e6f15cebc236"
 
 [[package]]
 name = "async-trait"
@@ -488,14 +494,13 @@ dependencies = [
 
 [[package]]
 name = "config"
-version = "0.14.0"
+version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7328b20597b53c2454f0b1919720c25c7339051c02b72b7e05409e00b14132be"
+checksum = "68578f196d2a33ff61b27fae256c3164f65e36382648e30666dde05b8cc9dfdf"
 dependencies = [
  "async-trait",
  "convert_case",
  "json5",
- "lazy_static",
  "nom",
  "pathdiff",
  "ron",
@@ -503,7 +508,7 @@ dependencies = [
  "serde",
  "serde_json",
  "toml",
- "yaml-rust",
+ "yaml-rust2",
 ]
 
 [[package]]
@@ -568,7 +573,7 @@ name = "counter-app-basic"
 version = "0.0.0"
 dependencies = [
  "crossterm",
- "ratatui 0.29.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -576,7 +581,7 @@ name = "counter-app-error-handling"
 version = "0.0.0"
 dependencies = [
  "color-eyre",
- "ratatui 0.29.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -894,6 +899,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a357d28ed41a50f9c765dbfe56cbc04a64e53e5fc58ba79fbc34c10ef3df831f"
 
 [[package]]
+name = "encoding_rs"
+version = "0.8.35"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "75030f3c4f45dafd7586dd6780965a8c7e8e285a5ecb86713e63a79c5b2766f3"
+dependencies = [
+ "cfg-if",
+]
+
+[[package]]
 name = "equivalent"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1154,18 +1168,21 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.13.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43a3c133739dddd0d2990f9a4bdf8eb4b21ef50e4851ca85ab661199821d510e"
-
-[[package]]
-name = "hashbrown"
 version = "0.14.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e5274423e17b7c9fc20b6e7e208532f9b19825d82dfd615708b70edd83df41f1"
 dependencies = [
  "ahash",
  "allocator-api2",
+]
+
+[[package]]
+name = "hashlink"
+version = "0.8.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8094feaf31ff591f651a2664fb9cfd92bba7a60ce3197265e9482ebe753c8f7"
+dependencies = [
+ "hashbrown",
 ]
 
 [[package]]
@@ -1178,7 +1195,7 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 name = "hello-world"
 version = "0.0.0"
 dependencies = [
- "ratatui 0.29.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -1199,7 +1216,7 @@ version = "0.0.0"
 dependencies = [
  "color-eyre",
  "crossterm",
- "ratatui 0.28.1",
+ "ratatui",
 ]
 
 [[package]]
@@ -1207,7 +1224,7 @@ name = "how-to-color_eyre"
 version = "0.0.0"
 dependencies = [
  "color-eyre",
- "ratatui 0.28.1",
+ "ratatui",
 ]
 
 [[package]]
@@ -1217,21 +1234,21 @@ dependencies = [
  "color-eyre",
  "derive_setters",
  "lipsum",
- "ratatui 0.28.1",
+ "ratatui",
 ]
 
 [[package]]
 name = "how-to-panic-hooks"
 version = "0.0.0"
 dependencies = [
- "ratatui 0.28.1",
+ "ratatui",
 ]
 
 [[package]]
 name = "how-to-spawn-vim"
 version = "0.0.0"
 dependencies = [
- "ratatui 0.28.1",
+ "ratatui",
 ]
 
 [[package]]
@@ -1413,7 +1430,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "de3fc2e30ba82dd1b3911c8de1ffc143c74a914a14e99514d7637e3099df5ea0"
 dependencies = [
  "equivalent",
- "hashbrown 0.14.5",
+ "hashbrown",
 ]
 
 [[package]]
@@ -1496,7 +1513,7 @@ dependencies = [
 name = "json-editor"
 version = "0.0.0"
 dependencies = [
- "ratatui 0.29.0",
+ "ratatui",
  "serde",
  "serde_json",
 ]
@@ -1541,9 +1558,9 @@ checksum = "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe"
 
 [[package]]
 name = "libc"
-version = "0.2.161"
+version = "0.2.162"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e9489c2807c139ffd9c1794f4af0ebe86a828db53ecdc7fea2111d0fed085d1"
+checksum = "18d287de67fe55fd7e1581fe933d965a5a9477b38e949cfa9f8574ef01506398"
 
 [[package]]
 name = "libmath"
@@ -1574,12 +1591,6 @@ dependencies = [
  "bitflags 2.6.0",
  "libc",
 ]
-
-[[package]]
-name = "linked-hash-map"
-version = "0.5.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0717cef1bc8b636c6e1c1bbdefc09e6322da8a9321966e8928ef80d20f7f770f"
 
 [[package]]
 name = "linux-raw-sys"
@@ -1619,7 +1630,7 @@ version = "0.12.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37ee39891760e7d94734f6f63fedc29a2e4a152f836120753a72503f09fcf904"
 dependencies = [
- "hashbrown 0.14.5",
+ "hashbrown",
 ]
 
 [[package]]
@@ -1888,12 +1899,12 @@ dependencies = [
 
 [[package]]
 name = "ordered-multimap"
-version = "0.6.0"
+version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4ed8acf08e98e744e5384c8bc63ceb0364e68a6854187221c18df61c4797690e"
+checksum = "49203cdcae0030493bad186b28da2fa25645fa276a51b6fec8010d281e02ef79"
 dependencies = [
  "dlv-list",
- "hashbrown 0.13.2",
+ "hashbrown",
 ]
 
 [[package]]
@@ -2198,7 +2209,7 @@ dependencies = [
 name = "quickstart-ratatui"
 version = "0.1.0"
 dependencies = [
- "ratatui 0.29.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -2371,30 +2382,6 @@ dependencies = [
 
 [[package]]
 name = "ratatui"
-version = "0.28.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fdef7f9be5c0122f890d58bdf4d964349ba6a6161f705907526d891efabba57d"
-dependencies = [
- "bitflags 2.6.0",
- "cassowary",
- "compact_str",
- "crossterm",
- "instability",
- "itertools 0.13.0",
- "lru",
- "paste",
- "strum",
- "strum_macros",
- "termion",
- "termwiz",
- "time",
- "unicode-segmentation",
- "unicode-truncate",
- "unicode-width 0.1.14",
-]
-
-[[package]]
-name = "ratatui"
 version = "0.29.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eabd94c2f37801c20583fc49dd5cd6b0ba68c716787c2dd6ed18571e1e63117b"
@@ -2410,6 +2397,9 @@ dependencies = [
  "paste",
  "serde",
  "strum",
+ "termion",
+ "termwiz",
+ "time",
  "unicode-segmentation",
  "unicode-truncate",
  "unicode-width 0.2.0",
@@ -2420,7 +2410,7 @@ name = "ratatui-counter-app"
 version = "0.1.0"
 dependencies = [
  "color-eyre",
- "ratatui 0.29.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -2441,7 +2431,7 @@ dependencies = [
  "libc",
  "log",
  "pretty_assertions",
- "ratatui 0.29.0",
+ "ratatui",
  "serde",
  "serde_json",
  "signal-hook",
@@ -2474,7 +2464,7 @@ dependencies = [
  "pretty_assertions",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
- "ratatui 0.28.1",
+ "ratatui",
  "rstest",
  "serde_json",
  "strum",
@@ -2498,7 +2488,7 @@ dependencies = [
  "itertools 0.13.0",
  "libc",
  "log",
- "ratatui 0.29.0",
+ "ratatui",
  "strip-ansi-escapes",
  "strum",
  "tokio",
@@ -2539,7 +2529,7 @@ dependencies = [
 name = "recipes"
 version = "0.0.0"
 dependencies = [
- "ratatui 0.28.1",
+ "ratatui",
 ]
 
 [[package]]
@@ -2686,9 +2676,9 @@ dependencies = [
 
 [[package]]
 name = "rust-ini"
-version = "0.19.0"
+version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7e2a3bcec1f113553ef1c88aae6c020a369d03d55b58de9869a0908930385091"
+checksum = "3e0698206bcb8882bf2a9ecb4c1e7785db57ff052297085a6efd4fe42302068a"
 dependencies = [
  "cfg-if",
  "ordered-multimap",
@@ -3344,9 +3334,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.40.0"
+version = "1.41.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2b070231665d27ad9ec9b8df639893f46727666c6767db40317fbe920a5d998"
+checksum = "22cfb5bee7a6a52939ca9224d6ac897bb669134078daa8735560897f69de4d33"
 dependencies = [
  "backtrace",
  "bytes",
@@ -3592,7 +3582,7 @@ dependencies = [
  "derive_builder",
  "font8x8",
  "itertools 0.13.0",
- "ratatui 0.29.0",
+ "ratatui",
 ]
 
 [[package]]
@@ -3917,7 +3907,7 @@ version = "0.0.0"
 dependencies = [
  "clap",
  "color-eyre",
- "ratatui 0.28.1",
+ "ratatui",
  "time",
 ]
 
@@ -4119,12 +4109,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "yaml-rust"
-version = "0.4.5"
+name = "yaml-rust2"
+version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56c1936c4cc7a1c9ab21a1ebb602eb942ba868cbd44a99cb7cdc5892335e1c85"
+checksum = "8902160c4e6f2fb145dbe9d6760a75e3c9522d8bf796ed7047c85919ac7115f8"
 dependencies = [
- "linked-hash-map",
+ "arraydeque",
+ "encoding_rs",
+ "hashlink",
 ]
 
 [[package]]
