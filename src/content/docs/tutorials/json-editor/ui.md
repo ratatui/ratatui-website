@@ -82,7 +82,7 @@ terminals into account), and the application state.
 ```
 
 Before we proceed, let's implement a `centered_rect` helper function. This code is adapted from the
-[popup example](https://github.com/ratatui/ratatui/blob/main/examples/popup.rs) found in the
+[popup example](https://github.com/ratatui/ratatui/blob/main/ratatui/examples/popup.rs) found in the
 official repo.
 
 ```rust
