@@ -47,7 +47,8 @@ welcome to use explicit imports if that is your preferred style.
 :::caution
 
 Some editors remove unused imports automatically, so if you run into errors about missing types,
-etc. make sure these are in place.
+etc. make sure these are in place. and double-check that shared imports like `Stylize` come from 
+ratatui and not crossterm to avoid conflicts.
 
 :::
 
