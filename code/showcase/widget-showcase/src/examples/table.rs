@@ -60,7 +60,7 @@ pub fn render(frame: &mut Frame) {
     )
     .header(Row::new(["User", "Email", "TZ"]).bold().underlined().blue())
     .highlight_spacing(HighlightSpacing::Always)
-    .highlight_style(Style::new().reversed().bold())
+    .row_highlight_style(Style::new().reversed().bold())
     .highlight_symbol(">");
 
     let mut state = TableState::new().with_selected(Some(4));
