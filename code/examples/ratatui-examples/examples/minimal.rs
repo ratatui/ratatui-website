@@ -4,8 +4,8 @@
 //! this is not meant to be prescriptive. See the [examples] folder for more complete examples.
 //! In particular, the [hello-world] example is a good starting point.
 //!
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
-//! [hello-world]: https://github.com/ratatui/ratatui/blob/main/examples/hello_world.rs
+//! [examples]: https://github.com/ratatui-org/ratatui/blob/main/examples
+//! [hello-world]: https://github.com/ratatui-org/ratatui/blob/main/examples/hello_world.rs
 //!
 //! The latest version of this example is available in the [examples] folder in the repository.
 //!
@@ -20,21 +20,21 @@
 //! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
-use ratatui::{
-    crossterm::event::{self, Event},
-    text::Text,
-    Frame,
-};
+use crossterm::event::{self, Event};
+use ratatui::{text::Text, Frame};
 
 fn main() {
     let mut terminal = ratatui::init();
     loop {
-        terminal
-            .draw(|frame: &mut Frame| frame.render_widget(Text::raw("Hello World!"), frame.area()))
-            .expect("Failed to draw");
+        terminal.draw(draw).expect("failed to draw frame");
         if matches!(event::read().expect("failed to read event"), Event::Key(_)) {
             break;
         }
     }
     ratatui::restore();
+}
+
+fn draw(frame: &mut Frame) {
+    let text = Text::raw("Hello World!");
+    frame.render_widget(text, frame.area());
 }
