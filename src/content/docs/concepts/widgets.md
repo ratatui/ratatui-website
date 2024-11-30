@@ -9,20 +9,20 @@ UIs, and can be easily customized to suit the needs of your application.
 Ratatui provides a wide variety of built-in widgets that can be used to quickly create UIs. These
 widgets include:
 
-- [`Block`]: A basic Widget that draws a block with optional borders, titles, and styles.
-- [`BarChart`]: Displays multiple datasets as bars with optional grouping.
-- [`Calendar`]: Displays a single month.
-- [`Canvas`]: Draws arbitrary shapes using drawing characters.
-- [`Chart`]: Displays multiple datasets as a lines or scatter graph.
+- [`Block`]|[`Example`](/examples/widgets/block): A basic Widget that draws a block with optional borders, titles, and styles.
+- [`BarChart`]|[`Example`](/examples/widgets/barchart): Displays multiple datasets as bars with optional grouping.
+- [`Calendar`]|[`Example`](/examples/widgets/calendar): Displays a single month.
+- [`Canvas`]|[`Example`](/examples/widgets/canvas): Draws arbitrary shapes using drawing characters.
+- [`Chart`]|[`Example`](/examples/widgets/chart): Displays multiple datasets as a lines or scatter graph.
 - [`Clear`]: Clears the area it occupies. Useful to render over previously drawn widgets.
-- [`Gauge`]: Displays progress percentage using block characters.
+- [`Gauge`]|[`Example`](/examples/widgets/gauge): Displays progress percentage using block characters.
 - [`LineGauge`]: Display progress as a line.
-- [`List`]: Displays a list of items and allows selection.
-- [`Paragraph`]: Displays a paragraph of optionally styled and wrapped text.
-- [`Scrollbar`]: Displays a scrollbar.
-- [`Sparkline`]: Display a single data set as a sparkline.
-- [`Table`]: Displays multiple rows and columns in a grid and allows selection.
-- [`Tabs`]: Displays a tab bar and allows selection.
+- [`List`]|[`Example`](list): Displays a list of items and allows selection.
+- [`Paragraph`]|[`Example`](/examples/widgets/paragraph): Displays a paragraph of optionally styled and wrapped text.
+- [`Scrollbar`]|[`Example`](/examples/widgets/scrollbar): Displays a scrollbar.
+- [`Sparkline`]|[`Example`](/examples/widgets/sparkline): Display a single data set as a sparkline.
+- [`Table`]|[`Example`](/examples/widgets/table): Displays multiple rows and columns in a grid and allows selection.
+- [`Tabs`]|[`Example`](/examples/widgets/tabs): Displays a tab bar and allows selection.
 
 Additionally, [`String`], [`&str`], [`Span`], [`Line`], and [`Text`] can be used as widgets (though
 it's common to use `Paragraph` instead of these directly).
