@@ -66,7 +66,7 @@ export default defineConfig({
         matrix: "https://matrix.to/#/#ratatui:matrix.org",
         discourse: "https://forum.ratatui.rs",
         "x.com": "https://twitter.com/ratatui_rs",
-        blueSky: "https://bsky.app/profile/ratatui-rs.bsky.social",
+        blueSky: "https://bsky.app/profile/ratatui.rs",
         mastodon: "https://fosstodon.org/@ratatui_rs",
         linkedin: "https://www.linkedin.com/company/ratatui-rs",
       },
