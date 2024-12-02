@@ -61,8 +61,8 @@ may need to restart the console.
 
 ## Setup Hooks
 
-There are two ways that a rust application can fail. The rust book chapter on [error handling] explains
-this in better detail.
+There are two ways that a rust application can fail. The rust book chapter on [error handling]
+explains this in better detail.
 
 [error handling]: https://doc.rust-lang.org/book/ch09-00-error-handling.html
 
@@ -74,8 +74,7 @@ this in better detail.
 
 One approach that makes it easy to show unhandled errors is to use the [color-eyre] crate to augment
 the error reporting hooks. In a ratatui application that's running on the [alternate screen] in [raw
-mode],
-it's important to restore the terminal before displaying these errors to the user.
+mode], it's important to restore the terminal before displaying these errors to the user.
 
 [color-eyre]: https://crates.io/crates/color-eyre
 [alternate screen]: /concepts/backends/alternate-screen/

@@ -4,10 +4,10 @@ sidebar:
   order: 0
 ---
 
-The previous [hello world] tutorial introduced how to create a simple TUI that displayed some text and
-waited for the user to press a key. This tutorial will cover how to handle state and some more complex
-interactions. You will build a counter application that allows the user to increment and decrement a
-value on the screen.
+The previous [hello world] tutorial introduced how to create a simple TUI that displayed some text
+and waited for the user to press a key. This tutorial will cover how to handle state and some more
+complex interactions. You will build a counter application that allows the user to increment and
+decrement a value on the screen.
 
 When you're finished the application will look like the following:
 
