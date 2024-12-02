@@ -164,11 +164,11 @@ Next, add code to the main function to setup and restore the terminal state.
 
 Our application needs to do a few things in order to setup the terminal for use:
 
-- First, the application enters the [alternate screen], which is a secondary screen which allows your
-  application to render whatever it needs to, without disturbing the normal output of terminal apps in
-  your shell.
-- Next, the application enables [raw mode], which turns off input and output processing by the terminal.
-  This gives your application control over when to print characters to the screen.
+- First, the application enters the [alternate screen], which is a secondary screen which allows
+  your application to render whatever it needs to, without disturbing the normal output of terminal
+  apps in your shell.
+- Next, the application enables [raw mode], which turns off input and output processing by the
+  terminal. This gives your application control over when to print characters to the screen.
 - The app then creates a [backend] and [`Terminal`] and then clears the screen.
 
 When the application is finished it needs to restore the terminal state by leaving the alternate
@@ -220,8 +220,8 @@ Add the following code to the `run` method:
 ```
 
 If you're wondering where to find the `white()` and `on_blue()` methods in the Ratatui doc, these
-are defined in the [`Stylize`] extension trait as [style shorthands], rather than on the [`Paragraph`]
-widget.
+are defined in the [`Stylize`] extension trait as [style shorthands], rather than on the
+[`Paragraph`] widget.
 
 ### Handle Keyboard Events
 

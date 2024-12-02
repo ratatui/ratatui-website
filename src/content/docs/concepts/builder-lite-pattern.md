@@ -3,8 +3,8 @@ title: Builder Lite Pattern
 ---
 
 In Ratatui, most widgets (and some other objects) use the [Builder Lite] pattern to set fields. This
-allows the object to be created in a single shot with methods that setup how the widget will be displayed,
-without having to store the widget in a variable and mutate it.
+allows the object to be created in a single shot with methods that setup how the widget will be
+displayed, without having to store the widget in a variable and mutate it.
 
 The builder lite pattern consumes the `self` parameter of each method and returns a value with the
 updated field. An example of this from Paragraph (and any other widget that supports being

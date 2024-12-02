@@ -349,18 +349,16 @@ lines. Here's an example using [`tui-big-text`](https://github.com/joshka/tui-bi
 
 ## Some characters appear to be missing / look weird
 
-`ratatui`, and TUIs in general, use special drawing characters like [box-drawing characters], [braille
-characters]
-or even icons. If your font doesn't support such features, it may display a white square (□) or a
-replacement character (�).
+`ratatui`, and TUIs in general, use special drawing characters like [box-drawing characters],
+[braille characters] or even icons. If your font doesn't support such features, it may display a
+white square (□) or a replacement character (�).
 
 [box-drawing characters]: https://en.wikipedia.org/wiki/Box-drawing_character
 [braille characters]: https://en.wikipedia.org/wiki/Braille_Patterns#Block
 
 To fix this, we recommend you use a [nerd font], this is generally what works the best. [Kreative
-Square]
-is also a good alternative. Though note that some characters may render a bit differently from font
-to font.
+Square] is also a good alternative. Though note that some characters may render a bit differently
+from font to font.
 
 [nerd font]: https://www.nerdfonts.com/
 [Kreative Square]: http://www.kreativekorp.com/software/fonts/ksquare/
