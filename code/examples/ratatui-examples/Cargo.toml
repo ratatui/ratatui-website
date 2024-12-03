@@ -44,8 +44,8 @@ itertools = "0.13"
 strum = { version = "0.26.3", features = ["derive"] }
 time = { version = "0.3.11", features = ["local-offset"] }
 tokio = { version = "1.41.1" }
-tracing = "0.1.40"
-tracing-subscriber = "0.3.18"
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"
 tracing-appender = "0.2.3"
 unicode-width = "0.2"
 
