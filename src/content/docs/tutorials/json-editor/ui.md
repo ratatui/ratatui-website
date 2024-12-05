@@ -43,7 +43,7 @@ For a better understanding of layouts and constraints, refer to the concepts pag
 
 In the example above, you can read the instructions aloud like this:
 
-1. Take the area `f.size()` (which is a rectangle), and cut it into three vertical pieces (making
+1. Take the area `f.area()` (which is a rectangle), and cut it into three vertical pieces (making
    horizontal cuts).
 2. The first section will be 3 lines tall
 3. The second section should never be smaller than one line tall, but can expand if needed.
