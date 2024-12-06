@@ -27,7 +27,7 @@ IP/hostname
 
 A customizable cross-platform graphical process/system monitor for the terminal
 
-![bottom demo](https://github.com/ClementTsang/bottom/blob/master/assets/demo.gif?raw=true)
+![bottom demo](https://github.com/ClementTsang/bottom/blob/main/assets/demo.gif?raw=true)
 
 ---
 
