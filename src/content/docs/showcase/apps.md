@@ -27,7 +27,7 @@ IP/hostname
 
 A customizable cross-platform graphical process/system monitor for the terminal
 
-![bottom demo](https://github.com/ClementTsang/bottom/blob/master/assets/demo.gif?raw=true)
+![bottom demo](https://github.com/ClementTsang/bottom/blob/main/assets/demo.gif?raw=true)
 
 ---
 
@@ -123,7 +123,7 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 An application to manage markdown notes from your terminal and compile them to HTML
 
-![rucola demo](https://github.com/Linus-Mussmaecher/rucola/blob/main/readme-images/readme-image-select.png)
+![rucola demo](https://github.com/Linus-Mussmaecher/rucola/blob/main/readme-images/readme-image-select.png?raw=true)
 
 ---
 
@@ -131,7 +131,7 @@ An application to manage markdown notes from your terminal and compile them to H
 
 A simple oscilloscope/vectorscope/spectroscope for your terminal
 
-![scope-tui demo](https://camo.githubusercontent.com/144d96875a367bd55d8cc2343da2479aefea9925106b71d9e73aa9bebc57c33f/68747470733a2f2f63646e2e616c656d692e6465762f73636f70652d7475692d776964652e706e67)
+![scope-tui demo](https://camo.githubusercontent.com/4b11674184b07eebd6bc386c38c9cce1a7a70ae82733b44cd977c8ab85c5a691/68747470733a2f2f63646e2e616c656d692e6465762f73636f70652d7475692d776964652e706e67)
 
 ---
 
