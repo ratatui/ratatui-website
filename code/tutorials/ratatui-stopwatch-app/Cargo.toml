@@ -20,6 +20,6 @@ log = "0.4.22"
 ratatui = "0.29.0"
 strip-ansi-escapes = "0.2.0"
 strum = "0.26.3"
-tokio = { version = "1.41.1", features = ["full"] }
-tokio-util = "0.7.12"
+tokio = { version = "1.42.0", features = ["full"] }
+tokio-util = "0.7.13"
 tui-big-text = "0.7.0"
