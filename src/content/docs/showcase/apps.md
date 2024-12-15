@@ -151,6 +151,14 @@ A terminal user interface for taskwarrior
 
 ---
 
+## [`todoist-rs`](https://github.com/illiteratewriter/todoist-rs)
+
+A terminal client for Todoist
+
+![todoist-rs demo](https://raw.githubusercontent.com/illiteratewriter/todoist-rs/master/imgs/app.gif)
+
+---
+
 ## [`xplr`](https://github.com/sayanarijit/xplr)
 
 A hackable, minimal, fast TUI file explorer
