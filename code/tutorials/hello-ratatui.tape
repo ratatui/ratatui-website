@@ -1,5 +1,5 @@
 # A VHS tape. See https://github.com/charmbracelet/vhs
-Output hello.gif
+Output hello-ratatui.gif
 Set Theme "Aardvark Blue"
 Set Width 1200
 Set Height 450
