@@ -87,8 +87,8 @@ $ cargo generate ratatui/templates
 
 ### Examine the Project
 
-The `cargo generate` command creates a new folder called `hello-ratatui` with a basic binary application
-in it. If you examine the folders and files created this will look like:
+The `cargo generate` command creates a new folder called `hello-ratatui` with a basic binary
+application in it. If you examine the folders and files created this will look like:
 
 ```text
 hello-ratatui/
@@ -99,8 +99,8 @@ hello-ratatui/
 └── README.md
 ```
 
-The `Cargo.toml` file is filled with some default values and the necessary dependencies (Ratatui
-and Crossterm), and one useful dependency (Color-eyre) for nicer error handling.
+The `Cargo.toml` file is filled with some default values and the necessary dependencies (Ratatui and
+Crossterm), and one useful dependency (Color-eyre) for nicer error handling.
 
 ```rust title="cargo.toml"
 {{#include @code/tutorials/hello-ratatui/Cargo.toml}}
