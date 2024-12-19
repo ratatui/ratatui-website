@@ -4,8 +4,11 @@ sidebar:
   order: 0
 ---
 
-Now that we have covered some of the basics of a "hello world" and "counter" app, we are ready to
+Now that we have covered some of the basics of a [Hello Ratatui] and [Counter] apps, we are ready to
 build and manage something more involved.
+
+[Hello Ratatui]: /tutorials/hello-ratatui
+[Counter]: /tutorials/counter-app
 
 In this tutorial, we will be creating an application that gives the user a simple interface to enter
 key-value pairs, which will be converted and printed to `stdout` in json. The purpose of this

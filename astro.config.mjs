@@ -91,8 +91,8 @@ export default defineConfig({
               link: "/tutorials/",
             },
             {
-              label: "Hello World",
-              link: "/tutorials/hello-world/",
+              label: "Hello Ratatui",
+              link: "/tutorials/hello-ratatui/",
             },
             {
               label: "Counter App",

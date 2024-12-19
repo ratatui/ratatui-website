@@ -2,7 +2,7 @@
 title: Tutorials
 ---
 
-- [Hello World](./hello-world/): This tutorial takes you through the basics of creating a simple
+- [Hello Ratatui](./hello-ratatui/): This tutorial takes you through the basics of creating a simple
   Ratatui application that displays "Hello World".
 - [Counter App](./counter-app/): This tutorial will set up the basics of a `ratatui` project by
   building a app that displays a counter.
