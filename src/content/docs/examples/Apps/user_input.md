@@ -3,7 +3,7 @@ title: User Input
 ---
 
 Demonstrates one approach to accepting user input. Source
-[user_input.rs](https://github.com/ratatui/ratatui/blob/main/examples/user_input.rs).
+[user_input.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/input-form/src/main.rs).
 
 :::caution
 
