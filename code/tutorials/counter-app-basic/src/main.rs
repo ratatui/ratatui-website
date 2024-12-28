@@ -72,11 +72,15 @@ impl App {
     }
 
     fn increment_counter(&mut self) {
-        self.counter += 1;
+        if self.counter < 255 {
+            self.counter += 1;
+        }
     }
 
     fn decrement_counter(&mut self) {
-        self.counter -= 1;
+        if self.counter > 0 {
+            self.counter -= 1;
+        }
     }
 }
 // ANCHOR_END: impl App
