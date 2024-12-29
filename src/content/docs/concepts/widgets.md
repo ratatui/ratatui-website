@@ -21,7 +21,7 @@ widgets include:
 - [`Gauge`]|[`Example`](/examples/widgets/gauge): Displays progress percentage using block
   characters.
 - [`LineGauge`]: Display progress as a line.
-- [`List`]|[`Example`](list): Displays a list of items and allows selection.
+- [`List`]|[`Example`](/examples/widgets/list): Displays a list of items and allows selection.
 - [`Paragraph`]|[`Example`](/examples/widgets/paragraph): Displays a paragraph of optionally styled
   and wrapped text.
 - [`Scrollbar`]|[`Example`](/examples/widgets/scrollbar): Displays a scrollbar.
