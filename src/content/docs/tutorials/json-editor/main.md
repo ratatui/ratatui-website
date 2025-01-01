@@ -35,8 +35,8 @@ use std::io;
 
 You might notice that we are using `stderr` for our output. This is because we want to allow the
 user to pipe their completed json to other programs like `ratatui-tutorial > output.json`. To do
-this, we are using the fact that `stderr` is piped differently than `stdout`. We render output
-to `stderr`, and print our completed json to `stdout`.
+this, we are using the fact that `stderr` is piped differently than `stdout`. We render output to
+`stderr`, and print our completed json to `stdout`.
 
 For more information, please read the
 [crossterm documentation](https://docs.rs/crossterm/latest/crossterm/)
