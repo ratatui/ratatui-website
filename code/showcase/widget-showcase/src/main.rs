@@ -15,8 +15,8 @@ mod examples;
 mod tui;
 
 use examples::{
-    bar_chart, block, calendar, canvas, chart, gauge, line_gauge, list, paragraph, sparkline,
-    table, tabs,
+    bar_chart, block, calendar, canvas, chart, gauge, line_gauge, list, paragraph, scrollbar,
+    sparkline, table, tabs,
 };
 
 #[derive(Debug, Parser)]
@@ -38,6 +38,7 @@ enum Widget {
     LineGauge,
     List,
     Paragraph,
+    Scrollbar,
     Sparkline,
     Table,
     Tabs,
@@ -103,13 +104,14 @@ impl App {
         match widget {
             Widget::Block => block::render(frame),
             Widget::BarChart => bar_chart::render(frame),
-            Widget::Calendar => crate::calendar::render(frame)?,
+            Widget::Calendar => calendar::render(frame)?,
             Widget::Canvas => canvas::render(frame),
             Widget::Chart => chart::render(frame),
             Widget::Gauge => gauge::render(frame),
             Widget::LineGauge => line_gauge::render(frame),
             Widget::List => list::render(frame),
             Widget::Paragraph => paragraph::render(frame),
+            Widget::Scrollbar => scrollbar::render(frame),
             Widget::Sparkline => sparkline::render(frame),
             Widget::Table => table::render(frame),
             Widget::Tabs => tabs::render(frame),
