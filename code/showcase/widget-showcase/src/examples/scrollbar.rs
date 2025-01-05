@@ -3,7 +3,7 @@ use ratatui::{
     layout::{Margin, Rect},
     style::Stylize,
     text::Text,
-    widgets::{Block, Borders, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState, Wrap},
+    widgets::{Block, Borders, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState},
     Frame,
 };
 
@@ -41,7 +41,7 @@ pub fn render(frame: &mut Frame) {
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
 
     let scrollbar = Scrollbar::new(ScrollbarOrientation::HorizontalBottom);
-    let mut scrollbar_state = ScrollbarState::new(text_width).position(0 as usize);
+    let mut scrollbar_state = ScrollbarState::new(text_width).position(0);
     let area = Rect::new(x + 1, y, width - 6, height - 2);
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
 
