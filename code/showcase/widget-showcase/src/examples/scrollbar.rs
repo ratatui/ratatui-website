@@ -1,7 +1,7 @@
 use lipsum::lipsum;
 use ratatui::{
     layout::{Margin, Rect},
-    style::Stylize,
+    style::{Color, Stylize},
     text::Text,
     widgets::{Block, Borders, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState},
     Frame,
@@ -17,7 +17,7 @@ pub fn render(frame: &mut Frame) {
         width,
         height,
     } = frame.area();
-    let main_area = Rect::new(x, y, width - 4, height - 4);
+    let main_area = Rect::new(x, y, width - 4, height - 2);
 
     // wrap (using textwrap) a bit wider than the frame to make sure we have a scrollbar
     let wrapped = textwrap::wrap(&text, (width as f64 * 1.5) as usize);
@@ -40,12 +40,21 @@ pub fn render(frame: &mut Frame) {
     let area = main_area.inner(Margin::new(1, 0));
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
 
-    let scrollbar = Scrollbar::new(ScrollbarOrientation::HorizontalBottom);
+    let scrollbar = Scrollbar::new(ScrollbarOrientation::HorizontalBottom)
+        .thumb_symbol("▩")
+        .end_style(Color::Blue)
+        .begin_style(Color::Blue)
+        .thumb_style(Color::Yellow)
+        .track_style(Color::Green);
     let mut scrollbar_state = ScrollbarState::new(text_width).position(0);
-    let area = Rect::new(x + 1, y, width - 6, height - 2);
+    let area = Rect::new(x + 1, y, width - 6, height - 1);
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
 
-    let scrollbar = Scrollbar::new(ScrollbarOrientation::HorizontalBottom);
+    let scrollbar = Scrollbar::new(ScrollbarOrientation::HorizontalBottom)
+        .thumb_symbol("▣")
+        .track_symbol(Some("-"))
+        .begin_symbol(Some("⭅"))
+        .end_symbol(Some("⭆"));
     let mut scrollbar_state = ScrollbarState::new(text_width).position(text_width as usize);
     let area = Rect::new(x + 1, y, width - 6, height);
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
@@ -55,13 +64,22 @@ pub fn render(frame: &mut Frame) {
     let area = main_area.inner(Margin::new(0, 1));
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
 
-    let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight);
+    let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight)
+        .thumb_symbol("▯")
+        .end_style(Color::Red)
+        .begin_style(Color::Red)
+        .thumb_style(Color::Cyan)
+        .track_style(Color::Magenta);
     let mut scrollbar_state = ScrollbarState::new(text_height).position(0);
-    let area = Rect::new(x, y + 1, width - 2, height - 6);
+    let area = Rect::new(x, y + 1, width - 2, height-4);
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
 
-    let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight);
+    let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight)
+        .thumb_symbol("▒")
+        .track_symbol(Some("|"))
+        .begin_symbol(Some("↑"))
+        .end_symbol(Some("↓"));
     let mut scrollbar_state = ScrollbarState::new(text_height).position(text_height as usize);
-    let area = Rect::new(x, y + 1, width, height - 6);
+    let area = Rect::new(x, y + 1, width, height - 4);
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
 }
