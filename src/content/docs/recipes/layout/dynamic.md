@@ -19,7 +19,7 @@ fn get_layout_based_on_messages(msg_count: usize, f: &Frame) -> Rc<[Rect]> {
             Constraint::Percentage(msg_percentage),
             Constraint::Percentage(100 - msg_percentage),
         ])
-        .split(f.size())
+        .split(f.area())
 }
 ```
 
@@ -48,6 +48,6 @@ let chunks = Layout::default()
         Constraint::Percentage(current_percentage),
         Constraint::Percentage(100 - current_percentage),
     ])
-    .split(f.size());
+    .split(f.area());
 
 ```

@@ -416,7 +416,7 @@ impl Component {
 
       while let Ok(action) = action_rx.try_recv().await {
         match action {
-          Action::Render => tui.draw(|f| self.component.render(f, f.size()))?,
+          Action::Render => tui.draw(|f| self.component.render(f, f.area()))?,
           Action::Quit => self.should_quit = true,
           _ => self.component.update(action),
         }
