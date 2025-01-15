@@ -81,7 +81,7 @@ fn ui(_: &App, f: &mut Frame) {
   ];
   let text: Vec<Line<'_>> =
     vec![styled_text.into(), bold_text.into(), italic_text.into(), bold_italic_text.into(), mixed_line.into()];
-  f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.size());
+  f.render_widget(Paragraph::new(text).block(Block::default().borders(Borders::ALL)), f.area());
 }
 ```
 

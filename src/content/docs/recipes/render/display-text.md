@@ -123,7 +123,7 @@ fn ui(_: &App, f: &mut Frame) {
     let span2 = "world".red().bold();
     let line = Line::from(vec![span1, " ".into(), span2]);
     let text = Text::from(line);
-    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.size());
+    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.area());
 }
 ```
 
@@ -143,7 +143,7 @@ fn ui(_: &App, f: &mut Frame) {
         " ".into(),
         "world".red().bold()
     ].into();
-    f.render_widget(Paragraph::new(line).block(Block::bordered()), f.size());
+    f.render_widget(Paragraph::new(line).block(Block::bordered()), f.area());
 }
 ```
 
@@ -161,7 +161,7 @@ fn ui(_: &App, f: &mut Frame) {
         "hello world 2".blue().into(),
         Line::from(vec!["hello".green(), " ".into(), "world".green().bold(), "3".into()]),
     ];
-    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.size());
+    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.area());
 }
 ```
 
@@ -191,7 +191,7 @@ fn ui(_: &App, f: &mut Frame) {
         Line::from("hello world 2"),
         Line::from("hello world 3").right_aligned(),
     ]).centered();
-    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.size());
+    f.render_widget(Paragraph::new(text).block(Block::bordered()), f.area());
 }
 ```
 

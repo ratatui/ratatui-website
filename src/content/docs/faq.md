@@ -262,7 +262,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   loop {
     terminal.draw(|f| {
-      let rect = centered_rect(f.size(), 35, 35);
+      let rect = centered_rect(f.area(), 35, 35);
       f.render_widget(
         Paragraph::new("Hello World!\n\n\n'q' to quit")
           .block(
@@ -380,13 +380,13 @@ render all three widgets:
 ```rust
   loop {
     terminal.draw(|f| {
-      f.render_widget(widget1, f.size());
+      f.render_widget(widget1, f.area());
     })?;
     terminal.draw(|f| {
-      f.render_widget(widget2, f.size());
+      f.render_widget(widget2, f.area());
     })?;
     terminal.draw(|f| {
-      f.render_widget(widget3, f.size());
+      f.render_widget(widget3, f.area());
     })?;
     // handle events
     // manage state
@@ -398,9 +398,9 @@ You want to write the code like this instead:
 ```rust
   loop {
     terminal.draw(|f| {
-      f.render_widget(widget1, f.size());
-      f.render_widget(widget2, f.size());
-      f.render_widget(widget3, f.size());
+      f.render_widget(widget1, f.area());
+      f.render_widget(widget2, f.area());
+      f.render_widget(widget3, f.area());
     })?;
     // handle events
     // manage state

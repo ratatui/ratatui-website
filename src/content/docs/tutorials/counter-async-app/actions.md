@@ -123,7 +123,7 @@ pub enum Action {
 
 // App ui render function
 fn ui(app: &App, f: &mut Frame) {
-  f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
+  f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.area());
 }
 
 fn get_action(_app: &App, event: Event) -> Action {

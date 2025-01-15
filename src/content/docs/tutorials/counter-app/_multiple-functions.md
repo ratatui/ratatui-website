@@ -97,7 +97,7 @@ fn shutdown() -> Result<()> {
 
 ```rust
 fn ui(app: &App, f: &mut Frame) {
-  f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
+  f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.area());
 }
 ```
 
@@ -251,7 +251,7 @@ struct App {
 
 // App ui render function
 fn ui(app: &App, f: &mut Frame) {
-  f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
+  f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.area());
 }
 
 // App update function

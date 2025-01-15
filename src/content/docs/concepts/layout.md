@@ -111,7 +111,7 @@ let outer_layout = Layout::default()
         Constraint::Percentage(50),
         Constraint::Percentage(50),
     ])
-    .split(f.size());
+    .split(f.area());
 
 let inner_layout = Layout::default()
     .direction(Direction::Horizontal)
