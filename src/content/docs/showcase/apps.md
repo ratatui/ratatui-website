@@ -157,7 +157,7 @@ Television is a fast and versatile fuzzy finder TUI.
 
 It lets you quickly search through any kind of data source (files, git repositories, environment variables, docker images, you name it) using a fuzzy matching algorithm and is designed to be easily extensible.
 
-![television demo](https://github.com/alexpasmantier/television/blob/main/assets/tv-linux-gamepad.png)
+![television demo](https://github.com/user-attachments/assets/6cdbe6b1-16c2-4e2c-823b-e5c25a53a004)
 
 ---
 
