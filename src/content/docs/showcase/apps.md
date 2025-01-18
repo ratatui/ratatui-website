@@ -151,6 +151,16 @@ A terminal user interface for taskwarrior
 
 ---
 
+## [`television`](https://github.com/alexpasmantier/television)
+
+Television is a fast and versatile fuzzy finder TUI.
+
+It lets you quickly search through any kind of data source (files, git repositories, environment variables, docker images, you name it) using a fuzzy matching algorithm and is designed to be easily extensible.
+
+![television demo](https://github.com/alexpasmantier/television/blob/main/assets/tv-linux-gamepad.png)
+
+---
+
 ## [`xplr`](https://github.com/sayanarijit/xplr)
 
 A hackable, minimal, fast TUI file explorer
