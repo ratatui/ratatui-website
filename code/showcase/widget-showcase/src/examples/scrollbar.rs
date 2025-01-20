@@ -71,7 +71,7 @@ pub fn render(frame: &mut Frame) {
         .thumb_style(Color::Cyan)
         .track_style(Color::Magenta);
     let mut scrollbar_state = ScrollbarState::new(text_height).position(0);
-    let area = Rect::new(x, y + 1, width - 2, height-4);
+    let area = Rect::new(x, y + 1, width - 2, height - 4);
     frame.render_stateful_widget(scrollbar, area, &mut scrollbar_state);
 
     let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight)
