@@ -462,7 +462,7 @@ now there are some easy approaches that can help avoid them.
 
 A one liner that will mostly fix this for pretty much any widget is to avoid rendering stuff outside
 of the buffer is to reassign the area to the intersection of the area and the buffer's area. If you
-are calling a widget that has an out of bounds problem, you can call this code just before calling a
+are calling a widget that has an out of bounds problem, you can call this code just before calling
 that widget.
 
 ```rust
