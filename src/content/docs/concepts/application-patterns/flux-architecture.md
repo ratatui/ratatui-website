@@ -7,8 +7,8 @@ sidebar:
 [Flux](https://facebookarchive.github.io/flux/docs/in-depth-overview/) is a design pattern
 introduced by Facebook to address the challenges of building large scale web applications. Though
 originally designed with web applications in mind, the Flux architecture can be applied to any
-client-side project, including terminal applications. Here's a real world example of using the `Flux`
-architecture with `ratatui`: <https://github.com/Yengas/rust-chat-server/tree/main/tui>.
+client-side project, including terminal applications. Here's a real world example of using the
+`Flux` architecture with `ratatui`: <https://github.com/Yengas/rust-chat-server/tree/main/tui>.
 
 ## Why `Flux` for `ratatui`?
 
