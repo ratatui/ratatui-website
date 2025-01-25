@@ -11,7 +11,7 @@ You want to center a widget within some area of your TUI's layout.
 
 ## Solution
 
-To center a widget in any area, create a [`Rect`] that is centered within the aread. You can
+To center a widget in any area, create a [`Rect`] that is centered within the area. You can
 calculate the x and y positions of the widget by subtracting the widget width and height from the
 enclosing area's width and height, respectively, and dividing by 2.
 
