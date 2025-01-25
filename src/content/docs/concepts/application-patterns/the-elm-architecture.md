@@ -278,8 +278,8 @@ This cycle repeats, ensuring your TUI is always up-to-date with user interaction
 
 As an illustrative example, here's the [Counter App](/tutorials/counter-app/) refactored using TEA.
 
-The notable difference from before is that we have a `Model` struct that captures the app state,
-and a `Message` enum that captures the various actions your app can take.
+The notable difference from before is that we have a `Model` struct that captures the app state, and
+a `Message` enum that captures the various actions your app can take.
 
 ```rust
 {{ #include @code/concepts/the-elm-architecture/src/main.rs }}
