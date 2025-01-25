@@ -1,12 +1,33 @@
 #![allow(dead_code)]
+// ANCHOR: imports
+use ratatui::layout::{Constraint, Flex, Layout, Rect};
+// ANCHOR_END: imports
+
 use ratatui::{
-    layout::{Constraint, Flex, Layout, Rect},
     text::Text,
     widgets::{Block, Clear, Paragraph},
     Frame,
 };
 
-// Examples for https://ratatui.rs/recipes/layout/center-a-rect/
+// Examples for https://ratatui.rs/recipes/layout/center-a-widget/
+
+// ANCHOR: horizontal
+fn center_horizontal(area: Rect, width: u16) -> Rect {
+    let [area] = Layout::horizontal([Constraint::Length(width)])
+        .flex(Flex::Center)
+        .areas(area);
+    area
+}
+// ANCHOR_END: horizontal
+
+// ANCHOR: vertical
+fn center_vertical(area: Rect, height: u16) -> Rect {
+    let [area] = Layout::vertical([Constraint::Length(height)])
+        .flex(Flex::Center)
+        .areas(area);
+    area
+}
+// ANCHOR_END: vertical
 
 // ANCHOR: center
 /// Centers a [`Rect`] within another [`Rect`] using the provided [`Constraint`]s.
