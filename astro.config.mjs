@@ -347,7 +347,7 @@ export default defineConfig({
     "/how-to/develop-apps/migrate-from-tui-rs": "/recipes/apps/migrate-from-tui-rs",
     "/how-to/develop-apps/panic-hooks": "/recipes/apps/panic-hooks",
     "/how-to/develop-apps/terminal-and-event-handler": "/recipes/apps/terminal-and-event-handler",
-    "/how-to/layout/center-a-rect": "/recipes/layout/center-a-rect",
+    "/how-to/layout/center-a-rect": "/recipes/layout/center-a-widget",
     "/how-to/layout/collapse-borders": "/recipes/layout/collapse-borders",
     "/how-to/layout/dynamic": "/recipes/layout/dynamic",
     "/how-to/layout": "/recipes/layout",
@@ -359,6 +359,7 @@ export default defineConfig({
     "/how-to/widgets/custom": "/recipes/widgets/custom",
     "/how-to/widgets": "/recipes/widgets",
     "/how-to/widgets/paragraph": "/recipes/widgets/paragraph",
+    "/recipes/layout/center-a-rect": "/recipes/layout/center-a-widget",
   },
   vite: {
     server: {
