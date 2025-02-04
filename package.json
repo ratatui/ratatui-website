@@ -56,7 +56,7 @@
     "tailwindcss-animate": "^1.0.7",
     "ts-dedent": "^2.2.0",
     "unist-util-visit": "^5.0.0",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.9"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
