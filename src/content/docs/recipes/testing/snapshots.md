@@ -11,7 +11,7 @@ tests for Ratatui apps and widgets.
 
 ### 1. Add Dependencies
 
-First, make sure to install cargo-insta and the include [`insta`] crate in your `Cargo.toml`:
+First, make sure to install cargo-insta and include the [`insta`] crate in your `Cargo.toml`:
 
 ```shell
 cargo install cargo-insta
