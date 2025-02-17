@@ -36,12 +36,12 @@ indoc = "2"
 octocrab = "0.43.0"
 palette = "0.7.3"
 pretty_assertions = "1.4.1"
-rand = "0.8.5"
-rand_chacha = "0.3.1"
+rand = "0.9.0"
+rand_chacha = "0.9.0"
 rstest = "0.24.0"
-serde_json = "1.0.137"
+serde_json = "1.0.138"
 itertools = "0.14"
-strum = { version = "0.26.3", features = ["derive"] }
+strum = { version = "0.27.1", features = ["derive"] }
 time = { version = "0.3.37", features = ["local-offset"] }
 tokio = { version = "1.43.0" }
 tracing = "0.1.41"
