@@ -148,7 +148,7 @@ You should only call the draw method once for each pass through your application
 
 ### Testing the UI Output
 
-To test how how Ratatui will display the widget when `render` is called, you can render the app to a
+To test how Ratatui will display the widget when `render` is called, you can render the app to a
 buffer in a test.
 
 Add the following `tests` module to `main.rs`:
