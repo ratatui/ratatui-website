@@ -19,7 +19,7 @@ libc = "0.2.171"
 log = "0.4.26"
 ratatui = "0.29.0"
 strip-ansi-escapes = "0.2.1"
-strum = "0.27.1"
+strum = { version = "0.27.1", features = ["derive"] }
 tokio = { version = "1.44.1", features = ["full"] }
 tokio-util = "0.7.14"
 tui-big-text = "0.7.1"
