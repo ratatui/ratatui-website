@@ -15,11 +15,11 @@ directories = "6.0.0"
 futures = "0.3.31"
 human-panic = "2.0.2"
 itertools = "0.14.0"
-libc = "0.2.169"
-log = "0.4.25"
+libc = "0.2.171"
+log = "0.4.26"
 ratatui = "0.29.0"
 strip-ansi-escapes = "0.2.1"
-strum = "0.26.3"
-tokio = { version = "1.43.0", features = ["full"] }
-tokio-util = "0.7.13"
-tui-big-text = "0.7.0"
+strum = { version = "0.27.1", features = ["derive"] }
+tokio = { version = "1.44.1", features = ["full"] }
+tokio-util = "0.7.14"
+tui-big-text = "0.7.1"
