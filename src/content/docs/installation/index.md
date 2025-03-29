@@ -29,7 +29,7 @@ or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.28.0", features = ["all-widgets"]}
+ratatui = { version = "0.28.0", features = ["all-widgets"] }
 ```
 
 You can learn more about available widgets from the
