@@ -16,7 +16,7 @@ futures = "0.3.31"
 human-panic = "2.0.2"
 itertools = "0.14.0"
 libc = "0.2.171"
-log = "0.4.26"
+log = "0.4.27"
 ratatui = "0.29.0"
 strip-ansi-escapes = "0.2.1"
 strum = { version = "0.27.1", features = ["derive"] }
