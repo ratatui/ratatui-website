@@ -27,7 +27,7 @@ your application to capture mouse events.
 [Crossterm]: https://crates.io/crates/crossterm
 [Termion]: https://crates.io/crates/termion
 [Termwiz]: https://crates.io/crates/termwiz
-[`Terminal`]: https://docs.rs/ratatui/latest/ratatui/terminal/struct.Terminal.html
+[`Terminal`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html
 [`CrosstermBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.CrosstermBackend.html
 [`TermionBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TermionBackend.html
 [`TermwizBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TermwizBackend.html
