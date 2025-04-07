@@ -10,7 +10,7 @@ publish.workspace = true
 
 [dependencies]
 better-panic = "0.3.0"
-clap = { version = "4.5.34", features = [
+clap = { version = "4.5.35", features = [
     "derive",
     "cargo",
     "wrap_help",
@@ -20,7 +20,7 @@ clap = { version = "4.5.34", features = [
 ] }
 color-eyre = "0.6.3"
 config = "0.15.11"
-crossterm = { version = "0.28.1", features = ["serde", "event-stream"] }
+crossterm = { version = "0.29.0", features = ["serde", "event-stream"] }
 derive_deref = "1.1.1"
 directories = "6.0.0"
 futures = "0.3.31"
@@ -35,7 +35,7 @@ serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 signal-hook = "0.3.17"
 strip-ansi-escapes = "0.2.1"
-tokio = { version = "1.44.1", features = ["full"] }
+tokio = { version = "1.44.2", features = ["full"] }
 tokio-util = "0.7.14"
 tracing = "0.1.41"
 tracing-error = "0.2.1"
