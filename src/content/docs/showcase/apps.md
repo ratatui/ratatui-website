@@ -190,3 +190,11 @@ Unlock the power of APIs with simplicity and speed, right from your terminal. Vi
 documentations in your terminal.
 
 ![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
+
+---
+
+## [`lazyssh`](https://github.com/KURANADO2/lazyssh)
+
+An ssh server manages tui tools.
+
+![lazyssh-demo](https://github.com/KURANADO2/lazyssh/blob/main/demo.gif?raw=true)
