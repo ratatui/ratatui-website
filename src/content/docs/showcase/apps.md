@@ -190,3 +190,12 @@ Unlock the power of APIs with simplicity and speed, right from your terminal. Vi
 documentations in your terminal.
 
 ![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
+
+
+---
+
+## [`yozefu`](https://github.com/MAIF/yozefu)
+
+Yōzefu is an interactive terminal user interface (TUI) application for exploring data of a kafka cluster. It is an alternative tool to AKHQ, redpanda console or the kafka plugin for JetBrains IDEs. It includes a search query language inspired from SQL providing a fine-grained way filtering capabilities.
+
+![yozefu demo](https://vhs.charm.sh/vhs-ptWKq7uXOYLqVkJpALH1O.gif)
