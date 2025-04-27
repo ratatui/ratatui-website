@@ -11,7 +11,7 @@ the previous tutorial, but here we'll explore some more sophisticated layouts.
 :::note
 
 If you have created a UI before, you should know that the UI code can take up much more space than
-you think it should, and this is not exception. We will only briefly cover all the functionality
+you think it should, and this is no exception. We will only briefly cover all the functionality
 available in `ratatui` and how the core of `ratatui` design works.
 
 There will be links to more resources where they are covered in depth in the following sections.
