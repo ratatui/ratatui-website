@@ -5,13 +5,13 @@ sidebar:
   label: Center a Rect
 ---
 
-You can use a `Vertical` layout followed by a `Horizontal` layout to get a centered `Rect`.
+You can use the `.centered()` method to get a centered `Rect`
 
 ```rust title=layout.rs collapse={1-13}
 {{ #include @code/recipes/how-to-misc/src/layout.rs:center }}
 ```
 
-Then you can use this method to draw any widget centered on the containing area.
+You can use this method to draw any widget centered on the containing area.
 
 ```rust
 {{ #include @code/recipes/how-to-misc/src/layout.rs:render }}

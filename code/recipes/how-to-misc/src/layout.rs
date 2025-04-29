@@ -23,19 +23,14 @@ use ratatui::{
 /// let centered = center(area, horizontal, vertical);
 /// ```
 fn center(area: Rect, horizontal: Constraint, vertical: Constraint) -> Rect {
-    let [area] = Layout::horizontal([horizontal])
-        .flex(Flex::Center)
-        .areas(area);
-    let [area] = Layout::vertical([vertical]).flex(Flex::Center).areas(area);
-    area
+    area.centered(horizontal, vertical)
 }
 // ANCHOR_END: center
 
 // ANCHOR: render
 fn render(frame: &mut Frame) {
     let text = Text::raw("Hello world!");
-    let area = center(
-        frame.area(),
+    let area = frame.area().centered(
         Constraint::Length(text.width() as u16),
         Constraint::Length(1),
     );
@@ -45,8 +40,7 @@ fn render(frame: &mut Frame) {
 
 // ANCHOR: render_popup
 fn render_popup(frame: &mut Frame) {
-    let area = center(
-        frame.area(),
+    let area = frame.area().centered(
         Constraint::Percentage(20),
         Constraint::Length(3), // top and bottom border + content
     );
