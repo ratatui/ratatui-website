@@ -47,7 +47,8 @@ welcome to use explicit imports if that is your preferred style.
 :::caution
 
 Some editors remove unused imports automatically, so if you run into errors about missing types,
-etc. make sure these are in place.
+etc. make sure these are in place, and double-check that shared imports like `Stylize` come from
+ratatui and not crossterm to avoid conflicts.
 
 :::
 
@@ -147,7 +148,7 @@ You should only call the draw method once for each pass through your application
 
 ### Testing the UI Output
 
-To test how how Ratatui will display the widget when `render` is called, you can render the app to a
+To test how Ratatui will display the widget when `render` is called, you can render the app to a
 buffer in a test.
 
 Add the following `tests` module to `main.rs`:
@@ -224,7 +225,7 @@ impl App {
 
     // -- snip --
 
-{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event() }}
+{{ #include @code/tutorials/counter-app-basic/src/main.rs:handle_key_event fn }}
 }
 ```
 

@@ -11,7 +11,7 @@ the previous tutorial, but here we'll explore some more sophisticated layouts.
 :::note
 
 If you have created a UI before, you should know that the UI code can take up much more space than
-you think it should, and this is not exception. We will only briefly cover all the functionality
+you think it should, and this is no exception. We will only briefly cover all the functionality
 available in `ratatui` and how the core of `ratatui` design works.
 
 There will be links to more resources where they are covered in depth in the following sections.
@@ -43,7 +43,7 @@ For a better understanding of layouts and constraints, refer to the concepts pag
 
 In the example above, you can read the instructions aloud like this:
 
-1. Take the area `f.size()` (which is a rectangle), and cut it into three vertical pieces (making
+1. Take the area `f.area()` (which is a rectangle), and cut it into three vertical pieces (making
    horizontal cuts).
 2. The first section will be 3 lines tall
 3. The second section should never be smaller than one line tall, but can expand if needed.
@@ -82,8 +82,7 @@ terminals into account), and the application state.
 ```
 
 Before we proceed, let's implement a `centered_rect` helper function. This code is adapted from the
-[popup example](https://github.com/ratatui/ratatui/blob/main/examples/popup.rs) found in the
-official repo.
+[popup example](https://ratatui.rs/examples/apps/popup/).
 
 ```rust
 {{#include @code/tutorials/json-editor/src/ui.rs:centered_rect}}

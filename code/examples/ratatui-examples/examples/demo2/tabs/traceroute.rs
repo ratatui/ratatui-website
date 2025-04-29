@@ -52,10 +52,7 @@ impl Widget for TracerouteTab {
 
 fn render_hops(selected_row: usize, area: Rect, buf: &mut Buffer) {
     let mut state = TableState::default().with_selected(Some(selected_row));
-    let rows = HOPS
-        .iter()
-        .map(|hop| Row::new(vec![hop.host, hop.address]))
-        .collect_vec();
+    let rows = HOPS.iter().map(|hop| Row::new(vec![hop.host, hop.address]));
     let block = Block::new()
         .padding(Padding::new(1, 1, 1, 1))
         .title_alignment(Alignment::Center)
@@ -63,7 +60,7 @@ fn render_hops(selected_row: usize, area: Rect, buf: &mut Buffer) {
     StatefulWidget::render(
         Table::new(rows, [Constraint::Max(100), Constraint::Length(15)])
             .header(Row::new(vec!["Host", "Address"]).set_style(THEME.traceroute.header))
-            .highlight_style(THEME.traceroute.selected)
+            .row_highlight_style(THEME.traceroute.selected)
             .block(block),
         area,
         buf,
@@ -102,7 +99,7 @@ pub fn render_ping(progress: usize, area: Rect, buf: &mut Buffer) {
                 .title_alignment(Alignment::Center)
                 .border_type(BorderType::Thick),
         )
-        .data(&data)
+        .data(data)
         .style(THEME.traceroute.ping)
         .render(area, buf);
 }

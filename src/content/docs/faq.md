@@ -262,7 +262,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   loop {
     terminal.draw(|f| {
-      let rect = centered_rect(f.size(), 35, 35);
+      let rect = centered_rect(f.area(), 35, 35);
       f.render_widget(
         Paragraph::new("Hello World!\n\n\n'q' to quit")
           .block(
@@ -349,18 +349,16 @@ lines. Here's an example using [`tui-big-text`](https://github.com/joshka/tui-bi
 
 ## Some characters appear to be missing / look weird
 
-`ratatui`, and TUIs in general, use special drawing characters like [box-drawing characters], [braille
-characters]
-or even icons. If your font doesn't support such features, it may display a white square (□) or a
-replacement character (�).
+`ratatui`, and TUIs in general, use special drawing characters like [box-drawing characters],
+[braille characters] or even icons. If your font doesn't support such features, it may display a
+white square (□) or a replacement character (�).
 
 [box-drawing characters]: https://en.wikipedia.org/wiki/Box-drawing_character
 [braille characters]: https://en.wikipedia.org/wiki/Braille_Patterns#Block
 
 To fix this, we recommend you use a [nerd font], this is generally what works the best. [Kreative
-Square]
-is also a good alternative. Though note that some characters may render a bit differently from font
-to font.
+Square] is also a good alternative. Though note that some characters may render a bit differently
+from font to font.
 
 [nerd font]: https://www.nerdfonts.com/
 [Kreative Square]: http://www.kreativekorp.com/software/fonts/ksquare/
@@ -382,13 +380,13 @@ render all three widgets:
 ```rust
   loop {
     terminal.draw(|f| {
-      f.render_widget(widget1, f.size());
+      f.render_widget(widget1, f.area());
     })?;
     terminal.draw(|f| {
-      f.render_widget(widget2, f.size());
+      f.render_widget(widget2, f.area());
     })?;
     terminal.draw(|f| {
-      f.render_widget(widget3, f.size());
+      f.render_widget(widget3, f.area());
     })?;
     // handle events
     // manage state
@@ -400,9 +398,9 @@ You want to write the code like this instead:
 ```rust
   loop {
     terminal.draw(|f| {
-      f.render_widget(widget1, f.size());
-      f.render_widget(widget2, f.size());
-      f.render_widget(widget3, f.size());
+      f.render_widget(widget1, f.area());
+      f.render_widget(widget2, f.area());
+      f.render_widget(widget3, f.area());
     })?;
     // handle events
     // manage state
@@ -462,7 +460,7 @@ now there are some easy approaches that can help avoid them.
 
 A one liner that will mostly fix this for pretty much any widget is to avoid rendering stuff outside
 of the buffer is to reassign the area to the intersection of the area and the buffer's area. If you
-are calling a widget that has an out of bounds problem, you can call this code just before calling a
+are calling a widget that has an out of bounds problem, you can call this code just before calling
 that widget.
 
 ```rust

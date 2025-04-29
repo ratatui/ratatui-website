@@ -18,7 +18,7 @@ To add each widget:
 - Create a VHS tape (copy from the existing tapes) and edit the output and screenshot
 - Run `~/go/bin/vhs <tapefile>.tape` (Install VHS from main to get the Aardvark Blue theme and the
   Screenshot command).
-- Add the image to the [widgets showcase](../../src/content/docs/showcase/widgets/index.mdx)
+- Add the image to the [widgets showcase](../../../src/content/docs/showcase/widgets.mdx)
 
 ## Design guidelines
 

@@ -4,14 +4,11 @@ use std::io;
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
     buffer::Buffer,
-    layout::{Alignment, Rect},
+    layout::Rect,
     style::Stylize,
     symbols::border,
     text::{Line, Text},
-    widgets::{
-        block::{Position, Title},
-        Block, Paragraph, Widget,
-    },
+    widgets::{Block, Paragraph, Widget},
     DefaultTerminal, Frame,
 };
 // ANCHOR_END: imports
@@ -59,6 +56,7 @@ impl App {
         Ok(())
     }
 
+    // ANCHOR: handle_key_event fn
     fn handle_key_event(&mut self, key_event: KeyEvent) {
         match key_event.code {
             KeyCode::Char('q') => self.exit(),
@@ -67,6 +65,7 @@ impl App {
             _ => {}
         }
     }
+    // ANCHOR_END: handle_key_event fn
 
     fn exit(&mut self) {
         self.exit = true;
@@ -85,22 +84,18 @@ impl App {
 // ANCHOR: impl Widget
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let title = Title::from(" Counter App Tutorial ".bold());
-        let instructions = Title::from(Line::from(vec![
+        let title = Line::from(" Counter App Tutorial ".bold());
+        let instructions = Line::from(vec![
             " Decrement ".into(),
             "<Left>".blue().bold(),
             " Increment ".into(),
             "<Right>".blue().bold(),
             " Quit ".into(),
             "<Q> ".blue().bold(),
-        ]));
+        ]);
         let block = Block::bordered()
-            .title(title.alignment(Alignment::Center))
-            .title(
-                instructions
-                    .alignment(Alignment::Center)
-                    .position(Position::Bottom),
-            )
+            .title(title.centered())
+            .title_bottom(instructions.centered())
             .border_set(border::THICK);
 
         let counter_text = Text::from(vec![Line::from(vec![

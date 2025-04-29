@@ -130,7 +130,7 @@ struct App {
 
 // App ui render function
 fn ui(f: &mut Frame, app: &App) {
-  f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.size());
+  f.render_widget(Paragraph::new(format!("Counter: {}", app.counter)), f.area());
 }
 
 fn update(app: &mut App, event: Event) {

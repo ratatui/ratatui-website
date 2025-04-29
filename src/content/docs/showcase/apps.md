@@ -27,7 +27,7 @@ IP/hostname
 
 A customizable cross-platform graphical process/system monitor for the terminal
 
-![bottom demo](https://github.com/ClementTsang/bottom/blob/master/assets/demo.gif?raw=true)
+![bottom demo](https://github.com/ClementTsang/bottom/blob/main/assets/demo.gif?raw=true)
 
 ---
 
@@ -88,7 +88,7 @@ gpg-tui is a Terminal User Interface for GnuPG.
 
 A material design color palette for the terminal.
 
-![material demo](https://camo.githubusercontent.com/92cd9a40d68173168c9901c1709fcb80c57eaf73098a567bf7d074ebc9a6723b/68747470733a2f2f692e6962622e636f2f324d444b6d68372f53637265656e73686f742d323032322d30382d30322d61742d31362d34332d31322e706e67)
+![material demo](https://i.ibb.co/2MDKmh7/Screenshot-2022-08-02-at-16-43-12.png)
 
 ---
 
@@ -123,7 +123,7 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 An application to manage markdown notes from your terminal and compile them to HTML
 
-![rucola demo](https://github.com/Linus-Mussmaecher/rucola/blob/main/readme-images/readme-image-select.png)
+![rucola demo](https://github.com/Linus-Mussmaecher/rucola/blob/main/readme-images/readme-image-select.png?raw=true)
 
 ---
 
@@ -131,7 +131,7 @@ An application to manage markdown notes from your terminal and compile them to H
 
 A simple oscilloscope/vectorscope/spectroscope for your terminal
 
-![scope-tui demo](https://camo.githubusercontent.com/144d96875a367bd55d8cc2343da2479aefea9925106b71d9e73aa9bebc57c33f/68747470733a2f2f63646e2e616c656d692e6465762f73636f70652d7475692d776964652e706e67)
+![scope-tui demo](https://camo.githubusercontent.com/4b11674184b07eebd6bc386c38c9cce1a7a70ae82733b44cd977c8ab85c5a691/68747470733a2f2f63646e2e616c656d692e6465762f73636f70652d7475692d776964652e706e67)
 
 ---
 
@@ -148,6 +148,18 @@ Terminal HTTP/REST client
 A terminal user interface for taskwarrior
 
 ![taskwarrior-tui demo](https://user-images.githubusercontent.com/1813121/159858280-3ca31e9a-fc38-4547-a92d-36a7758cf5dc.gif)
+
+---
+
+## [`television`](https://github.com/alexpasmantier/television)
+
+Television is a fast and versatile fuzzy finder TUI.
+
+It lets you quickly search through any kind of data source (files, git repositories, environment
+variables, docker images, you name it) using a fuzzy matching algorithm and is designed to be easily
+extensible.
+
+![television demo](https://github.com/user-attachments/assets/7a967f9c-779e-4915-baa8-160f586f8936)
 
 ---
 

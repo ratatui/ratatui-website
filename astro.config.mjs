@@ -65,8 +65,9 @@ export default defineConfig({
         discord: "https://discord.gg/pMCEU9hNEj",
         matrix: "https://matrix.to/#/#ratatui:matrix.org",
         discourse: "https://forum.ratatui.rs",
-        mastodon: "https://fosstodon.org/@ratatui_rs",
         "x.com": "https://twitter.com/ratatui_rs",
+        blueSky: "https://bsky.app/profile/ratatui.rs",
+        mastodon: "https://fosstodon.org/@ratatui_rs",
         linkedin: "https://www.linkedin.com/company/ratatui-rs",
       },
       sidebar: [
@@ -90,8 +91,8 @@ export default defineConfig({
               link: "/tutorials/",
             },
             {
-              label: "Hello World",
-              link: "/tutorials/hello-world/",
+              label: "Hello Ratatui",
+              link: "/tutorials/hello-ratatui/",
             },
             {
               label: "Counter App",
@@ -204,6 +205,13 @@ export default defineConfig({
               },
             },
             {
+              label: "Testing",
+              collapsed: true,
+              autogenerate: {
+                directory: "recipes/testing",
+              },
+            },
+            {
               label: "Applications",
               collapsed: true,
               autogenerate: {
@@ -223,6 +231,10 @@ export default defineConfig({
             {
               label: "Highlights",
               link: "/highlights/",
+            },
+            {
+              label: "v0.29",
+              link: "/highlights/v029/",
             },
             {
               label: "v0.28",
@@ -335,7 +347,7 @@ export default defineConfig({
     "/how-to/develop-apps/migrate-from-tui-rs": "/recipes/apps/migrate-from-tui-rs",
     "/how-to/develop-apps/panic-hooks": "/recipes/apps/panic-hooks",
     "/how-to/develop-apps/terminal-and-event-handler": "/recipes/apps/terminal-and-event-handler",
-    "/how-to/layout/center-a-rect": "/recipes/layout/center-a-rect",
+    "/how-to/layout/center-a-rect": "/recipes/layout/center-a-widget",
     "/how-to/layout/collapse-borders": "/recipes/layout/collapse-borders",
     "/how-to/layout/dynamic": "/recipes/layout/dynamic",
     "/how-to/layout": "/recipes/layout",
@@ -347,6 +359,7 @@ export default defineConfig({
     "/how-to/widgets/custom": "/recipes/widgets/custom",
     "/how-to/widgets": "/recipes/widgets",
     "/how-to/widgets/paragraph": "/recipes/widgets/paragraph",
+    "/recipes/layout/center-a-rect": "/recipes/layout/center-a-widget",
   },
   vite: {
     server: {

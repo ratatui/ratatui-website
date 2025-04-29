@@ -156,10 +156,10 @@ You may also want to check out the following links (roughly in order of increasi
 - <https://github.com/ratatui/ratatui/tree/main/examples>: Simple one-off examples to illustrate
   various widgets and features in `ratatui`.
 - <https://github.com/ratatui/templates/tree/main/simple>: Starter kit for using `ratatui`
-- <https://github.com/ratatui/templates/tree/main/async>: Starter kit for using `ratatui` with
-  `async` using `tokio`
-- <https://github.com/ratatui/ratatui-website/tree/main/code/json-editor>: Tutorial project that the
-  user a simple interface to enter key-value pairs, which will printed in json.
+- <https://github.com/ratatui/templates/tree/main/simple-async>: Starter kit for using `ratatui`
+  with `async` using `tokio`
+- <https://github.com/ratatui/ratatui-website/tree/main/code/tutorials/json-editor>: Tutorial
+  project that the user a simple interface to enter key-value pairs, which will printed in json.
 - <https://github.com/ratatui/templates/tree/main/component>: Async tokio crossterm based
   opinionated starter kit with "components" for using `ratatui`.
 - <https://github.com/veeso/tui-realm/>: A framework for `tui.rs` to simplify the implementation of

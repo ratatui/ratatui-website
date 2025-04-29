@@ -30,8 +30,8 @@ easily be productive in creating applications:
 
 - Each example has an App struct, with methods that implement a main loop, handle events and drawing
   the UI.
-- We use color_eyre for handling errors and panics. See [How to use color-eyre with Ratatui] on the website
-  for more information about this.
+- We use color_eyre for handling errors and panics. See [How to use color-eyre with Ratatui] on the
+  website for more information about this.
 - Common code is not extracted into a separate file. This makes each example self-contained and easy
   to read as a whole.
 

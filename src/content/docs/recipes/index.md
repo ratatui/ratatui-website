@@ -8,5 +8,6 @@ title: Recipes
   including how to style and write to the buffer.
 - [Widgets](./widgets/): Articles related to using individual widgets suchs as the paragraph, block,
   and creating your own custom widget.
+- [Testing](./testing/): Articles related to how to test your TUI application.
 - [Applications](./apps/): Articles related to developing applications. E.g. how to handle CLI
   arguments, tracing, configuration, panics, etc.

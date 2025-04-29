@@ -29,7 +29,7 @@ or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.28.0", features = ["all-widgets"]}
+ratatui = { version = "0.28.0", features = ["all-widgets"] }
 ```
 
 You can learn more about available widgets from the
@@ -41,7 +41,7 @@ By default, `ratatui` enables the `crossterm` feature, but it's possible to alte
 `termion`, or `termwiz` instead by enabling the appropriate feature and disabling the default
 features. See [Backend] for more information.
 
-::: note
+:::note
 
 Before Ratatui 0.27.0, it was necessary to import a backend crate that matched the backend feature.
 In 0.27.0 Ratatui now exports the backend crates at the root to make it easier to ensure a matching
