@@ -9,8 +9,8 @@ Command Line Interface (CLI) tools often require input parameters to dictate the
 [`clap`](https://docs.rs/clap/latest/clap/) (Command Line Argument Parser) is a feature-rich Rust
 library that facilitates the parsing of these arguments in an intuitive manner.
 
-To use the derive syntax as shown in the following snippets, be sure to enable the `derive`
-feature (i.e. by running `cargo add clap --feature derive`).
+To use the derive syntax as shown in the following snippets, be sure to enable the `derive` feature
+(i.e. by running `cargo add clap --feature derive`).
 
 ## Defining Command Line Arguments
 
