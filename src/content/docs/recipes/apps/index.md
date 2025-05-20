@@ -14,3 +14,4 @@ This section covers recipes for developing applications:
 - [Use Better Panic](./better-panic/)
 - [Migrate from TUI-rs](./migrate-from-tui-rs/)
 - [Spawn Vim](./spawn-vim/)
+- [Releasing Your App](./release-your-app/)
