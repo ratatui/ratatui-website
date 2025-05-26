@@ -40,8 +40,8 @@ we use VHS to create screenshots and gifs for our all the examples and widgets.
 
 Some tips for creating good screenshots:
 
-TL;DR: Use [VHS], `Set Width 1200`, `Set Theme "Aardvark Blue"`, `Sleep 2s`, `Hide`/`Show` around CLI
-command to run the app,
+TL;DR: Use [VHS], `Set Width 1200`, `Set Theme "Aardvark Blue"`, `Sleep 2s`, `Hide`/`Show` around
+CLI command to run the app,
 
 - Use a dark background for your terminal. Don't flashbang devs with light screens.
 - Choose a good color scheme that shows off your app. Aardvark Blue is the choice we use in Ratatui,
@@ -53,11 +53,11 @@ command to run the app,
   make your screenshots look cleaner and more professional.
 - Wait around 2 seconds after making some changes to let the viewier read and understand the
   changes. This is especially important for gifs with a lot of information changing on each screen.
-- Avoid storing the screenshot / gifs in your repo. This tends to bloat the repo and make it
-  harder to clone. Instead, use VHS to publish the screenshots (`vhs publish`), or store them in a
-  PR comment, an image hosting service, or your own website.
-- Try to get to the meat of your app as quickly as possible. Don't waste time on the loading screen or
-  splash screen. This is especially important for gifs, where you have a limited amount of time to
-  show off your app.
+- Avoid storing the screenshot / gifs in your repo. This tends to bloat the repo and make it harder
+  to clone. Instead, use VHS to publish the screenshots (`vhs publish`), or store them in a PR
+  comment, an image hosting service, or your own website.
+- Try to get to the meat of your app as quickly as possible. Don't waste time on the loading screen
+  or splash screen. This is especially important for gifs, where you have a limited amount of time
+  to show off your app.
 
 [VHS]: https://github.com/charmbracelet/vhs
