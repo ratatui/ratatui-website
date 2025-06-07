@@ -4,6 +4,7 @@ use color_eyre::eyre::Result;
 use ratatui::{
   layout::{Alignment, Constraint, Direction, Layout, Rect},
   style::Stylize,
+  text::Line,
   widgets::Block,
   Frame,
 };
