@@ -17,8 +17,8 @@ development and debugging purposes.
 
 The following code shows how you might implement this for some simple form's state. More advanced
 applications may want to have more sophisticated debug views, but the principle remains the same.
-The applicaiton state has a `show_debug` field that can be toggled on and off, and the and the
-`render` function allocates some space to render the debug information when `show_debug` is true.
+The app state has a `show_debug` field that can be toggled on and off, and the and the `render`
+function allocates some space to render the debug information when `show_debug` is true.
 
 ```rust collapse={3-19}
 {{ #include @code/recipes/how-to-debug-widget-state/src/main.rs }}
