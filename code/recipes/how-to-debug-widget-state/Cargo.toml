@@ -1,0 +1,17 @@
+[package]
+name = "how-to-debug-widget-state"
+version.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+repository.workspace = true
+keywords.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+color-eyre = "0.6.5"
+crossterm = "0.28.1"
+ratatui = "0.29.0"
