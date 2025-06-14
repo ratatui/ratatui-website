@@ -23,4 +23,4 @@ but in my opinion, essential for any Terminal User Interface (TUI) program:
 - Logging
 - Panic Handler
 
-These are described in more detail in the [`utils.rs` section](./08-structure.md).
+These are described in more detail in the [`utils.rs` section](./utils-rs.md).
