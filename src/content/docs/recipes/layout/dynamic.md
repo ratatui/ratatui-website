@@ -1,7 +1,7 @@
 ---
 title: "Create Dynamic layouts"
 sidebar:
-  order: 1
+  order: 4
   label: Dynamic Layouts
 ---
 
