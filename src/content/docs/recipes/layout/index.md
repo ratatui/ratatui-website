@@ -7,9 +7,10 @@ sidebar:
 
 In this section we will cover layout basics and advanced techniques.
 
-- [Create Dynamic Layouts](./dynamic/)
+- [Grid Layout](./grid/)
 - [Center a Rect](./center-a-widget/)
 - [Collapse Borders](./collapse-borders/)
+- [Create Dynamic Layouts](./dynamic/)
 
 ## See Also
 
