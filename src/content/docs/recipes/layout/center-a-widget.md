@@ -15,10 +15,7 @@ To center a widget in any area, create a [`Rect`] that is centered within the ar
 calculate the x and y positions of the widget by subtracting the widget width and height from the
 enclosing area's width and height, respectively, and dividing by 2.
 
-More simply, you can use the [`Layout`] struct to center a widget. You can use a `Horizontal` layout
-followed by a `Vertical` layout to get a centered [`Rect`]. The [`Flex`] enum can be used to specify
-the alignment of the rect within the containing area.
-
+More simply, you can use the `.centered_vertically()` and `.centered_horizontally()` methods on rect
 ### Centering horizontally
 
 ```rust
@@ -37,9 +34,7 @@ the alignment of the rect within the containing area.
 
 ### Centering both horizontally and vertically
 
-You can use a `Vertical` layout followed by a `Horizontal` layout to get a centered `Rect`. This
-example centers the `Rect` using constraints on each axis. This lets you allocate the space
-available based on a percentage, ratio, or fixed size.
+You can use the `.centered` method to get a centered `Rect`.
 
 ```rust collapse={1-13}
 {{ #include @code/recipes/how-to-misc/src/layout.rs:center }}
