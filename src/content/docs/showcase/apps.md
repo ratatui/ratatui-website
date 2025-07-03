@@ -119,6 +119,14 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 ---
 
+## [`Raijin`](https://github.com/MasonStooksbury/Raijin)
+
+A free, simple weather TUI that pulls data without the need for an API key, account, or subscription
+
+![Raijin screenshot](https://github.com/MasonStooksbury/Raijin/blob/main/screenshot.png?raw=true)
+
+---
+
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
 An application to manage markdown notes from your terminal and compile them to HTML
