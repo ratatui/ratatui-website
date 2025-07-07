@@ -190,3 +190,12 @@ Unlock the power of APIs with simplicity and speed, right from your terminal. Vi
 documentations in your terminal.
 
 ![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
+
+---
+
+## [`rama ws`](https://github.com/plabayo/rama)
+
+Websocket client (http/1.1 + h2) with a Terminal User Interface (TUI) via the rama ws command.
+This can be a useful client to quickly test out a WebSocket service or a MITM WS Proxy.
+
+![rama ws demo](https://ramaproxy.org/book/img/rama_ws_client_tui_demo.gif)
