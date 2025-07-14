@@ -20,62 +20,38 @@ We can do better though, by collapsing borders. E.g.:
 
 ![solution](https://user-images.githubusercontent.com/381361/279935618-3b411b45-1a02-4f4c-af9f-7b68f766023e.png)
 
-The first thing we need to do is work out which borders to collapse. Because in the layout above we
-want to connect the bottom right block to the middle vertical border, we're going to need this to be
-rendered by the top left and bottom left blocks rather than the right block.
+Starting with Ratatui 0.30, collapsing borders has become much easier thanks to the new
+`merge_borders` method and `Spacing::Overlap`. The recipe is simple:
 
-We need to use the symbols module to achieve this so we add this to the imports:
+1.  Import `Spacing` and `MergeStrategy`.
 
-```rust ins={3}
-{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:imports}}
-```
+    ```rust ins={2-3}
+    {{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:imports}}
+    ```
 
-Our first change is to the left block where we remove the right border:
+2.  Use `Spacing::Overlap(1)` in your layout to make borders overlap.
 
-```rust
-{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:left_block}}
-```
+    ```rust
+    {{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:layout}}
+    ```
 
-Next, we see that the top left corner of the top right block joins with the top right corner of the
-left block, so we need to replace that with a T shape. We also see omit the bottom border as that
-will be rendered by the bottom right block. We use a custom [`symbols::border::Set`] to achieve
-this.
+3.  Add `.merge_borders(MergeStrategy::Exact)` to your blocks to automatically merge borders (see
+    [`MergeStrategy` documentation](https://docs.rs/ratatui/latest/ratatui/symbols/merge/enum.MergeStrategy.html#variants)
+    for details about the different strategies).
 
-[`symbols::border::Set`]: https://docs.rs/ratatui/latest/ratatui/symbols/border/struct.Set.html
+    ```rust
+    {{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:blocks}}
+    ```
 
-```rust
-{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:top_right_block}}
-```
+Setting `merge_borders` to `MergeStrategy::Exact` or `MergeStrategy::Fuzzy` automatically handles
+all the complex border joining logic. The `Spacing::Overlap(1)` ensures that adjacent borders occupy
+the same space, allowing them to be merged.
 
-In the bottom right block, we see that the top right corner joins the left block's right border and
-so we need to rend this with a horizontal T shape pointing to the right. We need to do the same for
-the top right corner and the bottom left corner.
+:::tip
 
-```rust
-{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:bottom_right_block}}
-```
-
-Finally, render the blocks:
-
-```rust
-{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:render}}
-```
-
-If we left it here, then we'd be mostly fine, but in small areas we'd notice that the 50/50 split no
-longer looks right. This is due to the fact that by default we round up when splitting an odd number
-of rows or columns in 2 (e.g. 5 rows => 2.5/2.5 => 3/2). This is fine normally, but when we collapse
-borders between blocks, the first block has one extra row (or columns) already as it does not have
-the collapsed block. We can easily work around this issue by allocating a small amount of extra
-space to the last layout item (e.g. by using 49/51 or 33/33/34).
-
-```rust
-{{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs:layout}}
-```
-
-:::note
-
-If this sounds too complex, we're looking for some help to make this easier in
-<https://github.com/ratatui/ratatui/issues/605>.
+This new approach in Ratatui 0.30 replaces the complex manual border management that was required in
+earlier versions. If you're using an older version of Ratatui, you'll need to use custom border sets
+and selective border rendering as described in the previous version of this recipe.
 
 :::
 
