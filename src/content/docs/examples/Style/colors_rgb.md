@@ -10,7 +10,7 @@ two square-ish pixels in the space of a single rectangular terminal cell.
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=colors_rgb --features=crossterm
+cargo run --example=colors_rgb --features="crossterm palette"
 ```
 
 <!-- TODO update this to use the mov file -->
