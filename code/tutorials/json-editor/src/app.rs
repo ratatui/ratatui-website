@@ -66,7 +66,7 @@ impl App {
     // ANCHOR: print_json
     pub fn print_json(&self) -> serde_json::Result<()> {
         let output = serde_json::to_string(&self.pairs)?;
-        println!("{}", output);
+        println!("{output}");
         Ok(())
     }
     // ANCHOR_END: print_json

@@ -63,7 +63,7 @@ fn render(frame: &mut Frame, state: &AppState) {
     frame.render_widget(&state.form, main);
 
     if state.show_debug {
-        let debug_text = Text::from(format!("state: {:#?}", state));
+        let debug_text = Text::from(format!("state: {state:#?}"));
         frame.render_widget(debug_text, debug);
     }
 }
