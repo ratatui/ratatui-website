@@ -197,6 +197,7 @@ documentations in your terminal.
 
 Yōzefu is an interactive TUI application for exploring data of a Kafka cluster.
 
-It is an alternative tool to AKHQ, Redpanda Console, or the Kafka plugin for JetBrains IDEs. It includes a search query language inspired by SQL, providing fine-grained filtering capabilities.
+It is an alternative tool to AKHQ, Redpanda Console, or the Kafka plugin for JetBrains IDEs. It
+includes a search query language inspired by SQL, providing fine-grained filtering capabilities.
 
 ![yozefu demo](https://vhs.charm.sh/vhs-UpIJD2h92vKkj01XSS0r0.gif)
