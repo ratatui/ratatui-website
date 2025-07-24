@@ -22,8 +22,7 @@ fn main() -> color_eyre::Result<()> {
     let result = run(terminal).wrap_err("run failed");
     if let Err(err) = tui::restore() {
         eprintln!(
-            "failed to restore terminal. Run `reset` or restart your terminal to recover: {}",
-            err
+            "failed to restore terminal. Run `reset` or restart your terminal to recover: {err}"
         );
     }
     result

@@ -17,7 +17,7 @@ use std::time::{Duration, Instant};
 
 use color_eyre::Result;
 use rand::{
-    distributions::{Distribution, Uniform},
+    distr::{Distribution, Uniform},
     rngs::ThreadRng,
 };
 use ratatui::{
@@ -52,8 +52,8 @@ struct RandomSignal {
 impl RandomSignal {
     fn new(lower: u64, upper: u64) -> Self {
         Self {
-            distribution: Uniform::new(lower, upper),
-            rng: rand::thread_rng(),
+            distribution: Uniform::new(lower, upper).unwrap(),
+            rng: rand::rng(),
         }
     }
 }
