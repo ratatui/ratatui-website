@@ -33,9 +33,9 @@ method.
         loop {
           if crossterm::event::poll(tick_rate).unwrap() {
             match crossterm::event::read().unwrap() {
-              CrosstermEvent::Key(e) => {
+              CrosstermEvent::Key(key) => {
                 if key.kind == event::KeyEventKind::Press {
-                  tx.send(Event::Key(e)).unwrap()
+                  tx.send(Event::Key(key)).unwrap()
                 }
               },
               _ => unimplemented!(),
