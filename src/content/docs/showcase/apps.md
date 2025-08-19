@@ -52,14 +52,6 @@ compared to the standard 'rm' command.
 
 ---
 
-## [`joshuto`](https://github.com/kamiyaa/joshuto)
-
-Ranger-like terminal file manager written in Rust
-
-![joshuto demo](https://github.com/kamiyaa/joshuto/raw/main/screenshot.png?raw=true)
-
----
-
 ## [`fzf-make`](https://github.com/kyu08/fzf-make)
 
 A command line tool that executes make target using fuzzy finder with preview window
@@ -81,6 +73,14 @@ TUI for git written in rust
 gpg-tui is a Terminal User Interface for GnuPG.
 
 ![gpg-tui demo](https://github.com/orhun/gpg-tui/blob/master/demo/gpg-tui-scrolling_rows.gif?raw=true)
+
+---
+
+## [`joshuto`](https://github.com/kamiyaa/joshuto)
+
+Ranger-like terminal file manager written in Rust
+
+![joshuto demo](https://github.com/kamiyaa/joshuto/raw/main/screenshot.png?raw=true)
 
 ---
 
@@ -119,6 +119,15 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 ---
 
+## [`openapi-tui`](https://github.com/zaghaghi/openapi-tui)
+
+Unlock the power of APIs with simplicity and speed, right from your terminal. View OpenAPI
+documentations in your terminal.
+
+![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
+
+---
+
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
 An application to manage markdown notes from your terminal and compile them to HTML
@@ -140,6 +149,21 @@ A simple oscilloscope/vectorscope/spectroscope for your terminal
 Terminal HTTP/REST client
 
 ![slumber demo](https://media.githubusercontent.com/media/LucasPickering/slumber/master/static/demo.gif)
+
+---
+
+## [`steer`](https://github.com/BrendanGraham14/steer)
+
+A CLI-based AI coding agent for local dev, scripts/CI, and automation.
+
+- TUI: interactive coding sessions in your terminal. Run it locally, or connect to a session in a remote server.
+- Headless: single-shot stdin/stdout for scripts and CI.
+- Server mode: expose agent sessions over gRPC; target a remote workspace for editing, commands, and file access.
+
+Steer supports MCP, persistent sessions, and a tool/command approval system. It includes data-driven model/provider configuration, keyring-backed auth (API keys
+and Claude OAuth), custom slash commands, themes, desktop/audio notifications, and more.
+
+![steer demo](https://raw.githubusercontent.com/brendangraham14/steer/main/.github/images/demo.gif)
 
 ---
 
@@ -181,15 +205,6 @@ Blazing fast terminal file manager written in Rust, based on async I/O
   <source src="https://github.com/sxyazi/yazi/assets/17523360/92ff23fa-0cd5-4f04-b387-894c12265cc7" type="video/mp4">
   Your browser does not support the video tag.
 </video>
-
----
-
-## [`openapi-tui`](https://github.com/zaghaghi/openapi-tui)
-
-Unlock the power of APIs with simplicity and speed, right from your terminal. View OpenAPI
-documentations in your terminal.
-
-![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
 
 ---
 
