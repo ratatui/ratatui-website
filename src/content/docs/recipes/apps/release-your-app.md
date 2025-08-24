@@ -31,6 +31,30 @@ Discord server / forum. This is not a comprehensive list, but it should help you
 [Ratatui Discord]: https://discord.gg/pMCEU9hNEj
 [Ratatui Forum]: https://forum.ratatui.rs
 
+## Cargo configuration
+
+Make sure you enable additional compiler optimizations for the release build. This will help reduce the size of the resulting binary. Add the following lines to your `Cargo.toml` file:
+
+```toml
+[profile.release]
+codegen-units = 1 # Allows compiler to perform better optimization.
+lto = true # Enables Link-time Optimization.
+opt-level = "s" # Prioritizes small binary size. Use `3` if you prefer speed.
+strip = true # Ensures debug symbols are removed.
+```
+
+### References
+
+- [codegen-units]: Tweaks a tradeoff between compile times and compile time optimizations.
+- [lto]: Enables Link-time Optimization.
+- [opt-level]: Determines the focus of the compiler in optimizations. Use `3` to optimize performance, `z` to optimize for size, and `s` for something in-between.
+- [strip]: Strip either symbols or debuginfo from a binary.
+
+[codegen-units]: https://doc.rust-lang.org/cargo/reference/profiles.html#codegen-units
+[lto]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
+[opt-level]: https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level
+[strip]: https://doc.rust-lang.org/cargo/reference/profiles.html#strip
+
 ## Screenshots
 
 Don't forget to add a screenshot / gif of your app in action. This will help users understand what
