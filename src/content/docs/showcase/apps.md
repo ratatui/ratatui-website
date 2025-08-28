@@ -119,6 +119,14 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 ---
 
+## [`oxker`](https://github.com/mrjackwills/oxker/)
+
+A simple tui to view & control docker containers
+
+![oxker demo](https://raw.githubusercontent.com/mrjackwills/oxker/main/.github/screenshot_01.png?raw=true)
+
+---
+
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
 An application to manage markdown notes from your terminal and compile them to HTML
