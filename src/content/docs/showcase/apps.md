@@ -121,7 +121,7 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 ## [`oxker`](https://github.com/mrjackwills/oxker/)
 
-A simple tui to view & control docker containers
+A simple TUI to view & control docker containers
 
 ![oxker demo](https://raw.githubusercontent.com/mrjackwills/oxker/main/.github/demo_01.webp?raw=true)
 
