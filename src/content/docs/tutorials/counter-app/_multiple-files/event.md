@@ -228,4 +228,3 @@ Here's the full code for your reference:
 ```rust
 {{#include @code/tutorials/ratatui-counter-app/src/event.rs:eventall}}
 ```
-
