@@ -19,25 +19,24 @@ Take this "hello world" program below. If we run it with and without the
 `std::io::stderr().execute(EnterAlternateScreen)?` (and the corresponding `LeaveAlternateScreen`),
 you can see how the program behaves differently.
 
-```rust
-use std::{ // hide_line
-  io::{stderr, Result}, // hide_line
-  thread::sleep, // hide_line
-  time::Duration, // hide_line
-}; // hide_line
-// hide_line
-use ratatui::crossterm::{ // hide_line
-  terminal::{EnterAlternateScreen, LeaveAlternateScreen}, // hide_line
-  ExecutableCommand, // hide_line
-}; // hide_line
-use ratatui::{prelude::*, widgets::*}; // hide_line
-// hide_line
-fn main() -> Result<()> { // hide_line
-  let should_enter_alternate_screen = std::env::args().nth(1).unwrap().parse::<bool>().unwrap(); // hide_line
-  if should_enter_alternate_screen { // hide_line
-  stderr().execute(EnterAlternateScreen)?; // remove this line
-  } // hide_line
+```rust collapse={1-17, 25-30}
+use std::{
+  io::{stderr, Result},
+  thread::sleep,
+  time::Duration,
+};
 
+use ratatui::crossterm::{
+  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+  ExecutableCommand,
+};
+use ratatui::{prelude::*, widgets::*};
+
+fn main() -> Result<()> {
+  let should_enter_alternate_screen = std::env::args().nth(1).unwrap().parse::<bool>().unwrap();
+  if should_enter_alternate_screen {
+  stderr().execute(EnterAlternateScreen)?; // remove this line
+  }
   let mut terminal = Terminal::new(CrosstermBackend::new(stderr()))?;
 
   terminal.draw(|f| {
@@ -45,11 +44,11 @@ fn main() -> Result<()> { // hide_line
   })?;
   sleep(Duration::from_secs(2));
 
-  if should_enter_alternate_screen { // hide_line
+  if should_enter_alternate_screen {
   stderr().execute(LeaveAlternateScreen)?; // remove this line
-  } // hide_line
-  Ok(()) // hide_line
-} // hide_line
+  }
+  Ok(())
+}
 ```
 
 <!--
