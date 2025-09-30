@@ -23,11 +23,27 @@ IP/hostname
 
 ---
 
+## [`binsider`](https://github.com/orhun/binsider)
+
+Perform binary analysis in your terminal.
+
+![binsider demo](https://github.com/orhun/binsider/blob/main/website/src/content/assets/quickstart.gif?raw=true)
+
+---
+
 ## [`bottom`](https://github.com/ClementTsang/bottom)
 
 A customizable cross-platform graphical process/system monitor for the terminal
 
 ![bottom demo](https://github.com/ClementTsang/bottom/blob/main/assets/demo.gif?raw=true)
+
+---
+
+## [`crossword`](https://github.com/matrixfrog/crossword)
+
+Play crossword puzzles in your terminal.
+
+![crossword demo](https://github.com/user-attachments/assets/8a2bb53b-f461-4ddd-b60c-9ae5170b501d)
 
 ---
 
@@ -136,6 +152,14 @@ documentations in your terminal.
 
 ---
 
+## [`rainfrog`](https://github.com/achristmascarl/rainfrog)
+
+A lightweight and terminal-based tool for interacting with databases.
+
+![rainfrog demo](https://github.com/achristmascarl/rainfrog/raw/main/vhs/demo.gif?raw=true)
+
+---
+
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
 An application to manage markdown notes from your terminal and compile them to HTML
@@ -185,6 +209,15 @@ variables, docker images, you name it) using a fuzzy matching algorithm and is d
 extensible.
 
 ![television demo](https://github.com/user-attachments/assets/7a967f9c-779e-4915-baa8-160f586f8936)
+
+---
+
+## [`trippy`](https://github.com/fujiapple852/trippy)
+
+A network diagnostic tool that combines the functionality of traceroute and ping and is designed to
+assist with the analysis of networking issues.
+
+![trippy demo](https://raw.githubusercontent.com/fujiapple852/trippy/master/assets/0.12.0/demo.gif?raw=true)
 
 ---
 
