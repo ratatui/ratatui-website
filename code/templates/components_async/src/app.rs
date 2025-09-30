@@ -1,3 +1,4 @@
+// ANCHOR: all
 use color_eyre::Result;
 use crossterm::event::KeyEvent;
 use ratatui::prelude::Rect;
@@ -175,3 +176,4 @@ impl App {
         Ok(())
     }
 }
+// ANCHOR_END: all
