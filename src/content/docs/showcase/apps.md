@@ -152,6 +152,14 @@ documentations in your terminal.
 
 ---
 
+## [`rainfrog`](https://github.com/achristmascarl/rainfrog)
+
+A lightweight and terminal-based tool for interacting with databases.
+
+![rainfrog demo](https://github.com/achristmascarl/rainfrog/raw/main/vhs/demo.gif?raw=true)
+
+---
+
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
 An application to manage markdown notes from your terminal and compile them to HTML
