@@ -23,6 +23,14 @@ IP/hostname
 
 ---
 
+## [`binsider`](https://github.com/orhun/binsider)
+
+Perform binary analysis in your terminal.
+
+![binsider demo](https://github.com/orhun/binsider/blob/main/website/src/content/assets/quickstart.gif?raw=true)
+
+---
+
 ## [`bottom`](https://github.com/ClementTsang/bottom)
 
 A customizable cross-platform graphical process/system monitor for the terminal
