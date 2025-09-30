@@ -156,7 +156,7 @@ A simple oscilloscope/vectorscope/spectroscope for your terminal
 
 Terminal HTTP/REST client
 
-![slumber demo](https://raw.githubusercontent.com/media/LucasPickering/slumber/master/static/demo.gif)
+![slumber demo](https://media.githubusercontent.com/media/LucasPickering/slumber/master/docs/src/images/demo.gif)
 
 ---
 
