@@ -212,6 +212,15 @@ extensible.
 
 ---
 
+## [`trippy`](https://github.com/fujiapple852/trippy)
+
+A network diagnostic tool that combines the functionality of traceroute and ping and is designed to
+assist with the analysis of networking issues.
+
+![trippy demo](https://raw.githubusercontent.com/fujiapple852/trippy/master/assets/0.12.0/demo.gif?raw=true)
+
+---
+
 ## [`xplr`](https://github.com/sayanarijit/xplr)
 
 A hackable, minimal, fast TUI file explorer
