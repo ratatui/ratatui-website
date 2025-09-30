@@ -39,6 +39,14 @@ A customizable cross-platform graphical process/system monitor for the terminal
 
 ---
 
+## [`crossword`](https://github.com/matrixfrog/crossword)
+
+Play crossword puzzles in your terminal.
+
+![crossword demo](https://github.com/user-attachments/assets/8a2bb53b-f461-4ddd-b60c-9ae5170b501d)
+
+---
+
 ## [`csvlens`](https://github.com/YS-L/csvlens)
 
 `csvlens` is A command line CSV file viewer. It is like less but made for CSV.
