@@ -1,3 +1,4 @@
+// ANCHOR: all
 use clap::Parser;
 
 use crate::config::{get_config_dir, get_data_dir};
@@ -40,3 +41,4 @@ Config directory: {config_dir_path}
 Data directory: {data_dir_path}"
     )
 }
+// ANCHOR_END: all

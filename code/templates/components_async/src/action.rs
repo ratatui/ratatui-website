@@ -1,3 +1,4 @@
+// ANCHOR: all
 use serde::{Deserialize, Serialize};
 use strum::Display;
 
@@ -13,3 +14,4 @@ pub enum Action {
     Error(String),
     Help,
 }
+// ANCHOR_END: all

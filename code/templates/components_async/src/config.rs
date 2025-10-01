@@ -1,4 +1,5 @@
 #![allow(dead_code)] // Remove this once you start using the code
+// ANCHOR: all
 
 use std::{collections::HashMap, env, path::PathBuf};
 
@@ -447,6 +448,7 @@ fn parse_color(s: &str) -> Option<Color> {
     }
 }
 
+// ANCHOR_END: all
 #[cfg(test)]
 mod tests {
     use pretty_assertions::assert_eq;

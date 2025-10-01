@@ -1,3 +1,4 @@
+// ANCHOR: all
 use color_eyre::Result;
 use crossterm::event::{KeyEvent, MouseEvent};
 use ratatui::{
@@ -15,6 +16,7 @@ pub mod home;
 ///
 /// Implementors of this trait can be registered with the main application loop and will be able to
 /// receive events, update state, and be rendered on the screen.
+// ANCHOR: component
 pub trait Component {
     /// Register an action handler that can send actions for processing if necessary.
     ///
@@ -123,3 +125,5 @@ pub trait Component {
     /// * `Result<()>` - An Ok result or an error.
     fn draw(&mut self, frame: &mut Frame, area: Rect) -> Result<()>;
 }
+// ANCHOR_END: component
+// ANCHOR_END: all
