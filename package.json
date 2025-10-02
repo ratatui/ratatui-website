@@ -26,7 +26,7 @@
     "@astrojs/starlight-tailwind": "^3.0.0",
     "@astrojs/tailwind": "^5.1.4",
     "@expressive-code/plugin-collapsible-sections": "^0.38.3",
-    "astro": "5.1.1",
+    "astro": "^5.14.1",
     "astro-diagram": "^0.7.0",
     "hast-util-select": "^6.0.3",
     "hastscript": "^9.0.0",
@@ -56,12 +56,16 @@
     "tailwindcss-animate": "^1.0.7",
     "ts-dedent": "^2.2.0",
     "unist-util-visit": "^5.0.0",
-    "vitest": "^2.1.9"
+    "vitest": "^3.2.4"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
   "overrides": {
-    "vite": "6.0.3"
+    "vite": "6.3.6",
+    "mermaid": "11.11.0",
+    "dompurify": "3.2.6",
+    "tar-fs": "^3.0.4",
+    "ws": "^8.18.0"
   }
 }
