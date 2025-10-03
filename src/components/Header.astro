@@ -1,6 +1,4 @@
 ---
-import type { Props } from "@astrojs/starlight/props";
-
 import Search from "@astrojs/starlight/components/Search.astro";
 import SiteTitle from "@astrojs/starlight/components/SiteTitle.astro";
 import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
@@ -15,7 +13,7 @@ const buttons = [
 
 <div class="flex h-full items-center justify-between">
   <div class="flex">
-    <SiteTitle {...Astro.props} />
+    <SiteTitle />
   </div>
   <div class="flex flex-grow"></div>
   <div class="hidden space-x-2 md:flex">
@@ -31,15 +29,15 @@ const buttons = [
     }
   </div>
   <div class="flex px-6">
-    <Search {...Astro.props} />
+    <Search />
   </div>
   <div class="hidden items-center gap-4 md:flex">
     <div class="flex items-center gap-4">
-      <SocialIcons {...Astro.props} />
+      <SocialIcons />
       <span class="block h-8 border-r border-gray-500"></span>
       <!-- For the pseudo element -->
     </div>
-    <ThemeSelect {...Astro.props} />
-    <LanguageSelect {...Astro.props} />
+    <ThemeSelect />
+    <LanguageSelect />
   </div>
 </div>
