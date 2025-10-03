@@ -1,6 +1,7 @@
 import partytown from "@astrojs/partytown";
 import starlight from "@astrojs/starlight";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import rehypeMermaid from "rehype-mermaid";
 import emoji from "remark-emoji";
@@ -9,7 +10,6 @@ import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
 import { collapsibleFrames } from "/src/plugins/collapsible-frames";
 import remarkIncludeCode from "/src/plugins/remark-code-import";
-import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
@@ -68,7 +68,11 @@ export default defineConfig({
         { icon: "x.com", label: "X.com", href: "https://twitter.com/ratatui_rs" },
         { icon: "blueSky", label: "Bluesky", href: "https://bsky.app/profile/ratatui.rs" },
         { icon: "mastodon", label: "Mastodon", href: "https://fosstodon.org/@ratatui_rs" },
-        { icon: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/ratatui-rs" },
+        {
+          icon: "linkedin",
+          label: "LinkedIn",
+          href: "https://www.linkedin.com/company/ratatui-rs",
+        },
       ],
       sidebar: [
         // note that the need to order items and name the groups in the sidebar prevents
