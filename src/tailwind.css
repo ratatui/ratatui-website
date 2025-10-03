@@ -8,11 +8,11 @@
   .hero {
     grid-template-columns: 3fr 7fr;
     gap: 6%;
-    padding-block: 1.5rem;
+    padding-block: 1.5rebottom
   }
 
-  .hero > img,
-  .hero > .hero-html {
+  .hero>img,
+  .hero>.hero-html {
     order: 0;
     width: min(100%, 15rem);
   }
@@ -21,10 +21,13 @@
 .three-cols {
   display: grid;
   padding-top: 1rem;
+
   @media (min-width: 50rem) {
     grid-template-columns: 1fr 1fr 1fr;
   }
+
   gap: 2.5rem;
+
   h3 {
     margin-bottom: 0rem;
   }
@@ -35,6 +38,7 @@ svg.svgbob text,
 svg.svgbob .filled {
   fill: currentColor;
 }
+
 svg.svgbob .solid,
 svg.svgbob polygon {
   stroke: currentColor;
@@ -44,26 +48,41 @@ svg.svgbob polygon {
 svg[aria-roledescription="sequence"] .messageText {
   fill: currentColor !important;
 }
+
 svg[aria-roledescription="sequence"] line,
 svg[aria-roledescription="sequence"] path,
 svg[aria-roledescription="sequence"] .flowchart-link {
   stroke: currentColor !important;
 }
+
 svg[aria-roledescription="flowchart-v2"] .arrowMarkerPath {
   fill: currentColor;
 }
+
 svg[aria-roledescription="flowchart-v2"] line,
 svg[aria-roledescription="flowchart-v2"] path,
 svg[aria-roledescription="flowchart-v2"] .flowchart-link {
   stroke: currentColor !important;
 }
+
 svg[aria-roledescription="stateDiagram"] {
   line-height: normal;
 }
+
 svg[aria-roledescription="stateDiagram"] line,
 svg[aria-roledescription="stateDiagram"] path,
 svg[aria-roledescription="stateDiagram"] circle {
   stroke: currentColor !important;
+}
+
+/* Text highlight colour for tagline */
+:root[data-theme="dark"] {
+  --sl-color-highlight: oklch(79.5% 0.184 86.047);
+}
+
+:root[data-theme="light"] {
+  --sl-color-highlight: oklch(42.4% 0.199 265.638);
+  ;
 }
 
 marker#arrowhead path {
@@ -91,14 +110,14 @@ article hr,
 /* More aggressive targeting of potential hr elements */
 hr:first-child,
 hr:first-of-type,
-.sl-container > hr,
-main .sl-container > hr,
-main .content > hr {
+.sl-container>hr,
+main .sl-container>hr,
+main .content>hr {
   display: none !important;
 }
 
 /* Hide the specific border-top rule that creates the line between content panels */
-.content-panel + .content-panel {
+.content-panel+.content-panel {
   border-top: none !important;
 }
 
@@ -142,10 +161,6 @@ main .content-panel:first-child {
 
 /* Hero section */
 .landing-hero {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  align-items: center;
   padding: 2rem 0;
   text-align: center;
 }
@@ -154,15 +169,21 @@ main .content-panel:first-child {
   .landing-hero {
     grid-template-columns: auto 1fr;
     text-align: left;
+    align-items: flex-start;
     gap: 3rem;
   }
 }
 
+.landing-hero-title {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
 .landing-hero-logo {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto;
   position: relative;
+  width: 100px;
+  height: auto;
 }
 
 @media (min-width: 768px) {
@@ -175,9 +196,6 @@ main .content-panel:first-child {
 .landing-hero-logo-dark {
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
 /* Show light logo in light theme, hide dark logo */
@@ -211,19 +229,45 @@ main .content-panel:first-child {
   display: block;
 }
 
+.landing-hero-content {
+  padding: 2rem 0;
+}
+
 .landing-title {
   font-size: 2.5rem;
-  margin: 0 0 1rem 0;
   font-weight: 700;
   color: var(--sl-color-white);
 }
 
-.landing-tagline {
-  font-size: 2.2rem;
-  margin: 0 0 0.5rem 0;
-  color: var(--sl-color-white);
+.landing-highlight {
+  color: var(--sl-color-highlight);
   font-weight: 600;
 }
+
+.landing-highlight::after {
+  content: '';
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.25em;
+  background: var(--sl-color-highlight);
+  margin-left: 0.2rem;
+  animation: blink 1s infinite;
+  vertical-align: text-bottom;
+  vertical-align: -0.1em;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
 
 .landing-description {
   margin: 0 0 2rem 0;

@@ -13,18 +13,23 @@ import heroDark from "../../assets/hero-dark.png";
 import StatsDisplay from "../../components/StatsDisplay.astro";
 
 <div class="landing-hero">
-  <div class="landing-hero-logo">
-    <img src={heroLight.src} alt="Ratatui Logo" class="landing-hero-logo-light" />
-    <img src={heroDark.src} alt="Ratatui Logo" class="landing-hero-logo-dark" />
+  <div class="landing-hero-title">
+    <div class="landing-hero-logo">
+      <img src={heroLight.src} alt="Ratatui Logo" class="landing-hero-logo-light" />
+      <img src={heroDark.src} alt="Ratatui Logo" class="landing-hero-logo-dark" />
+    </div>
+    <h1 class="landing-title landing-mono">Ratatui</h1>
   </div>
+  
   <div class="landing-hero-content">
-    <h1 class="landing-title">Ratatui</h1>
-    <p class="landing-tagline landing-mono">Cook up delicious terminal user interfaces</p>
-    <p class="landing-description landing-mono landing-text-large">
-      Ratatui is a Rust library for building rich terminal user interfaces and applications. Create
-      powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences
-      with ease.
-    </p>
+    <p class="font-bold text-6xl dark:text-white landing-mono">Cook up <span class="landing-highlight">delicious</span></p>
+    <p class="font-bold text-6xl dark:text-white landing-mono">terminal user interfaces</p>
+    <p class="text-xl pt-10 leading-8 w-[600px] landing-mono">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
+  </div>
+
+  <div class="flex-row items-center">
+    <button class="font-bold text-xl text-white bg-blue-600 hover:bg-blue-700 cursor-pointer mr-10 p-2 px-6 landing-mono">Get Started</button>
+    <button class="font-bold text-xl dark:text-white bg-transparent hover:bg-slate-300 dark:hover:bg-slate-800 border border-blue-900 dark:border-blue-200 cursor-pointer p-2 px-6 landing-mono">Browse Examples</button>
   </div>
 </div>
 
