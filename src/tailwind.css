@@ -5,10 +5,6 @@
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @theme {
-  /*
-   * Configure your Tailwind theme that will be used by Starlight.
-	 * https://starlight.astro.build/guides/css-and-tailwind/#styling-starlight-with-tailwind
-   */
   /* Custom accent colors. */
   --color-accent-50: var(--color-blue-50);
   --color-accent-100: var(--color-blue-100);
@@ -34,11 +30,6 @@
   --color-gray-900: var(--color-slate-900);
   --color-gray-950: var(--color-slate-950);
 }
-
-/*
- * Add additional Tailwind styles to this file:
- * https://tailwindcss.com/docs/adding-custom-styles#using-custom-css
- */
 
 @media (min-width: 50rem) {
   /* Move the logo to the left side  */
