@@ -20,20 +20,27 @@ try {
 }
 ---
 
-<div class="landing-stats landing-text-large" style="text-align: center; margin: 1rem 0 3rem 0;">
+<div class="pt-[60px] text-xl landing-mono">
   <p class="landing-mono">
-    <a
-      href="https://crates.io/crates/ratatui/reverse_dependencies"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <span class="landing-stats-number">{stats.crates}</span> crates
-    </a> built with Ratatui
-    <a href="https://github.com/ratatui-org/ratatui" target="_blank" rel="noopener noreferrer">
-      <span class="landing-stats-number">{stats.stars}</span> stars
-    </a> on GitHub
-    <a href="https://crates.io/crates/ratatui" target="_blank" rel="noopener noreferrer">
-      <span class="landing-stats-number">{stats.downloads}</span> downloads
-    </a> on crates.io
+    <span class="text-slate-300">
+      <a
+        class="no-underline"
+        href="https://crates.io/crates/ratatui/reverse_dependencies"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="font-bold text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-6 m-2 landing-mono">{stats.crates}</span>
+      </a> 📦 crates built with Ratatui
+    </span>
+    <span class="text-slate-300">
+      <a class="no-underline" href="https://github.com/ratatui-org/ratatui" target="_blank" rel="noopener noreferrer">
+        <span class="font-bold text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-6 m-2 landing-mono">{stats.stars}</span>
+      </a> ⭐ stars on GitHub
+    </span>
+    <span class="text-slate-300">
+      <a class="no-underline" href="https://crates.io/crates/ratatui" target="_blank" rel="noopener noreferrer">
+        <span class="font-bold text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-6 m-2 landing-mono">{stats.downloads}</span>
+      </a> ⬇️ downloads on crates.io
+    </span>
   </p>
 </div>

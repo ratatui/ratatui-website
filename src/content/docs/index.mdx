@@ -13,73 +13,78 @@ tableOfContents: false
 import { Card, CardGrid } from "@astrojs/starlight/components";
 import heroLight from "../../assets/hero-light.png";
 import heroDark from "../../assets/hero-dark.png";
+import atuin from "../../assets/atuin-animation.gif";
+import bottom from "../../assets/bottom-animation.gif";
+import bandwhich from "../../assets/bandwhich-animation.gif";
 import StatsDisplay from "../../components/StatsDisplay.astro";
+import ImageSwap from '../../components/ImageSwap.astro'
 
-<div class="landing-hero py-8 mb-30 flex justify-center">
+<div class="landing-hero py-8 mb-30 flex justify-center landing-mono">
   <div>
-    <div class="flex flex-wrap gap-10 items-center">
+    <h1 class="landing-mono">Ratatui</h1>
+    <div class="flex flex-wrap gap-10 justify-center items-end">
       <div>
         <div class="landing-hero-title">
           <div class="landing-hero-logo">
             <img src={heroLight.src} alt="Ratatui Logo" class="landing-hero-logo-light" />
             <img src={heroDark.src} alt="Ratatui Logo" class="landing-hero-logo-dark" />
           </div>
-          <h1 class="landing-title landing-mono">Ratatui</h1>
+          <p class="font-bold text-5xl landing-mono">Ratatui</p>
         </div>
         <div class="landing-hero-content">
-          <p class="font-bold text-6xl dark:text-white landing-mono">Cook up <span class="landing-highlight">delicious</span></p>
-          <p class="font-bold text-6xl dark:text-white landing-mono">terminal user interfaces</p>
-          <p class="text-xl pt-10 leading-8 w-[600px] landing-mono">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
+          <p class="font-bold text-6xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
+          <p class="font-bold text-6xl text-black dark:text-white">terminal user interfaces</p>
+          <p class="text-xl pt-10 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
         </div>
         <div class="flex-row items-center">
-          <button class="font-bold text-xl text-white bg-blue-600 hover:bg-blue-700 cursor-pointer mr-10 p-2 px-6 landing-mono">Get Started</button>
-          <button class="font-bold text-xl dark:text-white bg-transparent hover:bg-slate-300 dark:hover:bg-slate-800 border border-blue-900 dark:border-blue-200 cursor-pointer p-2 px-6 landing-mono">Browse Examples</button>
+          <button class="font-bold text-xl text-white bg-blue-600 hover:bg-blue-700 cursor-pointer mr-10 p-2 px-6">Get Started</button>
+          <button class="font-bold text-xl dark:text-white bg-transparent hover:bg-slate-300 dark:hover:bg-slate-800 border border-blue-900 dark:border-blue-200 cursor-pointer p-2 px-6">Browse Examples</button>
         </div>
       </div>
 
       <div class="ml-10 w-[550px]">
-          ```rust
+        ```rust
         {{ #include @code/tutorials/quickstart-ratatui/src/main.rs }}
         ```
       </div>
     </div>
 
+  <div class="flex justify-center">
     <div class="pt-[200px]">
-      <h2 class="landing-mono dark:text-violet-500">Trusted by {`{developers}`}</h2>
-      <p class="font-bold text-6xl dark:text-white landing-mono">Building amazing terminal apps</p>
-    </div>
-
-    <div class="mt-30 text-center">
-      <StatsDisplay />
-
-      <div class="landing-apps-grid">
-        <div class="landing-app-card">
-          <h3 class="landing-app-title landing-mono">
-            <a href="https://github.com/atuinsh/atuin">atuin</a>
-          </h3>
-          <p class="landing-app-description landing-text-small landing-mono">Shell history with superpowers</p>
-        </div>
-
-        <div class="landing-app-card">
-          <h3 class="landing-app-title landing-mono">
-            <a href="https://github.com/ClementTsang/bottom">bottom</a>
-          </h3>
-          <p class="landing-app-description landing-text-small landing-mono">System monitor</p>
-        </div>
-
-        <div class="landing-app-card">
-          <h3 class="landing-app-title landing-mono">
-            <a href="https://github.com/imsnif/bandwhich">bandwhich</a>
-          </h3>
-          <p class="landing-app-description landing-text-small landing-mono">Network utilization monitor</p>
-        </div>
-
+      <p class="font-bold text-3xl text-blue-700 dark:!text-violet-500 landing-mono">
+      <span>Trusted by </span>
+      <span class="text-5xl">{`{developers}`}</span>
+      </p>
+      <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Building amazing terminal apps</p>
+      <div class="bg-blue-800 dark:bg-blue-950 py-10 px-20 max-w-[1500px]">
+        <p class="font-bold text-2xl text-white landing-mono">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</p>
+        <StatsDisplay />
       </div>
+    </div>
+  </div>
 
+  <div class="flex justify-center">
+    <div class="pt-[200px]">
+      <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">
+        <span class="text-6xl text-blue-700 dark:text-violet-500">1400+</span>
+        <span> crates built with Ratatui</span>
+      </p>
+      <ImageSwap 
+        images={{
+          atuin: atuin.src,
+          bottom: bottom.src,
+          bandwhich: bandwhich.src
+        }}
+        threshold={0.5}
+        rootMargin="-20% 0px"
+      />
+    </div>
+  </div>
+  
+   
       <p class="landing-stats-link landing-mono" style="margin-top: 2rem; text-align: center;">
         <a href="/showcase/apps" class="landing-link">Explore the showcase →</a>
       </p>
-    </div>
 
     <CardGrid>
       <Card title="⚡ Fast & Lightweight" icon="rocket">
