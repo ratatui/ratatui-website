@@ -160,11 +160,6 @@ main .content-panel:first-child {
 }
 
 /* Hero section */
-.landing-hero {
-  padding: 2rem 0;
-  text-align: center;
-}
-
 @media (min-width: 768px) {
   .landing-hero {
     grid-template-columns: auto 1fr;
@@ -327,11 +322,6 @@ main .content-panel:first-child {
 }
 
 /* Section styling */
-.landing-section {
-  text-align: center;
-  margin: 4rem 0;
-}
-
 .landing-section-title {
   font-size: 1.75rem !important;
   margin-bottom: 2rem;

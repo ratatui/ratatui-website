@@ -1,5 +1,8 @@
 ---
 title: ""
+head:
+  - tag: style
+    content: ":root { --sl-content-width: 100vw !important; }"
 description:
   "Ratatui: Cook up delicious terminal user interfaces in Rust - the fast, lightweight TUI library
   trusted by developers worldwide"
@@ -12,120 +15,111 @@ import heroLight from "../../assets/hero-light.png";
 import heroDark from "../../assets/hero-dark.png";
 import StatsDisplay from "../../components/StatsDisplay.astro";
 
-<div class="landing-hero">
-  <div class="landing-hero-title">
-    <div class="landing-hero-logo">
-      <img src={heroLight.src} alt="Ratatui Logo" class="landing-hero-logo-light" />
-      <img src={heroDark.src} alt="Ratatui Logo" class="landing-hero-logo-dark" />
-    </div>
-    <h1 class="landing-title landing-mono">Ratatui</h1>
-  </div>
-  
-  <div class="landing-hero-content">
-    <p class="font-bold text-6xl dark:text-white landing-mono">Cook up <span class="landing-highlight">delicious</span></p>
-    <p class="font-bold text-6xl dark:text-white landing-mono">terminal user interfaces</p>
-    <p class="text-xl pt-10 leading-8 w-[600px] landing-mono">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
-  </div>
-
-  <div class="flex-row items-center">
-    <button class="font-bold text-xl text-white bg-blue-600 hover:bg-blue-700 cursor-pointer mr-10 p-2 px-6 landing-mono">Get Started</button>
-    <button class="font-bold text-xl dark:text-white bg-transparent hover:bg-slate-300 dark:hover:bg-slate-800 border border-blue-900 dark:border-blue-200 cursor-pointer p-2 px-6 landing-mono">Browse Examples</button>
-  </div>
-</div>
-
-<div class="landing-demo-grid">
+<div class="landing-hero py-8 mb-30 flex justify-center">
   <div>
-    <h2 class="landing-demo-heading landing-mono">From zero to TUI in minutes</h2>
-    
-    ```rust
-    {{ #include @code/tutorials/quickstart-ratatui/src/main.rs }}
-    ```
-  </div>
+    <div class="flex flex-wrap gap-10 items-center">
+      <div>
+        <div class="landing-hero-title">
+          <div class="landing-hero-logo">
+            <img src={heroLight.src} alt="Ratatui Logo" class="landing-hero-logo-light" />
+            <img src={heroDark.src} alt="Ratatui Logo" class="landing-hero-logo-dark" />
+          </div>
+          <h1 class="landing-title landing-mono">Ratatui</h1>
+        </div>
+        <div class="landing-hero-content">
+          <p class="font-bold text-6xl dark:text-white landing-mono">Cook up <span class="landing-highlight">delicious</span></p>
+          <p class="font-bold text-6xl dark:text-white landing-mono">terminal user interfaces</p>
+          <p class="text-xl pt-10 leading-8 w-[600px] landing-mono">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
+        </div>
+        <div class="flex-row items-center">
+          <button class="font-bold text-xl text-white bg-blue-600 hover:bg-blue-700 cursor-pointer mr-10 p-2 px-6 landing-mono">Get Started</button>
+          <button class="font-bold text-xl dark:text-white bg-transparent hover:bg-slate-300 dark:hover:bg-slate-800 border border-blue-900 dark:border-blue-200 cursor-pointer p-2 px-6 landing-mono">Browse Examples</button>
+        </div>
+      </div>
 
-  <div class="landing-demo-image">
-    [![Demo image]][Demo source]
-    <a href="/tutorials/hello-ratatui" class="landing-cta-button landing-cta-secondary landing-mono">
-      Start with hello world tutorial →
-    </a>
-  </div>
-</div>
-
-[Demo image]: ../../assets/quickstart.png
-[Demo source]: /tutorials/hello-ratatui
-
-<div class="landing-section">
-  <h2 class="landing-section-title landing-mono">Trusted by developers building amazing terminal apps</h2>
-
-{" "}
-
-<StatsDisplay />
-
-  <div class="landing-apps-grid">
-    <div class="landing-app-card">
-      <h3 class="landing-app-title landing-mono">
-        <a href="https://github.com/atuinsh/atuin">atuin</a>
-      </h3>
-      <p class="landing-app-description landing-text-small landing-mono">Shell history with superpowers</p>
+      <div class="ml-10 w-[550px]">
+          ```rust
+        {{ #include @code/tutorials/quickstart-ratatui/src/main.rs }}
+        ```
+      </div>
     </div>
 
-    <div class="landing-app-card">
-      <h3 class="landing-app-title landing-mono">
-        <a href="https://github.com/ClementTsang/bottom">bottom</a>
-      </h3>
-      <p class="landing-app-description landing-text-small landing-mono">System monitor</p>
+    <div class="pt-[200px]">
+      <h2 class="landing-mono dark:text-violet-500">Trusted by {`{developers}`}</h2>
+      <p class="font-bold text-6xl dark:text-white landing-mono">Building amazing terminal apps</p>
     </div>
 
-    <div class="landing-app-card">
-      <h3 class="landing-app-title landing-mono">
-        <a href="https://github.com/imsnif/bandwhich">bandwhich</a>
-      </h3>
-      <p class="landing-app-description landing-text-small landing-mono">Network utilization monitor</p>
+    <div class="mt-30 text-center">
+      <StatsDisplay />
+
+      <div class="landing-apps-grid">
+        <div class="landing-app-card">
+          <h3 class="landing-app-title landing-mono">
+            <a href="https://github.com/atuinsh/atuin">atuin</a>
+          </h3>
+          <p class="landing-app-description landing-text-small landing-mono">Shell history with superpowers</p>
+        </div>
+
+        <div class="landing-app-card">
+          <h3 class="landing-app-title landing-mono">
+            <a href="https://github.com/ClementTsang/bottom">bottom</a>
+          </h3>
+          <p class="landing-app-description landing-text-small landing-mono">System monitor</p>
+        </div>
+
+        <div class="landing-app-card">
+          <h3 class="landing-app-title landing-mono">
+            <a href="https://github.com/imsnif/bandwhich">bandwhich</a>
+          </h3>
+          <p class="landing-app-description landing-text-small landing-mono">Network utilization monitor</p>
+        </div>
+
+      </div>
+
+      <p class="landing-stats-link landing-mono" style="margin-top: 2rem; text-align: center;">
+        <a href="/showcase/apps" class="landing-link">Explore the showcase →</a>
+      </p>
     </div>
 
-  </div>
+    <CardGrid>
+      <Card title="⚡ Fast & Lightweight" icon="rocket">
+        Efficient rendering with minimal overhead. Your TUIs will be as fast as they are delicious.
+      </Card>
 
-  <p class="landing-stats-link landing-mono" style="margin-top: 2rem; text-align: center;">
-    <a href="/showcase/apps" class="landing-link">Explore the showcase →</a>
-  </p>
-</div>
+    {" "}
 
-<CardGrid>
-  <Card title="⚡ Fast & Lightweight" icon="rocket">
-    Efficient rendering with minimal overhead. Your TUIs will be as fast as they are delicious.
-  </Card>
+    <Card title="🎨 Rich Ingredients" icon="puzzle">
+      Charts, tables, lists, gauges, and more. Mix and match widgets to create the perfect recipe.
+    </Card>
 
-{" "}
+    {" "}
 
-<Card title="🎨 Rich Ingredients" icon="puzzle">
-  Charts, tables, lists, gauges, and more. Mix and match widgets to create the perfect recipe.
-</Card>
+    <Card title="🔧 Flexible Recipes" icon="setting">
+      Responsive layouts that adapt to any terminal size. CSS-like constraints with Rust performance.
+    </Card>
 
-{" "}
+      <Card title="🦀 Pure Rust" icon="star">
+        Type-safe, memory-safe, and thread-safe. No C dependencies, just pure Rust goodness.
+      </Card>
+    </CardGrid>
 
-<Card title="🔧 Flexible Recipes" icon="setting">
-  Responsive layouts that adapt to any terminal size. CSS-like constraints with Rust performance.
-</Card>
+    <div class="landing-cta-section">
+      <h2 class="landing-cta-title landing-mono">Ready to start cooking?</h2>
+      <p class="landing-cta-description landing-mono landing-text-large">
+        Join thousands of developers cooking up the next generation of terminal applications
+      </p>
 
-  <Card title="🦀 Pure Rust" icon="star">
-    Type-safe, memory-safe, and thread-safe. No C dependencies, just pure Rust goodness.
-  </Card>
-</CardGrid>
-
-<div class="landing-cta-section">
-  <h2 class="landing-cta-title landing-mono">Ready to start cooking?</h2>
-  <p class="landing-cta-description landing-mono landing-text-large">
-    Join thousands of developers cooking up the next generation of terminal applications
-  </p>
-
-  <div class="landing-cta-buttons">
-    <a href="/installation" class="landing-cta-button landing-cta-primary landing-mono">
-      Get Started
-    </a>
-    <a href="/examples" class="landing-cta-button landing-cta-secondary landing-mono">
-      Browse Examples
-    </a>
-    <a href="https://docs.rs/ratatui" class="landing-cta-button landing-cta-tertiary landing-mono">
-      API Docs
-    </a>
+      <div class="landing-cta-buttons">
+        <a href="/installation" class="landing-cta-button landing-cta-primary landing-mono">
+          Get Started
+        </a>
+        <a href="/examples" class="landing-cta-button landing-cta-secondary landing-mono">
+          Browse Examples
+        </a>
+        <a href="https://docs.rs/ratatui" class="landing-cta-button landing-cta-tertiary landing-mono">
+          API Docs
+        </a>
+      </div>
+    </div>
   </div>
 </div>
