@@ -49,82 +49,89 @@ import ImageSwap from '../../components/ImageSwap.astro'
       </div>
     </div>
 
-  <div class="flex justify-center">
-    <div class="pt-[200px]">
-      <p class="font-bold text-3xl text-blue-700 dark:!text-violet-500 landing-mono">
-      <span>Trusted by </span>
-      <span class="text-5xl">{`{developers}`}</span>
-      </p>
-      <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Building amazing terminal apps</p>
-      <div class="bg-blue-800 dark:bg-blue-950 py-10 px-20 max-w-[1500px]">
-        <p class="font-bold text-2xl text-white landing-mono">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</p>
-        <StatsDisplay />
+    <div class="flex justify-center">
+      <div class="pt-[200px]">
+        <p class="font-bold text-3xl text-blue-700 dark:!text-violet-500 landing-mono">
+        <span>Trusted by </span>
+        <span class="text-5xl">{`{developers}`}</span>
+        </p>
+        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Building amazing terminal apps</p>
+        <div class="bg-blue-800 dark:bg-blue-950 py-10 px-20 max-w-[1500px]">
+          <p class="font-bold text-2xl text-white landing-mono">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</p>
+          <StatsDisplay />
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="flex justify-center">
-    <div class="pt-[200px]">
-      <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">
-        <span class="text-6xl text-blue-700 dark:text-violet-500">1400+</span>
-        <span> crates built with Ratatui</span>
-      </p>
-      <ImageSwap 
-        images={{
-          atuin: atuin.src,
-          bottom: bottom.src,
-          bandwhich: bandwhich.src
-        }}
-        threshold={0.5}
-        rootMargin="-20% 0px"
-      />
+    <div class="flex justify-center">
+      <div class="pt-[200px]">
+        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">
+          <span class="text-6xl text-blue-700 dark:text-violet-500">1400+</span>
+          <span> crates built with Ratatui</span>
+        </p>
+        <ImageSwap 
+          images={{
+            atuin: atuin.src,
+            bottom: bottom.src,
+            bandwhich: bandwhich.src
+          }}
+          threshold={0.5}
+          rootMargin="-20% 0px"
+        />
+      </div>
     </div>
-  </div>
   
-   
-      <p class="landing-stats-link landing-mono" style="margin-top: 2rem; text-align: center;">
+    <div class="flex justify-center px-[100px]">
+      <p class="font-bold text-2xl border border-blue-800 dark:border-slate-300 p-2 px-6 dark:hover:bg-slate-800">
         <a href="/showcase/apps" class="landing-link">Explore the showcase →</a>
       </p>
+    </div>
 
-    <CardGrid>
-      <Card title="⚡ Fast & Lightweight" icon="rocket">
-        Efficient rendering with minimal overhead. Your TUIs will be as fast as they are delicious.
+    <div class="pt-[100px]">
+      <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Your favourite features</p>
+      <CardGrid>
+        <Card title="⚡ Fast & Lightweight" icon="rocket">
+          Efficient rendering with minimal overhead. Your TUIs will be as fast as they are delicious.
+        </Card>
+
+      {" "}
+
+      <Card title="🎨 Rich Ingredients" icon="puzzle">
+        Charts, tables, lists, gauges, and more. Mix and match widgets to create the perfect recipe.
       </Card>
 
-    {" "}
+      {" "}
 
-    <Card title="🎨 Rich Ingredients" icon="puzzle">
-      Charts, tables, lists, gauges, and more. Mix and match widgets to create the perfect recipe.
-    </Card>
-
-    {" "}
-
-    <Card title="🔧 Flexible Recipes" icon="setting">
-      Responsive layouts that adapt to any terminal size. CSS-like constraints with Rust performance.
-    </Card>
-
-      <Card title="🦀 Pure Rust" icon="star">
-        Type-safe, memory-safe, and thread-safe. No C dependencies, just pure Rust goodness.
+      <Card title="🔧 Flexible Recipes" icon="setting">
+        Responsive layouts that adapt to any terminal size. CSS-like constraints with Rust performance.
       </Card>
-    </CardGrid>
 
-    <div class="landing-cta-section">
-      <h2 class="landing-cta-title landing-mono">Ready to start cooking?</h2>
-      <p class="landing-cta-description landing-mono landing-text-large">
-        Join thousands of developers cooking up the next generation of terminal applications
-      </p>
+        <Card title="🦀 Pure Rust" icon="star">
+          Type-safe, memory-safe, and thread-safe. No C dependencies, just pure Rust goodness.
+        </Card>
+      </CardGrid>
+    </div>
 
-      <div class="landing-cta-buttons">
-        <a href="/installation" class="landing-cta-button landing-cta-primary landing-mono">
-          Get Started
-        </a>
-        <a href="/examples" class="landing-cta-button landing-cta-secondary landing-mono">
-          Browse Examples
-        </a>
-        <a href="https://docs.rs/ratatui" class="landing-cta-button landing-cta-tertiary landing-mono">
-          API Docs
-        </a>
+    <div class="pt-[200px] flex justify-center">
+      <div class="text-center p-10 pt-[100px] pb-[100px] w-screen bg-slate-950">
+        <h2 class="!text-6xl pb-10">Ready to start cooking?</h2>
+        <p>
+          Join thousands of developers cooking up the next generation of terminal applications
+        </p>
+
+        <div class="pt-5 flex gap-10 justify-center">
+          <a href="/installation" class="landing-cta-button landing-cta-primary landing-mono">
+            Get Started
+          </a>
+          <a href="/examples" class="landing-cta-button landing-cta-secondary landing-mono">
+            Browse Examples
+          </a>
+          <a href="https://docs.rs/ratatui" class="landing-cta-button landing-cta-tertiary landing-mono">
+            API Docs
+          </a>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
