@@ -1,6 +1,4 @@
 ---
-import type { Props } from "@astrojs/starlight/props";
-
 import Search from "@astrojs/starlight/components/Search.astro";
 import SiteTitle from "@astrojs/starlight/components/SiteTitle.astro";
 import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
@@ -15,15 +13,15 @@ const buttons = [
 
 <div class="flex h-full items-center justify-between">
   <div class="flex">
-    <SiteTitle {...Astro.props} />
+    <SiteTitle />
   </div>
-  <div class="flex flex-grow"></div>
+  <div class="flex grow"></div>
   <div class="hidden space-x-2 md:flex">
     {
       buttons.map((button) => (
         <a
           href={button.url}
-          class="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white no-underline hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white no-underline hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-hidden dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           {button.text}
         </a>
@@ -31,15 +29,15 @@ const buttons = [
     }
   </div>
   <div class="flex px-6">
-    <Search {...Astro.props} />
+    <Search />
   </div>
   <div class="hidden items-center gap-4 md:flex">
     <div class="flex items-center gap-4">
-      <SocialIcons {...Astro.props} />
+      <SocialIcons />
       <span class="block h-8 border-r border-gray-500"></span>
       <!-- For the pseudo element -->
     </div>
-    <ThemeSelect {...Astro.props} />
-    <LanguageSelect {...Astro.props} />
+    <ThemeSelect />
+    <LanguageSelect />
   </div>
 </div>
