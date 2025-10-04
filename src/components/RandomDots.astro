@@ -216,10 +216,11 @@ for (let i = 0; i < numClusters; i++) {
     preserveAspectRatio="xMidYMid slice"
   >
     {allDots.map((dot) => (
-      <circle
-        cx={dot.x}
-        cy={dot.y}
-        r={dot.size}
+       <rect
+        x={dot.x - dot.size}
+        y={dot.y - dot.size}
+        width={dot.size * 2}
+        height={dot.size * 2}
         fill={dot.color}
         opacity={opacity}
       />

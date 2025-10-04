@@ -28,14 +28,15 @@ import RandomDots from '../../components/RandomDots.astro'
     <h1>Ratatui</h1>
     <div class="w-100 h-100 text-center">
       <RandomDots
-        gridSize={25}
+        gridSize={15}
         numClusters={15}
-        dotsPerCluster={65}
-        clusterRadius={150}
+        dotsPerCluster={100}
+        clusterRadius={120}
+        dotSize={3}
         pattern="random"
         opacity={0.2}
         fixed={true}
-        colors={['#64748b', '#64748b', '#334155']}
+        colors={['#64748b', '#f1f5f9', '#64748b', '#334155']}
       />
     </div>
         
