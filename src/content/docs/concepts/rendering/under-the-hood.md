@@ -5,7 +5,7 @@ sidebar:
   label: Under the hood
 ---
 
-You may have read in previous sections that Ratatui is a immediate mode rendering library. But what
+You may have read in previous sections that Ratatui is an immediate mode rendering library. But what
 does that really mean? And how is it implemented? In this section, we will discuss how Ratatui
 renders a widget to the screen, starting with the `Terminal`'s `draw` method and ending with your
 chosen backend library.

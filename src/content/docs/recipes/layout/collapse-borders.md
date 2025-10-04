@@ -80,7 +80,7 @@ If this sounds too complex, we're looking for some help to make this easier in
 :::
 
 The full code for this example is available at
-<https://github.com/ratatui/ratatui-website/blob/main/code/how-to-collapse-borders>
+<https://github.com/ratatui/ratatui-website/blob/main/code/recipes/how-to-collapse-borders>
 
 ```rust collapsed title="collapse-borders.rs"
 {{#include @code/recipes/how-to-collapse-borders/src/bin/solution.rs}}

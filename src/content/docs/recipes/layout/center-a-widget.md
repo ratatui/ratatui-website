@@ -79,7 +79,7 @@ text using the [textwrap crate] and then using the line count to work out where 
 :::
 
 Full code for this recipe is available in the website repo at:
-<https://github.com/ratatui/ratatui-website/blob/main/code/recipes/src/layout.rs>
+<https://github.com/ratatui/ratatui-website/blob/main/code/recipes/how-to-misc/src/layout.rs>
 
 ## See also
 

@@ -10,7 +10,7 @@ Command Line Interface (CLI) tools often require input parameters to dictate the
 library that facilitates the parsing of these arguments in an intuitive manner.
 
 To use the derive syntax as shown in the following snippets, be sure to enable the `derive` feature
-(i.e. by running `cargo add clap --feature derive`).
+(i.e. by running `cargo add clap --features derive`).
 
 ## Defining Command Line Arguments
 
