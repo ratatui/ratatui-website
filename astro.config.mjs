@@ -1,7 +1,7 @@
 import partytown from "@astrojs/partytown";
 import starlight from "@astrojs/starlight";
-import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import rehypeMermaid from "rehype-mermaid";
 import emoji from "remark-emoji";
@@ -60,16 +60,20 @@ export default defineConfig({
       expressiveCode: {
         plugins: [pluginCollapsibleSections(), collapsibleFrames()],
       },
-      social: {
-        github: "https://github.com/ratatui/ratatui",
-        discord: "https://discord.gg/pMCEU9hNEj",
-        matrix: "https://matrix.to/#/#ratatui:matrix.org",
-        discourse: "https://forum.ratatui.rs",
-        "x.com": "https://twitter.com/ratatui_rs",
-        blueSky: "https://bsky.app/profile/ratatui.rs",
-        mastodon: "https://fosstodon.org/@ratatui_rs",
-        linkedin: "https://www.linkedin.com/company/ratatui-rs",
-      },
+      social: [
+        { icon: "github", label: "GitHub", href: "https://github.com/ratatui/ratatui" },
+        { icon: "discord", label: "Discord", href: "https://discord.gg/pMCEU9hNEj" },
+        { icon: "matrix", label: "Matrix", href: "https://matrix.to/#/#ratatui:matrix.org" },
+        { icon: "discourse", label: "Discourse", href: "https://forum.ratatui.rs" },
+        { icon: "x.com", label: "X.com", href: "https://twitter.com/ratatui_rs" },
+        { icon: "blueSky", label: "Bluesky", href: "https://bsky.app/profile/ratatui.rs" },
+        { icon: "mastodon", label: "Mastodon", href: "https://fosstodon.org/@ratatui_rs" },
+        {
+          icon: "linkedin",
+          label: "LinkedIn",
+          href: "https://www.linkedin.com/company/ratatui-rs",
+        },
+      ],
       sidebar: [
         // note that the need to order items and name the groups in the sidebar prevents
         // autogeneration except for the leaf level of the sidebar hierarchy.
@@ -318,9 +322,6 @@ export default defineConfig({
         baseUrl: "https://github.com/ratatui/ratatui-website/edit/main/",
       },
     }),
-    tailwind({
-      applyBaseStyles: false,
-    }),
     partytown(),
   ],
   redirects: {
@@ -367,5 +368,6 @@ export default defineConfig({
         ignored: ["**/target/**/*"],
       },
     },
+    plugins: [tailwindcss()],
   },
 });

@@ -22,11 +22,11 @@
     "@astro-community/astro-embed-youtube": "^0.5.6",
     "@astrojs/check": "^0.9.3",
     "@astrojs/partytown": "^2.1.2",
-    "@astrojs/starlight": "^0.30.3",
-    "@astrojs/starlight-tailwind": "^3.0.0",
-    "@astrojs/tailwind": "^5.1.4",
-    "@expressive-code/plugin-collapsible-sections": "^0.38.3",
-    "astro": "5.1.1",
+    "@astrojs/starlight": "^0.36.0",
+    "@astrojs/starlight-tailwind": "^4.0.1",
+    "@expressive-code/plugin-collapsible-sections": "^0.41.3",
+    "@tailwindcss/vite": "^4.1.14",
+    "astro": "^5.14.1",
     "astro-diagram": "^0.7.0",
     "hast-util-select": "^6.0.3",
     "hastscript": "^9.0.0",
@@ -35,7 +35,7 @@
     "remark-svgbob": "^1.1.1",
     "sharp": "^0.33.5",
     "starlight-links-validator": "0.14.1",
-    "tailwindcss": "3.4.17",
+    "tailwindcss": "^4.1.14",
     "tree-sitter": "0.22.1",
     "tree-sitter-rust": "^0.23.2",
     "typescript": "^5.7.2",
@@ -56,12 +56,16 @@
     "tailwindcss-animate": "^1.0.7",
     "ts-dedent": "^2.2.0",
     "unist-util-visit": "^5.0.0",
-    "vitest": "^2.1.9"
+    "vitest": "^3.2.4"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
   "overrides": {
-    "vite": "6.0.3"
+    "vite": "6.3.6",
+    "mermaid": "11.11.0",
+    "dompurify": "3.2.6",
+    "tar-fs": "^3.0.4",
+    "ws": "^8.18.0"
   }
 }
