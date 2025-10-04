@@ -1,28 +1,10 @@
 ---
-title: ""
-head:
-  - tag: style
-    content: ":root { --sl-content-width: 100vw !important; }"
+title: "Ratatui"
 description:
   "Ratatui: Cook up delicious terminal user interfaces in Rust - the fast, lightweight TUI library
   trusted by developers worldwide"
 template: splash
 tableOfContents: false
-hero:
-  tagline: A Rust crate for cooking up Terminal User Interfaces
-  image:
-    alt: Ratatui Hero Logo
-    dark: ../../assets/hero-dark.png
-    light: ../../assets/hero-light.png
-  actions:
-    - text: Hello Ratatui Tutorial
-      link: /tutorials/hello-ratatui
-      icon: right-arrow
-      variant: primary
-    - text: cargo add ratatui
-      link: /installation
-      icon: right-arrow
-      variant: secondary
 ---
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
@@ -39,23 +21,21 @@ import RandomDots from '../../components/RandomDots.astro'
 import Features from '../../components/Features.astro'
 
 
-<div class="landing-hero py-8 mb-30 flex justify-center landing-mono">
+<div class="py-8 mb-30 flex justify-center landing-mono">
   <div>
     <h1>Ratatui</h1>
-    <div class="w-100 h-100 text-center">
-      <RandomDots
-        gridSize={15}
-        numClusters={15}
-        dotsPerCluster={100}
-        clusterRadius={120}
-        dotSize={3}
-        pattern="random"
-        opacity={0.2}
-        fixed={true}
-        colors={['#64748b', '#f1f5f9', '#64748b', '#334155']}
-      />
-    </div>
-        
+    <RandomDots
+      gridSize={15}
+      numClusters={15}
+      dotsPerCluster={100}
+      clusterRadius={120}
+      dotSize={3}
+      pattern="random"
+      opacity={0.2}
+      fixed={true}
+      colors={['#64748b', '#f1f5f9', '#64748b', '#334155']}
+    />
+
     <div class="flex flex-wrap gap-10 justify-center items-end">
       <div>
         <div class="flex">
@@ -92,13 +72,13 @@ import Features from '../../components/Features.astro'
 
     <div class="flex justify-center">
       <div class="pt-[200px]">
-        <p class="font-bold text-3xl text-blue-700 dark:!text-violet-500 landing-mono">
+        <p class="font-bold text-3xl text-blue-700 dark:!text-violet-500 ">
         <span>Trusted by </span>
         <span class="text-5xl">{`{developers}`}</span>
         </p>
-        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Building amazing terminal apps</p>
+        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white ">Building amazing terminal apps</p>
         <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-800 dark:to-slate-900 py-10 px-20 max-w-[1500px]">
-          <p class="font-bold text-2xl text-white landing-mono">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</p>
+          <p class="font-bold text-2xl text-white ">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</p>
           <StatsDisplay />
         </div>
       </div>
@@ -106,7 +86,7 @@ import Features from '../../components/Features.astro'
 
     <div class="flex justify-center">
       <div class="pt-[200px]">
-        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">
+        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white ">
           <span class="text-6xl text-blue-700 dark:text-violet-500">1400+</span>
           <span> crates built with Ratatui</span>
         </p>
