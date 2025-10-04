@@ -13,43 +13,23 @@ tableOfContents: false
 import { Card, CardGrid } from "@astrojs/starlight/components";
 import heroLight from "../../assets/hero-light.png";
 import heroDark from "../../assets/hero-dark.png";
-import logoTextLight from "../../assets/logo-text-light-2.png";
-import logoTextDark from "../../assets/logo-text-dark.png";
 import atuin from "../../assets/atuin-animation.gif";
 import bottom from "../../assets/bottom-animation.gif";
 import bandwhich from "../../assets/bandwhich-animation.gif";
 import StatsDisplay from "../../components/StatsDisplay.astro";
 import ImageSwap from '../../components/ImageSwap.astro'
-import RandomDots from '../../components/RandomDots.astro'
-
 
 <div class="landing-hero py-8 mb-30 flex justify-center landing-mono">
   <div>
-    <h1>Ratatui</h1>
-    <div class="w-100 h-100 text-center">
-      <RandomDots
-        gridSize={25}
-        numClusters={15}
-        dotsPerCluster={65}
-        clusterRadius={150}
-        pattern="random"
-        opacity={0.2}
-        fixed={true}
-        colors={['#64748b', '#64748b', '#334155']}
-      />
-    </div>
-        
+    <h1 class="landing-mono">Ratatui</h1>
     <div class="flex flex-wrap gap-10 justify-center items-end">
       <div>
-        <div class="flex">
+        <div class="landing-hero-title">
           <div class="landing-hero-logo">
             <img src={heroLight.src} alt="Ratatui Logo" class="landing-hero-logo-light" />
             <img src={heroDark.src} alt="Ratatui Logo" class="landing-hero-logo-dark" />
           </div>
-          <div>
-            <img src={logoTextLight.src} class="max-h-[70px] dark:hidden" />
-            <img src={logoTextDark.src} class="max-h-[70px] !hidden dark:!block" />
-          </div>
+          <p class="font-bold text-5xl landing-mono">Ratatui</p>
         </div>
         <div class="landing-hero-content">
           <p class="font-bold text-6xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
@@ -57,12 +37,8 @@ import RandomDots from '../../components/RandomDots.astro'
           <p class="text-xl pt-10 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
         </div>
         <div class="flex-row items-center">
-          <a class="no-underline" href="/installation">
-            <span class="font-bold text-xl text-white bg-blue-700 p-2 px-6 mr-10">Get Started</span>
-          </a>
-          <a class="no-underline" href="/examples">
-            <span class="font-bold text-xl text-slate-900 dark:text-slate-100 border border-slate-800 dark:border-slate-600 p-2 px-6">Browse Examples</span>
-          </a>
+          <button class="font-bold text-xl text-white bg-blue-600 hover:bg-blue-700 cursor-pointer mr-10 p-2 px-6">Get Started</button>
+          <button class="font-bold text-xl dark:text-white bg-transparent hover:bg-slate-300 dark:hover:bg-slate-800 border border-blue-900 dark:border-blue-200 cursor-pointer p-2 px-6">Browse Examples</button>
         </div>
       </div>
 
@@ -111,47 +87,47 @@ import RandomDots from '../../components/RandomDots.astro'
       </p>
     </div>
 
-    <div class="flex justify-center pt-[100px]">
-      <div class="max-w-[1500px]">
-        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Your favourite features</p>
-        <CardGrid>
-          <Card title="Fast & Lightweight" icon="rocket">
-            Efficient rendering with minimal overhead. Your TUIs will be as fast as they are delicious.
-          </Card>
-
-        {" "}
-
-        <Card title="Rich Ingredients" icon="puzzle">
-          Charts, tables, lists, gauges, and more. Mix and match widgets to create the perfect recipe.
+    <div class="pt-[100px]">
+      <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Your favourite features</p>
+      <CardGrid>
+        <Card title="⚡ Fast & Lightweight" icon="rocket">
+          Efficient rendering with minimal overhead. Your TUIs will be as fast as they are delicious.
         </Card>
 
-        {" "}
+      {" "}
 
-        <Card title="Flexible Recipes" icon="setting">
-          Responsive layouts that adapt to any terminal size. CSS-like constraints with Rust performance.
+      <Card title="🎨 Rich Ingredients" icon="puzzle">
+        Charts, tables, lists, gauges, and more. Mix and match widgets to create the perfect recipe.
+      </Card>
+
+      {" "}
+
+      <Card title="🔧 Flexible Recipes" icon="setting">
+        Responsive layouts that adapt to any terminal size. CSS-like constraints with Rust performance.
+      </Card>
+
+        <Card title="🦀 Pure Rust" icon="star">
+          Type-safe, memory-safe, and thread-safe. No C dependencies, just pure Rust goodness.
         </Card>
-
-          <Card title="Pure Rust" icon="star">
-            Type-safe, memory-safe, and thread-safe. No C dependencies, just pure Rust goodness.
-          </Card>
-        </CardGrid>
-      </div>
+      </CardGrid>
     </div>
 
     <div class="pt-[200px] flex justify-center">
-      <div class="text-center p-10 pt-[100px] pb-[100px] w-screen bg-blue-800 dark:bg-slate-950">
-        <h2 class="!text-6xl pb-10 !text-white">Ready to start cooking?</h2>
-        <p class="text-xl pb-10 text-white">Join thousands of developers cooking up the next generation of terminal applications</p>
+      <div class="text-center p-10 pt-[100px] pb-[100px] w-screen bg-slate-950">
+        <h2 class="!text-6xl pb-10">Ready to start cooking?</h2>
+        <p>
+          Join thousands of developers cooking up the next generation of terminal applications
+        </p>
 
         <div class="pt-5 flex gap-10 justify-center">
-          <a class="no-underline" href="/installation">
-            <span class="font-bold text-xl bg-slate-200 dark:bg-blue-700 p-4 px-6">Get Started</span>
+          <a href="/installation" class="landing-cta-button landing-cta-primary landing-mono">
+            Get Started
           </a>
-          <a class="no-underline" href="/examples">
-            <span class="font-bold text-xl text-white border p-4 px-6">Browse Examples</span>
+          <a href="/examples" class="landing-cta-button landing-cta-secondary landing-mono">
+            Browse Examples
           </a>
-          <a class="no-underline" href="https://docs.rs/ratatui">
-            <span class="font-bold text-xl text-white border p-4 px-6">API Docs</span>
+          <a href="https://docs.rs/ratatui" class="landing-cta-button landing-cta-tertiary landing-mono">
+            API Docs
           </a>
         </div>
       </div>
