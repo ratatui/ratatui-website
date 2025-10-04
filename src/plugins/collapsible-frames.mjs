@@ -10,7 +10,6 @@ export function collapsibleFrames() {
     baseStyles: `
       .collapsible-frame {
         & summary {
-	      display:none;
           cursor: pointer;
           &::marker {
             display: inline-block;

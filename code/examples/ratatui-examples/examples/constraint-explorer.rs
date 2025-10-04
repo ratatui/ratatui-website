@@ -477,7 +477,7 @@ impl ConstraintBlock {
             } else {
                 main_color
             };
-            if let Some(last_row) = area.rows().next_back() {
+            if let Some(last_row) = area.rows().last() {
                 buf.set_style(last_row, border_color);
             }
         }
