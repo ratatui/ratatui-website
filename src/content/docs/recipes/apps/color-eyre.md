@@ -102,9 +102,9 @@ With `RUST_BACKTRACE=full`:
 
 See the `color_eyre` [docs] and [examples] for more advanced setups. E.g.:
 
-- [Capturing span traces](https://github.com/eyre-rs/color-eyre/blob/master/examples/usage.rs)
-- [Configuring an automatic issue url](https://github.com/eyre-rs/color-eyre/blob/master/examples/github_issue.rs)
+- [Capturing span traces](https://github.com/eyre-rs/eyre/blob/master/color-eyre/examples/usage.rs)
+- [Configuring an automatic issue url](https://github.com/eyre-rs/eyre/blob/master/color-eyre/examples/github_issue.rs)
 
 [`color_eyre`]: https://crates.io/crates/color-eyre
-[docs]: https://github.com/eyre-rs/color-eyre/blob/master/examples/
-[examples]: https://github.com/eyre-rs/color-eyre/blob/master/examples/
+[docs]: https://docs.rs/color_eyre/latest/color_eyre
+[examples]: https://github.com/eyre-rs/eyre/blob/master/color-eyre/examples/

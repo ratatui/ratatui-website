@@ -38,6 +38,7 @@ dependencies on crates.io and GitHub:
 - [tenere](https://github.com/pythops/tenere): TUI interface for LLMs written in Rust
 - [nomad](https://github.com/JosephLai241/nomad): Customizable next-gen tree command with Git
   integration and TUI
+- [yozefu](https://github.com/MAIF/yozefu): A TUI interface for exploring data of a kafka cluster.
 
 ### 🕹️ Games and Entertainment
 

@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
       - main
+      # release branches
+      - ratatui-*.*
   merge_group:
 
 # ensure that the workflow is only triggered once per PR,  subsequent pushes to the PR will cancel

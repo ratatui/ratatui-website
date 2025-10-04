@@ -38,7 +38,7 @@ If you were already using `crossterm` before, note that now you'll need to add
 You can use `cargo add` from the command line to add the above dependencies in one go:
 
 ```bash
-cargo add ratatui color-eyre tokio tokio-util futures --features tokio/full,crossterm/event-stream
+cargo add ratatui crossterm color-eyre tokio tokio-util futures --features tokio/full,crossterm/event-stream
 ```
 
 :::

@@ -23,11 +23,27 @@ IP/hostname
 
 ---
 
+## [`binsider`](https://github.com/orhun/binsider)
+
+Perform binary analysis in your terminal.
+
+![binsider demo](https://github.com/orhun/binsider/blob/main/website/src/content/assets/quickstart.gif?raw=true)
+
+---
+
 ## [`bottom`](https://github.com/ClementTsang/bottom)
 
 A customizable cross-platform graphical process/system monitor for the terminal
 
 ![bottom demo](https://github.com/ClementTsang/bottom/blob/main/assets/demo.gif?raw=true)
+
+---
+
+## [`crossword`](https://github.com/matrixfrog/crossword)
+
+Play crossword puzzles in your terminal.
+
+![crossword demo](https://github.com/user-attachments/assets/8a2bb53b-f461-4ddd-b60c-9ae5170b501d)
 
 ---
 
@@ -52,14 +68,6 @@ compared to the standard 'rm' command.
 
 ---
 
-## [`joshuto`](https://github.com/kamiyaa/joshuto)
-
-Ranger-like terminal file manager written in Rust
-
-![joshuto demo](https://github.com/kamiyaa/joshuto/raw/main/screenshot.png?raw=true)
-
----
-
 ## [`fzf-make`](https://github.com/kyu08/fzf-make)
 
 A command line tool that executes make target using fuzzy finder with preview window
@@ -81,6 +89,14 @@ TUI for git written in rust
 gpg-tui is a Terminal User Interface for GnuPG.
 
 ![gpg-tui demo](https://github.com/orhun/gpg-tui/blob/master/demo/gpg-tui-scrolling_rows.gif?raw=true)
+
+---
+
+## [`joshuto`](https://github.com/kamiyaa/joshuto)
+
+Ranger-like terminal file manager written in Rust
+
+![joshuto demo](https://github.com/kamiyaa/joshuto/raw/main/screenshot.png?raw=true)
 
 ---
 
@@ -119,6 +135,31 @@ oha is a tiny program that sends some load to a web application and show realtim
 
 ---
 
+## [`oxker`](https://github.com/mrjackwills/oxker/)
+
+A simple TUI to view & control docker containers
+
+![oxker demo](https://raw.githubusercontent.com/mrjackwills/oxker/main/.github/demo_01.webp?raw=true)
+
+---
+
+## [`openapi-tui`](https://github.com/zaghaghi/openapi-tui)
+
+Unlock the power of APIs with simplicity and speed, right from your terminal. View OpenAPI
+documentations in your terminal.
+
+![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
+
+---
+
+## [`rainfrog`](https://github.com/achristmascarl/rainfrog)
+
+A lightweight and terminal-based tool for interacting with databases.
+
+![rainfrog demo](https://github.com/achristmascarl/rainfrog/raw/main/vhs/demo.gif?raw=true)
+
+---
+
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
 An application to manage markdown notes from your terminal and compile them to HTML
@@ -139,7 +180,15 @@ A simple oscilloscope/vectorscope/spectroscope for your terminal
 
 Terminal HTTP/REST client
 
-![slumber demo](https://media.githubusercontent.com/media/LucasPickering/slumber/master/static/demo.gif)
+![slumber demo](https://media.githubusercontent.com/media/LucasPickering/slumber/master/docs/src/images/demo.gif)
+
+---
+
+## [`steer`](https://github.com/BrendanGraham14/steer)
+
+A CLI-based AI coding agent for local dev, scripts/CI, and automation.
+
+![steer demo](https://raw.githubusercontent.com/brendangraham14/steer/main/.github/images/demo.gif)
 
 ---
 
@@ -160,6 +209,15 @@ variables, docker images, you name it) using a fuzzy matching algorithm and is d
 extensible.
 
 ![television demo](https://github.com/user-attachments/assets/7a967f9c-779e-4915-baa8-160f586f8936)
+
+---
+
+## [`trippy`](https://github.com/fujiapple852/trippy)
+
+A network diagnostic tool that combines the functionality of traceroute and ping and is designed to
+assist with the analysis of networking issues.
+
+![trippy demo](https://raw.githubusercontent.com/fujiapple852/trippy/master/assets/0.12.0/demo.gif?raw=true)
 
 ---
 
@@ -184,9 +242,11 @@ Blazing fast terminal file manager written in Rust, based on async I/O
 
 ---
 
-## [`openapi-tui`](https://github.com/zaghaghi/openapi-tui)
+## [`yozefu`](https://github.com/MAIF/yozefu)
 
-Unlock the power of APIs with simplicity and speed, right from your terminal. View OpenAPI
-documentations in your terminal.
+Yōzefu is an interactive TUI application for exploring data of a Kafka cluster.
 
-![openapi-tui demo](https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true)
+It is an alternative tool to AKHQ, Redpanda Console, or the Kafka plugin for JetBrains IDEs. It
+includes a search query language inspired by SQL, providing fine-grained filtering capabilities.
+
+![yozefu demo](https://vhs.charm.sh/vhs-UpIJD2h92vKkj01XSS0r0.gif)

@@ -21,6 +21,7 @@ Discord server / forum. This is not a comprehensive list, but it should help you
 - Add a `LICENSE` file to your project. This file should contain the license you are using for your
   app. The most common licenses are MIT and Apache 2.0. You can use [ChooseALicense] to help you
   choose a license.
+- Enable additional [optimizations] in your `Cargo.toml` file.
 - Consider using `Release-plz` to automate your GitHub releases. This makes doing a release as easy
   as clicking merge on an automatically generated PR.
 - Submit your app to the [Awesome Ratatui] list, the [Ratatui Discord], and the [Ratatui Forum].
@@ -30,6 +31,7 @@ Discord server / forum. This is not a comprehensive list, but it should help you
 [Awesome Ratatui]: https://github.com/ratatui-org/awesome-ratatui
 [Ratatui Discord]: https://discord.gg/pMCEU9hNEj
 [Ratatui Forum]: https://forum.ratatui.rs
+[optimizations]: https://ratatui.rs/recipes/apps/release-your-app/#optimizations
 
 ## Screenshots
 
@@ -61,3 +63,29 @@ CLI command to run the app,
   to show off your app.
 
 [VHS]: https://github.com/charmbracelet/vhs
+
+## Optimizations
+
+Make sure you enable additional compiler optimizations for the release build. This will help reduce
+the size of the resulting binary. Add the following lines to your `Cargo.toml` file:
+
+```toml
+[profile.release]
+codegen-units = 1 # Allows compiler to perform better optimization.
+lto = true # Enables Link-time Optimization.
+opt-level = "s" # Prioritizes small binary size. Use `3` if you prefer speed.
+strip = true # Ensures debug symbols are removed.
+```
+
+### References
+
+- [codegen-units]: Tweaks a tradeoff between compile times and compile time optimizations.
+- [lto]: Enables Link-time Optimization.
+- [opt-level]: Determines the focus of the compiler in optimizations. Use `3` to optimize
+  performance, `z` to optimize for size, and `s` for something in-between.
+- [strip]: Strip either symbols or debuginfo from a binary.
+
+[codegen-units]: https://doc.rust-lang.org/cargo/reference/profiles.html#codegen-units
+[lto]: https://doc.rust-lang.org/cargo/reference/profiles.html#lto
+[opt-level]: https://doc.rust-lang.org/cargo/reference/profiles.html#opt-level
+[strip]: https://doc.rust-lang.org/cargo/reference/profiles.html#strip
