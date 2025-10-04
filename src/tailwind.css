@@ -163,12 +163,6 @@ main .content-panel:first-child {
   }
 }
 
-.landing-hero-title {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-}
-
 .landing-hero-logo {
   position: relative;
   width: 100px;
