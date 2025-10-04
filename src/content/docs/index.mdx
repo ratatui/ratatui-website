@@ -39,16 +39,16 @@ import Features from '../../components/Features.astro'
     <div class="flex flex-wrap gap-10 justify-center items-end">
       <div>
         <div class="flex">
-          <div class="landing-hero-logo">
-            <img src={heroLight.src} alt="Ratatui Logo" class="landing-hero-logo-light" />
-            <img src={heroDark.src} alt="Ratatui Logo" class="landing-hero-logo-dark" />
+          <div class="w-[100px]">
+            <img src={heroLight.src} alt="Ratatui Logo" class="dark:hidden" />
+            <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
           </div>
           <div>
             <img src={logoTextLight.src} class="max-h-[70px] dark:hidden" />
             <img src={logoTextDark.src} class="max-h-[70px] !hidden dark:!block" />
           </div>
         </div>
-        <div class="landing-hero-content">
+        <div class="p-2">
           <p class="font-bold text-6xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
           <p class="font-bold text-6xl text-black dark:text-white">terminal user interfaces</p>
           <p class="text-xl pt-10 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
