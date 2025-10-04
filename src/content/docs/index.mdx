@@ -21,6 +21,7 @@ import bandwhich from "../../assets/bandwhich-animation.gif";
 import StatsDisplay from "../../components/StatsDisplay.astro";
 import ImageSwap from '../../components/ImageSwap.astro'
 import RandomDots from '../../components/RandomDots.astro'
+import Features from '../../components/Features.astro'
 
 
 <div class="landing-hero py-8 mb-30 flex justify-center landing-mono">
@@ -81,7 +82,7 @@ import RandomDots from '../../components/RandomDots.astro'
         <span class="text-5xl">{`{developers}`}</span>
         </p>
         <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Building amazing terminal apps</p>
-        <div class="bg-blue-800 dark:bg-blue-950 py-10 px-20 max-w-[1500px]">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-800 dark:to-slate-900 py-10 px-20 max-w-[1500px]">
           <p class="font-bold text-2xl text-white landing-mono">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</p>
           <StatsDisplay />
         </div>
@@ -112,32 +113,7 @@ import RandomDots from '../../components/RandomDots.astro'
       </p>
     </div>
 
-    <div class="flex justify-center pt-[100px]">
-      <div class="max-w-[1500px]">
-        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">Your favourite features</p>
-        <CardGrid>
-          <Card title="Fast & Lightweight" icon="rocket">
-            Efficient rendering with minimal overhead. Your TUIs will be as fast as they are delicious.
-          </Card>
-
-        {" "}
-
-        <Card title="Rich Ingredients" icon="puzzle">
-          Charts, tables, lists, gauges, and more. Mix and match widgets to create the perfect recipe.
-        </Card>
-
-        {" "}
-
-        <Card title="Flexible Recipes" icon="setting">
-          Responsive layouts that adapt to any terminal size. CSS-like constraints with Rust performance.
-        </Card>
-
-          <Card title="Pure Rust" icon="star">
-            Type-safe, memory-safe, and thread-safe. No C dependencies, just pure Rust goodness.
-          </Card>
-        </CardGrid>
-      </div>
-    </div>
+    <Features />
 
     <div class="pt-[200px] flex justify-center">
       <div class="text-center p-10 pt-[100px] pb-[100px] w-screen bg-blue-800 dark:bg-slate-950">
