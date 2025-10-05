@@ -7,41 +7,41 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    title: "Fast & Lightweight",
-    icon: "🚀",
-    description: "Efficient rendering with minimal overhead. Your TUIs will be as fast as they are delicious."
+    title: "Blazing Fast Performance & Lightweight",
+    icon: "⚡",
+    description: "Sub-millisecond rendering with zero-cost abstractions and immediate-mode rendering. Build responsive dashboards and complex terminal applications that feel instant, even with hundreds of widgets on screen. No runtime overhead, just pure Rust performance."
   },
   {
-    title: "Rich Ingredients",
-    icon: "🧩",
-    description: "Charts, tables, lists, gauges, and more. Mix and match widgets to create the perfect recipe."
+    title: "Rich Widget Ingredients",
+    icon: "🎨",
+    description: "Everything you need to craft professional TUIs: charts, sparklines, tables, gauges, scrollable lists, trees, progress bars, and more. Mix and match widgets to create dashboards, monitoring tools, interactive forms, or full-featured command-line applications. Check out the widget examples to see what's possible."
   },
   {
-    title: "Flexible Recipes",
-    icon: "⚙️",
-    description: "Responsive layouts that adapt to any terminal size. CSS-like constraints with Rust performance."
+    title: "Flexible Layout Recipes",
+    icon: "📐 ",
+    description: "Constraint-based responsive layouts that automatically adapt to any terminal size—think Flexbox, but for the terminal. Build complex nested layouts with horizontal and vertical splits, automatically sized containers, and percentage-based constraints. Your interface looks great whether it's in a tiny tmux pane or a 4K terminal."
   },
   {
-    title: "Pure Rust",
+    title: "Pure Rust Reliability",
     icon: "🦀",
-    description: "Type-safe, memory-safe, and thread-safe. No C dependencies, just pure Rust goodness."
+    description: "Memory-safe, thread-safe, and type-safe by design. No C dependencies, no runtime exceptions, no undefined behavior. Just pure Rust goodness that compiles to efficient native code. Works seamlessly with Crossterm, Termion, or Termwiz backends—choose the one that fits your needs."
   }
 ];
 ---
 
 <div class="flex justify-center">
-  <div class="max-w-[1500px]">
-    <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white landing-mono">
+  <div class="max-w-[1440px]">
+    <p class="font-bold text-4xl text-black dark:text-white landing-mono">
       Your favourite features
     </p>
     <div class="grid grid-cols-2 gap-6 p-[80px] bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-800 dark:to-blue-950 auto-rows-fr">
       {features.map((feature) => (
-        <div class="p-8 !m-0 bg-gradient-to-r from-slate-100 to-slate-300 dark:from-slate-900 dark:to-slate-800 h-full">
-          <div>
-            <span class="text-4xl">{feature.icon}</span>
+        <div class="px-8 pb-6 !m-0 bg-gradient-to-r from-slate-100 to-slate-300 dark:from-slate-900 dark:to-slate-800 h-full">
+          <div class="flex items-end gap-4">
+            <span class="text-2xl">{feature.icon}</span>
+            <h3 class="font-bold text-xl">{feature.title}</h3>
           </div>
-          <h3 class="font-bold text-xl">{feature.title}</h3>
-          <p class="text-lg pt-2">{feature.description}</p>
+          <p class="text-base pt-2">{feature.description}</p>
         </div>
       ))}
     </div>

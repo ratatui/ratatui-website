@@ -1,0 +1,157 @@
+---
+// BlockRevealCode.astro
+import { readFile } from 'fs/promises';
+import { codeToHtml } from 'shiki';
+
+interface Props {
+  lang?: string;
+  class?: string;
+}
+
+const { lang = 'rust', class: className = '' } = Astro.props;
+
+// Read file at build time
+const code = await readFile('./code/tutorials/quickstart-ratatui/src/main.rs', 'utf-8');
+
+// Pre-render syntax highlighted HTML with Night Owl theme
+const highlightedHtml = await codeToHtml(code, {
+  lang: lang,
+  theme: 'night-owl'
+});
+---
+
+<div class={`block-reveal-wrapper ${className}`}>
+  <pre class="scramble-container"><code class="language-rust"></code></pre>
+  <div class="highlighted-code" set:html={highlightedHtml} />
+</div>
+
+<script define:vars={{ code }}>
+  const initScramble = () => {
+    const wrappers = document.querySelectorAll('.block-reveal-wrapper');
+    
+    wrappers.forEach((wrapper) => {
+      const scrambleContainer = wrapper.querySelector('.scramble-container');
+      const highlightedCode = wrapper.querySelector('.highlighted-code');
+      const codeElement = scrambleContainer?.querySelector('code');
+      
+      if (!codeElement || codeElement.textContent) return;
+      
+      // Night Owl color palette for scrambling
+      const nightOwlColors = [
+        '#82AAFF', // variables (blue)
+        '#c792ea', // keywords (purple)
+        '#F78C6C', // numbers (orange)
+        '#ecc48d', // strings (yellow)
+        '#7fdbca', // functions (cyan)
+        '#addb67', // green
+        '#fff',    // property white
+      ];
+      
+      const charset = '!<>-_\\/[]{}—=+*^?#________01234567890abcdefghijklmnopqrstuvwxyz';
+      const scrambleDuration = 2000;
+      const revealInterval = 30;
+      
+      let frame = 0;
+      const totalFrames = Math.ceil(scrambleDuration / revealInterval);
+      const codeLength = code.length;
+      
+      const randomChar = () => charset[Math.floor(Math.random() * charset.length)];
+      const randomColor = () => nightOwlColors[Math.floor(Math.random() * nightOwlColors.length)];
+      
+      const scramble = () => {
+        frame++;
+        const revealCount = Math.floor((frame / totalFrames) * codeLength);
+        
+        let output = '';
+        
+        for (let i = 0; i < codeLength; i++) {
+          if (i < revealCount) {
+            // Revealed character in muted color
+            const char = code[i];
+            const escapedChar = char.replace(/&/g, '&amp;')
+                                    .replace(/</g, '&lt;')
+                                    .replace(/>/g, '&gt;');
+            output += `<span style="color: #d6deeb;">${escapedChar}</span>`;
+          } else {
+            const char = code[i];
+            if (char === ' ') {
+              output += ' ';
+            } else if (char === '\n') {
+              output += '\n';
+            } else if (char === '\t') {
+              output += '\t';
+            } else {
+              // Scrambled character with Night Owl colors
+              output += `<span style="color: ${randomColor()};">${randomChar()}</span>`;
+            }
+          }
+        }
+        
+        codeElement.innerHTML = output;
+        
+        if (frame < totalFrames) {
+          setTimeout(scramble, revealInterval);
+        } else {
+          // Switch to syntax highlighted version
+          scrambleContainer.style.opacity = '0';
+          setTimeout(() => {
+            scrambleContainer.style.display = 'none';
+            highlightedCode.style.display = 'block';
+            setTimeout(() => {
+              highlightedCode.style.opacity = '1';
+            }, 50);
+          }, 300);
+        }
+      };
+      
+      scramble();
+    });
+  };
+  
+  document.addEventListener('astro:page-load', initScramble);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScramble);
+  } else {
+    initScramble();
+  }
+</script>
+
+<style>
+  .block-reveal-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 550px;
+  }
+
+  .scramble-container {
+    font-family: 'Courier New', monospace;
+    background: #011627;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    white-space: pre;
+    font-size: 14px;
+    line-height: 1.7;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    min-height: 100px;
+  }
+
+  .scramble-container code {
+    font-family: inherit;
+    display: block;
+  }
+
+  .highlighted-code {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .highlighted-code :global(pre) {
+    margin: 0;
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+</style>
+

@@ -55,15 +55,6 @@
   </button>
 </div>
 
-<div class="slider-indicators">
-  <button class="indicator active" data-index="0" aria-label="Go to slide 1"></button>
-  <button class="indicator" data-index="1" aria-label="Go to slide 2"></button>
-  <button class="indicator" data-index="2" aria-label="Go to slide 3"></button>
-  <button class="indicator" data-index="3" aria-label="Go to slide 4"></button>
-  <button class="indicator" data-index="4" aria-label="Go to slide 5"></button>
-  <button class="indicator" data-index="5" aria-label="Go to slide 6"></button>
-</div>
-
 <style>
   .showcase-slider {
     position: relative;
@@ -71,7 +62,6 @@
     align-items: center;
     gap: 1rem;
     max-width: 1200px;
-    margin: 2rem auto;
   }
 
   .slider-container {
@@ -87,17 +77,16 @@
 
   .slide {
     min-width: 100%;
-    padding: 2rem;
+    padding: 0 2rem 0 2rem;
     box-sizing: border-box;
   }
 
   .slide h2 {
-    margin-top: 0;
-    margin-bottom: 1rem;
+    margin: 0;
   }
 
   .slide p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0rem;
     line-height: 1.6;
   }
 
@@ -185,7 +174,6 @@
   const slides = document.querySelectorAll('.slide');
   const prevBtn = document.querySelector('.slider-btn-prev') as HTMLButtonElement;
   const nextBtn = document.querySelector('.slider-btn-next') as HTMLButtonElement;
-  const indicators = document.querySelectorAll('.indicator') as NodeListOf<HTMLButtonElement>;
   
   let currentIndex = 0;
   const totalSlides = slides.length;
@@ -197,11 +185,6 @@
     // Update button states
     prevBtn.disabled = currentIndex === 0;
     nextBtn.disabled = currentIndex === totalSlides - 1;
-    
-    // Update indicators
-    indicators.forEach((indicator, index) => {
-      indicator.classList.toggle('active', index === currentIndex);
-    });
   }
 
   function goToSlide(index: number) {
@@ -215,13 +198,6 @@
 
   nextBtn.addEventListener('click', () => {
     goToSlide(currentIndex + 1);
-  });
-
-  indicators.forEach((indicator) => {
-    indicator.addEventListener('click', () => {
-      const index = parseInt(indicator.dataset.index || '0');
-      goToSlide(index);
-    });
   });
 
   // Keyboard navigation
