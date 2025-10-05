@@ -6,7 +6,8 @@ sidebar:
 
 > An effects and animation library for Ratatui applications.
 
-Build complex animations by composing and layering simple effects, bringing smooth transitions and visual polish to the terminal.
+Build complex animations by composing and layering simple effects, bringing smooth transitions and
+visual polish to the terminal.
 
 ![](https://github.com/junkdog/tachyonfx/raw/development/images/demo-0.6.0.gif)
 
@@ -16,7 +17,8 @@ Build complex animations by composing and layering simple effects, bringing smoo
 
 :::tip
 
-You can also try out these effects on your browser via Tachyonfx FTL: <https://junkdog.github.io/tachyonfx-ftl/>
+You can also try out these effects on your browser via Tachyonfx FTL:
+<https://junkdog.github.io/tachyonfx-ftl/>
 
 :::
 

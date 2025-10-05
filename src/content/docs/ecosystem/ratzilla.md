@@ -6,7 +6,6 @@ sidebar:
 
 > Build terminal-themed web applications with Rust and WebAssembly.
 
-
 ![Ratzilla demo](https://github.com/orhun/ratzilla/blob/main/assets/demo.gif?raw=true)
 
 ➡️ Demo: <https://orhun.dev/ratzilla/demo/>
