@@ -13,3 +13,17 @@ sidebar:
 - [Quickstart](https://github.com/j-g00da/mousefood?tab=readme-ov-file#quickstart)
 - [API Documentation](https://docs.rs/mousefood/)
 - [Built with Mousefood](https://github.com/j-g00da/mousefood?tab=readme-ov-file#built-with-mousefood)
+
+:::tip
+
+Mousefood can also be used as a backend for any `embedded-graphics` draw target, which means you can
+use it with a variety of displays and platforms.
+
+For example:
+
+![rust-psp ratatui](https://github.com/orhun/rust-rocks/blob/main/assets/ratatui-psp.png?raw=true)
+
+[Ratatui running on PSP](https://github.com/overdrivenpotato/rust-psp/tree/master/examples/ratatui)
+via `rust-psp`
+
+:::
