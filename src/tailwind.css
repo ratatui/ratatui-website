@@ -32,11 +32,11 @@
 }
 
 :root[data-theme="dark"] {
-  --sl-color-basic: white;
+  --color-basic: white;
 }
 
 :root[data-theme="light"] {
-  --sl-color-basic: black;
+  --color-basic: black;
   ;
 }
 
@@ -396,4 +396,40 @@ a:hover .btn-slide::after {
   .glitch-container:hover .glitch-text::after {
     animation: none;
   }
+}
+
+
+/* Button on hover bracket effect */
+.bracket-btn {
+  position: relative;
+}
+
+.bracket-btn::before,
+.bracket-btn::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  width: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.bracket-btn::before {
+  left: -6px;
+  border-left: 3px solid var(--color-basic);
+  border-top: 3px solid var(--color-basic);
+  border-bottom: 3px solid var(--color-basic);
+}
+
+.bracket-btn::after {
+  right: -6px;
+  border-right: 3px solid var(--color-basic);
+  border-top: 3px solid var(--color-basic);
+  border-bottom: 3px solid var(--color-basic);
+}
+
+.bracket-btn:hover::before,
+.bracket-btn:hover::after {
+  opacity: 1;
 }

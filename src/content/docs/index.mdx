@@ -7,6 +7,8 @@ template: splash
 tableOfContents: false
 ---
 
+import SocialIcons from "@astrojs/starlight/components/SocialIcons.astro";
+
 import heroLight from "../../assets/hero-light.png";
 import heroDark from "../../assets/hero-dark.png";
 import logoTextLight from "../../assets/logo-text-light.png";
@@ -23,7 +25,7 @@ import ScrambleText from '../../components/ScrambleText.astro'
 import ScrambleCode from '../../components/ScrambleCode.astro'
 import ShowcaseSlider from '../../components/ShowcaseSlider.astro'
 import MainButtons from '../../components/MainButtons.astro';
-import HideHeader from '../../components/HideHeader.astro';
+ import HideHeader from '../../components/HideHeader.astro';
 
 <div class="flex justify-center landing-mono">
   <div>
@@ -41,7 +43,7 @@ import HideHeader from '../../components/HideHeader.astro';
     />
 
     <div class="flex justify-center">
-      <div class="flex flex-wrap justify-between max-xl:justify-center gap-10 items-end max-w-[1440px] 2xl:min-w-[1440px]">
+      <div class="flex flex-wrap justify-between max-xl:justify-center gap-10 items-end max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px]">
         <div class="max-xl:text-center">
           <div class="flex items-end pb-10">
             <div class="w-[150px] max-2xl:w-[100px]">
@@ -54,29 +56,37 @@ import HideHeader from '../../components/HideHeader.astro';
             </div>
           </div>
           
-          <div class="pb-10">
+          <div class="pb-5">
             <p class="font-bold text-5xl max-2xl:text-4xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
             <p class="font-bold text-5xl max-2xl:text-4xl text-black dark:text-white">terminal user interfaces</p>
             <p class="text-lg pt-5 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
           </div>
           
-          <MainButtons primaryClass="bg-yellow-500 !text-black dark:bg-blue-700 dark:!text-white" secondaryClass="!bg-blue-700 text-white dark:!bg-white dark:!text-black" />
+          <MainButtons
+            primaryClass="bg-yellow-500 !text-black dark:bg-blue-700 dark:!text-white"
+            secondaryClass="!bg-blue-700 text-white dark:!bg-white dark:!text-black"
+          />
         </div>
         
-        <ScrambleCode />
+        <div class="grid justify-items-end">
+          <div class="flex justify-center gap-5">
+            <SocialIcons />
+          </div>
+          <ScrambleCode />
+        </div>
       </div>
     </div>
 
     <div class="flex justify-center">
-      <div class="max-w-[1440px] 2xl:min-w-[1440px] py-8 max-xl:text-center">
-        <ScrambleText text={`─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ───────`} />
+      <div class="max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] py-5 pt-[50px] max-xl:text-center">
         <p class="font-bold text-2xl text-blue-700 dark:!text-yellow-500 ">
-        <span>Trusted by </span>
-        <span class="text-3xl">{`{developers}`}</span>
+          <span>Trusted by </span>
+          <span class="text-3xl">{`{developers}`}</span>
+          <span class="font-bold text-2xl text-black dark:text-white"> building amazing terminal apps</span>
         </p>
-        <p class="font-bold text-4xl text-black dark:text-white">Building amazing terminal apps</p>
-        <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-900 dark:to-blue-950 py-10 px-20">
-          <p class="font-bold text-lg text-white ">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</p>
+        
+        <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-900 dark:to-blue-950 py-8 px-20">
+          <span class="font-bold text-lg text-white">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</span>
           <StatsDisplay />
           <CompanyLogos />
         </div>
@@ -85,7 +95,6 @@ import HideHeader from '../../components/HideHeader.astro';
 
     <div class="flex justify-center px-[100px]">
       <div>
-        <ScrambleText text={`─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ───────`} />
         <ShowcaseSlider />
         <div class="flex justify-center pt-2">
           <a class="no-underline" href="/showcase/apps">
@@ -108,14 +117,18 @@ import HideHeader from '../../components/HideHeader.astro';
     </div>
 
     <div class="flex justify-center">
-      <div class="flex max-xl:flex-wrap items-center justify-center gap-10 text-center py-10 w-screen bg-gradient-to-r from-blue-600 to-blue-800 dark:from-slate-950 dark:to-slate-950">
-        <div class="max-w-[450px] ml-[-150px] max-xl:ml-0">
-          <img src={ascii.src} />
-        </div>
-        <div>
+      <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-r from-blue-600 to-blue-800 dark:from-slate-950 dark:to-slate-950">
+        <div class="py-10">
           <h2 class="!text-6xl pb-10 !text-white">Ready to start <span class="landing-highlight-tall">cooking</span></h2>
-          <p class="text-xl pb-10 text-white">Join thousands of <span class="dark:text-yellow-500">{`{developers}`}</span> cooking 🍳 up the next generation of terminal applications</p>
-          <MainButtons primaryClass="!text-black dark:!text-white bg-yellow-500 dark:bg-blue-700" secondaryClass="dark:text-black dark:bg-white" />
+          <p class="text-xl pb-5 text-white">Join thousands of <span class="dark:text-yellow-500">{`{developers}`}</span> cooking 🍳 up the next generation of terminal applications</p>
+          <MainButtons
+            containerClass="justify-center"
+            primaryClass="!text-black dark:!text-white bg-yellow-500 dark:bg-blue-700"
+            secondaryClass="dark:text-black dark:bg-white"
+          />
+          <div class="flex justify-center gap-5 pt-10">
+            <SocialIcons />
+          </div>
         </div>
       </div>
     </div>

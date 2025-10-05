@@ -18,33 +18,38 @@ try {
     downloads: "7.1M",
   };
 }
+
+const data = [
+  {
+    value: stats.crates,
+    url: "https://crates.io/crates/ratatui/reverse_dependencies",
+    description: " 📦 crates built with Ratatui",
+  },
+  {
+    value: stats.stars,
+    url: "https://github.com/ratatui-org/ratatui",
+    description: "  ⭐ stars on GitHub",
+  },
+  {
+    value: stats.downloads,
+    url: "https://crates.io/crates/ratatui",
+    description: " ⬇️ downloads on crates.io",
+  }
+]
 ---
 
-<div class="flex flex-wrap gap-5 pt-5 text-base landing-mono text-white">
-  <span class="border-2 border-dotted border-slate-900 pr-2">
+<div class="flex flex-wrap gap-5 pt-5 text-base text-white landing-mono">
+  {data.map((datum) => (
     <a
-      class="no-underline"
-      href="https://crates.io/crates/ratatui/reverse_dependencies"
+      class="bracket-btn no-underline border-2 border-dotted border-slate-100 dark:border-slate-900 py-1"
+      href={datum.url}
       target="_blank"
       rel="noopener noreferrer"
     >
-      <span class="text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-4 landing-mono glitch-container">
-        <span class="text-xl btn-slide relative">{stats.crates}</span>
-      </span>
-    </a> 📦 crates built with Ratatui
-  </span>
-  <span class="border-2 border-dotted border-slate-900 pr-2">
-    <a class="no-underline" href="https://github.com/ratatui-org/ratatui" target="_blank" rel="noopener noreferrer">
-      <span class="text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-4 landing-mono glitch-container">
-        <span class="text-xl btn-slide relative">{stats.stars}</span>
-      </span>
-    </a> ⭐ stars on GitHub
-  </span>
-  <span class="border-2 border-dotted border-slate-900 pr-2">
-    <a class="no-underline" href="https://crates.io/crates/ratatui" target="_blank" rel="noopener noreferrer">
-      <span class="font-bold text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-4 landing-mono glitch-container">
-        <span class="text-xl btn-slide relative">{stats.downloads}</span>
-      </span>
-    </a> ⬇️ downloads on crates.io
-  </span>
-</div>
+        <span class="text-xl text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2">
+          {datum.value}
+        </span>
+        <span class="px-2 text-white">{datum.description}</span>
+    </a>))
+  }
+ </div>

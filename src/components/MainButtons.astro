@@ -1,10 +1,11 @@
 ---
 interface Props {
+  containerClass: string;
   primaryClass: string;
   secondaryClass: string;
 }
 
-const { primaryClass, secondaryClass } = Astro.props;
+const {containerClass, primaryClass, secondaryClass } = Astro.props;
 
 const links = [
   { class: primaryClass, title: "Get Started", href: "/installation" },
@@ -13,12 +14,9 @@ const links = [
 ];
 ---
 
-<div class="flex-row max-xl:flex-wrap">
+<div class={`flex gap-10 max-xl:flex-wrap ${containerClass}`}>
   {links.map((link) => (
-     <a class="no-underline" href={link.href} aria-label={link.title}>
-      <span class={`font-bold text-xl text-white bg-blue-700 p-4 pl-10 pr-8 mr-10 max-2xl:pl-6 max-2xl:pr-5 ${link.class}`}>
-        <span class="btn-slide relative">{link.title}</span>
-      </span>
-    </a>))
-  }
+     <a class={`bracket-btn font-bold text-xl text-white bg-blue-700 p-3 px-6 max-2xl:p-2 max-2xl:px-4 no-underline ${link.class}`} href={link.href} aria-label={link.title}>
+        {link.title}
+    </a>))}
  </div>

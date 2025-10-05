@@ -150,39 +150,6 @@ const slides = [
     padding: 0 2rem 0 2rem;
   }
 
-  .slider-btn {
-    position: relative;
-  }
-
-  .slider-btn::before,
-  .slider-btn::after {
-    content: "";
-    position: absolute;
-    top: -5px;
-    bottom: -5px;
-    width: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .slider-btn::before {
-    left: -5px;
-    border-left: 3px solid var(--sl-color-basic);
-    border-top: 3px solid var(--sl-color-basic);
-    border-bottom: 3px solid var(--sl-color-basic);
-  }
-
-  .slider-btn::after {
-    right: -5px;
-    border-right: 3px solid var(--sl-color-basic);
-    border-top: 3px solid var(--sl-color-basic);
-    border-bottom: 3px solid var(--sl-color-basic);
-  }
-
-  .slider-btn:hover::before,
-  .slider-btn:hover::after {
-    opacity: 1;
-  }
 
   @media (max-width: 768px) {
     .slider-btn {

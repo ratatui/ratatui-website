@@ -20,7 +20,7 @@ const highlightedHtml = await codeToHtml(code, {
 });
 ---
 
-<div class={`block-reveal-wrapper ${className}`}>
+<div class={`block-reveal-wrapper h-[460px] ${className}`}>
   <pre class="scramble-container"><code class="language-rust"></code></pre>
   <div class="highlighted-code" set:html={highlightedHtml} />
 </div>
@@ -92,14 +92,10 @@ const highlightedHtml = await codeToHtml(code, {
         if (frame < totalFrames) {
           setTimeout(scramble, revealInterval);
         } else {
-          // Switch to syntax highlighted version
+          // Fade out scramble, fade in highlighted
           scrambleContainer.style.opacity = '0';
           setTimeout(() => {
-            scrambleContainer.style.display = 'none';
-            highlightedCode.style.display = 'block';
-            setTimeout(() => {
-              highlightedCode.style.opacity = '1';
-            }, 50);
+            highlightedCode.style.opacity = '1';
           }, 300);
         }
       };
@@ -121,12 +117,22 @@ const highlightedHtml = await codeToHtml(code, {
     position: relative;
     overflow: hidden;
     width: 550px;
+    min-height: 100px; /* Reserve space to prevent collapse */
+  }
+
+  .scramble-container,
+  .highlighted-code {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
   }
 
   .scramble-container {
     font-family: 'Courier New', monospace;
     background: #011627;
     padding: 1rem;
+    margin-top: 1.15rem;
     border-radius: 6px;
     overflow-x: auto;
     white-space: pre;
@@ -134,7 +140,7 @@ const highlightedHtml = await codeToHtml(code, {
     line-height: 1.7;
     opacity: 1;
     transition: opacity 0.3s ease;
-    min-height: 100px;
+    z-index: 2; /* Layer on top initially */
   }
 
   .scramble-container code {
@@ -143,15 +149,18 @@ const highlightedHtml = await codeToHtml(code, {
   }
 
   .highlighted-code {
-    display: none;
     opacity: 0;
     transition: opacity 0.5s ease;
+    z-index: 1;
   }
 
   .highlighted-code :global(pre) {
     margin: 0;
     border-radius: 6px;
     overflow-x: auto;
+    background: #011627;
+    padding: 1rem;
+    font-size: 14px;
+    line-height: 1.7;
   }
 </style>
-
