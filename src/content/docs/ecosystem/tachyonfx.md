@@ -1,5 +1,5 @@
 ---
-title: Shader animations (Tachyonfx)
+title: Effects and animations (Tachyonfx)
 sidebar:
   order: 1
 ---
