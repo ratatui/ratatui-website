@@ -105,7 +105,7 @@ const slides = [
 ---
 
 <div class="relative flex items-center gap-1 max-w-[1440px]">
-  <button class="slider-btn bg-yellow-500 text-black w-[45px] h-[45px] cursor-pointer slider-btn-prev" aria-label="Previous app">
+  <button class="bracket-btn bg-yellow-500 text-black w-[45px] h-[45px] cursor-pointer slider-btn-prev" aria-label="Previous app">
     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
@@ -115,10 +115,12 @@ const slides = [
     <div class="slider-track">
       {slides.map((slide) => (
         <div class="slide">
-          <img class="w-auto h-[720px] mx-auto object-fit object-top max-xl:h-[400px]" src={slide.image} alt={slide.alt} />
+          <a href={slide.url} target="_blank" aria-label={slide.title}>
+            <img class="w-auto h-[720px] mx-auto object-fit object-top max-xl:h-[400px]" src={slide.image} alt={slide.alt} />
+          </a>
           <h2 class="!mt-5">
             <a href={slide.url} target="_blank" aria-label={slide.title}>
-              <span class="btn-slide relative text-black dark:text-white">{slide.title}</span>
+              <span class="bracket-btn text-black dark:text-white">{slide.title}</span>
             </a>
           </h2>
           <p class="text-lg text-black dark:text-white">
@@ -131,7 +133,7 @@ const slides = [
     </div>
   </div>
 
-  <button class="slider-btn bg-yellow-500 text-black w-[45px] h-[45px] cursor-pointer slider-btn-next" aria-label="Next app">
+  <button class="bracket-btn bg-yellow-500 text-black w-[45px] h-[45px] cursor-pointer slider-btn-next" aria-label="Next app">
     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
@@ -152,11 +154,6 @@ const slides = [
 
 
   @media (max-width: 768px) {
-    .slider-btn {
-      width: 40px;
-      height: 40px;
-    }
-
     .slide {
       padding: 1rem;
     }
