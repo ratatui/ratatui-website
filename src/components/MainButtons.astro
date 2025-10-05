@@ -1,0 +1,26 @@
+---
+interface Props {
+  primaryClass: string;
+  secondaryClass: string;
+}
+
+const { primaryClass, secondaryClass } = Astro.props;
+---
+
+<div class="flex-row">
+  <a class="no-underline" href="/installation">
+    <span class={`font-bold text-xl text-white bg-blue-700 p-4 pl-10 pr-8 mr-10 ${primaryClass}`}>
+      <span class="btn-slide relative">Get Started</span>
+    </span>
+  </a>
+  <a class="no-underline" href="/examples">
+    <span class={`font-bold text-xl text-slate-800 dark:text-black bg-slate-100 dark:bg-white p-4 pl-10 pr-8 mr-10 ${secondaryClass}`}>
+      <span class="btn-slide relative">Browse Examples</span>
+    </span>
+  </a>
+  <a class="no-underline"  href="https://docs.rs/ratatui">
+    <span class={`font-bold text-xl text-slate-800 dark:text-black bg-slate-100 dark:bg-white p-4 px-8 ${secondaryClass}`}>
+      <span class="btn-slide relative">API Docs</span>
+    </span>
+  </a>
+</div>

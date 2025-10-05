@@ -20,27 +20,31 @@ try {
 }
 ---
 
-<div class="pt-[60px] text-xl landing-mono">
-  <p class="landing-mono">
-    <span class="text-slate-300">
-      <a
-        class="no-underline"
-        href="https://crates.io/crates/ratatui/reverse_dependencies"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="font-bold text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-6 m-2 landing-mono">{stats.crates}</span>
-      </a> 📦 crates built with Ratatui
-    </span>
-    <span class="text-slate-300">
-      <a class="no-underline" href="https://github.com/ratatui-org/ratatui" target="_blank" rel="noopener noreferrer">
-        <span class="font-bold text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-6 m-2 landing-mono">{stats.stars}</span>
-      </a> ⭐ stars on GitHub
-    </span>
-    <span class="text-slate-300">
-      <a class="no-underline" href="https://crates.io/crates/ratatui" target="_blank" rel="noopener noreferrer">
-        <span class="font-bold text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-6 m-2 landing-mono">{stats.downloads}</span>
-      </a> ⬇️ downloads on crates.io
-    </span>
-  </p>
+<div class="flex flex-wrap gap-5 pt-5 text-xl landing-mono font-bold text-slate-300">
+  <span>
+    <a
+      class="no-underline"
+      href="https://crates.io/crates/ratatui/reverse_dependencies"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span class="text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-4 m-2 landing-mono glitch-container">
+        <span class="btn-slide relative">{stats.crates}</span>
+      </span>
+    </a> 📦 crates built with Ratatui
+  </span>
+  <span>
+    <a class="no-underline" href="https://github.com/ratatui-org/ratatui" target="_blank" rel="noopener noreferrer">
+      <span class="text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-4 m-2 landing-mono glitch-container">
+        <span class="btn-slide relative">{stats.stars}</span>
+      </span>
+    </a> ⭐ stars on GitHub
+  </span>
+  <span>
+    <a class="no-underline" href="https://crates.io/crates/ratatui" target="_blank" rel="noopener noreferrer">
+      <span class="font-bold text-black dark:text-white bg-slate-100 dark:bg-slate-900 p-2 px-4 m-2 landing-mono glitch-container">
+        <span class="btn-slide relative">{stats.downloads}</span>
+      </span>
+    </a> ⬇️ downloads on crates.io
+  </span>
 </div>

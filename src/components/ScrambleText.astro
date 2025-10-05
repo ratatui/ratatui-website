@@ -1,0 +1,136 @@
+---
+interface Props {
+  text: string;
+  classNames: string;
+}
+
+const { text } = Astro.props;
+---
+
+<div 
+  class="scramble-text text-lg py-8 text-center tracking-[0.2rem] text-blue-900 dark:text-slate-300"
+  data-original={text}
+>
+  {text}
+</div>
+
+<style>
+  .scramble-text {
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+</style>
+
+<script>
+  class TextScrambler {
+    private element: HTMLElement;
+    private originalText: string;
+    private isScrambling: boolean = false;
+    private isUnscrambling: boolean = false;
+    private scrambleInterval: number | null = null;
+
+    constructor(element: HTMLElement) {
+      this.element = element;
+      this.originalText = element.getAttribute('data-original') || element.textContent || '';
+      this.init();
+    }
+
+    init(): void {
+      this.element.addEventListener('mouseenter', () => this.scramble());
+      this.element.addEventListener('mouseleave', () => this.unscramble());
+    }
+
+    scramble(): void {
+      // Clear any existing intervals for this instance
+      if (this.scrambleInterval !== null) {
+        clearInterval(this.scrambleInterval);
+        this.scrambleInterval = null;
+      }
+
+      this.isUnscrambling = false;
+      this.isScrambling = true;
+
+      const chars = this.originalText.split('');
+      let frame = 0;
+      const maxFrames = 60;
+
+      this.scrambleInterval = window.setInterval(() => {
+        if (!this.isScrambling) {
+          if (this.scrambleInterval !== null) {
+            clearInterval(this.scrambleInterval);
+            this.scrambleInterval = null;
+          }
+          return;
+        }
+
+        const scrambled = chars.map((char) => {
+          if (char === ' ') return ' ';
+          return '01'[Math.floor(Math.random() * 2)];
+        }).join('');
+
+        this.element.textContent = scrambled;
+        frame++;
+
+        if (frame >= maxFrames) {
+          if (this.scrambleInterval !== null) {
+            clearInterval(this.scrambleInterval);
+            this.scrambleInterval = null;
+          }
+        }
+      }, 1000 / 60);
+    }
+
+    unscramble(): void {
+      // Clear any existing intervals for this instance
+      if (this.scrambleInterval !== null) {
+        clearInterval(this.scrambleInterval);
+        this.scrambleInterval = null;
+      }
+
+      this.isScrambling = false;
+      this.isUnscrambling = true;
+
+      const chars = this.originalText.split('');
+      let frame = 0;
+      const maxFrames = 60;
+
+      this.scrambleInterval = window.setInterval(() => {
+        if (!this.isUnscrambling) {
+          if (this.scrambleInterval !== null) {
+            clearInterval(this.scrambleInterval);
+            this.scrambleInterval = null;
+          }
+          return;
+        }
+
+        const scrambled = chars.map((char, index) => {
+          const progress = frame / maxFrames;
+          const revealThreshold = (index / chars.length);
+          
+          if (progress > revealThreshold) {
+            return char;
+          }
+          
+          return char === ' ' ? ' ' : '01'[Math.floor(Math.random() * 2)];
+        }).join('');
+
+        this.element.textContent = scrambled;
+        frame++;
+
+        if (frame >= maxFrames) {
+          this.element.textContent = this.originalText;
+          if (this.scrambleInterval !== null) {
+            clearInterval(this.scrambleInterval);
+            this.scrambleInterval = null;
+          }
+        }
+      }, 1000 / 60);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const elements = document.querySelectorAll<HTMLElement>('.scramble-text');
+    elements.forEach(element => new TextScrambler(element));
+  });
+</script>
+

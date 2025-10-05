@@ -7,21 +7,24 @@ template: splash
 tableOfContents: false
 ---
 
-import { Card, CardGrid } from "@astrojs/starlight/components";
 import heroLight from "../../assets/hero-light.png";
 import heroDark from "../../assets/hero-dark.png";
 import logoTextLight from "../../assets/logo-text-light.png";
 import logoTextDark from "../../assets/logo-text-dark.png";
-import atuin from "../../assets/atuin-animation.gif";
-import bottom from "../../assets/bottom-animation.gif";
-import bandwhich from "../../assets/bandwhich-animation.gif";
+import ascii from "../../assets/ascii-art.png";
+import netflix from "../../assets/netflix.png";
+
 import StatsDisplay from "../../components/StatsDisplay.astro";
+import CompanyLogos from "../../components/CompanyLogos.astro";
 import ImageSwap from '../../components/ImageSwap.astro'
 import RandomDots from '../../components/RandomDots.astro'
 import Features from '../../components/Features.astro'
+import ScrambleText from '../../components/ScrambleText.astro'
+import ShowcaseSlider from '../../components/ShowcaseSlider.astro'
+import MainButtons from '../../components/MainButtons.astro';
+// import HideHeader from '../../components/HideHeader.astro';
 
-
-<div class="py-8 mb-30 flex justify-center landing-mono">
+<div class="flex justify-center landing-mono">
   <div>
     <h1>Ratatui</h1>
     <RandomDots
@@ -36,95 +39,87 @@ import Features from '../../components/Features.astro'
       colors={['#64748b', '#f1f5f9', '#64748b', '#334155']}
     />
 
-    <div class="flex flex-wrap gap-10 justify-center items-end">
-      <div>
-        <div class="flex">
-          <div class="w-[100px]">
-            <img src={heroLight.src} alt="Ratatui Logo" class="dark:hidden" />
-            <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
+    <div class="flex justify-center">
+      <div class="flex flex-wrap gap-10 items-end max-w-[1440px] justify-between">
+        <div>
+          <div class="flex items-end pb-10">
+            <div class="w-[150px]">
+              <img src={heroLight.src} alt="Ratatui Logo" class="dark:hidden" />
+              <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
+            </div>
+            <div>
+              <img src={logoTextLight.src} class="max-h-[100px] dark:hidden" />
+              <img src={logoTextDark.src} class="max-h-[100px] !hidden dark:!block" />
+            </div>
           </div>
-          <div>
-            <img src={logoTextLight.src} class="max-h-[70px] dark:hidden" />
-            <img src={logoTextDark.src} class="max-h-[70px] !hidden dark:!block" />
+          
+          <div class="pb-10">
+            <p class="font-bold text-5xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
+            <p class="font-bold text-5xl text-black dark:text-white">terminal user interfaces</p>
+            <p class="text-lg pt-5 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
           </div>
+          
+          <MainButtons primaryClass="bg-yellow-500 !text-black dark:bg-blue-700 dark:!text-white" secondaryClass="!bg-blue-700 text-white dark:!bg-white dark:!text-black" />
         </div>
-        <div class="p-2">
-          <p class="font-bold text-6xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
-          <p class="font-bold text-6xl text-black dark:text-white">terminal user interfaces</p>
-          <p class="text-xl pt-10 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
-        </div>
-        <div class="flex-row items-center">
-          <a class="no-underline" href="/installation">
-            <span class="font-bold text-xl text-white bg-blue-700 p-2 px-6 mr-10">Get Started</span>
-          </a>
-          <a class="no-underline" href="/examples">
-            <span class="font-bold text-xl text-slate-900 dark:text-slate-100 border border-slate-800 dark:border-slate-600 p-2 px-6">Browse Examples</span>
-          </a>
-        </div>
-      </div>
 
-      <div class="ml-10 w-[550px]">
-        ```rust
-        {{ #include @code/tutorials/quickstart-ratatui/src/main.rs }}
-        ```
+        <div class="w-[550px]">
+          ```rust
+          {{ #include @code/tutorials/quickstart-ratatui/src/main.rs }}
+          ```
+        </div>
       </div>
     </div>
 
+
     <div class="flex justify-center">
-      <div class="pt-[200px]">
-        <p class="font-bold text-3xl text-blue-700 dark:!text-violet-500 ">
+      <div class="max-w-[1440px] py-8">
+      <ScrambleText text={`─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ───────`} />
+        <p class="font-bold text-2xl text-blue-700 dark:!text-yellow-500 ">
         <span>Trusted by </span>
-        <span class="text-5xl">{`{developers}`}</span>
+        <span class="text-3xl">{`{developers}`}</span>
         </p>
-        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white ">Building amazing terminal apps</p>
-        <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-800 dark:to-slate-900 py-10 px-20 max-w-[1500px]">
+        <p class="font-bold text-4xl text-black dark:text-white">Building amazing terminal apps</p>
+        <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-800 dark:to-slate-900 py-10 px-20">
           <p class="font-bold text-2xl text-white ">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</p>
           <StatsDisplay />
+          <CompanyLogos />
         </div>
       </div>
     </div>
 
-    <div class="flex justify-center">
-      <div class="pt-[200px]">
-        <p class="font-bold text-4xl p-2 pb-8 text-black dark:text-white ">
-          <span class="text-6xl text-blue-700 dark:text-violet-500">1400+</span>
-          <span> crates built with Ratatui</span>
-        </p>
-        <ImageSwap 
-          images={{
-            atuin: atuin.src,
-            bottom: bottom.src,
-            bandwhich: bandwhich.src
-          }}
-          threshold={0.5}
-          rootMargin="-20% 0px"
-        />
+    <div class="flex justify-center px-[100px]">
+      <div>
+      <ScrambleText text={`─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ───────`} />
+        <ShowcaseSlider />
+        <div class="flex justify-center pt-8">
+          <a class="no-underline" href="/showcase/apps">
+            <span class="font-bold text-2xl text-white bg-blue-700 p-4 px-8 glitch-container">
+              <span class="glitch-text" data-text="Explore the showcase ::<>">{`Explore the showcase ::<>`}</span>
+            </span>
+          </a>
+        </div>
       </div>
     </div>
-  
-    <div class="flex justify-center px-[100px]">
-      <p class="font-bold text-2xl border border-blue-800 dark:border-slate-300 p-2 px-6 dark:hover:bg-slate-800">
-        <a href="/showcase/apps" class="landing-link">Explore the showcase →</a>
-      </p>
+
+    <div class="py-8">
+      <ScrambleText text={`─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ───────`} />
+    </div>
+    
+    <Features />
+    
+    <div class="py-8">
+      <ScrambleText text={`─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ─────── ᓚᘏᕐᐷ ───────`} />
     </div>
 
-    <Features />
-
-    <div class="pt-[200px] flex justify-center">
-      <div class="text-center p-10 pt-[100px] pb-[100px] w-screen bg-blue-800 dark:bg-slate-950">
-        <h2 class="!text-6xl pb-10 !text-white">Ready to start cooking?</h2>
-        <p class="text-xl pb-10 text-white">Join thousands of developers cooking up the next generation of terminal applications</p>
-
-        <div class="pt-5 flex gap-10 justify-center">
-          <a class="no-underline" href="/installation">
-            <span class="font-bold text-xl bg-slate-200 dark:bg-blue-700 p-4 px-6">Get Started</span>
-          </a>
-          <a class="no-underline" href="/examples">
-            <span class="font-bold text-xl text-white border p-4 px-6">Browse Examples</span>
-          </a>
-          <a class="no-underline" href="https://docs.rs/ratatui">
-            <span class="font-bold text-xl text-white border p-4 px-6">API Docs</span>
-          </a>
+    <div class="flex justify-center">
+      <div class="flex items-center justify-center gap-10 text-center p-10 pt-[100px] pb-[100px] w-screen bg-gradient-to-r from-blue-600 to-blue-700 dark:from-slate-950 dark:to-slate-950">
+        <div class="max-w-[300px] ml-[-150px]">
+          <img src={ascii.src} />
+        </div>
+        <div>
+          <h2 class="!text-6xl pb-10 !text-white">Ready to start <span class="landing-highlight-tall">cooking</span></h2>
+          <p class="text-xl pb-10 text-white">Join thousands of <span class="dark:text-yellow-500">{`{developers}`}</span> cooking 🍳 up the next generation of terminal applications</p>
+          <MainButtons primaryClass="!text-black dark:!text-white bg-yellow-500 dark:bg-blue-700" />
         </div>
       </div>
     </div>
