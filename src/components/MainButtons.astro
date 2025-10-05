@@ -5,22 +5,20 @@ interface Props {
 }
 
 const { primaryClass, secondaryClass } = Astro.props;
+
+const links = [
+  { class: primaryClass, title: "Get Started", href: "/installation" },
+  { class: secondaryClass, title: "Browse Example", href: "/examples" },
+  { class: secondaryClass, title: "API Docs", href: "https://docs.rs/ratatui" },
+];
 ---
 
-<div class="flex-row">
-  <a class="no-underline" href="/installation" aria-label="Get Started">
-    <span class={`font-bold text-xl text-white bg-blue-700 p-4 pl-10 pr-8 mr-10 ${primaryClass}`}>
-      <span class="btn-slide relative">Get Started</span>
-    </span>
-  </a>
-  <a class="no-underline" href="/examples" aria-label="Browse Examples">
-    <span class={`font-bold text-xl text-slate-800 dark:text-black bg-slate-100 dark:bg-white p-4 pl-10 pr-8 mr-10 ${secondaryClass}`}>
-      <span class="btn-slide relative">Browse Examples</span>
-    </span>
-  </a>
-  <a class="no-underline" href="https://docs.rs/ratatui" target="_blank" aria-label="API Documentation">
-    <span class={`font-bold text-xl text-slate-800 dark:text-black bg-slate-100 dark:bg-white p-4 px-8 ${secondaryClass}`}>
-      <span class="btn-slide relative">API Docs</span>
-    </span>
-  </a>
-</div>
+<div class="flex-row max-xl:flex-wrap">
+  {links.map((link) => (
+     <a class="no-underline" href={link.href} aria-label={link.title}>
+      <span class={`font-bold text-xl text-white bg-blue-700 p-4 pl-10 pr-8 mr-10 max-2xl:pl-6 max-2xl:pr-5 ${link.class}`}>
+        <span class="btn-slide relative">{link.title}</span>
+      </span>
+    </a>))
+  }
+ </div>

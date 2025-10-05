@@ -31,6 +31,15 @@
   --color-gray-950: var(--color-slate-950);
 }
 
+:root[data-theme="dark"] {
+  --sl-color-basic: white;
+}
+
+:root[data-theme="light"] {
+  --sl-color-basic: black;
+  ;
+}
+
 @media (min-width: 50rem) {
   /* Move the logo to the left side  */
 
@@ -216,7 +225,6 @@ main .content-panel:first-child:not(:has(*)) {
 }
 
 /* Squiggle underline hover animation */
-.btn-slide-container:hover,
 .btn-slide::after {
   content: '';
   position: absolute;
