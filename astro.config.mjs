@@ -61,41 +61,13 @@ export default defineConfig({
         plugins: [pluginCollapsibleSections(), collapsibleFrames()],
       },
       social: [
-        {
-          icon: "github",
-          label: "GitHub",
-          href: "https://github.com/ratatui/ratatui",
-        },
-        {
-          icon: "discord",
-          label: "Discord",
-          href: "https://discord.gg/pMCEU9hNEj",
-        },
-        {
-          icon: "matrix",
-          label: "Matrix",
-          href: "https://matrix.to/#/#ratatui:matrix.org",
-        },
-        {
-          icon: "discourse",
-          label: "Discourse",
-          href: "https://forum.ratatui.rs",
-        },
-        {
-          icon: "x.com",
-          label: "X.com",
-          href: "https://twitter.com/ratatui_rs",
-        },
-        {
-          icon: "blueSky",
-          label: "Bluesky",
-          href: "https://bsky.app/profile/ratatui.rs",
-        },
-        {
-          icon: "mastodon",
-          label: "Mastodon",
-          href: "https://fosstodon.org/@ratatui_rs",
-        },
+        { icon: "github", label: "GitHub", href: "https://github.com/ratatui/ratatui" },
+        { icon: "discord", label: "Discord", href: "https://discord.gg/pMCEU9hNEj" },
+        { icon: "matrix", label: "Matrix", href: "https://matrix.to/#/#ratatui:matrix.org" },
+        { icon: "discourse", label: "Discourse", href: "https://forum.ratatui.rs" },
+        { icon: "x.com", label: "X.com", href: "https://twitter.com/ratatui_rs" },
+        { icon: "blueSky", label: "Bluesky", href: "https://bsky.app/profile/ratatui.rs" },
+        { icon: "mastodon", label: "Mastodon", href: "https://fosstodon.org/@ratatui_rs" },
         {
           icon: "linkedin",
           label: "LinkedIn",
@@ -358,38 +330,24 @@ export default defineConfig({
     "/how-to": "/recipes",
     "/how-to/develop-apps/better-panic": "/recipes/apps/better-panic",
     "/how-to/develop-apps/cli-arguments": "/recipes/apps/cli-arguments",
-    "/how-to/develop-apps/color-eyre/demo.gif":
-      "/recipes/apps/color-eyre/demo.gif",
-    "/how-to/develop-apps/color-eyre/error-full.gif":
-      "/recipes/apps/color-eyre/error-full.gif",
-    "/how-to/develop-apps/color-eyre/error-full.png":
-      "/recipes/apps/color-eyre/error-full.png",
-    "/how-to/develop-apps/color-eyre/error.gif":
-      "/recipes/apps/color-eyre/error.gif",
-    "/how-to/develop-apps/color-eyre/error.png":
-      "/recipes/apps/color-eyre/error.png",
-    "/how-to/develop-apps/color-eyre/panic-full.gif":
-      "/recipes/apps/color-eyre/panic-full.gif",
-    "/how-to/develop-apps/color-eyre/panic-full.png":
-      "/recipes/apps/color-eyre/panic-full.png",
-    "/how-to/develop-apps/color-eyre/panic.gif":
-      "/recipes/apps/color-eyre/panic.gif",
-    "/how-to/develop-apps/color-eyre/panic.png":
-      "/recipes/apps/color-eyre/panic.png",
-    "/how-to/develop-apps/color-eyre/quit.gif":
-      "/recipes/apps/color-eyre/quit.gif",
-    "/how-to/develop-apps/color-eyre/quit.png":
-      "/recipes/apps/color-eyre/quit.png",
+    "/how-to/develop-apps/color-eyre/demo.gif": "/recipes/apps/color-eyre/demo.gif",
+    "/how-to/develop-apps/color-eyre/error-full.gif": "/recipes/apps/color-eyre/error-full.gif",
+    "/how-to/develop-apps/color-eyre/error-full.png": "/recipes/apps/color-eyre/error-full.png",
+    "/how-to/develop-apps/color-eyre/error.gif": "/recipes/apps/color-eyre/error.gif",
+    "/how-to/develop-apps/color-eyre/error.png": "/recipes/apps/color-eyre/error.png",
+    "/how-to/develop-apps/color-eyre/panic-full.gif": "/recipes/apps/color-eyre/panic-full.gif",
+    "/how-to/develop-apps/color-eyre/panic-full.png": "/recipes/apps/color-eyre/panic-full.png",
+    "/how-to/develop-apps/color-eyre/panic.gif": "/recipes/apps/color-eyre/panic.gif",
+    "/how-to/develop-apps/color-eyre/panic.png": "/recipes/apps/color-eyre/panic.png",
+    "/how-to/develop-apps/color-eyre/quit.gif": "/recipes/apps/color-eyre/quit.gif",
+    "/how-to/develop-apps/color-eyre/quit.png": "/recipes/apps/color-eyre/quit.png",
     "/how-to/develop-apps/color_eyre": "/recipes/apps/color-eyre",
-    "/how-to/develop-apps/config-directories":
-      "/recipes/apps/config-directories",
+    "/how-to/develop-apps/config-directories": "/recipes/apps/config-directories",
     "/how-to/develop-apps": "/recipes/apps",
     "/how-to/develop-apps/log-with-tracing": "/recipes/apps/log-with-tracing",
-    "/how-to/develop-apps/migrate-from-tui-rs":
-      "/recipes/apps/migrate-from-tui-rs",
+    "/how-to/develop-apps/migrate-from-tui-rs": "/recipes/apps/migrate-from-tui-rs",
     "/how-to/develop-apps/panic-hooks": "/recipes/apps/panic-hooks",
-    "/how-to/develop-apps/terminal-and-event-handler":
-      "/recipes/apps/terminal-and-event-handler",
+    "/how-to/develop-apps/terminal-and-event-handler": "/recipes/apps/terminal-and-event-handler",
     "/how-to/layout/center-a-rect": "/recipes/layout/center-a-widget",
     "/how-to/layout/collapse-borders": "/recipes/layout/collapse-borders",
     "/how-to/layout/dynamic": "/recipes/layout/dynamic",
