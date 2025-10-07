@@ -128,7 +128,7 @@ const tileData = projects.map(() => ({
         data-col-span={tileData[index].colSpan}
       >
         <div class="bg-slate-600 dark:bg-slate-950 text-white">
-          <a href={project.url} alt={project.alt} target="_blank">
+          <a href={project.url} target="_blank">
             <p class={`font-bold text-3xl ${tileData[index].colSpan === 1 ? 'px-6 pt-6 pb-3' : 'px-6 pt-[50px] pb-6'}`}>
               <span class="bracket-btn">{project.title}</span>
             </p>
@@ -136,9 +136,9 @@ const tileData = projects.map(() => ({
           <p class={`px-6`}>{project.description}</p>
         </div>
         <div class="bg-slate-600 dark:bg-slate-950 p-3 overflow-hidden">
-          <a href={project.url} alt={project.alt} target="_blank">
+          <a href={project.url} target="_blank">
             {project.media.endsWith("webm")
-              ? <video class="w-full h-full object-cover" src={project.media} autoPlay muted loop playsInline />
+              ? <video class="w-full h-full object-cover" src={project.media} autoplay muted loop playsInline />
               : <img class="w-full h-full object-cover" src={project.media} alt={project.alt} />}
           </a>
         </div>
