@@ -14,6 +14,15 @@ sidebar:
 - [API Documentation](https://docs.rs/mousefood/)
 - [Built with Mousefood](https://github.com/j-g00da/mousefood?tab=readme-ov-file#built-with-mousefood)
 
+:::note[Example Project]
+
+[Tuitar](https://github.com/orhun/tuitar) is a guitar learning tool & DIY kit built with Ratatui &
+Mousefood.
+
+![](https://github.com/orhun/embedded-ratatui-talk/blob/main/assets/tuitar-fretboard-song.gif?raw=true)
+
+:::
+
 :::tip
 
 Mousefood can also be used as a backend for any `embedded-graphics` draw target, which means you can
