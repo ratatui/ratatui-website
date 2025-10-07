@@ -1,0 +1,190 @@
+---
+import crosstui from "../assets/crosstui.gif"
+import yazi from "../assets/reduced.gif"
+import { getGitHubStats } from "../utils/stats";
+
+const projects = [
+  {
+    title: "binsider",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/orhun/binsider",
+    description: "Perform binary analysis in your terminal",
+    media: "https://github.com/orhun/binsider/blob/main/website/src/content/assets/quickstart.gif?raw=true",
+    alt: "binsider demo"
+  },
+  {
+    title: "crossword",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/matrixfrog/crossword",
+    description: "Play crossword puzzles in your terminal",
+    media: crosstui.src,
+    alt: "crossword demo"
+  },
+  {
+    title: "csvlens",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/YS-L/csvlens",
+    description: "A command line CSV file viewer",
+    media: "/csvlens.gif",
+    alt: "csvlens demo"
+  },
+  {
+    title: "fzf-make",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/kyu08/fzf-make",
+    description: "A command line tool that executes make target using fuzzy finder",
+    media: "https://raw.githubusercontent.com/kyu08/fzf-make/main/static/demo.gif",
+    alt: "fzf-make demo"
+  },
+  {
+    title: "material",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://crates.io/crates/material",
+    description: "A material design color palette for the terminal",
+    media: "https://i.ibb.co/2MDKmh7/Screenshot-2022-08-02-at-16-43-12.png",
+    alt: "material demo"
+  },
+  {
+    title: "oxker",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/mrjackwills/oxker/",
+    description: "A simple TUI to view & control docker containers",
+    media: "https://raw.githubusercontent.com/mrjackwills/oxker/main/.github/demo_01.webp?raw=true",
+    alt: "oxker demo"
+  },
+  {
+    title: "openai-tui",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/zaghaghi/openapi-tui",
+    description: "Unlock the power of Open AI APIs",
+    media: "https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true",
+    alt: "openai-tui demo"
+  },
+  {
+    title: "scope-tui",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/alemidev/scope-tui",
+    description: "A simple oscilloscope/vectorscope/spectroscope for your terminal",
+    media: "https://cdn.alemi.dev/scope-tui-oscilloscope-music.webm",
+    alt: "scope-tui demo"
+  },
+  {
+    title: "television",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/alexpasmantier/television",
+    description: "Television is a fast and versatile fuzzy finder TUI",
+    media: "https://github.com/user-attachments/assets/7a967f9c-779e-4915-baa8-160f586f8936",
+    logo: "https://github.com/alexpasmantier/television/raw/main/assets/television-title.png",
+    alt: "television demo"
+  },
+  {
+    title: "trippy",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/fujiapple852/trippy",
+    description: "A network diagnostic tool",
+    media: "https://raw.githubusercontent.com/fujiapple852/trippy/master/assets/0.12.0/demo.gif?raw=true",
+    alt: "trippy demo"
+  },
+  {
+    title: "yozefu",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/MAIF/yozefu",
+    description: "Interactive TUI application for exploring data of a Kafka cluster",
+    media: "https://vhs.charm.sh/vhs-UpIJD2h92vKkj01XSS0r0.gif",
+    alt: "yozefu demo"
+  },
+ ];
+
+// Function to generate random hex color
+function randomColor(): string {
+  return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+}
+
+// Generate random sizes for each item
+const tileData = projects.map(() => ({
+  colSpan: Math.floor(Math.random() * 2) + 1, // 1-2 columns
+  rowSpan: Math.floor(Math.random() * 2) + 1, // 1-2 rows
+}));
+---
+
+<div class="not-content">
+  <h2 class="font-bold text-4xl text-black dark:text-white pt-6 pb-3 max-xl:text-center">Build with Ratatui  👨‍🍳🐀</h2>
+  <p class="text-lg pb-5 leading-8 max-w-[1440px] max-xl:text-center">Ratatui libraries are all the ingredients you need to cook up exceptional terminal applications. Always fresh and free to use.</p>
+  <div class="gallery-container">
+    {projects.map((project, index) => (
+      <div 
+        class={`gallery-item grid ${tileData[index].colSpan === 1 ? 'grid-rows-[1fr_4fr]' : 'grid-cols-[1fr_3fr]'}`}
+        data-col-span={tileData[index].colSpan}
+      >
+        <div class="bg-slate-600 dark:bg-slate-950 text-white">
+          <a href={project.url} alt={project.alt} target="_blank">
+            <p class={`font-bold text-3xl ${tileData[index].colSpan === 1 ? 'px-6 pt-6 pb-3' : 'px-6 pt-[50px] pb-6'}`}>
+              <span class="bracket-btn">{project.title}</span>
+            </p>
+          </a>
+          <p class={`px-6`}>{project.description}</p>
+        </div>
+        <div class="bg-slate-600 dark:bg-slate-950 p-3 overflow-hidden">
+          <a href={project.url} alt={project.alt} target="_blank">
+            {project.media.endsWith("webm")
+              ? <video class="w-full h-full object-cover" src={project.media} autoPlay muted loop playsInline />
+              : <img class="w-full h-full object-cover" src={project.media} alt={project.alt} />}
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+.gallery-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1440px;
+  margin: auto;
+  gap: 1rem;
+}
+
+.gallery-item {
+  flex: 1 1 calc(33.333% - 1rem); /* 3 columns by default */
+  min-width: 300px;
+  height: 500px;
+}
+
+/* Span 2 columns - double width */
+.gallery-item[data-col-span="2"] {
+  flex: 2 1 calc(66.666% - 1rem);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .gallery-item {
+    flex: 1 1 calc(50% - 1rem); /* 2 columns on tablets */
+  }
+  
+  .gallery-item[data-col-span="2"] {
+    flex: 2 1 calc(100% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-item {
+    flex: 1 1 100%; /* Single column on mobile */
+  }
+  
+  .gallery-item[data-col-span="2"] {
+    flex: 1 1 100%;
+  }
+}
+</style>

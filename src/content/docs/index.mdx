@@ -24,8 +24,9 @@ import Features from '../../components/Features.astro'
 import ScrambleText from '../../components/ScrambleText.astro'
 import ScrambleCode from '../../components/ScrambleCode.astro'
 import ShowcaseSlider from '../../components/ShowcaseSlider.astro'
+import ShowcaseCards from '../../components/ShowcaseCards.astro'
 import MainButtons from '../../components/MainButtons.astro';
- import HideHeader from '../../components/HideHeader.astro';
+import HideHeader from '../../components/HideHeader.astro';
 
 <div class="flex justify-center landing-mono">
   <div>
@@ -47,12 +48,16 @@ import MainButtons from '../../components/MainButtons.astro';
         <div class="max-xl:text-center">
           <div class="flex items-end pb-10">
             <div class="w-[150px] max-2xl:w-[100px]">
-              <img src={heroLight.src} alt="Ratatui Logo" class="dark:hidden" />
-              <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
+              <a class="no-underline" href="https://github.com/ratatui/ratatui">
+                <img src={heroLight.src} alt="Ratatui Logo" class="dark:hidden" />
+                <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
+              </a>
             </div>
             <div>
-              <img src={logoTextLight.src} class="max-h-[100px] max-2xl:max-h-[80px] dark:hidden" />
-              <img src={logoTextDark.src} class="max-h-[100px] max-2xl:max-h-[80px] !hidden dark:!block" />
+              <a class="no-underline" href="https://github.com/ratatui/ratatui">
+                <img src={logoTextLight.src} class="max-h-[100px] max-2xl:max-h-[80px] dark:hidden" />
+                <img src={logoTextDark.src} class="max-h-[100px] max-2xl:max-h-[80px] !hidden dark:!block" />
+              </a>
             </div>
           </div>
           
@@ -93,11 +98,11 @@ import MainButtons from '../../components/MainButtons.astro';
       </div>
     </div>
 
-    <div class="flex justify-center px-[100px]">
-      <div>
+    <div class="flex justify-center">
+      <div class="pt-5">
         <ScrambleText text={`■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ `} />
-        <ShowcaseSlider />
-        <div class="flex justify-center pt-2">
+        <ShowcaseCards />
+        <div class="flex justify-center pt-10">
           <a class="no-underline" href="/showcase/apps">
             <span class="font-bold text-2xl text-white bg-blue-700 p-4 px-8 glitch-container">
               <span class="glitch-text" data-text="Explore the showcase ::<>">{`Explore the showcase ::<>`}</span>
@@ -118,7 +123,7 @@ import MainButtons from '../../components/MainButtons.astro';
     </div>
 
     <div class="flex justify-center">
-      <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-r from-blue-600 to-blue-800 dark:from-slate-950 dark:to-slate-950">
+      <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-r from-blue-600 to-blue-800 dark:from-slate-950 dark:to-slate-950 mb-[-65px]">
         <div class="py-10">
           <h2 class="!text-6xl pb-10 !text-white">Ready to start <span class="landing-highlight-tall">cooking</span></h2>
           <p class="text-xl pb-5 text-white">Join thousands of <span class="dark:text-yellow-500">{`{developers}`}</span> cooking 🍳 up the next generation of terminal applications</p>

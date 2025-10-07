@@ -224,24 +224,6 @@ main .content-panel:first-child:not(:has(*)) {
   }
 }
 
-/* Squiggle underline hover animation */
-.btn-slide::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 6px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='red' stroke-width='2' d='M0,2 Q2.5,0 5,2 T10,2 T15,2 T20,2'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-size: 20px 6px;
-  transition: width 0.4s ease;
-}
-
-a:hover .btn-slide::after {
-  width: 100%;
-}
-
 /* Cyberpunk glitch effect on hover */
 /* Base setup */
 .glitch-container {
