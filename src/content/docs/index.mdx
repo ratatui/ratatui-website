@@ -8,6 +8,7 @@ tableOfContents: false
 ---
 
 import SocialIcons from "@astrojs/starlight/components/SocialIcons.astro";
+import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
 
 import heroLight from "../../assets/hero-light.png";
 import heroDark from "../../assets/hero-dark.png";
@@ -74,8 +75,8 @@ import HideHeader from '../../components/HideHeader.astro';
         </div>
         
         <div class="grid justify-items-end">
-          <div class="flex justify-center gap-5">
-            <SocialIcons />
+          <div class="flex flex-row items-center gap-5">
+            <SocialIcons /><ThemeSelect />
           </div>
           <ScrambleCode />
         </div>
@@ -104,8 +105,8 @@ import HideHeader from '../../components/HideHeader.astro';
         <ShowcaseCards />
         <div class="flex justify-center pt-10">
           <a class="no-underline" href="/showcase/apps">
-            <span class="font-bold text-2xl text-white bg-blue-700 p-4 px-8 glitch-container">
-              <span class="glitch-text" data-text="Explore the showcase ::<>">{`Explore the showcase ::<>`}</span>
+            <span class="bracket-btn font-bold text-2xl text-white bg-blue-700 p-4 px-8 glitch-container">
+              {`Explore the showcase ::<>`}
             </span>
           </a>
         </div>
@@ -123,17 +124,19 @@ import HideHeader from '../../components/HideHeader.astro';
     </div>
 
     <div class="flex justify-center">
-      <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-r from-blue-600 to-blue-800 dark:from-slate-950 dark:to-slate-950 mb-[-65px]">
+      <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-b from-blue-800 to-blue-200 dark:from-slate-950 dark:to-slate-950 mb-[-65px]">
         <div class="py-10">
           <h2 class="!text-6xl pb-10 !text-white">Ready to start <span class="landing-highlight-tall">cooking</span></h2>
           <p class="text-xl pb-5 text-white">Join thousands of <span class="dark:text-yellow-500">{`{developers}`}</span> cooking 🍳 up the next generation of terminal applications</p>
           <MainButtons
             containerClass="justify-center"
             primaryClass="!text-black dark:!text-white bg-yellow-500 dark:bg-blue-700"
-            secondaryClass="dark:text-black dark:bg-white"
+            secondaryClass="!text-black bg-white"
           />
-          <div class="flex justify-center gap-5 pt-10">
-            <SocialIcons />
+          <div class="flex justify-center w-full mt-10">
+            <div class="flex justify-center gap-5 p-2 px-6">
+              <SocialIcons />
+            </div>
           </div>
         </div>
       </div>

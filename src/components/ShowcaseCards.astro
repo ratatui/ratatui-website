@@ -5,13 +5,40 @@ import { getGitHubStats } from "../utils/stats";
 
 const projects = [
   {
-    title: "binsider",
+    title: "scope-tui",
     owner: "alemidev",
     repo: "scope-tui",
-    url: "https://github.com/orhun/binsider",
-    description: "Perform binary analysis in your terminal",
-    media: "https://github.com/orhun/binsider/blob/main/website/src/content/assets/quickstart.gif?raw=true",
-    alt: "binsider demo"
+    url: "https://github.com/alemidev/scope-tui",
+    description: "A simple oscilloscope/vectorscope/spectroscope for your terminal",
+    media: "https://cdn.alemi.dev/scope-tui-oscilloscope-music.webm",
+    alt: "scope-tui demo"
+  },
+  {
+    title: "rebel-in-the-sky",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/ricott1/rebels-in-the-sky",
+    description: "P2P terminal game about spacepirates",
+    media: "https://www.youtube.com/embed/5Lu9MSgmTBc?autoplay=1&loop=1&playlist=5Lu9MSgmTBc&mute=1&controls=0&modestbranding=0&rel=0&showinfo=0",
+    alt: "rebel-in-the-sky demo"
+  },
+  {
+    title: "yozefu",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/MAIF/yozefu",
+    description: "Interactive TUI application for exploring data of a Kafka cluster",
+    media: "https://vhs.charm.sh/vhs-UpIJD2h92vKkj01XSS0r0.gif",
+    alt: "yozefu demo"
+  },
+  {
+    title: "openai-tui",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/zaghaghi/openapi-tui",
+    description: "Unlock the power of Open AI APIs",
+    media: "https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true",
+    alt: "openai-tui demo"
   },
   {
     title: "crossword",
@@ -21,6 +48,15 @@ const projects = [
     description: "Play crossword puzzles in your terminal",
     media: crosstui.src,
     alt: "crossword demo"
+  },
+  {
+    title: "binsider",
+    owner: "alemidev",
+    repo: "scope-tui",
+    url: "https://github.com/orhun/binsider",
+    description: "Perform binary analysis in your terminal",
+    media: "https://github.com/orhun/binsider/blob/main/website/src/content/assets/quickstart.gif?raw=true",
+    alt: "binsider demo"
   },
   {
     title: "csvlens",
@@ -44,7 +80,7 @@ const projects = [
     title: "material",
     owner: "alemidev",
     repo: "scope-tui",
-    url: "https://crates.io/crates/material",
+    url: "https://github.com/azorng/material",
     description: "A material design color palette for the terminal",
     media: "https://i.ibb.co/2MDKmh7/Screenshot-2022-08-02-at-16-43-12.png",
     alt: "material demo"
@@ -57,24 +93,6 @@ const projects = [
     description: "A simple TUI to view & control docker containers",
     media: "https://raw.githubusercontent.com/mrjackwills/oxker/main/.github/demo_01.webp?raw=true",
     alt: "oxker demo"
-  },
-  {
-    title: "openai-tui",
-    owner: "alemidev",
-    repo: "scope-tui",
-    url: "https://github.com/zaghaghi/openapi-tui",
-    description: "Unlock the power of Open AI APIs",
-    media: "https://github.com/zaghaghi/openapi-tui/blob/main/static/demo.gif?raw=true",
-    alt: "openai-tui demo"
-  },
-  {
-    title: "scope-tui",
-    owner: "alemidev",
-    repo: "scope-tui",
-    url: "https://github.com/alemidev/scope-tui",
-    description: "A simple oscilloscope/vectorscope/spectroscope for your terminal",
-    media: "https://cdn.alemi.dev/scope-tui-oscilloscope-music.webm",
-    alt: "scope-tui demo"
   },
   {
     title: "television",
@@ -94,15 +112,6 @@ const projects = [
     description: "A network diagnostic tool",
     media: "https://raw.githubusercontent.com/fujiapple852/trippy/master/assets/0.12.0/demo.gif?raw=true",
     alt: "trippy demo"
-  },
-  {
-    title: "yozefu",
-    owner: "alemidev",
-    repo: "scope-tui",
-    url: "https://github.com/MAIF/yozefu",
-    description: "Interactive TUI application for exploring data of a Kafka cluster",
-    media: "https://vhs.charm.sh/vhs-UpIJD2h92vKkj01XSS0r0.gif",
-    alt: "yozefu demo"
   },
  ];
 
@@ -127,7 +136,7 @@ const tileData = projects.map(() => ({
         class={`gallery-item grid ${tileData[index].colSpan === 1 ? 'grid-rows-[1fr_4fr]' : 'grid-cols-[1fr_3fr]'}`}
         data-col-span={tileData[index].colSpan}
       >
-        <div class="bg-slate-600 dark:bg-slate-950 text-white">
+        <div class="bg-slate-500 dark:bg-slate-950 text-white">
           <a href={project.url} target="_blank">
             <p class={`font-bold text-3xl ${tileData[index].colSpan === 1 ? 'px-6 pt-6 pb-3' : 'px-6 pt-[50px] pb-6'}`}>
               <span class="bracket-btn">{project.title}</span>
@@ -135,10 +144,16 @@ const tileData = projects.map(() => ({
           </a>
           <p class={`px-6`}>{project.description}</p>
         </div>
-        <div class="bg-slate-600 dark:bg-slate-950 p-3 overflow-hidden">
+        <div class="bg-slate-500 dark:bg-slate-950 p-3 overflow-hidden">
           <a href={project.url} target="_blank">
-            {project.media.endsWith("webm")
-              ? <video class="w-full h-full object-cover" src={project.media} autoplay muted loop playsInline />
+            {project.media.endsWith("webm") 
+              ? <video class="w-full h-full object-cover" src={project.media} autoplay muted loop playsinline />
+              : project.media.includes("youtube")
+              ? <iframe  class="w-full h-full" src={project.media} title="YouTube video player"
+                frameborder="0"
+                allow="autoplay;"
+                >
+              </iframe>
               : <img class="w-full h-full object-cover" src={project.media} alt={project.alt} />}
           </a>
         </div>
