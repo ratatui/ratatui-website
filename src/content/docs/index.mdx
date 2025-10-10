@@ -43,7 +43,7 @@ import HideHeader from '../../components/HideHeader.astro';
     />
 
     <div class="flex justify-center">
-      <div class="flex flex-wrap justify-between max-xl:justify-center gap-10 items-end max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px]">
+      <div class="flex flex-wrap justify-between max-xl:justify-center gap-10 items-end max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] max-sm:w-[400px] max-xs:w-[300px]">
         <div class="max-xl:text-center">
           <div class="flex items-end pb-10">
             <div class="w-[150px] max-2xl:w-[100px]">
@@ -61,8 +61,8 @@ import HideHeader from '../../components/HideHeader.astro';
           </div>
           
           <div class="pb-5">
-            <p class="font-bold text-5xl max-2xl:text-4xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
-            <p class="font-bold text-5xl max-2xl:text-4xl text-black dark:text-white">terminal user interfaces</p>
+            <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl max-xs:text-2xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
+            <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl max-xs:text-2xl text-black dark:text-white">terminal user interfaces</p>
             <p class="text-lg pt-5 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
           </div>
           
@@ -72,7 +72,7 @@ import HideHeader from '../../components/HideHeader.astro';
           />
         </div>
         
-        <div class="grid justify-items-end">
+        <div class="grid justify-items-end max-md:justify-items-center">
           <div class="flex flex-row items-center gap-5">
             <SocialIcons />
           </div>

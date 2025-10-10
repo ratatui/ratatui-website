@@ -14,7 +14,7 @@ const links = [
 ];
 ---
 
-<div class={`flex gap-10 max-xl:flex-wrap ${containerClass}`}>
+<div class={`flex gap-10 max-xl:flex-wrap max-md:justify-center ${containerClass}`}>
   {links.map((link) => (
      <a class={`bracket-btn font-bold text-xl text-white bg-blue-700 p-3 px-6 max-2xl:p-2 max-2xl:px-4 no-underline ${link.class}`} href={link.href} aria-label={link.title}>
         {link.title}

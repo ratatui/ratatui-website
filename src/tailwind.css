@@ -29,6 +29,8 @@
   --color-gray-800: var(--color-slate-800);
   --color-gray-900: var(--color-slate-900);
   --color-gray-950: var(--color-slate-950);
+  /* Break Points */
+  --breakpoint-xs: 30rem;
 }
 
 :root[data-theme="dark"] {
