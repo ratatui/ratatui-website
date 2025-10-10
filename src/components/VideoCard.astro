@@ -1,0 +1,28 @@
+---
+interface Props {
+  colSpan: number;
+  title: string;
+  youtubeId: string;
+  description: string;
+}
+const { colSpan, title, youtubeId, description } = Astro.props;
+---
+
+<div class="bg-slate-500 dark:bg-slate-950 text-white">
+  <div class={`${colSpan === 1 ? 'm-5' : 'm-6 mt-10'}`}>
+    <a href={`https://www.youtube.com/watch?v=${youtubeId}`}  target="_blank">
+        <p class={`bracket-btn font-bold text-2xl`}>
+          {title}
+        </p>
+    </a>
+  </div>
+  <p class="px-6 text-slate-200 dark:text-slate-300">{description}</p>
+</div>
+<div class="bg-slate-500 dark:bg-slate-950 p-3 overflow-hidden">
+  <a href={`https://www.youtube.com/watch?v=${youtubeId}`} target="_blank">
+    <iframe  class="w-full h-full" src={`https://www.youtube.com/embed/5Lu9MSgmTBc?autoplay=0&loop=1&playlist=${youtubeId}&mute=0&controls=0&modestbranding=0&rel=0&showinfo=0`} title="YouTube video player"
+      frameborder="0"
+      allow="autoplay;"
+      ></iframe>
+  </a>
+</div>

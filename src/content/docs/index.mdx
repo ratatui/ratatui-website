@@ -19,13 +19,12 @@ import netflix from "../../assets/netflix.png";
 
 import StatsDisplay from "../../components/StatsDisplay.astro";
 import CompanyLogos from "../../components/CompanyLogos.astro";
-import ImageSwap from '../../components/ImageSwap.astro'
 import RandomDots from '../../components/RandomDots.astro'
 import Features from '../../components/Features.astro'
 import ScrambleText from '../../components/ScrambleText.astro'
 import ScrambleCode from '../../components/ScrambleCode.astro'
-import ShowcaseSlider from '../../components/ShowcaseSlider.astro'
 import ShowcaseCards from '../../components/ShowcaseCards.astro'
+import TutorialVideos from '../../components/TutorialVideos.astro'
 import MainButtons from '../../components/MainButtons.astro';
 import HideHeader from '../../components/HideHeader.astro';
 
@@ -107,6 +106,20 @@ import HideHeader from '../../components/HideHeader.astro';
           <a class="no-underline" href="/showcase/apps">
             <span class="bracket-btn font-bold text-2xl text-white bg-blue-700 p-4 px-8 glitch-container">
               {`Explore the showcase ::<>`}
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <div class="pt-5">
+        <ScrambleText text={`■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ `} />
+        <TutorialVideos />
+        <div class="flex justify-center pt-10">
+          <a class="no-underline" href="/showcase/apps">
+            <span class="bracket-btn font-bold text-2xl text-white bg-blue-700 p-4 px-8 glitch-container">
+              {`Explore the tutorials ::<>`}
             </span>
           </a>
         </div>

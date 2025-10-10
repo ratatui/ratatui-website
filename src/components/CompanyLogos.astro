@@ -1,18 +1,19 @@
 ---
 import netflix from "../assets/netflix.png"
-import openai from "../assets/openai.png"
-import ovhcloud from "../assets/ovhcloud.png"
+import openai from "../assets/openai.svg"
+import ovhcloud from "../assets/ovh.png"
 ---
 
 <div class="flex flex-wrap gap-8 pt-2 items-center">
-  <p class="items-center text-base text-white">Powering: </p>
+  <p class="items-center text-base text-white">Powering industry leaders: </p>
   <a class="no-underline" href="https://github.com/Netflix/bpftop" target="_blank" aria-label="Netflix" >
     <img src={netflix.src} class="h-[50px]" />
   </a>
   <a class="no-underline" href="https://github.com/openai/codex" target="_blank" aria-label="OpenAI">
-    <img src={openai.src} class="h-[40px] bg-white p-2 px-4" />
+    <img src={openai.src} class="h-[45px] rounded-full p-2
+     bg-white" />
   </a>
   <a class="no-underline" href="https://github.com/ovh/shai" target="_blank" aria-label="OVH Cloud">
-    <img src={ovhcloud.src} class="h-[40px]" />
+    <img src={ovhcloud.src} class="h-[50px] rounded-full" />
   </a>
 </div>

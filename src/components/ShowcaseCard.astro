@@ -1,0 +1,32 @@
+---
+interface Props {
+  colSpan: number;
+  url: string;
+  title: string;
+  description: string;
+  media: string;
+  alt: string;
+}
+const { colSpan, url, title, description, media, alt } = Astro.props;
+---
+
+<div class="bg-slate-500 dark:bg-slate-950 text-white">
+  <a href={url} target="_blank">
+    <p class={`font-bold text-3xl ${colSpan === 1 ? 'px-6 pt-6 pb-3' : 'px-6 pt-[50px] pb-6'}`}>
+      <span class="bracket-btn">{title}</span>
+    </p>
+  </a>
+  <p class="px-6 text-slate-200 dark:text-slate-300">{description}</p>
+</div>
+<div class="bg-slate-500 dark:bg-slate-950 p-3 overflow-hidden">
+  <a href={url} target="_blank">
+    {media.endsWith("webm") 
+      ? <video class="w-full h-full object-cover" src={media} autoplay muted loop playsinline />
+      : media.includes("youtube")
+      ? <iframe  class="w-full h-full" src={media} title="YouTube video player"
+        frameborder="0"
+        allow="autoplay;"
+        ></iframe>
+      : <img class="w-full h-full object-cover" src={media} alt={alt} />}
+  </a>
+</div>

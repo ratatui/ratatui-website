@@ -1,0 +1,104 @@
+---
+import crosstui from "../assets/crosstui.gif"
+import yazi from "../assets/reduced.gif"
+import { getGitHubStats } from "../utils/stats";
+import VideoCard from "./VideoCard.astro";
+
+const videos = [
+  {
+    title: "Building Embedded TUIs with Rust & Ratatui",
+    youtubeId: "F04kQMKwrwQ",
+    description: "Orhun Parmaksız showcases building embedded applications with Ratatui",
+  },
+  {
+    title: "Are we embedded yet? (Rust Poland #1)",
+    youtubeId: "QPjojOuhbe8",
+    description: "Jagoda Ślązak explores how Ratatui is moving beyond the terminal",
+  },
+  {
+    title: "Ratatui Tutorial Beginners Guide",
+    youtubeId: "M-BTpC_BEN0",
+    description: "A Ratatui Tutorial by Jonkero to get you up and running",
+  },
+  {
+    title: "Textual UIs with Orhun Parmaksız (Oxide and Friends)",
+    youtubeId: "VbLz79trgz8",
+    description: "Bryan and Adam from Oxide Computer were joined by Orhun to discuss the glory --as well as the ubiquity and utility!-- of TUIs",
+  },
+  {
+    title: "Bringing Terminal Aesthetics to the Web With Rust",
+    youtubeId: "iepbyYrF_YQ",
+    description: "Orhun Parmaksız explores rendering TUIs on the web",
+  },
+  {
+    title: "Ratatui, Multithreading, and Responsiveness!",
+    youtubeId: "awX7DUp-r14",
+    description: " GreenTeaCoding explores how Ratatui interacts with the terminal",
+  },
+];
+
+// Function to generate random hex color
+function randomColor(): string {
+  return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+}
+
+// Generate random sizes for each item
+const tileData = videos.map(() => ({
+  colSpan: Math.floor(Math.random() * 2) + 1, // 1-2 columns
+  rowSpan: Math.floor(Math.random() * 2) + 1, // 1-2 rows
+}));
+---
+
+<div class="not-content">
+  <h2 class="font-bold text-4xl text-black dark:text-white pt-12 pb-6 max-xl:text-center">Build with Ratatui  👨‍🍳🐀</h2>
+  <p class="text-lg pb-12 leading-8 max-w-[1440px] max-xl:text-center">Ratatui libraries are all the ingredients you need to cook up exceptional terminal applications. Always fresh and free to use.</p>
+  <div class="flex flex-wrap max-w-[1440px] m-auto gap-6">
+    {videos.map((video, index) => (
+      <div 
+        class={`gallery-item grid ${tileData[index].colSpan === 1 ? 'grid-rows-[1fr_4fr]' : 'grid-cols-[1fr_3fr]'}`}
+        data-col-span={tileData[index].colSpan}
+      >
+        <VideoCard
+          colSpan={tileData[index].colSpan}
+          title={video.title}
+          youtubeId={video.youtubeId}
+          description={video.description}
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+.gallery-item {
+  flex: 1 1 calc(33.333% - 1rem); /* 3 columns by default */
+  min-width: 300px;
+  height: 500px;
+}
+
+/* Span 2 columns - double width */
+.gallery-item[data-col-span="2"] {
+  flex: 2 1 calc(66.666% - 1rem);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .gallery-item {
+    flex: 1 1 calc(50% - 1rem); /* 2 columns on tablets */
+  }
+  
+  .gallery-item[data-col-span="2"] {
+    flex: 2 1 calc(100% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-item {
+    flex: 1 1 100%; /* Single column on mobile */
+  }
+  
+  .gallery-item[data-col-span="2"] {
+    flex: 1 1 100%;
+  }
+}
+</style>

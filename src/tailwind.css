@@ -233,22 +233,22 @@ main .content-panel:first-child:not(:has(*)) {
 .bracket-btn::after {
   content: "";
   position: absolute;
-  top: -6px;
-  bottom: -6px;
-  width: 12px;
+  top: -8px;
+  bottom: -8px;
+  width: 14px;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .bracket-btn::before {
-  left: -6px;
+  left: -8px;
   border-left: 3px solid var(--color-basic);
   border-top: 3px solid var(--color-basic);
   border-bottom: 3px solid var(--color-basic);
 }
 
 .bracket-btn::after {
-  right: -6px;
+  right: -7px;
   border-right: 3px solid var(--color-basic);
   border-top: 3px solid var(--color-basic);
   border-bottom: 3px solid var(--color-basic);
