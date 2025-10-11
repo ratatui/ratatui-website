@@ -109,13 +109,19 @@ const tileData = projects.map(() => ({
 }));
 ---
 
-<div class="not-content">
-  <h2 class="font-bold text-4xl text-black dark:text-white pt-[80px] pb-6 max-xl:text-center">Build with Ratatui  👨‍🍳🐀</h2>
-  <p class="text-lg pb-12 leading-8 max-w-[1440px] max-xl:text-center">Ratatui libraries are all the ingredients you need to cook up exceptional terminal applications. Always fresh and free to use.</p>
+<div class="not-content max-2xl:mx-6">
+  <h2 class="font-bold text-4xl text-black dark:text-white pt-[80px] max-sm:pt-[50px] pb-6 max-xl:text-center">Build with <span class="text-blue-700 dark:text-yellow-500">Ratatui</span>  👨‍🍳🐀</h2>
+  <p class="text-lg max-sm:text-sm pb-12 leading-8 max-w-[1440px] max-xl:text-center">Ratatui libraries are all the ingredients you need to cook up exceptional terminal applications. Always fresh and free to use.</p>
   <div class="flex flex-wrap max-w-[1440px] m-auto gap-6">
     {projects.map((project, index) => (
       <div 
-        class={`gallery-item grid ${tileData[index].colSpan === 1 ? 'grid-rows-[1fr_4fr]' : 'grid-cols-[1fr_3fr]'}`}
+        class={
+          `gallery-item grid min-w-[300px] h-[500px] max-sm:h-[300px]
+          ${tileData[index].colSpan === 1
+            ? 'grid-rows-[1fr_4fr] max-sm:grid-rows-none'
+            : 'grid-cols-[1fr_3fr] max-sm:grid-cols-none'
+          }
+        `}
         data-col-span={tileData[index].colSpan}
       >
         <ShowcaseCard
@@ -134,8 +140,6 @@ const tileData = projects.map(() => ({
 <style>
 .gallery-item {
   flex: 1 1 calc(33.333% - 1rem); /* 3 columns by default */
-  min-width: 300px;
-  height: 500px;
 }
 
 /* Span 2 columns - double width */

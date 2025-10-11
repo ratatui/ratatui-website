@@ -12,11 +12,17 @@ const { colSpan, url, title, description, media, alt } = Astro.props;
 
 <div class="bg-slate-500 dark:bg-slate-950 text-white">
   <a href={url} target="_blank">
-    <p class={`font-bold text-3xl ${colSpan === 1 ? 'px-6 pt-6 pb-3' : 'px-6 pt-[50px] pb-6'}`}>
+    <p class={
+      `font-bold text-3xl max-sm:text-lg
+      ${colSpan === 1
+        ? 'px-6 pt-6 pb-3 max-sm:pt-4'
+        : 'px-6 pt-[50px] pb-6 max-sm:pt-4'
+      }`
+    }>
       <span class="bracket-btn">{title}</span>
     </p>
   </a>
-  <p class="px-6 text-slate-200 dark:text-slate-300">{description}</p>
+  <p class="px-6 text-slate-200 dark:text-slate-300 max-sm:text-xs">{description}</p>
 </div>
 <div class="bg-slate-500 dark:bg-slate-950 p-3 overflow-hidden">
   <a href={url} target="_blank">

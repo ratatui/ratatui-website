@@ -36,21 +36,21 @@ const features: Feature[] = [
 
 <div class="flex justify-center landing-mono">
   <div class="max-w-[1440px] max-xl:text-center">
-    <p class="font-bold text-4xl text-black dark:text-white py-4">
+    <p class="font-bold text-4xl text-black dark:text-white py-4 max-md:px-6">
       Your favourite features ❤️
     </p>
-    <div class="grid grid-cols-2 gap-6 p-[80px] bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-blue-950 auto-rows-fr">
+    <div class="grid grid-cols-2 max-md:grid-cols-1 gap-6 p-[80px] max-xl:p-6 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-blue-950 auto-rows-fr">
       {features.map((feature) => (
-        <div class="px-8 pb-6 !m-0 bg-gradient-to-r from-slate-100 to-slate-300 dark:from-slate-900 dark:to-slate-800 h-full">
+        <div class="px-8 pb-6 max-md:p-2 !m-0 bg-gradient-to-r from-slate-100 to-slate-300 dark:from-slate-900 dark:to-slate-800 h-full">
           <div class="flex items-end gap-4">
-            <a class="pt-8" href={feature.url}>
-              <h3 class="bracket-btn font-bold text-xl">
-                <span class="text-2xl">{feature.icon}</span>
+            <a class="pt-8 max-md:pt-2" href={feature.url}>
+              <h3 class="bracket-btn font-bold text-xl max-md:text-sm">
+                <span class="text-2xl max-md:text-base">{feature.icon}</span>
                 {feature.title}
               </h3>
             </a>
           </div>
-          <p class="text-base pt-2">{feature.description}</p>
+          <p class="text-base pt-2 max-md:text-xs">{feature.description}</p>
         </div>
       ))}
     </div>

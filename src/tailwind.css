@@ -214,6 +214,14 @@ main .content-panel:first-child:not(:has(*)) {
   vertical-align: -0.2em;
 }
 
+@media (max-width: 640px) {
+
+  .landing-highlight::after,
+  .landing-highlight-tall::after {
+    width: 0.5rem;
+  }
+}
+
 @keyframes blink {
 
   0%,

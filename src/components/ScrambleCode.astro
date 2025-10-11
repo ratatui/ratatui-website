@@ -20,7 +20,7 @@ const highlightedHtml = await codeToHtml(code, {
 });
 ---
 
-<div class={`block-reveal-wrapper h-[460px] ${className}`}>
+<div class={`block-reveal-wrapper h-[460px] ${className} max-sm:hidden`}>
   <pre class="scramble-container"><code class="language-rust"></code></pre>
   <div class="highlighted-code" set:html={highlightedHtml} />
 </div>

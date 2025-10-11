@@ -43,10 +43,10 @@ import HideHeader from '../../components/HideHeader.astro';
     />
 
     <div class="flex justify-center">
-      <div class="flex flex-wrap justify-between max-xl:justify-center gap-10 items-end max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] max-sm:w-[400px] max-xs:w-[300px]">
+      <div class="flex flex-wrap justify-between max-xl:justify-center gap-10 items-end max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] max-sm:w-[450px] max-xs:w-[300px]">
         <div class="max-xl:text-center">
-          <div class="flex items-end pb-10">
-            <div class="w-[150px] max-2xl:w-[100px]">
+          <div class="flex max-sm:flex-wrap max-sm:justify-center items-end pb-10">
+            <div class="w-[150px] max-2xl:w-[100px] max-sm:w-[150px]">
               <a class="no-underline" href="https://github.com/ratatui/ratatui">
                 <img src={heroLight.src} alt="Ratatui Logo" class="dark:hidden" />
                 <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
@@ -61,9 +61,9 @@ import HideHeader from '../../components/HideHeader.astro';
           </div>
           
           <div class="pb-5">
-            <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl max-xs:text-2xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
-            <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl max-xs:text-2xl text-black dark:text-white">terminal user interfaces</p>
-            <p class="text-lg pt-5 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
+            <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
+            <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl text-black dark:text-white">terminal user interfaces</p>
+            <p class="text-lg max-sm:text-sm pt-5 leading-8 max-w-[600px]">Ratatui is a Rust library for building rich terminal user interfaces and applications.</p>
           </div>
           
           <MainButtons
@@ -83,14 +83,14 @@ import HideHeader from '../../components/HideHeader.astro';
 
     <div class="flex justify-center">
       <div class="max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] py-5 pt-[50px] max-xl:text-center">
-        <p class="font-bold text-2xl text-blue-700 dark:!text-yellow-500">
+        <p class="font-bold text-2xl max-xs:mx-3 text-blue-700 dark:!text-yellow-500">
           <span>Trusted by </span>
           <span class="text-3xl">{`{developers}`}</span>
           <span class="font-bold text-2xl text-black dark:text-white"> building amazing terminal apps</span>
         </p>
         
-        <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-900 dark:to-blue-950 py-8 px-20">
-          <span class="font-bold text-lg text-white">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</span>
+        <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-900 dark:to-blue-950 py-8 px-20 max-sm:px-5">
+          <span class="font-bold text-lg max-sm:text-sm text-white">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</span>
           <StatsDisplay />
           <CompanyLogos />
         </div>
@@ -101,9 +101,9 @@ import HideHeader from '../../components/HideHeader.astro';
       <div class="pt-5">
         <ScrambleText text={`■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ `} />
         <ShowcaseCards />
-        <div class="flex justify-center pt-10">
+        <div class="flex justify-center pt-12">
           <a class="no-underline" href="/showcase/apps">
-            <span class="bracket-btn font-bold text-2xl text-white bg-blue-700 p-4 px-8 glitch-container">
+            <span class="bracket-btn font-bold text-2xl max-sm:text-base text-white bg-blue-700 p-4 px-8 glitch-container">
               {`Explore the showcase ::<>`}
             </span>
           </a>
@@ -117,7 +117,7 @@ import HideHeader from '../../components/HideHeader.astro';
         <TutorialVideos />
         <div class="flex justify-center pt-10">
           <a class="no-underline" href="/showcase/apps">
-            <span class="bracket-btn font-bold text-2xl text-white bg-blue-700 p-4 px-8 glitch-container">
+            <span class="bracket-btn font-bold text-2xl max-sm:text-base text-white bg-blue-700 p-4 px-8 glitch-container">
               {`Explore the tutorials ::<>`}
             </span>
           </a>
@@ -138,8 +138,8 @@ import HideHeader from '../../components/HideHeader.astro';
     <div class="flex justify-center">
       <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-b from-blue-800 to-blue-200 dark:from-slate-950 dark:to-slate-950 mb-[-65px]">
         <div class="py-10">
-          <h2 class="!text-6xl pb-10 !text-white">Ready to start <span class="landing-highlight-tall">cooking</span></h2>
-          <p class="text-xl pb-5 text-white">Join thousands of <span class="dark:text-yellow-500">{`{developers}`}</span> cooking 🍳 up the next generation of terminal applications</p>
+          <h2 class="!text-6xl max-md:!text-3xl max-2xl:px-5 pb-10 !text-white">Ready to start <span class="landing-highlight-tall">cooking</span></h2>
+          <p class="text-xl max-md:text-sm pb-5 max-2xl:px-5 text-white">Join thousands of <span class="dark:text-yellow-500">{`{developers}`}</span> cooking 🍳 up the next generation of terminal applications</p>
           <MainButtons
             containerClass="justify-center"
             primaryClass="!text-black dark:!text-white bg-yellow-500 dark:bg-blue-700"

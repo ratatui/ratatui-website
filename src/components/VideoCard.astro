@@ -9,14 +9,14 @@ const { colSpan, title, youtubeId, description } = Astro.props;
 ---
 
 <div class="bg-slate-500 dark:bg-slate-950 text-white">
-  <div class={`${colSpan === 1 ? 'm-6' : 'm-6 mt-12'}`}>
+  <div class={`${colSpan === 1 ? 'm-6 max-sm:pt-2' : 'm-6 mt-12 max-sm:pt-2'}`}>
     <a href={`https://www.youtube.com/watch?v=${youtubeId}`}  target="_blank">
-        <p class={`bracket-btn font-bold text-xl`}>
+        <p class={`bracket-btn font-bold text-xl max-sm:text-sm`}>
           {title}
         </p>
     </a>
   </div>
-  <p class="px-6 text-sm text-slate-200 dark:text-slate-300">{description}</p>
+  <p class="px-6 text-sm text-slate-200 dark:text-slate-300 max-sm:text-xs">{description}</p>
 </div>
 <div class="bg-slate-500 dark:bg-slate-950 p-3 overflow-hidden">
   <a href={`https://www.youtube.com/watch?v=${youtubeId}`} target="_blank">
