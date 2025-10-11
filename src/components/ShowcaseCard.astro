@@ -30,7 +30,6 @@ const { colSpan, url, title, description, media, alt } = Astro.props;
       ? <video class="w-full h-full object-cover" src={media} autoplay muted loop playsinline />
       : media.includes("youtube")
       ? <iframe  class="w-full h-full" src={media} title="YouTube video player"
-        frameborder="0"
         allow="autoplay;"
         ></iframe>
       : <img class="w-full h-full object-cover" src={media} alt={alt} />}

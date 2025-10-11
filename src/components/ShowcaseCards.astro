@@ -1,7 +1,5 @@
 ---
 import crosstui from "../assets/crosstui.gif"
-import yazi from "../assets/reduced.gif"
-import { getGitHubStats } from "../utils/stats";
 import ShowcaseCard from "./ShowcaseCard.astro";
 
 const projects = [
@@ -96,11 +94,6 @@ const projects = [
     alt: "trippy demo"
   },
  ];
-
-// Function to generate random hex color
-function randomColor(): string {
-  return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-}
 
 // Generate random sizes for each item
 const tileData = projects.map(() => ({

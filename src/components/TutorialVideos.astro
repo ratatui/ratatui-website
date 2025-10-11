@@ -29,11 +29,6 @@ const videos = [
   },
  ];
 
-// Function to generate random hex color
-function randomColor(): string {
-  return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-}
-
 // Generate random sizes for each item
 const tileData = videos.map(() => ({
   colSpan: Math.floor(Math.random() * 2) + 1, // 1-2 columns
@@ -42,8 +37,8 @@ const tileData = videos.map(() => ({
 ---
 
 <div class="not-content max-2xl:mx-6">
-  <h2 class="font-bold text-4xl text-black dark:text-white pt-[100px] pb-6 max-xl:text-center">Watch and learn <span class="text-blue-700 dark:text-yellow-500">Ratatui</span>  👨‍🍳🐀</ </h2>
 
+  <h2 class="font-bold text-4xl text-black dark:text-white pt-[80px] max-sm:pt-[50px] pb-6 max-xl:text-center">Watch and learn <span class="text-blue-700 dark:text-yellow-500">Ratatui</span>  👨‍🍳🐀</h2>
   <p class="text-lg max-sm:text-sm pb-12 leading-8 max-w-[1440px] max-xl:text-center">Watch our ‘recipes’ for building features, explore creative twists from other developers, and discussions that stir up fresh ideas.</p>
 
   <div class="flex flex-wrap max-w-[1440px] m-auto gap-6">
