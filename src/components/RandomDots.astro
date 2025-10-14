@@ -8,7 +8,7 @@ export interface Props {
   clusterRadius?: number;
   dotSize?: number;
   colors?: string[];
-  pattern?: 'random' | 'circular' | 'dense' | 'sparse';
+  pattern?: "random" | "circular" | "dense" | "sparse";
   opacity?: number;
   fixed?: boolean;
 }
@@ -21,10 +21,10 @@ const {
   dotsPerCluster = 20,
   clusterRadius = 80,
   dotSize = 4,
-  colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'],
-  pattern = 'random',
+  colors = ["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b", "#10b981"],
+  pattern = "random",
   opacity = 0.6,
-  fixed = true
+  fixed = true,
 } = Astro.props;
 
 interface Point {
@@ -43,7 +43,7 @@ function snapToGrid(coord: number, gridSize: number): number {
 function getGridCell(x: number, y: number, gridSize: number): { x: number; y: number } {
   return {
     x: snapToGrid(x, gridSize),
-    y: snapToGrid(y, gridSize)
+    y: snapToGrid(y, gridSize),
   };
 }
 
@@ -57,129 +57,129 @@ function generateClusterCenter(): { x: number; y: number } {
 function generateRandomPattern(center: { x: number; y: number }, count: number): Point[] {
   const dots: Point[] = [];
   const usedCells = new Set<string>();
-  
+
   let attempts = 0;
   const maxAttempts = count * 10;
-  
+
   while (dots.length < count && attempts < maxAttempts) {
     attempts++;
-    
+
     const angle = Math.random() * Math.PI * 2;
     const distance = Math.random() * clusterRadius;
     const rawX = center.x + Math.cos(angle) * distance;
     const rawY = center.y + Math.sin(angle) * distance;
-    
+
     const snapped = getGridCell(rawX, rawY, gridSize);
     const cellKey = `${snapped.x},${snapped.y}`;
-    
+
     if (!usedCells.has(cellKey)) {
       usedCells.add(cellKey);
       dots.push({
         x: snapped.x,
         y: snapped.y,
         color: colors[Math.floor(Math.random() * colors.length)],
-        size: dotSize
+        size: dotSize,
       });
     }
   }
-  
+
   return dots;
 }
 
 function generateCircularPattern(center: { x: number; y: number }, count: number): Point[] {
   const dots: Point[] = [];
   const usedCells = new Set<string>();
-  
+
   const maxRings = Math.ceil(clusterRadius / gridSize);
-  
+
   for (let ring = 0; ring <= maxRings && dots.length < count; ring++) {
     const radius = ring * gridSize;
     const circumference = 2 * Math.PI * radius;
     const dotsInRing = ring === 0 ? 1 : Math.floor(circumference / gridSize);
-    
+
     for (let i = 0; i < dotsInRing && dots.length < count; i++) {
       const angle = (i / dotsInRing) * Math.PI * 2;
       const rawX = center.x + Math.cos(angle) * radius;
       const rawY = center.y + Math.sin(angle) * radius;
-      
+
       const snapped = getGridCell(rawX, rawY, gridSize);
       const cellKey = `${snapped.x},${snapped.y}`;
-      
+
       if (!usedCells.has(cellKey)) {
         usedCells.add(cellKey);
         dots.push({
           x: snapped.x,
           y: snapped.y,
           color: colors[ring % colors.length],
-          size: dotSize
+          size: dotSize,
         });
       }
     }
   }
-  
+
   return dots;
 }
 
 function generateDensePattern(center: { x: number; y: number }, count: number): Point[] {
   const dots: Point[] = [];
   const usedCells = new Set<string>();
-  
+
   const gridRadius = Math.ceil(Math.sqrt(count) / 2);
-  
+
   for (let dx = -gridRadius; dx <= gridRadius && dots.length < count; dx++) {
     for (let dy = -gridRadius; dy <= gridRadius && dots.length < count; dy++) {
       const x = center.x + dx * gridSize;
       const y = center.y + dy * gridSize;
-      
+
       const distance = Math.hypot(dx, dy) * gridSize;
       if (distance <= clusterRadius) {
         const cellKey = `${x},${y}`;
-        
+
         if (!usedCells.has(cellKey)) {
           usedCells.add(cellKey);
           dots.push({
             x,
             y,
             color: colors[Math.abs(dx + dy) % colors.length],
-            size: dotSize
+            size: dotSize,
           });
         }
       }
     }
   }
-  
+
   return dots;
 }
 
 function generateSparsePattern(center: { x: number; y: number }, count: number): Point[] {
   const dots: Point[] = [];
   const usedCells = new Set<string>();
-  
+
   let attempts = 0;
   const maxAttempts = count * 20;
-  
+
   while (dots.length < count && attempts < maxAttempts) {
     attempts++;
-    
+
     const gridSteps = Math.floor(clusterRadius / gridSize);
-    const dx = (Math.floor(Math.random() * gridSteps * 2) - gridSteps);
-    const dy = (Math.floor(Math.random() * gridSteps * 2) - gridSteps);
-    
+    const dx = Math.floor(Math.random() * gridSteps * 2) - gridSteps;
+    const dy = Math.floor(Math.random() * gridSteps * 2) - gridSteps;
+
     const x = center.x + dx * gridSize;
     const y = center.y + dy * gridSize;
     const cellKey = `${x},${y}`;
-    
+
     if (!usedCells.has(cellKey)) {
       usedCells.add(cellKey);
       dots.push({
         x,
         y,
         color: colors[Math.floor(Math.random() * colors.length)],
-        size: dotSize
+        size: dotSize,
       });
     }
   }
-  
+
   return dots;
 }
 
@@ -188,43 +188,45 @@ const allDots: Point[] = [];
 for (let i = 0; i < numClusters; i++) {
   const center = generateClusterCenter();
   let clusterDots: Point[];
-  
+
   switch (pattern) {
-    case 'circular':
+    case "circular":
       clusterDots = generateCircularPattern(center, dotsPerCluster);
       break;
-    case 'dense':
+    case "dense":
       clusterDots = generateDensePattern(center, dotsPerCluster);
       break;
-    case 'sparse':
+    case "sparse":
       clusterDots = generateSparsePattern(center, dotsPerCluster);
       break;
     default:
       clusterDots = generateRandomPattern(center, dotsPerCluster);
   }
-  
+
   allDots.push(...clusterDots);
 }
 ---
 
 <div class="dot-background" class:list={[{ fixed }]}>
-  <svg 
-    width={width} 
-    height={height} 
-    viewBox={`${-width/2} ${-height/2} ${width} ${height}`}
-    xmlns="http://www.w3.org/2000/svg" 
+  <svg
+    width={width}
+    height={height}
+    viewBox={`${-width / 2} ${-height / 2} ${width} ${height}`}
+    xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="xMidYMid slice"
   >
-    {allDots.map((dot) => (
-       <rect
-        x={dot.x - dot.size}
-        y={dot.y - dot.size}
-        width={dot.size * 2}
-        height={dot.size * 2}
-        fill={dot.color}
-        opacity={opacity}
-      />
-    ))}
+    {
+      allDots.map((dot) => (
+        <rect
+          x={dot.x - dot.size}
+          y={dot.y - dot.size}
+          width={dot.size * 2}
+          height={dot.size * 2}
+          fill={dot.color}
+          opacity={opacity}
+        />
+      ))
+    }
   </svg>
 </div>
 
@@ -239,11 +241,11 @@ for (let i = 0; i < numClusters; i++) {
     z-index: -1;
     pointer-events: none;
   }
-  
+
   .dot-background.fixed {
     position: fixed;
   }
-  
+
   .dot-background svg {
     position: absolute;
     top: 50%;
@@ -254,7 +256,7 @@ for (let i = 0; i < numClusters; i++) {
     width: auto;
     height: auto;
   }
-  
+
   circle {
     transition: opacity 0.3s ease;
   }

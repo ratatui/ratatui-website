@@ -20,13 +20,8 @@ export async function getGitHubStats(
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
-      console.error(
-        `GitHub API error: ${response.status} ${response.statusText}`,
-      );
-      console.error(
-        "Response headers:",
-        Object.fromEntries(response.headers.entries()),
-      );
+      console.error(`GitHub API error: ${response.status} ${response.statusText}`);
+      console.error("Response headers:", Object.fromEntries(response.headers.entries()));
       const errorText = await response.text();
       console.error("Response body:", errorText);
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -34,10 +29,7 @@ export async function getGitHubStats(
 
     const data: GitHubRepo = await response.json();
 
-    if (
-      typeof data.stargazers_count !== "number" ||
-      typeof data.forks_count !== "number"
-    ) {
+    if (typeof data.stargazers_count !== "number" || typeof data.forks_count !== "number") {
       console.error("Invalid GitHub response structure:", {
         stargazers_count: data.stargazers_count,
         forks_count: data.forks_count,
@@ -52,10 +44,7 @@ export async function getGitHubStats(
   } catch (error) {
     console.error("Failed to fetch GitHub stats:");
     console.error("Error type:", error?.constructor?.name);
-    console.error(
-      "Error message:",
-      (error as Error)?.message || "Unknown error",
-    );
+    console.error("Error message:", (error as Error)?.message || "Unknown error");
     console.error("Full error:", error);
 
     // Fallback values
@@ -72,13 +61,8 @@ export async function getCratesStats(): Promise<{ downloads: number }> {
     });
 
     if (!response.ok) {
-      console.error(
-        `Crates.io API error: ${response.status} ${response.statusText}`,
-      );
-      console.error(
-        "Response headers:",
-        Object.fromEntries(response.headers.entries()),
-      );
+      console.error(`Crates.io API error: ${response.status} ${response.statusText}`);
+      console.error("Response headers:", Object.fromEntries(response.headers.entries()));
       const errorText = await response.text();
       console.error("Response body:", errorText);
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -97,10 +81,7 @@ export async function getCratesStats(): Promise<{ downloads: number }> {
   } catch (error) {
     console.error("Failed to fetch crates.io stats:");
     console.error("Error type:", error?.constructor?.name);
-    console.error(
-      "Error message:",
-      (error as Error)?.message || "Unknown error",
-    );
+    console.error("Error message:", (error as Error)?.message || "Unknown error");
     console.error("Full error:", error);
 
     // Fallback value
@@ -132,13 +113,8 @@ export async function getShowcaseAppsCount(): Promise<{ count: number }> {
     );
 
     if (!response.ok) {
-      console.error(
-        `Crates.io reverse deps API error: ${response.status} ${response.statusText}`,
-      );
-      console.error(
-        "Response headers:",
-        Object.fromEntries(response.headers.entries()),
-      );
+      console.error(`Crates.io reverse deps API error: ${response.status} ${response.statusText}`);
+      console.error("Response headers:", Object.fromEntries(response.headers.entries()));
       const errorText = await response.text();
       console.error("Response body:", errorText);
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -148,19 +124,14 @@ export async function getShowcaseAppsCount(): Promise<{ count: number }> {
 
     if (!data.meta || typeof data.meta.total !== "number") {
       console.error("Invalid crates.io reverse deps response structure:", data);
-      throw new Error(
-        "Invalid response structure from crates.io reverse deps API",
-      );
+      throw new Error("Invalid response structure from crates.io reverse deps API");
     }
 
     return { count: data.meta.total };
   } catch (error) {
     console.error("Failed to fetch reverse dependencies count:");
     console.error("Error type:", error?.constructor?.name);
-    console.error(
-      "Error message:",
-      (error as Error)?.message || "Unknown error",
-    );
+    console.error("Error message:", (error as Error)?.message || "Unknown error");
     console.error("Full error:", error);
 
     // Fallback value

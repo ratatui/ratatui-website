@@ -1,112 +1,113 @@
 ---
 // BlockRevealCode.astro
-import { readFile } from 'fs/promises';
-import { codeToHtml } from 'shiki';
+import { readFile } from "fs/promises";
+import { codeToHtml } from "shiki";
 
 interface Props {
   lang?: string;
   class?: string;
 }
 
-const { lang = 'rust', class: className = '' } = Astro.props;
+const { lang = "rust", class: className = "" } = Astro.props;
 
 // Read file at build time
-const code = await readFile('./code/tutorials/quickstart-ratatui/src/main.rs', 'utf-8');
+const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "utf-8");
 
 // Pre-render syntax highlighted HTML with Night Owl theme
 const highlightedHtml = await codeToHtml(code, {
   lang: lang,
-  theme: 'night-owl'
+  theme: "night-owl",
 });
 ---
 
 <div class={`block-reveal-wrapper h-[460px] ${className} max-sm:hidden`}>
-  <pre class="scramble-container"><code class="language-rust"></code></pre>
+  <pre class="scramble-container"><code class="language-rust" /></pre>
   <div class="highlighted-code" set:html={highlightedHtml} />
 </div>
 
 <script define:vars={{ code }}>
   const initScramble = () => {
-    const wrappers = document.querySelectorAll('.block-reveal-wrapper');
-    
+    const wrappers = document.querySelectorAll(".block-reveal-wrapper");
+
     wrappers.forEach((wrapper) => {
-      const scrambleContainer = wrapper.querySelector('.scramble-container');
-      const highlightedCode = wrapper.querySelector('.highlighted-code');
-      const codeElement = scrambleContainer?.querySelector('code');
-      
+      const scrambleContainer = wrapper.querySelector(".scramble-container");
+      const highlightedCode = wrapper.querySelector(".highlighted-code");
+      const codeElement = scrambleContainer?.querySelector("code");
+
       if (!codeElement || codeElement.textContent) return;
-      
+
       // Night Owl color palette for scrambling
       const nightOwlColors = [
-        '#82AAFF', // variables (blue)
-        '#c792ea', // keywords (purple)
-        '#F78C6C', // numbers (orange)
-        '#ecc48d', // strings (yellow)
-        '#7fdbca', // functions (cyan)
-        '#addb67', // green
-        '#fff',    // property white
+        "#82AAFF", // variables (blue)
+        "#c792ea", // keywords (purple)
+        "#F78C6C", // numbers (orange)
+        "#ecc48d", // strings (yellow)
+        "#7fdbca", // functions (cyan)
+        "#addb67", // green
+        "#fff", // property white
       ];
-      
-      const charset = '!<>-_\\/[]{}—=+*^?#________01234567890abcdefghijklmnopqrstuvwxyz';
+
+      const charset = "!<>-_\\/[]{}—=+*^?#________01234567890abcdefghijklmnopqrstuvwxyz";
       const scrambleDuration = 2000;
       const revealInterval = 30;
-      
+
       let frame = 0;
       const totalFrames = Math.ceil(scrambleDuration / revealInterval);
       const codeLength = code.length;
-      
+
       const randomChar = () => charset[Math.floor(Math.random() * charset.length)];
       const randomColor = () => nightOwlColors[Math.floor(Math.random() * nightOwlColors.length)];
-      
+
       const scramble = () => {
         frame++;
         const revealCount = Math.floor((frame / totalFrames) * codeLength);
-        
-        let output = '';
-        
+
+        let output = "";
+
         for (let i = 0; i < codeLength; i++) {
           if (i < revealCount) {
             // Revealed character in muted color
             const char = code[i];
-            const escapedChar = char.replace(/&/g, '&amp;')
-                                    .replace(/</g, '&lt;')
-                                    .replace(/>/g, '&gt;');
+            const escapedChar = char
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
             output += `<span style="color: #d6deeb;">${escapedChar}</span>`;
           } else {
             const char = code[i];
-            if (char === ' ') {
-              output += ' ';
-            } else if (char === '\n') {
-              output += '\n';
-            } else if (char === '\t') {
-              output += '\t';
+            if (char === " ") {
+              output += " ";
+            } else if (char === "\n") {
+              output += "\n";
+            } else if (char === "\t") {
+              output += "\t";
             } else {
               // Scrambled character with Night Owl colors
               output += `<span style="color: ${randomColor()};">${randomChar()}</span>`;
             }
           }
         }
-        
+
         codeElement.innerHTML = output;
-        
+
         if (frame < totalFrames) {
           setTimeout(scramble, revealInterval);
         } else {
           // Fade out scramble, fade in highlighted
-          scrambleContainer.style.opacity = '0';
+          scrambleContainer.style.opacity = "0";
           setTimeout(() => {
-            highlightedCode.style.opacity = '1';
+            highlightedCode.style.opacity = "1";
           }, 300);
         }
       };
-      
+
       scramble();
     });
   };
-  
-  document.addEventListener('astro:page-load', initScramble);
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initScramble);
+
+  document.addEventListener("astro:page-load", initScramble);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScramble);
   } else {
     initScramble();
   }
@@ -129,7 +130,7 @@ const highlightedHtml = await codeToHtml(code, {
   }
 
   .scramble-container {
-    font-family: 'Courier New', monospace;
+    font-family: "Courier New", monospace;
     background: #011627;
     padding: 1rem;
     margin-top: 1.15rem;

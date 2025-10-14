@@ -11,48 +11,56 @@ const features: Feature[] = [
     title: "Blazing Fast Performance & Lightweight",
     url: "/tutorials/hello-ratatui/",
     icon: "⚡",
-    description: "Sub-millisecond rendering with zero-cost abstractions and immediate-mode rendering. Build responsive dashboards and complex terminal applications that feel instant, even with hundreds of widgets on screen. No runtime overhead, just pure Rust performance."
+    description:
+      "Sub-millisecond rendering with zero-cost abstractions and immediate-mode rendering. Build responsive dashboards and complex terminal applications that feel instant, even with hundreds of widgets on screen. No runtime overhead, just pure Rust performance.",
   },
   {
     title: "Rich Widget Ingredients",
     url: "/concepts/widgets/",
     icon: "🎨",
-    description: "Everything you need to craft professional TUIs: charts, sparklines, tables, gauges, scrollable lists, trees, progress bars, and more. Mix and match widgets to create dashboards, monitoring tools, interactive forms, or full-featured command-line applications. Check out the widget examples to see what's possible."
+    description:
+      "Everything you need to craft professional TUIs: charts, sparklines, tables, gauges, scrollable lists, trees, progress bars, and more. Mix and match widgets to create dashboards, monitoring tools, interactive forms, or full-featured command-line applications. Check out the widget examples to see what's possible.",
   },
   {
     title: "Flexible Layout Recipes",
     url: "/concepts/layout/",
     icon: "📐 ",
-    description: "Constraint-based responsive layouts that automatically adapt to any terminal size—think Flexbox, but for the terminal. Build complex nested layouts with horizontal and vertical splits, automatically sized containers, and percentage-based constraints. Your interface looks great whether it's in a tiny tmux pane or a 4K terminal."
+    description:
+      "Constraint-based responsive layouts that automatically adapt to any terminal size—think Flexbox, but for the terminal. Build complex nested layouts with horizontal and vertical splits, automatically sized containers, and percentage-based constraints. Your interface looks great whether it's in a tiny tmux pane or a 4K terminal.",
   },
   {
     title: "Pure Rust Reliability",
     url: "/concepts/backends/",
     icon: "🦀",
-    description: "Memory-safe, thread-safe, and type-safe by design. No C dependencies, no runtime exceptions, no undefined behavior. Just pure Rust goodness that compiles to efficient native code. Works seamlessly with Crossterm, Termion, or Termwiz backends—choose the one that fits your needs."
-  }
+    description:
+      "Memory-safe, thread-safe, and type-safe by design. No C dependencies, no runtime exceptions, no undefined behavior. Just pure Rust goodness that compiles to efficient native code. Works seamlessly with Crossterm, Termion, or Termwiz backends—choose the one that fits your needs.",
+  },
 ];
 ---
 
-<div class="flex justify-center landing-mono">
+<div class="landing-mono flex justify-center">
   <div class="max-w-[1440px] max-xl:text-center">
-    <p class="font-bold text-4xl text-black dark:text-white py-4 max-md:px-6">
+    <p class="py-4 text-4xl font-bold text-black max-md:px-6 dark:text-white">
       Your favourite features ❤️
     </p>
-    <div class="grid grid-cols-2 max-md:grid-cols-1 gap-6 p-[80px] max-xl:p-6 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-blue-950 auto-rows-fr">
-      {features.map((feature) => (
-        <div class="px-8 pb-6 max-md:p-2 !m-0 bg-gradient-to-r from-slate-100 to-slate-300 dark:from-slate-900 dark:to-slate-800 h-full">
-          <div class="flex items-end gap-4">
-            <a class="pt-8 max-md:pt-2" href={feature.url}>
-              <h3 class="bracket-btn font-bold text-xl max-md:text-sm">
-                <span class="text-2xl max-md:text-base">{feature.icon}</span>
-                {feature.title}
-              </h3>
-            </a>
+    <div
+      class="grid auto-rows-fr grid-cols-2 gap-6 bg-gradient-to-r from-blue-600 to-blue-800 p-[80px] max-xl:p-6 max-md:grid-cols-1 dark:from-blue-900 dark:to-blue-950"
+    >
+      {
+        features.map((feature) => (
+          <div class="!m-0 h-full bg-gradient-to-r from-slate-100 to-slate-300 px-8 pb-6 max-md:p-2 dark:from-slate-900 dark:to-slate-800">
+            <div class="flex items-end gap-4">
+              <a class="pt-8 max-md:pt-2" href={feature.url}>
+                <h3 class="bracket-btn text-xl font-bold max-md:text-sm">
+                  <span class="text-2xl max-md:text-base">{feature.icon}</span>
+                  {feature.title}
+                </h3>
+              </a>
+            </div>
+            <p class="pt-2 text-base max-md:text-xs">{feature.description}</p>
           </div>
-          <p class="text-base pt-2 max-md:text-xs">{feature.description}</p>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </div>

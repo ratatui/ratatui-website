@@ -27,7 +27,7 @@ const videos = [
     youtubeId: "iepbyYrF_YQ",
     description: "Orhun Parmaksız explores rendering TUIs on the web",
   },
- ];
+];
 
 // Generate random sizes for each item
 const tileData = videos.map(() => ({
@@ -37,62 +37,68 @@ const tileData = videos.map(() => ({
 ---
 
 <div class="not-content max-2xl:mx-6">
+  <h2
+    class="pt-[80px] pb-6 text-4xl font-bold text-black max-xl:text-center max-sm:pt-[50px] dark:text-white"
+  >
+    Watch and learn <span class="text-blue-700 dark:text-yellow-500">Ratatui</span> 👨‍🍳🐀
+  </h2>
 
-  <h2 class="font-bold text-4xl text-black dark:text-white pt-[80px] max-sm:pt-[50px] pb-6 max-xl:text-center">Watch and learn <span class="text-blue-700 dark:text-yellow-500">Ratatui</span>  👨‍🍳🐀</h2>
+  <p class="max-w-[1440px] pb-12 text-lg leading-8 max-xl:text-center max-sm:text-sm">
+    Watch our ‘recipes’ for building features, explore creative twists from other developers, and
+    discussions that stir up fresh ideas.
+  </p>
 
-  <p class="text-lg max-sm:text-sm pb-12 leading-8 max-w-[1440px] max-xl:text-center">Watch our ‘recipes’ for building features, explore creative twists from other developers, and discussions that stir up fresh ideas.</p>
-
-  <div class="flex flex-wrap max-w-[1440px] m-auto gap-6">
-    {videos.map((video, index) => (
-      <div 
-        class={`
-          gallery-item grid min-w-[300px] h-[500px] max-sm:h-[350px]
-          ${tileData[index].colSpan === 1
-            ? 'grid-rows-[1fr_4fr] max-sm:grid-rows-[1fr_8fr]'
-            : 'grid-cols-[1fr_3fr] max-sm:grid-cols-none'
-          }`
-        }
-        data-col-span={tileData[index].colSpan}
-      >
-        <TutorialVideo
-          colSpan={tileData[index].colSpan}
-          title={video.title}
-          youtubeId={video.youtubeId}
-          description={video.description}
-        />
-      </div>
-    ))}
+  <div class="m-auto flex max-w-[1440px] flex-wrap gap-6">
+    {
+      videos.map((video, index) => (
+        <div
+          class={`gallery-item grid h-[500px] min-w-[300px] max-sm:h-[350px] ${
+            tileData[index].colSpan === 1
+              ? "grid-rows-[1fr_4fr] max-sm:grid-rows-[1fr_8fr]"
+              : "grid-cols-[1fr_3fr] max-sm:grid-cols-none"
+          }`}
+          data-col-span={tileData[index].colSpan}
+        >
+          <TutorialVideo
+            colSpan={tileData[index].colSpan}
+            title={video.title}
+            youtubeId={video.youtubeId}
+            description={video.description}
+          />
+        </div>
+      ))
+    }
   </div>
 </div>
 
 <style>
-.gallery-item {
-  flex: 1 1 calc(33.333% - 1rem); /* 3 columns by default */
-}
-
-/* Span 2 columns - double width */
-.gallery-item[data-col-span="2"] {
-  flex: 2 1 calc(66.666% - 1rem);
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
   .gallery-item {
-    flex: 1 1 calc(50% - 1rem); /* 2 columns on tablets */
+    flex: 1 1 calc(33.333% - 1rem); /* 3 columns by default */
   }
-  
-  .gallery-item[data-col-span="2"] {
-    flex: 2 1 calc(100% - 1rem);
-  }
-}
 
-@media (max-width: 768px) {
-  .gallery-item {
-    flex: 1 1 100%; /* Single column on mobile */
-  }
-  
+  /* Span 2 columns - double width */
   .gallery-item[data-col-span="2"] {
-    flex: 1 1 100%; /* Single column on mobile */
+    flex: 2 1 calc(66.666% - 1rem);
   }
-}
+
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .gallery-item {
+      flex: 1 1 calc(50% - 1rem); /* 2 columns on tablets */
+    }
+
+    .gallery-item[data-col-span="2"] {
+      flex: 2 1 calc(100% - 1rem);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .gallery-item {
+      flex: 1 1 100%; /* Single column on mobile */
+    }
+
+    .gallery-item[data-col-span="2"] {
+      flex: 1 1 100%; /* Single column on mobile */
+    }
+  }
 </style>

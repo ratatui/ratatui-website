@@ -7,8 +7,8 @@ interface Props {
 const { text } = Astro.props;
 ---
 
-<div 
-  class="scramble-text text-lg py-4 text-center tracking-[0.2rem] text-slate-500 max-lg:hidden"
+<div
+  class="scramble-text py-4 text-center text-lg tracking-[0.2rem] text-slate-500 max-lg:hidden"
   data-original={text}
 >
   {text}
@@ -31,13 +31,13 @@ const { text } = Astro.props;
 
     constructor(element: HTMLElement) {
       this.element = element;
-      this.originalText = element.getAttribute('data-original') || element.textContent || '';
+      this.originalText = element.getAttribute("data-original") || element.textContent || "";
       this.init();
     }
 
     init(): void {
-      this.element.addEventListener('mouseenter', () => this.scramble());
-      this.element.addEventListener('mouseleave', () => this.unscramble());
+      this.element.addEventListener("mouseenter", () => this.scramble());
+      this.element.addEventListener("mouseleave", () => this.unscramble());
     }
 
     scramble(): void {
@@ -50,7 +50,7 @@ const { text } = Astro.props;
       this.isUnscrambling = false;
       this.isScrambling = true;
 
-      const chars = this.originalText.split('');
+      const chars = this.originalText.split("");
       let frame = 0;
       const maxFrames = 60;
 
@@ -63,10 +63,12 @@ const { text } = Astro.props;
           return;
         }
 
-        const scrambled = chars.map((char) => {
-          if (char === ' ') return ' ';
-          return '01'[Math.floor(Math.random() * 2)];
-        }).join('');
+        const scrambled = chars
+          .map((char) => {
+            if (char === " ") return " ";
+            return "01"[Math.floor(Math.random() * 2)];
+          })
+          .join("");
 
         this.element.textContent = scrambled;
         frame++;
@@ -90,7 +92,7 @@ const { text } = Astro.props;
       this.isScrambling = false;
       this.isUnscrambling = true;
 
-      const chars = this.originalText.split('');
+      const chars = this.originalText.split("");
       let frame = 0;
       const maxFrames = 60;
 
@@ -103,16 +105,18 @@ const { text } = Astro.props;
           return;
         }
 
-        const scrambled = chars.map((char, index) => {
-          const progress = frame / maxFrames;
-          const revealThreshold = (index / chars.length);
-          
-          if (progress > revealThreshold) {
-            return char;
-          }
-          
-          return char === ' ' ? ' ' : '01'[Math.floor(Math.random() * 2)];
-        }).join('');
+        const scrambled = chars
+          .map((char, index) => {
+            const progress = frame / maxFrames;
+            const revealThreshold = index / chars.length;
+
+            if (progress > revealThreshold) {
+              return char;
+            }
+
+            return char === " " ? " " : "01"[Math.floor(Math.random() * 2)];
+          })
+          .join("");
 
         this.element.textContent = scrambled;
         frame++;
@@ -128,9 +132,8 @@ const { text } = Astro.props;
     }
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const elements = document.querySelectorAll<HTMLElement>('.scramble-text');
-    elements.forEach(element => new TextScrambler(element));
+  document.addEventListener("DOMContentLoaded", () => {
+    const elements = document.querySelectorAll<HTMLElement>(".scramble-text");
+    elements.forEach((element) => new TextScrambler(element));
   });
 </script>
-

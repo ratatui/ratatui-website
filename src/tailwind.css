@@ -39,7 +39,6 @@
 
 :root[data-theme="light"] {
   --color-basic: black;
-  ;
 }
 
 @media (min-width: 50rem) {
@@ -48,11 +47,11 @@
   .hero {
     grid-template-columns: 3fr 7fr;
     gap: 6%;
-    padding-block: 1.5rebottom
+    padding-block: 1.5rebottom;
   }
 
-  .hero>img,
-  .hero>.hero-html {
+  .hero > img,
+  .hero > .hero-html {
     order: 0;
     width: min(100%, 15rem);
   }
@@ -122,7 +121,6 @@ svg[aria-roledescription="stateDiagram"] circle {
 
 :root[data-theme="light"] {
   --sl-color-highlight: oklch(48.8% 0.243 264.376);
-  ;
 }
 
 :root[data-theme="dark"] {
@@ -131,7 +129,6 @@ svg[aria-roledescription="stateDiagram"] circle {
 
 :root[data-theme="light"] {
   --sl-color-highlight-2: oklch(79.5% 0.184 86.047);
-  ;
 }
 
 marker#arrowhead path {
@@ -159,14 +156,14 @@ article hr,
 /* More aggressive targeting of potential hr elements */
 hr:first-child,
 hr:first-of-type,
-.sl-container>hr,
-main .sl-container>hr,
-main .content>hr {
+.sl-container > hr,
+main .sl-container > hr,
+main .content > hr {
   display: none !important;
 }
 
 /* Hide the specific border-top rule that creates the line between content panels */
-.content-panel+.content-panel {
+.content-panel + .content-panel {
   border-top: none !important;
 }
 
@@ -178,7 +175,8 @@ main .content-panel:first-child:not(:has(*)) {
 
 /* Landing page font */
 .landing-mono {
-  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
 }
 
 /* Landing page text blinking cursor animation */
@@ -188,7 +186,7 @@ main .content-panel:first-child:not(:has(*)) {
 }
 
 .landing-highlight::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 1.25rem;
   height: 0.85em;
@@ -204,7 +202,7 @@ main .content-panel:first-child:not(:has(*)) {
 }
 
 .landing-highlight-tall::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 1.25rem;
   height: 1em;
@@ -215,7 +213,6 @@ main .content-panel:first-child:not(:has(*)) {
 }
 
 @media (max-width: 640px) {
-
   .landing-highlight::after,
   .landing-highlight-tall::after {
     width: 0.5rem;
@@ -223,7 +220,6 @@ main .content-panel:first-child:not(:has(*)) {
 }
 
 @keyframes blink {
-
   0%,
   100% {
     opacity: 0;

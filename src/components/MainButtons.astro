@@ -5,7 +5,7 @@ interface Props {
   secondaryClass: string;
 }
 
-const {containerClass, primaryClass, secondaryClass } = Astro.props;
+const { containerClass, primaryClass, secondaryClass } = Astro.props;
 
 const links = [
   { class: primaryClass, title: "Get Started", href: "/installation" },
@@ -15,8 +15,15 @@ const links = [
 ---
 
 <div class={`flex gap-10 max-xl:flex-wrap max-md:justify-center ${containerClass}`}>
-  {links.map((link) => (
-     <a class={`bracket-btn font-bold text-xl text-white bg-blue-700 p-3 px-6 max-2xl:p-2 max-2xl:px-4 no-underline ${link.class}`} href={link.href} aria-label={link.title}>
+  {
+    links.map((link) => (
+      <a
+        class={`bracket-btn bg-blue-700 p-3 px-6 text-xl font-bold text-white no-underline max-2xl:p-2 max-2xl:px-4 ${link.class}`}
+        href={link.href}
+        aria-label={link.title}
+      >
         {link.title}
-    </a>))}
- </div>
+      </a>
+    ))
+  }
+</div>
