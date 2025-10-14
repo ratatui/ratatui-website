@@ -1,5 +1,5 @@
 ---
-import VideoCard from "./VideoCard.astro";
+import TutorialVideo from "./TutorialVideo.astro";
 
 const videos = [
   {
@@ -39,21 +39,22 @@ const tileData = videos.map(() => ({
 <div class="not-content max-2xl:mx-6">
 
   <h2 class="font-bold text-4xl text-black dark:text-white pt-[80px] max-sm:pt-[50px] pb-6 max-xl:text-center">Watch and learn <span class="text-blue-700 dark:text-yellow-500">Ratatui</span>  👨‍🍳🐀</h2>
+
   <p class="text-lg max-sm:text-sm pb-12 leading-8 max-w-[1440px] max-xl:text-center">Watch our ‘recipes’ for building features, explore creative twists from other developers, and discussions that stir up fresh ideas.</p>
 
   <div class="flex flex-wrap max-w-[1440px] m-auto gap-6">
     {videos.map((video, index) => (
       <div 
         class={`
-          gallery-item grid min-w-[300px] h-[500px] max-sm:h-[400px]
+          gallery-item grid min-w-[300px] h-[500px] max-sm:h-[350px]
           ${tileData[index].colSpan === 1
-            ? 'grid-rows-[1fr_4fr] max-sm:grid-rows-none'
+            ? 'grid-rows-[1fr_4fr] max-sm:grid-rows-[1fr_8fr]'
             : 'grid-cols-[1fr_3fr] max-sm:grid-cols-none'
           }`
         }
         data-col-span={tileData[index].colSpan}
       >
-        <VideoCard
+        <TutorialVideo
           colSpan={tileData[index].colSpan}
           title={video.title}
           youtubeId={video.youtubeId}
@@ -91,7 +92,7 @@ const tileData = videos.map(() => ({
   }
   
   .gallery-item[data-col-span="2"] {
-    flex: 1 1 100%;
+    flex: 1 1 100%; /* Single column on mobile */
   }
 }
 </style>
