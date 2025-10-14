@@ -10,22 +10,22 @@ tableOfContents: false
 import SocialIcons from "@astrojs/starlight/components/SocialIcons.astro";
 import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
 
-import heroLight from "../../assets/hero-light.png";
-import heroDark from "../../assets/hero-dark.png";
-import logoTextLight from "../../assets/logo-text-light.png";
-import logoTextDark from "../../assets/logo-text-dark.png";
-import netflix from "../../assets/netflix.png";
+import heroLight from "@assets/hero-light.png";
+import heroDark from "@assets/hero-dark.png";
+import logoTextLight from "@assets/logo-text-light.png";
+import logoTextDark from "@assets/logo-text-dark.png";
+import netflix from "@assets/netflix.png";
 
-import StatsDisplay from "../../components/StatsDisplay.astro";
-import CompanyLogos from "../../components/CompanyLogos.astro";
-import RandomDots from '../../components/RandomDots.astro'
-import Features from '../../components/Features.astro'
-import ScrambleText from '../../components/ScrambleText.astro'
-import ScrambleCode from '../../components/ScrambleCode.astro'
-import ShowcaseCards from '../../components/ShowcaseCards.astro'
-import TutorialVideos from '../../components/TutorialVideos.astro'
-import MainButtons from '../../components/MainButtons.astro';
-import HideHeader from '../../components/HideHeader.astro';
+import StatsDisplay from "@components/StatsDisplay.astro";
+import CompanyLogos from "@components/CompanyLogos.astro";
+import RandomDots from '@components/RandomDots.astro'
+import Features from '@components/Features.astro'
+import ScrambleText from '@components/ScrambleText.astro'
+import ScrambleCode from '@components/ScrambleCode.astro'
+import ShowcaseCards from '@components/ShowcaseCards.astro'
+import TutorialVideos from '@components/TutorialVideos.astro'
+import MainButtons from '@components/MainButtons.astro';
+import HideHeader from '@components/HideHeader.astro';
 
 <div class="flex justify-center landing-mono">
   <div>
@@ -47,13 +47,13 @@ import HideHeader from '../../components/HideHeader.astro';
         <div class="max-xl:text-center">
           <div class="flex max-sm:flex-wrap max-sm:justify-center items-end pb-10">
             <div class="w-[150px] max-2xl:w-[100px] max-sm:w-[150px]">
-              <a class="no-underline" href="https://github.com/ratatui/ratatui">
+              <a class="no-underline" href="https://github.com/ratatui/ratatui/">
                 <img src={heroLight.src} alt="Ratatui Logo" class="dark:hidden" />
                 <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
               </a>
             </div>
             <div>
-              <a class="no-underline" href="https://github.com/ratatui/ratatui">
+              <a class="no-underline" href="https://github.com/ratatui/ratatui/">
                 <img src={logoTextLight.src} class="max-h-[100px] max-2xl:max-h-[80px] dark:hidden" />
                 <img src={logoTextDark.src} class="max-h-[100px] max-2xl:max-h-[80px] !hidden dark:!block" />
               </a>
