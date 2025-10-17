@@ -70,6 +70,12 @@ can find more information about this template in the [Hello World Template READM
 cargo generate ratatui/templates simple
 ```
 
+:::danger
+
+Note that the example code is under the MIT LICENSE in the `Cargo.toml`.
+
+:::
+
 You will be prompted for a project name to use. Enter `hello-ratatui`.
 
 ```shell title="create new rust project"
