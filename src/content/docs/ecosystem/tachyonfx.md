@@ -9,7 +9,7 @@ sidebar:
 Build complex animations by composing and layering simple effects, bringing smooth transitions and
 visual polish to the terminal.
 
-![](https://github.com/junkdog/tachyonfx/raw/development/images/demo-0.6.0.gif)
+[![](https://github.com/junkdog/exabind/raw/main/demo/exabind-02.gif)](https://junkdog.github.io/exabind/)
 
 - [Getting Started](https://github.com/junkdog/tachyonfx?tab=readme-ov-file#getting-started)
 - [Effects API](https://docs.rs/tachyonfx/latest/tachyonfx/fx/index.html)
