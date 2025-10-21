@@ -23,6 +23,14 @@ IP/hostname
 
 ---
 
+## [`bbcli`](https://github.com/imsnif/bbcli)
+
+A terminal-based BBC News reader built with Rust and ratatui, featuring a compact, numbered list interface with vim-like navigation.
+
+![bbcli demo](https://raw.githubusercontent.com/hako/bbcli/refs/heads/master/bbcli.gif?raw=true)
+
+---
+
 ## [`binsider`](https://github.com/orhun/binsider)
 
 Perform binary analysis in your terminal.
