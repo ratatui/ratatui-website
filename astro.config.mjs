@@ -226,6 +226,13 @@ export default defineConfig({
           ],
         },
         {
+          label: "Ecosystem",
+          collapsed: true,
+          autogenerate: {
+            directory: "ecosystem",
+          },
+        },
+        {
           label: "FAQ",
           link: "/faq/",
         },
