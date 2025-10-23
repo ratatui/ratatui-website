@@ -13,14 +13,14 @@ function rehypeExternalLink() {
       // We set a flag so we can skip adding the external‑link icon for this specific link.
       if (node.tagName === "h2") {
         if (node.children[0].type === "element" && node.children[0].tagName === "a") {
-          isTagaInsideH2 = true;
+          isATagInsideH2 = true;
         }
       }
       // Process every <a> element encountered during traversal.
       if (node.tagName === "a" && node.properties?.href) {
         // If the link was inside an <h2>, reset the flag and skip icon logic.
-        if (isTagaInsideH2) {
-          isTagaInsideH2 = false;
+        if (isATagInsideH2) {
+          isATagInsideH2 = false;
         } else {
           // Normal external-link handling
           const href: string = node.properties.href as string;
