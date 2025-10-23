@@ -6,7 +6,7 @@ export default rehypeExternalLink;
  */
 function rehypeExternalLink() {
   const iconNode = getExternalLinkSvgNode();
-  let isTagaInsideH2 = false;
+  let isATagInsideH2 = false;
   return (tree: Node) => {
     visit(tree, "element", (node: any) => {
       // Detect when a link is the first child of an <h2> element.
