@@ -1,0 +1,54 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-astro",
+    "stylelint-config-tailwindcss"
+  ],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "selector-class-pattern": null,
+    "order/properties-order": [
+      [
+        "display",
+        "position",
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "align-items",
+        "justify-content",
+        "width",
+        "height",
+        "margin",
+        "padding",
+        "background",
+        "color",
+        "font-size",
+        "font-weight",
+        "line-height",
+        "text-align",
+        "border",
+        "border-radius",
+        "opacity"
+      ],
+      {
+        "unspecified": "bottomAlphabetical"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.astro", "**/*.astro"],
+      "customSyntax": "postcss-html",
+      "rules": {
+        "custom-property-pattern": null,
+        "selector-pseudo-class-no-unknown": [
+          true,
+          {
+            "ignorePseudoClasses": ["global"]
+          }
+        ]
+      }
+    }
+  ]
+}

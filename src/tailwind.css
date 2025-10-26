@@ -1,8 +1,8 @@
 @layer base, starlight, theme, components, utilities;
 
-@import "@astrojs/starlight-tailwind";
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import url("@astrojs/starlight-tailwind");
+@import url("tailwindcss/theme.css") layer(theme);
+@import url("tailwindcss/utilities.css") layer(utilities);
 
 @theme {
   /* Custom accent colors. */
@@ -17,6 +17,7 @@
   --color-accent-800: var(--color-blue-800);
   --color-accent-900: var(--color-blue-900);
   --color-accent-950: var(--color-blue-950);
+
   /* Custom gray colors. */
   --color-gray-50: var(--color-slate-50);
   --color-gray-100: var(--color-slate-100);
@@ -31,73 +32,81 @@
   --color-gray-950: var(--color-slate-950);
 }
 
-@media (min-width: 50rem) {
+@media (width >= 50rem) {
   /* Move the logo to the left side  */
 
   .hero {
-    grid-template-columns: 3fr 7fr;
     gap: 6%;
+    grid-template-columns: 3fr 7fr;
     padding-block: 1.5rem;
   }
 
   .hero > img,
   .hero > .hero-html {
-    order: 0;
     width: min(100%, 15rem);
+    order: 0;
   }
 }
 
 .three-cols {
   display: grid;
+  gap: 2.5rem;
   padding-top: 1rem;
-  @media (min-width: 50rem) {
+
+  @media (width >= 50rem) {
     grid-template-columns: 1fr 1fr 1fr;
   }
-  gap: 2.5rem;
+
   h3 {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
   }
 }
 
 /* Fix for SVGBob diagrams on dark mode */
 svg.svgbob text,
 svg.svgbob .filled {
-  fill: currentColor;
+  fill: currentcolor;
 }
+
 svg.svgbob .solid,
 svg.svgbob polygon {
-  stroke: currentColor;
+  stroke: currentcolor;
 }
 
 /* Fix for Mermaid diagrams on dark mode */
 svg[aria-roledescription="sequence"] .messageText {
-  fill: currentColor !important;
+  fill: currentcolor !important;
 }
+
 svg[aria-roledescription="sequence"] line,
 svg[aria-roledescription="sequence"] path,
 svg[aria-roledescription="sequence"] .flowchart-link {
-  stroke: currentColor !important;
+  stroke: currentcolor !important;
 }
+
 svg[aria-roledescription="flowchart-v2"] .arrowMarkerPath {
-  fill: currentColor;
+  fill: currentcolor;
 }
+
 svg[aria-roledescription="flowchart-v2"] line,
 svg[aria-roledescription="flowchart-v2"] path,
 svg[aria-roledescription="flowchart-v2"] .flowchart-link {
-  stroke: currentColor !important;
+  stroke: currentcolor !important;
 }
+
 svg[aria-roledescription="stateDiagram"] {
   line-height: normal;
 }
+
 svg[aria-roledescription="stateDiagram"] line,
 svg[aria-roledescription="stateDiagram"] path,
 svg[aria-roledescription="stateDiagram"] circle {
-  stroke: currentColor !important;
+  stroke: currentcolor !important;
 }
 
 marker#arrowhead path {
-  fill: currentColor !important;
-  stroke: currentColor !important;
+  fill: currentcolor !important;
+  stroke: currentcolor !important;
 }
 
 :root {

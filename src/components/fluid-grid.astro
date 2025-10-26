@@ -11,11 +11,12 @@ const { minColumnWidth } = Astro.props;
 <style define:vars={{ minColumnWidth }}>
   .fluid-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--minColumnWidth, 11rem)), 1fr));
-    gap: 1rem;
-    list-style: none;
     padding: 0;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--minColumnWidth, 11rem)), 1fr));
+    list-style: none;
   }
+
   .fluid-grid > :global(*) {
     margin-top: 0 !important;
   }
