@@ -161,7 +161,7 @@ export function formatCratesNumber(num: number): string {
 
 export async function getAllStats() {
   const [github, crates, showcase] = await Promise.all([
-    getGitHubStats("ratatui-org", "ratatui"),
+    getGitHubStats("ratatui", "ratatui"),
     getCratesStats(),
     getShowcaseAppsCount(),
   ]);
