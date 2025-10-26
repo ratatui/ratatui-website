@@ -36,6 +36,7 @@
     "sharp": "^0.33.5",
     "starlight-links-validator": "0.14.1",
     "tailwindcss": "^4.1.14",
+    "toml": "^3.0.0",
     "tree-sitter": "0.22.1",
     "tree-sitter-rust": "^0.23.2",
     "typescript": "^5.7.2",
