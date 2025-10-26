@@ -2,8 +2,7 @@
 name = "ratatui-hello-world"
 version = "0.1.0"
 edition = "2024"
-description = "no"
-authors = ["JayanAXHF <sunil.chdry@gmail.com>"]
+description = "A ready-to-use template for building terminal user interfaces with ratatui using the components architecture"
 build = "build.rs"
 
 

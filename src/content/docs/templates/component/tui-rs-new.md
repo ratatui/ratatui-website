@@ -1,10 +1,10 @@
 ---
-title: New Tui.rs
+title: Tui.rs
 sidebar:
-  order: 10
+  order: 3
 ---
 
-This page will explain how the `tui.rs` file works in the components template.
+This page will explain how the `tui.rs` file works in the `components` template.
 
 ## Terminal
 
@@ -38,7 +38,7 @@ fn main() -> Result<()> {
 You can use `termion` or `termwiz` instead here, and you'll have to change the implementation of
 `setup_terminal` and `teardown_terminal`.
 
-I personally like to use `crossterm` so that I can run the TUI on windows as well.
+See the [backends](http://ratatui.rs/concepts/backends/) page for more information.
 
 :::note
 
@@ -46,7 +46,7 @@ Terminals have two screen buffers for each window. The default screen buffer is 
 into when you start up a terminal. The second screen buffer, called the alternate screen, is used
 for running interactive apps such as the `vim`, `less` etc.
 
-Here's a 8 minute talk on Terminal User Interfaces I gave at JuliaCon2020:
+Here's an 8-minute talk on Terminal User Interfaces I gave at JuliaCon2020:
 <https://www.youtube.com/watch?v=-TASx67pphw> that might be worth watching for more information
 about how terminal user interfaces work.
 
@@ -61,7 +61,7 @@ Our implementation of the `Tui` struct has the following parts:
 # Terminal Setup and Teardown
 
 The `Tui` struct has a `terminal` field that is of type `ratatui::Terminal<Backend<Stdout>>`. This
-template uses `crossterm` as the backend. In the contructor for the `Tui` struct, we create and
+template uses `crossterm` as the backend. In the constructor for the `Tui` struct, we create and
 store a new `ratatui::Terminal`. The setup and teardown of the terminal is managed by the following
 methods:
 
@@ -80,7 +80,7 @@ impl Tui {
             event_loop.await;
         });
     }
-        pub fn enter(&mut self) -> Result<()> {
+    pub fn enter(&mut self) -> Result<()> {
         crossterm::terminal::enable_raw_mode()?;
         crossterm::execute!(stdout(), EnterAlternateScreen, cursor::Hide)?;
         if self.mouse {
@@ -130,8 +130,8 @@ impl Tui {
 
 When we call the `run()` method on the `App` struct (the function that we called in our `main.rs`
 file), the first function that runs is the `Tui::enter()` function. This function prepares the
-terminal by enabling the terminal `raw_mode`, entering an `AlternateScreen`, and if the App is has
-mouse controls, it enables mouse capture. Then, it calls the `Tui::start()` method to initialise the
+terminal by enabling the terminal `raw_mode`, entering an `AlternateScreen`, and if the App has
+mouse controls, it enables mouse capture. Then, it calls the `Tui::start()` method to initialize the
 event loop.
 
 ```rust
@@ -146,7 +146,7 @@ While we are in the "raw mode", i.e. after we call `t.enter()`, any key presses 
 window are sent to `stdin`. We have to read these key presses from `stdin` if we want to act on
 them.
 
-There's a number of different ways to do that. `crossterm` has a `event` module that implements
+There are a number of different ways to do that. `crossterm` has a `event` module that implements
 features to read these key presses for us.
 
 Let's assume we were building a simple "counter" application, that incremented a counter when we
@@ -234,7 +234,7 @@ To make the code work as expected across all platforms, you can do this instead:
 
 The event loop function takes an `event_tx`. It uses this to send events (like KeyPresses) to other
 parts of our app. This is done using unbounded Multiple Producer Single Consumer (`mpsc`) channels.
-The function creates initialises the tick rate (time delay between `ticks`), frame rate, and an
+The function creates initializes the tick rate (time delay between `ticks`), frame rate, and an
 `event_stream`. A `tick` is a fundamental unit of time for our app. Think of it as a `CLOCK` for our
 app, similar to ones found in microcontrollers. Every tick, the execution of our app moves forward.
 The default tick rate is 4 ticks per second (also known as TPS). After this, the loop gets events
@@ -261,10 +261,10 @@ pub enum Event {
 
 When it's time to stop the app, the `Tui` struct has a `cancellation_token` field. This is a
 `CancellationToken` that can be used to stop the `tokio` task on request. When the `exit` method is
-called, it calls the `stop` method, which stops all pending tokio tasks. After this, we clean up the
-terminal and make sure that we don't leave the user's terminal in an unusable state. In case our app
-terminates unexpectedly, we don't want to ruin our user's terminal. So we implement the `Drop` trait
-on the `Tui` struct. When it is dropped, it calls the exit function, restoring the terminal.
+called, it calls the `stop` method, which stops all pending `tokio` tasks. After this, we clean up
+the terminal and make sure that we don't leave the user's terminal in an unusable state. In case our
+app terminates unexpectedly, we don't want to ruin our user's terminal. So we implement the `Drop`
+trait on the `Tui` struct. When it is dropped, it calls the exit function, restoring the terminal.
 
 ```rust
 impl Drop for Tui {

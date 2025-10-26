@@ -75,7 +75,7 @@ for the user.
 Let's say we weren't worried about complexity, and were interested in performing a computationally
 demanding or I/O intensive task in the background.
 
-To do this, we employ a model that dispatches and receives `Action`s to perfoem certain actions.
+To do this, we employ a model that dispatches and receives `Action`s to perform certain actions.
 This allows us to have actions that result in other actions easily. For example, if we have to make
 a network request, and then render the UI again, we can have an `update()` that looks like:
 
@@ -119,7 +119,7 @@ logic, each component has a `register_action_handler()` method, which allows the
 `Action` to a central action handler.
 
 Then, we have to handle actions sent by the components. For each component, if there is an action
-returned by its `update` method, we propogate it to the receiver. This ensures that all actions and
+returned by its `update` method, we propagate it to the receiver. This ensures that all actions and
 handled. Thus our `handle_actions` function looks like:
 
 ```rust
