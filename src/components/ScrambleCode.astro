@@ -50,16 +50,20 @@ const highlightedHtml = await codeToHtml(code, {
         "#fff", // property white
       ];
 
-      const charset = "!<>-_\\/[]{}—=+*^?#________01234567890abcdefghijklmnopqrstuvwxyz";
+      const charset = "🧀🧡🌟✨🐭🍕🐀🍺🌭🍔<>0123456789________";
 
       const scrambleDuration = 2000;
       const revealInterval = 30;
 
       let frame = 0;
       const totalFrames = Math.ceil(scrambleDuration / revealInterval);
-      const codeLength = code.length;
+      const codeChars = Array.from(code);
+      const codeLength = codeChars.length;
+      <!-- const codeLength = code.length; -->
 
-      const randomChar = () => charset[Math.floor(Math.random() * charset.length)];
+      const charsetArray = Array.from(charset);
+      const randomChar = () => charsetArray[Math.floor(Math.random() * charsetArray.length)];
+      <!-- const randomChar = () => charset[Math.floor(Math.random() * charset.length)]; -->
       const randomColor = () => nightOwlColors[Math.floor(Math.random() * nightOwlColors.length)];
 
       const scramble = () => {
