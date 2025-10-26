@@ -58,7 +58,7 @@ Our implementation of the `Tui` struct has the following parts:
 - The `Tui` struct itself
 - Async event handling using `tokio`
 
-# Terimal Setup and Teardown
+# Terminal Setup and Teardown
 
 The `Tui` struct has a `terminal` field that is of type `ratatui::Terminal<Backend<Stdout>>`. This
 template uses `crossterm` as the backend. In the contructor for the `Tui` struct, we create and
