@@ -28,6 +28,7 @@ const { text } = Astro.props;
     private isScrambling: boolean = false;
     private isUnscrambling: boolean = false;
     private scrambleInterval: number | null = null;
+    private emojis: string[] = ["🐀", "🧀"];
 
     constructor(element: HTMLElement) {
       this.element = element;
@@ -41,7 +42,6 @@ const { text } = Astro.props;
     }
 
     scramble(): void {
-      // Clear any existing intervals for this instance
       if (this.scrambleInterval !== null) {
         clearInterval(this.scrambleInterval);
         this.scrambleInterval = null;
@@ -66,7 +66,7 @@ const { text } = Astro.props;
         const scrambled = chars
           .map((char) => {
             if (char === " ") return " ";
-            return "01"[Math.floor(Math.random() * 2)];
+            return this.emojis[Math.floor(Math.random() * this.emojis.length)];
           })
           .join("");
 
@@ -83,7 +83,6 @@ const { text } = Astro.props;
     }
 
     unscramble(): void {
-      // Clear any existing intervals for this instance
       if (this.scrambleInterval !== null) {
         clearInterval(this.scrambleInterval);
         this.scrambleInterval = null;
@@ -114,7 +113,7 @@ const { text } = Astro.props;
               return char;
             }
 
-            return char === " " ? " " : "01"[Math.floor(Math.random() * 2)];
+            return char === " " ? " " : this.emojis[Math.floor(Math.random() * this.emojis.length)];
           })
           .join("");
 
