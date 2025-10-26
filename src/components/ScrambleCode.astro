@@ -23,7 +23,7 @@ const highlightedHtml = await codeToHtml(code, {
 
 <div class={`block-reveal-wrapper h-[460px] ${className} max-sm:hidden`}>
   <RatatuiVersion />
-  <CopyButton code={code} className="absolute top-0 right-0" />
+  <CopyButton code={code} class="absolute top-0 right-0" />
   <pre class="scramble-container"><code class="language-rust" /></pre>
   <div class="highlighted-code" set:html={highlightedHtml} />
 </div>
