@@ -9,6 +9,7 @@ import remarkSvgBob from "remark-svgbob";
 import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
 import { collapsibleFrames } from "/src/plugins/collapsible-frames";
+import rehypeExternalLink from "/src/plugins/rehype-external-link";
 import remarkIncludeCode from "/src/plugins/remark-code-import";
 
 // https://astro.build/config
@@ -27,7 +28,7 @@ export default defineConfig({
   },
   markdown: {
     remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob],
-    rehypePlugins: [rehypeMermaid],
+    rehypePlugins: [rehypeMermaid, rehypeExternalLink],
   },
   integrations: [
     starlight({
