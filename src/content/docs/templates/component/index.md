@@ -67,7 +67,7 @@ Options:
 
 ### Show `version`
 
-Without direnv variables:
+Without `direnv` variables:
 
 ```bash
 $ cargo run -- --version
@@ -93,7 +93,6 @@ $ # OR
 $ export RATATUI_HELLO_WORLD_CONFIG=`pwd`/.config
 $ export RATATUI_HELLO_WORLD_DATA=`pwd`/.data
 $ export RATATUI_HELLO_WORLD_LOG_LEVEL=debug
-
 $ cargo run -- --version
     Finished dev [unoptimized + debuginfo] target(s) in 0.07s
      Running `target/debug/ratatui-hello-world --version`
