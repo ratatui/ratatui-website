@@ -4,6 +4,7 @@ import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-s
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import rehypeMermaid from "rehype-mermaid";
+import { remarkHeadingId } from "remark-custom-heading-id";
 import emoji from "remark-emoji";
 import remarkSvgBob from "remark-svgbob";
 import remarkYoutube from "remark-youtube";
@@ -26,7 +27,7 @@ export default defineConfig({
     prefetchAll: true,
   },
   markdown: {
-    remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob],
+    remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob, remarkHeadingId],
     rehypePlugins: [rehypeMermaid],
   },
   integrations: [
