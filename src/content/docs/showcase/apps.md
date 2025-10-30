@@ -58,6 +58,17 @@ See https://github.com/withastro/astro/issues/8886 -->
 
 ---
 
+## [`comchan`](https://github.com/Vaishnav-Sabari-Girish/ComChan)
+
+ComChan is a minimal serial monitor with a plotter TUI.
+
+<!-- This is in the public folder not the app folder as it causes astro to crash during processing
+See https://github.com/withastro/astro/issues/8886 -->
+
+![comchan demo](https://github.com/Vaishnav-Sabari-Girish/ComChan/blob/main/docs/src/videos/full.gif?raw=true)
+
+---
+
 ## [`dua`](https://github.com/Byron/dua-cli)
 
 `dua` is a disk space analysis tool designed for speed, leveraging parallel processing to quickly
