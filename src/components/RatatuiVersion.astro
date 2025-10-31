@@ -1,0 +1,15 @@
+---
+import { getRatatuiVersion } from "../utils/cargoParser.ts";
+
+const version = await getRatatuiVersion("./code/tutorials/quickstart-ratatui/Cargo.toml");
+---
+
+<div class="absolute top-6 right-10 z-10 p-2 text-sm">
+  <a
+    class="no-underline"
+    href=`https://github.com/ratatui/ratatui/releases/tag/ratatui-v${version}`
+    target="_blank"
+  >
+    <span class="landing-mono bg-slate-700 px-2 text-slate-300">{version}</span>
+  </a>
+</div>
