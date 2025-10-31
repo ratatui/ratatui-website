@@ -1,8 +1,9 @@
 ---
 import crosstui from "@assets/crosstui.gif";
 import ShowcaseCard from "./ShowcaseCard.astro";
+import ShowcaseProject from "../models/project.ts";
 
-const projects = [
+const projects: ShowcaseProject[] = [
   {
     title: "scope-tui",
     owner: "alemidev",
@@ -117,7 +118,7 @@ const tileData = projects.map(() => ({
   </p>
   <div class="m-auto flex max-w-[1440px] flex-wrap gap-6">
     {
-      projects.map((project, index) => (
+      projects.map((project: ShowcaseProject, index: number) => (
         <div
           class={`gallery-item grid h-[500px] min-w-[300px] max-sm:h-[300px] ${
             tileData[index].colSpan === 1
@@ -126,14 +127,7 @@ const tileData = projects.map(() => ({
           } `}
           data-col-span={tileData[index].colSpan}
         >
-          <ShowcaseCard
-            colSpan={tileData[index].colSpan}
-            url={project.url}
-            title={project.title}
-            description={project.description}
-            media={project.media}
-            alt={project.alt}
-          />
+          <ShowcaseCard colSpan={tileData[index].colSpan} project={project} />
         </div>
       ))
     }

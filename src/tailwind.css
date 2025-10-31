@@ -41,37 +41,6 @@
   --color-basic: black;
 }
 
-@media (min-width: 50rem) {
-  /* Move the logo to the left side  */
-
-  .hero {
-    grid-template-columns: 3fr 7fr;
-    gap: 6%;
-    padding-block: 1.5rebottom;
-  }
-
-  .hero > img,
-  .hero > .hero-html {
-    order: 0;
-    width: min(100%, 15rem);
-  }
-}
-
-.three-cols {
-  display: grid;
-  padding-top: 1rem;
-
-  @media (min-width: 50rem) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  gap: 2.5rem;
-
-  h3 {
-    margin-bottom: 0rem;
-  }
-}
-
 /* Fix for SVGBob diagrams on dark mode */
 svg.svgbob text,
 svg.svgbob .filled {

@@ -1,33 +1,20 @@
 // Utility functions to fetch real statistics from APIs
 
-interface GitHubRepo {
-  stargazers_count: number;
-  forks_count: number;
-}
+import { Octokit } from "octokit";
+import type { CratesIoResponse, CratesIoReverseDepsResponse, GitHubRepo } from "~/models/stats";
 
-interface CratesIoResponse {
-  crate: {
-    downloads: number;
-  };
-}
+const token = import.meta.env.GITHUB_TOKEN ?? process.env.GITHUB_TOKEN;
+const octokit = new Octokit({
+  auth: token,
+});
 
-export async function getGitHubStats(
-  owner: string,
-  repo: string,
-): Promise<{ stars: number; forks: number }> {
+export async function getGitHubStats(owner: string, repo: string): Promise<GitHubRepo> {
   try {
-    const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
-    const response = await fetch(apiUrl);
-
-    if (!response.ok) {
-      console.error(`GitHub API error: ${response.status} ${response.statusText}`);
-      console.error("Response headers:", Object.fromEntries(response.headers.entries()));
-      const errorText = await response.text();
-      console.error("Response body:", errorText);
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data: GitHubRepo = await response.json();
+    // Use Octokit's rest API for repo info
+    const { data } = await octokit.rest.repos.get({
+      owner,
+      repo,
+    });
 
     if (typeof data.stargazers_count !== "number" || typeof data.forks_count !== "number") {
       console.error("Invalid GitHub response structure:", {
@@ -42,11 +29,7 @@ export async function getGitHubStats(
       forks: data.forks_count,
     };
   } catch (error) {
-    console.error("Failed to fetch GitHub stats:");
-    console.error("Error type:", error?.constructor?.name);
-    console.error("Error message:", (error as Error)?.message || "Unknown error");
-    console.error("Full error:", error);
-
+    console.error("Failed to fetch GitHub stats (Octokit):", error);
     // Fallback values
     return { stars: 13418, forks: 500 };
   }
@@ -87,17 +70,6 @@ export async function getCratesStats(): Promise<{ downloads: number }> {
     // Fallback value
     return { downloads: 7124990 };
   }
-}
-
-interface CratesIoReverseDepsResponse {
-  dependencies: Array<{
-    crate: {
-      name: string;
-    };
-  }>;
-  meta: {
-    total: number;
-  };
 }
 
 export async function getShowcaseAppsCount(): Promise<{ count: number }> {
@@ -159,9 +131,9 @@ export function formatCratesNumber(num: number): string {
   return `${roundedDown}+`;
 }
 
-export async function getAllStats() {
+export async function getAllStats(owner: string, repo: string) {
   const [github, crates, showcase] = await Promise.all([
-    getGitHubStats("ratatui", "ratatui"),
+    getGitHubStats(owner, repo),
     getCratesStats(),
     getShowcaseAppsCount(),
   ]);
