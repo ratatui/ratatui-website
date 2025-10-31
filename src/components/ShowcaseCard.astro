@@ -1,6 +1,7 @@
 ---
-import ShowcaseProject from "../models/project.ts";
 import { getGitHubStats, formatNumber } from "../utils/stats.ts";
+import type { GitHubRepo } from "~/models/stats";
+import type { ShowcaseProject } from "~/models/project.ts";
 
 interface Props {
   colSpan: number;
@@ -10,7 +11,7 @@ interface Props {
 const { colSpan, project } = Astro.props;
 const { title, owner, repo, url, description, media, alt } = project;
 
-let stats = { stars: "N/A", forks: "N/A" };
+let stats: GitHubRepo = { stars: 100, forks: 100 };
 try {
   stats = await getGitHubStats(owner, repo);
 } catch (err) {
@@ -26,10 +27,9 @@ try {
     >
       <span class="bracket-btn">{title}</span>
       <div class="landing-mono ml-6">
-        <span>
-          <span class="bg-blue-500 p-1 px-2">⭐</span><span class="bg-blue-700 p-1 px-2"
-            >{formatNumber(stats.stars)}</span
-          >
+        <span class="bg-blue-700 py-1">
+          <span class="m-0 bg-blue-500 p-1">⭐</span>
+          <span class="m-0 bg-blue-700 p-1 pr-2 pl-0">{formatNumber(stats.stars)}</span>
         </span>
       </div>
     </p>
