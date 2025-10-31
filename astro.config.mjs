@@ -4,11 +4,13 @@ import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-s
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import rehypeMermaid from "rehype-mermaid";
+import { remarkHeadingId } from "remark-custom-heading-id";
 import emoji from "remark-emoji";
 import remarkSvgBob from "remark-svgbob";
 import remarkYoutube from "remark-youtube";
 import starlightLinksValidator from "starlight-links-validator";
 import { collapsibleFrames } from "/src/plugins/collapsible-frames";
+import rehypeExternalLink from "/src/plugins/rehype-external-link";
 import remarkIncludeCode from "/src/plugins/remark-code-import";
 
 // https://astro.build/config
@@ -26,8 +28,8 @@ export default defineConfig({
     prefetchAll: true,
   },
   markdown: {
-    remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob],
-    rehypePlugins: [rehypeMermaid],
+    remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob, remarkHeadingId],
+    rehypePlugins: [rehypeMermaid, rehypeExternalLink],
   },
   integrations: [
     starlight({
@@ -242,6 +244,10 @@ export default defineConfig({
             {
               label: "Highlights",
               link: "/highlights/",
+            },
+            {
+              label: "v0.30",
+              link: "/highlights/v030/",
             },
             {
               label: "v0.29",
