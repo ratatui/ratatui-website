@@ -4,6 +4,8 @@ sidebar:
   order: 3
 ---
 
+This page will explain how the `tui.rs` file works in the `components` template.
+
 ## Terminal
 
 In this section of the tutorial, we are going to discuss the basic components of the `Tui` struct.
@@ -36,7 +38,7 @@ fn main() -> Result<()> {
 You can use `termion` or `termwiz` instead here, and you'll have to change the implementation of
 `setup_terminal` and `teardown_terminal`.
 
-I personally like to use `crossterm` so that I can run the TUI on windows as well.
+See the [backends](http://ratatui.rs/concepts/backends/) page for more information.
 
 :::note
 
@@ -44,130 +46,107 @@ Terminals have two screen buffers for each window. The default screen buffer is 
 into when you start up a terminal. The second screen buffer, called the alternate screen, is used
 for running interactive apps such as the `vim`, `less` etc.
 
-Here's a 8 minute talk on Terminal User Interfaces I gave at JuliaCon2020:
+Here's an 8-minute talk on Terminal User Interfaces I gave at JuliaCon2020:
 <https://www.youtube.com/watch?v=-TASx67pphw> that might be worth watching for more information
 about how terminal user interfaces work.
 
 :::
 
-We can reorganize the setup and teardown functions into an `enter()` and `exit()` methods on a `Tui`
-struct.
+Our implementation of the `Tui` struct has the following parts:
 
-:::note[Wondering whether to use `stdout` or `stderr`?]
+- Setup and teardown of the terminal
+- The `Tui` struct itself
+- Async event handling using `tokio`
 
-See the [FAQ](/faq/#should-i-use-stdout-or-stderr) for more details.
+# Terminal Setup and Teardown
 
-:::
+The `Tui` struct has a `terminal` field that is of type `ratatui::Terminal<Backend<Stdout>>`. This
+template uses `crossterm` as the backend. In the constructor for the `Tui` struct, we create and
+store a new `ratatui::Terminal`. The setup and teardown of the terminal is managed by the following
+methods:
 
 ```rust
-use color_eyre::eyre::Result;
-use ratatui::crossterm::{
-  cursor,
-  event::{DisableMouseCapture, EnableMouseCapture},
-  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-};
-use ratatui::backend::CrosstermBackend as Backend;
-use tokio::{
-  sync::{mpsc, Mutex},
-  task::JoinHandle,
-};
-
-pub type Frame<'a> = ratatui::Frame<'a, Backend<std::io::Stderr>>;
-
-pub struct Tui {
-  pub terminal: ratatui::Terminal<Backend<std::io::Stderr>>,
-}
-
 impl Tui {
-  pub fn new() -> Result<Self> {
-    let terminal = ratatui::Terminal::new(Backend::new(std::io::stderr()))?;
-    Ok(Self { terminal })
-  }
+    pub fn start(&mut self) {
+        self.cancel(); // Cancel any existing task
+        self.cancellation_token = CancellationToken::new();
+        let event_loop = Self::event_loop(
+            self.event_tx.clone(),
+            self.cancellation_token.clone(),
+            self.tick_rate,
+            self.frame_rate,
+        );
+        self.task = tokio::spawn(async {
+            event_loop.await;
+        });
+    }
+    pub fn enter(&mut self) -> Result<()> {
+        crossterm::terminal::enable_raw_mode()?;
+        crossterm::execute!(stdout(), EnterAlternateScreen, cursor::Hide)?;
+        if self.mouse {
+            crossterm::execute!(stdout(), EnableMouseCapture)?;
+        }
+        if self.paste {
+            crossterm::execute!(stdout(), EnableBracketedPaste)?;
+        }
+        self.start();
+        Ok(())
+    }
 
-  pub fn enter(&self) -> Result<()> {
-    crossterm::terminal::enable_raw_mode()?;
-    crossterm::execute!(std::io::stderr(), EnterAlternateScreen, EnableMouseCapture, cursor::Hide)?;
-    Ok(())
-  }
+    pub fn exit(&mut self) -> Result<()> {
+        self.stop()?;
+        if crossterm::terminal::is_raw_mode_enabled()? {
+            self.flush()?;
+            if self.paste {
+                crossterm::execute!(stdout(), DisableBracketedPaste)?;
+            }
+            if self.mouse {
+                crossterm::execute!(stdout(), DisableMouseCapture)?;
+            }
+            crossterm::execute!(stdout(), LeaveAlternateScreen, cursor::Show)?;
+            crossterm::terminal::disable_raw_mode()?;
+        }
+        Ok(())
+    }
 
-  pub fn exit(&self) -> Result<()> {
-    crossterm::execute!(std::io::stderr(), LeaveAlternateScreen, DisableMouseCapture, cursor::Show)?;
-    crossterm::terminal::disable_raw_mode()?;
-    Ok(())
-  }
-
-  pub fn suspend(&self) -> Result<()> {
-    self.exit()?;
-    #[cfg(not(windows))]
-    signal_hook::low_level::raise(signal_hook::consts::signal::SIGTSTP)?;
-    Ok(())
-  }
-
-  pub fn resume(&self) -> Result<()> {
-    self.enter()?;
-    Ok(())
-  }
+    pub fn stop(&self) -> Result<()> {
+        self.cancel();
+        let mut counter = 0;
+        while !self.task.is_finished() {
+            std::thread::sleep(Duration::from_millis(1));
+            counter += 1;
+            if counter > 50 {
+                self.task.abort();
+            }
+            if counter > 100 {
+                error!("Failed to abort task in 100 milliseconds for unknown reason");
+                break;
+            }
+        }
+        Ok(())
+    }
 }
 ```
 
-:::note
-
-This is the same `Tui` struct we used in `initialize_panic_handler()`. We call `Tui::exit()` before
-printing the stacktrace.
-
-:::
-
-Feel free to modify this as you need for use with `termion` or `wezterm`.
-
-The type alias to `Frame` is only to make the `components` folder easier to work with, and is not
-strictly required.
-
-## Event
-
-In it's simplest form, most applications will have a `main` loop like this:
+When we call the `run()` method on the `App` struct (the function that we called in our `main.rs`
+file), the first function that runs is the `Tui::enter()` function. This function prepares the
+terminal by enabling the terminal `raw_mode`, entering an `AlternateScreen`, and if the App has
+mouse controls, it enables mouse capture. Then, it calls the `Tui::start()` method to initialize the
+event loop.
 
 ```rust
-fn main() -> Result<()> {
-  let mut app = App::new();
-
-  let mut t = Tui::new()?;
-
-  t.enter()?; // raw mode enabled
-
-  loop {
-
-    // get key event and update state
-    // ... Special handling to read key or mouse events required here
-
-    t.terminal.draw(|f| { // <- `terminal.draw` is the only ratatui function here
-      ui(app, f) // render state to terminal
-    })?;
-
-  }
-
-  t.exit()?; // raw mode disabled
-
-  Ok(())
-}
+self.task = tokio::spawn(async {
+    event_loop.await;
+});
 ```
 
-:::note
-
-The `terminal.draw(|f| { ui(app, f); })` call is the only line in the code above that uses `ratatui`
-functionality. You can learn more about
-[`draw` from the official documentation](https://docs.rs/ratatui/latest/ratatui/terminal/struct.Terminal.html#method.draw).
-Essentially, `terminal.draw()` takes a callback that takes a
-[`Frame`](https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html) and expects the
-callback to render widgets to that frame, which is then drawn to the terminal using a double buffer
-technique.
-
-:::
+## Event Loop
 
 While we are in the "raw mode", i.e. after we call `t.enter()`, any key presses in that terminal
 window are sent to `stdin`. We have to read these key presses from `stdin` if we want to act on
 them.
 
-There's a number of different ways to do that. `crossterm` has a `event` module that implements
+There are a number of different ways to do that. `crossterm` has a `event` module that implements
 features to read these key presses for us.
 
 Let's assume we were building a simple "counter" application, that incremented a counter when we
@@ -204,8 +183,7 @@ fn main() -> Result {
 }
 ```
 
-This works perfectly fine, and a lot of small to medium size programs can get away with doing just
-that.
+This works perfectly fine, and many small to medium size programs can get away with doing just that.
 
 However, this approach conflates the key input handling with app state updates, and does so in the
 "draw" loop. The practical issue with this approach is we block the draw loop for 250 ms waiting for
@@ -217,145 +195,16 @@ want key presses to mean _different_ things depending on the state of the app (w
 on an input field, you may want to enter the letter `"j"` into the text input field, but when
 focused on a list of items, you may want to scroll down the list.)
 
-![Pressing `j` 3 times to increment counter and 3 times in the text field](https://user-images.githubusercontent.com/1813121/254444604-de8cfcfa-eeec-417a-a8b0-92a7ccb5fcb5.gif)
-
-<!--
-```
-Set Shell zsh
-Sleep 1s
-Hide
-Type "cargo run"
-Enter
-Sleep 1s
-Show
-Type "jjj"
-Sleep 5s
-Sleep 5s
-Type "/jjj"
-Sleep 5s
-Escape
-Type "q"
-```
--->
-
-We have to do a few different things set ourselves up, so let's take things one step at a time.
-
 First, instead of polling, we are going to introduce channels to get the key presses asynchronously
-and send them over a channel. We will then receive on the channel in the `main` loop.
+and send them over a channel. We will then receive on the channel in the main loop.
 
-There are two ways to do this. We can either use OS threads or "green" threads, i.e. tasks, i.e.
-rust's `async`-`await` features + a future executor.
+This block of code creates a new `tokio::task` to asynchronously run the event loop. This makes sure
+that our main thread isn't block due to things like polling for `key_events`.
 
-Here's example code of reading key presses asynchronously using `std::thread` and `tokio::task`.
-
-## `std::thread`
+The `event_loop` function is defined as follows:
 
 ```rust
-enum Event {
-  Key(crossterm::event::KeyEvent)
-}
-
-struct EventHandler {
-  rx: std::sync::mpsc::Receiver<Event>,
-}
-
-impl EventHandler {
-  fn new() -> Self {
-    let tick_rate = std::time::Duration::from_millis(250);
-    let (tx, rx) =  std::sync::mpsc::channel();
-    std::thread::spawn(move || {
-      loop {
-        if crossterm::event::poll(tick_rate)? {
-          match crossterm::event::read()? {
-            CrosstermEvent::Key(e) => tx.send(Event::Key(e)),
-            _ => unimplemented!(),
-          }?
-        }
-      }
-    })
-
-    EventHandler { rx }
-  }
-
-  fn next(&self) -> Result<Event> {
-    Ok(self.rx.recv()?)
-  }
-}
-```
-
-## `tokio::task`
-
-```rust
-enum Event {
-  Key(crossterm::event::KeyEvent)
-}
-
-struct EventHandler {
-  rx: tokio::sync::mpsc::UnboundedReceiver<Event>,
-}
-
-impl EventHandler {
-  fn new() -> Self {
-    let tick_rate = std::time::Duration::from_millis(250);
-    let (tx, mut rx) =  tokio::sync::mpsc::unbounded_channel();
-    tokio::spawn(async move {
-      loop {
-        if crossterm::event::poll(tick_rate)? {
-          match crossterm::event::read()? {
-            CrosstermEvent::Key(e) => tx.send(Event::Key(e)),
-            _ => unimplemented!(),
-          }?
-        }
-      }
-    })
-
-    EventHandler { rx }
-  }
-
-  async fn next(&self) -> Result<Event> {
-    Ok(self.rx.recv().await.ok()?)
-  }
-}
-```
-
-## `diff`
-
-```diff
-  enum Event {
-    Key(crossterm::event::KeyEvent)
-  }
-
-  struct EventHandler {
--   rx: std::sync::mpsc::Receiver<Event>,
-+   rx: tokio::sync::mpsc::UnboundedReceiver<Event>,
-  }
-
-  impl EventHandler {
-    fn new() -> Self {
-      let tick_rate = std::time::Duration::from_millis(250);
--     let (tx, rx) =  std::sync::mpsc::channel();
-+     let (tx, mut rx) =  tokio::sync::mpsc::unbounded_channel();
--     std::thread::spawn(move || {
-+     tokio::spawn(async move {
-        loop {
-          if crossterm::event::poll(tick_rate)? {
-            match crossterm::event::read()? {
-              CrosstermEvent::Key(e) => tx.send(Event::Key(e)),
-              _ => unimplemented!(),
-            }?
-          }
-        }
-      })
-
-      EventHandler { rx }
-    }
-
--   fn next(&self) -> Result<Event> {
-+   async fn next(&self) -> Result<Event> {
--     Ok(self.rx.recv()?)
-+     Ok(self.rx.recv().await.ok()?)
-    }
-  }
+{{#include @code/templates/components_async/src/tui.rs:event_loop}}
 ```
 
 :::caution
@@ -383,164 +232,57 @@ To make the code work as expected across all platforms, you can do this instead:
 
 :::
 
-Tokio is an asynchronous runtime for the Rust programming language. It is one of the more popular
-runtimes for asynchronous programming in rust. You can learn more about here
-<https://tokio.rs/tokio/tutorial>. For the rest of the tutorial here, we are going to assume we want
-to use tokio. I highly recommend you read the official `tokio` documentation.
-
-If we use `tokio`, receiving a event requires `.await`. So our `main` loop now looks like this:
+The event loop function takes an `event_tx`. It uses this to send events (like KeyPresses) to other
+parts of our app. This is done using unbounded Multiple Producer Single Consumer (`mpsc`) channels.
+The function creates initializes the tick rate (time delay between `ticks`), frame rate, and an
+`event_stream`. A `tick` is a fundamental unit of time for our app. Think of it as a `CLOCK` for our
+app, similar to ones found in microcontrollers. Every tick, the execution of our app moves forward.
+The default tick rate is 4 ticks per second (also known as TPS). After this, the loop gets events
+and passes them to our app. The possible events are:
 
 ```rust
-#[tokio::main]
-async fn main() -> {
-  let mut app = App::new();
-
-  let events = EventHandler::new();
-
-  let mut t = Tui::new()?;
-
-  t.enter()?;
-
-  loop {
-    if let Event::Key(key) = events.next().await? {
-      match key.code {
-        KeyCode::Char('j') => app.increment(),
-        KeyCode::Char('k') => app.decrement(),
-        KeyCode::Char('q') => break,
-        _ => (),
-      }
-    }
-
-    t.terminal.draw(|f| {
-      ui(app, f)
-    })?;
-  }
-
-  t.exit()?;
-
-  Ok(())
+pub enum Event {
+    Init,
+    Quit,
+    Error,
+    Closed,
+    Tick,
+    Render,
+    FocusGained,
+    FocusLost,
+    Paste(String),
+    Key(KeyEvent),
+    Mouse(MouseEvent),
+    Resize(u16, u16),
 }
 ```
 
-### Additional improvements
+## Cleanup and Teardown
 
-We are going to modify our `EventHandler` to handle a `AppTick` event. We want the `Event::AppTick`
-to be sent at regular intervals. We are also going to want to use a `CancellationToken` to stop the
-tokio task on request.
-
-[`tokio`'s `select!` macro](https://tokio.rs/tokio/tutorial/select) allows us to wait on multiple
-`async` computations and returns when a single computation completes.
-
-Here's what the completed `EventHandler` code now looks like:
+When it's time to stop the app, the `Tui` struct has a `cancellation_token` field. This is a
+`CancellationToken` that can be used to stop the `tokio` task on request. When the `exit` method is
+called, it calls the `stop` method, which stops all pending `tokio` tasks. After this, we clean up
+the terminal and make sure that we don't leave the user's terminal in an unusable state. In case our
+app terminates unexpectedly, we don't want to ruin our user's terminal. So we implement the `Drop`
+trait on the `Tui` struct. When it is dropped, it calls the exit function, restoring the terminal.
 
 ```rust
-use color_eyre::eyre::Result;
-use ratatui::crossterm::{
-  cursor,
-  event::{Event as CrosstermEvent, KeyEvent, KeyEventKind, MouseEvent},
-};
-use futures::{FutureExt, StreamExt};
-use tokio::{
-  sync::{mpsc, oneshot},
-  task::JoinHandle,
-};
-
-#[derive(Clone, Copy, Debug)]
-pub enum Event {
-  Error,
-  AppTick,
-  Key(KeyEvent),
-}
-
-#[derive(Debug)]
-pub struct EventHandler {
-  _tx: mpsc::UnboundedSender<Event>,
-  rx: mpsc::UnboundedReceiver<Event>,
-  task: Option<JoinHandle<()>>,
-  stop_cancellation_token: CancellationToken,
-}
-
-impl EventHandler {
-  pub fn new(tick_rate: u64) -> Self {
-    let tick_rate = std::time::Duration::from_millis(tick_rate);
-
-    let (tx, rx) = mpsc::unbounded_channel();
-    let _tx = tx.clone();
-
-    let stop_cancellation_token = CancellationToken::new();
-    let _stop_cancellation_token = stop_cancellation_token.clone();
-
-    let task = tokio::spawn(async move {
-      let mut reader = crossterm::event::EventStream::new();
-      let mut interval = tokio::time::interval(tick_rate);
-      loop {
-        let delay = interval.tick();
-        let crossterm_event = reader.next().fuse();
-        tokio::select! {
-          _ = _stop_cancellation_token.cancelled() => {
-            break;
-          }
-          maybe_event = crossterm_event => {
-            match maybe_event {
-              Some(Ok(evt)) => {
-                match evt {
-                  CrosstermEvent::Key(key) => {
-                    if key.kind == KeyEventKind::Press {
-                      tx.send(Event::Key(key)).unwrap();
-                    }
-                  },
-                  _ => {},
-                }
-              }
-              Some(Err(_)) => {
-                tx.send(Event::Error).unwrap();
-              }
-              None => {},
-            }
-          },
-          _ = delay => {
-              tx.send(Event::AppTick).unwrap();
-          },
-        }
-      }
-    });
-
-    Self { _tx, rx, task: Some(task), stop_cancellation_token }
-  }
-
-  pub async fn next(&mut self) -> Option<Event> {
-    self.rx.recv().await
-  }
-
-  pub async fn stop(&mut self) -> Result<()> {
-    self.stop_cancellation_token.cancel();
-    if let Some(handle) = self.task.take() {
-      handle.await.unwrap();
+impl Drop for Tui {
+    fn drop(&mut self) {
+        self.exit().unwrap();
     }
-    Ok(())
-  }
 }
 ```
 
 :::note
 
-Using `crossterm::event::EventStream::new()` requires the `event-stream` feature to be enabled.
-
-```yml
-crossterm = { version = "0.26.1", default-features = false, features = ["event-stream"] }
-```
+Read about graceful cleanup of the terminal in case of an error with
+[panic hooks](https://ratatui.rs/recipes/apps/panic-hooks/).
 
 :::
 
-With this `EventHandler` implemented, we can use `tokio` to create a separate "task" that handles
-any key asynchronously in our `main` loop.
-
-I personally like to combine the `EventHandler` and the `Tui` struct into one struct. Here's an
-example of that `Tui` struct for your reference.
+## Finished Code
 
 ```rust
-{{#include @code/templates/async-template-counter/src/tui.rs}}
+{{#include @code/templates/components_async/src/tui.rs:all}}
 ```
-
-In the next section, we will introduce a `Command` pattern to bridge handling the effect of an
-event.

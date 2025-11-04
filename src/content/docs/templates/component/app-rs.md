@@ -73,215 +73,134 @@ In my experience, the trade-off is here is usually complexity for the developer 
 for the user.
 
 Let's say we weren't worried about complexity, and were interested in performing a computationally
-demanding or I/O intensive task in the background. For our example, let's say that we wanted to
-trigger a increment to the counter after sleeping for `5` seconds.
+demanding or I/O intensive task in the background.
 
-This means that we'll have to start a "task" that sleeps for 5 seconds, and then sends another
-`Action` to be dispatched on.
-
-Now, our `update()` method takes the following shape:
+To do this, we employ a model that dispatches and receives `Action`s to perform certain actions.
+This allows us to have actions that result in other actions easily. For example, if we have to make
+a network request, and then render the UI again, we can have an `update()` that looks like:
 
 ```rust
-  fn update(&mut self, action: Action) -> Option<Action> {
+fn update(&mut self, action: Action) -> Option<Action> {
     match action {
-      Action::Tick => self.tick(),
-      Action::ScheduleIncrement => self.schedule_increment(1),
-      Action::ScheduleDecrement => self.schedule_decrement(1),
-      Action::Increment(i) => self.increment(i),
-      Action::Decrement(i) => self.decrement(i),
-      _ => (),
+        Action::Tick => {
+            self.last_tick_key_events.drain(..);
+        }
+        Action::Quit => self.should_quit = true,
+        Action::Suspend => self.should_suspend = true,
+        Action::Resume => self.should_suspend = false,
+        Action::ClearScreen => tui.terminal.clear()?,
+        Action::Resize(w, h) => self.handle_resize(tui, w, h)?,
+        Action::Render => self.render(tui)?,
+        Action::NetworkRequest => {
+            self.perform_expensive_request();
+            Some(Action::Render) // Triggers a render
+        }
+        _ => None,
     }
-    None
-  }
-```
-
-And `schedule_increment()` and `schedule_decrement()` both spawn short lived `tokio` tasks:
-
-```rust
-  pub fn schedule_increment(&mut self, i: i64) {
-    let tx = self.action_tx.clone().unwrap();
-    tokio::spawn(async move {
-      tokio::time::sleep(Duration::from_secs(5)).await;
-      tx.send(Action::Increment(i)).unwrap();
-    });
-  }
-
-  pub fn schedule_decrement(&mut self, i: i64) {
-    let tx = self.action_tx.clone().unwrap();
-    tokio::spawn(async move {
-      tokio::time::sleep(Duration::from_secs(5)).await;
-      tx.send(Action::Decrement(i)).unwrap();
-    });
-  }
-
-  pub fn increment(&mut self, i: i64) {
-    self.counter += i;
-  }
-
-  pub fn decrement(&mut self, i: i64) {
-    self.counter -= i;
-  }
-
-```
-
-In order to do this, we want to set up a `action_tx` on the `App` struct:
-
-```rust
-#[derive(Default)]
-struct App {
-  counter: i64,
-  should_quit: bool,
-  action_tx: Option<UnboundedSender<Action>>
 }
 ```
 
-:::note
+A similar method is defined for each component, which allows them to send their `Action` to other
+parts of the app.
 
-The only reason we are using an `Option<T>` here for `action_tx` is that we are not initializing the
-action channel when creating the instance of the `App`.
-
-:::
-
-This is what we want to do:
-
-```rust
-  pub async fn run(&mut self) -> Result<()> {
-    let (action_tx, mut action_rx) = mpsc::unbounded_channel();
-    let t = Tui::new();
-    t.enter();
-
-    tokio::spawn(async move {
-      let mut event = EventHandler::new(250);
-      loop {
-        let event = event.next().await;
-        let action = self.handle_events(event); // ERROR: self is moved to this tokio task
-        action_tx.send(action);
-      }
-    })
-
-    loop {
-      if let Some(action) = action_rx.recv().await {
-        self.update(action);
-      }
-      t.terminal.draw(|f| self.render(f))?;
-      if self.should_quit {
-        break
-      }
-    }
-    t.exit();
-    Ok(())
-  }
-```
-
-However, this doesn't quite work because we can't move `self`, i.e. the `App` to the
-`event -> action` mapping, i.e. `self.handle_events()`, and still use it later for `self.update()`.
-
-One way to solve this is to pass a `Arc<Mutex<App>` instance to the `event -> action` mapping loop,
-where it uses a `lock()` to get a reference to the object to call `obj.handle_events()`. We'll have
-to use the same `lock()` functionality in the main loop as well to call `obj.update()`.
+To do this, we set up an `action_tx` and an `action_rx` in the `App` struct.
 
 ```rust
 pub struct App {
-  pub component: Arc<Mutex<App>>,
-  pub should_quit: bool,
-}
-
-impl App {
-  pub async fn run(&mut self) -> Result<()> {
-    let (action_tx, mut action_rx) = mpsc::unbounded_channel();
-
-    let tui = Tui::new();
-    tui.enter();
-
-    tokio::spawn(async move {
-      let component = self.component.clone();
-      let mut event = EventHandler::new(250);
-      loop {
-        let event = event.next().await;
-        let action = component.lock().await.handle_events(event);
-        action_tx.send(action);
-      }
-    })
-
-    loop {
-      if let Some(action) = action_rx.recv().await {
-        match action {
-          Action::Render => {
-            let c = self.component.lock().await;
-            t.terminal.draw(|f| c.render(f))?;
-          };
-          Action::Quit => self.should_quit = true,
-          _ => self.component.lock().await.update(action),
-        }
-      }
-      self.should_quit {
-        break;
-      }
-    }
-
-    tui.exit();
-    Ok(())
-  }
+    should_quit: bool,
+    should_suspend: bool,
+    action_tx: mpsc::UnboundedSender<Action>,
+    action_rx: mpsc::UnboundedReceiver<Action>,
 }
 ```
 
-Now our `App` is generic boilerplate that doesn't depend on any business logic. It is responsible
-just to drive the application forward, i.e. call appropriate functions.
+To handle multiple components produicing actions, like `Render`s and `Tick`s based on their own
+logic, each component has a `register_action_handler()` method, which allows them to send their
+`Action` to a central action handler.
 
-We can go one step further and make the render loop its own `tokio` task:
+Then, we have to handle actions sent by the components. For each component, if there is an action
+returned by its `update` method, we propagate it to the receiver. This ensures that all actions and
+handled. Thus our `handle_actions` function looks like:
 
 ```rust
-pub struct App {
-  pub component: Arc<Mutex<Home>>,
-  pub should_quit: bool,
+fn handle_actions(&mut self, tui: &mut Tui) -> Result<()> {
+    while let Ok(action) = self.action_rx.try_recv() {
+        if action != Action::Tick && action != Action::Render {
+            debug!("{action:?}");
+        }
+        match action {
+            Action::Tick => {
+                self.last_tick_key_events.drain(..);
+            }
+            Action::Quit => self.should_quit = true,
+            Action::Suspend => self.should_suspend = true,
+            Action::Resume => self.should_suspend = false,
+            Action::ClearScreen => tui.terminal.clear()?,
+            Action::Resize(w, h) => self.handle_resize(tui, w, h)?,
+            Action::Render => self.render(tui)?,
+            _ => {}
+        }
+        for component in self.components.iter_mut() {
+            if let Some(action) = component.update(action.clone())? {
+                self.action_tx.send(action)?
+            };
+        }
+    }
+    Ok(())
+}
+```
+
+Similar to actions, there are certain events that can happen while the app is running. For example,
+a keypress, a mouse click, and more. To handle this, the `app` struct has the `handle_event` and
+`handle_key_event` methods that are responsible for handling these events. These methods are also
+defined for all components. When an event occurs, we perform the necessary function and sometimes
+send an `Action` related to the event. The code for these two functions is:
+
+```rust
+async fn handle_events(&mut self, tui: &mut Tui) -> Result<()> {
+    let Some(event) = tui.next_event().await else {
+        return Ok(());
+    };
+    let action_tx = self.action_tx.clone();
+    match event {
+        Event::Quit => action_tx.send(Action::Quit)?,
+        Event::Tick => action_tx.send(Action::Tick)?,
+        Event::Render => action_tx.send(Action::Render)?,
+        Event::Resize(x, y) => action_tx.send(Action::Resize(x, y))?,
+        Event::Key(key) => self.handle_key_event(key)?,
+        _ => {}
+    }
+    for component in self.components.iter_mut() {
+        if let Some(action) = component.handle_events(Some(event.clone()))? {
+            action_tx.send(action)?;
+        }
+    }
+    Ok(())
 }
 
-impl App {
-  pub async fn run(&mut self) -> Result<()> {
-    let (render_tx, mut render_rx) = mpsc::unbounded_channel();
-
-    tokio::spawn(async move {
-      let component = self.component.clone();
-      let tui = Tui::new();
-      tui.enter();
-      loop {
-        if let Some(_) = render_rx.recv() {
-          let c = self.component.lock().await;
-          tui.terminal.draw(|f| c.render(f))?;
+fn handle_key_event(&mut self, key: KeyEvent) -> Result<()> {
+    let action_tx = self.action_tx.clone();
+    let Some(keymap) = self.config.keybindings.get(&self.mode) else {
+        return Ok(());
+    }; // See `config.rs`
+    match keymap.get(&vec![key]) {
+        Some(action) => {
+            info!("Got action: {action:?}");
+            action_tx.send(action.clone())?;
         }
-      }
-      tui.exit()
-    })
+        _ => {
+            // If the key was not handled as a single key action,
+            // then consider it for multi-key combinations.
+            self.last_tick_key_events.push(key);
 
-    let (action_tx, mut action_rx) = mpsc::unbounded_channel();
-
-    tokio::spawn(async move {
-      let component = self.component.clone();
-      let mut event = EventHandler::new(250);
-      loop {
-        let event = event.next().await;
-        let action = component.lock().await.handle_events(event);
-        action_tx.send(action);
-      }
-    })
-
-    loop {
-      if let Some(action) = action_rx.recv().await {
-        match action {
-          Action::Render => {
-            render_tx.send(());
-          };
-          Action::Quit => self.should_quit = true,
-          _ => self.component.lock().await.update(action),
+            // Check for multi-key combinations
+            if let Some(action) = keymap.get(&self.last_tick_key_events) {
+                info!("Got action: {action:?}");
+                action_tx.send(action.clone())?;
+            }
         }
-      }
-      self.should_quit {
-        break;
-      }
     }
-
     Ok(())
-  }
 }
 ```
 
@@ -432,10 +351,53 @@ impl Component {
 }
 ```
 
-Our `Component` currently does one thing and just one thing (increment and decrement a counter). But
-we may want to do more complex things and combine `Component`s in interesting ways. For example, we
-may want to add a text input field as well as show logs conditionally from our TUI application.
+Now that we have a framework for driving our app forward, we can define a `run` method to start the
+app. It registers the event handlers for all components, and starts an event loop that handles
+events and actions.
 
-In the next sections, we will talk about breaking out our app into various components, with the one
-root component called `Home`. And we'll introduce a `Component` trait so it is easier to understand
-where the TUI specific code ends and where our app's business logic begins.
+```rust
+pub async fn run(&mut self) -> Result<()> {
+    let mut tui = Tui::new()?
+        // .mouse(true) // uncomment this line to enable mouse support
+        .tick_rate(self.tick_rate)
+        .frame_rate(self.frame_rate);
+    tui.enter()?;
+
+    for component in self.components.iter_mut() {
+        component.register_action_handler(self.action_tx.clone())?;
+    }
+    for component in self.components.iter_mut() {
+        component.register_config_handler(self.config.clone())?;
+    }
+    for component in self.components.iter_mut() {
+        component.init(tui.size()?)?;
+    }
+
+    let action_tx = self.action_tx.clone();
+    loop {
+        self.handle_events(&mut tui).await?;
+        self.handle_actions(&mut tui)?;
+        if self.should_suspend {
+            tui.suspend()?;
+            action_tx.send(Action::Resume)?;
+            action_tx.send(Action::ClearScreen)?;
+            // tui.mouse(true);
+            tui.enter()?;
+        } else if self.should_quit {
+            tui.stop()?;
+            break;
+        }
+    }
+    tui.exit()?;
+    Ok(())
+}
+```
+
+To handle different modes of the app, we have a `mode` field in the `App` struct. Furthermore, for
+configurable multi-key combinations, we track the event in the last tick.
+
+Full code for the `app.rs` file is:
+
+```rust
+{{#include @code/templates/components_async/src/app.rs:all}}
+```
