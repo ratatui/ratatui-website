@@ -39,6 +39,15 @@ A customizable cross-platform graphical process/system monitor for the terminal
 
 ---
 
+## [`codex`](https://github.com/openai/codex)
+
+Codex is a terminal-native coding agent that can generate, edit, and run applications directly from
+your shell.
+
+![codex demo](./apps/codex.gif)
+
+---
+
 ## [`crossword`](https://github.com/matrixfrog/crossword)
 
 Play crossword puzzles in your terminal.
