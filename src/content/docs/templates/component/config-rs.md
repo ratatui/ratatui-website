@@ -129,7 +129,7 @@ impl<'de> Deserialize<'de> for KeyBindings {
 ```
 
 Now all we need to do is implement a `parse_key_event` function.
-[You can check the source code for an example of this implementation](https://github.com/ratatui/templates/blob/main/async/template/src/config.rs#L105-L109).
+[You can check the source code for an example of this implementation](https://github.com/ratatui/templates/blob/main/component/template/src/config.rs#L150-L154).
 
 :::tip
 

@@ -33,7 +33,7 @@ cd ratatui-hello-world
 ```
 
 You can also use a
-[`template.toml`](https://github.com/ratatui/templates/blob/main/.github/workflows/template.toml)
+[`template.toml`](https://github.com/ratatui/templates/blob/main/component/.github/workflows/template.toml)
 file to skip the prompts:
 
 ```bash
