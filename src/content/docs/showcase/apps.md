@@ -117,6 +117,14 @@ A material design color palette for the terminal.
 
 ---
 
+## [`mdfried`](https://github.com/benjajaja/mdfried)
+
+Markdown viewer for the terminal that renders headers as Bigger Text than the rest.
+
+![mdfried-demo](./apps/mdfried.gif)
+
+---
+
 ## [`minesweep-rs`](https://github.com/cpcloud/minesweep-rs)
 
 A mine sweeping game written in Rust
