@@ -77,6 +77,14 @@ compared to the standard 'rm' command.
 
 ---
 
+## [`fpick`](https://github.com/igrek51/fpick)
+
+Interactive file picker
+
+![fpick demo](https://raw.githubusercontent.com/igrek51/fpick/master/docs/video/demo.gif)
+
+---
+
 ## [`fzf-make`](https://github.com/kyu08/fzf-make)
 
 A command line tool that executes make target using fuzzy finder with preview window
