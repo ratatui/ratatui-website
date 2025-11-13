@@ -70,6 +70,8 @@ dependencies on crates.io and GitHub:
 - [igrep](https://github.com/konradsz/igrep): Interactive Grep
 - [todolist-rust](https://github.com/ebubekirgungor/todolist-rust): A terminal-based simple to-do
   app
+- [intelli-shell](https://github.com/lasantosr/intelli-shell): Interactive command template manager,
+  optionally enhanced with AI
 
 ### 🎼 Music and Media
 
