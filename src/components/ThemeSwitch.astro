@@ -1,0 +1,89 @@
+---
+type Theme = "auto" | "dark" | "light";
+---
+
+<starlight-theme-toggle>
+  <button
+    type="button"
+    class="relative flex h-6 w-6 cursor-pointer items-center justify-center rounded-lg transition-colors hover:text-slate-400 focus:outline-none"
+    aria-label="Toggle theme"
+  >
+    <!-- Sun Icon -->
+    <svg
+      class="sun-icon absolute inset-0 m-auto h-5 w-5 scale-0 rotate-90 transition-all duration-300 dark:scale-100 dark:rotate-0"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
+      <path
+        stroke-linecap="round"
+        d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"
+      ></path>
+    </svg>
+
+    <!-- Moon Icon -->
+    <svg
+      class="moon-icon absolute inset-0 m-auto h-5 w-5 scale-100 rotate-0 transition-all duration-300 dark:scale-0 dark:rotate-90"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M21.64 13a1 1 0 00-1.05-.14 8.05 8.05 0 01-3.37.73 8.15 8.15 0 01-8.14-8.1 8.59 8.59 0 01.25-2A1 1 0 008 2.36a10.14 10.14 0 1014 11.69 1 1 0 00-.36-1.05zm-9.5 6.69A8.14 8.14 0 017.08 5.22v.27a10.15 10.15 0 0010.14 10.14 9.79 9.79 0 002.1-.22 8.11 8.11 0 01-7.18 4.32z"
+      ></path>
+    </svg>
+  </button>
+</starlight-theme-toggle>
+
+<script>
+  type Theme = "auto" | "dark" | "light";
+
+  const storageKey = "starlight-theme";
+
+  const parseTheme = (theme: unknown): Theme =>
+    theme === "auto" || theme === "dark" || theme === "light" ? theme : "auto";
+
+  const loadTheme = (): Theme =>
+    parseTheme(typeof localStorage !== "undefined" && localStorage.getItem(storageKey));
+
+  function storeTheme(theme: Theme): void {
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem(storageKey, theme === "light" || theme === "dark" ? theme : "");
+    }
+  }
+
+  const getPreferredColorScheme = (): Theme =>
+    matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+
+  function onThemeChange(theme: Theme): void {
+    const resolvedTheme = theme === "auto" ? getPreferredColorScheme() : theme;
+
+    if (resolvedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    document.documentElement.dataset.theme = resolvedTheme;
+    storeTheme(theme);
+  }
+
+  matchMedia(`(prefers-color-scheme: light)`).addEventListener("change", () => {
+    if (loadTheme() === "auto") onThemeChange("auto");
+  });
+
+  class StarlightThemeToggle extends HTMLElement {
+    constructor() {
+      super();
+      onThemeChange(loadTheme());
+
+      this.querySelector("button")?.addEventListener("click", () => {
+        const currentTheme = loadTheme();
+        const newTheme: Theme = currentTheme === "light" ? "dark" : "light";
+        onThemeChange(newTheme);
+      });
+    }
+  }
+  customElements.define("starlight-theme-toggle", StarlightThemeToggle);
+</script>
