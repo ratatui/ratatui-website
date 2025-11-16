@@ -15,6 +15,9 @@ import heroDark from "@assets/hero-dark.png";
 import logoTextLight from "@assets/logo-text-light.png";
 import logoTextDark from "@assets/logo-text-dark.png";
 import netflix from "@assets/netflix.png";
+import rat from "@assets/rat.png";
+import chef from "@assets/chef.png";
+import cheese from "@assets/cheese.png";
 
 import StatsDisplay from "@components/StatsDisplay.astro";
 import CompanyLogos from "@components/CompanyLogos.astro";
@@ -64,8 +67,13 @@ import HideHeader from "@components/HideHeader.astro";
           <div class="pb-5">
             <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
             <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl text-black dark:text-white">terminal user interfaces.</p>
-            <p class="text-lg max-sm:text-sm pt-5 leading-8 max-w-[600px]">Ratatui is a Rust library for building fast, lightweight, and rich terminal user interfaces 👨‍🍳🐀</p>
-          </div>
+
+            <p class="flex items-end text-lg max-sm:text-sm pt-5 leading-8 max-w-[600px]">
+              <span>Ratatui is a Rust library for building fast, lightweight, and rich terminal user interfaces</span>
+              <img class="h-8 m-0 hidden md:block" src={chef.src} />
+              <img class="h-9 m-0 pl-2 hidden md:block" src={rat.src} />
+            </p>
+           </div>
 
           <MainButtons
             primaryClass="bg-yellow-500 !text-black dark:bg-blue-700 dark:!text-white"
@@ -84,10 +92,13 @@ import HideHeader from "@components/HideHeader.astro";
 
     <div class="flex justify-center">
       <div class="max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] py-5 pt-[50px] max-xl:text-center">
-        <p class="font-bold text-2xl max-xs:mx-3 text-blue-700 dark:!text-yellow-500">
-          <span>Trusted by </span>
-          <span class="text-3xl">{`{developers}`}</span>
-          <span class="font-bold text-2xl text-black dark:text-white"> building amazing apps 🧀</span>
+        <p class="flex font-bold text-2xl max-xs:mx-3 text-blue-700 dark:!text-yellow-500">
+          <span>
+            <span>Trusted by </span>
+            <span class="text-3xl">{`{developers}`}</span>
+            <span class="font-bold text-2xl text-black dark:text-white"> building amazing apps</span>
+          </span>
+          <img class="h-8 pl-3" src={cheese.src} />
         </p>
 
         <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-900 dark:to-blue-950 py-8 px-20 max-sm:px-5">
@@ -100,7 +111,7 @@ import HideHeader from "@components/HideHeader.astro";
 
     <div class="flex justify-center">
       <div class="pt-5">
-        <ScrambleText text={`⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛`} />
+        <ScrambleText />
         <ShowcaseCards />
         <div class="flex justify-center pt-12">
           <a class="no-underline" href="/showcase/apps">
@@ -114,7 +125,7 @@ import HideHeader from "@components/HideHeader.astro";
 
     <div class="flex justify-center">
       <div class="pt-5">
-        <ScrambleText text={`⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛`} />
+        <ScrambleText />
         <TutorialVideos />
         <div class="flex justify-center pt-10">
           <a class="no-underline" href="/tutorials">
@@ -127,13 +138,13 @@ import HideHeader from "@components/HideHeader.astro";
     </div>
 
     <div class="py-8">
-        <ScrambleText text={`⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛`} />
+        <ScrambleText />
     </div>
 
     <Features />
 
     <div class="py-8">
-        <ScrambleText text={`⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛ ⬛`} />
+        <ScrambleText />
     </div>
 
     <div class="flex justify-center">
@@ -151,7 +162,7 @@ import HideHeader from "@components/HideHeader.astro";
               <SocialIcons />
             </div>
           </div>
-          <div class="pt-3 text-2xl">🐁</div>
+          <div class="pt-3 text-2xl"><img class="w-6 m-auto" src={rat.src} /></div>
         </div>
       </div>
     </div>

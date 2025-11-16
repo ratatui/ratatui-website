@@ -1,5 +1,8 @@
 ---
 import TutorialVideo from "./TutorialVideo.astro";
+import rat from "@assets/rat.png";
+import chef from "@assets/chef.png";
+import cheese from "@assets/cheese.png";
 
 const videos = [
   {
@@ -38,9 +41,13 @@ const tileData = videos.map(() => ({
 
 <div class="not-content max-2xl:mx-6">
   <h2
-    class="pt-[80px] pb-6 text-4xl font-bold text-black max-xl:text-center max-sm:pt-[50px] dark:text-white"
+    class="flex items-start pt-[80px] pb-6 text-4xl font-bold text-black max-xl:text-center max-sm:pt-[50px] dark:text-white"
   >
-    Watch and learn <span class="text-blue-700 dark:text-yellow-500">Ratatui</span> 👨‍🍳🐀
+    <span class="pr-2"
+      >Watch and learn <span class="text-blue-700 dark:text-yellow-500">Ratatui</span></span
+    >
+    <img class="h-8 m-0 hidden md:block" src={chef.src} />
+    <img class="h-8 m-0 pl-2 hidden md:block" src={rat.src} />
   </h2>
 
   <p class="max-w-[1440px] pb-12 text-lg leading-8 max-xl:text-center max-sm:text-sm">

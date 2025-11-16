@@ -1,17 +1,25 @@
 ---
+import rat from "@assets/rat.png";
+import cheese from "@assets/cheese.png";
+import square from "@assets/square.png";
+
 interface Props {
-  text: string;
   classNames: string;
 }
-
-const { text } = Astro.props;
 ---
 
 <div
   class="scramble-text py-4 text-center text-lg tracking-[0.2rem] text-slate-500 max-lg:hidden"
-  data-original={text}
+  data-original=""
+  data-rat={rat.src}
+  data-cheese={cheese.src}
+  data-square={square.src}
 >
-  {text}
+  {
+    Array.from({ length: 20 }).map(() => (
+      <img class="w-10 inline align-bottom px-2" src={square.src} alt="" />
+    ))
+  }
 </div>
 
 <style>
@@ -28,17 +36,29 @@ const { text } = Astro.props;
     private isScrambling: boolean = false;
     private isUnscrambling: boolean = false;
     private scrambleInterval: number | null = null;
-    private emojis: string[] = ["🐀", "🧀"];
+    private images: string[];
+    private squareCount: number = 20;
 
     constructor(element: HTMLElement) {
       this.element = element;
       this.originalText = element.getAttribute("data-original") || element.textContent || "";
+
+      // Read image paths from data attributes
+      const ratImg = element.getAttribute("data-rat") || "";
+      const cheeseImg = element.getAttribute("data-cheese") || "";
+      const squareImg = element.getAttribute("data-square") || "";
+      this.images = [ratImg, cheeseImg];
+
       this.init();
     }
 
     init(): void {
       this.element.addEventListener("mouseenter", () => this.scramble());
       this.element.addEventListener("mouseleave", () => this.unscramble());
+    }
+
+    private createImageTag(src: string): string {
+      return `<img class="w-10 inline align-bottom px-2" src="${src}" alt="" />`;
     }
 
     scramble(): void {
@@ -50,7 +70,6 @@ const { text } = Astro.props;
       this.isUnscrambling = false;
       this.isScrambling = true;
 
-      const chars = this.originalText.split("");
       let frame = 0;
       const maxFrames = 60;
 
@@ -63,14 +82,14 @@ const { text } = Astro.props;
           return;
         }
 
-        const scrambled = chars
-          .map((char) => {
-            if (char === " ") return " ";
-            return this.emojis[Math.floor(Math.random() * this.emojis.length)];
+        const scrambled = Array.from({ length: this.squareCount })
+          .map(() => {
+            const randomImage = this.images[Math.floor(Math.random() * this.images.length)];
+            return this.createImageTag(randomImage);
           })
           .join("");
 
-        this.element.textContent = scrambled;
+        this.element.innerHTML = scrambled;
         frame++;
 
         if (frame >= maxFrames) {
@@ -91,9 +110,9 @@ const { text } = Astro.props;
       this.isScrambling = false;
       this.isUnscrambling = true;
 
-      const chars = this.originalText.split("");
       let frame = 0;
       const maxFrames = 60;
+      const squareImg = this.element.getAttribute("data-square") || "";
 
       this.scrambleInterval = window.setInterval(() => {
         if (!this.isUnscrambling) {
@@ -104,24 +123,27 @@ const { text } = Astro.props;
           return;
         }
 
-        const scrambled = chars
-          .map((char, index) => {
+        const scrambled = Array.from({ length: this.squareCount })
+          .map((_, index) => {
             const progress = frame / maxFrames;
-            const revealThreshold = index / chars.length;
+            const revealThreshold = index / this.squareCount;
 
             if (progress > revealThreshold) {
-              return char;
+              return this.createImageTag(squareImg);
             }
 
-            return char === " " ? " " : this.emojis[Math.floor(Math.random() * this.emojis.length)];
+            const randomImage = this.images[Math.floor(Math.random() * this.images.length)];
+            return this.createImageTag(randomImage);
           })
           .join("");
 
-        this.element.textContent = scrambled;
+        this.element.innerHTML = scrambled;
         frame++;
 
         if (frame >= maxFrames) {
-          this.element.textContent = this.originalText;
+          this.element.innerHTML = Array.from({ length: this.squareCount })
+            .map(() => this.createImageTag(squareImg))
+            .join("");
           if (this.scrambleInterval !== null) {
             clearInterval(this.scrambleInterval);
             this.scrambleInterval = null;
