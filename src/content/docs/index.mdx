@@ -68,11 +68,13 @@ import HideHeader from "@components/HideHeader.astro";
             <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
             <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl text-black dark:text-white">terminal user interfaces.</p>
 
-            <p class="flex items-end text-lg max-sm:text-sm pt-5 leading-8 max-w-[600px]">
-              <span>Ratatui is a Rust library for building fast, lightweight, and rich terminal user interfaces</span>
-              <img class="h-8 m-0 hidden md:block" src={chef.src} />
-              <img class="h-9 m-0 pl-2 hidden md:block" src={rat.src} />
-            </p>
+            <div class="relative text-lg max-sm:text-sm pt-5 leading-8 max-w-[600px]">
+              <p class="p-0 m-0">Ratatui is a Rust library for building fast, lightweight, and rich terminal user interfaces</p>
+              <p class="absolute bottom-0 right-4 flex mb-1">
+                <img class="h-8 m-0 hidden md:block" src={chef.src} />
+                <img class="h-9 m-0 pl-2 hidden md:block" src={rat.src} />
+              </p>
+            </div>
            </div>
 
           <MainButtons
