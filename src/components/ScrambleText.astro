@@ -2,6 +2,7 @@
 import rat from "@assets/rat.png";
 import cheese from "@assets/cheese.png";
 import square from "@assets/square.png";
+import squareWhite from "@assets/square_white.png";
 
 interface Props {
   classNames: string;
@@ -14,12 +15,8 @@ interface Props {
   data-rat={rat.src}
   data-cheese={cheese.src}
   data-square={square.src}
+  data-square-white={squareWhite.src}
 >
-  {
-    Array.from({ length: 20 }).map(() => (
-      <img class="inline w-10 px-2 align-bottom" src={square.src} alt="" />
-    ))
-  }
 </div>
 
 <style>
@@ -38,6 +35,8 @@ interface Props {
     private scrambleInterval: number | null = null;
     private images: string[];
     private squareCount: number = 20;
+    private themeObserver: MutationObserver | null = null;
+    private pendingThemeUpdate: boolean = false;
 
     constructor(element: HTMLElement) {
       this.element = element;
@@ -46,10 +45,12 @@ interface Props {
       // Read image paths from data attributes
       const ratImg = element.getAttribute("data-rat") || "";
       const cheeseImg = element.getAttribute("data-cheese") || "";
-      const squareImg = element.getAttribute("data-square") || "";
       this.images = [ratImg, cheeseImg];
 
+      // Initialize with correct square images based on theme
+      this.initializeSquares();
       this.init();
+      this.observeThemeChanges();
     }
 
     init(): void {
@@ -57,8 +58,46 @@ interface Props {
       this.element.addEventListener("mouseleave", () => this.unscramble());
     }
 
+    private observeThemeChanges(): void {
+      this.themeObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === "attributes" && mutation.attributeName === "data-theme") {
+            if (!this.isScrambling && !this.isUnscrambling) {
+              // Update immediately if not animating
+              this.initializeSquares();
+            } else {
+              // Flag for update after animation completes
+              this.pendingThemeUpdate = true;
+            }
+          }
+        });
+      });
+
+      // Observe the documentElement for data-theme attribute changes
+      this.themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+    }
+
+    private initializeSquares(): void {
+      const squareImg = this.getCurrentSquareImage();
+      this.element.innerHTML = Array.from({ length: this.squareCount })
+        .map(() => this.createImageTag(squareImg))
+        .join("");
+      this.pendingThemeUpdate = false;
+    }
+
     private createImageTag(src: string): string {
       return `<img class="w-10 inline align-bottom px-2" src="${src}" alt="" />`;
+    }
+
+    private getCurrentSquareImage(): string {
+      const theme = document.documentElement.getAttribute("data-theme");
+      if (theme === "light") {
+        return this.element.getAttribute("data-square-white") || "";
+      }
+      return this.element.getAttribute("data-square") || "";
     }
 
     scramble(): void {
@@ -97,6 +136,12 @@ interface Props {
             clearInterval(this.scrambleInterval);
             this.scrambleInterval = null;
           }
+          this.isScrambling = false;
+
+          // Apply pending theme update if theme changed during scramble
+          if (this.pendingThemeUpdate) {
+            this.initializeSquares();
+          }
         }
       }, 1000 / 60);
     }
@@ -112,7 +157,6 @@ interface Props {
 
       let frame = 0;
       const maxFrames = 60;
-      const squareImg = this.element.getAttribute("data-square") || "";
 
       this.scrambleInterval = window.setInterval(() => {
         if (!this.isUnscrambling) {
@@ -122,6 +166,8 @@ interface Props {
           }
           return;
         }
+
+        const squareImg = this.getCurrentSquareImage();
 
         const scrambled = Array.from({ length: this.squareCount })
           .map((_, index) => {
@@ -141,15 +187,28 @@ interface Props {
         frame++;
 
         if (frame >= maxFrames) {
+          const finalSquareImg = this.getCurrentSquareImage();
           this.element.innerHTML = Array.from({ length: this.squareCount })
-            .map(() => this.createImageTag(squareImg))
+            .map(() => this.createImageTag(finalSquareImg))
             .join("");
           if (this.scrambleInterval !== null) {
             clearInterval(this.scrambleInterval);
             this.scrambleInterval = null;
           }
+          this.isUnscrambling = false;
+
+          // Apply pending theme update if theme changed during unscramble
+          if (this.pendingThemeUpdate) {
+            this.initializeSquares();
+          }
         }
       }, 1000 / 60);
+    }
+
+    disconnect(): void {
+      if (this.themeObserver) {
+        this.themeObserver.disconnect();
+      }
     }
   }
 

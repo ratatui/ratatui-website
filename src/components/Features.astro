@@ -43,12 +43,10 @@ const features: Feature[] = [
     <p class="py-4 text-4xl font-bold text-black max-md:px-6 dark:text-white">
       Cooked to perfection 🍲
     </p>
-    <div
-      class="grid auto-rows-fr grid-cols-2 gap-6 bg-gradient-to-r from-blue-600 to-blue-800 p-[80px] max-xl:p-6 max-md:grid-cols-1 dark:from-blue-900 dark:to-blue-950"
-    >
+    <div class="grid auto-rows-fr grid-cols-2 gap-6 max-md:grid-cols-1">
       {
         features.map((feature) => (
-          <div class="!m-0 h-full bg-gradient-to-r from-slate-100 to-slate-300 px-8 pb-6 max-md:p-2 dark:from-slate-900 dark:to-slate-800">
+          <div class="!m-0 h-full bg-gradient-to-r from-slate-300 to-slate-400 px-8 pb-6 max-md:p-2 dark:from-blue-950 dark:to-slate-800">
             <div class="flex items-end gap-4">
               <a class="pt-8 max-md:pt-2" href={feature.url}>
                 <h3 class="bracket-btn text-xl font-bold max-md:text-sm">

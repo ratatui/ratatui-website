@@ -38,7 +38,7 @@ const data = [
 ];
 ---
 
-<div class="landing-mono flex flex-wrap gap-5 pt-5 text-base text-white">
+<div class="landing-mono flex flex-wrap gap-5 pt-5 text-base">
   {
     data.map((datum) => (
       <a
@@ -50,7 +50,9 @@ const data = [
         <span class="bg-slate-100 p-2 text-xl text-black max-sm:text-sm dark:bg-slate-900 dark:text-white">
           {datum.value}
         </span>
-        <span class="max-xs:text-xs px-2 text-white max-sm:text-sm">{datum.description}</span>
+        <span class="max-xs:text-xs px-2 text-black max-sm:text-sm dark:text-white">
+          {datum.description}
+        </span>
       </a>
     ))
   }

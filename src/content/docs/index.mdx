@@ -30,8 +30,9 @@ import ShowcaseCards from "@components/ShowcaseCards.astro";
 import TutorialVideos from "@components/TutorialVideos.astro";
 import MainButtons from "@components/MainButtons.astro";
 import HideHeader from "@components/HideHeader.astro";
+import ThemeSwitch from "@components/ThemeSwitch.astro";
 
-<div class="flex justify-center landing-mono">
+<div class="flex justify-center landing-mono pt-3 dark:pt-0">
   <div>
     <h1>Ratatui</h1>
     <RandomDots
@@ -52,14 +53,14 @@ import HideHeader from "@components/HideHeader.astro";
           <div class="flex max-sm:flex-wrap max-sm:justify-center items-end pb-10">
             <div class="w-[150px] max-2xl:w-[100px] max-sm:w-[150px]">
               <a class="no-underline" href="https://github.com/ratatui/ratatui/">
-                <img src={heroLight.src} alt="Ratatui Logo" class="dark:hidden" />
+                <img src={heroLight.src} alt="Ratatui Logo" class="block dark:hidden" />
                 <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
               </a>
             </div>
             <div>
               <a class="no-underline" href="https://github.com/ratatui/ratatui/">
-                <img src={logoTextLight.src} class="max-h-[100px] max-2xl:max-h-[80px] dark:hidden" />
-                <img src={logoTextDark.src} class="max-h-[100px] max-2xl:max-h-[80px] !hidden dark:!block" />
+                <img src={logoTextLight.src} class="max-h-[100px] max-2xl:max-h-[80px] block dark:hidden" />
+                <img src={logoTextDark.src} class="max-h-[100px] max-2xl:max-h-[80px] hidden dark:block" />
               </a>
             </div>
           </div>
@@ -86,6 +87,7 @@ import HideHeader from "@components/HideHeader.astro";
         <div class="grid justify-items-end max-md:justify-items-center">
           <div class="flex flex-row items-center gap-3">
             <SocialIcons />
+            <ThemeSwitch />
           </div>
           <ScrambleCode />
         </div>
@@ -103,8 +105,8 @@ import HideHeader from "@components/HideHeader.astro";
           <img class="h-8 pl-3 hidden min-md:block" src={cheese.src} />
         </p>
 
-        <div class="bg-gradient-to-r from-blue-500 to-blue-700 dark:from-blue-900 dark:to-blue-950 py-8 px-20 max-sm:px-5">
-          <span class="font-bold text-lg max-sm:text-sm text-white">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</span>
+        <div class="bg-gradient-to-r from-slate-400 to-slate-300 dark:from-blue-950 dark:to-slate-800 py-8 px-10 max-sm:px-5">
+          <span class="font-bold text-lg max-sm:text-sm text-black dark:text-white">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</span>
           <StatsDisplay />
           <CompanyLogos />
         </div>
@@ -152,7 +154,7 @@ import HideHeader from "@components/HideHeader.astro";
     </div>
 
     <div class="flex justify-center">
-      <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-b from-blue-800 to-blue-200 dark:from-slate-950 dark:to-slate-950 mb-[-65px]">
+      <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-b from-slate-500 to-slate-300 dark:from-slate-950 dark:to-slate-950 mb-[-65px]">
         <div class="py-10">
           <h2 class="!text-6xl max-md:!text-3xl max-2xl:px-5 pb-10 !text-white">Ready to start <span class="text-yellow-500">cooking?</span></h2>
           <p class="text-xl max-md:text-sm pb-5 max-2xl:px-5 text-white">Join thousands of <span class="dark:text-yellow-500">{`{rats}`}</span> cooking up the next generation of terminal applications.</p>
@@ -162,8 +164,9 @@ import HideHeader from "@components/HideHeader.astro";
             secondaryClass="!text-black bg-white"
           />
           <div class="flex justify-center w-full mt-10">
-            <div class="flex justify-center gap-5 p-2 px-6">
+            <div class="flex justify-center items-center gap-5 p-2 px-6">
               <SocialIcons />
+              <ThemeSwitch />
             </div>
           </div>
           <div class="pt-3 text-2xl"><img class="w-6 m-auto" src={rat.src} /></div>
