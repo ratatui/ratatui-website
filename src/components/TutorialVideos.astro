@@ -55,7 +55,7 @@ const tileData = videos.map(() => ({
           class={`gallery-item grid h-[500px] min-w-[300px] max-sm:h-[350px] ${
             tileData[index].colSpan === 1
               ? "grid-rows-[1fr_4fr] max-sm:grid-rows-[1fr_8fr]"
-              : "grid-cols-[1fr_3fr] max-sm:grid-cols-none"
+              : "grid-cols-[1fr_3fr] max-sm:grid-cols-none max-sm:grid-rows-[1fr_8fr]"
           }`}
           data-col-span={tileData[index].colSpan}
         >
