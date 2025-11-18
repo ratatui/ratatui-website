@@ -29,7 +29,7 @@ To make the code work as expected across all platforms, you can do this instead:
 
 `ratatui` isn't a native `async` library. So is it beneficial to use `tokio` or `async`/`await`?
 
-As a user of `rataui`, there really is only one point of interface with the `ratatui` library and
+As a user of `ratatui`, there really is only one point of interface with the `ratatui` library and
 that's the `terminal.draw(|f| ui(f))` functionality (the creation of widgets provided by `ratatui`
 typically happens in `ui(f)`). Everything else in your code is your own to do as you wish.
 
