@@ -32,6 +32,7 @@
     "hastscript": "^9.0.0",
     "marked": "^15.0.4",
     "rehype-mermaid": "3.0.0",
+    "remark-custom-heading-id": "^2.0.0",
     "remark-svgbob": "^1.1.1",
     "sharp": "^0.33.5",
     "starlight-links-validator": "0.14.1",
