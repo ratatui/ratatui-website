@@ -96,18 +96,25 @@ export default defineConfig({
               link: "/tutorials/",
             },
             {
-              label: "Hello Ratatui",
-              link: "/tutorials/hello-ratatui/",
-            },
-            {
-              label: "Counter App",
+              label: 'A Bookesque Tutorial for Ratatui',
               collapsed: true,
               autogenerate: {
-                directory: "tutorials/counter-app",
+                directory: 'tutorials/bookesque',
               },
             },
             {
-              label: "JSON Editor",
+              label: 'Hello Ratatui',
+              link: '/tutorials/hello-ratatui/',
+            },
+            {
+              label: 'Counter App',
+              collapsed: true,
+              autogenerate: {
+                directory: 'tutorials/counter-app',
+              },
+            },
+            {
+              label: 'JSON Editor',
               collapsed: true,
               autogenerate: {
                 directory: "tutorials/json-editor",
