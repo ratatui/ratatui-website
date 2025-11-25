@@ -11,7 +11,7 @@ to building your first TUI. In essence, there are three broad parts of a Ratatui
 3. State Management (Making your app dynamic)
 
 For all these options, Ratatui is incredibly flexible, allowing you to employ multiple approaches to
-tackle these parts. But let's not get ahead of ourselves. The rabbit hole of architectures and
+tackle these parts. But let's not get ahead of ourselves. The rat hole of architectures and
 approaches is deep, and we'll explore it later on in this series, but to do that, we need to know
 how a Ratatui TUI runs.
 
