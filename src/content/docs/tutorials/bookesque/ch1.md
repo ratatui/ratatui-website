@@ -109,7 +109,7 @@ state.
 :::note
 
 To make life much easier, we'll use `color-eyre` for a general error type, so that we can use error
-propagation to reduce boilerplate. Simply run
+propagation to reduce boilerplate. Simply run:
 
 ```bash
 cargo add color-eyre
