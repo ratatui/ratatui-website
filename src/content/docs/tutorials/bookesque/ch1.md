@@ -84,7 +84,7 @@ Under the hood, the `init()` function does the following:
    operating system's terminal driver disables all special processing of input and output, passing
    data directly to the application as it is typed. This allows for Ratatui to precisely render
    content to the terminal, without interference, and for proper event capture.
-3. Enters the _Alternate screen_. The alternate screen is a separate buffer that some terminals
+3. Enters the _Alternate Screen_. The alternate screen is a separate buffer that some terminals
    provide, distinct from the main screen. When activated, the terminal will display the alternate
    screen, hiding the current content of the main screen. Applications can write to this screen as
    if it were the regular terminal display, but when the application exits, the terminal will switch
