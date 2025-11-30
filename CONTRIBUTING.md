@@ -6,8 +6,8 @@ This repo contains the Astro/Starlight site plus a Rust workspace with the code 
 
 ## Setup
 
-- Node 22.x, NPM, and Git LFS.
-- Rust (MSRV 1.74) (only if you change anything in [code/](code/)).
+- Node 24.x (lts), NPM, and Git LFS.
+- Rust (MSRV 1.86) (only if you change anything in [code/](code/)).
 
 ```sh
 git clone https://github.com/ratatui/ratatui-website
