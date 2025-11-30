@@ -19,6 +19,7 @@ npm install && npm run dev
 ## Commands
 
 - Website (Astro/Starlight): 
+  - `npm run dev` for viewing locally
   - `npm run format`
   - `npm run astro check`
   - `npm run build` (runs `astro check`)
