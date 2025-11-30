@@ -49,7 +49,7 @@ how a Ratatui TUI runs.
 
 ## App Flow
 
-The Application flow can be separated into a startup (done using `ratatui::init()`), an application
+The application flow can be separated into a startup (done using `ratatui::init()`), an application
 loop consisting of event handling and rendering, and a cleanup to restore the user's terminal back
 to its original state (done using `ratatui::restore`). The startup and cleanup are relatively
 simple, so we'll start with those first.
