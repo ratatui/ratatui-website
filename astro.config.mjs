@@ -96,6 +96,13 @@ export default defineConfig({
               link: "/tutorials/",
             },
             {
+              label: "A Bookesque Tutorial for Ratatui",
+              collapsed: true,
+              autogenerate: {
+                directory: "tutorials/bookesque",
+              },
+            },
+            {
               label: "Hello Ratatui",
               link: "/tutorials/hello-ratatui/",
             },
