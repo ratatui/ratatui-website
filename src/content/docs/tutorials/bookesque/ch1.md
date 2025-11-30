@@ -67,10 +67,10 @@ let terminal = ratatui::init();
 
 Under the hood, the `init()` function does the following:
 
-1. Sets the panic hook. A _panic hook_ is a custom function that is run automatically when a thread
-   panics, before the default panic handler takes over. In Ratatui, we use it to restore the user's
-   terminal incase the application panics, so the user's terminal isn't left unusable due to our
-   application crashing.
+1. Sets the panic hook. A [_panic hook_](http://localhost:4321/recipes/apps/panic-hooks/) is a
+   custom function that is run automatically when a thread panics, before the default panic handler
+   takes over. In Ratatui, we use it to restore the user's terminal incase the application panics,
+   so the user's terminal isn't left unusable due to our application crashing.
    ```rust
     fn set_panic_hook() {
         let hook = std::panic::take_hook();
@@ -84,11 +84,12 @@ Under the hood, the `init()` function does the following:
    operating system's terminal driver disables all special processing of input and output, passing
    data directly to the application as it is typed. This allows for Ratatui to precisely render
    content to the terminal, without interference, and for proper event capture.
-3. Enters the _Alternate Screen_. The alternate screen is a separate buffer that some terminals
-   provide, distinct from the main screen. When activated, the terminal will display the alternate
-   screen, hiding the current content of the main screen. Applications can write to this screen as
-   if it were the regular terminal display, but when the application exits, the terminal will switch
-   back to the main screen, and the contents of the alternate screen will be cleared. See
+3. Enters the [_Alternate Screen_](https://ratatui.rs/concepts/backends/alternate-screen/). The
+   alternate screen is a separate buffer that some terminals provide, distinct from the main screen.
+   When activated, the terminal will display the alternate screen, hiding the current content of the
+   main screen. Applications can write to this screen as if it were the regular terminal display,
+   but when the application exits, the terminal will switch back to the main screen, and the
+   contents of the alternate screen will be cleared. See
    [this page](https://ratatui.rs/concepts/backends/alternate-screen/##_top) on Alternate screens
    for more information. And that's it for the startup!
 
@@ -266,7 +267,10 @@ And, just like that, you've created your first Ratatui application.
 
 1. https://ratatui.rs/concepts/widgets/
 2. https://ratatui.rs/concepts/event-handling/
-3. https://refactoring.guru/design-patterns/singleton/rust/example and
+3. http://localhost:4321/recipes/apps/panic-hooks/
+4. http://localhost:4321/recipes/apps/better-panic/
+5. http://localhost:4321/recipes/apps/color-eyre/
+6. https://refactoring.guru/design-patterns/singleton/rust/example and
    https://en.wikipedia.org/wiki/Singleton_pattern A (pseudo) Singleton pattern is the predominant
    way for storing state in Ratatui. I call it a pseudo-Singleton pattern because a _true_ singleton
    is only possible with unsafe (see the first link).
