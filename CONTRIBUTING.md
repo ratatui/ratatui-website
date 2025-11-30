@@ -26,6 +26,7 @@ npm install && npm run dev
   - `npm test`
 
 - Code examples:
+  - All snippets should live in `code/`, included using `{{ #include @code/... }}`
   - `cargo fmt --all --check`
   - `cargo clippy --all-targets -- -D warnings`
   - `cargo test`
