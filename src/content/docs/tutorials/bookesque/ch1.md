@@ -185,7 +185,7 @@ use the `Line` and `Paragraph` widgets.
 
 :::
 
-Now that we know (in very brief), what Widgets are, we can start writing them.
+Now that we know (in very brief), what widgets are, we can start using them.
 
 ```rust
 terminal.draw(|frame| {
