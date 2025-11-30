@@ -6,24 +6,28 @@ This repo contains the Astro/Starlight site plus a Rust workspace with the code 
 
 ## Setup
 
-- Node 24.x (lts), NPM, and Git LFS.
+- Node 24.x (lts), pnpm (recommended) or npm, and Git LFS.
 - Rust (MSRV 1.86) (only if you change anything in [code/](code/)).
 
 ```sh
 git clone https://github.com/ratatui/ratatui-website
 cd ratatui-website
 git lfs install && git lfs pull
-npm install && npm run dev
+pnpm install && pnpm dev
+# or: npm install && npm run dev
 ```
+
+> [!NOTE] 
+> `npm install` (and `pnpm install`) triggers Playwright's browser download; you can skip the heavy Chromium bundle by hitting Ctrl+C once that download starts if you do not plan to run the end-to-end tests.
 
 ## Commands
 
 - Website (Astro/Starlight): 
-  - `npm run dev` for viewing locally
-  - `npm run format`
-  - `npm run astro check`
-  - `npm run build` (runs `astro check`)
-  - `npm test`
+  - `pnpm dev` or `npm run dev` for viewing locally
+  - Format: `pnpm format` / `npm run format -- --write` (write) or `npm run format -- --check` (note the double `--`)
+  - Type-check: `pnpm astro check` or `npm run astro check`
+  - Build: `pnpm build` or `npm run build` (runs `astro check`)
+  - Tests: `pnpm test` or `npm test`
 
 - Code examples:
   - All snippets should live in `code/`, included using `{{ #include @code/... }}`
