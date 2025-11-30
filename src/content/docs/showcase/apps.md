@@ -267,3 +267,15 @@ It is an alternative tool to AKHQ, Redpanda Console, or the Kafka plugin for Jet
 includes a search query language inspired by SQL, providing fine-grained filtering capabilities.
 
 ![yozefu demo](https://vhs.charm.sh/vhs-UpIJD2h92vKkj01XSS0r0.gif)
+
+---
+
+## [`intelli-shell`](https://github.com/lasantosr/intelli-shell)
+
+IntelliShell is a command-line tool that acts as a smart bookmark manager. It helps you find,
+organize, and reuse complex shell commands without ever leaving your terminal.
+
+A key feature is the flexible interface, which supports both a non-intrusive (inline) and an
+immersive (full-screen) TUI.
+
+![intelli-shell demo](https://github.com/lasantosr/intelli-shell/raw/HEAD/docs/src/images/demo.gif)
