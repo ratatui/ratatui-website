@@ -267,9 +267,9 @@ And, just like that, you've created your first Ratatui application.
 
 1. https://ratatui.rs/concepts/widgets/
 2. https://ratatui.rs/concepts/event-handling/
-3. http://localhost:4321/recipes/apps/panic-hooks/
-4. http://localhost:4321/recipes/apps/better-panic/
-5. http://localhost:4321/recipes/apps/color-eyre/
+3. https://ratatui.rs/recipes/apps/panic-hooks/
+4. https://ratatui.rs/recipes/apps/better-panic/
+5. https://ratatui.rs/recipes/apps/color-eyre/
 6. https://refactoring.guru/design-patterns/singleton/rust/example and
    https://en.wikipedia.org/wiki/Singleton_pattern A (pseudo) Singleton pattern is the predominant
    way for storing state in Ratatui. I call it a pseudo-Singleton pattern because a _true_ singleton
