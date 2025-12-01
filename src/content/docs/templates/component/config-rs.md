@@ -72,24 +72,29 @@ use serde_derive::Deserialize;
 
 use crate::action::Action;
 
+#[derive(Clone, Debug, Deserialize, Default)]
+pub struct AppConfig {
+    #[serde(default)]
+    pub data_dir: PathBuf,
+    #[serde(default)]
+    pub config_dir: PathBuf,
+}
+
+#[derive(Clone, Debug, Default, Deref, DerefMut)]
+pub struct KeyBindings(pub HashMap<Mode, HashMap<Vec<KeyEvent>, Action>>);
+
 #[derive(Clone, Debug, Default, Deserialize)]
 pub struct Config {
-  #[serde(default)]
-  pub keymap: KeyMap,
-}
-
-#[derive(Clone, Debug, Default, Deserialize)]
-pub struct KeyMap(pub HashMap<KeyEvent, Action>);
-
-impl Config {
-  pub fn new() -> Result<Self, config::ConfigError> {
-    let mut builder = config::Config::builder();
-    builder = builder
-      .add_source(config::File::from(config_dir.join("config.toml")).format(config::FileFormat::Toml).required(false));
-    builder.build()?.try_deserialize()
-  }
+    #[serde(default, flatten)]
+    pub config: AppConfig,
+    #[serde(default)]
+    pub keybindings: KeyBindings,
+    #[serde(default)]
+    pub styles: Styles,
 }
 ```
+
+## Key Bindings and Styles
 
 We are using `serde` to deserialize from a TOML file.
 
@@ -97,59 +102,34 @@ Now the default `KeyEvent` serialized format is not very user friendly, so let's
 version:
 
 ```rust
-#[derive(Clone, Debug, Default)]
-pub struct KeyMap(pub HashMap<KeyEvent, Action>);
+#[derive(Clone, Debug, Default, Deref, DerefMut)]
+pub struct KeyBindings(pub HashMap<Mode, HashMap<Vec<KeyEvent>, Action>>);
 
-impl<'de> Deserialize<'de> for KeyMap {
-  fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where D: Deserializer<'de>,
-  {
-    struct KeyMapVisitor;
-    impl<'de> Visitor<'de> for KeyMapVisitor {
-      type Value = KeyMap;
-      fn visit_map<M>(self, mut access: M) -> Result<KeyMap, M::Error>
-      where
-        M: MapAccess<'de>,
-      {
-        let mut keymap = HashMap::new();
-        while let Some((key_str, action)) = access.next_entry::<String, Action>()? {
-          let key_event = parse_key_event(&key_str).map_err(de::Error::custom)?;
-          keymap.insert(key_event, action);
-        }
-        Ok(KeyMap(keymap))
-      }
+impl<'de> Deserialize<'de> for KeyBindings {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let parsed_map = HashMap::<Mode, HashMap<String, Action>>::deserialize(deserializer)?;
+
+        let keybindings = parsed_map
+            .into_iter()
+            .map(|(mode, inner_map)| {
+                let converted_inner_map = inner_map
+                    .into_iter()
+                    .map(|(key_str, cmd)| (parse_key_sequence(&key_str).unwrap(), cmd))
+                    .collect();
+                (mode, converted_inner_map)
+            })
+            .collect();
+
+        Ok(KeyBindings(keybindings))
     }
-    deserializer.deserialize_map(KeyMapVisitor)
-  }
 }
 ```
 
 Now all we need to do is implement a `parse_key_event` function.
-[You can check the source code for an example of this implementation](https://github.com/ratatui/templates/blob/main/async/template/src/config.rs#L105-L109).
-
-With that implementation complete, we can add a `HashMap` to store a map of `KeyEvent`s and `Action`
-in the `Home` component:
-
-```rust {filename="components/home.rs"}
-#[derive(Default)]
-pub struct Home {
-  ...
-  pub keymap: HashMap<KeyEvent, Action>,
-}
-```
-
-Now we have to create an instance of `Config` and pass the keymap to `Home`:
-
-```rust
-impl App {
-  pub fn new(tick_rate: (u64, u64)) -> Result<Self> {
-    let h = Home::new();
-    let config = Config::new()?;
-    let h = h.keymap(config.keymap.0.clone());
-    let home = Arc::new(Mutex::new(h));
-    Ok(Self { tick_rate, home, should_quit: false, should_suspend: false, config })
-  }
-}
-```
+[You can check the source code for an example of this implementation](https://github.com/ratatui/templates/blob/main/component/template/src/config.rs#L150-L154).
 
 :::tip
 
@@ -162,28 +142,31 @@ And in the `handle_key_events` we get the `Action` that should to be performed f
 directly.
 
 ```rust
-impl Component for Home {
-  fn handle_key_events(&mut self, key: KeyEvent) -> Action {
-    match self.mode {
-      Mode::Normal | Mode::Processing => {
-        if let Some(action) = self.keymap.get(&key) {
-          *action
-        } else {
-          Action::Tick
+impl App {
+    fn handle_key_event(&mut self, key: KeyEvent) -> Result<()> {
+        let action_tx = self.action_tx.clone();
+        let Some(keymap) = self.config.keybindings.get(&self.mode) else {
+            return Ok(());
+        };
+        match keymap.get(&vec![key]) {
+            Some(action) => {
+                info!("Got action: {action:?}");
+                action_tx.send(action.clone())?;
+            }
+            _ => {
+                // If the key was not handled as a single key action,
+                // then consider it for multi-key combinations.
+                self.last_tick_key_events.push(key);
+
+                // Check for multi-key combinations
+                if let Some(action) = keymap.get(&self.last_tick_key_events) {
+                    info!("Got action: {action:?}");
+                    action_tx.send(action.clone())?;
+                }
+            }
         }
-      },
-      Mode::Insert => {
-        match key.code {
-          KeyCode::Esc => Action::EnterNormal,
-          KeyCode::Enter => Action::EnterNormal,
-          _ => {
-            self.input.handle_event(&crossterm::event::Event::Key(key));
-            Action::Update
-          },
-        }
-      },
+        Ok(())
     }
-  }
 }
 ```
 
@@ -193,60 +176,95 @@ map for example:
 - `<g><j>` to `Action::GotoBottom`
 - `<g><k>` to `Action::GotoTop`
 
-:::note
-
-Remember, if you add a new `Action` variant you also have to update the `deserialize` method
-accordingly.
-
-:::
-
-And because we are now using multiple keys as input, you have to update the `app.rs` main loop
-accordingly to handle that:
-
-```rust
-    // -- snip --
-    loop {
-      if let Some(e) = tui.next().await {
-        match e {
-          // -- snip --
-          tui::Event::Key(key) => {
-            if let Some(keymap) = self.config.keybindings.get(&self.mode) {
-              // If the key is a single key action
-              if let Some(action) = keymap.get(&vec![key.clone()]) {
-                log::info!("Got action: {action:?}");
-                action_tx.send(action.clone())?;
-              } else {
-                // If the key was not handled as a single key action,
-                // then consider it for multi-key combinations.
-                self.last_tick_key_events.push(key);
-
-                // Check for multi-key combinations
-                if let Some(action) = keymap.get(&self.last_tick_key_events) {
-                  log::info!("Got action: {action:?}");
-                  action_tx.send(action.clone())?;
-                }
-              }
-            };
-          },
-          _ => {},
-        }
-        // -- snip --
-      }
-      while let Ok(action) = action_rx.try_recv() {
-        // -- snip --
-        for component in self.components.iter_mut() {
-          if let Some(action) = component.update(action.clone())? {
-            action_tx.send(action)?
-          };
-        }
-      }
-      // -- snip --
-    }
-    // -- snip --
-```
-
-Here's the JSON configuration we use for the counter application:
+Here's the JSON configuration we use for the template:
 
 ```json
 {{#include @code/templates/async-template-counter/.config/config.json5}}
+```
+
+Similarly, we have a `Styles` struct that parses custom styles from a config file.
+
+```rust
+#[derive(Clone, Debug, Default, Deref, DerefMut)]
+pub struct Styles(pub HashMap<Mode, HashMap<String, Style>>);
+
+impl<'de> Deserialize<'de> for Styles {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let parsed_map = HashMap::<Mode, HashMap<String, String>>::deserialize(deserializer)?;
+
+        let styles = parsed_map
+            .into_iter()
+            .map(|(mode, inner_map)| {
+                let converted_inner_map = inner_map
+                    .into_iter()
+                    .map(|(str, style)| (str, parse_style(&style)))
+                    .collect();
+                (mode, converted_inner_map)
+            })
+            .collect();
+
+        Ok(Styles(styles))
+    }
+}
+```
+
+There are some helper functions in the `config.rs` file that you can use to parse the styles and
+keybinds.
+
+## XDG Directories
+
+The template has two main directories that are used for storing configuration files and data files.
+
+Using the directories crate, we can get the XDG directories for the current user. This allows us to
+store the configuration and data files in a platform-agnostic way.
+
+```rust
+lazy_static! {
+    pub static ref PROJECT_NAME: String = env!("CARGO_CRATE_NAME").to_uppercase().to_string();
+    pub static ref DATA_FOLDER: Option<PathBuf> =
+        env::var(format!("{}_DATA", PROJECT_NAME.clone()))
+            .ok()
+            .map(PathBuf::from);
+    pub static ref CONFIG_FOLDER: Option<PathBuf> =
+        env::var(format!("{}_CONFIG", PROJECT_NAME.clone()))
+            .ok()
+            .map(PathBuf::from);
+}
+
+// -- snip --
+pub fn get_data_dir() -> PathBuf {
+    let directory = if let Some(s) = DATA_FOLDER.clone() {
+        s
+    } else if let Some(proj_dirs) = project_directory() {
+        proj_dirs.data_local_dir().to_path_buf()
+    } else {
+        PathBuf::from(".").join(".data")
+    };
+    directory
+}
+
+pub fn get_config_dir() -> PathBuf {
+    let directory = if let Some(s) = CONFIG_FOLDER.clone() {
+        s
+    } else if let Some(proj_dirs) = project_directory() {
+        proj_dirs.config_local_dir().to_path_buf()
+    } else {
+        PathBuf::from(".").join(".config")
+    };
+    directory
+}
+
+fn project_directory() -> Option<ProjectDirs> {
+    ProjectDirs::from("com", "kdheepak", env!("CARGO_PKG_NAME")) // Replace kdheepak with your name/project name.
+}
+
+```
+
+## Final Code
+
+```rust
+{{#include @code/templates/components_async/src/config.rs:all}}
 ```

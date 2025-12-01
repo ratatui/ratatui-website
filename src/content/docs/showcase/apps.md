@@ -39,6 +39,15 @@ A customizable cross-platform graphical process/system monitor for the terminal
 
 ---
 
+## [`codex`](https://github.com/openai/codex)
+
+Codex is a terminal-native coding agent that can generate, edit, and run applications directly from
+your shell.
+
+![codex demo](./apps/codex.gif)
+
+---
+
 ## [`crossword`](https://github.com/matrixfrog/crossword)
 
 Play crossword puzzles in your terminal.
@@ -105,6 +114,14 @@ Ranger-like terminal file manager written in Rust
 A material design color palette for the terminal.
 
 ![material demo](https://i.ibb.co/2MDKmh7/Screenshot-2022-08-02-at-16-43-12.png)
+
+---
+
+## [`mdfried`](https://github.com/benjajaja/mdfried)
+
+Markdown viewer for the terminal that renders headers as Bigger Text than the rest.
+
+![mdfried-demo](./apps/mdfried.gif)
 
 ---
 
