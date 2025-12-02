@@ -46,12 +46,14 @@ const features: Feature[] = [
     <div class="grid auto-rows-fr grid-cols-2 gap-6 max-md:grid-cols-1">
       {
         features.map((feature) => (
-          <div class="!m-0 h-full bg-gradient-to-r from-slate-300 to-slate-400 px-8 pb-6 max-md:p-2 dark:from-blue-950 dark:to-slate-800">
-            <div class="flex items-end gap-4">
+          <div class="!m-0 h-full bg-gradient-to-br from-slate-300 to-slate-400 px-8 pb-6 max-md:p-2 dark:from-blue-950 dark:to-slate-950">
+            <div class="flex items-end">
               <a class="pt-8 max-md:pt-2" href={feature.url}>
                 <h3 class="bracket-btn text-xl font-bold max-md:text-sm">
                   <span class="text-2xl max-md:text-base">{feature.icon}</span>
-                  {feature.title}
+                  <span class="bracket-btn">
+                    <span class="bracket left">[</span>{feature.title}<span class="bracket right">]</span>
+                  </span>
                 </h3>
               </a>
             </div>

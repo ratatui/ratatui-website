@@ -144,7 +144,8 @@ main .content-panel:first-child:not(:has(*)) {
 
 /* Landing page font */
 .landing-mono {
-  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
 }
 
 /* Landing page text blinking cursor animation */
@@ -198,13 +199,33 @@ main .content-panel:first-child:not(:has(*)) {
   }
 }
 
-/* Button on hover bracket effect */
+/* On hover bracket */
 .bracket-btn {
+  position: relative;
+  display: inline-block;
+}
+
+.bracket {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: var(--color-basic);
+}
+
+.bracket.left {
+  margin-left: -1ch;
+}
+
+.bracket-btn:hover .bracket {
+  opacity: 1;
+}
+
+/* On hover bracket effect */
+.bracket-effect {
   position: relative;
 }
 
-.bracket-btn::before,
-.bracket-btn::after {
+.bracket-effect::before,
+.bracket-effect::after {
   content: "";
   position: absolute;
   top: -8px;
@@ -214,21 +235,21 @@ main .content-panel:first-child:not(:has(*)) {
   transition: opacity 0.3s ease;
 }
 
-.bracket-btn::before {
+.bracket-effect::before {
   left: -8px;
   border-left: 3px solid var(--color-basic);
   border-top: 3px solid var(--color-basic);
   border-bottom: 3px solid var(--color-basic);
 }
 
-.bracket-btn::after {
+.bracket-effect::after {
   right: -7px;
   border-right: 3px solid var(--color-basic);
   border-top: 3px solid var(--color-basic);
   border-bottom: 3px solid var(--color-basic);
 }
 
-.bracket-btn:hover::before,
-.bracket-btn:hover::after {
+.bracket-effect:hover::before,
+.bracket-effect:hover::after {
   opacity: 1;
 }
