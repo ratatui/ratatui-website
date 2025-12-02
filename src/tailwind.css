@@ -144,8 +144,7 @@ main .content-panel:first-child:not(:has(*)) {
 
 /* Landing page font */
 .landing-mono {
-  font-family:
-    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
 }
 
 /* Landing page text blinking cursor animation */
