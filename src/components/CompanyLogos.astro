@@ -87,18 +87,15 @@ const logos = [
     <b>Powering industry leaders:</b>
   </p>
   <div
-    class="justify-left ml-[-12px] flex flex-wrap items-center gap-8 max-lg:justify-center max-sm:gap-3"
+    class="m-0 p-0 justify-left ml-[-12px] flex flex-wrap items-center gap-8 max-lg:justify-center max-sm:gap-3"
   >
     {
       logos.map((logo) => (
-        <a key={logo.aria} class="no-underline" href="" target="_blank" aria-label={logo.aria}>
-          <img
-            src={logo.lightMode.src}
-            className={`${logo.class} w-auto object-contain dark:hidden`}
-          />
+        <a class="no-underline" href="" target="_blank" aria-label={logo.aria}>
+          <img src={logo.lightMode.src} class={`${logo.class} w-auto object-contain dark:hidden`} />
           <img
             src={logo.darkMode.src}
-            className={`${logo.class} hidden w-auto object-contain dark:block`}
+            class={`${logo.class} hidden w-auto object-contain dark:block`}
           />
         </a>
       ))
