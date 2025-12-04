@@ -130,6 +130,11 @@ const highlightedHtml = await codeToHtml(code, {
   }
 
   .scramble-container,
+  .highlighted-code :global(pre) {
+    border: none;
+  }
+
+  .scramble-container,
   .highlighted-code {
     position: absolute;
     top: 0;
