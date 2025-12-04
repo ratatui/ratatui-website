@@ -21,63 +21,63 @@ const logos = [
     lightMode: netflix,
     href: "https://github.com/Netflix/bpftop",
     aria: "Netflix",
-    class: "h-[50px] max-sm:h-[25px]",
+    class: "h-[50px] max-xl:h-[40px] max-sm:h-[25px]",
   },
   {
     darkMode: openai_white,
     lightMode: openai_black,
     href: "https://github.com/openai/codex",
     aria: "OpenAI",
-    class: "h-[55px] max-sm:h-[30px]",
+    class: "h-[55px] max-xl:h-[40px] max-sm:h-[30px]",
   },
   {
     darkMode: ovhcloud,
     lightMode: ovhcloud,
     href: "https://github.com/ovh/shai",
     aria: "OVH Cloud",
-    class: "h-[35px] max-sm:h-[20px]",
+    class: "h-[35px] max-xl:h-[30px] max-sm:h-[20px]",
   },
   {
     darkMode: oxide_white,
     lightMode: oxide_black,
     href: "https://github.com/oxidecomputer/omicron",
     aria: "Oxide",
-    class: "h-[40px] max-sm:h-[25px]",
+    class: "h-[40px] max-xl:h-[35px] max-sm:h-[25px]",
   },
   {
     darkMode: aws_white,
     lightMode: aws_black,
     href: "https://github.com/aws/amazon-q-developer-cli",
     aria: "AWS",
-    class: "h-[23px] max-sm:h-[15px] mt-1 dark:mt-5",
-  },
-  {
-    darkMode: vercel_white,
-    lightMode: vercel_black,
-    href: "https://github.com/vercel/turborepo",
-    aria: "Vercel",
-    class: "h-[20px] max-sm:h-[10px] pl-2",
-  },
-  {
-    darkMode: hugging_face_white,
-    lightMode: hugging_face_black,
-    href: "https://github.com/huggingface/text-generation-inference",
-    aria: "Hugging Face",
-    class: "h-[35px] max-sm:h-[25px] pl-2",
-  },
-  {
-    darkMode: gitbutler_white,
-    lightMode: gitbutler_black,
-    href: "https://github.com/gitbutlerapp/gitbutler",
-    aria: "Git Butler",
-    class: "h-[30px] max-sm:h-[18px]",
+    class: "h-[23px] max-xl:h-[18px] max-sm:h-[15px] mt-1 dark:mt-5",
   },
   {
     darkMode: electronic_arts,
     lightMode: electronic_arts,
     href: "https://github.com/electronicarts/helmci",
     aria: "Electronic Arts",
-    class: "h-[30px] max-sm:h-[20px] ml-2",
+    class: "h-[30px] max-xl:h-[25px] max-sm:h-[20px] ml-2",
+  },
+  {
+    darkMode: vercel_white,
+    lightMode: vercel_black,
+    href: "https://github.com/vercel/turborepo",
+    aria: "Vercel",
+    class: "h-[20px] max-xl:h-[15px] max-sm:h-[10px] pl-2",
+  },
+  {
+    darkMode: hugging_face_white,
+    lightMode: hugging_face_black,
+    href: "https://github.com/huggingface/text-generation-inference",
+    aria: "Hugging Face",
+    class: "h-[35px] max-xl:h-[30px] max-sm:h-[25px] pl-2",
+  },
+  {
+    darkMode: gitbutler_white,
+    lightMode: gitbutler_black,
+    href: "https://github.com/gitbutlerapp/gitbutler",
+    aria: "Git Butler",
+    class: "h-[30px] max-xl:h-[25px] max-sm:h-[18px]",
   },
 ];
 ---
@@ -87,7 +87,7 @@ const logos = [
     <b>Powering industry leaders:</b>
   </p>
   <div
-    class="justify-left m-0 ml-[-12px] flex flex-wrap items-center gap-8 p-0 max-lg:justify-center max-sm:gap-3"
+    class="justify-left m-0 ml-[-12px] flex flex-wrap items-center gap-8 p-0 max-xl:justify-center max-2xl:gap-6 max-lg:gap-4 max-sm:gap-3"
   >
     {
       logos.map((logo) => (
