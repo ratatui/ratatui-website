@@ -2,7 +2,8 @@
 
 Thanks for helping improve [Ratatui](https://ratatui.rs)'s website! 🐭
 
-This repo contains the Astro/Starlight site plus a Rust workspace with the code samples under [code/](code/).
+This repo contains the Astro/Starlight site plus a Rust workspace with the code samples under
+[code/](code/).
 
 ## Setup
 
@@ -17,14 +18,17 @@ pnpm install && pnpm dev
 # or: npm install && npm run dev
 ```
 
-> [!NOTE] 
-> `npm install` (and `pnpm install`) triggers Playwright's browser download; you can skip the heavy Chromium bundle by hitting Ctrl+C once that download starts if you do not plan to run the end-to-end tests.
+> [!NOTE] `npm install` (and `pnpm install`) triggers Playwright's browser download; you can skip
+> the heavy Chromium bundle by hitting Ctrl+C once that download starts if you do not plan to run
+> the end-to-end tests.
 
 ## Commands
 
-- Website (Astro/Starlight): 
+- Website (Astro/Starlight):
+
   - `pnpm dev` or `npm run dev` for viewing locally
-  - Format: `pnpm format` / `npm run format -- --write` (write) or `npm run format -- --check` (note the double `--`)
+  - Format: `pnpm format` / `npm run format -- --write` (write) or `npm run format -- --check` (note
+    the double `--`)
   - Type-check: `pnpm astro check` or `npm run astro check`
   - Build: `pnpm build` or `npm run build` (runs `astro check`)
   - Tests: `pnpm test` or `npm test`
@@ -46,7 +50,8 @@ pnpm install && pnpm dev
 
 ## Pull requests
 
-Open an issue or start a discussion for non-trivial changes. Keep PRs focused with a short test note.
+Open an issue or start a discussion for non-trivial changes. Keep PRs focused with a short test
+note.
 
 ## App showcase criteria
 
