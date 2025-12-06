@@ -15,5 +15,4 @@ publish.workspace = true
 
 [dependencies]
 color-eyre = "0.6.3"
-crossterm = "0.28.1"
-ratatui = "0.29.0"
+ratatui = "0.30.0-alpha.5"
