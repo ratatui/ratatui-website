@@ -65,10 +65,12 @@ We can set up a `Config` struct using
 
 ```rust
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 use color_eyre::eyre::Result;
 use ratatui::crossterm::event::KeyEvent;
-use serde_derive::Deserialize;
+use serde::Deserialize;
+use derive_deref::{Deref, DerefMut};
 
 use crate::action::Action;
 
@@ -96,7 +98,8 @@ pub struct Config {
 
 ## Key Bindings and Styles
 
-We are using `serde` to deserialize from a TOML file.
+We are using `serde` to deserialize from a TOML file, and `derive_deref` to be able to write
+`.get(..)` instead of `.0.get(..)` when we access the `KeyBindings` tuple struct.
 
 Now the default `KeyEvent` serialized format is not very user friendly, so let's implement our own
 version:
@@ -143,7 +146,7 @@ directly.
 
 ```rust
 impl App {
-    fn handle_key_event(&mut self, key: KeyEvent) -> Result<()> {
+    fn handle_key_events(&mut self, key: KeyEvent) -> Result<()> {
         let action_tx = self.action_tx.clone();
         let Some(keymap) = self.config.keybindings.get(&self.mode) else {
             return Ok(());
