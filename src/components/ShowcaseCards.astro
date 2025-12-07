@@ -102,56 +102,8 @@ const tileData = [3, 2, 1, 1, 3, 2, 1, 1];
   <div class="m-auto flex max-w-[1440px] flex-wrap gap-6">
     {
       projects.map((project: ShowcaseProject, index: number) => (
-        <div
-          class={`gallery-item grid h-[550px] min-w-[300px] bg-gradient-to-br from-slate-300 to-slate-400 max-sm:h-[300px] dark:from-slate-950 dark:to-slate-950 ${
-            tileData[index] === 1 ? "grid-rows-[1fr_5fr]" : "grid-cols-[1fr_4fr]"
-          } max-sm:grid-cols-none max-sm:grid-rows-[1fr_5fr]`}
-          data-col-span={tileData[index]}
-        >
-          <ShowcaseCard colSpan={tileData[index]} project={project} />
-        </div>
+        <ShowcaseCard colSpan={tileData[index]} project={project} />
       ))
     }
   </div>
 </div>
-
-<style>
-  .gallery-item {
-    flex: 1 1 calc(38% - 1rem);
-  }
-
-  .gallery-item[data-col-span="2"] {
-    flex: 2 1 calc(66.667% - 1rem);
-  }
-
-  .gallery-item[data-col-span="3"] {
-    flex: 1 calc(100% - 1rem);
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 1024px) {
-    .gallery-item {
-      flex: 1 1 calc(50% - 1rem);
-    }
-
-    .gallery-item[data-col-span="2"] {
-      flex: 2 1 calc(100% - 1rem);
-    }
-  }
-
-  @media (max-width: 768px) {
-    .gallery-item {
-      flex: 1 1 100%;
-    }
-
-    .gallery-item[data-col-span="2"] {
-      flex: 1 1 100%;
-    }
-
-    /* Force grid rows on mobile */
-    .gallery-item.max-sm\:grid-rows-\[1fr_5fr\] {
-      grid-template-rows: 1fr 5fr;
-      grid-template-columns: none;
-    }
-  }
-</style>
