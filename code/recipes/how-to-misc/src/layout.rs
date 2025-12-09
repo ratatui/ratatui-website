@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 // ANCHOR: imports
-use ratatui::layout::{Constraint, Flex, Layout, Rect};
+use ratatui::layout::{Constraint, Rect};
 // ANCHOR_END: imports
 
 use ratatui::{
@@ -13,19 +13,13 @@ use ratatui::{
 
 // ANCHOR: horizontal
 fn center_horizontal(area: Rect, width: u16) -> Rect {
-    let [area] = Layout::horizontal([Constraint::Length(width)])
-        .flex(Flex::Center)
-        .areas(area);
-    area
+    area.centered_horizontally(Constraint::Length(width))
 }
 // ANCHOR_END: horizontal
 
 // ANCHOR: vertical
 fn center_vertical(area: Rect, height: u16) -> Rect {
-    let [area] = Layout::vertical([Constraint::Length(height)])
-        .flex(Flex::Center)
-        .areas(area);
-    area
+    area.centered_vertically(Constraint::Length(height))
 }
 // ANCHOR_END: vertical
 
@@ -44,19 +38,14 @@ fn center_vertical(area: Rect, height: u16) -> Rect {
 /// let centered = center(area, horizontal, vertical);
 /// ```
 fn center(area: Rect, horizontal: Constraint, vertical: Constraint) -> Rect {
-    let [area] = Layout::horizontal([horizontal])
-        .flex(Flex::Center)
-        .areas(area);
-    let [area] = Layout::vertical([vertical]).flex(Flex::Center).areas(area);
-    area
+    area.centered(horizontal, vertical)
 }
 // ANCHOR_END: center
 
 // ANCHOR: render
 fn render(frame: &mut Frame) {
     let text = Text::raw("Hello world!");
-    let area = center(
-        frame.area(),
+    let area = frame.area().centered(
         Constraint::Length(text.width() as u16),
         Constraint::Length(1),
     );
@@ -66,8 +55,7 @@ fn render(frame: &mut Frame) {
 
 // ANCHOR: render_popup
 fn render_popup(frame: &mut Frame) {
-    let area = center(
-        frame.area(),
+    let area = frame.area().centered(
         Constraint::Percentage(20),
         Constraint::Length(3), // top and bottom border + content
     );
