@@ -35,6 +35,8 @@ dependencies on crates.io and GitHub:
 - [joshuto](https://github.com/kamiyaa/joshuto): Ranger-like terminal file manager written in Rust
 - [repgrep](https://github.com/acheronfail/repgrep): An interactive replacer for ripgrep that makes
   it easy to find and replace across files on the command line
+- [television](https://github.com/alexpasmantier/television): A portable and hackable fuzzy finder
+  for the terminal
 - [tenere](https://github.com/pythops/tenere): TUI interface for LLMs written in Rust
 - [nomad](https://github.com/JosephLai241/nomad): Customizable next-gen tree command with Git
   integration and TUI
