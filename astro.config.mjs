@@ -159,6 +159,10 @@ export default defineConfig({
               link: "/concepts/builder-lite-pattern/",
             },
             {
+              label: "Using no_std",
+              link: "/concepts/no-std/",
+            },
+            {
               label: "Rendering",
               collapsed: true,
               autogenerate: {

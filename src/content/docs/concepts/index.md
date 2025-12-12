@@ -9,3 +9,4 @@ In this section, we will cover various concepts associated with terminal user in
 - Application patterns
 - Backends
 - Event handling
+- Using `no_std`
