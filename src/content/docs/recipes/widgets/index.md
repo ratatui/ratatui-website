@@ -20,4 +20,4 @@ more widgets.
 [`Widget`]: https://docs.rs/ratatui/latest/ratatui/widgets/trait.Widget.html
 [`StatefulWidget`]: https://docs.rs/ratatui/latest/ratatui/widgets/trait.StatefulWidget.html
 [`widgets` module]: https://docs.rs/ratatui/latest/ratatui/widgets/index.html
-[Third Party Crates]: /references/#third-party-crates
+[Third Party Crates]: /showcase/third-party-widgets
