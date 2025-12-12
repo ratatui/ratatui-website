@@ -65,10 +65,11 @@ We can set up a `Config` struct using
 
 ```rust
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 use color_eyre::eyre::Result;
 use ratatui::crossterm::event::KeyEvent;
-use serde_derive::Deserialize;
+use serde::Deserialize;
 
 use crate::action::Action;
 
@@ -143,7 +144,7 @@ directly.
 
 ```rust
 impl App {
-    fn handle_key_event(&mut self, key: KeyEvent) -> Result<()> {
+    fn handle_key_events(&mut self, key: KeyEvent) -> Result<()> {
         let action_tx = self.action_tx.clone();
         let Some(keymap) = self.config.keybindings.get(&self.mode) else {
             return Ok(());
