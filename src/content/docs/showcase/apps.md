@@ -39,6 +39,14 @@ A customizable cross-platform graphical process/system monitor for the terminal
 
 ---
 
+## [`chess-tui`](https://github.com/thomas-mauran/chess-tui)
+
+Play chess from your terminal
+
+![chess-tui demo](https://raw.githubusercontent.com/thomas-mauran/chess-tui/refs/heads/main/examples/ratatui.gif)
+
+---
+
 ## [`codex`](https://github.com/openai/codex)
 
 Codex is a terminal-native coding agent that can generate, edit, and run applications directly from
