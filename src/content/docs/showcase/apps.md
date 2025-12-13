@@ -43,7 +43,7 @@ A customizable cross-platform graphical process/system monitor for the terminal
 
 Play chess from your terminal
 
-![chess-tui demo](https://raw.githubusercontent.com/thomas-mauran/chess-tui/refs/heads/main/examples/play_against_white_bot.gif)
+![chess-tui demo](https://raw.githubusercontent.com/thomas-mauran/chess-tui/refs/heads/main/examples/ratatui.gif)
 
 ---
 
