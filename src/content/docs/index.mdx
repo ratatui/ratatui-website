@@ -58,8 +58,8 @@ import ThemeSwitch from "@components/ThemeSwitch.astro";
             </div>
             <div>
               <a class="no-underline" href="https://github.com/ratatui/ratatui/">
-                <img src={logoTextLight.src} class="max-h-[100px] max-2xl:max-h-[80px] block dark:hidden" />
-                <img src={logoTextDark.src} class="max-h-[100px] max-2xl:max-h-[80px] hidden dark:block" />
+                <img src={logoTextLight.src} alt="Ratatui Logo" class="max-h-[100px] max-2xl:max-h-[80px] block dark:hidden" />
+                <img src={logoTextDark.src} alt="Ratatui Logo" class="max-h-[100px] max-2xl:max-h-[80px] hidden dark:block" />
               </a>
             </div>
           </div>
@@ -71,8 +71,8 @@ import ThemeSwitch from "@components/ThemeSwitch.astro";
             <div class="relative text-lg max-sm:text-sm pt-5 leading-8 max-w-[600px]">
               <p class="p-0 m-0">Ratatui is a Rust library for building fast, lightweight, and rich terminal user interfaces</p>
               <p class="absolute bottom-0 right-5 flex mb-1">
-                <img class="h-8 m-0 hidden xl:block" src={chef.src} />
-                <img class="h-8 m-0 pl-2 hidden xl:block" src={rat.src} />
+                <img alt="Chef icon" class="h-8 m-0 hidden xl:block" src={chef.src} />
+                <img alt="Rat icon" class="h-8 m-0 pl-2 hidden xl:block" src={rat.src} />
               </p>
             </div>
            </div>
@@ -101,7 +101,7 @@ import ThemeSwitch from "@components/ThemeSwitch.astro";
             <span class="text-3xl">{`{developers}`}</span>
             <span class="font-bold text-2xl text-black dark:text-white"> building amazing apps</span>
           </span>
-          <img class="h-8 pl-3 hidden min-md:block" src={cheese.src} />
+          <img alt="Cheese icon" class="h-8 pl-3 hidden min-md:block" src={cheese.src} />
         </p>
 
         <div class="bg-gradient-to-b from-slate-300 to-slate-400 dark:from-blue-950 dark:to-slate-950 p-10 max-sm:px-5">
@@ -162,7 +162,7 @@ import ThemeSwitch from "@components/ThemeSwitch.astro";
               <ThemeSwitch />
             </div>
           </div>
-          <div class="pt-3 text-2xl"><img class="w-6 m-auto" src={rat.src} /></div>
+          <div class="pt-3 text-2xl"><img alt="Rat icon" class="w-6 m-auto" src={rat.src} /></div>
         </div>
       </div>
     </div>

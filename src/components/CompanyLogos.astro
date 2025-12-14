@@ -93,9 +93,14 @@ const logos = [
     {
       logos.map((logo) => (
         <a class="no-underline" href={logo.href} target="_blank" aria-label={logo.aria}>
-          <img src={logo.lightMode.src} class={`${logo.class} w-auto object-contain dark:hidden`} />
+          <img
+            src={logo.lightMode.src}
+            alt={logo.aria}
+            class={`${logo.class} w-auto object-contain dark:hidden`}
+          />
           <img
             src={logo.darkMode.src}
+            alt={logo.aria}
             class={`${logo.class} hidden w-auto object-contain dark:block`}
           />
         </a>
