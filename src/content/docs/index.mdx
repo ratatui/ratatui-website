@@ -35,11 +35,11 @@ import ThemeSwitch from "@components/ThemeSwitch.astro";
   <div>
     <h1>Ratatui</h1>
     <RandomDots
-      gridSize={15}
-      numClusters={15}
-      dotsPerCluster={100}
-      clusterRadius={120}
-      dotSize={3}
+      gridSize={10}
+      numClusters={10}
+      dotsPerCluster={250}
+      clusterRadius={150}
+      dotSize={2}
       pattern="random"
       opacity={0.2}
       fixed={true}
@@ -104,11 +104,11 @@ import ThemeSwitch from "@components/ThemeSwitch.astro";
           <img class="h-8 pl-3 hidden min-md:block" src={cheese.src} />
         </p>
 
-        <div class="bg-gradient-to-b from-slate-300 to-slate-400 dark:from-blue-950 dark:to-slate-950 py-8 px-10 max-sm:px-5">
+        <div class="bg-gradient-to-b from-slate-300 to-slate-400 dark:from-blue-950 dark:to-slate-950 p-10 max-sm:px-5">
           <span class="font-bold text-lg max-sm:text-sm text-black dark:text-white">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</span>
           <StatsDisplay />
-          <CompanyLogos />
         </div>
+        <CompanyLogos />
       </div>
     </div>
 
