@@ -1,8 +1,8 @@
 ---
-title: Handle Key Bindings
+title: Configurable Keybindings
 sidebar:
   order: 11
-  label: Key Bindings
+  label: Configurable Vim Keybind Config
 ---
 # Recipe: Configurable Keybindings in Ratatui Apps
 
