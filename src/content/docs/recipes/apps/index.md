@@ -15,3 +15,4 @@ This section covers recipes for developing applications:
 - [Migrate from TUI-rs](./migrate-from-tui-rs/)
 - [Spawn Vim](./spawn-vim/)
 - [Releasing Your App](./release-your-app/)
+- [Key Binding](./keybind/)
