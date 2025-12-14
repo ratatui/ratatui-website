@@ -51,7 +51,7 @@ try {
     </a>
   </div>
   <div class="overflow-hidden p-6">
-    <a href={url} target="_blank">
+    <a href={url} target="_blank" aria-label={alt}>
       {
         media.endsWith("webm") ? (
           <video class="h-full w-full object-cover" src={media} autoplay muted loop playsinline />
