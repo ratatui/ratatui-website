@@ -44,10 +44,11 @@ dependency graph.
 For example:
 
 ```toml
-# choose one
 ratatui = { version = "0.30", features = ["crossterm_0_28"] }
+crossterm = "0.28"
+# or
 ratatui = { version = "0.30", features = ["crossterm_0_29"] }
-```
+crossterm = "0.29
 
 :::note
 
