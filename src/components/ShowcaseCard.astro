@@ -14,9 +14,7 @@ const { title, owner, repo, url, description, media, alt } = project;
 let stats: GitHubRepo = { stars: 100, forks: 100 };
 try {
   stats = await getGitHubStats(owner, repo);
-} catch (err) {
-  console.error("Failed to fetch GitHub stats:", err);
-}
+} catch (err) {}
 ---
 
 <div
