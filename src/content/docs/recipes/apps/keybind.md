@@ -34,11 +34,11 @@ use crossterm_keybind::KeyBind;
 
 #[derive(KeyBind)]
 pub enum KeyEvent {
-    /// Quit the application
+    /// Close the application
     #[keybindings["Control+c", "Q", "q"]]
     Quit,
 
-    /// Show help menu (via 'h' or F1)
+    /// Toggle to open/close a widget show all the commands
     #[keybindings["h", "F1"]]
     ShowHelp,
 }
@@ -87,13 +87,10 @@ KeyBindEvent::to_toml_example("keybind.toml")
 **The Config Content Example**:
 
 ```toml
-# The app will be closed with following key bindings
-# - combine key Control and c
-# - single key Q
-# - single key q
+# Close the application
 quit = ["Control+c", "Q", "q"]
 
-# A toggle to open/close a widget show all the commands
+# Toggle to open/close a widget show all the commands
 toggle_help_widget = ["F1", "?"]
 ```
 
