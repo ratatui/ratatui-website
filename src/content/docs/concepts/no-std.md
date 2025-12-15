@@ -62,6 +62,14 @@ cargo check --target riscv32imc-unknown-none-elf
 If you already have a Ratatui widget, you can make it `no_std`-compatible with a few small changes.
 Even if you haven't built for embedded before!
 
+:::tip[Why `no_std` widgets?]
+
+The same widget can be reused in a terminal app on Linux, a dashboard on a microcontroller, or a web
+app compiled to WebAssembly. Furthermore, it will be smaller (binary size) and more predictable across
+platforms because it doesn't pull in extra OS dependencies and only relies on core Rust features.
+
+:::
+
 1. Opt into `no_std` and expose `alloc` types:
 
    ```rust
@@ -82,7 +90,11 @@ Even if you haven't built for embedded before!
 4. Keep a `std` feature (off by default) for conveniences like tests or examples, but write your
    core widget logic so it also works without it.
 
-A minimal `no_std` widget implementation:
+5. Avoid `std`-only APIs in widget code paths. Examples: use `core::time::Duration` instead of
+   `std::time::Duration`, pass in data rather than reading files, and keep logging behind a feature
+   so it can be disabled on targets without I/O.
+
+Here is a minimal `no_std` widget implementation:
 
 ```rust
 #![no_std]
@@ -112,5 +124,7 @@ Some tips for testing and maintaining `no_std` compatibility:
 
 - Run `cargo check --no-default-features` (optionally with a `no_std` target) to catch regressions.
 - Document which optional features are `no_std`-compatible so users know what to enable.
+- Keep features additive: use `cfg(feature = "std")` to layer in extra features (e.g. logging) without
+  breaking `no_std`.
 
 :::
