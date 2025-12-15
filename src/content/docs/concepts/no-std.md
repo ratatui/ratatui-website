@@ -65,8 +65,9 @@ Even if you haven't built for embedded before!
 :::tip[Why `no_std` widgets?]
 
 The same widget can be reused in a terminal app on Linux, a dashboard on a microcontroller, or a web
-app compiled to WebAssembly. Furthermore, it will be smaller (binary size) and more predictable across
-platforms because it doesn't pull in extra OS dependencies and only relies on core Rust features.
+app compiled to WebAssembly. Furthermore, it will be smaller (binary size) and more predictable
+across platforms because it doesn't pull in extra OS dependencies and only relies on core Rust
+features.
 
 :::
 
@@ -124,7 +125,7 @@ Some tips for testing and maintaining `no_std` compatibility:
 
 - Run `cargo check --no-default-features` (optionally with a `no_std` target) to catch regressions.
 - Document which optional features are `no_std`-compatible so users know what to enable.
-- Keep features additive: use `cfg(feature = "std")` to layer in extra features (e.g. logging) without
-  breaking `no_std`.
+- Keep features additive: use `cfg(feature = "std")` to layer in extra features (e.g. logging)
+  without breaking `no_std`.
 
 :::
