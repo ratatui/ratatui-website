@@ -49,13 +49,6 @@ _The Enum Example from keybinds-rs:_
 #[derive(Deserialize)]
 enum Action {
     Exit,
-    Up,
-    Down,
-    Left,
-    Right,
-    Top,
-    Bottom,
-    Home,
     End,
 }
 
@@ -116,13 +109,6 @@ _The Example from keybinds-rs:_
   if let Some(action) = keybinds.dispatch(&event) {
       match action {
           Action::Exit => break,
-          Action::Up => execute!(stdout, cursor::MoveUp(1))?,
-          Action::Down => execute!(stdout, cursor::MoveDown(1))?,
-          Action::Left => execute!(stdout, cursor::MoveLeft(1))?,
-          Action::Right => execute!(stdout, cursor::MoveRight(1))?,
-          Action::Top => execute!(stdout, cursor::MoveUp(9999))?,
-          Action::Bottom => execute!(stdout, cursor::MoveDown(9999))?,
-          Action::Home => execute!(stdout, cursor::MoveLeft(9999))?,
           Action::End => execute!(stdout, cursor::MoveRight(9999))?,
       }
   }
@@ -201,18 +187,15 @@ _The Example Content of User's Config:_
 const CONFIG_FILE_CONTENT: &str = r#"
 [keyboard]
 # Standard bindings
-"Up" = "Up"
-...
+"End" = "End"
 "Mod+q" = "Exit"
 
 # Emacs-like bindings
-"Ctrl+p" = "Up"
-...
+"Ctrl+e" = "End"
 "Ctrl+x Ctrl+c" = "Exit"
 
 # Vim-like bindings
-"k" = "Up"
-...
+"$" = "End"
 "Esc" = "Exit"
 "#;
 ```
@@ -310,7 +293,7 @@ cd ratatui-keybind-template
 cargo run
 ```
 
-### Option 2. Clone from a GitHub Template for keybind-rs
+### Option 2. Check examples from keybind-rs
 
 Follow [examples](https://github.com/rhysd/keybinds-rs/blob/main/examples) from keybind-rs.
 
@@ -318,7 +301,7 @@ Follow [examples](https://github.com/rhysd/keybinds-rs/blob/main/examples) from 
 
 - [ratatui-keybind-template](https://github.com/yanganto/ratatui-keybind-template)
 - [crossterm-keybind crate](https://github.com/yanganto/crossterm-keybind)
-- [keybind-rs crate](https://github.com/rhysd/keybinds-rs?tab=readme-ov-file)
+- [keybind-rs crate](https://github.com/rhysd/keybinds-rs)
 - [Pull request discussion/background](https://github.com/ratatui/templates/pull/124)
 
 With this approach, you can let contributors and users maintain their own keyboard preferences,
