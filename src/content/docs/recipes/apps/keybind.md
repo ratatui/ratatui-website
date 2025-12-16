@@ -9,9 +9,9 @@ sidebar:
 
 This recipe explores how to add customizable, user-driven keybindings to your Ratatui application.
 It covers common approaches for managing keybindings, supporting user configuration, and maintaining
-backward compatibility as your application evolves. One concrete implementation using the
-[`crossterm-keybind`](https://github.com/yanganto/crossterm-keybind) crate is presented as an
-example.
+backward compatibility as your application evolves. Concrete implementations using the
+[`crossterm-keybind`](https://github.com/yanganto/crossterm-keybind) or
+[`keybind-rs`](https://github.com/rhysd/keybinds-rs) are presented as example.
 
 ## Problem statement and motivation
 
@@ -24,10 +24,9 @@ keybinds to remain compatible across updates.
 
 ### Core Pattern
 
-The main idea is to define all keybindings in _a single enum_, use attribute macros to declare
-default shortcuts, and support external TOML configuration for overrides and patches.
+The main idea is to define all keybindings in _a single enum_.
 
-**The Enum Example**:
+_The Enum Example from crossterm-keybind:_
 
 ```rust
 use crossterm_keybind::KeyBind;
@@ -44,15 +43,49 @@ pub enum KeyEvent {
 }
 ```
 
+_The Enum Example from keybinds-rs:_
+
+```rust
+#[derive(Deserialize)]
+enum Action {
+    Exit,
+    Up,
+    Down,
+    Left,
+    Right,
+    Top,
+    Bottom,
+    Home,
+    End,
+}
+
+#[derive(Deserialize)]
+struct Config {
+    keyboard: Keybinds<Action>,
+}
+```
+
+The difference is that `crossterm-keybind` uses attribute macros to declare default shortcuts and
+supports external TOML configuration for overrides and patches.
+
+On the other hand, `keybinds-rs` leaves default keybinding definitions flexible, allowing developers
+to provide them through any deserialization approach they prefer.
+
 #### How to capture a user input
 
 Within an abstraction, the enum, you don't want to directly compare the `KeyCode`, `KeyModifiers` of
 a `crossterm::KeyEvent` when capturing a user's input. Instead, you can pass a reference of it to a
-`match_any` method, which can be provided by the KeyBind derive macro. Before you match any
-keyevent, you should initialize first with `KeyEvent::init_and_load(...)`, because it is possible
-for your users to have customized keybinds (this will be explained in the next section). It can be
-initialized without any user customized keybind by `KeyEvent::init_and_load(None)`. Normally, you
-can run it as the first task of the main function.
+`match_any` method with `crossterm-keybind` or `dispatch` from `keybind-rs`, which can be provided
+by the derive macro. Before you match any keyevent, you should initialize a keybind instance for
+your app first, because it is possible for your users to have customized keybinds (this will be
+explained in the next section).
+
+- `crossterm-keybind` uses `KeyEvent::init_and_load(...)`
+- `keybind-rs` needs developers to construct the instance via a deserializer
+
+Normally, you can run initialization as the first task of the main function.
+
+_The Example from crossterm-keybind:_
 
 ```rust
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -68,7 +101,44 @@ if KeyBindEvent::Quit.match_any(&key) {
 }
 ```
 
+_The Example from keybinds-rs:_
+
+```rust
+    // Parse the configuration from the file content
+    let config: Config = toml::from_str(CONFIG_FILE_CONTENT).unwrap();
+
+    // `Keybinds` instance is a key bindings dispatcher that receives key inputs and
+    // dispatches the corresponding actions.
+    let mut keybinds = config.keyboard;
+```
+
+```rust
+  if let Some(action) = keybinds.dispatch(&event) {
+      match action {
+          Action::Exit => break,
+          Action::Up => execute!(stdout, cursor::MoveUp(1))?,
+          Action::Down => execute!(stdout, cursor::MoveDown(1))?,
+          Action::Left => execute!(stdout, cursor::MoveLeft(1))?,
+          Action::Right => execute!(stdout, cursor::MoveRight(1))?,
+          Action::Top => execute!(stdout, cursor::MoveUp(9999))?,
+          Action::Bottom => execute!(stdout, cursor::MoveDown(9999))?,
+          Action::Home => execute!(stdout, cursor::MoveLeft(9999))?,
+          Action::End => execute!(stdout, cursor::MoveRight(9999))?,
+      }
+  }
+```
+
 #### How can user customize their keybinds
+
+The ways to customize keybinding will different between two crates.
+
+**The crossterm-keybind way**
+
+Crossterm additionally takes care of:
+
+- Override issues using the struct-patch feature, which is borrowed from
+  [gitui](https://github.com/gitui-org/gitui)
+- Config file documentation, which is adapted from [kld](https://github.com/kuutamolabs/kld)
 
 The KeyBind macro can also provide a key config example file for users, so they can easily customize
 their keybinds.
@@ -84,7 +154,7 @@ in the current folder.
 KeyBindEvent::to_toml_example("keybind.toml")
 ```
 
-**The Config Content Example**:
+_The crossterm-keybind Config Content Example_
 
 ```toml
 # Close the application
@@ -107,7 +177,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 If the user only customized part of the key config, the system will patch the user's customized
 settings onto the default ones. You can learn this in detail with the following use case.
 
-**The Content of User's Config**:
+_The Content of User's Config:_
 
 ```toml
 quit = ["Control+q"]
@@ -119,10 +189,38 @@ remain the same as the default, because the user did not customize them, so the 
 `F1` or `?` to open the widget. You also get the benefit of backward compatibility for key configs,
 if you only make additions to the key binding enum.
 
-#### How can user know current key
+**The keybind-rs way**
 
-When the TUI application allows customized keybindings, it's helpful to hint to users what the
-current key binding is. You can use `fn key_bindings_display()` for this purpose.
+Developers can provide multiple sets of keybindings in the config file. The keybinds to the enum can
+be many-to-one (multiple keybinds mapping to the same action). The keyboard configuration can be
+part of your main config file.
+
+_The Example Content of User's Config:_
+
+```toml
+const CONFIG_FILE_CONTENT: &str = r#"
+[keyboard]
+# Standard bindings
+"Up" = "Up"
+...
+"Mod+q" = "Exit"
+
+# Emacs-like bindings
+"Ctrl+p" = "Up"
+...
+"Ctrl+x Ctrl+c" = "Exit"
+
+# Vim-like bindings
+"k" = "Up"
+...
+"Esc" = "Exit"
+"#;
+```
+
+#### How can users know the current keybindings
+
+When the TUI application allows customized keybindings, it's helpful to show users what the current
+keybindings are. `crossterm-keybind` provides a `key_bindings_display()` method for this purpose.
 
 ```
 println!(
@@ -133,65 +231,78 @@ println!(
 
 ### Summary
 
-With this approach, the following features are supported:
+With these approaches, the following features are supported:
+
+Both crates support:
 
 - **User Customization:** Let users adapt the app to their muscle memory and workflows.
+- **Multiple Shortcuts:** Map several key combos to a single action.
+- **Better User Experience:** Power users and international users can adjust keyboard layouts.
+
+crossterm-keybind supports:
+
 - **Maintainability:** Adding new actions or keys shouldn’t break old configs.
 - **Upgradeability:** Users can partially override configs, even as your keybindings evolve.
-- **Multiple Shortcuts:** Map several key combos to a single action.
 - **Backward Compatibility:** It can always be compatible with legacy configs, if we only make
   additions to the Enum.
-- **Better User Experience:** Power users and international users can adjust keyboard layouts as
-  needed.
 
-There are some constraints with this approach you need to know ahead of time:
+keybind-rs supports:
 
-- Always use the enum for new Key Bindings; do not directly handle keycode in functions
-- Only make additions to the enum to keep keybind config backward compatibility.
-- Using macros will slightly increase compiling time, but this is not easy to detect with modern
+- **Embedded Config:** Keyboard can be part of the main config.
+- **Customizable Deserialization:** Customizable deserializer for the config.
+
+There are some constraints with these approaches you need to know ahead of time:
+
+Both crates have constraints:
+
+- Always use the enum for new key bindings; do not directly handle keycode in functions.
+- Using macros will slightly increase compile time, but this is not easy to detect with modern
   computers.
 
-This approach is similar to [gitui](https://github.com/gitui-org/gitui), though gitui uses RON
-format while this example uses TOML format. The TOML example feature is similar to
-[kld](https://github.com/kuutamolabs/kld). The KeyBind derive macro combines these patterns into a
-complete solution. It's also possible to use `crossterm-keybind-core` alone to achieve a similar
-approach with a different pattern.
+crossterm-keybind constraints:
+
+- Only make additions to the enum to keep keybind config backward compatibility.
+
+It's also possible to use `crossterm-keybind-core` alone to achieve a similar approach with a
+different pattern.
 
 ## Migration guide for existing applications
 
 You do not need to worry that the application will break if some keybinds are not migrated into the
 enum. The following guide helps you complete the migration without issues.
 
-- Create a keybind enum first, and initialize it at the start of main
+- (Both) Create a keybind enum first, and initialize it at the start of main
   - You can use different naming for the enum to avoid confusion, for example `AppEvent`, not
     `KeyEvent`.
-  - Use `AppEvent::init_and_load(None)?` first
-- Gradually move crossterm::KeyEvent into the `match_any` of the enum
+  - (crossterm-keybind) Use `AppEvent::init_and_load(None)?` first
+  - (keybind-rs) Add deserializer for your config
+- (Both) Gradually move crossterm::KeyEvent into the `match_any` (crossterm-keybind) or `dispatch`
+  (keybind-rs) of the enum
   - Normally the condition will change from `match` arms to `if` arms in this step
   - A simple search for `KeyCode`, `KeyModifiers` is good enough rather than searching for
     `KeyEvent`
-- Make sure `crossterm::KeyCode` or `crossterm::KeyModifiers` are not being used in your project
+- (Both) Make sure `crossterm::KeyCode` or `crossterm::KeyModifiers` are not being used in your
+  project
   - If `KeyCode` and `KeyModifiers` are not directly used, and are managed by the KeyBind enum
 - Allow users to customize the keybind
-  - Save the key config to disk with `AppEvent::to_toml_example("keybind.toml")`
-  - Then use `AppEvent::init_and_load("keybind.toml")?` to load the customized config
+  - (crossterm-keybind) Save the key config to disk with `AppEvent::to_toml_example("keybind.toml")`
+  - (crossterm-keybind) Then use `AppEvent::init_and_load("keybind.toml")?` to load the customized
+    config
+  - (keybind-rs) Manually provide example for keybind
 
-## Extras: A starter template
+## Extras: starter templates
 
 If you want a ready-made starting point that applies these ideas, here's a template that puts it all
 together.
 
-### Option 1. Using GitHub Template
+### Option 1. Using GitHub Template for crossterm-keybind
 
 Click the top-left green `Use this template` button of
 [ratatui-keybind-template](https://github.com/yanganto/ratatui-keybind-template).
 
 Set up your project name.
 
-### Option 2. Clone from a GitHub Template
-
-Begin your project from
-[ratatui-keybind-template](https://github.com/yanganto/ratatui-keybind-template):
+or simply clone the project
 
 ```bash
 git clone https://github.com/yanganto/ratatui-keybind-template.git
@@ -199,10 +310,15 @@ cd ratatui-keybind-template
 cargo run
 ```
 
+### Option 2. Clone from a GitHub Template for keybind-rs
+
+Follow [examples](https://github.com/rhysd/keybinds-rs/blob/main/examples) from keybind-rs.
+
 ## References
 
 - [ratatui-keybind-template](https://github.com/yanganto/ratatui-keybind-template)
 - [crossterm-keybind crate](https://github.com/yanganto/crossterm-keybind)
+- [keybind-rs crate](https://github.com/rhysd/keybinds-rs?tab=readme-ov-file)
 - [Pull request discussion/background](https://github.com/ratatui/templates/pull/124)
 
 With this approach, you can let contributors and users maintain their own keyboard preferences,
