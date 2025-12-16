@@ -7,8 +7,8 @@ description: Running Ratatui without the Rust standard library and authoring no_
 
 `no_std` is an attribute that disables Rust's standard library.
 
-In this mode your code can only uses a limited `core` crate instead of `std`,
-so there is no operating system integration, file I/O, threads, or heap allocator unless you provide one.
+In this mode your code can only uses a limited `core` crate instead of `std`, so there is no
+operating system integration, file I/O, threads, or heap allocator unless you provide one.
 
 :::
 
@@ -26,8 +26,8 @@ ratatui = { version = "0.30", default-features = false }
 
 :::note
 
-You can re-enable only the features you need that don't depend on the standard library. (e.g. `macros`,
-`all-widgets`, etc.)
+You can re-enable only the features you need that don't depend on the standard library. (e.g.
+`macros`, `all-widgets`, etc.)
 
 Skip features that explicitly require `std` such as `crossterm`, `serde` and so on.
 
@@ -42,8 +42,9 @@ atomics:
 ratatui = { version = "0.30", default-features = false, features = ["portable-atomic"] }
 ```
 
-Additionally, depending on your target, you will have to enable one of the `portable-atomic` features.
-Refer to the `portable-atomic` crate documentation for more information.
+Additionally, depending on your target, you will have to enable one of the `portable-atomic`
+features. Refer to the [`portable-atomic` crate documentation](https://docs.rs/portable-atomic) for
+more information.
 
 :::
 
