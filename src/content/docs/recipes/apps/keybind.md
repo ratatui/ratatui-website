@@ -22,39 +22,83 @@ keybinds to remain compatible across updates.
 
 ## From Scratch First
 
-There may be more possible ways to solve this problem, and most problems can be solved by an intermediate abstraction layer.
-Configurable keybindings are one such problem that benefits from this approach.
-The abstraction layer could be a module, a struct/enum with a set of functions, or a combination of these.
+There may be more possible ways to solve this problem, and most problems can be solved by an
+intermediate abstraction layer. Configurable keybindings are one such problem that benefits from
+this approach. The abstraction layer could be a module, a struct/enum with a set of functions, or a
+combination of these.
 
-Within this abstraction, other functions/handlers are not directly comparing the raw key events, which are the user's key strikes.
-They just pass the raw event to the abstraction layer, and then the layer, based on the user's key strikes,
-executes the corresponding functions or returns back an _event token_ to let other functions know how to handle it.
+Within this abstraction, other functions/handlers are not directly comparing the raw key events,
+which are the user's key strikes. They just pass the raw event to the abstraction layer, and then
+the layer, based on the user's key strikes, executes the corresponding functions or returns back an
+_event token_ to let other functions know how to handle it.
 
-As you can imagine, one of the functions in the abstraction layer will read the user's key strikes, and read a config file on disk like the following, then find out the user's meaning.
+As you can imagine, one of the functions in the abstraction layer will read the user's key strikes,
+and read a config file on disk like the following, then find out the user's meaning.
+
+_keybind.txt_ - a user input to the program know keybinds are using for different intention.
+
 ```text
 ...
 Control+c -> Close the app
 ...
 ```
 
+Following is a simple pseudo code to use a simple str for the _event token_, and read from the
+keybind.txt provided by user.
+
+```rust
+// keybind.rs
+use std::fs::read_to_string;
+
+fn known_from_user_strikes(key: crossterm::KeyEvent) -> String {
+  for line in read_to_string("keybind.txt").unwrap().lines() {
+    let Some((user_keybind_input, user_intention)) = line.split_once(" -> ");
+    // comparing the keyevent with user input
+    if keybind_match(key, user_keybind_input) {
+      return user_intention.to_string()
+    }
+  }
+  "nothing to do".to_string()
+}
+```
+
 With a file-based input, users can easily use different key bindings for different actions.
 
-However, user inputs are fragile and hard to trust, and frequently checking the config file on disk is not efficient.
-So we normally need another function in the abstraction layer to read the file from disk and deserialize it into memory.
-This way we can normalize and report possible malformed user input at first, while the previous function performs comparison in memory in an efficient way.
+However, user inputs are fragile and hard to trust, and frequently checking the config file on disk
+is not efficient. So we normally need another function in the abstraction layer to read the file
+from disk and deserialize it into memory. This way we can normalize and report possible malformed
+user input at first, while the previous function performs comparison in memory in an efficient way.
 
-With good handling of user input parsing, error handling, and event comparison in these two functions (one for config parsing and one for event matching),
-you can complete a configurable keybindings feature for a TUI app in a 0-dependency way.
-However, keybinding issues involve more than just these concerns, so we encourage you to read more and develop the best solution for your needs.
+Following are a simple pseudo code, and we can a simple str for the _event token_
+
+```rust
+// keybind.rs
+use std::fs::read_to_string;
+
+fn load_from_user_config() -> Result<(), ()> {
+  for line in read_to_string("keybind.txt").unwrap().lines() {
+    let Some((user_keybind_input, user_intention)) = line.split_once(" -> ") else {
+      // Normalize users' input and save into memory
+    }
+  }
+  Ok(())
+}
+```
+
+With good handling of user input parsing, error handling, and event comparison in these two
+functions (one for config parsing and one for event matching), you can complete a configurable
+keybindings feature for a TUI app in a 0-dependency way. However, keybinding issues involve more
+than just these concerns, so we encourage you to read more and develop the best solution for your
+needs.
 
 ## Design and Constraints
-The following examples use an approach that defines all keybindings in _a single enum_, in which the _event tokens_ from the previous section are the enum variants.
-We are not saying that using an enum is always the best practice.
-These are just some suggestions and solutions for you to solve keybind-related problems ahead.
 
-### Core Pattern
+The following examples use an approach that defines all keybindings in _a single enum_, in which the
+_event tokens_ from the previous section are the enum variants. We are not saying that using an enum
+is always the best practice. These are just some suggestions and solutions for you to solve
+keybind-related problems ahead.
 
-_The Enum Example from crossterm-keybind:_
+### Crossterm-keybind
 
 ```rust
 use crossterm_keybind::KeyBind;
@@ -71,7 +115,20 @@ pub enum KeyEvent {
 }
 ```
 
-_The Enum Example from keybinds-rs:_
+And following methods are implemented.
+
+- Initialze and read user's config
+  - `KeyEvent::init_and_load(Some(PathBuf::from("/The/path/to/keyconfig.toml")))?`
+- Know the user's intention
+  - `KeyBindEvent::Quit.match_any(&key)`
+  - `for event in KeyBindEvent::dispatch(&key) {...}`
+- Provide default configure with documentation
+  - `KeyBindEvent::toml_example()` will return the content of the example.
+  - `KeyBindEvent::to_toml_example(path)` will write the example into a file.
+- Provide hint for current keybind
+  - `Quit.key_bindings_display()` to print current keybind in chars.
+
+### Keybind-rs
 
 ```rust
 #[derive(Deserialize)]
@@ -86,245 +143,63 @@ struct Config {
 }
 ```
 
-The difference is that `crossterm-keybind` uses attribute macros to declare default shortcuts and
-supports external TOML configuration for overrides and patches.
-
-On the other hand, `keybinds-rs` leaves default keybinding definitions flexible, allowing developers
-to provide them through any deserialization approach they prefer.
-
-#### How to capture user input
-
-Within an abstraction, the enum, you don't want to directly compare the `KeyCode`, `KeyModifiers` of
-a `crossterm::KeyEvent` when capturing a user's input. Instead, you can pass a reference of it to a
-`match_any` method with `crossterm-keybind` or `dispatch` from `keybind-rs`, which can be provided
-by the derive macro. Before you match any keyevent, you should initialize a keybind instance for
-your app first, because it is possible for your users to have customized keybinds (this will be
-explained in the next section).
-
-- `crossterm-keybind` uses `KeyEvent::init_and_load(...)`
-- `keybind-rs` needs developers to construct the instance via a deserializer
-
-Normally, you can run initialization as the first task of the main function.
-
-_The Example from crossterm-keybind:_
-
-```rust
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    KeyEvent::init_and_load(None)?;
-}
-```
-
-In less comparing way
-```rust
-if KeyBindEvent::Quit.match_any(&key) {
-  // Close the app
-} else if KeyBindEvent::ShowHelp.match_any(&key){
-  // Show documents
-}
-```
-
-or use dispatch in a full comparing way to get all possilbe enum variants
-
-```rust
-for event in KeyBindEvent::dispatch(&key) {
-  match event {
-    KeyBindEvent::Quit => {
-      // Close the app
-    },
-    KeyBindEvent::ShowHelp => {
-      // Show documents
-    },
-  }
-}
-```
-
-_The Example from keybinds-rs:_
-
-```rust
-    // Parse the configuration from the file content
-    let config: Config = toml::from_str(CONFIG_FILE_CONTENT).unwrap();
-
-    // `Keybinds` instance is a key bindings dispatcher that receives key inputs and
-    // dispatches the corresponding actions.
-    let mut keybinds = config.keyboard;
-```
-
-```rust
-  if let Some(action) = keybinds.dispatch(&event) {
-      match action {
-          Action::Exit => break,
-          Action::End => execute!(stdout, cursor::MoveRight(9999))?,
-      }
-  }
-```
-
-#### How can users customize their keybinds
-
-The ways to customize keybindings differ between the two crates.
-
-**The crossterm-keybind way**
-
-Crossterm additionally takes care of:
-
-- Override issues using the struct-patch feature, which is borrowed from
-  [gitui](https://github.com/gitui-org/gitui)
-- Config file documentation, which is adapted from [kld](https://github.com/kuutamolabs/kld)
-
-The KeyBind macro can also provide a key config example file for users, so they can easily customize
-their keybinds.
-
-- `KeyBindEvent::toml_example()` will return the content of the example.
-- `KeyBindEvent::to_toml_example(path)` will write the example into a file.
-
-In general, you can have some subcommand to help users generate the config file to their disk. Note:
-You can follow other recipes to handle config folder and path; the current example stores the file
-in the current folder.
-
-```rust
-KeyBindEvent::to_toml_example("keybind.toml")
-```
-
-_The crossterm-keybind Config Content Example_
-
-```toml
-# Close the application
-quit = ["Control+c", "Q", "q"]
-
-# Toggle to open/close a widget showing all the commands
-show_help = ["h", "F1"]
-```
-
-As you can see, the documentation of the enum will also be included in the config files, so you
-don't need to write the same thing twice. Users can customize the keybind as they need; you just
-pass the path of the config file when initializing keybindings.
-
-```rust
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    KeyEvent::init_and_load("keybind.toml")?;
-}
-```
-
-If the user only customized part of the key config, the system will patch the user's customized
-settings onto the default ones. You can learn this in detail with the following use case.
-
-_The Content of User's Config:_
-
-```toml
-quit = ["Control+q"]
-```
-
-The config can be loaded successfully. After loading, only `Control+q` can quit the application, and
-the default keys `Control+c`, `Q`, `q` will not work anymore. The keybinds to open a widget will
-remain the same as the default, because the user did not customize them, so the user can still use
-`F1` or `?` to open the widget. You also get the benefit of backward compatibility for key configs,
-if you only make additions to the key binding enum.
-
-It is possible to let a keybind trigger more than one enum variant.
-
-**The keybind-rs way**
-
-Developers can provide multiple sets of keybindings in the config file. The keybinds to the enum can
-be many-to-one (multiple keybinds mapping to the same action). The keyboard configuration can be
-part of your main config file.
-
-_The Example Content of User's Config:_
-
-```toml
-const CONFIG_FILE_CONTENT: &str = r#"
-[keyboard]
-# Standard bindings
-"End" = "End"
-"Mod+q" = "Exit"
-
-# Emacs-like bindings
-"Ctrl+e" = "End"
-"Ctrl+x Ctrl+c" = "Exit"
-
-# Vim-like bindings
-"$" = "End"
-"Esc" = "Exit"
-"#;
-```
-
-Every keybind binds to one enum variant.
-
-#### How can users know the current keybindings
-
-When the TUI application allows customized keybindings, it's helpful to show users what the current
-keybindings are. `crossterm-keybind` provides a `key_bindings_display()` method for this purpose.
-
-```rust
-println!(
-    "type {} for help",
-    KeyEvent::ShowHelp.key_bindings_display()
-);
-```
+And following methods are implemented. `if let Some(action) = keybinds.dispatch(&event) {...}`
 
 ### Summary
 
-With these approaches, the following features are supported:
-
-Both crates support:
+With these approaches, the benefits of configurable keybinding and additional features provided by
+third party crates are listed in the following, making it easier for you to find your solution:
 
 - **User Customization:** Let users adapt the app to their muscle memory and workflows.
 - **Multiple Shortcuts:** Map several key combos to a single action.
 - **Better User Experience:** Power users and international users can adjust keyboard layouts.
-
-crossterm-keybind supports:
-
-- **Backward Compatibility:** It can always be compatible with legacy configs, if we only make
-  additions to the Enum.
-- **Maintainability:** It is easy to keep a keybind config updated with the code.
-- **Better Developer Experience:** Easy to setup default keybindings.
-- **Flexible Keybindings:** It is possible to trigger multiple enum variants from one keybinding.
-
-keybind-rs supports:
-
-- **Embedded Config:** Keyboard can be part of the main config.
-- **Customizable Deserialization:** Customizable deserializer for the config.
+- **Backward Compatibility(crossterm-keybind):** It can always be compatible with legacy configs, if
+  we only make additions to the Enum.
+- **Maintainability(crossterm-keybind):** It is easy to keep a keybind config with document updated
+  with the code.
+- **Better Developer Experience(crossterm-keybind):** Easy to setup default keybindings.
+- **Flexible Keybindings(crossterm-keybind):** It is possible to trigger multiple enum variants from
+  one keybinding.
+- **Keybind Hint(crossterm-keybind):** easier to know what the current keybind is.
+- **Embedded Config(keybind-rs):** Keyboard can be part of the main config.
+- **Customizable Deserialization(keybind-rs):** Customizable deserializer for the config.
 
 There are some constraints with these approaches you need to know ahead of time:
-
-Both crates have constraints:
 
 - Always use the enum for new key bindings; do not directly handle keycode in functions.
 - Using macros will slightly increase compile time, but this is not easy to detect with modern
   computers.
+- Only make additions to the enum to keep keybind config backward compatibility (crossterm-keybind).
+- One keybind can only trigger one enum variant (keybind-rs).
 
-crossterm-keybind constraints:
-
-- Only make additions to the enum to keep keybind config backward compatibility.
-
-keybind-rs constraints:
-
-- One keybind can only trigger one enum variant.
-
-It's also possible to use `crossterm-keybind-core` alone to achieve a similar approach with a
-different pattern.
+It's also possible to use `crossterm-keybind-core` alone to achieve a different approach.
 
 ## Migration guide for existing applications
 
 You do not need to worry that the application will break if some keybinds are not migrated into the
 enum. The following guide helps you complete the migration without issues.
 
-- (Both) Create a keybind enum first, and initialize it at the start of main
+- Create a keybind enum first, and initialize it at the start of main
   - You can use different naming for the enum to avoid confusion, for example `AppEvent`, not
     `KeyEvent`.
-  - (crossterm-keybind) Use `AppEvent::init_and_load(None)?` first
+  - (manual) Add `fn load_from_user_config()`
+  - (crossterm-keybind) Use `AppEvent::init_and_load(None)?`
   - (keybind-rs) Add deserializer for your config
-- (Both) Gradually move crossterm::KeyEvent into the `match_any` (crossterm-keybind) or `dispatch`
-  (keybind-rs) of the enum
+- Gradually move crossterm::KeyEvent into the `match_any` (crossterm-keybind) or `dispatch` of the
+  enum, or manually create a `fn known_from_user_strikes(key: crossterm::KeyEvent)`
   - Normally the condition will change from `match` arms to `if` arms in this step
   - A simple search for `KeyCode`, `KeyModifiers` is good enough rather than searching for
     `KeyEvent`
-- (Both) Make sure `crossterm::KeyCode` or `crossterm::KeyModifiers` are not being used directly in
-  your project
-  - Verify that `KeyCode` and `KeyModifiers` are managed through the KeyBind enum
+- Make sure `crossterm::KeyCode` or `crossterm::KeyModifiers` are not being used directly in your
+  project
+- Verify that `KeyCode` and `KeyModifiers` are managed through the KeyBind enum
 - Allow users to customize the keybind
-  - (crossterm-keybind) Save the key config to disk with `AppEvent::to_toml_example("keybind.toml")`
-  - (crossterm-keybind) Then use `AppEvent::init_and_load("keybind.toml")?` to load the customized
-    config
-  - (keybind-rs) Manually provide example for keybind
+  - (manual, keybind-rs) Manually provide example for keybind
+  - (crossterm-keybind) Save the key config to disk with
+    `AppEvent::to_toml_example("keybind.toml")`, and use `AppEvent::init_and_load("keybind.toml")?`
+    to load the customized config
+- (Optional) Provide keybind hint in UI
+  - (crossterm-keybind) Using `Quit.key_bindings_display()` to print current keybind in chars in ui.
 
 ## Extras: starter templates
 
