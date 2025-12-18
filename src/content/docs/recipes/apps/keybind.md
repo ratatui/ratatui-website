@@ -52,10 +52,11 @@ use std::fs::read_to_string;
 
 fn known_from_user_strikes(key: crossterm::KeyEvent) -> String {
   for line in read_to_string("keybind.txt").unwrap().lines() {
-    let Some((user_keybind_input, user_intention)) = line.split_once(" -> ");
-    // comparing the keyevent with user input
-    if keybind_match(key, user_keybind_input) {
-      return user_intention.to_string()
+    if let Some((user_keybind_input, user_intention)) = line.split_once(" -> ") {
+      // comparing the keyevent with user input by pseudo function keybind_match
+      if keybind_match(key, user_keybind_input) {
+        return user_intention.to_string()
+      }
     }
   }
   "nothing to do".to_string()
@@ -78,8 +79,9 @@ use std::fs::read_to_string;
 fn load_from_user_config() -> Result<(), ()> {
   for line in read_to_string("keybind.txt").unwrap().lines() {
     let Some((user_keybind_input, user_intention)) = line.split_once(" -> ") else {
-      // Normalize users' input and save into memory
+      // Error handle
     }
+    // Normalize users' input and save into memory, and also handle more possible errors
   }
   Ok(())
 }
