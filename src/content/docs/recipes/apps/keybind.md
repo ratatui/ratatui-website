@@ -119,7 +119,7 @@ pub enum KeyEvent {
 
 And following methods are implemented.
 
-- Initialze and read user's config
+- Initialize and read user's config
   - `KeyEvent::init_and_load(Some(PathBuf::from("/The/path/to/keyconfig.toml")))?`
 - Know the user's intention
   - `KeyBindEvent::Quit.match_any(&key)`
