@@ -211,15 +211,7 @@ together.
 Click the top-left green `Use this template` button of
 [ratatui-keybind-template](https://github.com/yanganto/ratatui-keybind-template).
 
-Set up your project name.
-
-or simply clone the project
-
-```bash
-git clone https://github.com/yanganto/ratatui-keybind-template.git
-cd ratatui-keybind-template
-cargo run
-```
+or clone it `git clone https://github.com/yanganto/ratatui-keybind-template.git`
 
 ### Option 2. Check examples from keybind-rs
 
