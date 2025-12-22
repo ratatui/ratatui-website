@@ -9,18 +9,19 @@ sidebar:
 
 This recipe explores how to add customizable, user-driven keybindings to your Ratatui application.
 It covers common approaches for managing keybindings, supporting user configuration, and maintaining
-backward compatibility as your application evolves. Concrete implementations using the
-[`crossterm-keybind`](https://github.com/yanganto/crossterm-keybind) or
-[`keybind-rs`](https://github.com/rhysd/keybinds-rs) are presented as examples.
+backward compatibility as your application evolves. We provide a design pattern here, concrete
+implementations using the [`crossterm-keybind`](https://github.com/yanganto/crossterm-keybind) or
+[`keybind-rs`](https://github.com/rhysd/keybinds-rs) are presented as examples, and also a general
+migration guide for an existing tui project.
 
-## Problem statement and motivation
+## Problem & motivation
 
 With growing userbases, developers of Terminal UI (TUI) apps often get requests for alternative
 keybinding schemes (like vim-style bindings or personalized shortcuts). Manually supporting such
 requests quickly becomes a maintenance burden, and as your app evolves, users expect their custom
 keybinds to remain compatible across updates.
 
-## From Scratch First
+## Core idea: separating input from intent
 
 There may be more possible ways to solve this problem, and most problems can be solved by an
 intermediate abstraction layer. Configurable keybindings are one such problem that benefits from
@@ -35,7 +36,16 @@ _event token_ to let other functions know how to handle it.
 As you can imagine, one of the functions in the abstraction layer will read the user's key strikes,
 and read a config file on disk like the following, then find out the user's meaning.
 
-_keybind.txt_ - a user input to the program know keybinds are using for different intention.
+However, user inputs are fragile and hard to trust, and frequently checking the config file on disk
+is not efficient. So we normally need another function in the abstraction layer to read the file
+from disk and deserialize it into memory. This way we can normalize and report possible malformed
+user input at first, while the previous function performs comparison in memory in an efficient way.
+
+## Minimal abstraction (no crates)
+
+First, a user provide a file input to the program know keybinds are using for different intention.
+
+_keybind.txt_ - this file is possible in anykind of format or ordering, here is just an example
 
 ```text
 ...
@@ -63,14 +73,10 @@ fn known_from_user_strikes(key: crossterm::KeyEvent) -> String {
 }
 ```
 
-With a file-based input, users can easily use different key bindings for different actions.
-
-However, user inputs are fragile and hard to trust, and frequently checking the config file on disk
-is not efficient. So we normally need another function in the abstraction layer to read the file
-from disk and deserialize it into memory. This way we can normalize and report possible malformed
-user input at first, while the previous function performs comparison in memory in an efficient way.
-
-Following are a simple pseudo code, and we can a simple str for the _event token_
+With a file-based input, users can easily use different key bindings for different actions. As we
+mentioned befored, preloading the config file can report error earlier and in a better efficient
+way. Following are a simple pseudo code for loading the config, and we can a simple str for the
+_event token_.
 
 ```rust
 // keybind.rs
@@ -93,12 +99,16 @@ keybindings feature for a TUI app in a 0-dependency way. However, keybinding iss
 than just these concerns, so we encourage you to read more and develop the best solution for your
 needs.
 
-## Design and Constraints
+## Design choices and constraints
 
 The following examples use an approach that defines all keybindings in _a single enum_, in which the
 _event tokens_ from the previous section are the enum variants. We are not saying that using an enum
-is always the best practice. These are just some suggestions and solutions for you to solve
+is always the best practice, and some
+[discussion](https://github.com/ratatui/ratatui/discussions/627) about using a struct as the _event
+token_. Here are some concrete implementations with more detail solutions for you to solve
 keybind-related problems ahead.
+
+## Concrete implementations (crates as examples)
 
 ### Crossterm-keybind
 
@@ -165,6 +175,7 @@ third party crates are listed in the following, making it easier for you to find
 - **Keybind Hint(crossterm-keybind):** easier to know what the current keybind is.
 - **Embedded Config(keybind-rs):** Keyboard can be part of the main config.
 - **Customizable Deserialization(keybind-rs):** Customizable deserializer for the config.
+- **Emacs-style(keybind-rs):** Using Emacs style keybinds and map multiple key strikes to an event.
 
 There are some constraints with these approaches you need to know ahead of time:
 
@@ -174,9 +185,11 @@ There are some constraints with these approaches you need to know ahead of time:
 - Only make additions to the enum to keep keybind config backward compatibility (crossterm-keybind).
 - One keybind can only trigger one enum variant (keybind-rs).
 
-It's also possible to use `crossterm-keybind-core` alone to achieve a different approach.
+`crossterm-keybind` is a crate opened to used with features with less codding, and it's still
+possible to use `crossterm-keybind-core` alone to achieve a different approach. On the other hand,
+`keybind-rs` is a lightweight intended crate.
 
-## Migration guide for existing applications
+## Migration guide
 
 You do not need to worry that the application will break if some keybinds are not migrated into the
 enum. The following guide helps you complete the migration without issues.
@@ -203,7 +216,7 @@ enum. The following guide helps you complete the migration without issues.
 - (Optional) Provide keybind hint in UI
   - (crossterm-keybind) Using `Quit.key_bindings_display()` to print current keybind in chars in ui.
 
-## Extras: starter templates
+## Optional templates & references
 
 If you want a ready-made starting point that applies these ideas, here's a template that puts it all
 together.
@@ -219,7 +232,7 @@ or clone it `git clone https://github.com/yanganto/ratatui-keybind-template.git`
 
 Follow [examples](https://github.com/rhysd/keybinds-rs/blob/main/examples) from keybind-rs.
 
-## References
+### References
 
 - [ratatui-keybind-template](https://github.com/yanganto/ratatui-keybind-template)
 - [crossterm-keybind crate](https://github.com/yanganto/crossterm-keybind)
