@@ -1,7 +1,7 @@
-@layer base, starlight, theme, components, utilities;
+@layer base, starlight, components, utilities;
 
 @import "@astrojs/starlight-tailwind";
-@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss";
 @import "tailwindcss/utilities.css" layer(utilities);
 
 @theme {
@@ -29,34 +29,16 @@
   --color-gray-800: var(--color-slate-800);
   --color-gray-900: var(--color-slate-900);
   --color-gray-950: var(--color-slate-950);
+  /* Break Points */
+  --breakpoint-xs: 30rem;
 }
 
-@media (min-width: 50rem) {
-  /* Move the logo to the left side  */
-
-  .hero {
-    grid-template-columns: 3fr 7fr;
-    gap: 6%;
-    padding-block: 1.5rem;
-  }
-
-  .hero > img,
-  .hero > .hero-html {
-    order: 0;
-    width: min(100%, 15rem);
-  }
+:root[data-theme="dark"] {
+  --color-basic: white;
 }
 
-.three-cols {
-  display: grid;
-  padding-top: 1rem;
-  @media (min-width: 50rem) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-  gap: 2.5rem;
-  h3 {
-    margin-bottom: 0rem;
-  }
+:root[data-theme="light"] {
+  --color-basic: black;
 }
 
 /* Fix for SVGBob diagrams on dark mode */
@@ -64,6 +46,7 @@ svg.svgbob text,
 svg.svgbob .filled {
   fill: currentColor;
 }
+
 svg.svgbob .solid,
 svg.svgbob polygon {
   stroke: currentColor;
@@ -73,26 +56,48 @@ svg.svgbob polygon {
 svg[aria-roledescription="sequence"] .messageText {
   fill: currentColor !important;
 }
+
 svg[aria-roledescription="sequence"] line,
 svg[aria-roledescription="sequence"] path,
 svg[aria-roledescription="sequence"] .flowchart-link {
   stroke: currentColor !important;
 }
+
 svg[aria-roledescription="flowchart-v2"] .arrowMarkerPath {
   fill: currentColor;
 }
+
 svg[aria-roledescription="flowchart-v2"] line,
 svg[aria-roledescription="flowchart-v2"] path,
 svg[aria-roledescription="flowchart-v2"] .flowchart-link {
   stroke: currentColor !important;
 }
+
 svg[aria-roledescription="stateDiagram"] {
   line-height: normal;
 }
+
 svg[aria-roledescription="stateDiagram"] line,
 svg[aria-roledescription="stateDiagram"] path,
 svg[aria-roledescription="stateDiagram"] circle {
   stroke: currentColor !important;
+}
+
+/* Text highlight colour for tagline */
+:root[data-theme="dark"] {
+  --sl-color-highlight: oklch(79.5% 0.184 86.047);
+}
+
+:root[data-theme="light"] {
+  --sl-color-highlight: oklch(48.8% 0.243 264.376);
+}
+
+:root[data-theme="dark"] {
+  --sl-color-highlight-2: oklch(79.5% 0.184 86.047);
+}
+
+:root[data-theme="light"] {
+  --sl-color-highlight-2: oklch(79.5% 0.184 86.047);
 }
 
 marker#arrowhead path {
@@ -102,4 +107,148 @@ marker#arrowhead path {
 
 :root {
   --sl-content-width: 60rem;
+}
+
+/* Hide page title and horizontal line on splash template pages */
+.sl-container h1:first-child {
+  display: none !important;
+}
+
+/* Hide ALL horizontal lines in main content for splash pages */
+.sl-container hr,
+main hr,
+article hr,
+.content hr {
+  display: none !important;
+}
+
+/* More aggressive targeting of potential hr elements */
+hr:first-child,
+hr:first-of-type,
+.sl-container > hr,
+main .sl-container > hr,
+main .content > hr {
+  display: none !important;
+}
+
+/* Hide the specific border-top rule that creates the line between content panels */
+.content-panel + .content-panel {
+  border-top: none !important;
+}
+
+/* Hide the first empty content panel on splash pages */
+main .content-panel:first-child:empty,
+main .content-panel:first-child:not(:has(*)) {
+  display: none !important;
+}
+
+/* Landing page font */
+.landing-mono {
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+}
+
+/* Landing page text blinking cursor animation */
+.landing-highlight {
+  color: var(--sl-color-highlight);
+  font-weight: 600;
+}
+
+.landing-highlight::after {
+  content: "";
+  display: inline-block;
+  width: 1.25rem;
+  height: 0.85em;
+  background: var(--sl-color-highlight);
+  margin-left: 0.2rem;
+  animation: blink 1s infinite;
+  vertical-align: 0em;
+}
+
+.landing-highlight-tall {
+  color: var(--sl-color-highlight-2);
+  font-weight: 600;
+}
+
+.landing-highlight-tall::after {
+  content: "";
+  display: inline-block;
+  width: 1.25rem;
+  height: 1em;
+  background: var(--sl-color-highlight-2);
+  margin-left: 0.2rem;
+  animation: blink 1s infinite;
+  vertical-align: -0.2em;
+}
+
+@media (max-width: 640px) {
+  .landing-highlight::after,
+  .landing-highlight-tall::after {
+    width: 0.5rem;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* On hover bracket */
+.bracket-btn {
+  position: relative;
+  display: inline-block;
+}
+
+.bracket {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: var(--color-basic);
+}
+
+.bracket.left {
+  margin-left: -1ch;
+}
+
+.bracket-btn:hover .bracket {
+  opacity: 1;
+}
+
+/* On hover bracket effect */
+.bracket-effect {
+  position: relative;
+}
+
+.bracket-effect::before,
+.bracket-effect::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  width: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.bracket-effect::before {
+  left: -8px;
+  border-left: 3px solid var(--color-basic);
+  border-top: 3px solid var(--color-basic);
+  border-bottom: 3px solid var(--color-basic);
+}
+
+.bracket-effect::after {
+  right: -7px;
+  border-right: 3px solid var(--color-basic);
+  border-top: 3px solid var(--color-basic);
+  border-bottom: 3px solid var(--color-basic);
+}
+
+.bracket-effect:hover::before,
+.bracket-effect:hover::after {
+  opacity: 1;
 }

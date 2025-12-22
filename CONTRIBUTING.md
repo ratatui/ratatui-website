@@ -46,7 +46,8 @@ pnpm install && pnpm dev
 
 ## Assets
 
-`.png` and `.gif` files are tracked by Git LFS. Add new images with LFS to avoid bloating the repo.
+`.png`, `.gif`, `.svg`, `.webp` and `.xcf` files are tracked by Git LFS. Add new images with LFS to
+avoid bloating the repo.
 
 ## Pull requests
 

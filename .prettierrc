@@ -10,7 +10,6 @@
   "proseWrap": "always",
   "plugins": [
     "prettier-plugin-astro",
-    "prettier-plugin-svelte",
     "prettier-plugin-organize-imports",
     "prettier-plugin-tailwindcss"
   ]

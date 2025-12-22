@@ -1,105 +1,171 @@
 ---
-title: Ratatui
-description: "Ratatui: A Rust crate for cooking up Terminal User Interfaces"
+title: "Ratatui"
+description:
+  "Ratatui: Cook up delicious terminal user interfaces in Rust - the fast and lightweight TUI
+  library trusted by developers"
+template: splash
 tableOfContents: false
-hero:
-  tagline: A Rust crate for cooking up Terminal User Interfaces
-  image:
-    alt: Ratatui Hero Logo
-    dark: ../../assets/hero-dark.png
-    light: ../../assets/hero-light.png
-  actions:
-    - text: Hello Ratatui Tutorial
-      link: /tutorials/hello-ratatui
-      icon: right-arrow
-      variant: primary
-    - text: cargo add ratatui
-      link: /installation
-      icon: right-arrow
-      variant: secondary
 ---
 
-import { Card, CardGrid } from "@astrojs/starlight/components";
+import SocialIcons from "@astrojs/starlight/components/SocialIcons.astro";
+import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
 
-[![Demo image]][Demo source]
+import heroLight from "@assets/hero-light.png";
+import heroDark from "@assets/hero-dark.png";
+import logoTextLight from "@assets/logo-text-light.png";
+import logoTextDark from "@assets/logo-text-dark.png";
+import rat from "@assets/rat.png";
+import chef from "@assets/chef.png";
+import cheese from "@assets/cheese.png";
 
-[Demo image]: https://raw.githubusercontent.com/ratatui/ratatui/images/examples/demo2.gif
-[Demo source]: https://github.com/ratatui/ratatui/tree/main/examples/apps/demo2
+import StatsDisplay from "@components/StatsDisplay.astro";
+import CompanyLogos from "@components/CompanyLogos.astro";
+import RandomDots from "@components/RandomDots.astro";
+import Features from "@components/Features.astro";
+import ScrambleText from "@components/ScrambleText.astro";
+import ScrambleCode from "@components/ScrambleCode.astro";
+import RatatuiVersion from "@components/RatatuiVersion.astro";
+import ShowcaseCards from "@components/ShowcaseCards.astro";
+import TutorialVideos from "@components/TutorialVideos.astro";
+import MainButtons from "@components/MainButtons.astro";
+import HideHeader from "@components/HideHeader.astro";
+import ThemeSwitch from "@components/ThemeSwitch.astro";
 
-<div class="three-cols not-content">
+<div class="flex justify-center landing-mono pt-3 dark:pt-0">
   <div>
-    <h3>What is Ratatui?</h3>
-    <p>
-      Ratatui is a Rust library for cooking up delicious TUIs (terminal user interfaces). It is a
-      lightweight library that provides a set of widgets and utilities to build simple or complex
-      rust TUIs.
-    </p>
-  </div>
-  <div>
-    <h3>Why Ratatui?</h3>
-    <p>
-      Ratatui is designed for developers and enthusiasts who want a lightweight alternative to
-      graphical user interfaces and need applications that are to be deployed in constrained
-      environments.
-    </p>
-  </div>
-  <div>
-    <h3>Who is this website for?</h3>
-    <p>
-      This website is for developers who want to learn how to build terminal user interfaces using
-      Ratatui. We cover beginner guides to advanced patterns for developing terminal user
-      interfaces.
-    </p>
-  </div>
-  <div>
-    <h3>Next Steps</h3>
-    <p>
-      Get started with Ratatui by following the [installation guide]. If you're already set up, you
-      can jump straight into the [Hello Ratatui tutorial].
+    <h1>Ratatui</h1>
+    <RandomDots
+      gridSize={10}
+      numClusters={10}
+      dotsPerCluster={250}
+      clusterRadius={150}
+      dotSize={2}
+      pattern="random"
+      opacity={0.2}
+      fixed={true}
+      colors={['#64748b', '#f1f5f9', '#64748b', '#334155']}
+    />
 
-      [installation guide]: installation/
-      [Hello Ratatui tutorial]: tutorials/hello-ratatui/
-    </p>
+    <div class="flex justify-center mt-[-2rem]">
+      <div class="flex flex-wrap justify-between max-xl:justify-center gap-10 items-end max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] max-sm:w-[450px] max-xs:w-[300px]">
+        <div class="max-xl:text-center">
+          <div class="flex max-sm:flex-wrap max-sm:justify-center items-end pb-10">
+            <div class="w-[150px] max-2xl:w-[100px] max-sm:w-[150px]">
+              <a class="no-underline" href="https://github.com/ratatui/ratatui/" aria-label="Ratatui GitHub Repository">
+                <img src={heroLight.src} alt="Ratatui Logo" class="block dark:hidden" />
+                <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
+              </a>
+            </div>
+            <div>
+              <a class="no-underline" href="https://github.com/ratatui/ratatui/" aria-label="Ratatui GitHub Repository">
+                <img src={logoTextLight.src} alt="Ratatui Logo" class="max-h-[100px] max-2xl:max-h-[80px] block dark:hidden" />
+                <img src={logoTextDark.src} alt="Ratatui Logo" class="max-h-[100px] max-2xl:max-h-[80px] hidden dark:block" />
+              </a>
+            </div>
+          </div>
 
-  </div>
-  <div>
-    <h3>Showcase</h3>
-    <p>
-      Check out the [community showcase] to see the [apps] and [widgets] that have been built using
-      Ratatui.
+          <div class="pb-5">
+            <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl text-black dark:text-white">Cook up <span class="landing-highlight">delicious</span></p>
+            <p class="font-bold text-5xl max-2xl:text-4xl max-sm:text-3xl text-black dark:text-white">terminal user interfaces.</p>
 
-      [community showcase]: showcase/
-      [apps]: showcase/apps/
-      [widgets]: showcase/third-party-widgets/
-    </p>
+            <div class="relative text-lg max-sm:text-sm pt-5 leading-8 max-w-[600px]">
+              <p class="p-0 m-0">Ratatui is a Rust library for building fast, lightweight, and rich terminal user interfaces</p>
+              <p class="absolute bottom-0 right-5 flex mb-1">
+                <img alt="Chef icon" class="h-8 m-0 hidden xl:block" src={chef.src} />
+                <img alt="Rat icon" class="h-8 m-0 pl-2 hidden xl:block" src={rat.src} />
+              </p>
+            </div>
+           </div>
 
-  </div>
-  <div>
-    <h3>Contribute</h3>
-    <p>
-      Help us improve Ratatui by contributing to the project. You can contribute by reporting bugs,
-      suggesting features, or even contributing code.
-    </p>
+          <MainButtons
+            primaryClass="bg-yellow-500 !text-black dark:bg-blue-700 dark:!text-white"
+            secondaryClass="!bg-blue-700 text-white dark:!bg-white dark:!text-black"
+          />
+        </div>
+
+        <div class="grid justify-items-end max-md:justify-items-center">
+          <div class="flex flex-row items-center gap-3">
+            <SocialIcons />
+            <ThemeSwitch />
+          </div>
+          <ScrambleCode />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <div class="max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] py-5 pt-[50px] max-xl:text-center">
+        <p class="flex max-xl:justify-center font-bold text-2xl max-xs:mx-3 text-blue-700 dark:!text-yellow-500">
+          <span>
+            <span>Trusted by </span>
+            <span class="text-3xl">{`{developers}`}</span>
+            <span class="font-bold text-2xl text-black dark:text-white"> building amazing apps</span>
+          </span>
+          <img alt="Cheese icon" class="h-8 pl-3 hidden min-md:block" src={cheese.src} />
+        </p>
+
+        <div class="bg-gradient-to-b from-slate-300 to-slate-400 dark:from-blue-950 dark:to-slate-950 p-10 max-sm:px-5">
+          <span class="font-bold text-lg max-sm:text-sm text-black dark:text-white">Create powerful TUIs, interactive dashboards, command-line games, and modern terminal experiences with ease.</span>
+          <StatsDisplay />
+        </div>
+        <CompanyLogos />
+      </div>
+    </div>
+
+    <div class="flex justify-center m-auto max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] max-xl:text-center">
+      <div>
+        <ShowcaseCards />
+        <div class="flex justify-center pt-12">
+          <a class="no-underline" href="/showcase/apps/">
+            <span class="bracket-btn font-bold text-2xl max-sm:text-base text-white bg-blue-700 p-4 px-8 glitch-container">
+              {`Explore the apps ::<>`}
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center m-auto max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] max-xl:text-center">
+      <div class="pt-5">
+        <TutorialVideos />
+        <div class="flex justify-center pt-10">
+          <a class="no-underline" href="/tutorials/">
+            <span class="bracket-btn font-bold text-2xl max-sm:text-base text-white bg-blue-700 p-4 px-8 glitch-container">
+              {`Explore the tutorials ::<>`}
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center pt-[5rem] m-auto max-w-[1440px] 2xl:w-[1440px] xl:w-[1280px] max-xl:text-center">
+      <Features />
+    </div>
+
+    <div class="py-8">
+        <ScrambleText />
+    </div>
+
+    <div class="flex justify-center">
+      <div class="flex justify-center gap-10 text-center py-10 w-screen bg-gradient-to-b from-slate-500 to-slate-300 dark:from-slate-950 dark:to-slate-950 mb-[-65px]">
+        <div class="py-10">
+          <h2 class="!text-6xl max-md:!text-3xl max-2xl:px-5 pb-10 !text-white">Ready to start <span class="text-yellow-500">cooking?</span></h2>
+          <p class="text-xl max-md:text-sm pb-5 max-2xl:px-5 text-white">Join thousands of <span class="dark:text-yellow-500">{`{rats}`}</span> cooking up the next generation of terminal applications.</p>
+          <MainButtons
+            containerClass="justify-center"
+            primaryClass="!text-black dark:!text-white bg-yellow-500 dark:bg-blue-700"
+            secondaryClass="!text-black bg-white"
+          />
+          <div class="flex justify-center w-full mt-10">
+            <div class="flex justify-center items-center gap-5 p-2 px-6">
+              <SocialIcons />
+              <ThemeSwitch />
+            </div>
+          </div>
+          <div class="pt-3 text-2xl"><img alt="Rat icon" class="w-6 m-auto" src={rat.src} /></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
-
-:::note[Help us improve!]
-
-We've designed this website to aid you throughout your journey with our open-source project.
-However, the beauty of open source is that it's not just about receiving, but also contributing. We
-highly encourage you to contribute to our project and help improve it even further. If you have
-innovative ideas, helpful feedback, or useful suggestions, please don't hesitate to share them with
-us.
-
-If you see something that could be better written, feel free to [create an issue], a [discussion
-thread] or even contribute a [Pull Request]. We're also often active on the [Forum], [Discord] and
-[Matrix].
-
-[create an issue]: https://github.com/ratatui/ratatui-website/issues
-[discussion thread]: https://github.com/ratatui/ratatui-website/discussions
-[Pull Request]: https://github.com/ratatui/ratatui-website/pulls
-[Forum]: https://forum.ratatui.rs
-[Discord]: https://discord.gg/pMCEU9hNEj
-[Matrix]: https://matrix.to/#/#ratatui:matrix.org
-
-:::

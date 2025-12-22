@@ -1,0 +1,110 @@
+---
+import netflix from "@assets/companies/Netflix_Logo_monochrome.png";
+import openai_white from "@assets/companies/OpenAI-white-wordmark.svg";
+import openai_black from "@assets/companies/OpenAI-black-wordmark.svg";
+import ovhcloud from "@assets/companies/ovhcloud-logo-monochrome.png";
+import aws_white from "@assets/companies/aws-logo-white.png";
+import aws_black from "@assets/companies/aws-logo-black.png";
+import oxide_white from "@assets/companies/OXIDE_Wordmark_RGB_White.svg";
+import oxide_black from "@assets/companies/OXIDE_Wordmark_RGB_Black.svg";
+import vercel_white from "@assets/companies/vercel-logotype-white.svg";
+import vercel_black from "@assets/companies/vercel-logotype-black.svg";
+import hugging_face_white from "@assets/companies/hf-logo-with-white-title_monochrome.png";
+import hugging_face_black from "@assets/companies/hf-logo-with-black-title_monochrome.png";
+import gitbutler_white from "@assets/companies/gitbutler-logo-white.svg";
+import gitbutler_black from "@assets/companies/gitbutler-logo-black.svg";
+import electronic_arts_black from "@assets/companies/ea-wordmark-black.svg";
+import electronic_arts_white from "@assets/companies/ea-wordmark-white.svg";
+
+const logos = [
+  {
+    darkMode: netflix,
+    lightMode: netflix,
+    href: "https://github.com/Netflix/bpftop",
+    aria: "Netflix",
+    class: "h-[50px] max-xl:h-[40px] max-sm:h-[25px]",
+  },
+  {
+    darkMode: openai_white,
+    lightMode: openai_black,
+    href: "https://github.com/openai/codex",
+    aria: "OpenAI",
+    class: "h-[55px] max-xl:h-[40px] max-sm:h-[30px] ml-[-8px]",
+  },
+  {
+    darkMode: ovhcloud,
+    lightMode: ovhcloud,
+    href: "https://github.com/ovh/shai",
+    aria: "OVH Cloud",
+    class: "h-[35px] max-xl:h-[30px] max-sm:h-[20px]",
+  },
+  {
+    darkMode: oxide_white,
+    lightMode: oxide_black,
+    href: "https://github.com/oxidecomputer/omicron",
+    aria: "Oxide",
+    class: "h-[40px] max-xl:h-[35px] max-sm:h-[25px]",
+  },
+  {
+    darkMode: aws_white,
+    lightMode: aws_black,
+    href: "https://github.com/aws/amazon-q-developer-cli",
+    aria: "AWS",
+    class: "h-[23px] max-xl:h-[18px] max-sm:h-[15px] mt-1 dark:mt-5",
+  },
+  {
+    darkMode: electronic_arts_white,
+    lightMode: electronic_arts_black,
+    href: "https://github.com/electronicarts/helmci",
+    aria: "Electronic Arts",
+    class: "h-[30px] max-xl:h-[25px] max-sm:h-[20px] ml-2",
+  },
+  {
+    darkMode: vercel_white,
+    lightMode: vercel_black,
+    href: "https://github.com/vercel/turborepo",
+    aria: "Vercel",
+    class: "h-[20px] max-xl:h-[15px] max-sm:h-[10px] pl-2",
+  },
+  {
+    darkMode: hugging_face_white,
+    lightMode: hugging_face_black,
+    href: "https://github.com/huggingface/text-generation-inference",
+    aria: "Hugging Face",
+    class: "h-[35px] max-xl:h-[30px] max-sm:h-[25px] pl-2",
+  },
+  {
+    darkMode: gitbutler_white,
+    lightMode: gitbutler_black,
+    href: "https://github.com/gitbutlerapp/gitbutler",
+    aria: "Git Butler",
+    class: "h-[28px] max-xl:h-[22px] max-sm:h-[16px]",
+  },
+];
+---
+
+<div class="max-sm:justify-center">
+  <p class="mt-6 text-base text-slate-700 max-sm:hidden dark:text-slate-300">
+    Powering industry leaders:
+  </p>
+  <div
+    class="justify-left m-0 ml-[-12px] flex flex-wrap items-center gap-8 p-0 max-2xl:gap-6 max-xl:justify-center max-lg:gap-4 max-sm:gap-3"
+  >
+    {
+      logos.map((logo) => (
+        <a class="no-underline" href={logo.href} target="_blank" aria-label={logo.aria}>
+          <img
+            src={logo.lightMode.src}
+            alt={logo.aria}
+            class={`${logo.class} w-auto object-contain dark:hidden`}
+          />
+          <img
+            src={logo.darkMode.src}
+            alt={logo.aria}
+            class={`${logo.class} hidden w-auto object-contain dark:block`}
+          />
+        </a>
+      ))
+    }
+  </div>
+</div>
