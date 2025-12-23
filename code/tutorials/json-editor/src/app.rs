@@ -41,11 +41,11 @@ impl App {
 
     // ANCHOR: save_key_value
     pub fn save_key_value(&mut self) {
-        self.pairs
-            .insert(self.key_input.clone(), self.value_input.clone());
+        self.pairs.insert(
+            std::mem::take(&mut self.key_input),
+            std::mem::take(&mut self.value_input),
+        );
 
-        self.key_input = String::new();
-        self.value_input = String::new();
         self.currently_editing = None;
     }
     // ANCHOR_END: save_key_value
