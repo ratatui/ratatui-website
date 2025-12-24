@@ -67,7 +67,7 @@ can find more information about this template in the [Hello World Template READM
 [Hello World Template README]: https://github.com/ratatui/templates/blob/main/hello-world/README.md
 
 ```shell title="create new rust project"
-cargo generate ratatui/templates simple
+cargo generate ratatui/templates hello-world
 ```
 
 :::note
