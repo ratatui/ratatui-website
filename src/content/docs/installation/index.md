@@ -17,15 +17,6 @@ or by adding the following to your `Cargo.toml` file:
 ratatui = "0.30.0"
 ```
 
-:::note
-
-Before Ratatui 0.30.0, using additional widgets (currently just the
-[Calendar widget](https://docs.rs/ratatui/latest/ratatui/widgets/calendar/index.html))
-required manually enabling the `all-widgets` feature. Starting from Ratatui 0.30.0, it is enabled 
-by default. See [Feature Flags] for more details.
-
-:::
-
 By default, `ratatui` enables the `crossterm` feature, but it's possible to alternatively use
 `termion`, or `termwiz` instead by enabling the appropriate feature and disabling the default
 features. See [Backend] for more information.
@@ -65,4 +56,3 @@ ratatui = { version = "0.30.0", default-features = false, features = ["termwiz"]
 ```
 
 [Backend]: /concepts/backends/
-[Feature Flags]: /installation/feature-flags/
