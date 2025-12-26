@@ -14,26 +14,15 @@ or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-ratatui = "0.28.0"
+ratatui = "0.30.0"
 ```
 
-:::tip
+:::note
 
-Additionally, you can use the `all-widgets` feature, which enables additional widgets:
-
-```shell
-cargo add ratatui --features all-widgets
-```
-
-or by adding the following to your `Cargo.toml` file:
-
-```toml
-[dependencies]
-ratatui = { version = "0.28.0", features = ["all-widgets"] }
-```
-
-You can learn more about available widgets from the
-[docs.rs page on widgets](https://docs.rs/ratatui/latest/ratatui/widgets/index.html).
+Before Ratatui 0.30.0, using additional widgets (currently just the
+[Calendar widget](https://docs.rs/ratatui/latest/ratatui/widgets/calendar/index.html))
+required manually enabling the `all-widgets` feature. Starting from Ratatui 0.30.0, it is enabled 
+by default. See [Feature Flags] for more details.
 
 :::
 
@@ -59,7 +48,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.28.0", default-features = false, features = ["termion"] }
+ratatui = { version = "0.30.0", default-features = false, features = ["termion"] }
 ```
 
 For Termwiz:
@@ -72,7 +61,8 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.28.0", default-features = false, features = ["termwiz"] }
+ratatui = { version = "0.30.0", default-features = false, features = ["termwiz"] }
 ```
 
 [Backend]: /concepts/backends/
+[Feature Flags]: /installation/feature-flags/
