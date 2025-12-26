@@ -28,20 +28,27 @@ cargo add termwiz
 
 ## All-Widgets
 
-This feature enables some extra widgets that are not in `default` to save on compile time. As of
-v0.21, the only widget in this feature group is the `calendar` widget, which can be enabled with the
-`widget-calendar` feature.
+As of v0.21, the only widget in this feature group is the `calendar` widget, which can be enabled
+with the `widget-calendar` feature.
+
+:::note
+
+Starting from v0.30.0, the `all-widgets` feature is enabled by default. It can be disabled to save
+on compile time.
+
+:::
 
 ```shell
-cargo add ratatui --features all-widgets
+cargo add ratatui --no-default-features --features=all-widgets
 ```
 
 ## Widget-Calendar
 
-This feature enables the calendar widget, which requires the `time` crate.
+This feature enables the calendar widget, which requires the `time` crate. It is enabled by default
+as part of the `all-widgets` feature.
 
 ```shell
-cargo add ratatui --features widget-calendar
+cargo add ratatui --no-default-features --features=widget-calendar
 ```
 
 ## Serde
