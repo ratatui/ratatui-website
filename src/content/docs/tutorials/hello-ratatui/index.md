@@ -10,8 +10,8 @@ Code for this tutorial is available to view at
 :::
 
 This tutorial will lead you through creating a simple "Hello World" TUI app that displays some text
-in the middle of the screen and waits for the user to press any key to exit. It demonstrates the
-tasks that any application developed with Ratatui needs to undertake.
+in the top-left corner of the screen and waits for the user to press any key to exit. It
+demonstrates the tasks that any application developed with Ratatui needs to undertake.
 
 We assume you have a basic understanding of the terminal, and have a text editor or IDE. If you
 don't have a preference, [VSCode] with [rust-analyzer] makes a good default choice.
@@ -125,7 +125,7 @@ In previous versions, the setup of an app was quite a bit more complex. Older Ra
 code that includes a lot of boilerplate code to set up the app. Ratatui 0.28.1 has simplified this
 process to just calling `ratatui::init()` and `ratatui::restore()`. Ratatui 0.30.0 made it even
 simpler by introducing the `ratatui::run()` method, which handles those calls and can be used for
-most applications. 
+most applications.
 
 :::
 
