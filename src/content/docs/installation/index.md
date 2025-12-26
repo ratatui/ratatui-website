@@ -14,28 +14,8 @@ or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-ratatui = "0.28.0"
+ratatui = "0.30.0"
 ```
-
-:::tip
-
-Additionally, you can use the `all-widgets` feature, which enables additional widgets:
-
-```shell
-cargo add ratatui --features all-widgets
-```
-
-or by adding the following to your `Cargo.toml` file:
-
-```toml
-[dependencies]
-ratatui = { version = "0.28.0", features = ["all-widgets"] }
-```
-
-You can learn more about available widgets from the
-[docs.rs page on widgets](https://docs.rs/ratatui/latest/ratatui/widgets/index.html).
-
-:::
 
 By default, `ratatui` enables the `crossterm` feature, but it's possible to alternatively use
 `termion`, or `termwiz` instead by enabling the appropriate feature and disabling the default
@@ -59,7 +39,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.28.0", default-features = false, features = ["termion"] }
+ratatui = { version = "0.30.0", default-features = false, features = ["termion"] }
 ```
 
 For Termwiz:
@@ -72,7 +52,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.28.0", default-features = false, features = ["termwiz"] }
+ratatui = { version = "0.30.0", default-features = false, features = ["termwiz"] }
 ```
 
 [Backend]: /concepts/backends/
