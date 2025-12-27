@@ -86,7 +86,7 @@ features.
 2. Depend on `ratatui-core` instead of the full `ratatui` crate to avoid backend dependencies:
 
    ```toml
-   ratatui-core = { version = "0.30", default-features = false }
+   ratatui-core = { version = "0.1", default-features = false }
    ```
 
 3. Swap `std` types for their `core`/`alloc` equivalents, for example `core::fmt`,
