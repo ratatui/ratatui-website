@@ -310,7 +310,7 @@ for widget in widgets {
 [`StatefulWidget`]: https://docs.rs/ratatui/latest/ratatui/widgets/trait.StatefulWidget.html
 [`WidgetRef`]: https://docs.rs/ratatui/latest/ratatui/widgets/trait.WidgetRef.html
 [`StatefulWidgetRef`]: https://docs.rs/ratatui/latest/ratatui/widgets/trait.StatefulWidgetRef.html
-[`Block`]: https://docs.rs/ratatui/latest/ratatui/widgets/block/struct.Block.html
+[`Block`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.Block.html
 [`BarChart`]: https://docs.rs/ratatui/latest/ratatui/widgets/struct.BarChart.html
 [`Calendar`]: https://docs.rs/ratatui/latest/ratatui/widgets/calendar/struct.Monthly.html
 [`Canvas`]: https://docs.rs/ratatui/latest/ratatui/widgets/canvas/struct.Canvas.html
