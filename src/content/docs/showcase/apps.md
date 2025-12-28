@@ -74,7 +74,6 @@ provide detailed disk usage information and allowing for faster deletion of unne
 compared to the standard 'rm' command.
 
 [![dua demo](https://asciinema.org/a/kDnXUOeqBxZVMoWuFNqzfpeey.svg)](https://asciinema.org/a/kDnXUOeqBxZVMoWuFNqzfpeey)
-## [`dua`](https://github.com/Byron/dua-cli)
 
 ---
 
