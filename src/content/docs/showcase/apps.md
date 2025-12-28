@@ -74,6 +74,16 @@ provide detailed disk usage information and allowing for faster deletion of unne
 compared to the standard 'rm' command.
 
 [![dua demo](https://asciinema.org/a/kDnXUOeqBxZVMoWuFNqzfpeey.svg)](https://asciinema.org/a/kDnXUOeqBxZVMoWuFNqzfpeey)
+## [`dua`](https://github.com/Byron/dua-cli)
+
+---
+
+## [`eilmeldung`](https://github.com/christo-auer/eilmeldung)
+
+`eilmeldung` is a RSS reader based on the news-flash library, which supports many RSS providers, is very configurable,
+has an article query language and supports bulk-operations.
+
+[![eilmeldung screenshot](https://github.com/christo-auer/eilmeldung/blob/aafc6bfbff075c482a7d1f578dcfe9462b0e1627/docs/images/hero-shot.jpg)
 
 ---
 
