@@ -1,0 +1,82 @@
+---
+// TachyonFX Code Animation
+
+import { readFile } from "fs/promises";
+import RatatuiVersion from "./RatatuiVersion.astro";
+import CopyButton from "./CopyButton.astro";
+
+// Read file at build time
+const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "utf-8");
+---
+
+<div class="relative max-sm:hidden">
+  <RatatuiVersion />
+  <CopyButton code={code} class="absolute top-0 right-0" />
+  <div id="tachyon-canvas" class="bg-[#011627]"></div>
+</div>
+
+<script>
+  import init, { createRenderer, RendererConfig } from "tachyonfx-renderer";
+  import wasmUrl from "tachyonfx-renderer/tachyonfx_renderer_bg.wasm?url";
+  import { CODE_EXAMPLE } from "../assets/code-example-ansi.ts";
+
+  const FIRE_EFFECT = `let content_area = Rect::new(0, 0, 80, 27);
+let screen_bg = Color::from_u32(0x020617);
+// let content_bg = Color::from_u32(0xFFD04A);
+let content_bg = Color::from_u32(0x1E3A8A);
+
+let style = Style::default()
+    .fg(content_bg)
+    .bg(screen_bg);
+
+let boot_timer = (300, Interpolation::CircIn);
+let timer = (900, QuadIn);
+
+let startup = fx::evolve((EvolveSymbolSet::Shaded, style), boot_timer)
+    .with_pattern(RadialPattern::with_transition((0.5, 0.5), 10.0))
+    .with_area(content_area);
+
+// the effect runs reversed() so that the symbols appear
+// to flicker out; since it's reversed, the applied pattern
+// is the same as DissolvePattern if the effect wasn't rersed
+let inner_fire_fx = fx::evolve_from((EvolveSymbolSet::Quadrants, style), timer)
+    .with_pattern(CoalescePattern::new())
+    .with_area(content_area)
+    .reversed();
+
+// moving the rendered area upwards to mimic of fire
+let fire = fx::translate(inner_fire_fx, Offset { x: 0, y: -22 }, timer)
+    .with_area(content_area);
+
+let fade_in_text = fade_from(screen_bg, screen_bg, timer)
+    .with_filter(CellFilter::Text)
+    .with_area(content_area)
+    .with_pattern(CoalescePattern::new());
+
+
+fx::prolong_start(300, fx::sequence(&[
+    startup,
+    fx::parallel(&[
+        fx::fade_from(screen_bg, screen_bg, 300),
+        fire,
+        fade_in_text,
+    ])
+]))
+`;
+
+  async function initTachyon() {
+    try {
+      await init(wasmUrl);
+
+      const config = new RendererConfig("tachyon-canvas")
+        .withDsl(FIRE_EFFECT)
+        .withCanvas(CODE_EXAMPLE);
+
+      const renderer = createRenderer(config);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  initTachyon();
+</script>
