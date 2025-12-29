@@ -4,6 +4,7 @@
 import { readFile } from "fs/promises";
 import RatatuiVersion from "./RatatuiVersion.astro";
 import CopyButton from "./CopyButton.astro";
+import CodeExampleLabel from "./CodeExampleLabel.astro";
 
 // Read file at build time
 const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "utf-8");
@@ -13,6 +14,7 @@ const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "
   <RatatuiVersion />
   <CopyButton code={code} class="absolute top-0 right-0" />
   <div id="tachyon-canvas" class="bg-[#011627]"></div>
+  <CodeExampleLabel />
 </div>
 
 <script>
@@ -22,7 +24,6 @@ const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "
 
   const FIRE_EFFECT = `let content_area = Rect::new(0, 0, 80, 27);
 let screen_bg = Color::from_u32(0x020617);
-// let content_bg = Color::from_u32(0xFFD04A);
 let content_bg = Color::from_u32(0x1E293B);
 
 let style = Style::default()
@@ -38,7 +39,7 @@ let startup = fx::evolve((EvolveSymbolSet::Shaded, style), boot_timer)
 
 // the effect runs reversed() so that the symbols appear
 // to flicker out; since it's reversed, the applied pattern
-// is the same as DissolvePattern if the effect wasn't rersed
+// is the same as DissolvePattern if the effect wasn't reversed
 let inner_fire_fx = fx::evolve_from((EvolveSymbolSet::Quadrants, style), timer)
     .with_pattern(CoalescePattern::new())
     .with_area(content_area)
