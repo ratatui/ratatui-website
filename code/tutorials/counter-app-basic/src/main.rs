@@ -147,7 +147,7 @@ mod tests {
 
     // ANCHOR: handle_key_event test
     #[test]
-    fn handle_key_event() -> io::Result<()> {
+    fn handle_key_event() {
         let mut app = App::default();
         app.handle_key_event(KeyCode::Right.into());
         assert_eq!(app.counter, 1);
@@ -158,8 +158,6 @@ mod tests {
         let mut app = App::default();
         app.handle_key_event(KeyCode::Char('q').into());
         assert!(app.exit);
-
-        Ok(())
     }
     // ANCHOR_END: handle_key_event test
 }
