@@ -74,6 +74,7 @@ fx::prolong_start(300, fx::sequence(&[
         .withCanvas(CODE_EXAMPLE);
 
       const renderer = createRenderer(config);
+      document.getElementById("code-label")?.classList.remove("opacity-0");
     } catch (error) {
       console.error("Error:", error);
     }
