@@ -2,7 +2,8 @@
 title: Hello World
 ---
 
-Demonstrates a basic hello world app.
+Demonstrates a basic hello world app. Source
+[hello-world.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/hello-world/src/main.rs).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
