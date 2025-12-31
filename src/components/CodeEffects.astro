@@ -20,7 +20,7 @@ const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "
 <script>
   import init, { createRenderer, RendererConfig } from "tachyonfx-renderer";
   import wasmUrl from "tachyonfx-renderer/tachyonfx_renderer_bg.wasm?url";
-  import { CODE_EXAMPLE } from "../assets/code-example-ansi.ts";
+  import { ANSI_CODE } from "../assets/code-example.ts";
 
   const FIRE_EFFECT = `let content_area = Rect::new(0, 0, 80, 27);
 let screen_bg = Color::from_u32(0x020617);
@@ -71,7 +71,7 @@ fx::prolong_start(300, fx::sequence(&[
 
       const config = new RendererConfig("tachyon-canvas")
         .withDsl(FIRE_EFFECT)
-        .withCanvas(CODE_EXAMPLE);
+        .withCanvas(ANSI_CODE);
 
       const renderer = createRenderer(config);
       document.getElementById("code-label")?.classList.remove("opacity-0");

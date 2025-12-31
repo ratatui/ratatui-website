@@ -16,7 +16,8 @@
     "format": "npm run _format -- --write",
     "format:check": "npm run _format -- --check",
     "preinstall": "npx playwright install",
-    "test": "vitest"
+    "test": "vitest",
+    "generate:ansi-code": "bash src/utils/generateAnsiCode.sh"
   },
   "dependencies": {
     "@astro-community/astro-embed-youtube": "^0.5.6",
