@@ -12,4 +12,4 @@ cargo run --example=demo2 --features=crossterm
 
 ![demo2](demo2-destroy.gif)
 
-Source: <https://github.com/ratatui/ratatui/tree/latest/examples/demo2>
+Source: <https://github.com/ratatui/ratatui/tree/latest/examples/apps/demo2>
