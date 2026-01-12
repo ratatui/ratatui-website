@@ -18,6 +18,9 @@ If you want to jump right into coding yourself, we provide templates for that. S
 We also have some [examples](https://github.com/ratatui/ratatui/tree/main/examples) that might help
 you get started on GitHub.
 
+If you are new to terminals, [How Terminals Work](https://how-terminals-work.vercel.app/) overview
+is a good place to start.
+
 :::
 
 :::note
