@@ -1,4 +1,6 @@
 #!/bin/bash
+# Use this script to generate ANSI code from the INPUT_FILE.
+# Execute it via npm run generate:ansi-code.
 
 set -euo pipefail
 
@@ -7,6 +9,18 @@ INPUT_FILE="${PROJECT_ROOT}/code/tutorials/quickstart-ratatui/src/main.rs"
 OUTPUT_FILE="${PROJECT_ROOT}/src/assets/code-example.ts"
 THEME="night-owlish"
 TARGET_WIDTH=64 #Line width excluding padding
+
+require_bat() {
+  if ! command -v bat >/dev/null 2>&1; then
+    echo "Error: 'bat' is not installed or not on PATH. Please install 'bat' to generate the ANSI code snippet." >&2
+    exit 1
+  fi
+
+  if ! bat --list-themes | grep -q "^${THEME}$"; then
+    echo "Error: bat theme '${THEME}' is not available. Install or configure the '${THEME}' theme before running this script." >&2
+    exit 1
+  fi
+}
 
 bat_highlight() {
   bat --theme="$THEME" --color=always --decorations=never "$INPUT_FILE"
@@ -115,6 +129,7 @@ build_ansi_code() {
 }
 
 main() {
+  require_bat
   build_ansi_code
 }
 

@@ -22,56 +22,20 @@ const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "
   import wasmUrl from "tachyonfx-renderer/tachyonfx_renderer_bg.wasm?url";
   import { ANSI_CODE } from "../assets/code-example.ts";
 
-  const FIRE_EFFECT = `let content_area = Rect::new(0, 0, 80, 27);
+  const EFFECT = `let content_area = Rect::new(0, 0, 80, 27);
 let screen_bg = Color::from_u32(0x020617);
-let content_bg = Color::from_u32(0x1E293B);
 
-let style = Style::default()
-    .fg(content_bg)
-    .bg(screen_bg);
-
-let boot_timer = (300, Interpolation::CircIn);
-let timer = (900, QuadIn);
-
-let startup = fx::evolve((EvolveSymbolSet::Shaded, style), boot_timer)
-    .with_pattern(RadialPattern::with_transition((0.5, 0.5), 10.0))
-    .with_area(content_area);
-
-// the effect runs reversed() so that the symbols appear
-// to flicker out; since it's reversed, the applied pattern
-// is the same as DissolvePattern if the effect wasn't reversed
-let inner_fire_fx = fx::evolve_from((EvolveSymbolSet::Quadrants, style), timer)
-    .with_pattern(CoalescePattern::new())
-    .with_area(content_area)
-    .reversed();
-
-// moving the rendered area upwards to mimic of fire
-let fire = fx::translate(inner_fire_fx, Offset { x: 0, y: -22 }, timer)
-    .with_area(content_area);
-
-let fade_in_text = fade_from(screen_bg, screen_bg, timer)
-    .with_filter(CellFilter::Text)
-    .with_area(content_area)
-    .with_pattern(CoalescePattern::new());
-
-
-fx::prolong_start(300, fx::sequence(&[
-    startup,
-    fx::parallel(&[
-        fx::fade_from(screen_bg, screen_bg, 300),
-        fire,
-        fade_in_text,
-    ])
-]))
+fx::parallel(&[
+  fx::slide_in(Motion::LeftToRight, 10, 0, screen_bg, (1500, Interpolation::Linear)),
+  fx::coalesce((1800, Interpolation::QuadOut))
+])
 `;
 
   async function initTachyon() {
     try {
       await init(wasmUrl);
 
-      const config = new RendererConfig("tachyon-canvas")
-        .withDsl(FIRE_EFFECT)
-        .withCanvas(ANSI_CODE);
+      const config = new RendererConfig("tachyon-canvas").withDsl(EFFECT).withCanvas(ANSI_CODE);
 
       const renderer = createRenderer(config);
       document.getElementById("code-label")?.classList.remove("opacity-0");
