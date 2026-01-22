@@ -1,8 +1,10 @@
 ---
-title: Build websites (Ratzilla)
+title: Build websites
 sidebar:
   order: 3
 ---
+
+## Ratzilla
 
 > Build terminal-themed web applications with Rust and WebAssembly.
 
