@@ -1,8 +1,10 @@
 ---
-title: Effects and animations (Tachyonfx)
+title: Effects and animations
 sidebar:
   order: 1
 ---
+
+## Tachyonfx
 
 > An effects and animation library for Ratatui applications.
 

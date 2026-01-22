@@ -1,8 +1,10 @@
 ---
-title: Embedded (Mousefood)
+title: Embedded
 sidebar:
   order: 2
 ---
+
+## Mousefood
 
 > An [embedded-graphics](https://docs.rs/embedded-graphics) backend for Ratatui! Supports `no_std`.
 
