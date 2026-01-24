@@ -10,7 +10,7 @@ sidebar:
 
 ![Ratzilla demo](https://github.com/ratatui/ratzilla/blob/main/assets/demo.gif?raw=true)
 
-➡️ Demo: <https://orhun.dev/ratzilla/demo/>
+➡️ Demo: <https://ratatui.github.io/ratzilla/demo/>
 
 - [Quickstart](https://github.com/ratatui/ratzilla?tab=readme-ov-file#quickstart)
 - [API Documentation](https://docs.rs/ratzilla/)
