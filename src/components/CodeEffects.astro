@@ -23,26 +23,122 @@ const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "
   import { ANSI_CODE } from "../assets/code-example.ts";
 
   const EFFECT = `let content_area = Rect::new(0, 0, 80, 27);
-let screen_bg = Color::from_u32(0x020617);
-
-fx::parallel(&[
-  fx::slide_in(Motion::LeftToRight, 10, 0, screen_bg, (1500, Interpolation::Linear)),
-  fx::coalesce((1800, Interpolation::QuadOut))
-])
+let screen_bg = Color::from_u32(0x0F172A);
+let style = Style::default().bg(screen_bg);
+fx::coalesce_from(style,(1800, Interpolation::QuadOut))
 `;
+
+  let renderer: any = null;
+  let loseContextExt: any = null;
+  let restoreTimeout: any = null;
+  let actualCanvas: HTMLCanvasElement | null = null;
+
+  function cleanupCanvas() {
+    const containerDiv = document.getElementById("tachyon-canvas");
+    if (containerDiv && actualCanvas) {
+      // Remove event listeners from old canvas
+      actualCanvas.removeEventListener("webglcontextlost", handleContextLost);
+      actualCanvas.removeEventListener("webglcontextrestored", handleContextRestored);
+
+      // Set canvas dimensions to 0 to free GPU memory
+      actualCanvas.width = 0;
+      actualCanvas.height = 0;
+
+      // Remove the canvas from DOM
+      if (actualCanvas.parentNode) {
+        actualCanvas.parentNode.removeChild(actualCanvas);
+      }
+
+      actualCanvas = null;
+    }
+
+    // Clear the container completely
+    if (containerDiv) {
+      containerDiv.innerHTML = "";
+    }
+
+    renderer = null;
+    loseContextExt = null;
+  }
+
+  function handleContextLost(event: Event) {
+    event.preventDefault();
+    console.warn("WebGL context lost - will attempt restore");
+
+    // Try to force restore after 2 seconds
+    restoreTimeout = setTimeout(() => {
+      if (loseContextExt) {
+        console.log("Forcing context restoration");
+        try {
+          loseContextExt.restoreContext();
+        } catch (e) {
+          console.error("Failed to restore context:", e);
+        }
+      }
+    }, 2000);
+  }
+
+  async function handleContextRestored() {
+    console.log("WebGL context restored - reinitializing");
+
+    if (restoreTimeout) {
+      clearTimeout(restoreTimeout);
+      restoreTimeout = null;
+    }
+
+    // Clean up old canvas completely before reinitializing
+    cleanupCanvas();
+
+    // Wait a bit before reinitializing
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    await initTachyon();
+  }
+
+  function setupContextHandlers(canvas: HTMLCanvasElement) {
+    canvas.addEventListener("webglcontextlost", handleContextLost, false);
+    canvas.addEventListener("webglcontextrestored", handleContextRestored, false);
+  }
 
   async function initTachyon() {
     try {
-      await init(wasmUrl);
+      await init({ module_or_path: wasmUrl });
 
       const config = new RendererConfig("tachyon-canvas").withDsl(EFFECT).withCanvas(ANSI_CODE);
 
-      const renderer = createRenderer(config);
+      renderer = createRenderer(config);
+
+      // Find the actual canvas element created by the renderer
+      const containerDiv = document.getElementById("tachyon-canvas");
+      if (containerDiv) {
+        actualCanvas = containerDiv.querySelector("canvas");
+
+        if (actualCanvas) {
+          // Get WebGL context and extension
+          const gl =
+            actualCanvas.getContext("webgl", {
+              preserveDrawingBuffer: true,
+            }) ||
+            actualCanvas.getContext("webgl2", {
+              preserveDrawingBuffer: true,
+            });
+
+          if (gl) {
+            loseContextExt = gl.getExtension("WEBGL_lose_context");
+
+            // Setup handlers on the actual canvas element
+            setupContextHandlers(actualCanvas);
+
+            console.log("TachyonFX initialized successfully");
+          }
+        }
+      }
+
       document.getElementById("code-label")?.classList.remove("opacity-0");
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error initializing TachyonFX:", error);
     }
   }
 
+  // Start initialization
   initTachyon();
 </script>
