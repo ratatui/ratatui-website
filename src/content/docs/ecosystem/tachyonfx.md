@@ -13,9 +13,9 @@ visual polish to the terminal.
 
 [![](https://github.com/junkdog/exabind/raw/main/demo/exabind-02.gif)](https://junkdog.github.io/exabind/)
 
-- [Getting Started](https://github.com/junkdog/tachyonfx?tab=readme-ov-file#getting-started)
+- [Getting Started](https://github.com/ratatui/tachyonfx?tab=readme-ov-file#getting-started)
 - [Effects API](https://docs.rs/tachyonfx/latest/tachyonfx/fx/index.html)
-- [Examples](https://github.com/junkdog/tachyonfx/tree/development/examples)
+- [Examples](https://github.com/ratatui/tachyonfx/tree/development/examples)
 
 :::tip
 
@@ -24,7 +24,7 @@ You can also try out these effects on your browser via Tachyonfx FTL:
 
 :::
 
-![](https://raw.githubusercontent.com/junkdog/tachyonfx/development/images/tfx-ftl.png)
+![](https://raw.githubusercontent.com/ratatui/tachyonfx/development/images/tfx-ftl.png)
 
 :::note
 
