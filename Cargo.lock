@@ -2726,6 +2726,7 @@ dependencies = [
 name = "recipes"
 version = "0.0.0"
 dependencies = [
+ "color-eyre",
  "ratatui",
 ]
 
