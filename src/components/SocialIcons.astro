@@ -6,16 +6,19 @@ const links = config.social || [];
 ---
 
 {
-  links.length > 0 && (
-    <>
-      {links.map(({ label, href, icon }) => (
-        <a {href} rel="me noopener noreferrer" target="_blank" class="sl-flex">
-          <span class="sr-only">{label}</span>
-          <Icon name={icon} />
-        </a>
-      ))}
-    </>
-  )
+  links.length > 0 &&
+    links.map(({ label, href, icon }) => (
+      <a
+        {href}
+        rel="me noopener noreferrer" 
+        target="_blank"
+        aria-label={label}
+        class="sl-flex"
+      >
+        <span class="sr-only">{label}</span>
+        <Icon name={icon} />
+      </a>
+    ))
 }
 
 <style>
