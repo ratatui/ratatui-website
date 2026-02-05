@@ -247,6 +247,14 @@ assist with the analysis of networking issues.
 
 ---
 
+## [`wireman`](https://github.com/preiter93/wireman)
+
+A configurable gRPC client for the terminal that works with vim-like motions or with the mouse and system editor,.
+
+![wireman demo](https://github.com/preiter93/wireman/blob/main/example/tape/demo.gif?raw=true)
+
+---
+
 ## [`xplr`](https://github.com/sayanarijit/xplr)
 
 A hackable, minimal, fast TUI file explorer
