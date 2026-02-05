@@ -101,7 +101,7 @@ cargo run --example=barchart-grouped --features=crossterm
 
 ## Block
 
-Demonstrates the [`Block`](https://docs.rs/ratatui/latest/ratatui/widgets/block/struct.Block.html)
+Demonstrates the [`Block`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Block.html)
 widget. Source: [block.rs](./block.rs).
 
 ```shell
