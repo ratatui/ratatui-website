@@ -82,7 +82,7 @@ compared to the standard 'rm' command.
 `eilmeldung` is a RSS reader based on the news-flash library, which supports many RSS providers, is
 very configurable, has an article query language and supports bulk-operations.
 
-![eilmeldung screenshot](https://github.com/christo-auer/eilmeldung/blob/aafc6bfbff075c482a7d1f578dcfe9462b0e1627/docs/images/hero-shot.jpg?raw=true)
+![eilmeldung screenshot](https://github.com/christo-auer/eilmeldung/blob/bd975910adb06e0cfa383f75fbe20e702a9a03eb/docs/images/hero-shot.jpg?raw=true)
 
 ---
 
