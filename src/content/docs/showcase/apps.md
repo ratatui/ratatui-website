@@ -226,6 +226,14 @@ A terminal user interface for taskwarrior
 
 ---
 
+## [`taws`](https://github.com/huseyinbabal/taws)
+
+A terminal-based AWS resource viewer and manager
+
+![taws screenshot](https://github.com/huseyinbabal/taws/raw/master/assets/screenshot-ec2.png)
+
+---
+
 ## [`television`](https://github.com/alexpasmantier/television)
 
 Television is a fast and versatile fuzzy finder TUI.
