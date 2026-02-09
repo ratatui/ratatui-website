@@ -183,6 +183,12 @@ provides several constraint types for fine-tuning your user interface's layout:
 - `Constraint::Max(u16)`: Limits the maximum size of a component. Similar to `Min`, if mixed with
   `Percentage` or `Ratio`, the component will never exceed the specified maximum size.
 
+- `Constraint::Fill(u16)`: Applies the scaling factor proportional to all other `Constraint::Fill`
+  elements to fill excess space.
+
+  The element will only expand or fill into excess available space, proportionally matching other
+  `Constraint::Fill` elements while satisfying all other constraints.
+
 :::caution
 
 The `Ratio` and `Percentage` constraints are defined in terms of the parent's size.
@@ -223,6 +229,74 @@ order to determine the right size for the rects. In some cases, not every constr
 possible to achieve, and the solver can return an arbitrary solution that is close to fulfilling the
 constraints. The specific result is non-deterministic when this occurs.
 
+## Flex Layouts
+
+The [`Flex`] system determines how elements are positioned when the constraints don't perfectly fill the available area.
+
+### Alignment Strategies
+
+| Flex Variant | Behavior |
+| :--- | :--- |
+| `Flex::Legacy` | Fills the available space within the container, putting excess space into the last element. |
+| `Flex::Start` | Aligns items to the start of the container. |
+| `Flex::End` | Aligns items to the end of the container. |
+| `Flex::Center` | Centers items within the container. |
+| `Flex::SpaceBetween` | Adds excess space between each element. |
+| `Flex::SpaceAround` | Adds excess space around each element. |
+
+Examples
+
+Here is how two `Length(20)` elements are positioned across the same 80-cell area using different `Flex` strategies:
+
+"Flex::Start"
+```svgbob
+<--------------------------------------- 80 px ---------------------------------------->
+┌────────────────────┐┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐
+│    Length(20)      ││    Length(20)      ││              40 px Spacer                │
+└────────────────────┘└────────────────────┘└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘
+```
+
+"Flex::Center"
+```svgbob
+<--------------------------------------- 80 px ---------------------------------------->
+┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐
+│   20 px Spacer     ││    Length(20)      ││    Length(20)      ││   20 px Spacer     │
+└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘└────────────────────┘└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘
+```
+
+"Flex::End"
+```svgbob
+<--------------------------------------- 80 px ---------------------------------------->
+┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐┌────────────────────┐
+│              40 px Spacer                ││    Length(20)      ││    Length(20)      │
+└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘└────────────────────┘
+```
+
+"Flex::SpaceAround"
+```svgbob
+<--------------------------------------- 80 px ---------------------------------------->
+┌╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ┐
+│  Spacer  ││    Length(20)      ││      Spacer      ││    Length(20)      ││  Spacer  │
+└╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘└╌ ╌ ╌ ╌ ╌ ┘
+```
+
+"Flex::SpaceBetween"
+```svgbob
+<--------------------------------------- 80 px ---------------------------------------->
+┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐
+│    Length(20)      ││                 40 px Spacer             ││    Length(20)      │
+└────────────────────┘└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘
+```
+
+You can also use `.spacing(u16)` on a layout to automatically add gaps between your elements:
+
+```rust
+let layout = Layout::horizontal([Length(10), Length(10)])
+    .flex(Flex::Center)
+    .spacing(2) // 2-cell gap between items
+    .split(area);
+```
+
 ## Other Layout approaches
 
 There are a few PoCs of using [Taffy](https://crates.io/crates/taffy) for creating layouts that use
@@ -243,4 +317,5 @@ for more details.
 [`Frame::render_stateful_widget`]:
   https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_stateful_widget
 [`Constraint`]: https://docs.rs/ratatui/latest/ratatui/layout/enum.Constraint.html
+[`Flex`]: https://docs.rs/ratatui/latest/ratatui/layout/enum.Flex.html
 [faq-avoid-panics]: /faq#how-do-i-avoid-panics-due-to-out-of-range-calls-on-the-buffer
