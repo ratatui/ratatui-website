@@ -1,0 +1,51 @@
+---
+// TachyonFX Code Animation
+
+import { readFile } from "fs/promises";
+import RatatuiVersion from "./RatatuiVersion.astro";
+import CopyButton from "./CopyButton.astro";
+import CodeExampleLabel from "./CodeExampleLabel.astro";
+
+// Read file at build time
+const code = await readFile("./code/tutorials/quickstart-ratatui/src/main.rs", "utf-8");
+---
+
+<div class="relative max-sm:hidden">
+  <RatatuiVersion />
+  <CopyButton code={code} class="absolute top-0 right-0" />
+  <div id="tachyon-canvas" class="bg-[#011627]"></div>
+  <CodeExampleLabel />
+</div>
+
+<script>
+  import init, { createRenderer, RendererConfig } from "tachyonfx-renderer";
+  import wasmUrl from "tachyonfx-renderer/tachyonfx_renderer_bg.wasm?url";
+  import { ANSI_CODE } from "../assets/code-example.ts";
+
+  const EFFECT = `let content_area = Rect::new(0, 0, 80, 27);
+let screen_bg = Color::from_u32(0x0F172A);
+let style = Style::default().bg(screen_bg);
+fx::coalesce_from(style,(1800, Interpolation::QuadOut))
+`;
+
+  let renderer: ReturnType<typeof createRenderer> | null = null;
+
+  async function initTachyon() {
+    try {
+      await init({ module_or_path: wasmUrl });
+      const config = new RendererConfig("tachyon-canvas").withDsl(EFFECT).withCanvas(ANSI_CODE);
+      renderer = createRenderer(config);
+
+      // Only show the attributions after the renderer has loaded
+      document.getElementById("code-label")?.classList.remove("opacity-0");
+    } catch (error) {
+      console.error("Error initializing TachyonFX:", error);
+    }
+  }
+
+  initTachyon();
+
+  document.addEventListener("astro:before-swap", () => {
+    renderer?.destroy();
+  });
+</script>
