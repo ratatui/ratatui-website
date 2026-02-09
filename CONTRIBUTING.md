@@ -25,7 +25,6 @@ pnpm install && pnpm dev
 ## Commands
 
 - Website (Astro/Starlight):
-
   - `pnpm dev` or `npm run dev` for viewing locally
   - Format: `pnpm format` / `npm run format -- --write` (write) or `npm run format -- --check` (note
     the double `--`)
