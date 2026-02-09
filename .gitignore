@@ -21,3 +21,6 @@ pnpm-debug.log*
 
 code/**/target
 target
+
+# local editor settings (use global VS Code settings instead)
+.vscode/settings.json
