@@ -8,4 +8,4 @@ publish.workspace = true
 
 [dependencies]
 color-eyre = "0.6.3"
-ratatui = "0.29.0"
+ratatui = "0.30.0"
