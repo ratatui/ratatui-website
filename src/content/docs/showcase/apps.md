@@ -247,6 +247,14 @@ assist with the analysis of networking issues.
 
 ---
 
+## [`turm`](https://github.com/karimknaebel/turm)
+
+A TUI for [Slurm](https://slurm.schedmd.com/), which provides a convenient way to manage your cluster jobs.
+
+![turm screenshot](https://github.com/user-attachments/assets/7daade50-def3-4bf8-bf12-df311438094e)
+
+---
+
 ## [`xplr`](https://github.com/sayanarijit/xplr)
 
 A hackable, minimal, fast TUI file explorer
