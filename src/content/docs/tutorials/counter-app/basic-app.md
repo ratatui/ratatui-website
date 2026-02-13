@@ -60,10 +60,11 @@ A common pattern found in most Ratatui apps is that they:
 2. Run the application in a loop until the user exits the app
 3. Restore the terminal back to its original state
 
-The `main` function sets up the terminal by calling the `ratatui::init` and `ratatui::restore`
-methods and then creates and runs the App (defined later). It defers propagating the return of
-`App::run()`'s result until after the terminal is restored to ensure that any `Error` results will
-be displayed to the user after the application exits.
+The `main` function calls `ratatui::run()`. The `ratatui::run()` function sets up the terminal by
+calling the `ratatui::init` and `ratatui::restore` methods and then creates and runs the App
+(defined later). It defers propagating the return of `App::run()`'s result until after the terminal
+is restored to ensure that any `Error` results will be displayed to the user after the application
+exits.
 
 Fill out the main function:
 
