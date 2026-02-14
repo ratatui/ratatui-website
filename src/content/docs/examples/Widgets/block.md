@@ -2,8 +2,7 @@
 title: Block
 ---
 
-Demonstrates the [`Block`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Block.html)
-widget.
+Demonstrates the [`Block`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Block.html) widget.
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
