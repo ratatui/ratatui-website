@@ -36,6 +36,7 @@
     "remark-custom-heading-id": "^2.0.0",
     "remark-svgbob": "^1.1.1",
     "sharp": "^0.33.5",
+    "starlight-auto-sidebar": "^0.1.4",
     "starlight-links-validator": "0.14.1",
     "tailwindcss": "^4.1.14",
     "toml": "^3.0.0",
