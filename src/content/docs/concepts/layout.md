@@ -231,24 +231,27 @@ constraints. The specific result is non-deterministic when this occurs.
 
 ## Flex Layouts
 
-The [`Flex`] system determines how elements are positioned when the constraints don't perfectly fill the available area.
+The [`Flex`] system determines how elements are positioned when the constraints don't perfectly fill
+the available area.
 
 ### Alignment Strategies
 
-| Flex Variant | Behavior |
-| :--- | :--- |
-| `Flex::Legacy` | Fills the available space within the container, putting excess space into the last element. |
-| `Flex::Start` | Aligns items to the start of the container. |
-| `Flex::End` | Aligns items to the end of the container. |
-| `Flex::Center` | Centers items within the container. |
-| `Flex::SpaceBetween` | Adds excess space between each element. |
-| `Flex::SpaceAround` | Adds excess space around each element. |
+| Flex Variant         | Behavior                                                                                    |
+| :------------------- | :------------------------------------------------------------------------------------------ |
+| `Flex::Legacy`       | Fills the available space within the container, putting excess space into the last element. |
+| `Flex::Start`        | Aligns items to the start of the container.                                                 |
+| `Flex::End`          | Aligns items to the end of the container.                                                   |
+| `Flex::Center`       | Centers items within the container.                                                         |
+| `Flex::SpaceBetween` | Adds excess space between each element.                                                     |
+| `Flex::SpaceAround`  | Adds excess space around each element.                                                      |
 
-Examples
+### Examples
 
-Here is how two `Length(20)` elements are positioned across the same 80-cell area using different `Flex` strategies:
+Here is how two `Length(20)` elements are positioned across the same 80-cell area using different
+`Flex` strategies:
 
-"Flex::Start"
+#### Flex::Start
+
 ```svgbob
 <--------------------------------------- 80 px ---------------------------------------->
 ┌────────────────────┐┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐
@@ -256,7 +259,8 @@ Here is how two `Length(20)` elements are positioned across the same 80-cell are
 └────────────────────┘└────────────────────┘└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘
 ```
 
-"Flex::Center"
+#### Flex::Center
+
 ```svgbob
 <--------------------------------------- 80 px ---------------------------------------->
 ┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐
@@ -264,7 +268,8 @@ Here is how two `Length(20)` elements are positioned across the same 80-cell are
 └╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘└────────────────────┘└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘
 ```
 
-"Flex::End"
+#### Flex::End
+
 ```svgbob
 <--------------------------------------- 80 px ---------------------------------------->
 ┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐┌────────────────────┐
@@ -272,7 +277,8 @@ Here is how two `Length(20)` elements are positioned across the same 80-cell are
 └╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘└────────────────────┘
 ```
 
-"Flex::SpaceAround"
+#### Flex::SpaceAround
+
 ```svgbob
 <--------------------------------------- 80 px ---------------------------------------->
 ┌╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ┐
@@ -280,7 +286,8 @@ Here is how two `Length(20)` elements are positioned across the same 80-cell are
 └╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘└╌ ╌ ╌ ╌ ╌ ┘
 ```
 
-"Flex::SpaceBetween"
+#### Flex::SpaceBetween
+
 ```svgbob
 <--------------------------------------- 80 px ---------------------------------------->
 ┌────────────────────┐┌╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┐┌────────────────────┐
@@ -288,7 +295,9 @@ Here is how two `Length(20)` elements are positioned across the same 80-cell are
 └────────────────────┘└╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ╌ ┘└────────────────────┘
 ```
 
-You can also use `.spacing(u16)` on a layout to automatically add gaps between your elements:
+:::tip
+
+You can also use [`.spacing(u16)`] on a layout to automatically add gaps between your elements:
 
 ```rust
 let layout = Layout::horizontal([Length(10), Length(10)])
@@ -296,6 +305,8 @@ let layout = Layout::horizontal([Length(10), Length(10)])
     .spacing(2) // 2-cell gap between items
     .split(area);
 ```
+
+:::
 
 ## Other Layout approaches
 
@@ -318,4 +329,5 @@ for more details.
   https://docs.rs/ratatui/latest/ratatui/terminal/struct.Frame.html#method.render_stateful_widget
 [`Constraint`]: https://docs.rs/ratatui/latest/ratatui/layout/enum.Constraint.html
 [`Flex`]: https://docs.rs/ratatui/latest/ratatui/layout/enum.Flex.html
+[`.spacing(u16)`]: https://docs.rs/ratatui/latest/ratatui/prelude/struct.Layout.html#method.spacing
 [faq-avoid-panics]: /faq#how-do-i-avoid-panics-due-to-out-of-range-calls-on-the-buffer
