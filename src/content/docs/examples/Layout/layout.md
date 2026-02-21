@@ -7,7 +7,7 @@ Demonstrates the [`Layout`](https://docs.rs/ratatui/latest/ratatui/layout/struct
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=layout --features=crossterm
+cargo run -p constraint-explorer
 ```
 
 ![layout](layout.gif)
