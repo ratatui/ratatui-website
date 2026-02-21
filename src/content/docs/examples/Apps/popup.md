@@ -9,7 +9,7 @@ Demonstrates how to render a widget over the top of previously rendered widgets 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=popup --features=crossterm
+cargo run -p popup
 ```
 
 ![popup](popup.gif)

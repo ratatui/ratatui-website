@@ -8,7 +8,7 @@ Demonstrates the setting up panic hooks. Source
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=panic --features=crossterm
+cargo run -p panic
 ```
 
 ![panic](panic.gif)

@@ -8,7 +8,7 @@ Demonstrates a basic hello world app. Source
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=hello_world --features=crossterm
+cargo run -p hello-world
 ```
 
 ![hello_world](hello_world.gif)

@@ -7,9 +7,9 @@ This is the original demo example from the main README. It is available for each
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=demo --features=crossterm
-cargo run --example=demo --no-default-features --features=termion
-cargo run --example=demo --no-default-features --features=termwiz
+cargo run -p demo
+cargo run -p demo --no-default-features --features termion
+cargo run -p demo --no-default-features --features termwiz
 ```
 
 ![demo](demo.gif)

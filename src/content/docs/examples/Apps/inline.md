@@ -9,7 +9,7 @@ Source [inline.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/in
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=inline --features=crossterm
+cargo run -p inline
 ```
 
 ![inline](inline.gif)
