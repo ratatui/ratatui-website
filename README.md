@@ -13,4 +13,6 @@ To read this content online, visit:
 
 <https://ratatui.rs>
 
-We welcome contributions! Please see [CONTRIBUTING.md](https://github.com/ratatui/ratatui-website/blob/main/CONTRIBUTING.md) to get started.
+We welcome contributions! Please see
+[CONTRIBUTING.md](https://github.com/ratatui/ratatui-website/blob/main/CONTRIBUTING.md) to get
+started.

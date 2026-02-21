@@ -22,10 +22,10 @@ npm run dev
 ```
 
 > [!NOTE]  
-> Using a different package manager may result in errors. `pnpm`, for example, is known not to work because of it's dependency isolation.
+> Using a different package manager may result in errors. `pnpm`, for example, is known not to work
+> because of it's dependency isolation.
 
-> [!NOTE]
-> `npm install` triggers Playwright's browser download; you can skip the heavy Chromium
+> [!NOTE] > `npm install` triggers Playwright's browser download; you can skip the heavy Chromium
 > bundle by hitting Ctrl+C once that download starts if you do not plan to run the end-to-end tests.
 
 ## Commands
@@ -33,8 +33,8 @@ npm run dev
 - Website (Astro/Starlight):
 
   - `npm run dev` for viewing locally
-  - Format: `npm run format -- --write` (write) or `npm run format -- --check` (note
-    the double `--`)
+  - Format: `npm run format -- --write` (write) or `npm run format -- --check` (note the double
+    `--`)
   - Type-check: `npm run astro check`
   - Build: `npm run build` (runs `astro check`)
   - Tests: `npm test`
