@@ -8,7 +8,7 @@ Demonstrates the style
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=modifiers --features=crossterm
+cargo run -p modifiers
 ```
 
 ![modifiers](modifiers.gif)

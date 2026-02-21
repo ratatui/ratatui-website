@@ -9,7 +9,7 @@ interaction.
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=custom_widget --features=crossterm
+cargo run -p custom-widget
 ```
 
 ![custom_widget](custom_widget.gif)

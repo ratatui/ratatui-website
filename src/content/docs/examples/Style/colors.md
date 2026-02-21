@@ -8,7 +8,7 @@ options. These can be used in any style field.
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=colors --features=crossterm
+cargo run -p color-explorer
 ```
 
 ![colors](colors.gif)

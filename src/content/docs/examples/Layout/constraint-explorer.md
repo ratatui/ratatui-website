@@ -8,7 +8,7 @@ constraints.
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=constraint-explorer --features=crossterm
+cargo run -p constraint-explorer
 ```
 
 ![constraint-explorer](constraint-explorer.gif)

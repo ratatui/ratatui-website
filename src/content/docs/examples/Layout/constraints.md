@@ -9,7 +9,7 @@ other in a layout.
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=constraints --features=crossterm
+cargo run -p constraints
 ```
 
 ![constraints](constraints.gif)
