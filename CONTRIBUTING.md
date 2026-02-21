@@ -21,7 +21,8 @@ npm install
 npm run dev
 ```
 
-Using a different package manager may result in errors. pnpm, for example, is known not to work because of it's dependency isolation.
+> [!NOTE]  
+> Using a different package manager may result in errors. `pnpm`, for example, is known not to work because of it's dependency isolation.
 
 > [!NOTE]
 > `npm install` triggers Playwright's browser download; you can skip the heavy Chromium
