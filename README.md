@@ -11,19 +11,6 @@ rich Terminal User Interfaces.
 
 To read this content online, visit:
 
-<https://ratatui.rs/>
+<https://ratatui.rs>
 
-To build and run the site locally:
-
-```shell
-git clone https://github.com/ratatui/ratatui-website/
-cd ratatui-website
-
-git lfs install
-git lfs pull
-
-npm install
-npm run dev
-```
-
-Feel free to make contributions and submit a PR if you'd like to improve the documentation.
+We welcome contributions! Please see [CONTRIBUTING.md](https://github.com/ratatui/ratatui-website/blob/main/CONTRIBUTING.md) to get started.
