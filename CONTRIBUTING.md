@@ -31,7 +31,6 @@ npm run dev
 ## Commands
 
 - Website (Astro/Starlight):
-
   - `npm run dev` for viewing locally
   - Format: `npm run format -- --write` (write) or `npm run format -- --check` (note the double
     `--`)
