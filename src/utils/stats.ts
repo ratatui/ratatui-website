@@ -9,6 +9,11 @@ const octokit = new Octokit({
 });
 
 export async function getGitHubStats(owner: string, repo: string): Promise<GitHubRepo> {
+  const fallback = { stars: 13418, forks: 500 };
+  if (import.meta.env.DEV) {
+    return fallback;
+  }
+
   try {
     // Use Octokit's rest API for repo info
     const { data } = await octokit.rest.repos.get({
@@ -31,11 +36,16 @@ export async function getGitHubStats(owner: string, repo: string): Promise<GitHu
   } catch (error) {
     console.error("Failed to fetch GitHub stats (Octokit):", error);
     // Fallback values
-    return { stars: 13418, forks: 500 };
+    return fallback;
   }
 }
 
 export async function getCratesStats(): Promise<{ downloads: number }> {
+  const fallback = { downloads: 7124990 };
+  if (import.meta.env.DEV) {
+    return fallback;
+  }
+
   try {
     const response = await fetch("https://crates.io/api/v1/crates/ratatui", {
       headers: {
@@ -68,11 +78,16 @@ export async function getCratesStats(): Promise<{ downloads: number }> {
     console.error("Full error:", error);
 
     // Fallback value
-    return { downloads: 7124990 };
+    return fallback;
   }
 }
 
 export async function getShowcaseAppsCount(): Promise<{ count: number }> {
+  const fallback = { count: 1049 };
+  if (import.meta.env.DEV) {
+    return fallback;
+  }
+
   try {
     // Fetch reverse dependencies from crates.io API
     const response = await fetch(
@@ -107,7 +122,7 @@ export async function getShowcaseAppsCount(): Promise<{ count: number }> {
     console.error("Full error:", error);
 
     // Fallback value
-    return { count: 1049 };
+    return fallback;
   }
 }
 
