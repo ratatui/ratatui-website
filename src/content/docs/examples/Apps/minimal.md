@@ -13,6 +13,6 @@ cargo run -p minimal
 
 ![minimal](minimal.gif)
 
-```rust title=minimal.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/minimal.rs }}
 ```
