@@ -13,6 +13,6 @@ cargo run -p hello-world
 
 ![hello_world](hello_world.gif)
 
-```rust title=hello_world.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/hello_world.rs }}
 ```
