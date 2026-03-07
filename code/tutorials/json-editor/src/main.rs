@@ -62,7 +62,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 // ANCHOR: run_app_all
 // ANCHOR: run_method_signature
-fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<bool> {
+fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<bool>
+where
+    io::Error: From<B::Error>,
+{
     // ANCHOR_END: run_method_signature
     // ANCHOR: ui_loop
     loop {
