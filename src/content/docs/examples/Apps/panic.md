@@ -13,6 +13,6 @@ cargo run -p panic
 
 ![panic](panic.gif)
 
-```rust title=panic.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/panic.rs }}
 ```
