@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example calendar
 ```
 
-![Calendar](calendar.gif)
+![Calendar](https://github.com/ratatui/ratatui/blob/images/widget-examples/calendar.gif?raw=true)
 
 ```rust title=calendar.rs
 {{ #include @code/examples/ratatui-examples/examples/calendar.rs }}

@@ -13,7 +13,7 @@ cd ratatui
 cargo run -p constraints
 ```
 
-![constraints](constraints.gif)
+![constraints](https://github.com/ratatui/ratatui/blob/images/examples/constraints.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/constraints.rs }}

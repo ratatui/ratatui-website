@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example sparkline
 ```
 
-![sparkline](sparkline.gif)
+![sparkline](https://github.com/ratatui/ratatui/blob/images/widget-examples/sparkline.gif?raw=true)
 
 ```rust title=sparkline.rs
 {{ #include @code/examples/ratatui-examples/examples/sparkline.rs }}

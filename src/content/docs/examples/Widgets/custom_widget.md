@@ -13,7 +13,7 @@ cd ratatui
 cargo run -p custom-widget
 ```
 
-![custom_widget](custom_widget.gif)
+![custom_widget](https://github.com/ratatui/ratatui/blob/images/examples/custom-widget.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/custom_widget.rs }}

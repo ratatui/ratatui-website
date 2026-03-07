@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example chart
 ```
 
-![chart](chart.gif)
+![chart](https://github.com/ratatui/ratatui/blob/images/widget-examples/chart.gif?raw=true)
 
 ```rust title=chart.rs
 {{ #include @code/examples/ratatui-examples/examples/chart.rs }}

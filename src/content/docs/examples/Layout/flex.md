@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p flex
 ```
 
-![flex](flex.gif)
+![flex](https://github.com/ratatui/ratatui/blob/images/examples/flex.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/flex.rs }}

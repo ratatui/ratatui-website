@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p minimal
 ```
 
-![minimal](minimal.gif)
+![minimal](https://github.com/ratatui/ratatui/blob/images/examples/minimal.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/minimal.rs }}

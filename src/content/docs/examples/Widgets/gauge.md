@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example gauge
 ```
 
-![gauge](gauge.gif)
+![gauge](https://github.com/ratatui/ratatui/blob/images/widget-examples/gauge.gif?raw=true)
 
 ```rust title=gauge.rs
 {{ #include @code/examples/ratatui-examples/examples/gauge.rs }}

@@ -13,7 +13,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example canvas
 ```
 
-![canvas](canvas.gif)
+![canvas](https://github.com/ratatui/ratatui/blob/images/widget-examples/canvas.gif?raw=true)
 
 ```rust title=canvas.rs
 {{ #include @code/examples/ratatui-examples/examples/canvas.rs }}

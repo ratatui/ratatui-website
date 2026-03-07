@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p popup
 ```
 
-![popup](popup.gif)
+![popup](https://github.com/ratatui/ratatui/blob/images/examples/popup.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/popup.rs }}

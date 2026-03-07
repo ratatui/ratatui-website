@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example scrollbar
 ```
 
-![scrollbar](scrollbar.gif)
+![scrollbar](https://github.com/ratatui/ratatui/blob/images/widget-examples/scrollbar.gif?raw=true)
 
 ```rust title=scrollbar.rs
 {{ #include @code/examples/ratatui-examples/examples/scrollbar.rs }}

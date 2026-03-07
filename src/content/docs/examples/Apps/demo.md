@@ -13,7 +13,7 @@ cargo run -p demo --no-default-features --features termion
 cargo run -p demo --no-default-features --features termwiz
 ```
 
-![demo](demo.gif)
+![demo](https://github.com/ratatui/ratatui/blob/images/examples/demo.gif?raw=true)
 
 ```rust title=demo/main.rs
 {{ #include @code/examples/ratatui-examples/examples/demo/main.rs }}

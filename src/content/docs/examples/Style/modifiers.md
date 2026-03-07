@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p modifiers
 ```
 
-![modifiers](modifiers.gif)
+![modifiers](https://github.com/ratatui/ratatui/blob/images/examples/modifiers.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/modifiers.rs }}

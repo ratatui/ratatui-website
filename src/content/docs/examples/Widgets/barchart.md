@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example barchart
 ```
 
-![Barchart](barchart.gif)
+![Barchart](https://github.com/ratatui/ratatui/blob/images/widget-examples/barchart.gif?raw=true)
 
 ```rust title=barchart.rs
 {{ #include @code/examples/ratatui-examples/examples/barchart.rs }}

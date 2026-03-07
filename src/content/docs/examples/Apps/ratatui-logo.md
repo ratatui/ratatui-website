@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example logo
 ```
 
-![ratatui-logo](ratatui-logo.gif)
+![ratatui-logo](https://github.com/ratatui/ratatui/blob/images/widget-examples/logo.gif?raw=true)
 
 ```rust title=logo.rs
 {{ #include @code/examples/ratatui-examples/examples/ratatui-logo.rs }}

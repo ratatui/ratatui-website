@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p demo2
 ```
 
-![demo2](demo2-destroy.gif)
+![demo2](https://github.com/ratatui/ratatui/blob/images/examples/demo2-destroy.gif?raw=true)
 
 ```rust title=demo2/main.rs
 {{ #include @code/examples/ratatui-examples/examples/demo2/main.rs }}

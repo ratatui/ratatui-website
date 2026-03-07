@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example list
 ```
 
-![list](list.gif)
+![list](https://github.com/ratatui/ratatui/blob/images/widget-examples/list.gif?raw=true)
 
 ```rust title=list.rs
 {{ #include @code/examples/ratatui-examples/examples/list.rs }}

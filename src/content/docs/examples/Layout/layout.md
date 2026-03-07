@@ -13,7 +13,7 @@ cd ratatui
 cargo run -p constraint-explorer
 ```
 
-![layout](layout.gif)
+![layout](https://github.com/ratatui/ratatui/blob/images/examples/constraint-explorer.gif?raw=true)
 
 ```rust title=constraint-explorer.rs
 {{ #include @code/examples/ratatui-examples/examples/constraint-explorer.rs }}

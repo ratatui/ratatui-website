@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example table
 ```
 
-![table](table.gif)
+![table](https://github.com/ratatui/ratatui/blob/images/widget-examples/table.gif?raw=true)
 
 ```rust title=table.rs
 {{ #include @code/examples/ratatui-examples/examples/table.rs }}

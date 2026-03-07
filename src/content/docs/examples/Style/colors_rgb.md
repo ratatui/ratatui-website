@@ -17,7 +17,7 @@ cargo run -p colors-rgb
 
 <!-- TODO update this to use the mov file -->
 
-![colors_rgb](colors_rgb.gif)
+![colors_rgb](https://github.com/ratatui/ratatui/blob/images/examples/colors-rgb.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/colors_rgb.rs }}

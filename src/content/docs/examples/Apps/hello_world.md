@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p hello-world
 ```
 
-![hello_world](hello_world.gif)
+![hello_world](https://github.com/ratatui/ratatui/blob/images/examples/hello-world.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/hello_world.rs }}

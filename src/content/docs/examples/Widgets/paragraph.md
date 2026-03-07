@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p ratatui-widgets --example paragraph
 ```
 
-![paragraph](paragraph.gif)
+![paragraph](https://github.com/ratatui/ratatui/blob/images/widget-examples/paragraph.gif?raw=true)
 
 ```rust title=paragraph.rs
 {{ #include @code/examples/ratatui-examples/examples/paragraph.rs }}

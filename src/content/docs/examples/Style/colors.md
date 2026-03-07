@@ -12,7 +12,7 @@ cd ratatui
 cargo run -p color-explorer
 ```
 
-![colors](colors.gif)
+![colors](https://github.com/ratatui/ratatui/blob/images/examples/color-explorer.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/colors.rs }}

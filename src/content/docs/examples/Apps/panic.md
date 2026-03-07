@@ -11,7 +11,7 @@ cd ratatui
 cargo run -p panic
 ```
 
-![panic](panic.gif)
+![panic](https://github.com/ratatui/ratatui/blob/images/examples/panic.gif?raw=true)
 
 ```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/panic.rs }}
