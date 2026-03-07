@@ -1,35 +1,23 @@
-//! # [Ratatui] Constraints example
-//!
-//! The latest version of this example is available in the [examples] folder in the repository.
-//!
-//! Please note that the examples are designed to be run against the `main` branch of the Github
-//! repository. This means that you may not be able to compile with the latest release version on
-//! crates.io, or the one that you have installed locally.
-//!
-//! See the [examples readme] for more information on finding examples that match the version of the
-//! library you are using.
-//!
-//! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
-//! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
-
+/// A Ratatui example that demonstrates different types of constraints.
+///
+/// This example runs with the Ratatui library code in the branch that you are currently
+/// reading. See the [`latest`] branch for the code which works with the most recent Ratatui
+/// release.
+///
+/// [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 use color_eyre::Result;
-use ratatui::{
-    buffer::Buffer,
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
-    layout::{
-        Constraint::{self, Fill, Length, Max, Min, Percentage, Ratio},
-        Layout, Rect,
-    },
-    style::{palette::tailwind, Color, Modifier, Style, Stylize},
-    symbols,
-    text::Line,
-    widgets::{
-        Block, Padding, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState, StatefulWidget,
-        Tabs, Widget,
-    },
-    DefaultTerminal,
+use crossterm::event::{self, KeyCode};
+use ratatui::buffer::Buffer;
+use ratatui::layout::Constraint::{self, Fill, Length, Max, Min, Percentage, Ratio};
+use ratatui::layout::{Layout, Rect};
+use ratatui::style::palette::tailwind;
+use ratatui::style::{Color, Modifier, Style, Stylize};
+use ratatui::text::Line;
+use ratatui::widgets::{
+    Block, Padding, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState, StatefulWidget,
+    Tabs, Widget,
 };
+use ratatui::{DefaultTerminal, symbols};
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 
 const SPACER_HEIGHT: u16 = 0;
@@ -48,10 +36,7 @@ const FILL_COLOR: Color = tailwind::SLATE.c950;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let app_result = App::default().run(terminal);
-    ratatui::restore();
-    app_result
+    ratatui::run(|terminal| App::default().run(terminal))
 }
 
 #[derive(Default, Clone, Copy)]
@@ -84,7 +69,7 @@ enum AppState {
 }
 
 impl App {
-    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
+    fn run(mut self, terminal: &mut DefaultTerminal) -> Result<()> {
         self.update_max_scroll_offset();
         while self.is_running() {
             terminal.draw(|frame| frame.render_widget(self, frame.area()))?;
@@ -93,7 +78,7 @@ impl App {
         Ok(())
     }
 
-    fn update_max_scroll_offset(&mut self) {
+    const fn update_max_scroll_offset(&mut self) {
         self.max_scroll_offset = (self.selected_tab.get_example_count() - 1) * EXAMPLE_HEIGHT;
     }
 
@@ -102,10 +87,7 @@ impl App {
     }
 
     fn handle_events(&mut self) -> Result<()> {
-        if let Event::Key(key) = event::read()? {
-            if key.kind != KeyEventKind::Press {
-                return Ok(());
-            }
+        if let Some(key) = event::read()?.as_key_press_event() {
             match key.code {
                 KeyCode::Char('q') | KeyCode::Esc => self.quit(),
                 KeyCode::Char('l') | KeyCode::Right => self.next(),
@@ -120,7 +102,7 @@ impl App {
         Ok(())
     }
 
-    fn quit(&mut self) {
+    const fn quit(&mut self) {
         self.state = AppState::Quit;
     }
 
@@ -136,7 +118,7 @@ impl App {
         self.scroll_offset = 0;
     }
 
-    fn up(&mut self) {
+    const fn up(&mut self) {
         self.scroll_offset = self.scroll_offset.saturating_sub(1);
     }
 
@@ -147,18 +129,18 @@ impl App {
             .min(self.max_scroll_offset);
     }
 
-    fn top(&mut self) {
+    const fn top(&mut self) {
         self.scroll_offset = 0;
     }
 
-    fn bottom(&mut self) {
+    const fn bottom(&mut self) {
         self.scroll_offset = self.max_scroll_offset;
     }
 }
 
 impl Widget for App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let [tabs, axis, demo] = Layout::vertical([Length(3), Length(3), Fill(0)]).areas(area);
+        let [tabs, axis, demo] = area.layout(&Layout::vertical([Length(3), Length(3), Fill(0)]));
 
         self.render_tabs(tabs, buf);
         Self::render_axis(axis, buf);
@@ -204,7 +186,7 @@ impl App {
     ///
     /// This function renders the demo content into a separate buffer and then splices the buffer
     /// into the main buffer. This is done to make it possible to handle scrolling easily.
-    #[allow(clippy::cast_possible_truncation)]
+    #[expect(clippy::cast_possible_truncation)]
     fn render_demo(self, area: Rect, buf: &mut Buffer) {
         // render demo content into a separate buffer so all examples fit we add an extra
         // area.height to make sure the last example is fully visible even when the scroll offset is
@@ -259,7 +241,7 @@ impl SelectedTab {
     }
 
     const fn get_example_count(self) -> u16 {
-        #[allow(clippy::match_same_arms)]
+        #[expect(clippy::match_same_arms)]
         match self {
             Self::Length => 4,
             Self::Percentage => 5,
@@ -299,8 +281,8 @@ impl Widget for SelectedTab {
 
 impl SelectedTab {
     fn render_length_example(area: Rect, buf: &mut Buffer) {
-        let [example1, example2, example3, _] =
-            Layout::vertical([Length(EXAMPLE_HEIGHT); 4]).areas(area);
+        let layout = Layout::vertical([Length(EXAMPLE_HEIGHT); 4]);
+        let [example1, example2, example3, _] = area.layout(&layout);
 
         Example::new(&[Length(20), Length(20)]).render(example1, buf);
         Example::new(&[Length(20), Min(20)]).render(example2, buf);
@@ -308,8 +290,8 @@ impl SelectedTab {
     }
 
     fn render_percentage_example(area: Rect, buf: &mut Buffer) {
-        let [example1, example2, example3, example4, example5, _] =
-            Layout::vertical([Length(EXAMPLE_HEIGHT); 6]).areas(area);
+        let layout = Layout::vertical([Length(EXAMPLE_HEIGHT); 6]);
+        let [example1, example2, example3, example4, example5, _] = area.layout(&layout);
 
         Example::new(&[Percentage(75), Fill(0)]).render(example1, buf);
         Example::new(&[Percentage(25), Fill(0)]).render(example2, buf);
@@ -319,8 +301,8 @@ impl SelectedTab {
     }
 
     fn render_ratio_example(area: Rect, buf: &mut Buffer) {
-        let [example1, example2, example3, example4, _] =
-            Layout::vertical([Length(EXAMPLE_HEIGHT); 5]).areas(area);
+        let layout = Layout::vertical([Length(EXAMPLE_HEIGHT); 5]);
+        let [example1, example2, example3, example4, _] = area.layout(&layout);
 
         Example::new(&[Ratio(1, 2); 2]).render(example1, buf);
         Example::new(&[Ratio(1, 4); 4]).render(example2, buf);
@@ -329,15 +311,15 @@ impl SelectedTab {
     }
 
     fn render_fill_example(area: Rect, buf: &mut Buffer) {
-        let [example1, example2, _] = Layout::vertical([Length(EXAMPLE_HEIGHT); 3]).areas(area);
+        let [example1, example2, _] = area.layout(&Layout::vertical([Length(EXAMPLE_HEIGHT); 3]));
 
         Example::new(&[Fill(1), Fill(2), Fill(3)]).render(example1, buf);
         Example::new(&[Fill(1), Percentage(50), Fill(1)]).render(example2, buf);
     }
 
     fn render_min_example(area: Rect, buf: &mut Buffer) {
-        let [example1, example2, example3, example4, example5, _] =
-            Layout::vertical([Length(EXAMPLE_HEIGHT); 6]).areas(area);
+        let layout = Layout::vertical([Length(EXAMPLE_HEIGHT); 6]);
+        let [example1, example2, example3, example4, example5, _] = area.layout(&layout);
 
         Example::new(&[Percentage(100), Min(0)]).render(example1, buf);
         Example::new(&[Percentage(100), Min(20)]).render(example2, buf);
@@ -347,8 +329,8 @@ impl SelectedTab {
     }
 
     fn render_max_example(area: Rect, buf: &mut Buffer) {
-        let [example1, example2, example3, example4, example5, _] =
-            Layout::vertical([Length(EXAMPLE_HEIGHT); 6]).areas(area);
+        let layout = Layout::vertical([Length(EXAMPLE_HEIGHT); 6]);
+        let [example1, example2, example3, example4, example5, _] = area.layout(&layout);
 
         Example::new(&[Percentage(0), Max(0)]).render(example1, buf);
         Example::new(&[Percentage(0), Max(20)]).render(example2, buf);
@@ -372,9 +354,10 @@ impl Example {
 
 impl Widget for Example {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let [area, _] =
-            Layout::vertical([Length(ILLUSTRATION_HEIGHT), Length(SPACER_HEIGHT)]).areas(area);
-        let blocks = Layout::horizontal(&self.constraints).split(area);
+        let vertical = Layout::vertical([Length(ILLUSTRATION_HEIGHT), Length(SPACER_HEIGHT)]);
+        let horizontal = Layout::horizontal(&self.constraints);
+        let [area, _] = area.layout(&vertical);
+        let blocks = area.layout_vec(&horizontal);
 
         for (block, constraint) in blocks.iter().zip(&self.constraints) {
             Self::illustration(*constraint, block.width).render(*block, buf);
