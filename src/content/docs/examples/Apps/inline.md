@@ -14,6 +14,6 @@ cargo run -p inline
 
 ![inline](inline.gif)
 
-```rust title=inline.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/inline.rs }}
 ```
