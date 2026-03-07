@@ -3,12 +3,13 @@ title: Paragraph
 ---
 
 Demonstrates the [`Paragraph`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Paragraph.html)
-widget.
+widget. Source
+[paragraph.rs](https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples/paragraph.rs).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=paragraph --features=crossterm
+cargo run -p ratatui-widgets --example paragraph
 ```
 
 ![paragraph](paragraph.gif)
