@@ -20,6 +20,6 @@ cargo run -p user-input
 
 ![user_input](user_input.gif)
 
-```rust title=user_input.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/user_input.rs }}
 ```

@@ -1,48 +1,36 @@
-//! # [Ratatui] User Input example
-//!
-//! The latest version of this example is available in the [examples] folder in the repository.
-//!
-//! Please note that the examples are designed to be run against the `main` branch of the Github
-//! repository. This means that you may not be able to compile with the latest release version on
-//! crates.io, or the one that you have installed locally.
-//!
-//! See the [examples readme] for more information on finding examples that match the version of the
-//! library you are using.
-//!
-//! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
-//! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
-
-// A simple example demonstrating how to handle user input. This is a bit out of the scope of
-// the library as it does not provide any input handling out of the box. However, it may helps
-// some to get started.
-//
-// This is a very simple example:
-//   * An input box always focused. Every character you type is registered here.
-//   * An entered character is inserted at the cursor position.
-//   * Pressing Backspace erases the left character before the cursor position
-//   * Pressing Enter pushes the current input in the history of previous messages. **Note: ** as
-//   this is a relatively simple example unicode characters are unsupported and their use will
-// result in undefined behaviour.
-//
-// See also https://github.com/rhysd/tui-textarea and https://github.com/sayanarijit/tui-input/
-
+/// A simple example demonstrating how to handle user input.
+///
+/// This is a bit out of the scope of
+/// the library as it does not provide any input handling out of the box. However, it may helps
+/// some to get started.
+///
+/// This is a very simple example:
+///   * An input box always focused. Every character you type is registered here.
+///   * An entered character is inserted at the cursor position.
+///   * Pressing Backspace erases the left character before the cursor position
+///   * Pressing Enter pushes the current input in the history of previous messages.
+///
+/// **Note:** as this is a relatively simple example unicode characters are unsupported and
+/// their use will result in undefined behaviour.
+///
+/// See also <https://github.com/rhysd/tui-textarea> and <https://github.com/sayanarijit/tui-input>/
+///
+/// This example runs with the Ratatui library code in the branch that you are currently
+/// reading. See the [`latest`] branch for the code which works with the most recent Ratatui
+/// release.
+///
+/// [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 use color_eyre::Result;
-use ratatui::{
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
-    layout::{Constraint, Layout, Position},
-    style::{Color, Modifier, Style, Stylize},
-    text::{Line, Span, Text},
-    widgets::{Block, List, ListItem, Paragraph},
-    DefaultTerminal, Frame,
-};
+use crossterm::event::{self, KeyCode, KeyEventKind};
+use ratatui::layout::{Constraint, Layout, Position};
+use ratatui::style::{Color, Modifier, Style, Stylize};
+use ratatui::text::{Line, Span, Text};
+use ratatui::widgets::{Block, List, ListItem, Paragraph};
+use ratatui::{DefaultTerminal, Frame};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let app_result = App::new().run(terminal);
-    ratatui::restore();
-    app_result
+    ratatui::run(|terminal| App::new().run(terminal))
 }
 
 /// App holds the state of the application
@@ -90,7 +78,7 @@ impl App {
 
     /// Returns the byte index based on the character position.
     ///
-    /// Since each character in a string can be contain multiple bytes, it's necessary to calculate
+    /// Since each character in a string can contain multiple bytes, it's necessary to calculate
     /// the byte index based on the index of the character.
     fn byte_index(&self) -> usize {
         self.input
@@ -126,7 +114,7 @@ impl App {
         new_cursor_pos.clamp(0, self.input.chars().count())
     }
 
-    fn reset_cursor(&mut self) {
+    const fn reset_cursor(&mut self) {
         self.character_index = 0;
     }
 
@@ -136,11 +124,11 @@ impl App {
         self.reset_cursor();
     }
 
-    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
+    fn run(mut self, terminal: &mut DefaultTerminal) -> Result<()> {
         loop {
-            terminal.draw(|frame| self.draw(frame))?;
+            terminal.draw(|frame| self.render(frame))?;
 
-            if let Event::Key(key) = event::read()? {
+            if let Some(key) = event::read()?.as_key_press_event() {
                 match self.input_mode {
                     InputMode::Normal => match key.code {
                         KeyCode::Char('e') => {
@@ -166,13 +154,13 @@ impl App {
         }
     }
 
-    fn draw(&self, frame: &mut Frame) {
-        let vertical = Layout::vertical([
+    fn render(&self, frame: &mut Frame) {
+        let layout = Layout::vertical([
             Constraint::Length(1),
             Constraint::Length(3),
             Constraint::Min(1),
         ]);
-        let [help_area, input_area, messages_area] = vertical.areas(frame.area());
+        let [help_area, input_area, messages_area] = frame.area().layout(&layout);
 
         let (msg, style) = match self.input_mode {
             InputMode::Normal => (
@@ -213,10 +201,10 @@ impl App {
 
             // Make the cursor visible and ask ratatui to put it at the specified coordinates after
             // rendering
-            #[allow(clippy::cast_possible_truncation)]
+            #[expect(clippy::cast_possible_truncation)]
             InputMode::Editing => frame.set_cursor_position(Position::new(
                 // Draw the cursor at the current position in the input field.
-                // This position is can be controlled via the left and right arrow key
+                // This position can be controlled via the left and right arrow key
                 input_area.x + self.character_index as u16 + 1,
                 // Move one line down, from the border to the input line
                 input_area.y + 1,
