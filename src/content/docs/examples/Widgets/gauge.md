@@ -2,12 +2,14 @@
 title: Gauge
 ---
 
-Demonstrates the [`Gauge`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Gauge.html) widget.
+Demonstrates the [`Gauge`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Gauge.html)
+widget. Source
+[gauge.rs](https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples/gauge.rs).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=gauge --features=crossterm
+cargo run -p ratatui-widgets --example gauge
 ```
 
 ![gauge](gauge.gif)
