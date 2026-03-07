@@ -1,19 +1,16 @@
-use ratatui::{
-    layout::{Constraint, Layout, Rect},
-    style::{Color, Modifier, Style},
-    symbols,
-    text::{self, Span},
-    widgets::{
-        canvas::{self, Canvas, Circle, Map, MapResolution, Rectangle},
-        Axis, BarChart, Block, Cell, Chart, Dataset, Gauge, LineGauge, List, ListItem, Paragraph,
-        Row, Sparkline, Table, Tabs, Wrap,
-    },
-    Frame,
+use ratatui::layout::{Constraint, Layout, Rect};
+use ratatui::style::{Color, Modifier, Style};
+use ratatui::text::{self, Span};
+use ratatui::widgets::canvas::{self, Canvas, Circle, Map, MapResolution, Rectangle};
+use ratatui::widgets::{
+    Axis, BarChart, Block, Cell, Chart, Dataset, Gauge, LineGauge, List, ListItem, Paragraph, Row,
+    Sparkline, Table, Tabs, Wrap,
 };
+use ratatui::{Frame, symbols};
 
 use crate::app::App;
 
-pub fn draw(frame: &mut Frame, app: &mut App) {
+pub fn render(frame: &mut Frame, app: &mut App) {
     let chunks = Layout::vertical([Constraint::Length(3), Constraint::Min(0)]).split(frame.area());
     let tabs = app
         .tabs
@@ -84,16 +81,21 @@ fn draw_gauges(frame: &mut Frame, app: &mut App, area: Rect) {
     let line_gauge = LineGauge::default()
         .block(Block::new().title("LineGauge:"))
         .filled_style(Style::default().fg(Color::Magenta))
-        .line_set(if app.enhanced_graphics {
-            symbols::line::THICK
+        .filled_symbol(if app.enhanced_graphics {
+            symbols::line::THICK_HORIZONTAL
         } else {
-            symbols::line::NORMAL
+            symbols::line::HORIZONTAL
+        })
+        .unfilled_symbol(if app.enhanced_graphics {
+            symbols::line::THICK_HORIZONTAL
+        } else {
+            symbols::line::HORIZONTAL
         })
         .ratio(app.progress);
     frame.render_widget(line_gauge, chunks[2]);
 }
 
-#[allow(clippy::too_many_lines)]
+#[expect(clippy::too_many_lines)]
 fn draw_charts(frame: &mut Frame, app: &mut App, area: Rect) {
     let constraints = if app.show_chart {
         vec![Constraint::Percentage(50), Constraint::Percentage(50)]
@@ -233,7 +235,9 @@ fn draw_charts(frame: &mut Frame, app: &mut App, area: Rect) {
 
 fn draw_text(frame: &mut Frame, area: Rect) {
     let text = vec![
-        text::Line::from("This is a paragraph with several lines. You can change style your text the way you want"),
+        text::Line::from(
+            "This is a paragraph with several lines. You can change style your text the way you want",
+        ),
         text::Line::from(""),
         text::Line::from(vec![
             Span::from("For example: "),
@@ -248,16 +252,17 @@ fn draw_text(frame: &mut Frame, area: Rect) {
             Span::raw("Oh and if you didn't "),
             Span::styled("notice", Style::default().add_modifier(Modifier::ITALIC)),
             Span::raw(" you can "),
-            Span::styled("automatically", Style::default().add_modifier(Modifier::BOLD)),
+            Span::styled(
+                "automatically",
+                Style::default().add_modifier(Modifier::BOLD),
+            ),
             Span::raw(" "),
             Span::styled("wrap", Style::default().add_modifier(Modifier::REVERSED)),
             Span::raw(" your "),
             Span::styled("text", Style::default().add_modifier(Modifier::UNDERLINED)),
-            Span::raw(".")
+            Span::raw("."),
         ]),
-        text::Line::from(
-            "One more thing is that it should display unicode characters: 10€"
-        ),
+        text::Line::from("One more thing is that it should display unicode characters: 10€"),
     ];
     let block = Block::bordered().title(Span::styled(
         "Footer",
