@@ -14,6 +14,6 @@ cargo run -p popup
 
 ![popup](popup.gif)
 
-```rust title=popup.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/popup.rs }}
 ```
