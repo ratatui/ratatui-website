@@ -1,13 +1,11 @@
-use rand::Rng;
+use rand::RngExt;
 use rand_chacha::rand_core::SeedableRng;
-use ratatui::{
-    buffer::Buffer,
-    layout::{Flex, Layout, Rect},
-    style::{Color, Style},
-    text::Text,
-    widgets::Widget,
-    Frame,
-};
+use ratatui::Frame;
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Flex, Layout, Rect};
+use ratatui::style::{Color, Style};
+use ratatui::text::Text;
+use ratatui::widgets::Widget;
 
 /// delay the start of the animation so it doesn't start immediately
 const DELAY: usize = 120;
@@ -34,7 +32,7 @@ pub fn destroy(frame: &mut Frame<'_>) {
 ///
 /// Each pick some random pixels and move them each down one row. This is a very inefficient way to
 /// do this, but it works well enough for this demo.
-#[allow(
+#[expect(
     clippy::cast_possible_truncation,
     clippy::cast_precision_loss,
     clippy::cast_sign_loss
@@ -76,7 +74,7 @@ fn drip(frame_count: usize, area: Rect, buf: &mut Buffer) {
 }
 
 /// draw some text fading in and out from black to red and back
-#[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
+#[expect(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
 fn text(frame_count: usize, area: Rect, buf: &mut Buffer) {
     let sub_frame = frame_count.saturating_sub(TEXT_DELAY);
     if sub_frame == 0 {
@@ -128,7 +126,7 @@ fn blend(mask_color: Color, cell_color: Color, percentage: f64) -> Color {
     let green = f64::from(mask_green).mul_add(percentage, f64::from(cell_green) * remain);
     let blue = f64::from(mask_blue).mul_add(percentage, f64::from(cell_blue) * remain);
 
-    #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+    #[expect(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
     Color::Rgb(red as u8, green as u8, blue as u8)
 }
 
@@ -136,7 +134,7 @@ fn blend(mask_color: Color, cell_color: Color, percentage: f64) -> Color {
 fn centered_rect(area: Rect, width: u16, height: u16) -> Rect {
     let horizontal = Layout::horizontal([width]).flex(Flex::Center);
     let vertical = Layout::vertical([height]).flex(Flex::Center);
-    let [area] = vertical.areas(area);
-    let [area] = horizontal.areas(area);
+    let [area] = area.layout(&vertical);
+    let [area] = area.layout(&horizontal);
     area
 }
