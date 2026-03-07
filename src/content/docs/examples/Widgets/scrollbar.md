@@ -3,12 +3,13 @@ title: Scrollbar
 ---
 
 Demonstrates the [`Scrollbar`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Scrollbar.html)
-widget.
+widget. Source
+[scrollbar.rs](https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples/scrollbar.rs).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=scrollbar --features=crossterm
+cargo run -p ratatui-widgets --example scrollbar
 ```
 
 ![scrollbar](scrollbar.gif)
