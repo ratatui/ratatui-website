@@ -12,8 +12,8 @@ cd ratatui
 cargo run -p inline
 ```
 
-![inline](inline.gif)
+![inline](https://github.com/ratatui/ratatui/blob/images/examples/inline.gif?raw=true)
 
-```rust title=inline.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/inline.rs }}
 ```

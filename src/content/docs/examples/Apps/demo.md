@@ -3,6 +3,7 @@ title: Demo
 ---
 
 This is the original demo example from the main README. It is available for each of the backends.
+Source [demo](https://github.com/ratatui/ratatui/tree/main/examples/apps/demo).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
@@ -12,7 +13,7 @@ cargo run -p demo --no-default-features --features termion
 cargo run -p demo --no-default-features --features termwiz
 ```
 
-![demo](demo.gif)
+![demo](https://github.com/ratatui/ratatui/blob/images/examples/demo.gif?raw=true)
 
 ```rust title=demo/main.rs
 {{ #include @code/examples/ratatui-examples/examples/demo/main.rs }}

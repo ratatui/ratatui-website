@@ -1,13 +1,11 @@
 use itertools::Itertools;
-use ratatui::{
-    buffer::Buffer,
-    layout::{Alignment, Constraint, Layout, Margin, Rect},
-    style::{Style, Stylize},
-    text::Line,
-    widgets::{
-        Block, Clear, Padding, Paragraph, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
-        StatefulWidget, Table, TableState, Widget, Wrap,
-    },
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Alignment, Constraint, Layout, Margin, Rect};
+use ratatui::style::{Style, Stylize};
+use ratatui::text::Line;
+use ratatui::widgets::{
+    Block, Clear, Padding, Paragraph, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
+    StatefulWidget, Table, TableState, Widget, Wrap,
 };
 
 use crate::{RgbSwatch, THEME};
@@ -19,13 +17,13 @@ struct Ingredient {
 }
 
 impl Ingredient {
-    #[allow(clippy::cast_possible_truncation)]
+    #[expect(clippy::cast_possible_truncation)]
     fn height(&self) -> u16 {
         self.name.lines().count() as u16
     }
 }
 
-impl<'a> From<Ingredient> for Row<'a> {
+impl From<Ingredient> for Row<'_> {
     fn from(i: Ingredient) -> Self {
         Row::new(vec![i.quantity, i.name]).height(i.height())
     }
@@ -137,8 +135,8 @@ impl Widget for RecipeTab {
             horizontal: 2,
             vertical: 1,
         });
-        let [recipe, ingredients] =
-            Layout::horizontal([Constraint::Length(44), Constraint::Min(0)]).areas(area);
+        let layout = Layout::horizontal([Constraint::Length(44), Constraint::Min(0)]);
+        let [recipe, ingredients] = area.layout(&layout);
 
         render_recipe(recipe, buf);
         render_ingredients(self.row_index, ingredients, buf);

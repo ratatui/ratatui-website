@@ -1,7 +1,5 @@
-use rand::{
-    distr::{Distribution, Uniform},
-    rngs::ThreadRng,
-};
+use rand::distr::{Distribution, Uniform};
+use rand::rngs::ThreadRng;
 use ratatui::widgets::ListState;
 
 const TASKS: [&str; 24] = [
@@ -75,7 +73,7 @@ pub struct RandomSignal {
 impl RandomSignal {
     pub fn new(lower: u64, upper: u64) -> Self {
         Self {
-            distribution: Uniform::new(lower, upper).unwrap(),
+            distribution: Uniform::new(lower, upper).expect("invalid range"),
             rng: rand::rng(),
         }
     }

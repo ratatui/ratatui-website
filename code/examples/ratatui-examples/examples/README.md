@@ -424,23 +424,6 @@ cargo run --example=user_input --features=crossterm
 
 ![User Input][user_input.gif]
 
-## How to update these examples
-
-These gifs were created using [VHS](https://github.com/charmbracelet/vhs). Each example has a
-corresponding `.tape` file that holds instructions for how to generate the images. Note that the
-images themselves are stored in a separate `images` git branch to avoid bloating the main
-repository.
-
-<!--
-
-Links to images to make them easier to update in bulk. Use the following script to update and upload
-the examples to the images branch. (Requires push access to the branch).
-
-```shell
-examples/vhs/generate.bash
-```
--->
-
 [barchart.gif]: https://github.com/ratatui/ratatui/blob/images/examples/barchart.gif?raw=true
 [barchart-grouped.gif]:
   https://github.com/ratatui/ratatui/blob/images/examples/barchart-grouped.gif?raw=true

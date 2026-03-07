@@ -1,36 +1,25 @@
-//! # [Ratatui] Custom Widget example
-//!
-//! The latest version of this example is available in the [examples] folder in the repository.
-//!
-//! Please note that the examples are designed to be run against the `main` branch of the Github
-//! repository. This means that you may not be able to compile with the latest release version on
-//! crates.io, or the one that you have installed locally.
-//!
-//! See the [examples readme] for more information on finding examples that match the version of the
-//! library you are using.
-//!
-//! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
-//! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
-
+/// A Ratatui example that demonstrates how to create a custom widget that can be interacted
+/// with using the mouse.
+///
+/// This example runs with the Ratatui library code in the branch that you are currently
+/// reading. See the [`latest`] branch for the code which works with the most recent Ratatui
+/// release.
+///
+/// [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 use std::{io::stdout, ops::ControlFlow, time::Duration};
 
 use color_eyre::Result;
-use ratatui::{
-    buffer::Buffer,
-    crossterm::{
-        event::{
-            self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, MouseButton, MouseEvent,
-            MouseEventKind,
-        },
-        execute,
-    },
-    layout::{Constraint, Layout, Rect},
-    style::{Color, Style},
-    text::Line,
-    widgets::{Paragraph, Widget},
-    DefaultTerminal, Frame,
+use crossterm::event::{
+    self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEvent, MouseButton,
+    MouseEvent, MouseEventKind,
 };
+use crossterm::execute;
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Constraint, Flex, Layout, Rect};
+use ratatui::style::{Color, Style};
+use ratatui::text::Line;
+use ratatui::widgets::{Paragraph, Widget};
+use ratatui::{DefaultTerminal, Frame};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
@@ -109,8 +98,8 @@ impl<'a> Button<'a> {
     }
 }
 
-impl<'a> Widget for Button<'a> {
-    #[allow(clippy::cast_possible_truncation)]
+impl Widget for Button<'_> {
+    #[expect(clippy::cast_possible_truncation)]
     fn render(self, area: Rect, buf: &mut Buffer) {
         let (background, text, shadow, highlight) = self.colors();
         buf.set_style(area, Style::new().bg(background).fg(text));
@@ -158,15 +147,12 @@ fn run(mut terminal: DefaultTerminal) -> Result<()> {
     let mut selected_button: usize = 0;
     let mut button_states = [State::Selected, State::Normal, State::Normal];
     loop {
-        terminal.draw(|frame| draw(frame, button_states))?;
+        terminal.draw(|frame| render(frame, button_states))?;
         if !event::poll(Duration::from_millis(100))? {
             continue;
         }
         match event::read()? {
             Event::Key(key) => {
-                if key.kind != event::KeyEventKind::Press {
-                    continue;
-                }
                 if handle_key_event(key, &mut button_states, &mut selected_button).is_break() {
                     break;
                 }
@@ -180,14 +166,14 @@ fn run(mut terminal: DefaultTerminal) -> Result<()> {
     Ok(())
 }
 
-fn draw(frame: &mut Frame, states: [State; 3]) {
-    let vertical = Layout::vertical([
+fn render(frame: &mut Frame, states: [State; 3]) {
+    let layout = Layout::vertical([
         Constraint::Length(1),
         Constraint::Max(3),
         Constraint::Length(1),
         Constraint::Min(0), // ignore remaining space
     ]);
-    let [title, buttons, help, _] = vertical.areas(frame.area());
+    let [title, buttons, help, _] = frame.area().layout(&layout);
 
     frame.render_widget(
         Paragraph::new("Custom Widget Example (mouse enabled)"),
@@ -198,13 +184,8 @@ fn draw(frame: &mut Frame, states: [State; 3]) {
 }
 
 fn render_buttons(frame: &mut Frame<'_>, area: Rect, states: [State; 3]) {
-    let horizontal = Layout::horizontal([
-        Constraint::Length(15),
-        Constraint::Length(15),
-        Constraint::Length(15),
-        Constraint::Min(0), // ignore remaining space
-    ]);
-    let [red, green, blue, _] = horizontal.areas(area);
+    let layout = Layout::horizontal([Constraint::Length(15); 3]).flex(Flex::Start);
+    let [red, green, blue] = area.layout(&layout);
 
     frame.render_widget(Button::new("Red").theme(RED).state(states[0]), red);
     frame.render_widget(Button::new("Green").theme(GREEN).state(states[1]), green);
@@ -212,10 +193,13 @@ fn render_buttons(frame: &mut Frame<'_>, area: Rect, states: [State; 3]) {
 }
 
 fn handle_key_event(
-    key: event::KeyEvent,
+    key: KeyEvent,
     button_states: &mut [State; 3],
     selected_button: &mut usize,
 ) -> ControlFlow<()> {
+    if !key.is_press() {
+        return ControlFlow::Continue(());
+    }
     match key.code {
         KeyCode::Char('q') => return ControlFlow::Break(()),
         KeyCode::Left | KeyCode::Char('h') => {
