@@ -13,7 +13,6 @@ use std::sync::LazyLock;
 
 use color_eyre::Result;
 use crossterm::event::{self, KeyCode};
-use ratatui::DefaultTerminal;
 use ratatui::buffer::Buffer;
 use ratatui::layout::Constraint::{self, Fill, Length, Max, Min, Percentage, Ratio};
 use ratatui::layout::{Alignment, Flex, Layout, Rect};
@@ -24,6 +23,7 @@ use ratatui::text::{Line, Text};
 use ratatui::widgets::{
     Block, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState, StatefulWidget, Tabs, Widget,
 };
+use ratatui::DefaultTerminal;
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 
 fn main() -> Result<()> {

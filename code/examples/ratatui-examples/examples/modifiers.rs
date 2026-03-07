@@ -12,22 +12,20 @@ use std::{error::Error, iter::once, result};
 
 use crossterm::event;
 use itertools::Itertools;
-use ratatui::Frame;
 use ratatui::layout::{Constraint, Layout};
 use ratatui::style::{Color, Modifier, Style, Stylize};
 use ratatui::text::Line;
 use ratatui::widgets::Paragraph;
+use ratatui::Frame;
 
 type Result<T> = result::Result<T, Box<dyn Error>>;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(render)?;
-            if event::read()?.is_key_press() {
-                break Ok(());
-            }
+    ratatui::run(|terminal| loop {
+        terminal.draw(render)?;
+        if event::read()?.is_key_press() {
+            break Ok(());
         }
     })
 }

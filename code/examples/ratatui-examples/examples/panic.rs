@@ -29,11 +29,11 @@
 ///
 /// [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 /// [Color Eyre recipe]: https://ratatui.rs/recipes/apps/color-eyre
-use color_eyre::{Result, eyre::bail};
+use color_eyre::{eyre::bail, Result};
 use crossterm::event::{self, KeyCode};
-use ratatui::Frame;
 use ratatui::text::Line;
 use ratatui::widgets::{Block, Paragraph};
+use ratatui::Frame;
 
 #[derive(Debug)]
 enum PanicHandlerState {
@@ -45,20 +45,18 @@ fn main() -> Result<()> {
     color_eyre::install()?;
 
     let mut panic_hook_state = PanicHandlerState::Enabled;
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(|frame| render(frame, &panic_hook_state))?;
-            if let Some(key) = event::read()?.as_key_press_event() {
-                match key.code {
-                    KeyCode::Char('p') => panic!("intentional demo panic"),
-                    KeyCode::Char('e') => bail!("intentional demo error"),
-                    KeyCode::Char('h') => {
-                        let _ = std::panic::take_hook();
-                        panic_hook_state = PanicHandlerState::Disabled;
-                    }
-                    KeyCode::Char('q') => return Ok(()),
-                    _ => {}
+    ratatui::run(|terminal| loop {
+        terminal.draw(|frame| render(frame, &panic_hook_state))?;
+        if let Some(key) = event::read()?.as_key_press_event() {
+            match key.code {
+                KeyCode::Char('p') => panic!("intentional demo panic"),
+                KeyCode::Char('e') => bail!("intentional demo error"),
+                KeyCode::Char('h') => {
+                    let _ = std::panic::take_hook();
+                    panic_hook_state = PanicHandlerState::Disabled;
                 }
+                KeyCode::Char('q') => return Ok(()),
+                _ => {}
             }
         }
     })

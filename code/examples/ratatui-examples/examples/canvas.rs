@@ -16,21 +16,19 @@
 
 use color_eyre::Result;
 use crossterm::event;
-use ratatui::Frame;
 use ratatui::layout::{Constraint, Layout, Rect};
 use ratatui::style::{Color, Stylize};
 use ratatui::symbols::Marker;
 use ratatui::text::{Line as TextLine, Span};
 use ratatui::widgets::canvas::{Canvas, Line, Map, MapResolution, Points, Rectangle};
+use ratatui::Frame;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(render)?;
-            if event::read()?.is_key_press() {
-                break Ok(());
-            }
+    ratatui::run(|terminal| loop {
+        terminal.draw(render)?;
+        if event::read()?.is_key_press() {
+            break Ok(());
         }
     })
 }

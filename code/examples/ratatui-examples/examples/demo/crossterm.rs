@@ -5,10 +5,10 @@ use std::time::{Duration, Instant};
 use crossterm::event::{self, DisableMouseCapture, EnableMouseCapture, KeyCode};
 use crossterm::execute;
 use crossterm::terminal::{
-    EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode,
+    disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen,
 };
-use ratatui::Terminal;
 use ratatui::backend::{Backend, CrosstermBackend};
+use ratatui::Terminal;
 
 use crate::app::App;
 use crate::ui;

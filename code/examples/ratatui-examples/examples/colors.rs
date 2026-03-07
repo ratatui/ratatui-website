@@ -11,20 +11,18 @@
 use color_eyre::Result;
 use crossterm::event;
 use itertools::Itertools;
-use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Layout, Rect};
 use ratatui::style::{Color, Style, Stylize};
 use ratatui::text::Line;
 use ratatui::widgets::{Block, Borders, Paragraph};
+use ratatui::Frame;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(render)?;
-            if event::read()?.is_key_press() {
-                return Ok(());
-            }
+    ratatui::run(|terminal| loop {
+        terminal.draw(render)?;
+        if event::read()?.is_key_press() {
+            return Ok(());
         }
     })
 }

@@ -22,17 +22,15 @@ use ratatui::layout::{Constraint, Layout, Rect};
 use ratatui::style::{Color, Style, Stylize};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{RenderDirection, Sparkline};
-use ratatui::{Frame, symbols};
+use ratatui::{symbols, Frame};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
     let frame_timeout = Duration::from_secs_f64(1.0 / 60.0); // run at 60 FPS
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(render)?;
-            if event::poll(frame_timeout)? && event::read()?.is_key_press() {
-                break Ok(());
-            }
+    ratatui::run(|terminal| loop {
+        terminal.draw(render)?;
+        if event::poll(frame_timeout)? && event::read()?.is_key_press() {
+            break Ok(());
         }
     })
 }

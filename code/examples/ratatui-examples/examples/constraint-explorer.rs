@@ -13,7 +13,6 @@ use std::cmp::Ordering;
 use color_eyre::Result;
 use crossterm::event::{self, KeyCode};
 use itertools::Itertools;
-use ratatui::DefaultTerminal;
 use ratatui::buffer::Buffer;
 use ratatui::layout::Constraint::{self, Fill, Length, Max, Min, Percentage, Ratio};
 use ratatui::layout::{Flex, Layout, Rect};
@@ -22,6 +21,7 @@ use ratatui::style::{Color, Style, Stylize};
 use ratatui::symbols::{self, line};
 use ratatui::text::{Line, Span, Text};
 use ratatui::widgets::{Block, Paragraph, Widget, Wrap};
+use ratatui::DefaultTerminal;
 use strum::{Display, EnumIter, FromRepr};
 
 fn main() -> Result<()> {
@@ -238,19 +238,14 @@ impl From<Constraint> for ConstraintName {
 
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        let [
-            header_area,
-            instructions_area,
-            swap_legend_area,
-            _,
-            blocks_area,
-        ] = area.layout(&Layout::vertical([
-            Length(2), // header
-            Length(2), // instructions
-            Length(1), // swap key legend
-            Length(1), // gap
-            Fill(1),   // blocks
-        ]));
+        let [header_area, instructions_area, swap_legend_area, _, blocks_area] =
+            area.layout(&Layout::vertical([
+                Length(2), // header
+                Length(2), // instructions
+                Length(1), // swap key legend
+                Length(1), // gap
+                Fill(1),   // blocks
+            ]));
 
         App::header().render(header_area, buf);
         App::instructions().render(instructions_area, buf);
@@ -327,14 +322,8 @@ impl App {
 
         self.render_user_constraints_legend(user_constraints, buf);
 
-        let [
-            start,
-            center,
-            end,
-            space_between,
-            space_around,
-            space_evenly,
-        ] = area.layout(&Layout::vertical([Length(7); 6]));
+        let [start, center, end, space_between, space_around, space_evenly] =
+            area.layout(&Layout::vertical([Length(7); 6]));
 
         self.render_layout_block(Flex::Start, start, buf);
         self.render_layout_block(Flex::Center, center, buf);

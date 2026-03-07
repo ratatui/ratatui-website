@@ -17,7 +17,7 @@ use ratatui::widgets::{
     Block, Padding, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState, StatefulWidget,
     Tabs, Widget,
 };
-use ratatui::{DefaultTerminal, symbols};
+use ratatui::{symbols, DefaultTerminal};
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 
 const SPACER_HEIGHT: u16 = 0;

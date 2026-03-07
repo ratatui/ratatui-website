@@ -20,22 +20,20 @@ use ratatui::layout::{Alignment, Constraint, Layout, Offset, Rect};
 use ratatui::style::{Color, Style, Stylize};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Paragraph, Tabs};
-use ratatui::{Frame, symbols};
+use ratatui::{symbols, Frame};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
 
     let mut selection = 0;
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(|frame| render(frame, selection))?;
-            if let Some(key) = event::read()?.as_key_press_event() {
-                match key.code {
-                    KeyCode::Char('q') | KeyCode::Esc => break Ok(()),
-                    KeyCode::Char('l') | KeyCode::Right => selection = (selection + 1) % 3,
-                    KeyCode::Char('h') | KeyCode::Left => selection = (selection + 2) % 3,
-                    _ => {}
-                }
+    ratatui::run(|terminal| loop {
+        terminal.draw(|frame| render(frame, selection))?;
+        if let Some(key) = event::read()?.as_key_press_event() {
+            match key.code {
+                KeyCode::Char('q') | KeyCode::Esc => break Ok(()),
+                KeyCode::Char('l') | KeyCode::Right => selection = (selection + 1) % 3,
+                KeyCode::Char('h') | KeyCode::Left => selection = (selection + 2) % 3,
+                _ => {}
             }
         }
     })

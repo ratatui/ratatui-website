@@ -16,22 +16,20 @@
 
 use color_eyre::Result;
 use crossterm::event;
-use ratatui::Frame;
 use ratatui::layout::{Constraint, Layout, Rect};
 use ratatui::style::{Color, Modifier, Style, Stylize};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
 use ratatui::widgets::{Block, Padding};
+use ratatui::Frame;
 use time::{Date, Month, OffsetDateTime};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(render)?;
-            if event::read()?.is_key_press() {
-                break Ok(());
-            }
+    ratatui::run(|terminal| loop {
+        terminal.draw(render)?;
+        if event::read()?.is_key_press() {
+            break Ok(());
         }
     })
 }

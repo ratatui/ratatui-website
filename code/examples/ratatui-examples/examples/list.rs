@@ -15,26 +15,24 @@
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
 use crossterm::event::{self, KeyCode};
-use ratatui::Frame;
 use ratatui::layout::{Constraint, Layout, Rect};
 use ratatui::style::{Color, Modifier, Style, Stylize};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{List, ListDirection, ListState};
+use ratatui::Frame;
 
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
 
     let mut list_state = ListState::default().with_selected(Some(0));
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(|frame| render(frame, &mut list_state))?;
-            if let Some(key) = event::read()?.as_key_press_event() {
-                match key.code {
-                    KeyCode::Char('j') | KeyCode::Down => list_state.select_next(),
-                    KeyCode::Char('k') | KeyCode::Up => list_state.select_previous(),
-                    KeyCode::Char('q') | KeyCode::Esc => break Ok(()),
-                    _ => {}
-                }
+    ratatui::run(|terminal| loop {
+        terminal.draw(|frame| render(frame, &mut list_state))?;
+        if let Some(key) = event::read()?.as_key_press_event() {
+            match key.code {
+                KeyCode::Char('j') | KeyCode::Down => list_state.select_next(),
+                KeyCode::Char('k') | KeyCode::Up => list_state.select_previous(),
+                KeyCode::Char('q') | KeyCode::Esc => break Ok(()),
+                _ => {}
             }
         }
     })

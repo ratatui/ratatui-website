@@ -10,11 +10,11 @@
 //! [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 use color_eyre::Result;
 use crossterm::event::{self, KeyCode};
-use ratatui::Frame;
 use ratatui::layout::{Constraint, Layout};
 use ratatui::style::Stylize;
 use ratatui::text::Line;
 use ratatui::widgets::{Block, Clear, Paragraph};
+use ratatui::Frame;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
@@ -23,16 +23,14 @@ fn main() -> Result<()> {
     // if you have more state to manage than just this flag.
     let mut show_popup = false;
 
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(|frame| render(frame, show_popup))?;
+    ratatui::run(|terminal| loop {
+        terminal.draw(|frame| render(frame, show_popup))?;
 
-            if let Some(key) = event::read()?.as_key_press_event() {
-                match key.code {
-                    KeyCode::Char('q') => return Ok(()),
-                    KeyCode::Char('p') => show_popup = !show_popup,
-                    _ => {}
-                }
+        if let Some(key) = event::read()?.as_key_press_event() {
+            match key.code {
+                KeyCode::Char('q') => return Ok(()),
+                KeyCode::Char('p') => show_popup = !show_popup,
+                _ => {}
             }
         }
     })

@@ -6,7 +6,7 @@ use ratatui::widgets::{
     Axis, BarChart, Block, Cell, Chart, Dataset, Gauge, LineGauge, List, ListItem, Paragraph, Row,
     Sparkline, Table, Tabs, Wrap,
 };
-use ratatui::{Frame, symbols};
+use ratatui::{symbols, Frame};
 
 use crate::app::App;
 

@@ -12,12 +12,10 @@
 //! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
 //! [hello-world]: https://github.com/ratatui/ratatui/blob/main/examples/apps/hello-world
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    ratatui::run(|terminal| {
-        loop {
-            terminal.draw(|frame| frame.render_widget("Hello World!", frame.area()))?;
-            if crossterm::event::read()?.is_key_press() {
-                break Ok(());
-            }
+    ratatui::run(|terminal| loop {
+        terminal.draw(|frame| frame.render_widget("Hello World!", frame.area()))?;
+        if crossterm::event::read()?.is_key_press() {
+            break Ok(());
         }
     })
 }
