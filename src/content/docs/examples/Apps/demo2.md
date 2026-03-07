@@ -2,8 +2,8 @@
 title: Demo 2
 ---
 
-This is the demo example from the main README and crate page.
-Source [demo2](https://github.com/ratatui/ratatui/tree/main/examples/apps/demo2).
+This is the demo example from the main README and crate page. Source
+[demo2](https://github.com/ratatui/ratatui/tree/main/examples/apps/demo2).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest

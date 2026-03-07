@@ -2,8 +2,8 @@
 title: Ratatui Logo
 ---
 
-A fun example of using half blocks to render graphics.
-Source [logo.rs](https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples/logo.rs).
+A fun example of using half blocks to render graphics. Source
+[logo.rs](https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples/logo.rs).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
