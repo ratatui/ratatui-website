@@ -13,7 +13,7 @@
 /// **Note:** as this is a relatively simple example unicode characters are unsupported and
 /// their use will result in undefined behaviour.
 ///
-/// See also <https://github.com/rhysd/tui-textarea> and <https://github.com/sayanarijit/tui-input>/
+/// See also <https://github.com/ratatui/ratatui-textarea> and <https://github.com/sayanarijit/tui-input>/
 ///
 /// This example runs with the Ratatui library code in the branch that you are currently
 /// reading. See the [`latest`] branch for the code which works with the most recent Ratatui
