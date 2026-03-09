@@ -4,8 +4,10 @@ title: Colors (RGB)
 
 Demonstrates the available RGB
 [`Color`](https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html) options. These can be used
-in any style field. Source: [colors_rgb.rs](./colors_rgb.rs). Uses a half block technique to render
-two square-ish pixels in the space of a single rectangular terminal cell.
+in any style field. Source
+[main.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/colors-rgb/src/main.rs). Uses a
+half block technique to render two square-ish pixels in the space of a single rectangular terminal
+cell.
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
@@ -15,8 +17,8 @@ cargo run -p colors-rgb
 
 <!-- TODO update this to use the mov file -->
 
-![colors_rgb](colors_rgb.gif)
+![colors_rgb](https://github.com/ratatui/ratatui/blob/images/examples/colors-rgb.gif?raw=true)
 
-```rust title=colors_rgb.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/colors_rgb.rs }}
 ```

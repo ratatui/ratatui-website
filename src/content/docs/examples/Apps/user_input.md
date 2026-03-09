@@ -18,8 +18,8 @@ cd ratatui
 cargo run -p user-input
 ```
 
-![user_input](user_input.gif)
+![user_input](https://github.com/ratatui/ratatui/blob/images/examples/user-input.gif?raw=true)
 
-```rust title=user_input.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/user_input.rs }}
 ```

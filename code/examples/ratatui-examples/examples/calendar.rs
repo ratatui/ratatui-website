@@ -1,6 +1,7 @@
-//! # [Ratatui] Calendar example
+//! # [Ratatui] `Calendar` example
 //!
-//! The latest version of this example is available in the [examples] folder in the repository.
+//! The latest version of this example is available in the [widget examples] folder in the
+//! repository.
 //!
 //! Please note that the examples are designed to be run against the `main` branch of the Github
 //! repository. This means that you may not be able to compile with the latest release version on
@@ -10,240 +11,72 @@
 //! library you are using.
 //!
 //! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
+//! [widget examples]: https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
 use color_eyre::Result;
-use ratatui::{
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
-    layout::{Constraint, Layout, Margin},
-    style::{Color, Modifier, Style},
-    widgets::calendar::{CalendarEventStore, DateStyler, Monthly},
-    DefaultTerminal, Frame,
-};
+use crossterm::event;
+use ratatui::layout::{Constraint, Layout, Rect};
+use ratatui::style::{Color, Modifier, Style, Stylize};
+use ratatui::text::{Line, Span};
+use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
+use ratatui::widgets::{Block, Padding};
+use ratatui::Frame;
 use time::{Date, Month, OffsetDateTime};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let result = run(terminal);
-    ratatui::restore();
-    result
-}
-
-fn run(mut terminal: DefaultTerminal) -> Result<()> {
-    loop {
-        terminal.draw(draw)?;
-        if let Event::Key(key) = event::read()? {
-            if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') {
-                break Ok(());
-            }
+    ratatui::run(|terminal| loop {
+        terminal.draw(render)?;
+        if event::read()?.is_key_press() {
+            break Ok(());
         }
-    }
+    })
 }
 
-fn draw(frame: &mut Frame) {
-    let area = frame.area().inner(Margin {
-        vertical: 1,
-        horizontal: 1,
-    });
+/// Render the UI with 2 monthly calendars side by side.
+fn render(frame: &mut Frame) {
+    let vertical = Layout::vertical([Constraint::Length(1), Constraint::Fill(1)]).spacing(1);
+    let horizontal = Layout::horizontal([Constraint::Percentage(50); 2]).spacing(1);
+    let [top, main] = frame.area().layout(&vertical);
+    let [left, right] = main.layout(&horizontal);
 
-    let mut start = OffsetDateTime::now_local()
-        .unwrap()
-        .date()
-        .replace_month(Month::January)
-        .unwrap()
-        .replace_day(1)
-        .unwrap();
+    let title = Line::from_iter([
+        Span::from("Calendar Widget").bold(),
+        Span::from(" (Press 'q' to quit)"),
+    ]);
+    frame.render_widget(title.centered(), top);
 
-    let list = make_dates(start.year());
-
-    let rows = Layout::vertical([Constraint::Ratio(1, 3); 3]).split(area);
-    let cols = rows.iter().flat_map(|row| {
-        Layout::horizontal([Constraint::Ratio(1, 4); 4])
-            .split(*row)
-            .to_vec()
-    });
-    for col in cols {
-        let cal = cals::get_cal(start.month(), start.year(), &list);
-        frame.render_widget(cal, col);
-        start = start.replace_month(start.month().next()).unwrap();
-    }
+    render_current_month(frame, left);
+    render_styled_month(frame, right);
 }
 
-fn make_dates(current_year: i32) -> CalendarEventStore {
-    let mut list = CalendarEventStore::today(
-        Style::default()
-            .add_modifier(Modifier::BOLD)
-            .bg(Color::Blue),
-    );
+/// Render the current month calendar.
+fn render_current_month(frame: &mut Frame, area: Rect) {
+    let date = OffsetDateTime::now_utc().date();
 
-    // Holidays
-    let holiday_style = Style::default()
-        .fg(Color::Red)
-        .add_modifier(Modifier::UNDERLINED);
-
-    // new year's
-    list.add(
-        Date::from_calendar_date(current_year, Month::January, 1).unwrap(),
-        holiday_style,
-    );
-    // next new_year's for December "show surrounding"
-    list.add(
-        Date::from_calendar_date(current_year + 1, Month::January, 1).unwrap(),
-        holiday_style,
-    );
-    // groundhog day
-    list.add(
-        Date::from_calendar_date(current_year, Month::February, 2).unwrap(),
-        holiday_style,
-    );
-    // april fool's
-    list.add(
-        Date::from_calendar_date(current_year, Month::April, 1).unwrap(),
-        holiday_style,
-    );
-    // earth day
-    list.add(
-        Date::from_calendar_date(current_year, Month::April, 22).unwrap(),
-        holiday_style,
-    );
-    // star wars day
-    list.add(
-        Date::from_calendar_date(current_year, Month::May, 4).unwrap(),
-        holiday_style,
-    );
-    // festivus
-    list.add(
-        Date::from_calendar_date(current_year, Month::December, 23).unwrap(),
-        holiday_style,
-    );
-    // new year's eve
-    list.add(
-        Date::from_calendar_date(current_year, Month::December, 31).unwrap(),
-        holiday_style,
-    );
-
-    // seasons
-    let season_style = Style::default()
-        .fg(Color::White)
-        .bg(Color::Yellow)
-        .add_modifier(Modifier::UNDERLINED);
-    // spring equinox
-    list.add(
-        Date::from_calendar_date(current_year, Month::March, 22).unwrap(),
-        season_style,
-    );
-    // summer solstice
-    list.add(
-        Date::from_calendar_date(current_year, Month::June, 21).unwrap(),
-        season_style,
-    );
-    // fall equinox
-    list.add(
-        Date::from_calendar_date(current_year, Month::September, 22).unwrap(),
-        season_style,
-    );
-    list.add(
-        Date::from_calendar_date(current_year, Month::December, 21).unwrap(),
-        season_style,
-    );
-    list
+    let monthly = Monthly::new(
+        date,
+        CalendarEventStore::today(Style::default().red().bold()),
+    )
+    .block(Block::new().padding(Padding::new(0, 0, 2, 0)))
+    .show_month_header(Modifier::BOLD)
+    .show_weekdays_header(Modifier::ITALIC);
+    frame.render_widget(monthly, area);
 }
 
-mod cals {
-    #[allow(clippy::wildcard_imports)]
-    use super::*;
+/// Render an arbitrary month with more styles.
+fn render_styled_month(frame: &mut Frame, area: Rect) {
+    // Release date of the movie Ratatouille.
+    let date = Date::from_calendar_date(2007, Month::June, 29).unwrap();
 
-    pub fn get_cal<'a, DS: DateStyler>(m: Month, y: i32, es: DS) -> Monthly<'a, DS> {
-        match m {
-            Month::May => example1(m, y, es),
-            Month::June => example2(m, y, es),
-            Month::July | Month::December => example3(m, y, es),
-            Month::February => example4(m, y, es),
-            Month::November => example5(m, y, es),
-            _ => default(m, y, es),
-        }
-    }
+    let mut event_store = CalendarEventStore::today(Style::default().red().bold());
+    event_store.add(date, Style::default().blue().italic());
 
-    fn default<'a, DS: DateStyler>(m: Month, y: i32, es: DS) -> Monthly<'a, DS> {
-        let default_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .bg(Color::Rgb(50, 50, 50));
-
-        Monthly::new(Date::from_calendar_date(y, m, 1).unwrap(), es)
-            .show_month_header(Style::default())
-            .default_style(default_style)
-    }
-
-    fn example1<'a, DS: DateStyler>(m: Month, y: i32, es: DS) -> Monthly<'a, DS> {
-        let default_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .bg(Color::Rgb(50, 50, 50));
-
-        Monthly::new(Date::from_calendar_date(y, m, 1).unwrap(), es)
-            .show_surrounding(default_style)
-            .default_style(default_style)
-            .show_month_header(Style::default())
-    }
-
-    fn example2<'a, DS: DateStyler>(m: Month, y: i32, es: DS) -> Monthly<'a, DS> {
-        let header_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .add_modifier(Modifier::DIM)
-            .fg(Color::LightYellow);
-
-        let default_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .bg(Color::Rgb(50, 50, 50));
-
-        Monthly::new(Date::from_calendar_date(y, m, 1).unwrap(), es)
-            .show_weekdays_header(header_style)
-            .default_style(default_style)
-            .show_month_header(Style::default())
-    }
-
-    fn example3<'a, DS: DateStyler>(m: Month, y: i32, es: DS) -> Monthly<'a, DS> {
-        let header_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .fg(Color::Green);
-
-        let default_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .bg(Color::Rgb(50, 50, 50));
-
-        Monthly::new(Date::from_calendar_date(y, m, 1).unwrap(), es)
-            .show_surrounding(Style::default().add_modifier(Modifier::DIM))
-            .show_weekdays_header(header_style)
-            .default_style(default_style)
-            .show_month_header(Style::default())
-    }
-
-    fn example4<'a, DS: DateStyler>(m: Month, y: i32, es: DS) -> Monthly<'a, DS> {
-        let header_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .fg(Color::Green);
-
-        let default_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .bg(Color::Rgb(50, 50, 50));
-
-        Monthly::new(Date::from_calendar_date(y, m, 1).unwrap(), es)
-            .show_weekdays_header(header_style)
-            .default_style(default_style)
-    }
-
-    fn example5<'a, DS: DateStyler>(m: Month, y: i32, es: DS) -> Monthly<'a, DS> {
-        let header_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .fg(Color::Green);
-
-        let default_style = Style::default()
-            .add_modifier(Modifier::BOLD)
-            .bg(Color::Rgb(50, 50, 50));
-
-        Monthly::new(Date::from_calendar_date(y, m, 1).unwrap(), es)
-            .show_month_header(header_style)
-            .default_style(default_style)
-    }
+    let monthly = Monthly::new(date, event_store)
+        .show_surrounding(Modifier::DIM)
+        .show_month_header(Modifier::BOLD)
+        .show_weekdays_header(Style::default().bold().green())
+        .default_style(Style::default().bold().bg(Color::Rgb(50, 50, 50)));
+    frame.render_widget(monthly, area);
 }

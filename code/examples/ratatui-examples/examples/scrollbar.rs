@@ -1,6 +1,7 @@
-//! # [Ratatui] Scrollbar example
+//! # [Ratatui] `Scrollbar` example
 //!
-//! The latest version of this example is available in the [examples] folder in the repository.
+//! The latest version of this example is available in the [widget examples] folder in the
+//! repository.
 //!
 //! Please note that the examples are designed to be run against the `main` branch of the Github
 //! repository. This means that you may not be able to compile with the latest release version on
@@ -10,202 +11,114 @@
 //! library you are using.
 //!
 //! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
+//! [widget examples]: https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
-#![warn(clippy::pedantic)]
-
-use std::time::{Duration, Instant};
-
 use color_eyre::Result;
-use ratatui::{
-    crossterm::event::{self, Event, KeyCode},
-    layout::{Alignment, Constraint, Layout, Margin},
-    style::{Color, Style, Stylize},
-    symbols::scrollbar,
-    text::{Line, Masked, Span},
-    widgets::{Block, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState},
-    DefaultTerminal, Frame,
-};
-
-#[derive(Default)]
-struct App {
-    pub vertical_scroll_state: ScrollbarState,
-    pub horizontal_scroll_state: ScrollbarState,
-    pub vertical_scroll: usize,
-    pub horizontal_scroll: usize,
-}
+use crossterm::event::{self, KeyCode};
+use ratatui::layout::{Constraint, Layout, Margin, Rect};
+use ratatui::style::{Color, Stylize};
+use ratatui::symbols::scrollbar::Set;
+use ratatui::text::{Line, Span};
+use ratatui::widgets::{Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState};
+use ratatui::Frame;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let app_result = App::default().run(terminal);
-    ratatui::restore();
-    app_result
-}
 
-impl App {
-    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
-        let tick_rate = Duration::from_millis(250);
-        let mut last_tick = Instant::now();
-        loop {
-            terminal.draw(|frame| self.draw(frame))?;
-
-            let timeout = tick_rate.saturating_sub(last_tick.elapsed());
-            if event::poll(timeout)? {
-                if let Event::Key(key) = event::read()? {
-                    match key.code {
-                        KeyCode::Char('q') => return Ok(()),
-                        KeyCode::Char('j') | KeyCode::Down => {
-                            self.vertical_scroll = self.vertical_scroll.saturating_add(1);
-                            self.vertical_scroll_state =
-                                self.vertical_scroll_state.position(self.vertical_scroll);
-                        }
-                        KeyCode::Char('k') | KeyCode::Up => {
-                            self.vertical_scroll = self.vertical_scroll.saturating_sub(1);
-                            self.vertical_scroll_state =
-                                self.vertical_scroll_state.position(self.vertical_scroll);
-                        }
-                        KeyCode::Char('h') | KeyCode::Left => {
-                            self.horizontal_scroll = self.horizontal_scroll.saturating_sub(1);
-                            self.horizontal_scroll_state = self
-                                .horizontal_scroll_state
-                                .position(self.horizontal_scroll);
-                        }
-                        KeyCode::Char('l') | KeyCode::Right => {
-                            self.horizontal_scroll = self.horizontal_scroll.saturating_add(1);
-                            self.horizontal_scroll_state = self
-                                .horizontal_scroll_state
-                                .position(self.horizontal_scroll);
-                        }
-                        _ => {}
-                    }
-                }
-            }
-            if last_tick.elapsed() >= tick_rate {
-                last_tick = Instant::now();
+    let mut vertical = ScrollbarState::new(100);
+    let mut horizontal = ScrollbarState::new(100);
+    ratatui::run(|terminal| loop {
+        terminal.draw(|frame| render(frame, &mut vertical, &mut horizontal))?;
+        if let Some(key) = event::read()?.as_key_press_event() {
+            match key.code {
+                KeyCode::Char('q') | KeyCode::Esc => break Ok(()),
+                KeyCode::Char('j') | KeyCode::Down => vertical.next(),
+                KeyCode::Char('k') | KeyCode::Up => vertical.prev(),
+                KeyCode::Char('l') | KeyCode::Right => horizontal.next(),
+                KeyCode::Char('h') | KeyCode::Left => horizontal.prev(),
+                _ => {}
             }
         }
-    }
+    })
+}
 
-    #[allow(clippy::too_many_lines, clippy::cast_possible_truncation)]
-    fn draw(&mut self, frame: &mut Frame) {
-        let area = frame.area();
+/// Render the UI with vertical/horizontal scrollbars.
+fn render(frame: &mut Frame, vertical: &mut ScrollbarState, horizontal: &mut ScrollbarState) {
+    let layout = Layout::vertical([Constraint::Length(1), Constraint::Fill(1)]).spacing(1);
+    let [top, main] = frame.area().layout(&layout);
 
-        // Words made "loooong" to demonstrate line breaking.
-        let s =
-            "Veeeeeeeeeeeeeeeery    loooooooooooooooooong   striiiiiiiiiiiiiiiiiiiiiiiiiing.   ";
-        let mut long_line = s.repeat(usize::from(area.width) / s.len() + 4);
-        long_line.push('\n');
+    let title = Line::from_iter([
+        Span::from("Scrollbar Widget").bold(),
+        Span::from(" (Press 'q' to quit, arrow keys to scroll)"),
+    ]);
+    frame.render_widget(title.centered(), top);
 
-        let chunks = Layout::vertical([
-            Constraint::Min(1),
-            Constraint::Percentage(25),
-            Constraint::Percentage(25),
-            Constraint::Percentage(25),
-            Constraint::Percentage(25),
-        ])
-        .split(area);
+    render_content(frame, main, vertical, horizontal);
+    render_vertical_scrollbar(frame, main, vertical);
+    render_horizontal_scrollbar(frame, main, horizontal);
+}
 
-        let text = vec![
-            Line::from("This is a line "),
-            Line::from("This is a line   ".red()),
-            Line::from("This is a line".on_dark_gray()),
-            Line::from("This is a longer line".crossed_out()),
-            Line::from(long_line.clone()),
-            Line::from("This is a line".reset()),
-            Line::from(vec![
-                Span::raw("Masked text: "),
-                Span::styled(Masked::new("password", '*'), Style::new().fg(Color::Red)),
-            ]),
-            Line::from("This is a line "),
-            Line::from("This is a line   ".red()),
-            Line::from("This is a line".on_dark_gray()),
-            Line::from("This is a longer line".crossed_out()),
-            Line::from(long_line.clone()),
-            Line::from("This is a line".reset()),
-            Line::from(vec![
-                Span::raw("Masked text: "),
-                Span::styled(Masked::new("password", '*'), Style::new().fg(Color::Red)),
-            ]),
-        ];
-        self.vertical_scroll_state = self.vertical_scroll_state.content_length(text.len());
-        self.horizontal_scroll_state = self.horizontal_scroll_state.content_length(long_line.len());
+/// Render a vertical scrollbar on the right side of the area.
+pub fn render_vertical_scrollbar(frame: &mut Frame, area: Rect, vertical: &mut ScrollbarState) {
+    let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight);
+    frame.render_stateful_widget(
+        scrollbar,
+        area.inner(Margin {
+            vertical: 1,
+            horizontal: 0,
+        }),
+        vertical,
+    );
+}
 
-        let create_block = |title: &'static str| Block::bordered().gray().title(title.bold());
+/// Render a horizontal scrollbar at the bottom of the area.
+pub fn render_horizontal_scrollbar(frame: &mut Frame, area: Rect, horizontal: &mut ScrollbarState) {
+    let scrollbar = Scrollbar::new(ScrollbarOrientation::HorizontalBottom)
+        .symbols(Set {
+            track: "-",
+            thumb: "▮",
+            begin: "<",
+            end: ">",
+        })
+        .track_style(Color::Yellow)
+        .begin_style(Color::Green)
+        .end_style(Color::Red);
 
-        let title = Block::new()
-            .title_alignment(Alignment::Center)
-            .title("Use h j k l or ◄ ▲ ▼ ► to scroll ".bold());
-        frame.render_widget(title, chunks[0]);
+    frame.render_stateful_widget(
+        scrollbar,
+        area.inner(Margin {
+            vertical: 0,
+            horizontal: 1,
+        }),
+        horizontal,
+    );
+}
 
-        let paragraph = Paragraph::new(text.clone())
-            .gray()
-            .block(create_block("Vertical scrollbar with arrows"))
-            .scroll((self.vertical_scroll as u16, 0));
-        frame.render_widget(paragraph, chunks[1]);
-        frame.render_stateful_widget(
-            Scrollbar::new(ScrollbarOrientation::VerticalRight)
-                .begin_symbol(Some("↑"))
-                .end_symbol(Some("↓")),
-            chunks[1],
-            &mut self.vertical_scroll_state,
-        );
-
-        let paragraph = Paragraph::new(text.clone())
-            .gray()
-            .block(create_block(
-                "Vertical scrollbar without arrows, without track symbol and mirrored",
-            ))
-            .scroll((self.vertical_scroll as u16, 0));
-        frame.render_widget(paragraph, chunks[2]);
-        frame.render_stateful_widget(
-            Scrollbar::new(ScrollbarOrientation::VerticalLeft)
-                .symbols(scrollbar::VERTICAL)
-                .begin_symbol(None)
-                .track_symbol(None)
-                .end_symbol(None),
-            chunks[2].inner(Margin {
-                vertical: 1,
-                horizontal: 0,
-            }),
-            &mut self.vertical_scroll_state,
-        );
-
-        let paragraph = Paragraph::new(text.clone())
-            .gray()
-            .block(create_block(
-                "Horizontal scrollbar with only begin arrow & custom thumb symbol",
-            ))
-            .scroll((0, self.horizontal_scroll as u16));
-        frame.render_widget(paragraph, chunks[3]);
-        frame.render_stateful_widget(
-            Scrollbar::new(ScrollbarOrientation::HorizontalBottom)
-                .thumb_symbol("🬋")
-                .end_symbol(None),
-            chunks[3].inner(Margin {
-                vertical: 0,
-                horizontal: 1,
-            }),
-            &mut self.horizontal_scroll_state,
-        );
-
-        let paragraph = Paragraph::new(text.clone())
-            .gray()
-            .block(create_block(
-                "Horizontal scrollbar without arrows & custom thumb and track symbol",
-            ))
-            .scroll((0, self.horizontal_scroll as u16));
-        frame.render_widget(paragraph, chunks[4]);
-        frame.render_stateful_widget(
-            Scrollbar::new(ScrollbarOrientation::HorizontalBottom)
-                .thumb_symbol("░")
-                .track_symbol(Some("─")),
-            chunks[4].inner(Margin {
-                vertical: 0,
-                horizontal: 1,
-            }),
-            &mut self.horizontal_scroll_state,
-        );
-    }
+/// Render some content.
+fn render_content(
+    frame: &mut Frame,
+    area: Rect,
+    vertical: &ScrollbarState,
+    horizontal: &ScrollbarState,
+) {
+    let content = vec![
+        Line::from("This is a paragraph with a vertical and horizontal scrollbar."),
+        Line::from_iter(["Lorem ipsum dolor sit amet, consectetur adipiscing elit.".repeat(10)]),
+        Line::from_iter([
+            "Horizontal: ".bold(),
+            horizontal.get_position().to_string().yellow(),
+        ]),
+        Line::from_iter([
+            "Vertical: ".bold(),
+            vertical.get_position().to_string().yellow(),
+        ]),
+    ];
+    frame.render_widget(
+        Paragraph::new(content).scroll((
+            vertical.get_position() as u16,
+            horizontal.get_position() as u16,
+        )),
+        area,
+    );
 }

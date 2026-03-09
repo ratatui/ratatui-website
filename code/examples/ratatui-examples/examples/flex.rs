@@ -1,52 +1,42 @@
-//! # [Ratatui] Flex example
-//!
-//! The latest version of this example is available in the [examples] folder in the repository.
-//!
-//! Please note that the examples are designed to be run against the `main` branch of the Github
-//! repository. This means that you may not be able to compile with the latest release version on
-//! crates.io, or the one that you have installed locally.
-//!
-//! See the [examples readme] for more information on finding examples that match the version of the
-//! library you are using.
-//!
-//! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
-//! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
-
+/// A Ratatui example that demonstrates different types of flex layouts.
+///
+/// You can also change the spacing between the constraints, and toggle between different types
+/// of flex layouts.
+///
+/// This example runs with the Ratatui library code in the branch that you are currently
+/// reading. See the [`latest`] branch for the code which works with the most recent Ratatui
+/// release.
+///
+/// [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 use std::num::NonZeroUsize;
+use std::sync::LazyLock;
 
 use color_eyre::Result;
-use ratatui::{
-    buffer::Buffer,
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
-    layout::{
-        Alignment,
-        Constraint::{self, Fill, Length, Max, Min, Percentage, Ratio},
-        Flex, Layout, Rect,
-    },
-    style::{palette::tailwind, Color, Modifier, Style, Stylize},
-    symbols::{self, line},
-    text::{Line, Text},
-    widgets::{
-        Block, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState, StatefulWidget, Tabs,
-        Widget,
-    },
-    DefaultTerminal,
+use crossterm::event::{self, KeyCode};
+use ratatui::buffer::Buffer;
+use ratatui::layout::Constraint::{self, Fill, Length, Max, Min, Percentage, Ratio};
+use ratatui::layout::{Alignment, Flex, Layout, Rect};
+use ratatui::style::palette::tailwind;
+use ratatui::style::{Color, Modifier, Style, Stylize};
+use ratatui::symbols::{self, line};
+use ratatui::text::{Line, Text};
+use ratatui::widgets::{
+    Block, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState, StatefulWidget, Tabs, Widget,
 };
+use ratatui::DefaultTerminal;
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let app_result = App::default().run(terminal);
-    ratatui::restore();
-    app_result
+    ratatui::run(|terminal| App::new().run(terminal))
 }
+
+static THEME: LazyLock<Theme> = LazyLock::new(Theme::new);
 
 const EXAMPLE_DATA: &[(&str, &[Constraint])] = &[
     (
         "Min(u16) takes any excess space always",
-        &[Length(10), Min(10), Max(10), Percentage(10), Ratio(1,10)],
+        &[Length(10), Min(10), Max(10), Percentage(10), Ratio(1, 10)],
     ),
     (
         "Fill(u16) takes any excess space always",
@@ -54,20 +44,18 @@ const EXAMPLE_DATA: &[(&str, &[Constraint])] = &[
     ),
     (
         "Here's all constraints in one line",
-        &[Length(10), Min(10), Max(10), Percentage(10), Ratio(1,10), Fill(1)],
+        &[
+            Length(10),
+            Min(10),
+            Max(10),
+            Percentage(10),
+            Ratio(1, 10),
+            Fill(1),
+        ],
     ),
-    (
-        "",
-        &[Max(50), Min(50)],
-    ),
-    (
-        "",
-        &[Max(20), Length(10)],
-    ),
-    (
-        "",
-        &[Max(20), Length(10)],
-    ),
+    ("", &[Max(50), Min(50)]),
+    ("", &[Max(20), Length(10)]),
+    ("", &[Max(20), Length(10)]),
     (
         "Min grows always but also allows Fill to grow",
         &[Percentage(50), Fill(1), Fill(2), Min(50)],
@@ -77,44 +65,58 @@ const EXAMPLE_DATA: &[(&str, &[Constraint])] = &[
         &[Length(20), Length(20), Percentage(20)],
     ),
     ("", &[Length(20), Percentage(20), Length(20)]),
-    ("A lowest priority constraint will be broken before a high priority constraint", &[Ratio(1,4), Percentage(20)]),
-    ("`Length` is higher priority than `Percentage`", &[Percentage(20), Length(10)]),
-    ("`Min/Max` is higher priority than `Length`", &[Length(10), Max(20)]),
+    (
+        "A lowest priority constraint will be broken before a high priority constraint",
+        &[Ratio(1, 4), Percentage(20)],
+    ),
+    (
+        "`Length` is higher priority than `Percentage`",
+        &[Percentage(20), Length(10)],
+    ),
+    (
+        "`Min/Max` is higher priority than `Length`",
+        &[Length(10), Max(20)],
+    ),
     ("", &[Length(100), Min(20)]),
-    ("`Length` is higher priority than `Min/Max`", &[Max(20), Length(10)]),
+    (
+        "`Length` is higher priority than `Min/Max`",
+        &[Max(20), Length(10)],
+    ),
     ("", &[Min(20), Length(90)]),
-    ("Fill is the lowest priority and will fill any excess space", &[Fill(1), Ratio(1, 4)]),
-    ("Fill can be used to scale proportionally with other Fill blocks", &[Fill(1), Percentage(20), Fill(2)]),
+    (
+        "Fill is the lowest priority and will fill any excess space",
+        &[Fill(1), Ratio(1, 4)],
+    ),
+    (
+        "Fill can be used to scale proportionally with other Fill blocks",
+        &[Fill(1), Percentage(20), Fill(2)],
+    ),
     ("", &[Ratio(1, 3), Percentage(20), Ratio(2, 3)]),
-    ("Legacy will stretch the last lowest priority constraint\nStretch will only stretch equal weighted constraints", &[Length(20), Length(15)]),
+    (
+        "Legacy will stretch the last lowest priority constraint\nStretch will only stretch equal weighted constraints",
+        &[Length(20), Length(15)],
+    ),
     ("", &[Percentage(20), Length(15)]),
-    ("`Fill(u16)` fills up excess space, but is lower priority to spacers.\ni.e. Fill will only have widths in Flex::Stretch and Flex::Legacy", &[Fill(1), Fill(1)]),
+    (
+        "`Fill(u16)` fills up excess space, but is lower priority to spacers.\ni.e. Fill will only have widths in Flex::Stretch and Flex::Legacy",
+        &[Fill(1), Fill(1)],
+    ),
     ("", &[Length(20), Length(20)]),
     (
         "When not using `Flex::Stretch` or `Flex::Legacy`,\n`Min(u16)` and `Max(u16)` collapse to their lowest values",
         &[Min(20), Max(20)],
     ),
-    (
-        "",
-        &[Max(20)],
-    ),
+    ("", &[Max(20)]),
     ("", &[Min(20), Max(20), Length(20), Length(20)]),
     ("", &[Fill(0), Fill(0)]),
     (
         "`Fill(1)` can be to scale with respect to other `Fill(2)`",
         &[Fill(1), Fill(2)],
     ),
-    (
-        "",
-        &[Fill(1), Min(10), Max(10), Fill(2)],
-    ),
+    ("", &[Fill(1), Min(10), Max(10), Fill(2)]),
     (
         "`Fill(0)` collapses if there are other non-zero `Fill(_)`\nconstraints. e.g. `[Fill(0), Fill(0), Fill(1)]`:",
-        &[
-            Fill(0),
-            Fill(0),
-            Fill(1),
-        ],
+        &[Fill(0), Fill(0), Fill(1)],
     ),
 ];
 
@@ -154,11 +156,20 @@ enum SelectedTab {
     Center,
     End,
     SpaceAround,
+    SpaceEvenly,
     SpaceBetween,
 }
 
 impl App {
-    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
+    fn new() -> Self {
+        Self {
+            selected_tab: SelectedTab::default(),
+            scroll_offset: 0,
+            spacing: 0,
+            state: AppState::default(),
+        }
+    }
+    fn run(mut self, terminal: &mut DefaultTerminal) -> Result<()> {
         // increase the layout cache to account for the number of layout events. This ensures that
         // layout is not generally reprocessed on every frame (which would lead to possible janky
         // results when there are more than one possible solution to the requested layout). This
@@ -178,8 +189,8 @@ impl App {
     }
 
     fn handle_events(&mut self) -> Result<()> {
-        match event::read()? {
-            Event::Key(key) if key.kind == KeyEventKind::Press => match key.code {
+        if let Some(key) = event::read()?.as_key_press_event() {
+            match key.code {
                 KeyCode::Char('q') | KeyCode::Esc => self.quit(),
                 KeyCode::Char('l') | KeyCode::Right => self.next(),
                 KeyCode::Char('h') | KeyCode::Left => self.previous(),
@@ -190,8 +201,7 @@ impl App {
                 KeyCode::Char('+') => self.increment_spacing(),
                 KeyCode::Char('-') => self.decrement_spacing(),
                 _ => (),
-            },
-            _ => {}
+            }
         }
         Ok(())
     }
@@ -204,7 +214,7 @@ impl App {
         self.selected_tab = self.selected_tab.previous();
     }
 
-    fn up(&mut self) {
+    const fn up(&mut self) {
         self.scroll_offset = self.scroll_offset.saturating_sub(1);
     }
 
@@ -215,7 +225,7 @@ impl App {
             .min(max_scroll_offset());
     }
 
-    fn top(&mut self) {
+    const fn top(&mut self) {
         self.scroll_offset = 0;
     }
 
@@ -223,15 +233,15 @@ impl App {
         self.scroll_offset = max_scroll_offset();
     }
 
-    fn increment_spacing(&mut self) {
+    const fn increment_spacing(&mut self) {
         self.spacing = self.spacing.saturating_add(1);
     }
 
-    fn decrement_spacing(&mut self) {
+    const fn decrement_spacing(&mut self) {
         self.spacing = self.spacing.saturating_sub(1);
     }
 
-    fn quit(&mut self) {
+    const fn quit(&mut self) {
         self.state = AppState::Quit;
     }
 }
@@ -257,7 +267,7 @@ fn example_height() -> u16 {
 impl Widget for App {
     fn render(self, area: Rect, buf: &mut Buffer) {
         let layout = Layout::vertical([Length(3), Length(1), Fill(0)]);
-        let [tabs, axis, demo] = layout.areas(area);
+        let [tabs, axis, demo] = area.layout(&layout);
         self.tabs().render(tabs, buf);
         let scroll_needed = self.render_demo(demo, buf);
         let axis_width = if scroll_needed {
@@ -271,7 +281,7 @@ impl Widget for App {
 
 impl App {
     fn tabs(self) -> impl Widget {
-        let tab_titles = SelectedTab::iter().map(SelectedTab::to_tab_title);
+        let tab_titles = SelectedTab::iter().map(|tab| SelectedTab::to_tab_title(tab, *THEME));
         let block = Block::new()
             .title("Flex Layouts ".bold())
             .title(" Use ◄ ► to change tab, ▲ ▼  to scroll, - + to change spacing ");
@@ -303,7 +313,7 @@ impl App {
     /// into the main buffer. This is done to make it possible to handle scrolling easily.
     ///
     /// Returns bool indicating whether scroll was needed
-    #[allow(clippy::cast_possible_truncation)]
+    #[expect(clippy::cast_possible_truncation)]
     fn render_demo(self, area: Rect, buf: &mut Buffer) -> bool {
         // render demo content into a separate buffer so all examples fit we add an extra
         // area.height to make sure the last example is fully visible even when the scroll offset is
@@ -363,16 +373,16 @@ impl SelectedTab {
     }
 
     /// Convert a `SelectedTab` into a `Line` to display it by the `Tabs` widget.
-    fn to_tab_title(value: Self) -> Line<'static> {
-        use tailwind::{INDIGO, ORANGE, SKY};
+    fn to_tab_title(value: Self, theme: Theme) -> Line<'static> {
         let text = value.to_string();
         let color = match value {
-            Self::Legacy => ORANGE.c400,
-            Self::Start => SKY.c400,
-            Self::Center => SKY.c300,
-            Self::End => SKY.c200,
-            Self::SpaceAround => INDIGO.c400,
-            Self::SpaceBetween => INDIGO.c300,
+            Self::Legacy => theme.legacy_tab,
+            Self::Start => theme.start_tab,
+            Self::Center => theme.center_tab,
+            Self::End => theme.end_tab,
+            Self::SpaceEvenly => theme.space_evenly_tab,
+            Self::SpaceBetween => theme.space_between_tab,
+            Self::SpaceAround => theme.space_around_tab,
         };
         format!(" {text} ").fg(color).bg(Color::Black).into()
     }
@@ -387,8 +397,15 @@ impl StatefulWidget for SelectedTab {
             Self::Start => Self::render_examples(area, buf, Flex::Start, spacing),
             Self::Center => Self::render_examples(area, buf, Flex::Center, spacing),
             Self::End => Self::render_examples(area, buf, Flex::End, spacing),
-            Self::SpaceAround => Self::render_examples(area, buf, Flex::SpaceAround, spacing),
-            Self::SpaceBetween => Self::render_examples(area, buf, Flex::SpaceBetween, spacing),
+            Self::SpaceEvenly => {
+                Self::render_examples(area, buf, Flex::SpaceEvenly, spacing);
+            }
+            Self::SpaceBetween => {
+                Self::render_examples(area, buf, Flex::SpaceBetween, spacing);
+            }
+            Self::SpaceAround => {
+                Self::render_examples(area, buf, Flex::SpaceAround, spacing);
+            }
         }
     }
 }
@@ -420,7 +437,7 @@ impl Widget for Example {
     fn render(self, area: Rect, buf: &mut Buffer) {
         let title_height = get_description_height(&self.description);
         let layout = Layout::vertical([Length(title_height), Fill(0)]);
-        let [title, illustrations] = layout.areas(area);
+        let [title, illustrations] = area.layout(&layout);
 
         let (blocks, spacers) = Layout::horizontal(&self.constraints)
             .flex(self.flex)
@@ -431,7 +448,7 @@ impl Widget for Example {
             Paragraph::new(
                 self.description
                     .split('\n')
-                    .map(|s| format!("// {s}").italic().fg(tailwind::SLATE.c400))
+                    .map(|s| format!("// {s}").italic().fg(THEME.description_fg))
                     .map(Line::from)
                     .collect::<Vec<Line>>(),
             )
@@ -439,7 +456,7 @@ impl Widget for Example {
         }
 
         for (block, constraint) in blocks.iter().zip(&self.constraints) {
-            Self::illustration(*constraint, block.width).render(*block, buf);
+            Self::illustration(*constraint, block.width, *THEME).render(*block, buf);
         }
 
         for spacer in spacers.iter() {
@@ -494,8 +511,8 @@ impl Example {
             .render(spacer, buf);
     }
 
-    fn illustration(constraint: Constraint, width: u16) -> impl Widget {
-        let main_color = color_for_constraint(constraint);
+    fn illustration(constraint: Constraint, width: u16, theme: Theme) -> impl Widget {
+        let main_color = color_for_constraint(constraint, theme);
         let fg_color = Color::White;
         let title = format!("{constraint}");
         let content = format!("{width} px");
@@ -507,24 +524,94 @@ impl Example {
         Paragraph::new(text).centered().block(block)
     }
 }
-
-const fn color_for_constraint(constraint: Constraint) -> Color {
-    use tailwind::{BLUE, SLATE};
+const fn color_for_constraint(constraint: Constraint, theme: Theme) -> Color {
     match constraint {
-        Constraint::Min(_) => BLUE.c900,
-        Constraint::Max(_) => BLUE.c800,
-        Constraint::Length(_) => SLATE.c700,
-        Constraint::Percentage(_) => SLATE.c800,
-        Constraint::Ratio(_, _) => SLATE.c900,
-        Constraint::Fill(_) => SLATE.c950,
+        Constraint::Min(_) => theme.min_bg,
+        Constraint::Max(_) => theme.max_bg,
+        Constraint::Length(_) => theme.length_bg,
+        Constraint::Percentage(_) => theme.percentage_bg,
+        Constraint::Ratio(_, _) => theme.ratio_bg,
+        Constraint::Fill(_) => theme.fill_bg,
     }
 }
 
-#[allow(clippy::cast_possible_truncation)]
+#[expect(clippy::cast_possible_truncation)]
 fn get_description_height(s: &str) -> u16 {
     if s.is_empty() {
         0
     } else {
         s.split('\n').count() as u16
+    }
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+struct Theme {
+    min_bg: Color,
+    max_bg: Color,
+    length_bg: Color,
+    percentage_bg: Color,
+    ratio_bg: Color,
+    fill_bg: Color,
+    legacy_tab: Color,
+    start_tab: Color,
+    center_tab: Color,
+    end_tab: Color,
+    space_evenly_tab: Color,
+    space_between_tab: Color,
+    space_around_tab: Color,
+    description_fg: Color,
+}
+
+impl Theme {
+    pub fn new() -> Self {
+        use tailwind::{BLUE, INDIGO, ORANGE, SKY, SLATE};
+
+        let is_true_color = Self::is_true_color_supported();
+        let color = |true_color, ansi_color| {
+            if is_true_color {
+                true_color
+            } else {
+                ansi_color
+            }
+        };
+
+        Self {
+            min_bg: color(BLUE.c900, Color::Indexed(24)),
+            max_bg: color(BLUE.c800, Color::Indexed(25)),
+            length_bg: color(SLATE.c700, Color::Indexed(67)),
+            percentage_bg: color(SLATE.c800, Color::Indexed(18)),
+            ratio_bg: color(SLATE.c900, Color::Indexed(17)),
+            fill_bg: color(SLATE.c950, Color::Indexed(16)),
+            legacy_tab: color(ORANGE.c400, Color::Indexed(173)),
+            start_tab: color(SKY.c400, Color::Indexed(74)),
+            center_tab: color(SKY.c300, Color::Indexed(116)),
+            end_tab: color(SKY.c200, Color::Indexed(152)),
+            space_evenly_tab: color(INDIGO.c400, Color::Indexed(104)),
+            space_between_tab: color(INDIGO.c300, Color::Indexed(146)),
+            space_around_tab: color(INDIGO.c500, Color::Indexed(68)),
+            description_fg: color(SLATE.c400, Color::Indexed(109)),
+        }
+    }
+
+    // Checks whether truecolor (24-bit color) is supported in the current terminal.
+    //
+    // Terminals known *not* to support truecolor:
+    // - Apple Terminal.app: all versions before 2.15 (build 465)
+    //
+    // Environment variables used:
+    // - "TERM_PROGRAM": identifies the terminal application in use
+    // - "TERM_PROGRAM_VERSION": version number of that terminal application
+    fn is_true_color_supported() -> bool {
+        let term = std::env::var("TERM_PROGRAM").unwrap_or_default();
+        if term == "Apple_Terminal" {
+            let term_v = std::env::var("TERM_PROGRAM_VERSION")
+                .unwrap_or_default()
+                .parse()
+                .unwrap_or(0);
+            if term_v < 465 {
+                return false;
+            }
+        }
+        true
     }
 }
