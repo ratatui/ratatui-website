@@ -7,7 +7,7 @@ Demonstrates one approach to accepting user input. Source
 
 :::caution
 
-Consider using [`tui-textarea`](https://crates.io/crates/tui-textarea) or
+Consider using [`ratatui-textarea`](https://crates.io/crates/ratatui-textarea) or
 [`tui-input`](https://crates.io/crates/tui-input) crates for more functional text entry UIs.
 
 :::
