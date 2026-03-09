@@ -118,6 +118,15 @@ Ranger-like terminal file manager written in Rust
 
 ---
 
+## [`lottie`](https://github.com/coignard/lottie)
+
+A simple yet powerful screenwriting editor for the [Fountain](https://www.fountain.io/) plain-text
+screenplay format. Fast, lightweight, and built for writers who live in the terminal.
+
+[![lottie demo](https://asciinema.org/a/1jYgFFAeaettGJZa.svg)](https://asciinema.org/a/1jYgFFAeaettGJZa)
+
+---
+
 ## [`material`](https://crates.io/crates/material)
 
 A material design color palette for the terminal.
