@@ -98,6 +98,17 @@ A command line tool that executes make target using fuzzy finder with preview wi
 
 TUI for git written in rust
 
+---
+
+## [`gitv`](https://github.com/jayanaxhf/gitv)
+
+A terminal user interface for browsing and interacting with GitHub Issues, designed for usability
+and efficiency.
+
+![gitv_gif](https://vhs.charm.sh/vhs-WEyf76YrrGK3OgECWA3pI.gif)
+
+---
+
 ![gitui demo](https://github.com/extrawurst/gitui/blob/master/demo.gif?raw=true)
 
 ---
