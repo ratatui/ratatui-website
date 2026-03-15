@@ -123,7 +123,7 @@ Ranger-like terminal file manager written in Rust
 A simple yet powerful screenwriting editor for the [Fountain](https://www.fountain.io/) plain-text
 screenplay format. Fast, lightweight, and built for writers who live in the terminal.
 
-[![lottie demo](https://asciinema.org/a/1jYgFFAeaettGJZa.svg)](https://asciinema.org/a/1jYgFFAeaettGJZa)
+![lottie demo](https://github.com/coignard/lottie/blob/main/assets/demo.gif?raw=true)
 
 ---
 
