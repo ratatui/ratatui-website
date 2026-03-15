@@ -120,8 +120,7 @@ Ranger-like terminal file manager written in Rust
 
 ## [`lottie`](https://github.com/coignard/lottie)
 
-A simple yet powerful screenwriting editor for the [Fountain](https://www.fountain.io/) plain-text
-screenplay format. Fast, lightweight, and built for writers who live in the terminal.
+A simple yet powerful Fountain screenplay editor.
 
 ![lottie demo](https://github.com/coignard/lottie/blob/main/assets/demo.gif?raw=true)
 
