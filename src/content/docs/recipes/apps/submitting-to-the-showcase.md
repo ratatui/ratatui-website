@@ -6,11 +6,15 @@ sidebar:
 ---
 
 The Ratatui showcase is curated. It is not meant to be a complete directory of every Ratatui app or
-widget. The goal is to highlight entries that make someone stop, immediately understand what is
-interesting, and want to click through to learn more.
+widget. We are intentionally selecting a set of entries that work well together on the site and
+help show what Ratatui can do. The goal is to highlight entries that make someone stop, immediately
+understand what is interesting, and want to click through to learn more.
 
-That means there is some judgment involved in showcase reviews. We still want the reasoning to be
-clear and consistent, so this page explains what we tend to optimize for and why.
+That means there is some judgment involved in showcase reviews. Sometimes that means rejecting a
+submission, or suggesting changes that are not strictly about the app or widget library itself, but
+about how the entry works as part of the curated set. That can include things like framing,
+capture, pacing, contrast, layout, or how much of the UI is shown. We still want the reasoning to
+be clear and consistent, so this page explains what we tend to optimize for and why.
 
 This guidance consolidates ideas from previous discussions in
 [#986](https://github.com/ratatui/ratatui-website/issues/986),
