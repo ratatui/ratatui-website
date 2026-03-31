@@ -20,9 +20,8 @@ npm install
 npm run dev
 ```
 
-> [!NOTE]
-> Using a different package manager may result in errors. `pnpm`, for example, is known not to work
-> because of its dependency isolation.
+> [!NOTE] Using a different package manager may result in errors. `pnpm`, for example, is known not
+> to work because of its dependency isolation.
 >
 > `npm install` triggers Playwright's browser download; you can skip the heavy Chromium bundle by
 > hitting Ctrl+C once that download starts if you do not plan to run the end-to-end tests.
@@ -64,6 +63,7 @@ note.
 Before adding an app or third-party widget to the showcase, read:
 
 - <https://ratatui.rs/recipes/apps/submitting-to-the-showcase/>
+- <https://github.com/ratatui/ratatui-website/issues/new?template=showcase-submission.yml>
 - <https://github.com/ratatui/ratatui-website/issues/986>
 
 The website showcase is curated and intentionally selective. If your project is not a good fit for

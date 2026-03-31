@@ -5,22 +5,23 @@ sidebar:
   label: Submitting to the Showcase
 ---
 
-The Ratatui showcase is curated. It is not meant to be a complete directory of every Ratatui app
-or widget. The goal is to highlight entries that make someone stop, immediately understand what is
+The Ratatui showcase is curated. It is not meant to be a complete directory of every Ratatui app or
+widget. The goal is to highlight entries that make someone stop, immediately understand what is
 interesting, and want to click through to learn more.
 
-That means showcase reviews are partly subjective. We still want the reasoning to be clear and
-consistent, so this page explains what we tend to optimize for and why.
+That means there is some judgment involved in showcase reviews. We still want the reasoning to be
+clear and consistent, so this page explains what we tend to optimize for and why.
 
-This guidance is not coming out of nowhere. It consolidates previous discussions in
+This guidance consolidates ideas from previous discussions in
 [#986](https://github.com/ratatui/ratatui-website/issues/986),
 [#905](https://github.com/ratatui/ratatui-website/issues/905), and
 [#1032](https://github.com/ratatui/ratatui-website/pull/1032), along with feedback repeated across
 showcase submissions and review threads.
 
 If your project is not a good fit for the showcase today, that does not mean it is not useful or
-well made. It often just means it is a better fit for [Awesome Ratatui], the forum, or Discord
-until the presentation is stronger.
+well made. We encourage you to share it on [Awesome Ratatui], the forum, or Discord. In some cases
+the reason may be presentation, and in others it may be overlap with existing showcase entries or
+the limited space on a curated page.
 
 ## What the showcase is for
 
@@ -29,19 +30,20 @@ The showcase is optimized for:
 - first impressions
 - visual clarity at a glance
 - entries that still read well when resized on the website, in a GitHub PR, or on a phone
+- giving people ideas for making cool TUIs
+- driving traffic to third-party apps and widgets in the ecosystem
+- showing a range of interesting approaches to building with Ratatui
 - a small number of strong examples rather than a complete catalog
 
-The mental model is simple:
-
-> Someone should be able to see the image or GIF, understand what is compelling within a second or
-> two, and feel like they want to try the project.
+A useful test is whether someone can see the image or GIF, understand what is compelling within a
+second or two, and feel like they want to try the project.
 
 ## Principles behind the feedback
 
 Most review comments are trying to improve one of these principles:
 
-- Legibility. Text, borders, labels, and structure should still be readable when the media is
-  scaled down.
+- Legibility. Text, borders, labels, and structure should still be readable when the media is scaled
+  down.
 - Contrast. Dim text, low-contrast separators, and thin visual details often disappear on the
   website.
 - Visual hierarchy. The important part of the UI should stand out immediately.
@@ -127,6 +129,10 @@ Those are great places for early projects, niche tools, libraries with less visu
 that are useful but not yet showcase-ready.
 
 ## Before opening a PR or issue
+
+If you want feedback on a possible showcase entry, open a showcase submission issue first:
+
+- [Open a showcase submission issue](https://github.com/ratatui/ratatui-website/issues/new?template=showcase-submission.yml)
 
 Please review your submission against this checklist:
 

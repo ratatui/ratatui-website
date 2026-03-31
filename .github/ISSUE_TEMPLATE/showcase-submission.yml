@@ -48,6 +48,14 @@ body:
     validations:
       required: true
   - type: textarea
+    id: interesting
+    attributes:
+      label: What is interesting or novel about this project?
+      description: Explain what this adds to the showcase beyond looking good.
+      placeholder: The notable part of this app or widget is...
+    validations:
+      required: true
+  - type: textarea
     id: media
     attributes:
       label: Screenshot or GIF
@@ -76,4 +84,5 @@ body:
     id: context
     attributes:
       label: Anything else reviewers should know?
-      description: Include links to docs, a crate page, forum post, or Awesome Ratatui entry if helpful.
+      description:
+        Include links to docs, a crate page, forum post, or Awesome Ratatui entry if helpful.
