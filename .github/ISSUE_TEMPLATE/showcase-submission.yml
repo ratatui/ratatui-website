@@ -1,0 +1,79 @@
+name: Showcase submission
+description: Propose an app or third-party widget for the Ratatui showcase
+title: "Showcase submission: "
+labels:
+  - showcase
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the submission.
+
+        Before filling this out, please read:
+
+        - https://ratatui.rs/recipes/apps/submitting-to-the-showcase/
+        - https://ratatui.rs/recipes/apps/release-your-app/
+
+        The showcase is curated and intentionally selective. If your project is not ready for the
+        showcase yet, Awesome Ratatui, the forum, and Discord are still great places to share it.
+  - type: input
+    id: project
+    attributes:
+      label: Project name
+      placeholder: my-cool-tui
+    validations:
+      required: true
+  - type: input
+    id: repo
+    attributes:
+      label: Repository URL
+      placeholder: https://github.com/owner/repo
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Submission type
+      options:
+        - App
+        - Third-party widget
+    validations:
+      required: true
+  - type: textarea
+    id: pitch
+    attributes:
+      label: What should the showcase viewer notice immediately?
+      description: Explain the core idea the image or GIF is supposed to communicate at a glance.
+      placeholder: The first thing viewers should notice is...
+    validations:
+      required: true
+  - type: textarea
+    id: media
+    attributes:
+      label: Screenshot or GIF
+      description: Paste a direct image URL, GitHub attachment, or GIF link.
+      placeholder: https://...
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission checklist
+      options:
+        - label: I read the showcase guidance document linked above.
+          required: true
+        - label: The text is readable when the media is scaled down.
+          required: true
+        - label: The image or GIF focuses on the UI instead of shell commands or setup noise.
+          required: true
+        - label: The media uses strong enough contrast and hierarchy to work on the website.
+          required: true
+        - label: If this is a GIF, it stays on each important state long enough to read.
+          required: true
+        - label: I checked how the media looks on a narrow or mobile-sized viewport.
+          required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else reviewers should know?
+      description: Include links to docs, a crate page, forum post, or Awesome Ratatui entry if helpful.

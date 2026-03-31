@@ -13,7 +13,6 @@ This repo contains the Astro/Starlight site plus a Rust workspace with the code 
 ```sh
 git clone https://github.com/ratatui/ratatui-website
 cd ratatui-website
-
 git lfs install
 git lfs pull
 
@@ -21,12 +20,12 @@ npm install
 npm run dev
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > Using a different package manager may result in errors. `pnpm`, for example, is known not to work
-> because of it's dependency isolation.
-
-> [!NOTE] > `npm install` triggers Playwright's browser download; you can skip the heavy Chromium
-> bundle by hitting Ctrl+C once that download starts if you do not plan to run the end-to-end tests.
+> because of its dependency isolation.
+>
+> `npm install` triggers Playwright's browser download; you can skip the heavy Chromium bundle by
+> hitting Ctrl+C once that download starts if you do not plan to run the end-to-end tests.
 
 ## Commands
 
@@ -62,8 +61,13 @@ note.
 
 ## App showcase criteria
 
-See the current criteria and discussion in <https://github.com/ratatui/ratatui-website/issues/986>
-before adding apps to the showcase.
+Before adding an app or third-party widget to the showcase, read:
+
+- <https://ratatui.rs/recipes/apps/submitting-to-the-showcase/>
+- <https://github.com/ratatui/ratatui-website/issues/986>
+
+The website showcase is curated and intentionally selective. If your project is not a good fit for
+the showcase yet, consider sharing it on Awesome Ratatui, the forum, or Discord first.
 
 ## License
 
