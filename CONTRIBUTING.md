@@ -41,7 +41,6 @@ hitting Ctrl+C once that download starts if you do not plan to run the end-to-en
 ## Commands
 
 - Website (Astro/Starlight):
-
   - `mise run dev` for viewing locally
   - Format: `pnpm format` to rewrite files, or `pnpm format:check` to check formatting only
   - Type-check: `pnpm astro check`
@@ -49,7 +48,6 @@ hitting Ctrl+C once that download starts if you do not plan to run the end-to-en
   - Tests: `mise run test`
 
 - Code examples:
-
   - All snippets should live in `code/`, included using `{{ #include @code/... }}`
   - `cargo fmt --all --check`
   - `cargo clippy --all-targets -- -D warnings`
