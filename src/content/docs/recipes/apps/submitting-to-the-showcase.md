@@ -77,11 +77,11 @@ Strong app submissions usually have most of these qualities:
 
 Common reasons for pushback:
 
-- the UI looks too plain, cluttered, or unfinished
-- there is too much whitespace or too many boxes competing for attention
-- the media is visually busy and does not make the app's purpose obvious
-- the color choices reduce readability or fail to create hierarchy
-- the app may be useful, but it is not a strong fit for the curated showcase
+- The UI looks too plain, cluttered, or unfinished
+- There is too much whitespace or too many boxes competing for attention
+- The media is visually busy and does not make the app's purpose obvious
+- The color choices reduce readability or fail to create hierarchy
+- The app may be useful, but it is not a strong fit for the curated showcase
 
 ## The bar for widgets and widget libraries
 
