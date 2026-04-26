@@ -218,6 +218,34 @@ main .content-panel:first-child:not(:has(*)) {
   opacity: 1;
 }
 
+/* Tailwind preflight clears list markers globally, but Starlight's markdown styles
+   expect normal list bullets/numbers in prose content. Restore them for docs pages. */
+.sl-markdown-content ul {
+  list-style: disc;
+  padding-inline-start: 1.5rem;
+}
+
+.sl-markdown-content ol {
+  list-style: decimal;
+  padding-inline-start: 1.5rem;
+}
+
+.sl-markdown-content li {
+  display: list-item;
+}
+
+.sl-markdown-content li::marker {
+  color: var(--sl-color-gray-2);
+}
+
+.sl-markdown-content ul ul {
+  list-style: circle;
+}
+
+.sl-markdown-content ul ul ul {
+  list-style: square;
+}
+
 /* On hover bracket effect */
 .bracket-effect {
   position: relative;
