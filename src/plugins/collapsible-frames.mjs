@@ -10,8 +10,8 @@ export function collapsibleFrames() {
     baseStyles: `
       .collapsible-frame {
         & summary {
-	      display:none;
           cursor: pointer;
+          list-style: none;
           &::marker {
             display: inline-block;
             content: "";
