@@ -84,8 +84,8 @@ importers:
         specifier: 0.22.1
         version: 0.22.1
       tree-sitter-rust:
-        specifier: ^0.23.2
-        version: 0.23.3(tree-sitter@0.22.1)
+        specifier: ^0.24.0
+        version: 0.24.0(tree-sitter@0.22.1)
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -4563,6 +4563,13 @@ packages:
       }
     engines: { node: ^18 || ^20 || >= 21 }
 
+  node-addon-api@8.7.0:
+    resolution:
+      {
+        integrity: sha512-9MdFxmkKaOYVTV+XVRG8ArDwwQ77XIgIPyKASB1k3JPq3M8fGQQQE3YpMOrKm6g//Ktx8ivZr8xo1Qmtqub+GA==,
+      }
+    engines: { node: ^18 || ^20 || >= 21 }
+
   node-emoji@2.2.0:
     resolution:
       {
@@ -5704,10 +5711,10 @@ packages:
         integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==,
       }
 
-  tree-sitter-rust@0.23.3:
+  tree-sitter-rust@0.24.0:
     resolution:
       {
-        integrity: sha512-uLdZJ1K26EuJTBMJlz1ltTlg7nJyAYThfouXgigf5ixKOasOL5wNrRCpuWTsl6rDcKlZK9UX+annFLqP/kchwQ==,
+        integrity: sha512-NWemUDf629Tfc90Y0Z55zuwPCAHkLxWnMf2RznYu4iBkkrQl2o/CHGB7Cr52TyN5F1DAx8FmUnDtCy9iUkXZEQ==,
       }
     peerDependencies:
       tree-sitter: ^0.22.1
@@ -9477,6 +9484,8 @@ snapshots:
 
   node-addon-api@8.5.0: {}
 
+  node-addon-api@8.7.0: {}
+
   node-emoji@2.2.0:
     dependencies:
       "@sindresorhus/is": 4.6.0
@@ -10308,9 +10317,9 @@ snapshots:
 
   tr46@0.0.3: {}
 
-  tree-sitter-rust@0.23.3(tree-sitter@0.22.1):
+  tree-sitter-rust@0.24.0(tree-sitter@0.22.1):
     dependencies:
-      node-addon-api: 8.5.0
+      node-addon-api: 8.7.0
       node-gyp-build: 4.8.4
     optionalDependencies:
       tree-sitter: 0.22.1
