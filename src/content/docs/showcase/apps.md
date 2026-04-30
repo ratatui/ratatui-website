@@ -35,7 +35,7 @@ Perform binary analysis in your terminal.
 
 A customizable cross-platform graphical process/system monitor for the terminal
 
-![bottom demo](https://github.com/ClementTsang/bottom/blob/main/assets/demo.gif?raw=true)
+![bottom demo](https://github.com/ClementTsang/bottom/blob/main/demos/demo.gif?raw=true)
 
 ---
 
@@ -90,7 +90,7 @@ compared to the standard 'rm' command.
 `eilmeldung` is a RSS reader based on the news-flash library, which supports many RSS providers, is
 very configurable, has an article query language and supports bulk-operations.
 
-![eilmeldung screenshot](https://github.com/christo-auer/eilmeldung/blob/bd975910adb06e0cfa383f75fbe20e702a9a03eb/docs/images/hero-shot.jpg?raw=true)
+![eilmeldung screenshot](https://github.com/christo-auer/eilmeldung/blob/d20f0c306e152ce0b251a403f224e330637b1c75/docs/images/hero-shot-no-border.png?raw=true)
 
 ---
 

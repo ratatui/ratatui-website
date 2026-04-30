@@ -1,0 +1,9 @@
+packages:
+  - "."
+
+allowBuilds:
+  esbuild: true
+  puppeteer: true
+  sharp: true
+  tree-sitter: true
+  tree-sitter-rust: true
