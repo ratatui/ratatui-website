@@ -12,21 +12,15 @@ use ratatui::{
     symbols::border,
     text::{Line, Text},
     widgets::{Block, Borders, Paragraph, Widget},
-    Frame,
+    DefaultTerminal, Frame,
 };
-
-mod tui;
 
 // ANCHOR: main
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let mut terminal = tui::init()?;
+    let mut terminal = ratatui::init();
     let app_result = App::default().run(&mut terminal);
-    if let Err(err) = tui::restore() {
-        eprintln!(
-            "failed to restore terminal. Run `reset` or restart your terminal to recover: {err}"
-        );
-    }
+    ratatui::restore();
     app_result
 }
 // ANCHOR_END: main
@@ -43,7 +37,7 @@ pub struct App {
 impl App {
     // ANCHOR: run
     /// runs the application's main loop until the user quits
-    pub fn run(&mut self, terminal: &mut tui::Tui) -> Result<()> {
+    pub fn run(&mut self, terminal: &mut DefaultTerminal) -> Result<()> {
         while !self.exit {
             terminal.draw(|frame| self.render_frame(frame))?;
             self.handle_events().wrap_err("handle events failed")?;
