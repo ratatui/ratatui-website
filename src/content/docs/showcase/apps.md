@@ -202,6 +202,14 @@ An application to manage markdown notes from your terminal and compile them to H
 
 ---
 
+## [`rustnet`](https://github.com/domcyrus/rustnet)
+
+Per-process network monitoring for your terminal with deep packet inspection. Cross-platform, sandboxed.
+
+![rustnet demo](https://github.com/domcyrus/rustnet/blob/main/assets/rustnet.gif?raw=true)
+
+---
+
 ## [`scope-tui`](https://github.com/alemidev/scope-tui)
 
 A simple oscilloscope/vectorscope/spectroscope for your terminal
