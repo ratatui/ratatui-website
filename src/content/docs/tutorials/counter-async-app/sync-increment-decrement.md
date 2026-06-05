@@ -79,10 +79,15 @@ graph TD
 Here's the full code for your reference:
 
 ```rust
-use std::time::Duration;
-
 use color_eyre::eyre::Result;
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    Frame, Terminal,
+    backend::CrosstermBackend,
+    crossterm::{self, event},
+    layout::Alignment,
+    style::{Color, Style},
+    widgets::{Block, BorderType, Borders, Paragraph},
+};
 use tokio::sync::mpsc;
 
 pub fn initialize_panic_handler() {

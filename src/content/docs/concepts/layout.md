@@ -43,7 +43,7 @@ for i in 0..10 {
 A simple example of using the layout struct might look like this:
 
 ```rust
-use ratatui::prelude::*;
+use ratatui::layout::{Constraint, Direction, Layout};
 
 let layout = Layout::default()
     .direction(Direction::Vertical)

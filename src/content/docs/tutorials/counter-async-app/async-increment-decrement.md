@@ -12,7 +12,14 @@ Here's the code for your reference:
 use std::time::Duration;
 
 use color_eyre::eyre::Result;
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    Frame, Terminal,
+    backend::CrosstermBackend,
+    crossterm,
+    layout::Alignment,
+    style::{Color, Style},
+    widgets::{Block, BorderType, Borders, Paragraph},
+};
 use tokio::sync::mpsc;
 
 pub fn initialize_panic_handler() {
