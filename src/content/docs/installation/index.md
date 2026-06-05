@@ -14,7 +14,7 @@ or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-ratatui = "0.30.0"
+ratatui = "0.30.1"
 ```
 
 By default, `ratatui` enables the `crossterm` feature, but it's possible to alternatively use
@@ -39,7 +39,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.30.0", default-features = false, features = ["termion"] }
+ratatui = { version = "0.30.1", default-features = false, features = ["termion"] }
 ```
 
 For Termwiz:
@@ -52,7 +52,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.30.0", default-features = false, features = ["termwiz"] }
+ratatui = { version = "0.30.1", default-features = false, features = ["termwiz"] }
 ```
 
 [Backend]: /concepts/backends/
