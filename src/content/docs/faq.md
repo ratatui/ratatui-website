@@ -252,7 +252,13 @@ each iteration. It does not handle input and users have use another library (lik
 as backends.
 
 ```rust
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    Terminal,
+    backend::CrosstermBackend,
+    crossterm,
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    widgets::{Block, Borders, Paragraph},
+};
 
 fn init() -> Result<(), Box<dyn std::error::Error>> {
   crossterm::terminal::enable_raw_mode()?;
@@ -297,7 +303,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
       f.render_widget(
         Paragraph::new("Hello World!\n\n\n'q' to quit")
           .block(
-            Block::default().title(block::Title::from("Ratatui").alignment(Alignment::Center)).borders(Borders::all()),
+            Block::default().title("Ratatui").title_alignment(Alignment::Center).borders(Borders::all()),
           )
           .alignment(Alignment::Center),
         rect,

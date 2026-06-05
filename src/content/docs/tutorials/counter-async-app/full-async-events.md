@@ -118,8 +118,8 @@ Here's the code for the fully async application:
 mod tui;
 
 use color_eyre::eyre::Result;
-use ratatui::crossterm::event::KeyCode::Char;
-use ratatui::{prelude::CrosstermBackend, widgets::Paragraph};
+use ratatui::{Frame, crossterm::event::KeyCode::Char, widgets::Paragraph};
+use tui::Event;
 use tui::Event;
 
 // App state
@@ -140,7 +140,7 @@ fn update(app: &mut App, event: Event) {
         Char('j') => app.counter += 1,
         Char('k') => app.counter -= 1,
         Char('q') => app.should_quit = true,
-        _ => Action::None,
+        _ => {}
       }
     },
     _ => {},

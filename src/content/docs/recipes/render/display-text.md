@@ -16,7 +16,13 @@ It is the most basic unit of displaying text in `ratatui`.
 The examples below assume the following imports:
 
 ```rust
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    Frame,
+    layout::Alignment,
+    style::{Color, Style, Stylize},
+    text::{Line, Span, Text},
+    widgets::*,
+};
 ```
 
 A `Span` consists of "content" and a "style" for the content. And a `Span` can be created in a few

@@ -21,16 +21,21 @@ you can see how the program behaves differently.
 
 ```rust collapse={1-17, 25-30}
 use std::{
-  io::{stderr, Result},
-  thread::sleep,
-  time::Duration,
+    io::{Result, stderr},
+    thread::sleep,
+    time::Duration,
 };
 
-use ratatui::crossterm::{
-  terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-  ExecutableCommand,
+use ratatui::{
+    Terminal,
+    backend::CrosstermBackend,
+    crossterm::{
+        ExecutableCommand,
+        terminal::{EnterAlternateScreen, LeaveAlternateScreen},
+    },
+    layout::Rect,
+    widgets::Paragraph,
 };
-use ratatui::{prelude::*, widgets::*};
 
 fn main() -> Result<()> {
   let should_enter_alternate_screen = std::env::args().nth(1).unwrap().parse::<bool>().unwrap();
