@@ -31,7 +31,7 @@ import MainButtons from "@components/MainButtons.astro";
 import HideHeader from "@components/HideHeader.astro";
 import ThemeSwitch from "@components/ThemeSwitch.astro";
 
-<div class="flex justify-center landing-mono pt-3 dark:pt-0">
+<div class="flex justify-center landing-mono pt-3">
   <div>
     <h1>Ratatui</h1>
     <RandomDots
@@ -51,13 +51,13 @@ import ThemeSwitch from "@components/ThemeSwitch.astro";
         <div class="max-xl:text-center">
           <div class="flex max-sm:flex-wrap max-sm:justify-center items-end pb-10">
             <div class="w-[150px] max-2xl:w-[100px] max-sm:w-[150px]">
-              <a class="no-underline" href="https://github.com/ratatui/ratatui/" aria-label="Ratatui GitHub Repository">
+              <a class="not-content no-underline" href="https://github.com/ratatui/ratatui/" aria-label="Ratatui GitHub Repository">
                 <img src={heroLight.src} alt="Ratatui Logo" class="block dark:hidden" />
                 <img src={heroDark.src} alt="Ratatui Logo" class="hidden dark:block" />
               </a>
             </div>
             <div>
-              <a class="no-underline" href="https://github.com/ratatui/ratatui/" aria-label="Ratatui GitHub Repository">
+              <a class="not-content no-underline" href="https://github.com/ratatui/ratatui/" aria-label="Ratatui GitHub Repository">
                 <img src={logoTextLight.src} alt="Ratatui Logo" class="max-h-[100px] max-2xl:max-h-[80px] block dark:hidden" />
                 <img src={logoTextDark.src} alt="Ratatui Logo" class="max-h-[100px] max-2xl:max-h-[80px] hidden dark:block" />
               </a>
