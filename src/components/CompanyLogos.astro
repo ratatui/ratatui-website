@@ -50,7 +50,7 @@ const logos = [
     lightMode: aws_black,
     href: "https://github.com/aws/amazon-q-developer-cli",
     aria: "AWS",
-    class: "h-[23px] max-xl:h-[18px] max-sm:h-[15px] mt-1 dark:mt-5",
+    class: "h-[23px] max-xl:h-[18px] max-sm:h-[15px] mt-1",
   },
   {
     darkMode: electronic_arts_white,
@@ -92,7 +92,7 @@ const logos = [
   >
     {
       logos.map((logo) => (
-        <a class="no-underline" href={logo.href} target="_blank" aria-label={logo.aria}>
+        <a class="not-content no-underline" href={logo.href} target="_blank" aria-label={logo.aria}>
           <img
             src={logo.lightMode.src}
             alt={logo.aria}
