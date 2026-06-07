@@ -1,6 +1,7 @@
-//! # [Ratatui] Paragraph example
+//! # [Ratatui] `Paragraph` example
 //!
-//! The latest version of this example is available in the [examples] folder in the repository.
+//! The latest version of this example is available in the [widget examples] folder in the
+//! repository.
 //!
 //! Please note that the examples are designed to be run against the `main` branch of the Github
 //! repository. This means that you may not be able to compile with the latest release version on
@@ -10,144 +11,82 @@
 //! library you are using.
 //!
 //! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
+//! [widget examples]: https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
-use std::{
-    io::{self},
-    time::{Duration, Instant},
-};
-
 use color_eyre::Result;
-use ratatui::{
-    buffer::Buffer,
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
-    layout::{Constraint, Layout, Rect},
-    style::{Color, Stylize},
-    text::{Line, Masked, Span},
-    widgets::{Block, Paragraph, Widget, Wrap},
-    DefaultTerminal,
-};
+use crossterm::event;
+use ratatui::layout::{Alignment, Constraint, Layout, Rect};
+use ratatui::style::{Color, Stylize};
+use ratatui::text::{Line, Masked, Span};
+use ratatui::widgets::{Paragraph, Wrap};
+use ratatui::Frame;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let app_result = App::new().run(terminal);
-    ratatui::restore();
-    app_result
-}
-
-#[derive(Debug)]
-struct App {
-    should_exit: bool,
-    scroll: u16,
-    last_tick: Instant,
-}
-
-impl App {
-    /// The duration between each tick.
-    const TICK_RATE: Duration = Duration::from_millis(250);
-
-    /// Create a new instance of the app.
-    fn new() -> Self {
-        Self {
-            should_exit: false,
-            scroll: 0,
-            last_tick: Instant::now(),
+    ratatui::run(|terminal| loop {
+        terminal.draw(render)?;
+        if event::read()?.is_key_press() {
+            break Ok(());
         }
-    }
-
-    /// Run the app until the user exits.
-    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
-        while !self.should_exit {
-            terminal.draw(|frame| frame.render_widget(&self, frame.area()))?;
-            self.handle_events()?;
-            if self.last_tick.elapsed() >= Self::TICK_RATE {
-                self.on_tick();
-                self.last_tick = Instant::now();
-            }
-        }
-        Ok(())
-    }
-
-    /// Handle events from the terminal.
-    fn handle_events(&mut self) -> io::Result<()> {
-        let timeout = Self::TICK_RATE.saturating_sub(self.last_tick.elapsed());
-        while event::poll(timeout)? {
-            if let Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') {
-                    self.should_exit = true;
-                }
-            }
-        }
-        Ok(())
-    }
-
-    /// Update the app state on each tick.
-    fn on_tick(&mut self) {
-        self.scroll = (self.scroll + 1) % 10;
-    }
+    })
 }
 
-impl Widget for &App {
-    fn render(self, area: Rect, buf: &mut Buffer) {
-        let areas = Layout::vertical([Constraint::Max(9); 4]).split(area);
-        Paragraph::new(create_lines(area))
-            .block(title_block("Default alignment (Left), no wrap"))
-            .gray()
-            .render(areas[0], buf);
-        Paragraph::new(create_lines(area))
-            .block(title_block("Default alignment (Left), with wrap"))
-            .gray()
-            .wrap(Wrap { trim: true })
-            .render(areas[1], buf);
-        Paragraph::new(create_lines(area))
-            .block(title_block("Right alignment, with wrap"))
-            .gray()
-            .right_aligned()
-            .wrap(Wrap { trim: true })
-            .render(areas[2], buf);
-        Paragraph::new(create_lines(area))
-            .block(title_block("Center alignment, with wrap, with scroll"))
-            .gray()
-            .centered()
-            .wrap(Wrap { trim: true })
-            .scroll((self.scroll, 0))
-            .render(areas[3], buf);
-    }
+/// Render the UI with various text.
+fn render(frame: &mut Frame) {
+    let vertical = Layout::vertical([Constraint::Length(1), Constraint::Fill(1)]).spacing(1);
+    let horizontal = Layout::horizontal([Constraint::Percentage(50); 2]).spacing(1);
+    let [top, main] = frame.area().layout(&vertical);
+    let [first, second] = main.layout(&horizontal);
+
+    let title = Line::from_iter([
+        Span::from("Paragraph Widget").bold(),
+        Span::from(" (Press 'q' to quit)"),
+    ]);
+    frame.render_widget(title.centered(), top);
+
+    render_centered_paragraph(frame, first);
+    render_wrapped_paragraph(frame, second);
 }
 
-/// Create a bordered block with a title.
-fn title_block(title: &str) -> Block {
-    Block::bordered()
-        .gray()
-        .title(title.bold().into_centered_line())
+/// Render a paragraph with centered text.
+pub fn render_centered_paragraph(frame: &mut Frame, area: Rect) {
+    let text = "Centered text\nwith multiple lines.\nCheck out the recipe!";
+    let paragraph = Paragraph::new(text)
+        .style(Color::White)
+        .alignment(Alignment::Center);
+
+    frame.render_widget(paragraph, area);
 }
 
-/// Create some lines to display in the paragraph.
+/// Render a long paragraph that wraps text.
+pub fn render_wrapped_paragraph(frame: &mut Frame, area: Rect) {
+    let paragraph = Paragraph::new(create_lines(area))
+        .style(Color::White)
+        .scroll((0, 0))
+        .wrap(Wrap { trim: true });
+
+    frame.render_widget(paragraph, area);
+}
+
+/// Returns the lines for the paragraph.
 fn create_lines(area: Rect) -> Vec<Line<'static>> {
-    let short_line = "A long line to demonstrate line wrapping. ";
-    let long_line = short_line.repeat(usize::from(area.width) / short_line.len() + 4);
-    let mut styled_spans = vec![];
-    for span in [
-        "Styled".blue(),
-        "Spans".red().on_white(),
-        "Bold".bold(),
-        "Italic".italic(),
-        "Underlined".underlined(),
-        "Strikethrough".crossed_out(),
-    ] {
-        styled_spans.push(span);
-        styled_spans.push(" ".into());
-    }
+    let short_line = "Slice, layer, and bake the vegetables. ";
+    let long_line = short_line.repeat((area.width as usize) / short_line.len() + 2);
     vec![
-        Line::raw("Unstyled Line"),
-        Line::raw("Styled Line").black().on_red().bold().italic(),
-        Line::from(styled_spans),
-        Line::from(long_line.green().italic()),
+        "Recipe: Ratatouille".into(),
+        "Ingredients:".bold().into(),
         Line::from_iter([
-            "Masked text: ".into(),
-            Span::styled(Masked::new("my secret password", '*'), Color::Red),
+            "Bell Peppers".into(),
+            ", Eggplant".italic(),
+            ", Tomatoes".bold(),
+            ", Onion".into(),
         ]),
+        Line::from_iter([
+            "Secret Ingredient: ".underlined(),
+            Span::styled(Masked::new("herbs de Provence", '*'), Color::Red),
+        ]),
+        "Instructions:".bold().yellow().into(),
+        long_line.green().italic().into(),
     ]
 }

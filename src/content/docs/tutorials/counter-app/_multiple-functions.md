@@ -14,14 +14,16 @@ previous functionality into separate functions.
 The first thing you might consider doing is reorganizing imports with qualified names.
 
 ```rust
+use ratatui::Frame;
+use ratatui::Terminal;
+use ratatui::backend::CrosstermBackend;
+use ratatui::widgets::Paragraph;
+
+use color_eyre::eyre::Result;
 use ratatui::crossterm::{
-  event::{self, Event::Key, KeyCode::Char},
-  execute,
-  terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-};
-use ratatui::{
-  prelude::{CrosstermBackend, Terminal, Frame},
-  widgets::Paragraph,
+    event::{self, Event::Key, KeyCode::Char},
+    execute,
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 ```
 
@@ -219,15 +221,16 @@ understand and work with but also set the stage for future enhancements and exte
 Here's the full code for reference:
 
 ```rust
+use ratatui::Frame;
+use ratatui::Terminal;
+use ratatui::backend::CrosstermBackend;
+use ratatui::widgets::Paragraph;
+
 use color_eyre::eyre::Result;
 use ratatui::crossterm::{
-  event::{self, Event::Key, KeyCode::Char},
-  execute,
-  terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-};
-use ratatui::{
-  prelude::{CrosstermBackend, Terminal, Frame},
-  widgets::Paragraph,
+    event::{self, Event::Key, KeyCode::Char},
+    execute,
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 
 

@@ -101,8 +101,8 @@ cargo run --example=barchart-grouped --features=crossterm
 
 ## Block
 
-Demonstrates the [`Block`](https://docs.rs/ratatui/latest/ratatui/widgets/block/struct.Block.html)
-widget. Source: [block.rs](./block.rs).
+Demonstrates the [`Block`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Block.html) widget.
+Source: [block.rs](./block.rs).
 
 ```shell
 cargo run --example=block --features=crossterm
@@ -415,7 +415,7 @@ cargo run --example=tracing --features=crossterm
 
 Demonstrates one approach to accepting user input. Source [user_input.rs](./user_input.rs).
 
-> [!NOTE] Consider using [`tui-textarea`](https://crates.io/crates/tui-textarea) or
+> [!NOTE] Consider using [`ratatui-textarea`](https://crates.io/crates/ratatui-textarea) or
 > [`tui-input`](https://crates.io/crates/tui-input) crates for more functional text entry UIs.
 
 ```shell
@@ -423,23 +423,6 @@ cargo run --example=user_input --features=crossterm
 ```
 
 ![User Input][user_input.gif]
-
-## How to update these examples
-
-These gifs were created using [VHS](https://github.com/charmbracelet/vhs). Each example has a
-corresponding `.tape` file that holds instructions for how to generate the images. Note that the
-images themselves are stored in a separate `images` git branch to avoid bloating the main
-repository.
-
-<!--
-
-Links to images to make them easier to update in bulk. Use the following script to update and upload
-the examples to the images branch. (Requires push access to the branch).
-
-```shell
-examples/vhs/generate.bash
-```
--->
 
 [barchart.gif]: https://github.com/ratatui/ratatui/blob/images/examples/barchart.gif?raw=true
 [barchart-grouped.gif]:

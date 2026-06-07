@@ -10,28 +10,31 @@ You'll need to install `tracing` and a few related dependencies:
 ```shell
 cargo add tracing-error tracing
 cargo add tracing-subscriber --features env-filter
-cargo add directories lazy_static color-eyre # (optional)
+cargo add directories color-eyre # (optional)
 ```
 
 You can paste the following in any module in your project.
 
 ```rust
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::LazyLock};
 
 use color_eyre::eyre::{Context, Result};
 use directories::ProjectDirs;
-use lazy_static::lazy_static;
 use tracing::error;
 use tracing_error::ErrorLayer;
 use tracing_subscriber::{self, layer::SubscriberExt, util::SubscriberInitExt, Layer};
 
-lazy_static! {
-  pub static ref PROJECT_NAME: String = env!("CARGO_CRATE_NAME").to_uppercase().to_string();
-  pub static ref DATA_FOLDER: Option<PathBuf> =
-    std::env::var(format!("{}_DATA", PROJECT_NAME.clone())).ok().map(PathBuf::from);
-  pub static ref LOG_ENV: String = format!("{}_LOGLEVEL", PROJECT_NAME.clone());
-  pub static ref LOG_FILE: String = format!("{}.log", env!("CARGO_PKG_NAME"));
-}
+
+pub static PROJECT_NAME: LazyLock<String> =
+    LazyLock::new(|| env!("CARGO_CRATE_NAME").to_uppercase().to_string());
+pub static DATA_FOLDER: LazyLock<Option<PathBuf>> = LazyLock::new(|| {
+    std::env::var(format!("{}_DATA", PROJECT_NAME.clone()))
+        .ok()
+        .map(PathBuf::from)
+});
+pub static LOG_ENV: LazyLock<String> =
+    LazyLock::new(|| format!("{}_LOGLEVEL", PROJECT_NAME.clone()));
+pub static LOG_FILE: LazyLock<String> = LazyLock::new(|| format!("{}.log", env!("CARGO_PKG_NAME")));
 
 fn project_directory() -> Option<ProjectDirs> {
   ProjectDirs::from("com", "kdheepak", env!("CARGO_PKG_NAME"))

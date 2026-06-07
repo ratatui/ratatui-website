@@ -2,16 +2,17 @@
 title: Hello World
 ---
 
-Demonstrates a basic hello world app.
+Demonstrates a basic hello world app. Source
+[hello-world.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/hello-world/src/main.rs).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=hello_world --features=crossterm
+cargo run -p hello-world
 ```
 
-![hello_world](hello_world.gif)
+![hello_world](https://github.com/ratatui/ratatui/blob/images/examples/hello-world.gif?raw=true)
 
-```rust title=hello_world.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/hello_world.rs }}
 ```

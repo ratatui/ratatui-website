@@ -15,9 +15,8 @@ To center a widget in any area, create a [`Rect`] that is centered within the ar
 calculate the x and y positions of the widget by subtracting the widget width and height from the
 enclosing area's width and height, respectively, and dividing by 2.
 
-More simply, you can use the [`Layout`] struct to center a widget. You can use a `Horizontal` layout
-followed by a `Vertical` layout to get a centered [`Rect`]. The [`Flex`] enum can be used to specify
-the alignment of the rect within the containing area.
+More simply, you can use the `.centered_vertically()` and `.centered_horizontally()` methods on
+[`Rect`].
 
 ### Centering horizontally
 
@@ -37,9 +36,7 @@ the alignment of the rect within the containing area.
 
 ### Centering both horizontally and vertically
 
-You can use a `Vertical` layout followed by a `Horizontal` layout to get a centered `Rect`. This
-example centers the `Rect` using constraints on each axis. This lets you allocate the space
-available based on a percentage, ratio, or fixed size.
+You can use the `.centered` method to get a centered `Rect`.
 
 ```rust collapse={1-13}
 {{ #include @code/recipes/how-to-misc/src/layout.rs:center }}
@@ -65,11 +62,9 @@ The following is an example of how you might do that:
 
 ## Summary
 
-The [`Layout`] struct provides a simple way to center a widget in a terminal. You can use the
-`Horizontal` and `Vertical` layouts to center a widget on the x and y axes, respectively. You can
-also use the `Flex` enum to specify the alignment of the widget within the containing area. There
-are more advanced layout options available in the [`Layout`] struct but not covered in this recipe,
-which you can use to create more complex layouts.
+Center a widget by placing it inside a `Rect` that sits in the middle of the area. Compute that rect
+by hand or use the `.centered`, `.centered_horizontally()`, and `.centered_vertically()` helpers on
+[`Rect`], then render the widget (popups included) into it.
 
 :::note
 
@@ -90,5 +85,3 @@ There are several third party widget libraries for making popups easy to use:
 
 [textwrap crate]: https://crates.io/crates/textwrap
 [`Rect`]: https://docs.rs/ratatui/latest/ratatui/struct.Rect.html
-[`Layout`]: https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html
-[`Flex`]: https://docs.rs/ratatui/latest/ratatui/layout/enum.Flex.html

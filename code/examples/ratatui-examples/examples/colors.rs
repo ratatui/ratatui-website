@@ -1,62 +1,43 @@
-//! # [Ratatui] Colors example
+//! A Ratatui example that demonstrates how to handle colors.
 //!
-//! The latest version of this example is available in the [examples] folder in the repository.
+//! This example shows all the colors supported by Ratatui. It will render a grid of foreground
+//! and background colors with their names and indexes.
 //!
-//! Please note that the examples are designed to be run against the `main` branch of the Github
-//! repository. This means that you may not be able to compile with the latest release version on
-//! crates.io, or the one that you have installed locally.
+//! This example runs with the Ratatui library code in the branch that you are currently reading.
+//! See the [`latest`] branch for the code which works with the most recent Ratatui release.
 //!
-//! See the [examples readme] for more information on finding examples that match the version of the
-//! library you are using.
-//!
-//! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
-//! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
-
-// This example shows all the colors supported by ratatui. It will render a grid of foreground
-// and background colors with their names and indexes.
+//! [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 
 use color_eyre::Result;
+use crossterm::event;
 use itertools::Itertools;
-use ratatui::{
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
-    layout::{Alignment, Constraint, Layout, Rect},
-    style::{Color, Style, Stylize},
-    text::Line,
-    widgets::{Block, Borders, Paragraph},
-    DefaultTerminal, Frame,
-};
+use ratatui::layout::{Alignment, Constraint, Layout, Rect};
+use ratatui::style::{Color, Style, Stylize};
+use ratatui::text::Line;
+use ratatui::widgets::{Block, Borders, Paragraph};
+use ratatui::Frame;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let app_result = run(terminal);
-    ratatui::restore();
-    app_result
-}
-
-fn run(mut terminal: DefaultTerminal) -> Result<()> {
-    loop {
-        terminal.draw(draw)?;
-        if let Event::Key(key) = event::read()? {
-            if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') {
-                return Ok(());
-            }
+    ratatui::run(|terminal| loop {
+        terminal.draw(render)?;
+        if event::read()?.is_key_press() {
+            return Ok(());
         }
-    }
+    })
 }
 
-fn draw(frame: &mut Frame) {
-    let layout = Layout::vertical([
+fn render(frame: &mut Frame) {
+    let [named, indexed_colors, indexed_greys] = Layout::vertical([
         Constraint::Length(30),
         Constraint::Length(17),
         Constraint::Length(2),
     ])
-    .split(frame.area());
+    .areas(frame.area());
 
-    render_named_colors(frame, layout[0]);
-    render_indexed_colors(frame, layout[1]);
-    render_indexed_grayscale(frame, layout[2]);
+    render_named_colors(frame, named);
+    render_indexed_colors(frame, indexed_colors);
+    render_indexed_grayscale(frame, indexed_greys);
 }
 
 const NAMED_COLORS: [Color; 16] = [
@@ -99,12 +80,12 @@ fn render_fg_named_colors(frame: &mut Frame, bg: Color, area: Rect) {
     let inner = block.inner(area);
     frame.render_widget(block, area);
 
-    let vertical = Layout::vertical([Constraint::Length(1); 2]).split(inner);
-    let areas = vertical.iter().flat_map(|area| {
-        Layout::horizontal([Constraint::Ratio(1, 8); 8])
-            .split(*area)
-            .to_vec()
-    });
+    let vertical = Layout::vertical([Constraint::Length(1); 2]);
+    let horizontal = Layout::horizontal([Constraint::Ratio(1, 8); 8]);
+    let areas = inner
+        .layout_vec(&vertical)
+        .into_iter()
+        .flat_map(|area| area.layout_vec(&horizontal));
     for (fg, area) in NAMED_COLORS.into_iter().zip(areas) {
         let color_name = fg.to_string();
         let paragraph = Paragraph::new(color_name).fg(fg).bg(bg);
@@ -117,12 +98,12 @@ fn render_bg_named_colors(frame: &mut Frame, fg: Color, area: Rect) {
     let inner = block.inner(area);
     frame.render_widget(block, area);
 
-    let vertical = Layout::vertical([Constraint::Length(1); 2]).split(inner);
-    let areas = vertical.iter().flat_map(|area| {
-        Layout::horizontal([Constraint::Ratio(1, 8); 8])
-            .split(*area)
-            .to_vec()
-    });
+    let vertical = Layout::vertical([Constraint::Length(1); 2]);
+    let horizontal = Layout::horizontal([Constraint::Ratio(1, 8); 8]);
+    let areas = inner
+        .layout_vec(&vertical)
+        .into_iter()
+        .flat_map(|area| area.layout_vec(&horizontal));
     for (bg, area) in NAMED_COLORS.into_iter().zip(areas) {
         let color_name = bg.to_string();
         let paragraph = Paragraph::new(color_name).fg(fg).bg(bg);
@@ -214,7 +195,7 @@ fn title_block(title: String) -> Block<'static> {
         .borders(Borders::TOP)
         .title_alignment(Alignment::Center)
         .border_style(Style::new().dark_gray())
-        .title_style(Style::new().reset())
+        .title_style(Style::reset())
         .title(title)
 }
 

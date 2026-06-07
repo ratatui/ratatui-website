@@ -1,0 +1,59 @@
+---
+// Component to display dynamic stats with fallbacks
+import { getAllStats } from "../utils/stats";
+
+let stats;
+try {
+  console.log("Fetching stats at build time...");
+  stats = await getAllStats("ratatui", "ratatui");
+  console.log("Successfully fetched stats:", stats);
+} catch (error) {
+  console.error("Failed to load stats, using fallbacks:");
+  console.error("Error type:", error?.constructor?.name);
+  console.error("Error message:", (error as Error)?.message || "Unknown error");
+  console.error("Full error:", error);
+  stats = {
+    crates: "1000+",
+    stars: "13.4k",
+    downloads: "7.1M",
+  };
+}
+
+const data = [
+  {
+    value: stats.crates,
+    url: "https://crates.io/crates/ratatui/reverse_dependencies",
+    description: " 📦 crates built with Ratatui",
+  },
+  {
+    value: stats.stars,
+    url: "https://github.com/ratatui/ratatui",
+    description: "  ⭐ stars on GitHub",
+  },
+  {
+    value: stats.downloads,
+    url: "https://crates.io/crates/ratatui",
+    description: " ⬇️ downloads on crates.io",
+  },
+];
+---
+
+<div class="landing-mono flex flex-wrap gap-12 pt-10 text-base max-xl:justify-center max-xl:gap-5">
+  {
+    data.map((datum) => (
+      <a
+        class="bracket-effect flex items-center bg-slate-300 text-left no-underline dark:bg-slate-800"
+        href={datum.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="bg-slate-100 p-2 text-xl text-black max-sm:text-sm dark:bg-slate-950 dark:text-white">
+          {datum.value}
+        </span>
+        <span class="max-xs:text-xs px-2 text-black max-sm:text-sm dark:text-white">
+          {datum.description}
+        </span>
+      </a>
+    ))
+  }
+</div>

@@ -53,7 +53,6 @@ function getExternalLinkSvgNode(): any {
       height: "16",
       viewBox: "0 0 24 24",
       fill: "currentColor",
-      style: "transform: translateY(0.2em); -sl-icon-size: 1.5rem;",
     },
     children: [
       {

@@ -1,18 +1,12 @@
-//! # [Ratatui] Inline example
-//!
-//! The latest version of this example is available in the [examples] folder in the repository.
-//!
-//! Please note that the examples are designed to be run against the `main` branch of the Github
-//! repository. This means that you may not be able to compile with the latest release version on
-//! crates.io, or the one that you have installed locally.
-//!
-//! See the [examples readme] for more information on finding examples that match the version of the
-//! library you are using.
-//!
-//! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
-//! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
-
+/// A Ratatui example that demonstrates how to use the inlined viewport.
+///
+/// It shows a list of downloads in progress, with a progress bar for each download.
+///
+/// This example runs with the Ratatui library code in the branch that you are currently
+/// reading. See the [`latest`] branch for the code which works with the most recent Ratatui
+/// release.
+///
+/// [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 use std::{
     collections::{BTreeMap, VecDeque},
     sync::mpsc,
@@ -21,17 +15,14 @@ use std::{
 };
 
 use color_eyre::Result;
+use crossterm::event;
 use rand::distr::{Distribution, Uniform};
-use ratatui::{
-    backend::Backend,
-    crossterm::event,
-    layout::{Constraint, Layout, Rect},
-    style::{Color, Modifier, Style},
-    symbols,
-    text::{Line, Span},
-    widgets::{Block, Gauge, LineGauge, List, ListItem, Paragraph, Widget},
-    Frame, Terminal, TerminalOptions, Viewport,
-};
+use ratatui::backend::Backend;
+use ratatui::layout::{Constraint, Layout, Rect};
+use ratatui::style::{Color, Modifier, Style};
+use ratatui::text::{Line, Span};
+use ratatui::widgets::{Block, Gauge, LineGauge, List, ListItem, Paragraph, Widget};
+use ratatui::{symbols, Frame, Terminal, TerminalOptions, Viewport};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
@@ -116,7 +107,7 @@ fn input_handling(tx: mpsc::Sender<Event>) {
                     event::Event::Key(key) => tx.send(Event::Input(key)).unwrap(),
                     event::Event::Resize(_, _) => tx.send(Event::Resize).unwrap(),
                     _ => {}
-                };
+                }
             }
             if last_tick.elapsed() >= tick_rate {
                 tx.send(Event::Tick).unwrap();
@@ -126,7 +117,7 @@ fn input_handling(tx: mpsc::Sender<Event>) {
     });
 }
 
-#[allow(clippy::cast_precision_loss, clippy::needless_pass_by_value)]
+#[expect(clippy::cast_precision_loss, clippy::needless_pass_by_value)]
 fn workers(tx: mpsc::Sender<Event>) -> Vec<Worker> {
     (0..4)
         .map(|id| {
@@ -152,7 +143,7 @@ fn workers(tx: mpsc::Sender<Event>) -> Vec<Worker> {
 }
 
 fn downloads() -> Downloads {
-    let distribution = Uniform::new(0, 1000).unwrap();
+    let distribution = Uniform::new(0, 1000).expect("invalid range");
     let mut rng = rand::rng();
     let pending = (0..NUM_DOWNLOADS)
         .map(|id| {
@@ -166,17 +157,20 @@ fn downloads() -> Downloads {
     }
 }
 
-#[allow(clippy::needless_pass_by_value)]
-fn run(
-    terminal: &mut Terminal<impl Backend>,
+#[expect(clippy::needless_pass_by_value)]
+fn run<B: Backend>(
+    terminal: &mut Terminal<B>,
     workers: Vec<Worker>,
     mut downloads: Downloads,
     rx: mpsc::Receiver<Event>,
-) -> Result<()> {
+) -> Result<()>
+where
+    B::Error: Send + Sync + 'static,
+{
     let mut redraw = true;
     loop {
         if redraw {
-            terminal.draw(|frame| draw(frame, &downloads))?;
+            terminal.draw(|frame| render(frame, &downloads))?;
         }
         redraw = true;
 
@@ -221,14 +215,14 @@ fn run(
                             break;
                         }
                     }
-                };
+                }
             }
-        };
+        }
     }
     Ok(())
 }
 
-fn draw(frame: &mut Frame, downloads: &Downloads) {
+fn render(frame: &mut Frame, downloads: &Downloads) {
     let area = frame.area();
 
     let block = Block::new().title(Line::from("Progress").centered());
@@ -236,12 +230,12 @@ fn draw(frame: &mut Frame, downloads: &Downloads) {
 
     let vertical = Layout::vertical([Constraint::Length(2), Constraint::Length(4)]).margin(1);
     let horizontal = Layout::horizontal([Constraint::Percentage(20), Constraint::Percentage(80)]);
-    let [progress_area, main] = vertical.areas(area);
-    let [list_area, gauge_area] = horizontal.areas(main);
+    let [progress_area, main] = area.layout(&vertical);
+    let [list_area, gauge_area] = main.layout(&horizontal);
 
     // total progress
     let done = NUM_DOWNLOADS - downloads.pending.len() - downloads.in_progress.len();
-    #[allow(clippy::cast_precision_loss)]
+    #[expect(clippy::cast_precision_loss)]
     let progress = LineGauge::default()
         .filled_style(Style::default().fg(Color::Blue))
         .label(format!("{done}/{NUM_DOWNLOADS}"))
@@ -271,7 +265,7 @@ fn draw(frame: &mut Frame, downloads: &Downloads) {
     let list = List::new(items);
     frame.render_widget(list, list_area);
 
-    #[allow(clippy::cast_possible_truncation)]
+    #[expect(clippy::cast_possible_truncation)]
     for (i, (_, download)) in downloads.in_progress.iter().enumerate() {
         let gauge = Gauge::default()
             .gauge_style(Style::default().fg(Color::Yellow))

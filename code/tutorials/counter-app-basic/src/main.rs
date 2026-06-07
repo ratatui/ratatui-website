@@ -14,10 +14,7 @@ use ratatui::{
 // ANCHOR_END: imports
 
 fn main() -> io::Result<()> {
-    let mut terminal = ratatui::init();
-    let app_result = App::default().run(&mut terminal);
-    ratatui::restore();
-    app_result
+    ratatui::run(|terminal| App::default().run(terminal))
 }
 
 // ANCHOR: app
@@ -147,7 +144,7 @@ mod tests {
 
     // ANCHOR: handle_key_event test
     #[test]
-    fn handle_key_event() -> io::Result<()> {
+    fn handle_key_event() {
         let mut app = App::default();
         app.handle_key_event(KeyCode::Right.into());
         assert_eq!(app.counter, 1);
@@ -158,8 +155,6 @@ mod tests {
         let mut app = App::default();
         app.handle_key_event(KeyCode::Char('q').into());
         assert!(app.exit);
-
-        Ok(())
     }
     // ANCHOR_END: handle_key_event test
 }

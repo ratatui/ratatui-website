@@ -3,16 +3,17 @@ title: Popup
 ---
 
 Demonstrates how to render a widget over the top of previously rendered widgets using the
-[`Clear`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Clear.html) widget.
+[`Clear`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Clear.html) widget. Source
+[popup.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/popup/src/main.rs).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=popup --features=crossterm
+cargo run -p popup
 ```
 
-![popup](popup.gif)
+![popup](https://github.com/ratatui/ratatui/blob/images/examples/popup.gif?raw=true)
 
-```rust title=popup.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/popup.rs }}
 ```

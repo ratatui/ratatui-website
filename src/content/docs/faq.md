@@ -131,6 +131,37 @@ The `simple-async` uses this architecture instead with tokio:
                                 ┊                   `------------------'
 ```
 
+## How do I fix errors when multiple Crossterm versions are used?
+
+If your dependency graph pulls in two Crossterm major versions, the compiler will surface confusing
+type errors such as:
+
+```text
+error[E0308]: mismatched types
+   --> src/main.rs:12:10
+    |
+12  |     match crossterm::event::read()? {
+    |                                  ^ expected enum `crossterm::event::Event`
+    |                                    found enum `crossterm::event::Event`
+    |
+    = note: perhaps two different versions of crate `crossterm` are being used?
+```
+
+```text
+error[E0599]: no method named `is_key_press` found for enum `crossterm::event::Event` in the current scope
+  --> src/main.rs:12:38
+   |
+12 |         if crossterm::event::read()?.is_key_press() {
+   |                                      ^^^^^^^^^^^^ method not found in `crossterm::event::Event`
+```
+
+These show up when Ratatui is compiled with one Crossterm major while another dependency pulls in a
+different one. You can resolve these conflicts by selecting the Crossterm major version used by
+Ratatui via feature flags.
+
+See [Crossterm version compatibility](/concepts/backends/#crossterm-version-compatibility) for more
+information.
+
 ## tui.rs history
 
 This project was forked from [`tui-rs`](https://github.com/fdehau/tui-rs/) in February 2023, with
@@ -221,7 +252,13 @@ each iteration. It does not handle input and users have use another library (lik
 as backends.
 
 ```rust
-use ratatui::{prelude::*, widgets::*};
+use ratatui::{
+    Terminal,
+    backend::CrosstermBackend,
+    crossterm,
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    widgets::{Block, Borders, Paragraph},
+};
 
 fn init() -> Result<(), Box<dyn std::error::Error>> {
   crossterm::terminal::enable_raw_mode()?;
@@ -266,7 +303,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
       f.render_widget(
         Paragraph::new("Hello World!\n\n\n'q' to quit")
           .block(
-            Block::default().title(block::Title::from("Ratatui").alignment(Alignment::Center)).borders(Borders::all()),
+            Block::default().title("Ratatui").title_alignment(Alignment::Center).borders(Borders::all()),
           )
           .alignment(Alignment::Center),
         rect,

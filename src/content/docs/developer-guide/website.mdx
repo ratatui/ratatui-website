@@ -23,12 +23,44 @@ git lfs pull
 To build and run the site locally:
 
 ```shell title="install necessary packages"
-npm install
+mise run pnpm-install
 ```
 
 ```shell title="run site"
-npm run dev
+mise run dev
 ```
+
+`mise run pnpm-install` installs the website's JavaScript dependencies. `mise run dev` starts the
+local Astro/Starlight development server and prints a local URL you can open in your browser.
+
+If you are not using [`mise`], use Node 24 and run the JavaScript package manager directly:
+
+```shell title="install necessary packages"
+corepack enable
+pnpm install
+```
+
+```shell title="run site"
+pnpm dev
+```
+
+`corepack enable` makes the `pnpm` command available. The exact pnpm version is pinned in
+`package.json`, so you do not need to install pnpm globally.
+
+To check the site before opening a PR:
+
+```shell title="build site"
+mise run build
+```
+
+```shell title="run tests"
+mise run test
+```
+
+For Cloudflare Pages, use `pnpm build` as the build command and `dist` as the output directory.
+
+[`mise`]: https://mise.jdx.dev/
+[Corepack]: https://nodejs.org/api/corepack.html
 
 Feel free to make contributions and submit a PR if you'd like to improve the documentation.
 

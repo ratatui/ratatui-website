@@ -1,5 +1,8 @@
 use palette::{IntoColor, Okhsv, Srgb};
-use ratatui::{buffer::Buffer, layout::Rect, style::Color, widgets::Widget};
+use ratatui::buffer::Buffer;
+use ratatui::layout::Rect;
+use ratatui::style::Color;
+use ratatui::widgets::Widget;
 
 /// A widget that renders a color swatch of RGB colors.
 ///
@@ -9,7 +12,7 @@ use ratatui::{buffer::Buffer, layout::Rect, style::Color, widgets::Widget};
 pub struct RgbSwatch;
 
 impl Widget for RgbSwatch {
-    #[allow(clippy::cast_precision_loss, clippy::similar_names)]
+    #[expect(clippy::cast_precision_loss, clippy::similar_names)]
     fn render(self, area: Rect, buf: &mut Buffer) {
         for (yi, y) in (area.top()..area.bottom()).enumerate() {
             let value = f32::from(area.height) - yi as f32;

@@ -69,12 +69,11 @@ fn view(model: &mut Model, frame: &mut Frame) {
 /// We don't need to pass in a `model` to this function in this example
 /// but you might need it as your project evolves
 fn handle_event(_: &Model) -> color_eyre::Result<Option<Message>> {
-    if event::poll(Duration::from_millis(250))? {
-        if let Event::Key(key) = event::read()? {
-            if key.kind == event::KeyEventKind::Press {
-                return Ok(handle_key(key));
-            }
-        }
+    if event::poll(Duration::from_millis(250))?
+        && let Event::Key(key) = event::read()?
+        && key.kind == event::KeyEventKind::Press
+    {
+        return Ok(handle_key(key));
     }
     Ok(None)
 }

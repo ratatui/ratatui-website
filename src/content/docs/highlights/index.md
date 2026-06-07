@@ -1,5 +1,7 @@
 ---
 title: Highlights
+sidebar:
+  order: 1
 ---
 
 This section highlights the main changes in each major release of Ratatui (from v0.21.0 through the

@@ -1,15 +1,11 @@
 use itertools::Itertools;
 use palette::Okhsv;
-use ratatui::{
-    buffer::Buffer,
-    layout::{Constraint, Direction, Layout, Margin, Rect},
-    style::{Color, Style, Stylize},
-    symbols,
-    widgets::{
-        calendar::{CalendarEventStore, Monthly},
-        Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding, Widget,
-    },
-};
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Constraint, Direction, Layout, Margin, Rect};
+use ratatui::style::{Color, Style};
+use ratatui::symbols;
+use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
+use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding, Widget};
 use time::OffsetDateTime;
 
 use crate::{color_from_oklab, RgbSwatch, THEME};
@@ -45,16 +41,16 @@ impl Widget for WeatherTab {
             horizontal: 2,
             vertical: 1,
         });
-        let [main, _, gauges] = Layout::vertical([
+        let tab_layout = Layout::vertical([
             Constraint::Min(0),
             Constraint::Length(1),
             Constraint::Length(1),
-        ])
-        .areas(area);
-        let [calendar, charts] =
-            Layout::horizontal([Constraint::Length(23), Constraint::Min(0)]).areas(main);
-        let [simple, horizontal] =
-            Layout::vertical([Constraint::Length(29), Constraint::Min(0)]).areas(charts);
+        ]);
+        let [main, _, gauges] = area.layout(&tab_layout);
+        let main_layout = Layout::horizontal([Constraint::Length(23), Constraint::Min(0)]);
+        let [calendar, charts] = main.layout(&main_layout);
+        let charts_layout = Layout::vertical([Constraint::Length(29), Constraint::Min(0)]);
+        let [simple, horizontal] = charts.layout(&charts_layout);
 
         render_calendar(calendar, buf);
         render_simple_barchart(simple, buf);
@@ -101,7 +97,7 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
                 } else {
                     Style::new().fg(Color::DarkGray).bg(Color::Yellow).bold()
                 })
-                .label(label.into())
+                .label(label)
         })
         .collect_vec();
     let group = BarGroup::default().bars(&data);
@@ -115,15 +111,15 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
 fn render_horizontal_barchart(area: Rect, buf: &mut Buffer) {
     let bg = Color::Rgb(32, 48, 96);
     let data = [
-        Bar::default().text_value("Winter 37-51".into()).value(51),
-        Bar::default().text_value("Spring 40-65".into()).value(65),
-        Bar::default().text_value("Summer 54-77".into()).value(77),
+        Bar::default().text_value("Winter 37-51").value(51),
+        Bar::default().text_value("Spring 40-65").value(65),
+        Bar::default().text_value("Summer 54-77").value(77),
         Bar::default()
-            .text_value("Fall 41-71".into())
+            .text_value("Fall 41-71")
             .value(71)
             .value_style(Style::new().bold()), // current season
     ];
-    let group = BarGroup::default().label("GPU".into()).bars(&data);
+    let group = BarGroup::default().label("GPU").bars(&data);
     BarChart::default()
         .block(Block::new().padding(Padding::new(0, 0, 2, 0)))
         .direction(Direction::Horizontal)
@@ -134,14 +130,14 @@ fn render_horizontal_barchart(area: Rect, buf: &mut Buffer) {
         .render(area, buf);
 }
 
-#[allow(clippy::cast_precision_loss)]
+#[expect(clippy::cast_precision_loss)]
 pub fn render_gauge(progress: usize, area: Rect, buf: &mut Buffer) {
     let percent = (progress * 3).min(100) as f64;
 
     render_line_gauge(percent, area, buf);
 }
 
-#[allow(clippy::cast_possible_truncation)]
+#[expect(clippy::cast_possible_truncation)]
 fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
     // cycle color hue based on the percent for a neat effect yellow -> red
     let hue = 90.0 - (percent as f32 * 0.6);
@@ -159,6 +155,7 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
         .style(Style::new().light_blue())
         .filled_style(Style::new().fg(filled_color))
         .unfilled_style(Style::new().fg(unfilled_color))
-        .line_set(symbols::line::THICK)
+        .filled_symbol(symbols::line::THICK_HORIZONTAL)
+        .unfilled_symbol(symbols::line::THICK_HORIZONTAL)
         .render(area, buf);
 }

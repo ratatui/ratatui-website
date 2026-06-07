@@ -2,16 +2,17 @@
 title: Panic Hooks
 ---
 
-Demonstrates the setting up panic hooks
+Demonstrates the setting up panic hooks. Source
+[panic.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/panic/src/main.rs).
 
 ```shell title=run example
 git clone https://github.com/ratatui/ratatui.git --branch latest
 cd ratatui
-cargo run --example=panic --features=crossterm
+cargo run -p panic
 ```
 
-![panic](panic.gif)
+![panic](https://github.com/ratatui/ratatui/blob/images/examples/panic.gif?raw=true)
 
-```rust title=panic.rs
+```rust title=main.rs
 {{ #include @code/examples/ratatui-examples/examples/panic.rs }}
 ```

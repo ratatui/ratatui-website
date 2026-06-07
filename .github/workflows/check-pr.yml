@@ -22,8 +22,8 @@ jobs:
         uses: nschloe/action-cached-lfs-checkout@v1
       - name: Get images
         run:
-          find . -regextype posix-awk -regex ".*\.(png|gif)" -type f | cut -d"/" -f2- | sort >
-          /tmp/images
+          find . -regextype posix-awk -regex ".*\.(png|gif|svg|xcf|webp)" -type f | cut -d"/" -f2- |
+          sort > /tmp/images
       - name: Get lfs files
         run: git lfs ls-files | cut -d" " -f3 | sort > /tmp/lfs-files
       - name: Diff

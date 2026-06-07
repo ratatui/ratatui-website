@@ -10,8 +10,8 @@ Code for this tutorial is available to view at
 :::
 
 This tutorial will lead you through creating a simple "Hello World" TUI app that displays some text
-in the middle of the screen and waits for the user to press any key to exit. It demonstrates the
-tasks that any application developed with Ratatui needs to undertake.
+in the top-left corner of the screen and waits for the user to press any key to exit. It
+demonstrates the tasks that any application developed with Ratatui needs to undertake.
 
 We assume you have a basic understanding of the terminal, and have a text editor or IDE. If you
 don't have a preference, [VSCode] with [rust-analyzer] makes a good default choice.
@@ -67,7 +67,7 @@ can find more information about this template in the [Hello World Template READM
 [Hello World Template README]: https://github.com/ratatui/templates/blob/main/hello-world/README.md
 
 ```shell title="create new rust project"
-cargo generate ratatui/templates simple
+cargo generate ratatui/templates hello-world
 ```
 
 :::note
@@ -86,6 +86,7 @@ $ cargo generate ratatui/templates
 🔧   Destination: /Users/joshka/local/ratatui-website/code/tutorials/hello-ratatui ...
 🔧   project-name: hello-ratatui ...
 🔧   Generating template ...
+🤷   Short description of the project: A Ratatui Hello World app
 🔧   Moving generated files into: `/Users/joshka/local/ratatui-website/code/tutorials/hello-ratatui`...
 🔧   Initializing a fresh Git repository
 ✨   Done! New project created /Users/joshka/local/ratatui-website/code/tutorials/hello-ratatui
@@ -120,9 +121,11 @@ The generate command created a default `main.rs` that runs the app:
 
 :::tip
 
-Before Ratatui 0.28.1, the setup of an app was quite a bit more complex. Older Ratatui apps may have
-code that includes a lot of boilerplate code to set up the app. The latest version of Ratatui has
-simplified this process to just calling `ratatui::init()` and `ratatui::restore()`.
+In previous versions, the setup of an app was quite a bit more complex. Older Ratatui apps may have
+code that includes a lot of boilerplate code to set up the app. Ratatui 0.28.1 has simplified this
+process to just calling `ratatui::init()` and `ratatui::restore()`. Ratatui 0.30.0 made it even
+simpler by introducing the `ratatui::run()` method, which handles those calls and can be used for
+most applications.
 
 :::
 

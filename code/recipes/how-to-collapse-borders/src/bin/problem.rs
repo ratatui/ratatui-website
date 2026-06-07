@@ -1,7 +1,7 @@
 use std::time::Duration;
 
 use color_eyre::Result;
-use crossterm::event::{self, Event};
+use ratatui::crossterm::event::{self, Event};
 use ratatui::{
     layout::{Constraint, Layout},
     widgets::Block,

@@ -14,7 +14,7 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      npm-dependencies:
+      js-dependencies:
         patterns: ["*"]
   - package-ecosystem: "cargo"
     directory: "/"

@@ -378,10 +378,9 @@ impl Tui {
                   }
                   maybe_event = crossterm_event => {
                     match maybe_event {
-                      Some(Ok(crossterm::event::Event::Key(key))) => {
-                        if key.kind == crossterm::event::KeyEventKind::Press {
+                      Some(Ok(crossterm::event::Event::Key(key)))
+                        if key.kind == crossterm::event::KeyEventKind::Press => {
                             _event_tx.send(Event::Key(key)).unwrap();
-                        }
                       }
                       Some(Ok(_)) => { }
                       Some(Err(_)) => {

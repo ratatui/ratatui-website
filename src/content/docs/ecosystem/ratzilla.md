@@ -1,16 +1,18 @@
 ---
-title: Build websites (Ratzilla)
+title: Build websites
 sidebar:
   order: 3
 ---
 
+## Ratzilla
+
 > Build terminal-themed web applications with Rust and WebAssembly.
 
-![Ratzilla demo](https://github.com/orhun/ratzilla/blob/main/assets/demo.gif?raw=true)
+![Ratzilla demo](https://github.com/ratatui/ratzilla/blob/main/assets/demo.gif?raw=true)
 
-➡️ Demo: <https://orhun.dev/ratzilla/demo/>
+➡️ Demo: <https://ratatui.github.io/ratzilla/demo/>
 
-- [Quickstart](https://github.com/orhun/ratzilla?tab=readme-ov-file#quickstart)
+- [Quickstart](https://github.com/ratatui/ratzilla?tab=readme-ov-file#quickstart)
 - [API Documentation](https://docs.rs/ratzilla/)
-- [Examples](https://github.com/orhun/ratzilla/tree/main/examples)
-- [Websites built with Ratzilla](https://github.com/orhun/ratzilla?tab=readme-ov-file#websites-built-with-ratzilla)
+- [Examples](https://github.com/ratatui/ratzilla/tree/main/examples)
+- [Websites built with Ratzilla](https://github.com/ratatui/ratzilla?tab=readme-ov-file#websites-built-with-ratzilla)

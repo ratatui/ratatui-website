@@ -1,2 +1,36 @@
+min_version = "2024.9.5"
+
 [tools]
-node = "22"
+node = "24"
+
+[settings]
+# Enable Corepack shims after mise installs Node so the packageManager field in
+# package.json controls the pnpm version without requiring a global pnpm install.
+node.corepack = true
+
+[env]
+# Make project-local CLIs such as astro, prettier, and vitest available when
+# running commands through mise.
+_.path = ["{{config_root}}/node_modules/.bin"]
+
+[tasks.pnpm-install]
+alias = "i"
+description = "Install dependencies with pnpm"
+run = "pnpm install"
+sources = ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", ".mise.toml"]
+outputs = ["node_modules/.pnpm/lock.yaml"]
+
+[tasks.dev]
+description = "Start the Astro dev server"
+run = "pnpm dev"
+depends = ["pnpm-install"]
+
+[tasks.build]
+description = "Build the Astro site"
+run = "pnpm build"
+depends = ["pnpm-install"]
+
+[tasks.test]
+description = "Run the test suite"
+run = "pnpm test"
+depends = ["pnpm-install"]

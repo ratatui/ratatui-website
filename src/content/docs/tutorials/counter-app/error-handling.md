@@ -5,16 +5,6 @@ sidebar:
   label: Error Handling
 ---
 
-:::caution
-
-This tutorial is outdated since Ratatui 0.28.1.
-
-We introduced the `ratatui::init` and `ratatui::restore` methods in Ratatui 0.28.1, which
-automatically setup panic hooks. That removes the need for the `tui` module here. We will update the
-tutorial soon.
-
-:::
-
 :::note[Source Code]
 
 Full source code is available at:
@@ -101,15 +91,6 @@ understand what to do if restoring the terminal does fail.
 {{#include @code/tutorials/counter-app-error-handling/src/main.rs:new-imports }}
 
 {{#include @code/tutorials/counter-app-error-handling/src/main.rs:main }}
-```
-
-Next, update the `tui::init()` function to replace the panic hook with one that first restores the
-terminal before printing the panic information. This will ensure that both panics and unhandled
-errors (i.e. any `Result::Err`s that bubble up to the top level of the main function) are both
-displayed on the terminal correctly when the application exits.
-
-```rust title=tui.rs ins={5,9-15}
-{{#include @code/tutorials/counter-app-error-handling/src/tui.rs:init }}
 ```
 
 ## Using color_eyre
@@ -236,10 +217,6 @@ Putting this altogether, you should now have the following files.
 
 ```rust collapsed title="main.rs (click to expand)"
 {{#include @code/tutorials/counter-app-error-handling/src/main.rs }}
-```
-
-```rust collapsed title="tui.rs (click to expand)"
-{{#include @code/tutorials/counter-app-error-handling/src/tui.rs }}
 ```
 
 ## Handling Panics

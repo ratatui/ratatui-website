@@ -119,9 +119,13 @@ included in `ratatui`. It allows for 3rd party backends to be implemented.
 
 `run_app` also requires a mutable borrow to an application state object, as defined in this project.
 
-Finally, the `run_app` returns an `io::Result<bool>` that indicates if there was an io error with
-the `Err` state, and an `Ok(true)` or `Ok(false)` that indicates if the program should print out the
-finished json.
+The return type is still `io::Result<bool>`, but there is one extra bound:
+`io::Error: From<B::Error>`. This is needed because `Terminal::draw()` returns a `Result` using the
+backend's error type, and `?` can only propagate that error if it can be converted into `io::Error`.
+
+With that conversion in place, `run_app` can use `?` on both `event::read()` and
+`terminal.draw(...)`, while still returning `Ok(true)` or `Ok(false)` to indicate whether the
+finished json should be printed.
 
 ### UI Loop
 

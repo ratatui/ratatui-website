@@ -15,4 +15,5 @@ This section covers recipes for developing applications:
 - [Migrate from TUI-rs](./migrate-from-tui-rs/)
 - [Spawn Vim](./spawn-vim/)
 - [Releasing Your App](./release-your-app/)
+- [Submitting to the Showcase](./submitting-to-the-showcase/)
 - [Configurable Keybindings](./keybind/)

@@ -1,0 +1,84 @@
+---
+import TutorialVideo from "./TutorialVideo.astro";
+import rat from "@assets/rat.png";
+import chef from "@assets/chef.png";
+
+const videos = [
+  {
+    title: "Building Embedded TUIs with Rust & Ratatui",
+    youtubeId: "F04kQMKwrwQ",
+    description: "Orhun Parmaksız showcases building embedded applications with Ratatui",
+  },
+  {
+    title: "Are we embedded yet?",
+    youtubeId: "QPjojOuhbe8",
+    description: "Jagoda Ślązak explores how Ratatui is moving beyond the terminal",
+  },
+  {
+    title: "Ratatui Tutorial Beginners Guide",
+    youtubeId: "M-BTpC_BEN0",
+    description: "A Ratatui Tutorial by Jonkero to get you up and running",
+  },
+  {
+    title: "Textual UIs with Orhun Parmaksız",
+    youtubeId: "VbLz79trgz8",
+    description: "Bryan and Adam from Oxide Computer discussing TUIs with Orhun Parmaksız",
+  },
+  {
+    title: "Bringing Terminal Aesthetics to the Web With Rust",
+    youtubeId: "iepbyYrF_YQ",
+    description:
+      "What if I told you it is possible to build terminal-like web applications with Rust and vice versa",
+  },
+  {
+    title: "Renaissance of Terminal User Interfaces with Rust",
+    youtubeId: "hWG51Mc1DlM",
+    description:
+      "The terminal is essential for every programmer when it comes to productivity and efficiency",
+  },
+];
+---
+
+<div class="not-content">
+  <h2
+    class="flex items-start pt-[80px] pb-6 text-4xl font-bold text-black max-xl:justify-center max-sm:pt-[50px] dark:text-white"
+  >
+    <span class="pr-2"
+      >Watch and learn <span class="text-blue-700 dark:text-yellow-500">Ratatui</span></span
+    >
+    <img alt="Chef icon" class="m-0 hidden h-8 md:block" src={chef.src} />
+    <img alt="Rat icon" class="m-0 hidden h-8 pl-2 md:block" src={rat.src} />
+  </h2>
+
+  <p class="max-w-[1440px] pb-12 text-lg leading-8 max-xl:text-center max-sm:text-sm">
+    Watch our "recipes" for learning how to cook up TUIs, get inspired by other developers, and join
+    conversations that spark new ideas.
+  </p>
+
+  <div class="m-auto flex max-w-[1440px] flex-wrap gap-6">
+    {
+      videos.map((video) => (
+        <div class="gallery-item grid h-[500px] min-w-[300px] grid-rows-[1fr_4fr] bg-gradient-to-br from-slate-300 to-slate-400 max-sm:h-[350px] max-sm:grid-rows-[1fr_8fr] dark:from-slate-950 dark:to-slate-950">
+          <TutorialVideo
+            title={video.title}
+            youtubeId={video.youtubeId}
+            description={video.description}
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .gallery-item {
+    flex: 0 0 calc(50% - 0.75rem); /* Exactly 50% minus half the gap */
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .gallery-item {
+      flex: 0 0 100%; /* Single column on mobile */
+    }
+  }
+</style>

@@ -36,13 +36,13 @@ indoc = "2"
 octocrab = "0.44.0"
 palette = "0.7.3"
 pretty_assertions = "1.4.1"
-rand = "0.9.0"
+rand = "0.9.3"
 rand_chacha = "0.9.0"
 rstest = "0.25.0"
 serde_json = "1.0.140"
 itertools = "0.14"
 strum = { version = "0.27.1", features = ["derive"] }
-time = { version = "0.3.41", features = ["local-offset"] }
+time = { version = "0.3.47", features = ["local-offset"] }
 tokio = { version = "1.44.1", features = ["macros", "rt", "rt-multi-thread"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
