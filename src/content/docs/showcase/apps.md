@@ -186,6 +186,15 @@ documentations in your terminal.
 
 ---
 
+## [`patent`](https://github.com/r14dd/patent)
+
+Prior-art search for code ideas, searches 11 package registries for existing implementations 
+and ranks results by semantic similarity.
+
+![patent demo](https://raw.githubusercontent.com/r14dd/patent/refs/heads/main/showcase.gif?raw=true)
+
+---
+
 ## [`rainfrog`](https://github.com/achristmascarl/rainfrog)
 
 A lightweight and terminal-based tool for interacting with databases.
