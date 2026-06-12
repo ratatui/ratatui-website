@@ -14,7 +14,7 @@ use ratatui::{
 mod app;
 mod ui;
 use crate::{
-    app::{App, CurrentScreen, CurrentlyEditing},
+    app::{App, CurrentScreen, EditFocus},
     ui::ui,
 };
 
@@ -83,7 +83,7 @@ where
                 CurrentScreen::Main => match key.code {
                     KeyCode::Char('e') => {
                         app.current_screen = CurrentScreen::Editing;
-                        app.currently_editing = Some(CurrentlyEditing::Key);
+                        app.start_editing();
                     }
                     KeyCode::Char('q') => {
                         app.current_screen = CurrentScreen::Exiting;
@@ -106,12 +106,12 @@ where
                 CurrentScreen::Editing if key.kind == KeyEventKind::Press => {
                     match key.code {
                         KeyCode::Enter => {
-                            if let Some(editing) = &app.currently_editing {
-                                match editing {
-                                    CurrentlyEditing::Key => {
-                                        app.currently_editing = Some(CurrentlyEditing::Value);
+                            if let Some(editing_pair) = &mut app.editing_pair {
+                                match editing_pair.focus {
+                                    EditFocus::Key => {
+                                        editing_pair.focus = EditFocus::Value;
                                     }
-                                    CurrentlyEditing::Value => {
+                                    EditFocus::Value => {
                                         app.save_key_value();
                                         app.current_screen = CurrentScreen::Main;
                                     }
@@ -121,13 +121,13 @@ where
                         // ANCHOR_END: editing_enter
                         // ANCHOR: backspace_editing
                         KeyCode::Backspace => {
-                            if let Some(editing) = &app.currently_editing {
-                                match editing {
-                                    CurrentlyEditing::Key => {
-                                        app.key_input.pop();
+                            if let Some(editing_pair) = &mut app.editing_pair {
+                                match editing_pair.focus {
+                                    EditFocus::Key => {
+                                        editing_pair.key.pop();
                                     }
-                                    CurrentlyEditing::Value => {
-                                        app.value_input.pop();
+                                    EditFocus::Value => {
+                                        editing_pair.value.pop();
                                     }
                                 }
                             }
@@ -136,7 +136,7 @@ where
                         // ANCHOR: escape_editing
                         KeyCode::Esc => {
                             app.current_screen = CurrentScreen::Main;
-                            app.currently_editing = None;
+                            app.editing_pair = None;
                         }
                         // ANCHOR_END: escape_editing
                         // ANCHOR: tab_editing
@@ -146,13 +146,13 @@ where
                         // ANCHOR_END: tab_editing
                         // ANCHOR: character_editing
                         KeyCode::Char(value) => {
-                            if let Some(editing) = &app.currently_editing {
-                                match editing {
-                                    CurrentlyEditing::Key => {
-                                        app.key_input.push(value);
+                            if let Some(editing_pair) = &mut app.editing_pair {
+                                match editing_pair.focus {
+                                    EditFocus::Key => {
+                                        editing_pair.key.push(value);
                                     }
-                                    CurrentlyEditing::Value => {
-                                        app.value_input.push(value);
+                                    EditFocus::Value => {
+                                        editing_pair.value.push(value);
                                     }
                                 }
                             }
