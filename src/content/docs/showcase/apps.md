@@ -259,7 +259,7 @@ assist with the analysis of networking issues.
 
 Play 2048 in your terminal
 
-![twozero48 demo](https://raw.githubusercontent.com/de-sh/twozero48/refs/heads/main/assets/demo.gif?raw=true)
+![twozero48 demo](./twozero48.gif)
 
 ---
 
