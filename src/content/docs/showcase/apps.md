@@ -255,6 +255,14 @@ assist with the analysis of networking issues.
 
 ---
 
+## [`twozero48`](https://github.com/de-sh/twozero48)
+
+Play 2048 in your terminal
+
+![twozero48 demo](./twozero48.gif)
+
+---
+
 ## [`xplr`](https://github.com/sayanarijit/xplr)
 
 A hackable, minimal, fast TUI file explorer
