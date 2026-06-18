@@ -165,6 +165,34 @@ In Ratatui, widgets are implemented as Rust traits, which allow for easy impleme
 extension. The two main traits for widgets are [`Widget`] and [`StatefulWidget`], which provide the
 basic functionality for rendering and managing the state of a Widget.
 
+### When to Make a Custom Widget
+
+All of these are valid ways to organize rendering:
+
+- keep a small UI in one render function
+- split larger areas into helper render functions
+- create structs that implement [`Widget`] or [`StatefulWidget`]
+
+Implementing a widget is useful when a section of UI needs a meaningful boundary, not only when it
+will be reused. A helper such as `fn render_sidebar(area, buf, app: &App)` can accidentally depend
+on any field in `App`. A widget struct makes the inputs explicit, such as
+`Sidebar { selected, items }`, and the render implementation can only use those fields.
+
+That boundary is helpful when a section has a clear contract, is reused, is getting large, or should
+only access a limited subset of application state. Small one-off sections can stay as render
+functions until a widget boundary would make the code easier to understand.
+
+Choose the implementation form based on ownership and state:
+
+- use `impl Widget for &MyWidget` for reusable widgets that do not mutate themselves during render
+- use `impl Widget for MyWidget` for cheap ephemeral widgets created fresh each frame
+- use `impl Widget for &mut MyWidget` when rendering updates state owned by the widget
+- use [`StatefulWidget`] when state should live outside the widget and persist independently, such as
+  selection, scroll offset, or cursor position
+
+A useful state question is: if this widget value is recreated, should its state reset? If yes,
+widget-owned state can be fine. If no, keep the state outside the widget and pass it in.
+
 Here's an example of implementing the [`Widget`] trait for a simple greeting Widget:
 
 ```rust
