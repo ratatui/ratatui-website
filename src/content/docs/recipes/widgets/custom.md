@@ -9,6 +9,9 @@ unique component tailored to specific needs. In such cases, creating a custom wi
 invaluable. This page will guide you through the process of designing and implementing custom
 widgets.
 
+If you are deciding whether a section of UI should be a custom widget or just another render
+function, see [When to Make a Custom Widget](/concepts/widgets/#when-to-make-a-custom-widget).
+
 ## `Widget` trait
 
 At the core of creating a custom widget is the `Widget` trait. Any struct that implements this trait
