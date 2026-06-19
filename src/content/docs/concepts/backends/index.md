@@ -17,6 +17,7 @@ Ratatui supports the following backends:
   specific versions.
 - [Termion] via [`TermionBackend`] and the `termion` feature.
 - [Termwiz] via [`TermwizBackend`] and the `termwiz` feature.
+- [Termina] via [`TerminaBackend`] and the `termina` feature.
 - A [`TestBackend`] which can be useful to unit test your application's UI
 
 For information on how to choose a backend see: [Comparison](./comparison/)
@@ -67,8 +68,10 @@ crossterm = "0.29"
 [Crossterm]: https://crates.io/crates/crossterm
 [Termion]: https://crates.io/crates/termion
 [Termwiz]: https://crates.io/crates/termwiz
+[Termina]: https://crates.io/crates/termina
 [`Terminal`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html
 [`CrosstermBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.CrosstermBackend.html
 [`TermionBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TermionBackend.html
 [`TermwizBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TermwizBackend.html
+[`TerminaBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TerminaBackend.html
 [`TestBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TestBackend.html

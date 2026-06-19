@@ -10,8 +10,8 @@ As ratatui grows and evolves, this list may change, so make sure to check the
 ## Backend Selection
 
 For most cases, the default `crossterm` backend is the correct choice. See
-[Backends](/concepts/backends/) for more information. However, this can be changed to termion or
-termwiz
+[Backends](/concepts/backends/) for more information. However, this can be changed to termion,
+termwiz, or termina.
 
 ```shell
 # Defaults to crossterm
@@ -24,6 +24,10 @@ cargo add termion
 # For termwiz, unset the default crossterm feature and select the termwiz feature
 cargo add ratatui --no-default-features --features=termwiz
 cargo add termwiz
+
+# For termina, unset the default crossterm feature and select the termina feature
+cargo add ratatui --no-default-features --features=termina
+cargo add termina
 ```
 
 ## All-Widgets
