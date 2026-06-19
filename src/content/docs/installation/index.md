@@ -14,12 +14,12 @@ or by adding the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-ratatui = "0.30.1"
+ratatui = "0.30.2"
 ```
 
 By default, `ratatui` enables the `crossterm` feature, but it's possible to alternatively use
-`termion`, or `termwiz` instead by enabling the appropriate feature and disabling the default
-features. See [Backend] for more information.
+`termion`, `termwiz`, or `termina` instead by enabling the appropriate feature and disabling the
+default features. See [Backend] for more information.
 
 :::note
 
@@ -39,7 +39,7 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.30.1", default-features = false, features = ["termion"] }
+ratatui = { version = "0.30.2", default-features = false, features = ["termion"] }
 ```
 
 For Termwiz:
@@ -52,7 +52,20 @@ or in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ratatui = { version = "0.30.1", default-features = false, features = ["termwiz"] }
+ratatui = { version = "0.30.2", default-features = false, features = ["termwiz"] }
+```
+
+For Termina:
+
+```shell
+cargo add ratatui --no-default-features --features termina
+```
+
+or in your `Cargo.toml`:
+
+```toml
+[dependencies]
+ratatui = { version = "0.30.2", default-features = false, features = ["termina"] }
 ```
 
 [Backend]: /concepts/backends/

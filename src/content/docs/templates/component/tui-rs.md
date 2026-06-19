@@ -35,8 +35,8 @@ fn main() -> Result<()> {
 }
 ```
 
-You can use `termion` or `termwiz` instead here, and you'll have to change the implementation of
-`setup_terminal` and `teardown_terminal`.
+You can use `termion`, `termwiz`, or `termina` instead here, and you'll have to change the
+implementation of `setup_terminal` and `teardown_terminal`.
 
 See the [backends](http://ratatui.rs/concepts/backends/) page for more information.
 

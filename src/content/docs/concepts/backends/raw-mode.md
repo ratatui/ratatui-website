@@ -22,7 +22,9 @@ raw mode.
 - [`CrosstermBackend`]
 - [`TermionBackend`]
 - [`TermwizBackend`]
+- [`TerminaBackend`]
 
 [`CrosstermBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.CrosstermBackend.html
 [`TermionBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TermionBackend.html
 [`TermwizBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TermwizBackend.html
+[`TerminaBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TerminaBackend.html
