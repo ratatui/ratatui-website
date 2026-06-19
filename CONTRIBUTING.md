@@ -35,8 +35,8 @@ pnpm dev
 `corepack enable` makes the `pnpm` command available. The exact pnpm version is pinned in
 `package.json`, so you do not need to install pnpm globally.
 
-`pnpm install` triggers Playwright's browser download. You can skip the heavy Chromium bundle by
-hitting Ctrl+C once that download starts if you do not plan to run the end-to-end tests.
+The website build renders Mermaid diagrams with Playwright. If your local build fails because no
+Playwright browser is installed, run `pnpm playwright:install`.
 
 ## Commands
 

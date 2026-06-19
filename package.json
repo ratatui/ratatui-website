@@ -16,7 +16,7 @@
     "_format": "prettier . --plugin=prettier-plugin-astro --plugin=prettier-plugin-organize-imports --plugin=prettier-plugin-tailwindcss",
     "format": "pnpm run _format --write",
     "format:check": "pnpm run _format --check",
-    "postinstall": "playwright install",
+    "playwright:install": "playwright install chromium",
     "test": "vitest"
   },
   "dependencies": {
