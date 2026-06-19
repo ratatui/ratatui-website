@@ -14,6 +14,8 @@ import { collapsibleFrames } from "/src/plugins/collapsible-frames";
 import rehypeExternalLink from "/src/plugins/rehype-external-link";
 import remarkIncludeCode from "/src/plugins/remark-code-import";
 
+const mermaidLaunchOptions = process.env.CI ? { channel: "chrome" } : undefined;
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://ratatui.rs",
@@ -30,7 +32,7 @@ export default defineConfig({
   },
   markdown: {
     remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob, remarkHeadingId],
-    rehypePlugins: [rehypeMermaid, rehypeExternalLink],
+    rehypePlugins: [[rehypeMermaid, { launchOptions: mermaidLaunchOptions }], rehypeExternalLink],
   },
   integrations: [
     starlight({
