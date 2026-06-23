@@ -281,3 +281,52 @@ main .content-panel:first-child:not(:has(*)) {
 .bracket-effect:hover::after {
   opacity: 1;
 }
+
+/* Rat emoji wiggle, shake & click-jump */
+.rat-jump + label {
+  animation: rat-run 10s linear infinite;
+}
+
+.rat-jump + label span {
+  animation: rat-shake 0.2s linear infinite;
+  filter: sepia(1) saturate(5) hue-rotate(-60deg);
+}
+
+.rat-jump:checked + label span {
+  animation: rat-wiggle 0.8s linear infinite;
+  filter: none;
+}
+
+.rat-jump:checked + label img {
+  animation: rat-jump 0.6s linear;
+}
+
+@keyframes rat-run {
+  0%,
+  100% { transform: translateX(-80px) scaleX(-1); }
+  48%  { transform: translateX(80px)  scaleX(-1); }
+  50%  { transform: translateX(80px)  scaleX(1); }
+  98%  { transform: translateX(-80px) scaleX(1); }
+}
+
+@keyframes rat-wiggle {
+  0%,
+  100% { transform: rotate(0)     translateY(0); }
+  25%  { transform: rotate(-8deg) translateY(-2px); }
+  75%  { transform: rotate(8deg)  translateY(2px); }
+}
+
+@keyframes rat-shake {
+  0%,
+  100% { transform: translateY(0); }
+  25%  { transform: translateY(-2px); }
+  50%  { transform: translateY(2px); }
+  75%  { transform: translateY(-1px); }
+}
+
+@keyframes rat-jump {
+  0%   { transform: translateY(0)     rotate(0)      scale(1); }
+  30%  { transform: translateY(-28px) rotate(180deg) scale(1.15); }
+  70%  { transform: translateY(-6px)  rotate(360deg) scale(0.95); }
+  100% { transform: translateY(0)     rotate(360deg) scale(1); }
+}
