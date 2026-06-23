@@ -164,7 +164,14 @@ import ThemeSwitch from "@components/ThemeSwitch.astro";
               <ThemeSwitch />
             </div>
           </div>
-          <div class="pt-3 text-2xl"><img alt="Rat icon" class="w-6 m-auto" src={rat.src} /></div>
+          <div class="pt-3 text-2xl">
+            <input id="rat-jump" type="checkbox" class="rat-jump hidden" checked />
+            <label for="rat-jump" class="cursor-pointer inline-block">
+              <span class="inline-block">
+                <img alt="Rat icon" class="w-6 m-auto" src={rat.src} />
+              </span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
