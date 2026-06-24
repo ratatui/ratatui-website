@@ -187,9 +187,9 @@ We will start with the keybinds and event handling for the `CurrentScreen::Main`
 After matching to the `Main` enum variant, we match the event. When the user is in the main screen,
 there are only two keybinds, and the rest are ignored.
 
-In this case, `KeyCode::Char('e')` changes the current screen to `CurrentScreen::Editing` and sets
-the `CurrentlyEditing` to a `Some` and notes that the user should be editing the `Key` value field,
-as opposed to the `Value` field.
+In this case, `KeyCode::Char('e')` changes the current screen to `CurrentScreen::Editing` and calls
+`start_editing()` to create a fresh key-value pair draft. The draft starts with the key field
+selected, as opposed to the `Value` field.
 
 `KeyCode::Char('q')` is straightforward, as it simply switches the application to the `Exiting`
 screen, and allows the ui and future event handling runs to do the rest.
@@ -224,8 +224,9 @@ currently edited, `Enter` will save the key-value pair, and return to the `Main`
                         // --snip--
 ```
 
-When `Backspace` is pressed, we need to first determine if the user is editing a `Key` or a `Value`,
-then `pop()` the endings of those strings accordingly.
+When `Backspace` is pressed, we first get the pair currently being edited, then determine if the
+user is editing a `Key` or a `Value`. Once we know which field is active, we `pop()` the end of that
+string.
 
 ```rust
                         // --snip--
@@ -233,7 +234,7 @@ then `pop()` the endings of those strings accordingly.
                         // --snip--
 ```
 
-When `Escape` is pressed, we want to quit editing.
+When `Escape` is pressed, we want to quit editing and discard the draft pair.
 
 ```rust
                         // --snip--
@@ -249,8 +250,8 @@ When `Tab` is pressed, we want the currently editing selection to switch.
                         // --snip--
 ```
 
-And finally, if the user types a valid character, we want to capture that, and add it to the string
-that is the final key or value.
+And finally, if the user types a valid character, we want to capture that and add it to the draft's
+key or value string.
 
 ```rust
                         // --snip--
