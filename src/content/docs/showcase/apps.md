@@ -194,6 +194,17 @@ A lightweight and terminal-based tool for interacting with databases.
 
 ---
 
+## [`ratty`](https://github.com/orhun/ratty)
+
+Ratty is a GPU-rendered terminal emulator with inline 3D graphics.
+
+<video controls>
+  <source src="https://github.com/user-attachments/assets/17eda86b-d00f-401b-9cf4-38343fa71386" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
 ## [`rucola`](https://github.com/Linus-Mussmaecher/rucola)
 
 An application to manage markdown notes from your terminal and compile them to HTML
