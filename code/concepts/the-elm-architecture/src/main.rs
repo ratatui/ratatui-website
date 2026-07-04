@@ -1,9 +1,9 @@
 use std::time::Duration;
 
 use ratatui::{
+    Frame,
     crossterm::event::{self, Event, KeyCode},
     widgets::Paragraph,
-    Frame,
 };
 
 // ANCHOR: model
@@ -114,14 +114,14 @@ fn update(model: &mut Model, msg: Message) -> Option<Message> {
 
 mod tui {
     use ratatui::{
+        Terminal,
         backend::{Backend, CrosstermBackend},
         crossterm::{
-            terminal::{
-                disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen,
-            },
             ExecutableCommand,
+            terminal::{
+                EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode,
+            },
         },
-        Terminal,
     };
     use std::{io::stdout, panic};
 
