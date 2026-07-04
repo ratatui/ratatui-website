@@ -10,3 +10,6 @@ the following articles where these patterns are explored more in-depth.
 - [The Elm Architecture](./the-elm-architecture/)
 - [Component Architecture](./component-architecture/)
 - [Flux Architecture](./flux-architecture/)
+- [Async Applications](./async-applications/)
+- [Async Application Examples](./async-application-examples/)
+- [Async Gaps and Direction](./async-gaps/)
