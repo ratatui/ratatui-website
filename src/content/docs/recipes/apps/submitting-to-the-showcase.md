@@ -153,9 +153,9 @@ iterating on the presentation first.
 
 ## Related reading
 
-- [Releasing Your App](./release-your-app/)
-- [App Showcase](../../showcase/apps/)
-- [Third Party Widgets](../../showcase/third-party-widgets/)
+- [Releasing Your App](/recipes/apps/release-your-app/)
+- [App Showcase](/showcase/apps/)
+- [Third Party Widgets](/showcase/third-party-widgets/)
 - [Issue #986: Ratatui app showcase criteria](https://github.com/ratatui/ratatui-website/issues/986)
 - [Issue #905: Improve Showcase Apps](https://github.com/ratatui/ratatui-website/issues/905)
 - [PR #1032 discussion](https://github.com/ratatui/ratatui-website/pull/1032)
