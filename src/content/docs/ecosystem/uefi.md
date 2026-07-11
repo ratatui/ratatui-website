@@ -4,9 +4,9 @@ sidebar:
   order: 4
 ---
 
-Using crates below, you can build Ratatui apps that run before operating system, as EFI applications.
+These crates allow you to build Ratatui apps that run before operating system, as EFI applications.
 
-## `ratatuefi`
+## ratatuefi
 
 > Provides a [uefi](https://docs.rs/uefi) backend for Ratatui (`no_std`).
 
@@ -25,3 +25,12 @@ Using crates below, you can build Ratatui apps that run before operating system,
 <video controls src="https://github.com/user-attachments/assets/c37e6d62-5e2a-4e62-86b2-3bcd2e930065"></video>
 
 :::
+
+## tui-uefi
+
+> Also provides a [uefi](https://docs.rs/uefi) backend for Ratatui (`no_std`).
+
+![screenshot](https://github.com/user-attachments/assets/29a559ff-f2c3-4059-8725-95602fdcba63)
+
+- [GitHub](https://github.com/reubeno/tui-uefi)
+- [Examples](https://github.com/reubeno/tui-uefi/tree/main/examples)
