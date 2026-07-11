@@ -20,7 +20,8 @@ These crates allow you to build Ratatui apps that run before operating system, a
 
 :::note[Example Project]
 
-[efimux](https://github.com/sermuns/efimux) is a bootloader-like EFI application built with Ratatui and `ratatuefi`. It can discovers and boot other EFI applications on detected filesystems.
+[efimux](https://github.com/sermuns/efimux) is a bootloader-like EFI application built with Ratatui
+and `ratatuefi`. It can discovers and boot other EFI applications on detected filesystems.
 
 <video controls src="https://github.com/user-attachments/assets/c37e6d62-5e2a-4e62-86b2-3bcd2e930065"></video>
 
