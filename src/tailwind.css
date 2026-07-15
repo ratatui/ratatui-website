@@ -303,30 +303,60 @@ main .content-panel:first-child:not(:has(*)) {
 
 @keyframes rat-run {
   0%,
-  100% { transform: translateX(-80px) scaleX(-1); }
-  48%  { transform: translateX(80px)  scaleX(-1); }
-  50%  { transform: translateX(80px)  scaleX(1); }
-  98%  { transform: translateX(-80px) scaleX(1); }
+  100% {
+    transform: translateX(-80px) scaleX(-1);
+  }
+  48% {
+    transform: translateX(80px) scaleX(-1);
+  }
+  50% {
+    transform: translateX(80px) scaleX(1);
+  }
+  98% {
+    transform: translateX(-80px) scaleX(1);
+  }
 }
 
 @keyframes rat-wiggle {
   0%,
-  100% { transform: rotate(0)     translateY(0); }
-  25%  { transform: rotate(-8deg) translateY(-2px); }
-  75%  { transform: rotate(8deg)  translateY(2px); }
+  100% {
+    transform: rotate(0) translateY(0);
+  }
+  25% {
+    transform: rotate(-8deg) translateY(-2px);
+  }
+  75% {
+    transform: rotate(8deg) translateY(2px);
+  }
 }
 
 @keyframes rat-shake {
   0%,
-  100% { transform: translateY(0); }
-  25%  { transform: translateY(-2px); }
-  50%  { transform: translateY(2px); }
-  75%  { transform: translateY(-1px); }
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+  75% {
+    transform: translateY(-1px);
+  }
 }
 
 @keyframes rat-jump {
-  0%   { transform: translateY(0)     rotate(0)      scale(1); }
-  30%  { transform: translateY(-28px) rotate(180deg) scale(1.15); }
-  70%  { transform: translateY(-6px)  rotate(360deg) scale(0.95); }
-  100% { transform: translateY(0)     rotate(360deg) scale(1); }
+  0% {
+    transform: translateY(0) rotate(0) scale(1);
+  }
+  30% {
+    transform: translateY(-28px) rotate(180deg) scale(1.15);
+  }
+  70% {
+    transform: translateY(-6px) rotate(360deg) scale(0.95);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg) scale(1);
+  }
 }

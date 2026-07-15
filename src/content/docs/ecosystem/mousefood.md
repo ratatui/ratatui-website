@@ -39,7 +39,7 @@ via `rust-psp`
 
 ![ratatui-on-nintendo-switch](https://media.githubusercontent.com/media/sermuns/ratatui-on-nintendo-switch/main/media/ratatui-and-mousefood-logos.jpg)
 
-[Ratatui running on Nintendo Switch](https://github.com/sermuns/ratatui-on-nintendo-switch)
-via [`nx`](https://github.com/aarch64-switch-rs/nx)
+[Ratatui running on Nintendo Switch](https://github.com/sermuns/ratatui-on-nintendo-switch) via
+[`nx`](https://github.com/aarch64-switch-rs/nx)
 
 :::
