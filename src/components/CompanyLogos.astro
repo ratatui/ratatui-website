@@ -1,119 +1,107 @@
 ---
-import netflix from "@assets/companies/Netflix_Logo_monochrome.png";
-import openai_white from "@assets/companies/OpenAI-white-wordmark.svg";
-import openai_black from "@assets/companies/OpenAI-black-wordmark.svg";
-import ovhcloud from "@assets/companies/ovhcloud-logo-monochrome.png";
-import aws_white from "@assets/companies/aws-logo-white.png";
-import aws_black from "@assets/companies/aws-logo-black.png";
-import oxide_white from "@assets/companies/OXIDE_Wordmark_RGB_White.svg";
-import oxide_black from "@assets/companies/OXIDE_Wordmark_RGB_Black.svg";
-import vercel_white from "@assets/companies/vercel-logotype-white.svg";
-import vercel_black from "@assets/companies/vercel-logotype-black.svg";
-import hugging_face_white from "@assets/companies/hf-logo-with-white-title_monochrome.png";
-import hugging_face_black from "@assets/companies/hf-logo-with-black-title_monochrome.png";
-import gitbutler_white from "@assets/companies/gitbutler-logo-white.svg";
-import gitbutler_black from "@assets/companies/gitbutler-logo-black.svg";
-import electronic_arts_black from "@assets/companies/ea-wordmark-black.svg";
-import electronic_arts_white from "@assets/companies/ea-wordmark-white.svg";
-import spacexai_black from "@assets/companies/spacexai-logo-black.png";
-import spacexai_white from "@assets/companies/spacexai-logo-white.png";
+import aws from "@assets/companies/aws-logo-white.png";
+import electronic_arts from "@assets/companies/ea-wordmark-white.svg";
+import gitbutler from "@assets/companies/gitbutler-logo-white.svg";
+import hugging_face from "@assets/companies/huggingface-logo-white.svg";
+import netflix from "@assets/companies/netflix-logo-white.svg";
+import openai from "@assets/companies/openai-logo-white.svg";
+import ovhcloud from "@assets/companies/ovhcloud-logo-white.svg";
+import oxide from "@assets/companies/oxide-logo-white.svg";
+import spacex_ai from "@assets/companies/spacexai-logo-white.svg";
+import vercel from "@assets/companies/vercel-logo-white.svg";
 
 const logos = [
   {
-    darkMode: netflix,
-    lightMode: netflix,
+    image: netflix,
     href: "https://github.com/Netflix/bpftop",
     aria: "Netflix",
-    class: "h-[50px] max-xl:h-[40px] max-sm:h-[25px]",
   },
   {
-    darkMode: openai_white,
-    lightMode: openai_black,
+    image: openai,
     href: "https://github.com/openai/codex",
     aria: "OpenAI",
-    class: "h-[55px] max-xl:h-[40px] max-sm:h-[30px] ml-[-8px]",
   },
   {
-    darkMode: spacexai_white,
-    lightMode: spacexai_black,
+    image: spacex_ai,
     href: "https://github.com/xai-org/grok-build",
-    aria: "SpaceXAI",
-    class: "h-[19px] max-xl:h-[17px] max-sm:h-[14px]",
+    aria: "xAI",
   },
   {
-    darkMode: ovhcloud,
-    lightMode: ovhcloud,
+    image: ovhcloud,
     href: "https://github.com/ovh/shai",
     aria: "OVH Cloud",
-    class: "h-[35px] max-xl:h-[30px] max-sm:h-[20px]",
   },
   {
-    darkMode: oxide_white,
-    lightMode: oxide_black,
+    image: oxide,
     href: "https://github.com/oxidecomputer/omicron",
     aria: "Oxide",
-    class: "h-[40px] max-xl:h-[35px] max-sm:h-[25px]",
   },
   {
-    darkMode: aws_white,
-    lightMode: aws_black,
+    image: aws,
     href: "https://github.com/aws/amazon-q-developer-cli",
     aria: "AWS",
-    class: "h-[23px] max-xl:h-[18px] max-sm:h-[15px] mt-1",
   },
   {
-    darkMode: electronic_arts_white,
-    lightMode: electronic_arts_black,
+    image: electronic_arts,
     href: "https://github.com/electronicarts/helmci",
     aria: "Electronic Arts",
-    class: "h-[30px] max-xl:h-[25px] max-sm:h-[20px] ml-2",
   },
   {
-    darkMode: vercel_white,
-    lightMode: vercel_black,
+    image: vercel,
     href: "https://github.com/vercel/turborepo",
     aria: "Vercel",
-    class: "h-[20px] max-xl:h-[15px] max-sm:h-[10px] pl-2",
   },
   {
-    darkMode: hugging_face_white,
-    lightMode: hugging_face_black,
+    image: hugging_face,
     href: "https://github.com/huggingface/text-generation-inference",
     aria: "Hugging Face",
-    class: "h-[35px] max-xl:h-[30px] max-sm:h-[25px] pl-2",
   },
   {
-    darkMode: gitbutler_white,
-    lightMode: gitbutler_black,
+    image: gitbutler,
     href: "https://github.com/gitbutlerapp/gitbutler",
     aria: "Git Butler",
-    class: "h-[28px] max-xl:h-[22px] max-sm:h-[16px]",
   },
 ];
 ---
 
 <div class="max-sm:justify-center">
-  <p class="mt-6 text-base text-slate-700 max-sm:hidden dark:text-slate-300">
+  <p class="my-6 text-base text-slate-700 max-sm:hidden dark:text-slate-300">
     Powering industry leaders:
   </p>
   <div
-    class="justify-left m-0 ml-[-12px] flex flex-wrap items-center gap-8 p-0 max-2xl:gap-6 max-xl:justify-center max-lg:gap-4 max-sm:gap-3"
+    class="logo-grid m-0 grid w-full grid-cols-4 items-center gap-y-6 p-0 lg:flex lg:flex-nowrap lg:justify-between lg:gap-0"
   >
     {
       logos.map((logo) => (
-        <a class="not-content no-underline" href={logo.href} target="_blank" aria-label={logo.aria}>
+        <a
+          class="not-content flex min-w-0 shrink items-center justify-center no-underline lg:justify-start"
+          href={logo.href}
+          target="_blank"
+          aria-label={logo.aria}
+        >
           <img
-            src={logo.lightMode.src}
+            src={logo.image.src}
             alt={logo.aria}
-            class={`${logo.class} w-auto object-contain dark:hidden`}
-          />
-          <img
-            src={logo.darkMode.src}
-            alt={logo.aria}
-            class={`${logo.class} hidden w-auto object-contain dark:block`}
+            class="company-logo h-[clamp(12px,3.4vw,22px)] w-auto max-w-none object-contain lg:h-[22px] xl:h-[26px] 2xl:h-7"
           />
         </a>
       ))
     }
   </div>
 </div>
+
+<style>
+  .company-logo {
+    filter: brightness(0);
+  }
+
+  :global(html.dark) .company-logo {
+    filter: brightness(1);
+  }
+
+  @media (max-width: 1023px) {
+    .logo-grid > :nth-last-child(2):nth-child(4n + 1) {
+      grid-column-start: 2;
+    }
+  }
+</style>
