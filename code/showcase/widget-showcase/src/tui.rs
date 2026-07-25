@@ -1,7 +1,7 @@
-use std::io::stdout;
+use std::io::{stdout, Stdout};
 
 use ratatui::{
-    backend::{Backend, CrosstermBackend},
+    backend::CrosstermBackend,
     crossterm::{
         terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
         ExecutableCommand,
@@ -9,7 +9,7 @@ use ratatui::{
     Terminal,
 };
 
-pub fn init() -> std::io::Result<Terminal<impl Backend>> {
+pub fn init() -> std::io::Result<Terminal<CrosstermBackend<Stdout>>> {
     stdout().execute(EnterAlternateScreen)?;
     enable_raw_mode()?;
     Terminal::new(CrosstermBackend::new(stdout()))

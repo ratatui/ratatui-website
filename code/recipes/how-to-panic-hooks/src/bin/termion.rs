@@ -1,14 +1,14 @@
 use std::{
-    io::{self, stdout, Write},
+    io::{self, stdout, Stdout, Write},
     panic::{set_hook, take_hook},
     thread::sleep,
     time::Duration,
 };
 
 use ratatui::{
-    backend::{Backend, TermionBackend},
+    backend::TermionBackend,
     termion::{
-        raw::IntoRawMode,
+        raw::{IntoRawMode, RawTerminal},
         screen::{ToAlternateScreen, ToMainScreen},
     },
     text::Span,
@@ -37,7 +37,7 @@ pub fn init_panic_hook() -> io::Result<()> {
     Ok(())
 }
 
-pub fn init_tui() -> io::Result<Terminal<impl Backend>> {
+pub fn init_tui() -> io::Result<Terminal<TermionBackend<RawTerminal<Stdout>>>> {
     let mut stdout = stdout().into_raw_mode()?;
     write!(stdout, "{}", ToAlternateScreen)?;
     stdout.flush()?;

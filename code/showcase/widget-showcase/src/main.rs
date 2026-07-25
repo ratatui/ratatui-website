@@ -89,11 +89,14 @@ enum RunningState {
     Finished,
 }
 impl App {
-    fn run(
+    fn run<B: Backend>(
         &mut self,
-        terminal: &mut Terminal<impl Backend>,
+        terminal: &mut Terminal<B>,
         widget: Widget,
-    ) -> color_eyre::Result<()> {
+    ) -> color_eyre::Result<()>
+    where
+        B::Error: Send + Sync + 'static,
+    {
         while self.running_state != RunningState::Finished {
             terminal.draw(|frame| self.render_frame(frame, widget).unwrap())?;
             self.update().wrap_err("update failed")?;

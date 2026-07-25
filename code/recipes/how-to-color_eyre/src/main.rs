@@ -30,7 +30,10 @@ fn main() -> color_eyre::Result<()> {
 // ANCHOR_END: main
 
 // ANCHOR: run
-fn run(mut terminal: Terminal<impl Backend>) -> color_eyre::Result<()> {
+fn run<B: Backend>(mut terminal: Terminal<B>) -> color_eyre::Result<()>
+where
+    B::Error: Send + Sync + 'static,
+{
     loop {
         terminal.draw(|frame| {
             let message = "Press <Q> to quit, <P> to panic, or <E> to error";
