@@ -74,11 +74,11 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       tree-sitter:
-        specifier: 0.22.1
-        version: 0.22.1
+        specifier: 0.22.4
+        version: 0.22.4
       tree-sitter-rust:
         specifier: ^0.24.0
-        version: 0.24.0(tree-sitter@0.22.1)
+        version: 0.24.0(tree-sitter@0.22.4)
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -4484,17 +4484,17 @@ packages:
         integrity: sha512-YKLBCcUYKAg0FNlOBT6aI91qFmSiFKiluk655WzPF+DDMA02qIyy8uiRqI8QXtcFpEvll12LpL5MXqEmAZ+dcA==,
       }
 
-  node-addon-api@8.5.0:
-    resolution:
-      {
-        integrity: sha512-/bRZty2mXUIFY/xU5HLvveNHlswNJej+RnxBjOMkidWfwZzgTbPG1E3K5TOxRLOR+5hX7bSofy8yf1hZevMS8A==,
-      }
-    engines: { node: ^18 || ^20 || >= 21 }
-
   node-addon-api@8.7.0:
     resolution:
       {
         integrity: sha512-9MdFxmkKaOYVTV+XVRG8ArDwwQ77XIgIPyKASB1k3JPq3M8fGQQQE3YpMOrKm6g//Ktx8ivZr8xo1Qmtqub+GA==,
+      }
+    engines: { node: ^18 || ^20 || >= 21 }
+
+  node-addon-api@8.9.0:
+    resolution:
+      {
+        integrity: sha512-ekZMeaaIzSQTSpr7X2X3iJM7lTzgnx8ahAG9pJfT/7+14mlEM8ZYQ9cgCDvSSRbReFK0oHli3WrZdCiRsgAT9Q==,
       }
     engines: { node: ^18 || ^20 || >= 21 }
 
@@ -5483,10 +5483,10 @@ packages:
       tree-sitter:
         optional: true
 
-  tree-sitter@0.22.1:
+  tree-sitter@0.22.4:
     resolution:
       {
-        integrity: sha512-gRO+jk2ljxZlIn20QRskIvpLCMtzuLl5T0BY6L9uvPYD17uUrxlxWkvYCiVqED2q2q7CVtY52Uex4WcYo2FEXw==,
+        integrity: sha512-usbHZP9/oxNsUY65MQUsduGRqDHQOou1cagUSwjhoSYAmSahjQDAVsh9s+SlZkn8X8+O1FULRGwHu7AFP3kjzg==,
       }
 
   trim-lines@3.0.1:
@@ -9044,9 +9044,9 @@ snapshots:
     dependencies:
       "@types/nlcst": 2.0.3
 
-  node-addon-api@8.5.0: {}
-
   node-addon-api@8.7.0: {}
+
+  node-addon-api@8.9.0: {}
 
   node-emoji@2.2.0:
     dependencies:
@@ -9752,16 +9752,16 @@ snapshots:
 
   toml@5.0.0: {}
 
-  tree-sitter-rust@0.24.0(tree-sitter@0.22.1):
+  tree-sitter-rust@0.24.0(tree-sitter@0.22.4):
     dependencies:
       node-addon-api: 8.7.0
       node-gyp-build: 4.8.4
     optionalDependencies:
-      tree-sitter: 0.22.1
+      tree-sitter: 0.22.4
 
-  tree-sitter@0.22.1:
+  tree-sitter@0.22.4:
     dependencies:
-      node-addon-api: 8.5.0
+      node-addon-api: 8.9.0
       node-gyp-build: 4.8.4
 
   trim-lines@3.0.1: {}

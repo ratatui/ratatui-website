@@ -42,7 +42,7 @@
     "starlight-links-validator": "0.25.2",
     "tailwindcss": "^4.3.3",
     "toml": "^5.0.0",
-    "tree-sitter": "0.22.1",
+    "tree-sitter": "0.22.4",
     "tree-sitter-rust": "^0.24.0",
     "typescript": "^6.0.3",
     "verbose-regexp": "^3.0.0"
