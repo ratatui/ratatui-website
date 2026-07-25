@@ -13,6 +13,16 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # 0.25.0 fails to build on Node 24, and the fixed 0.25.1 release is not on npm:
+      # https://github.com/tree-sitter/node-tree-sitter/issues/268
+      # https://github.com/tree-sitter/node-tree-sitter/issues/276
+      - dependency-name: "tree-sitter"
+        versions: ["0.25.0"]
+      # TypeScript 7 is not yet supported by Astro's language tooling:
+      # https://github.com/withastro/astro/issues/17268
+      - dependency-name: "typescript"
+        versions: ["7.x"]
     groups:
       js-dependencies:
         patterns: ["*"]
