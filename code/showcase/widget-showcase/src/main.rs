@@ -6,9 +6,8 @@ use color_eyre::{
     eyre::{self, WrapErr},
 };
 use ratatui::{
-    backend::Backend,
     crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind},
-    Frame, Terminal,
+    DefaultTerminal, Frame,
 };
 
 mod examples;
@@ -89,11 +88,7 @@ enum RunningState {
     Finished,
 }
 impl App {
-    fn run(
-        &mut self,
-        terminal: &mut Terminal<impl Backend>,
-        widget: Widget,
-    ) -> color_eyre::Result<()> {
+    fn run(&mut self, terminal: &mut DefaultTerminal, widget: Widget) -> color_eyre::Result<()> {
         while self.running_state != RunningState::Finished {
             terminal.draw(|frame| self.render_frame(frame, widget).unwrap())?;
             self.update().wrap_err("update failed")?;

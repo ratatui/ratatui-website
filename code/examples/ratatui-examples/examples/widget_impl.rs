@@ -1,60 +1,47 @@
-//! # [Ratatui] Widgets implementation examples
-//!
-//! This example demonstrates various ways to implement widget traits in Ratatui on a type, a
-//! reference, and a mutable reference. It also shows how to use the `WidgetRef` trait to render
-//! boxed widgets.
-//!
-//! The latest version of this example is available in the [examples] folder in the repository.
-//!
-//! Please note that the examples are designed to be run against the `main` branch of the Github
-//! repository. This means that you may not be able to compile with the latest release version on
-//! crates.io, or the one that you have installed locally.
-//!
-//! See the [examples readme] for more information on finding examples that match the version of the
-//! library you are using.
-//!
-//! [Ratatui]: https://github.com/ratatui-org/ratatui
-//! [examples]: https://github.com/ratatui-org/ratatui/blob/main/examples
-//! [examples readme]: https://github.com/ratatui-org/ratatui/blob/main/examples/README.md
+/// A Ratatui example that demonstrates how to implement the `Widget` trait.
+///
+/// This example demonstrates various ways to implement `Widget` traits in Ratatui on a type, a
+/// reference, and a mutable reference. It also shows how to use the `WidgetRef` trait to
+/// render boxed widgets.
+///
+/// This example runs with the Ratatui library code in the branch that you are currently
+/// reading. See the [`latest`] branch for the code which works with the most recent Ratatui
+/// release.
+///
+/// [`latest`]: https://github.com/ratatui/ratatui/tree/latest
 use std::time::{Duration, Instant};
 
 use color_eyre::Result;
-use crossterm::event::{self, Event, KeyCode};
-use ratatui::{
-    buffer::Buffer,
-    layout::{Constraint, Layout, Position, Rect, Size},
-    style::{Color, Style},
-    widgets::{Widget, WidgetRef},
-    DefaultTerminal,
-};
+use crossterm::event;
+use ratatui::DefaultTerminal;
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Constraint, Layout, Position, Rect, Size};
+use ratatui::style::{Color, Style};
+use ratatui::widgets::{Widget, WidgetRef};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let result = App::default().run(terminal);
-    ratatui::restore();
-    result
+    ratatui::run(|terminal| App::default().run(terminal))
 }
 
 #[derive(Default)]
 struct App {
     should_quit: bool,
     timer: Timer,
-    #[cfg(feature = "unstable-widget-ref")]
     boxed_squares: BoxedSquares,
     green_square: RightAlignedSquare,
 }
 
 impl App {
-    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
+    fn run(mut self, terminal: &mut DefaultTerminal) -> Result<()> {
         while !self.should_quit {
-            self.draw(&mut terminal)?;
+            self.render(terminal)?;
             self.handle_events()?;
         }
         Ok(())
     }
 
-    fn draw(&mut self, tui: &mut DefaultTerminal) -> Result<()> {
+    fn render(&mut self, tui: &mut DefaultTerminal) -> Result<()> {
         tui.draw(|frame| frame.render_widget(self, frame.area()))?;
         Ok(())
     }
@@ -65,11 +52,8 @@ impl App {
         if !event::poll(timeout)? {
             return Ok(());
         }
-        if let Event::Key(key) = event::read()? {
-            match key.code {
-                KeyCode::Char('q') | KeyCode::Esc => self.should_quit = true,
-                _ => {}
-            }
+        if event::read()?.is_key_press() {
+            self.should_quit = true;
         }
         Ok(())
     }
@@ -84,7 +68,7 @@ impl App {
 impl Widget for &mut App {
     fn render(self, area: Rect, buf: &mut Buffer) {
         let constraints = Constraint::from_lengths([1, 1, 2, 1]);
-        let [greeting, timer, squares, position] = Layout::vertical(constraints).areas(area);
+        let [greeting, timer, squares, position] = area.layout(&Layout::vertical(constraints));
 
         // render an ephemeral greeting widget
         Greeting::new("Ratatui!").render(greeting, buf);
@@ -93,7 +77,6 @@ impl Widget for &mut App {
         self.timer.render(timer, buf);
 
         // render a boxed widget containing red and blue squares
-        #[cfg(feature = "unstable-widget-ref")]
         self.boxed_squares.render(squares, buf);
 
         // render a mutable reference to the green square widget
@@ -115,7 +98,7 @@ impl Widget for &mut App {
 /// This was the way most widgets were implemented in Ratatui before `Widget` was implemented on
 /// references in [PR #903] (merged in Ratatui 0.26.0).
 ///
-/// [PR #903]: https://github.com/ratatui-org/ratatui/pull/903
+/// [PR #903]: https://github.com/ratatui/ratatui/pull/903
 struct Greeting {
     name: String,
 }
@@ -191,9 +174,9 @@ struct BlueSquare;
 impl Widget for &BoxedSquares {
     fn render(self, area: Rect, buf: &mut Buffer) {
         let constraints = vec![Constraint::Length(4); self.squares.len()];
-        let areas = Layout::horizontal(constraints).split(area);
-        for (widget, area) in self.squares.iter().zip(areas.iter()) {
-            widget.render_ref(*area, buf);
+        let areas = area.layout_vec(&Layout::horizontal(constraints));
+        for (widget, area) in self.squares.iter().zip(areas) {
+            widget.render_ref(area, buf);
         }
     }
 }
@@ -247,7 +230,7 @@ impl Widget for &mut RightAlignedSquare {
 /// Fill the area with the specified symbol and style.
 ///
 /// This probably should be a method on the `Buffer` type, but it is defined here for simplicity.
-/// <https://github.com/ratatui-org/ratatui/issues/1146>
+/// <https://github.com/ratatui/ratatui/issues/1146>
 fn fill<S: Into<Style>>(area: Rect, buf: &mut Buffer, symbol: &str, style: S) {
     let style = style.into();
     for y in area.top()..area.bottom() {

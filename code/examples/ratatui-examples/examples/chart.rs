@@ -16,19 +16,21 @@
 
 use color_eyre::Result;
 use crossterm::event;
+use ratatui::Frame;
 use ratatui::layout::{Constraint, Layout, Rect};
 use ratatui::style::{Color, Stylize};
 use ratatui::symbols::Marker;
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Axis, Chart, Dataset, GraphType};
-use ratatui::Frame;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    ratatui::run(|terminal| loop {
-        terminal.draw(render)?;
-        if event::read()?.is_key_press() {
-            break Ok(());
+    ratatui::run(|terminal| {
+        loop {
+            terminal.draw(render)?;
+            if event::read()?.is_key_press() {
+                break Ok(());
+            }
         }
     })
 }
@@ -47,24 +49,45 @@ fn render(frame: &mut Frame) {
     render_chart(frame, main);
 }
 
-/// Render a chart going upward.
+/// Render 2 charts. 1st chart goes upward, 2nd chart goes downward and has filled area underneath.
 pub fn render_chart(frame: &mut Frame, area: Rect) {
-    let dataset = Dataset::default()
+    let dataset_upward = Dataset::default()
         .name("Stonks")
         .marker(Marker::Braille)
         .graph_type(GraphType::Line)
         .style(Color::Blue)
         .data(&[
-            (0.0, 1.0),
-            (1.0, 3.0),
-            (2.0, 0.5),
-            (3.0, 2.0),
-            (4.0, 0.8),
-            (5.0, 4.0),
-            (6.0, 1.0),
-            (7.0, 6.0),
-            (8.0, 3.0),
-            (10.0, 10.0),
+            (0.0, 10.0),
+            (1.0, 14.0),
+            (2.0, 12.0),
+            (3.0, 15.0),
+            (4.0, 12.5),
+            (5.0, 16.0),
+            (6.0, 13.0),
+            (7.0, 18.0),
+            (8.0, 17.0),
+            (9.0, 19.0),
+            (10.0, 20.0),
+        ]);
+
+    let dataset_downward = Dataset::default()
+        .name("Not stonks")
+        .marker(Marker::Braille)
+        .graph_type(GraphType::Area)
+        .fill_to_y(0.0)
+        .style(Color::Red)
+        .data(&[
+            (0.0, 10.0),
+            (1.0, 8.0),
+            (2.0, 8.5),
+            (3.0, 6.0),
+            (4.0, 7.0),
+            (5.0, 5.0),
+            (6.0, 5.5),
+            (7.0, 4.0),
+            (8.0, 3.5),
+            (9.0, 1.5),
+            (10.0, 2.5),
         ]);
 
     let x_axis = Axis::default()
@@ -74,9 +97,11 @@ pub fn render_chart(frame: &mut Frame, area: Rect) {
 
     let y_axis = Axis::default()
         .title("Profit".blue())
-        .bounds([0.0, 10.0])
-        .labels(["0", "5", "10"]);
+        .bounds([0.0, 20.0])
+        .labels(["0", "10", "20"]);
 
-    let chart = Chart::new(vec![dataset]).x_axis(x_axis).y_axis(y_axis);
+    let chart = Chart::new(vec![dataset_downward, dataset_upward])
+        .x_axis(x_axis)
+        .y_axis(y_axis);
     frame.render_widget(chart, area);
 }

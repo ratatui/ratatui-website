@@ -3,14 +3,13 @@ title: Colors (RGB)
 ---
 
 Demonstrates the available RGB
-[`Color`](https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html) options. These can be used
-in any style field. Source
-[main.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/colors-rgb/src/main.rs). Uses a
-half block technique to render two square-ish pixels in the space of a single rectangular terminal
-cell.
+[`Color`](https://docs.rs/ratatui/0.30.2/ratatui/style/enum.Color.html) options. These can be used
+in any style field. Uses a half block technique to render two square-ish pixels in the space of a
+single rectangular terminal cell. Source
+[main.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/examples/apps/colors-rgb/src/main.rs).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p colors-rgb
 ```

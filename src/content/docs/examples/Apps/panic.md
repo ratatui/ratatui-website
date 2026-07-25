@@ -3,10 +3,10 @@ title: Panic Hooks
 ---
 
 Demonstrates the setting up panic hooks. Source
-[panic.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/panic/src/main.rs).
+[panic.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/examples/apps/panic/src/main.rs).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p panic
 ```

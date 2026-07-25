@@ -1,9 +1,7 @@
 //! # [Ratatui] Async example
 //!
 //! This example demonstrates how to use Ratatui with widgets that fetch data asynchronously. It
-//! uses the `octocrab` crate to fetch a list of pull requests from the GitHub API. You will need an
-//! environment variable named `GITHUB_TOKEN` with a valid GitHub personal access token. The token
-//! does not need any special permissions.
+//! uses the `octocrab` crate to fetch a list of pull requests from the GitHub API.
 //!
 //! <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token>
 //! <https://github.com/settings/tokens/new> to create a new token (select classic, and no scopes)
@@ -29,47 +27,29 @@
 //! [Ratatui]: https://github.com/ratatui/ratatui
 //! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
-use std::{
-    sync::{Arc, RwLock},
-    time::Duration,
-};
+use std::sync::{Arc, RwLock};
+use std::time::Duration;
 
-use color_eyre::{eyre::Context, Result, Section};
-use futures::StreamExt;
-use octocrab::{
-    params::{pulls::Sort, Direction},
-    OctocrabBuilder, Page,
-};
-use ratatui::{
-    buffer::Buffer,
-    crossterm::event::{Event, EventStream, KeyCode, KeyEventKind},
-    layout::{Constraint, Layout, Rect},
-    style::{Style, Stylize},
-    text::Line,
-    widgets::{Block, HighlightSpacing, Row, StatefulWidget, Table, TableState, Widget},
-    DefaultTerminal, Frame,
-};
+use color_eyre::Result;
+use crossterm::event::{Event, EventStream, KeyCode};
+use octocrab::Page;
+use octocrab::params::Direction;
+use octocrab::params::pulls::Sort;
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Constraint, Layout, Rect};
+use ratatui::style::{Style, Stylize};
+use ratatui::text::Line;
+use ratatui::widgets::{Block, HighlightSpacing, Row, StatefulWidget, Table, TableState, Widget};
+use ratatui::{DefaultTerminal, Frame};
+use tokio_stream::StreamExt;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     color_eyre::install()?;
-    init_octocrab()?;
     let terminal = ratatui::init();
     let app_result = App::default().run(terminal).await;
     ratatui::restore();
     app_result
-}
-
-fn init_octocrab() -> Result<()> {
-    let token = std::env::var("GITHUB_TOKEN")
-        .wrap_err("The GITHUB_TOKEN environment variable was not found")
-        .suggestion(
-            "Go to https://github.com/settings/tokens/new to create a token, and re-run:
-            GITHUB_TOKEN=ghp_... cargo run --example async --features crossterm",
-        )?;
-    let crab = OctocrabBuilder::new().personal_token(token).build()?;
-    octocrab::initialise(crab);
-    Ok(())
 }
 
 #[derive(Debug, Default)]
@@ -90,30 +70,28 @@ impl App {
 
         while !self.should_quit {
             tokio::select! {
-                _ = interval.tick() => { terminal.draw(|frame| self.draw(frame))?; },
+                _ = interval.tick() => { terminal.draw(|frame| self.render(frame))?; },
                 Some(Ok(event)) = events.next() => self.handle_event(&event),
             }
         }
         Ok(())
     }
 
-    fn draw(&self, frame: &mut Frame) {
-        let vertical = Layout::vertical([Constraint::Length(1), Constraint::Fill(1)]);
-        let [title_area, body_area] = vertical.areas(frame.area());
+    fn render(&self, frame: &mut Frame) {
+        let layout = Layout::vertical([Constraint::Length(1), Constraint::Fill(1)]);
+        let [title_area, body_area] = frame.area().layout(&layout);
         let title = Line::from("Ratatui async example").centered().bold();
         frame.render_widget(title, title_area);
         frame.render_widget(&self.pull_requests, body_area);
     }
 
     fn handle_event(&mut self, event: &Event) {
-        if let Event::Key(key) = event {
-            if key.kind == KeyEventKind::Press {
-                match key.code {
-                    KeyCode::Char('q') | KeyCode::Esc => self.should_quit = true,
-                    KeyCode::Char('j') | KeyCode::Down => self.pull_requests.scroll_down(),
-                    KeyCode::Char('k') | KeyCode::Up => self.pull_requests.scroll_up(),
-                    _ => {}
-                }
+        if let Some(key) = event.as_key_press_event() {
+            match key.code {
+                KeyCode::Char('q') | KeyCode::Esc => self.should_quit = true,
+                KeyCode::Char('j') | KeyCode::Down => self.pull_requests.scroll_down(),
+                KeyCode::Char('k') | KeyCode::Up => self.pull_requests.scroll_up(),
+                _ => {}
             }
         }
     }
@@ -180,7 +158,7 @@ impl PullRequestListWidget {
         }
     }
     fn on_load(&self, page: &Page<OctoPullRequest>) {
-        let prs = page.items.iter().map(Into::into);
+        let prs = page.items.iter().filter_map(PullRequest::from_octo);
         let mut state = self.state.write().unwrap();
         state.loading_state = LoadingState::Loaded;
         state.pull_requests.extend(prs);
@@ -208,17 +186,13 @@ impl PullRequestListWidget {
 
 type OctoPullRequest = octocrab::models::pulls::PullRequest;
 
-impl From<&OctoPullRequest> for PullRequest {
-    fn from(pr: &OctoPullRequest) -> Self {
-        Self {
-            id: pr.number.to_string(),
-            title: pr.title.as_ref().unwrap().to_string(),
-            url: pr
-                .html_url
-                .as_ref()
-                .map(ToString::to_string)
-                .unwrap_or_default(),
-        }
+impl PullRequest {
+    fn from_octo(pr: &OctoPullRequest) -> Option<Self> {
+        Some(Self {
+            id: pr.number?.to_string(),
+            title: pr.title.clone()?,
+            url: pr.html_url.as_ref()?.to_string(),
+        })
     }
 }
 

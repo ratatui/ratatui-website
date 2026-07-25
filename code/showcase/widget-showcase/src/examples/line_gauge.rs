@@ -24,7 +24,8 @@ pub fn render(frame: &mut Frame) {
         LineGauge::default()
             .ratio(0.5)
             .label("0.5")
-            .line_set(symbols::line::DOUBLE)
+            .filled_symbol(symbols::line::DOUBLE.horizontal)
+            .unfilled_symbol(symbols::line::DOUBLE.horizontal)
             .filled_style(Style::new().light_green().on_green()),
         layout[2],
     );
@@ -32,7 +33,8 @@ pub fn render(frame: &mut Frame) {
         LineGauge::default()
             .ratio(0.5)
             .label("10/20")
-            .line_set(symbols::line::THICK)
+            .filled_symbol(symbols::line::THICK.horizontal)
+            .unfilled_symbol(symbols::line::THICK.horizontal)
             .filled_style(Style::new().light_blue().on_blue())
             .style(Style::new().blue()),
         layout[4],
@@ -41,10 +43,8 @@ pub fn render(frame: &mut Frame) {
         LineGauge::default()
             .ratio(0.50)
             .filled_style(Style::new().white().on_black())
-            .line_set(symbols::line::Set {
-                horizontal: symbols::DOT,
-                ..Default::default()
-            })
+            .filled_symbol(symbols::DOT)
+            .unfilled_symbol(symbols::DOT)
             .style(Style::new().fg(Color::White).bg(Color::Blue)),
         layout[6],
     );

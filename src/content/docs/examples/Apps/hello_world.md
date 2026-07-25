@@ -3,10 +3,10 @@ title: Hello World
 ---
 
 Demonstrates a basic hello world app. Source
-[hello-world.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/hello-world/src/main.rs).
+[hello-world.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/examples/apps/hello-world/src/main.rs).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p hello-world
 ```

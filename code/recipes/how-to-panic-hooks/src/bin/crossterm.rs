@@ -1,12 +1,12 @@
 use std::{
-    io::{self, stdout},
+    io::{self, stdout, Stdout},
     panic::{set_hook, take_hook},
     thread::sleep,
     time::Duration,
 };
 
 use ratatui::{
-    backend::{Backend, CrosstermBackend},
+    backend::CrosstermBackend,
     crossterm::{
         execute,
         terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
@@ -34,7 +34,7 @@ pub fn init_panic_hook() {
     }));
 }
 
-pub fn init_tui() -> io::Result<Terminal<impl Backend>> {
+pub fn init_tui() -> io::Result<Terminal<CrosstermBackend<Stdout>>> {
     enable_raw_mode()?;
     execute!(stdout(), EnterAlternateScreen)?;
     Terminal::new(CrosstermBackend::new(stdout()))

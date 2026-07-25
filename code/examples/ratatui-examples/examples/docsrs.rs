@@ -15,12 +15,12 @@
 
 use color_eyre::Result;
 use ratatui::{
-    crossterm::event::{self, Event, KeyCode},
+    DefaultTerminal, Frame,
+    crossterm::event::{self, KeyCode},
     layout::{Constraint, Layout},
     style::{Color, Modifier, Style, Stylize},
     text::{Line, Span, Text},
     widgets::{Block, Borders, Paragraph},
-    DefaultTerminal, Frame,
 };
 
 /// Example code for lib.rs
@@ -50,10 +50,10 @@ fn run(mut terminal: DefaultTerminal, first_arg: &str) -> Result<()> {
 }
 
 fn handle_events() -> std::io::Result<bool> {
-    if let Event::Key(key) = event::read()? {
-        if key.kind == event::KeyEventKind::Press && key.code == KeyCode::Char('q') {
-            return Ok(true);
-        }
+    if let Some(key) = event::read()?.as_key_press_event()
+        && key.code == KeyCode::Char('q')
+    {
+        return Ok(true);
     }
     Ok(false)
 }

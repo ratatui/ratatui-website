@@ -2,11 +2,12 @@
 title: Table
 ---
 
-Demonstrates the [`Table`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Table.html) widget.
-Source [table.rs](https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples/table.rs).
+Demonstrates the [`Table`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Table.html) widget.
+Source
+[table.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/ratatui-widgets/examples/table.rs).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p ratatui-widgets --example table
 ```

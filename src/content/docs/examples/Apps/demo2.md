@@ -3,10 +3,10 @@ title: Demo 2
 ---
 
 This is the demo example from the main README and crate page. Source
-[demo2](https://github.com/ratatui/ratatui/tree/main/examples/apps/demo2).
+[demo2](https://github.com/ratatui/ratatui/tree/ratatui-v0.30.2/examples/apps/demo2).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p demo2
 ```

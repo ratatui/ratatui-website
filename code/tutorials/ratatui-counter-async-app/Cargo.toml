@@ -20,7 +20,7 @@ clap = { version = "4.5.34", features = [
 ] }
 color-eyre = "0.6.3"
 config = "0.15.11"
-crossterm = { version = "0.28.1", features = ["serde", "event-stream"] }
+crossterm = { version = "0.29.0", features = ["serde", "event-stream"] }
 derive_deref = "1.1.1"
 directories = "6.0.0"
 futures = "0.3.31"
@@ -29,7 +29,7 @@ json5 = "0.4.1"
 libc = "0.2.171"
 log = "0.4.27"
 pretty_assertions = "1.4.1"
-ratatui = { version = "0.29.0", features = ["serde", "macros"] }
+ratatui = { version = "0.30.2", features = ["serde", "macros"] }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 signal-hook = "0.3.17"

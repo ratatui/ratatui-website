@@ -5,10 +5,9 @@ use color_eyre::eyre::WrapErr;
 // ANCHOR_END: error_imports
 use color_eyre::eyre::bail;
 use ratatui::{
-    backend::Backend,
     crossterm::event::{self, Event, KeyCode, KeyEvent},
     widgets::Paragraph,
-    Terminal,
+    DefaultTerminal,
 };
 
 // ANCHOR: modules
@@ -30,7 +29,7 @@ fn main() -> color_eyre::Result<()> {
 // ANCHOR_END: main
 
 // ANCHOR: run
-fn run(mut terminal: Terminal<impl Backend>) -> color_eyre::Result<()> {
+fn run(mut terminal: DefaultTerminal) -> color_eyre::Result<()> {
     loop {
         terminal.draw(|frame| {
             let message = "Press <Q> to quit, <P> to panic, or <E> to error";

@@ -2,12 +2,12 @@
 title: Barchart
 ---
 
-Demonstrates the [`BarChart`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.BarChart.html)
+Demonstrates the [`BarChart`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.BarChart.html)
 widget. Source
-[barchart.rs](https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples/barchart.rs).
+[barchart.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/ratatui-widgets/examples/barchart.rs).
 
 ```shell title="run example"
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p ratatui-widgets --example barchart
 ```
