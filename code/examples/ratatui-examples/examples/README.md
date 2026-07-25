@@ -1,27 +1,11 @@
 # Examples
 
-This folder might use unreleased code. View the examples for the latest release instead.
+This folder is the website's flattened, buildable collection of application and widget examples from
+Ratatui `ratatui-v0.30.2`. See the [crate README](../README.md) for the exact upstream commit,
+source mapping, and intentional website-only exceptions.
 
-> [!WARNING]
->
-> There may be backwards incompatible changes in these examples, as they are designed to compile
-> against the `main` branch.
->
-> There are a few workaround for this problem:
->
-> - View the examples as they were when the latest version was release by selecting the tag that
->   matches that version. E.g. <https://github.com/ratatui/ratatui/tree/v0.26.1/examples>.
-> - If you're viewing this file on GitHub, there is a combo box at the top of this page which allows
->   you to select any previous tagged version.
-> - To view the code locally, checkout the tag. E.g. `git switch --detach v0.26.1`.
-> - Use the latest [alpha version of Ratatui] in your app. These are released weekly on Saturdays.
-> - Compile your code against the main branch either locally by adding e.g. `path = "../ratatui"` to
->   the dependency, or remotely by adding `git = "https://github.com/ratatui/ratatui"`
->
-> For a list of unreleased breaking changes, see [BREAKING-CHANGES.md].
->
-> We don't keep the CHANGELOG updated with unreleased changes, check the git commit history or run
-> `git-cliff -u` against a cloned version of this repository.
+Run commands in this directory, or add `-p ratatui-examples` when running them from the workspace
+root. Crossterm is the default backend.
 
 ## Design choices
 
@@ -48,7 +32,7 @@ move some of these design choices into the core of Ratatui to simplify apps.
 This is the demo example from the main README and crate page. Source: [demo2](./demo2/).
 
 ```shell
-cargo run --example=demo2 --features="crossterm widget-calendar"
+cargo run --example=demo2
 ```
 
 ![Demo2][demo2.gif]
@@ -59,12 +43,29 @@ This is the previous demo example from the main README. It is available for each
 Source: [demo.rs](./demo/).
 
 ```shell
-cargo run --example=demo --features=crossterm
+cargo run --example=demo
+cargo run --example=demo --no-default-features --features=termina
 cargo run --example=demo --no-default-features --features=termion
 cargo run --example=demo --no-default-features --features=termwiz
 ```
 
 ![Demo][demo.gif]
+
+## Interactive application variants
+
+The website keeps richer application packages separate from the similarly named standalone widget
+examples:
+
+- [Advanced Widget Implementation](./widget_impl.rs):
+  `cargo run --example=widget_impl --features=unstable-widget-ref`
+- [Async GitHub](./async.rs): `cargo run --example=async`
+- [Calendar Explorer](./calendar-explorer/main.rs): `cargo run --example=calendar-explorer`
+- [Canvas](./canvas-app/main.rs): `cargo run --example=canvas-app`
+- [Chart](./chart-app/main.rs): `cargo run --example=chart-app`
+- [Gauge](./gauge-app/main.rs): `cargo run --example=gauge-app`
+- [Scrollbar](./scrollbar-app/main.rs): `cargo run --example=scrollbar-app`
+- [Table](./table-app/main.rs): `cargo run --example=table-app`
+- [Todo List](./todo-list/main.rs): `cargo run --example=todo-list`
 
 ## Hello World
 
@@ -72,86 +73,95 @@ This is a pretty boring example, but it contains some good documentation on writ
 Source: [hello_world.rs](./hello_world.rs).
 
 ```shell
-cargo run --example=hello_world --features=crossterm
+cargo run --example=hello_world
 ```
 
 ![Hello World][hello_world.gif]
 
 ## Barchart
 
-Demonstrates the [`BarChart`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.BarChart.html)
+Demonstrates the [`BarChart`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.BarChart.html)
 widget. Source: [barchart.rs](./barchart.rs).
 
 ```shell
-cargo run --example=barchart --features=crossterm
+cargo run --example=barchart
 ```
 
 ![Barchart][barchart.gif]
 
 ## Barchart (Grouped)
 
-Demonstrates the [`BarChart`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.BarChart.html)
+Demonstrates the [`BarChart`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.BarChart.html)
 widget with groups. Source: [barchart-grouped.rs](./barchart-grouped.rs).
 
 ```shell
-cargo run --example=barchart-grouped --features=crossterm
+cargo run --example=barchart-grouped
 ```
 
 ![Barchart Grouped][barchart-grouped.gif]
 
 ## Block
 
-Demonstrates the [`Block`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Block.html) widget.
+Demonstrates the [`Block`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Block.html) widget.
 Source: [block.rs](./block.rs).
 
 ```shell
-cargo run --example=block --features=crossterm
+cargo run --example=block
 ```
 
 ![Block][block.gif]
 
 ## Calendar
 
-Demonstrates the [`Calendar`](https://docs.rs/ratatui/latest/ratatui/widgets/calendar/index.html)
+Demonstrates the [`Calendar`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/calendar/index.html)
 widget. Source: [calendar.rs](./calendar.rs).
 
 ```shell
-cargo run --example=calendar --features="crossterm widget-calendar"
+cargo run --example=calendar
 ```
 
 ![Calendar][calendar.gif]
 
 ## Canvas
 
-Demonstrates the [`Canvas`](https://docs.rs/ratatui/latest/ratatui/widgets/canvas/index.html) widget
+Demonstrates the [`Canvas`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/canvas/index.html) widget
 and related shapes in the
-[`canvas`](https://docs.rs/ratatui/latest/ratatui/widgets/canvas/index.html) module. Source:
+[`canvas`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/canvas/index.html) module. Source:
 [canvas.rs](./canvas.rs).
 
 ```shell
-cargo run --example=canvas --features=crossterm
+cargo run --example=canvas
 ```
 
 ![Canvas][canvas.gif]
 
 ## Chart
 
-Demonstrates the [`Chart`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Chart.html) widget.
+Demonstrates the [`Chart`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Chart.html) widget.
 Source: [chart.rs](./chart.rs).
 
 ```shell
-cargo run --example=chart --features=crossterm
+cargo run --example=chart
 ```
 
 ![Chart][chart.gif]
 
+## Collapsed Borders
+
+Demonstrates how to render adjacent blocks with collapsed borders. Source:
+[collapsed-borders.rs](./collapsed-borders.rs).
+
+```shell
+cargo run --example=collapsed-borders
+```
+
 ## Colors
 
-Demonstrates the available [`Color`](https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html)
+Demonstrates the available [`Color`](https://docs.rs/ratatui/0.30.2/ratatui/style/enum.Color.html)
 options. These can be used in any style field. Source: [colors.rs](./colors.rs).
 
 ```shell
-cargo run --example=colors --features=crossterm
+cargo run --example=colors
 ```
 
 ![Colors][colors.gif]
@@ -159,12 +169,12 @@ cargo run --example=colors --features=crossterm
 ## Colors (RGB)
 
 Demonstrates the available RGB
-[`Color`](https://docs.rs/ratatui/latest/ratatui/style/enum.Color.html) options. These can be used
+[`Color`](https://docs.rs/ratatui/0.30.2/ratatui/style/enum.Color.html) options. These can be used
 in any style field. Source: [colors_rgb.rs](./colors_rgb.rs). Uses a half block technique to render
 two square-ish pixels in the space of a single rectangular terminal cell.
 
 ```shell
-cargo run --example=colors_rgb --features=crossterm
+cargo run --example=colors_rgb
 ```
 
 Note: VHs renders full screen animations poorly, so this is a screen capture rather than the output
@@ -175,11 +185,11 @@ of the VHS tape.
 ## Constraint Explorer
 
 Demonstrates the behaviour of each
-[`Constraint`](https://docs.rs/ratatui/latest/ratatui/layout/enum.Constraint.html) option with
+[`Constraint`](https://docs.rs/ratatui/0.30.2/ratatui/layout/enum.Constraint.html) option with
 respect to each other across different `Flex` modes.
 
 ```shell
-cargo run --example=constraint-explorer --features=crossterm
+cargo run --example=constraint-explorer
 ```
 
 ![Constraint Explorer][constraint-explorer.gif]
@@ -187,45 +197,45 @@ cargo run --example=constraint-explorer --features=crossterm
 ## Constraints
 
 Demonstrates how to use
-[`Constraint`](https://docs.rs/ratatui/latest/ratatui/layout/enum.Constraint.html) options for
+[`Constraint`](https://docs.rs/ratatui/0.30.2/ratatui/layout/enum.Constraint.html) options for
 defining layout element sizes.
 
 ![Constraints][constraints.gif]
 
 ```shell
-cargo run --example=constraints --features=crossterm
+cargo run --example=constraints
 ```
 
 ## Custom Widget
 
 Demonstrates how to implement the
-[`Widget`](https://docs.rs/ratatui/latest/ratatui/widgets/trait.Widget.html) trait. Also shows mouse
+[`Widget`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/trait.Widget.html) trait. Also shows mouse
 interaction. Source: [custom_widget.rs](./custom_widget.rs).
 
 ```shell
-cargo run --example=custom_widget --features=crossterm
+cargo run --example=custom_widget
 ```
 
 ![Custom Widget][custom_widget.gif]
 
 ## Gauge
 
-Demonstrates the [`Gauge`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Gauge.html) widget.
+Demonstrates the [`Gauge`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Gauge.html) widget.
 Source: [gauge.rs](./gauge.rs).
 
 ```shell
-cargo run --example=gauge --features=crossterm
+cargo run --example=gauge
 ```
 
 ![Gauge][gauge.gif]
 
 ## Flex
 
-Demonstrates the different [`Flex`](https://docs.rs/ratatui/latest/ratatui/layout/enum.Flex.html)
+Demonstrates the different [`Flex`](https://docs.rs/ratatui/0.30.2/ratatui/layout/enum.Flex.html)
 modes for controlling layout space distribution.
 
 ```shell
-cargo run --example=flex --features=crossterm
+cargo run --example=flex
 ```
 
 ![Flex][flex.gif]
@@ -233,11 +243,11 @@ cargo run --example=flex --features=crossterm
 ## Line Gauge
 
 Demonstrates the
-[`Line Gauge`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.LineGauge.html) widget. Source:
+[`Line Gauge`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.LineGauge.html) widget. Source:
 [line_gauge.rs](./line_gauge.rs).
 
 ```shell
-cargo run --example=line_gauge --features=crossterm
+cargo run --example=line_gauge
 ```
 
 ![LineGauge][line_gauge.gif]
@@ -247,7 +257,7 @@ cargo run --example=line_gauge --features=crossterm
 Demonstrates how to use OSC 8 to create hyperlinks in the terminal.
 
 ```shell
-cargo run --example=hyperlink --features="crossterm unstable-widget-ref"
+cargo run --example=hyperlink
 ```
 
 ![Hyperlink][hyperlink.gif]
@@ -255,33 +265,33 @@ cargo run --example=hyperlink --features="crossterm unstable-widget-ref"
 ## Inline
 
 Demonstrates how to use the
-[`Inline`](https://docs.rs/ratatui/latest/ratatui/terminal/enum.Viewport.html#variant.Inline)
+[`Inline`](https://docs.rs/ratatui/0.30.2/ratatui/terminal/enum.Viewport.html#variant.Inline)
 Viewport mode for ratatui apps. Source: [inline.rs](./inline.rs).
 
 ```shell
-cargo run --example=inline --features=crossterm
+cargo run --example=inline
 ```
 
 ![Inline][inline.gif]
 
 ## Layout
 
-Demonstrates the [`Layout`](https://docs.rs/ratatui/latest/ratatui/layout/struct.Layout.html) and
+Demonstrates the [`Layout`](https://docs.rs/ratatui/0.30.2/ratatui/layout/struct.Layout.html) and
 interaction between each constraint. Source: [layout.rs](./layout.rs).
 
 ```shell
-cargo run --example=layout --features=crossterm
+cargo run --example=layout
 ```
 
 ![Layout][layout.gif]
 
 ## List
 
-Demonstrates the [`List`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.List.html) widget.
+Demonstrates the [`List`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.List.html) widget.
 Source: [list.rs](./list.rs).
 
 ```shell
-cargo run --example=list --features=crossterm
+cargo run --example=list
 ```
 
 ![List][list.gif]
@@ -289,11 +299,11 @@ cargo run --example=list --features=crossterm
 ## Modifiers
 
 Demonstrates the style
-[`Modifiers`](https://docs.rs/ratatui/latest/ratatui/style/struct.Modifier.html). Source:
+[`Modifiers`](https://docs.rs/ratatui/0.30.2/ratatui/style/struct.Modifier.html). Source:
 [modifiers.rs](./modifiers.rs).
 
 ```shell
-cargo run --example=modifiers --features=crossterm
+cargo run --example=modifiers
 ```
 
 ![Modifiers][modifiers.gif]
@@ -303,7 +313,7 @@ cargo run --example=modifiers --features=crossterm
 Demonstrates how to create a minimal `Hello World!` program.
 
 ```shell
-cargo run --example=minimal --features=crossterm
+cargo run --example=minimal
 ```
 
 ![Minimal][minimal.gif]
@@ -314,18 +324,18 @@ Demonstrates how to handle panics by ensuring that panic messages are written co
 screen. Source: [panic.rs](./panic.rs).
 
 ```shell
-cargo run --example=panic --features=crossterm
+cargo run --example=panic
 ```
 
 ![Panic][panic.gif]
 
 ## Paragraph
 
-Demonstrates the [`Paragraph`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Paragraph.html)
+Demonstrates the [`Paragraph`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Paragraph.html)
 widget. Source: [paragraph.rs](./paragraph.rs)
 
 ```shell
-cargo run --example=paragraph --features=crossterm
+cargo run --example=paragraph
 ```
 
 ![Paragraph][paragraph.gif]
@@ -333,13 +343,13 @@ cargo run --example=paragraph --features=crossterm
 ## Popup
 
 Demonstrates how to render a widget over the top of previously rendered widgets using the
-[`Clear`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Clear.html) widget. Source:
+[`Clear`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Clear.html) widget. Source:
 [popup.rs](./popup.rs).
 
 >
 
 ```shell
-cargo run --example=popup --features=crossterm
+cargo run --example=popup
 ```
 
 ![Popup][popup.gif]
@@ -351,51 +361,59 @@ A fun example of using half blocks to render graphics Source: [ratatui-logo.rs](
 >
 
 ```shell
-cargo run --example=ratatui-logo --features=crossterm
+cargo run --example=ratatui-logo
 ```
 
 ![Ratatui Logo][ratatui-logo.gif]
 
 ## Scrollbar
 
-Demonstrates the [`Scrollbar`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Scrollbar.html)
+Demonstrates the [`Scrollbar`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Scrollbar.html)
 widget. Source: [scrollbar.rs](./scrollbar.rs).
 
 ```shell
-cargo run --example=scrollbar --features=crossterm
+cargo run --example=scrollbar
 ```
 
 ![Scrollbar][scrollbar.gif]
 
 ## Sparkline
 
-Demonstrates the [`Sparkline`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Sparkline.html)
+Demonstrates the [`Sparkline`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Sparkline.html)
 widget. Source: [sparkline.rs](./sparkline.rs).
 
 ```shell
-cargo run --example=sparkline --features=crossterm
+cargo run --example=sparkline
 ```
 
 ![Sparkline][sparkline.gif]
 
+## Shadow
+
+Demonstrates how to render a shadow behind a widget. Source: [shadow.rs](./shadow.rs).
+
+```shell
+cargo run --example=shadow
+```
+
 ## Table
 
-Demonstrates the [`Table`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Table.html) widget.
+Demonstrates the [`Table`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Table.html) widget.
 Source: [table.rs](./table.rs).
 
 ```shell
-cargo run --example=table --features=crossterm
+cargo run --example=table
 ```
 
 ![Table][table.gif]
 
 ## Tabs
 
-Demonstrates the [`Tabs`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Tabs.html) widget.
+Demonstrates the [`Tabs`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Tabs.html) widget.
 Source: [tabs.rs](./tabs.rs).
 
 ```shell
-cargo run --example=tabs --features=crossterm
+cargo run --example=tabs
 ```
 
 ![Tabs][tabs.gif]
@@ -406,7 +424,7 @@ Demonstrates how to use the [tracing crate](https://crates.io/crates/tracing) fo
 file named `tracing.log` in the current directory.
 
 ```shell
-cargo run --example=tracing --features=crossterm
+cargo run --example=tracing
 ```
 
 ![Tracing][tracing.gif]
@@ -419,7 +437,7 @@ Demonstrates one approach to accepting user input. Source [user_input.rs](./user
 > [`tui-input`](https://crates.io/crates/tui-input) crates for more functional text entry UIs.
 
 ```shell
-cargo run --example=user_input --features=crossterm
+cargo run --example=user_input
 ```
 
 ![User Input][user_input.gif]
@@ -460,5 +478,3 @@ cargo run --example=user_input --features=crossterm
 [tabs.gif]: https://github.com/ratatui/ratatui/blob/images/examples/tabs.gif?raw=true
 [tracing.gif]: https://github.com/ratatui/ratatui/blob/images/examples/tracing.gif?raw=true
 [user_input.gif]: https://github.com/ratatui/ratatui/blob/images/examples/user_input.gif?raw=true
-[alpha version of Ratatui]: https://crates.io/crates/ratatui/versions
-[BREAKING-CHANGES.md]: https://github.com/ratatui/ratatui/blob/main/BREAKING-CHANGES.md

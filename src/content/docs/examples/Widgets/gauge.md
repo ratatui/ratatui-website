@@ -2,11 +2,12 @@
 title: Gauge
 ---
 
-Demonstrates the [`Gauge`](https://docs.rs/ratatui/latest/ratatui/widgets/struct.Gauge.html) widget.
-Source [gauge.rs](https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples/gauge.rs).
+Demonstrates the [`Gauge`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Gauge.html) widget.
+Source
+[gauge.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/ratatui-widgets/examples/gauge.rs).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p ratatui-widgets --example gauge
 ```

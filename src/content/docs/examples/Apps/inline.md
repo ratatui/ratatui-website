@@ -3,11 +3,12 @@ title: Inline Viewport
 ---
 
 Demonstrates the
-[`Inline`](https://docs.rs/ratatui/latest/ratatui/enum.Viewport.html#variant.Inline) Viewport.
-Source [inline.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/inline/src/main.rs).
+[`Inline`](https://docs.rs/ratatui/0.30.2/ratatui/enum.Viewport.html#variant.Inline) Viewport.
+Source
+[inline.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/examples/apps/inline/src/main.rs).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p inline
 ```

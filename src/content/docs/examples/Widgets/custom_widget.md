@@ -3,12 +3,12 @@ title: Custom Widget
 ---
 
 Demonstrates how to implement the
-[`Widget`](https://docs.rs/ratatui/latest/ratatui/widgets/trait.Widget.html) trait. Also shows mouse
+[`Widget`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/trait.Widget.html) trait. Also shows mouse
 interaction. Source
-[main.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/custom-widget/src/main.rs).
+[main.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/examples/apps/custom-widget/src/main.rs).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p custom-widget
 ```

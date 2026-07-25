@@ -1,6 +1,7 @@
-//! # [Ratatui] Line Gauge example
+//! # [Ratatui] `LineGauge` example
 //!
-//! The latest version of this example is available in the [examples] folder in the repository.
+//! The latest version of this example is available in the [widget examples] folder in the
+//! repository.
 //!
 //! Please note that the examples are designed to be run against the `main` branch of the Github
 //! repository. This means that you may not be able to compile with the latest release version on
@@ -10,30 +11,23 @@
 //! library you are using.
 //!
 //! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
+//! [widget examples]: https://github.com/ratatui/ratatui/blob/main/ratatui-widgets/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
-use std::time::Duration;
+use core::time::Duration;
 
 use color_eyre::Result;
-use ratatui::{
-    buffer::Buffer,
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
-    layout::{Alignment, Constraint, Layout, Rect},
-    style::{palette::tailwind, Color, Style, Stylize},
-    text::Line,
-    widgets::{Block, Borders, LineGauge, Padding, Paragraph, Widget},
-    DefaultTerminal,
-};
-
-const CUSTOM_LABEL_COLOR: Color = tailwind::SLATE.c200;
+use crossterm::event::{self, KeyCode};
+use ratatui::DefaultTerminal;
+use ratatui::buffer::Buffer;
+use ratatui::layout::Constraint::{Length, Min};
+use ratatui::layout::{Layout, Rect};
+use ratatui::style::{Color, Style, Stylize};
+use ratatui::widgets::{LineGauge, Paragraph, Widget};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let app_result = App::default().run(terminal);
-    ratatui::restore();
-    app_result
+    ratatui::run(|terminal| App::default().run(terminal))
 }
 
 #[derive(Debug, Default, Clone, Copy)]
@@ -46,14 +40,14 @@ struct App {
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 enum AppState {
     #[default]
-    Running,
-    Started,
-    Quitting,
+    Start,
+    Stop,
+    Quit,
 }
 
 impl App {
-    fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
-        while self.state != AppState::Quitting {
+    fn run(mut self, terminal: &mut DefaultTerminal) -> Result<()> {
+        while self.state != AppState::Quit {
             terminal.draw(|frame| frame.render_widget(&self, frame.area()))?;
             self.handle_events()?;
             self.update(terminal.size()?.width);
@@ -62,7 +56,7 @@ impl App {
     }
 
     fn update(&mut self, terminal_width: u16) {
-        if self.state != AppState::Started {
+        if self.state != AppState::Start {
             return;
         }
 
@@ -72,108 +66,88 @@ impl App {
 
     fn handle_events(&mut self) -> Result<()> {
         let timeout = Duration::from_secs_f32(1.0 / 20.0);
-        if event::poll(timeout)? {
-            if let Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Press {
-                    match key.code {
-                        KeyCode::Char(' ') | KeyCode::Enter => self.start(),
-                        KeyCode::Char('q') | KeyCode::Esc => self.quit(),
-                        _ => {}
-                    }
-                }
+        if event::poll(timeout)?
+            && let Some(key) = event::read()?.as_key_press_event()
+        {
+            match key.code {
+                KeyCode::Char(' ') => self.toggle_start(),
+                KeyCode::Char('r') => self.reset(),
+                KeyCode::Char('q') => self.state = AppState::Quit,
+                _ => {}
             }
         }
         Ok(())
     }
 
-    fn start(&mut self) {
-        self.state = AppState::Started;
+    fn toggle_start(&mut self) {
+        self.state = if self.state == AppState::Start {
+            AppState::Stop
+        } else {
+            AppState::Start
+        };
     }
 
-    fn quit(&mut self) {
-        self.state = AppState::Quitting;
+    const fn reset(&mut self) {
+        self.progress = 0.0;
+        self.progress_columns = 0;
+        self.state = AppState::Stop;
     }
 }
 
 impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        use Constraint::{Length, Min, Ratio};
-        let layout = Layout::vertical([Length(2), Min(0), Length(1)]);
-        let [header_area, main_area, footer_area] = layout.areas(area);
+        let layout = Layout::vertical([Length(3), Min(0)]);
+        let [header_area, main_area] = area.layout(&layout);
 
-        let layout = Layout::vertical([Ratio(1, 3); 3]);
-        let [gauge1_area, gauge2_area, gauge3_area] = layout.areas(main_area);
+        let gauges_layout = Layout::vertical([Length(2); 3]);
+        let [gauge1_area, gauge4_area, gauge6_area] = main_area.layout(&gauges_layout);
 
-        header().render(header_area, buf);
-        footer().render(footer_area, buf);
+        header(header_area, buf);
 
         self.render_gauge1(gauge1_area, buf);
-        self.render_gauge2(gauge2_area, buf);
-        self.render_gauge3(gauge3_area, buf);
+        self.render_gauge2(gauge4_area, buf);
+        self.render_gauge3(gauge6_area, buf);
     }
 }
 
-fn header() -> impl Widget {
-    Paragraph::new("Ratatui Line Gauge Example")
+fn header(area: Rect, buf: &mut Buffer) {
+    let [p1_area, p2_area] = area.layout(&Layout::vertical([Length(1), Min(1)]));
+    Paragraph::new("LineGauge Example")
         .bold()
-        .alignment(Alignment::Center)
-        .fg(CUSTOM_LABEL_COLOR)
-}
+        .centered()
+        .render(p1_area, buf);
 
-fn footer() -> impl Widget {
-    Paragraph::new("Press ENTER / SPACE to start")
-        .alignment(Alignment::Center)
-        .fg(CUSTOM_LABEL_COLOR)
-        .bold()
+    Paragraph::new("(Press 'SPACE' to start/stop progress, 'r' to reset progress, 'q' to quit)")
+        .centered()
+        .render(p2_area, buf);
 }
 
 impl App {
     fn render_gauge1(&self, area: Rect, buf: &mut Buffer) {
-        let title = title_block("Blue / red only foreground");
         LineGauge::default()
-            .block(title)
-            .filled_style(Style::default().fg(Color::Blue))
-            .unfilled_style(Style::default().fg(Color::Red))
-            .label("Foreground:")
+            .filled_style(Style::default().fg(Color::Indexed(149)))
+            .unfilled_style(Style::default().fg(Color::Indexed(58)))
             .ratio(self.progress)
             .render(area, buf);
     }
 
     fn render_gauge2(&self, area: Rect, buf: &mut Buffer) {
-        let title = title_block("Blue / red only background");
         LineGauge::default()
-            .block(title)
-            .filled_style(Style::default().fg(Color::Blue).bg(Color::Blue))
-            .unfilled_style(Style::default().fg(Color::Red).bg(Color::Red))
-            .label("Background:")
+            .filled_symbol("⣿")
+            .unfilled_symbol("⣿")
+            .filled_style(Style::default().fg(Color::Indexed(45)))
+            .unfilled_style(Style::default().fg(Color::Indexed(24)))
             .ratio(self.progress)
             .render(area, buf);
     }
 
     fn render_gauge3(&self, area: Rect, buf: &mut Buffer) {
-        let title = title_block("Fully styled with background");
         LineGauge::default()
-            .block(title)
-            .filled_style(
-                Style::default()
-                    .fg(tailwind::BLUE.c400)
-                    .bg(tailwind::BLUE.c600),
-            )
-            .unfilled_style(
-                Style::default()
-                    .fg(tailwind::RED.c400)
-                    .bg(tailwind::RED.c800),
-            )
-            .label("Both:")
+            .filled_symbol("▰")
+            .unfilled_symbol("▱")
+            .filled_style(Style::default().fg(Color::Indexed(75)))
+            .unfilled_style(Style::default().fg(Color::Indexed(25)))
             .ratio(self.progress)
             .render(area, buf);
     }
-}
-
-fn title_block(title: &str) -> Block {
-    Block::default()
-        .title(Line::from(title).centered())
-        .borders(Borders::NONE)
-        .fg(CUSTOM_LABEL_COLOR)
-        .padding(Padding::vertical(1))
 }

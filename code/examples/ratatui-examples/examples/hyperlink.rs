@@ -1,63 +1,34 @@
-//! # [Ratatui] Hyperlink examplew
-//!
-//! Shows how to use [OSC 8] to create hyperlinks in the terminal.
-//!
-//! The latest version of this example is available in the [examples] folder in the repository.
-//!
-//! Please note that the examples are designed to be run against the `main` branch of the Github
-//! repository. This means that you may not be able to compile with the latest release version on
-//! crates.io, or the one that you have installed locally.
-//!
-//! See the [examples readme] for more information on finding examples that match the version of the
-//! library you are using.
-//!
-//! [OSC 8]: https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
-//! [Ratatui]: https://github.com/ratatui/ratatui
-//! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
-//! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
-
+/// A Ratatui example that how to create hyperlinks in the terminal using [OSC 8].
+///
+/// This example runs with the Ratatui library code in the branch that you are currently
+/// reading. See the [`latest`] branch for the code which works with the most recent Ratatui
+/// release.
+///
+/// [`latest`]: https://github.com/ratatui/ratatui/tree/latest
+/// [OSC 8]: https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
 use color_eyre::Result;
+use crossterm::event;
 use itertools::Itertools;
-use ratatui::{
-    buffer::Buffer,
-    crossterm::event::{self, Event, KeyCode},
-    layout::Rect,
-    style::Stylize,
-    text::{Line, Text},
-    widgets::Widget,
-    DefaultTerminal,
-};
+use ratatui::buffer::Buffer;
+use ratatui::layout::Rect;
+use ratatui::style::Stylize;
+use ratatui::text::{Line, Text};
+use ratatui::widgets::Widget;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    let terminal = ratatui::init();
-    let app_result = App::new().run(terminal);
-    ratatui::restore();
-    app_result
-}
 
-struct App {
-    hyperlink: Hyperlink<'static>,
-}
+    let text = Line::from(vec!["Example ".into(), "hyperlink".blue()]);
+    let hyperlink = Hyperlink::new(text, "https://example.com");
 
-impl App {
-    fn new() -> Self {
-        let text = Line::from(vec!["Example ".into(), "hyperlink".blue()]);
-        let hyperlink = Hyperlink::new(text, "https://example.com");
-        Self { hyperlink }
-    }
-
-    fn run(self, mut terminal: DefaultTerminal) -> Result<()> {
+    ratatui::run(|terminal| {
         loop {
-            terminal.draw(|frame| frame.render_widget(&self.hyperlink, frame.area()))?;
-            if let Event::Key(key) = event::read()? {
-                if matches!(key.code, KeyCode::Char('q') | KeyCode::Esc) {
-                    break;
-                }
+            terminal.draw(|frame| frame.render_widget(&hyperlink, frame.area()))?;
+            if event::read()?.is_key_press() {
+                break Ok(());
             }
         }
-        Ok(())
-    }
+    })
 }
 
 /// A hyperlink widget that renders a hyperlink in the terminal using [OSC 8].

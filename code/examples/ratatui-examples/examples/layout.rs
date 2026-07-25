@@ -15,7 +15,8 @@
 
 use itertools::Itertools;
 use ratatui::{
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
+    DefaultTerminal, Frame,
+    crossterm::event::{self, KeyCode},
     layout::{
         Constraint::{self, Length, Max, Min, Percentage, Ratio},
         Layout, Rect,
@@ -23,7 +24,6 @@ use ratatui::{
     style::{Color, Style, Stylize},
     text::Line,
     widgets::{Block, Paragraph},
-    DefaultTerminal, Frame,
 };
 
 fn main() -> color_eyre::Result<()> {
@@ -37,10 +37,10 @@ fn main() -> color_eyre::Result<()> {
 fn run(mut terminal: DefaultTerminal) -> color_eyre::Result<()> {
     loop {
         terminal.draw(draw)?;
-        if let Event::Key(key) = event::read()? {
-            if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') {
-                break Ok(());
-            }
+        if let Some(key) = event::read()?.as_key_press_event()
+            && key.code == KeyCode::Char('q')
+        {
+            break Ok(());
         }
     }
 }

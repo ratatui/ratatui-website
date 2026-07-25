@@ -3,15 +3,15 @@ use ratatui::{prelude::*, widgets::*};
 pub fn render(frame: &mut Frame) {
     let data = BarGroup::default().bars(&[
         Bar::default()
-            .label("Red".into())
+            .label("Red")
             .value(2)
             .style(Style::new().red()),
         Bar::default()
-            .label("Green".into())
+            .label("Green")
             .value(7)
             .style(Style::new().green()),
         Bar::default()
-            .label("Blue".into())
+            .label("Blue")
             .value(11)
             .style(Style::new().blue()),
     ]);

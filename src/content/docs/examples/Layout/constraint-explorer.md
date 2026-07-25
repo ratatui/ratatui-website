@@ -4,10 +4,10 @@ title: Constraint Explorer
 
 The constraint explorer is a utility that can be used to work out the interaction between your
 constraints. Source
-[main.rs](https://github.com/ratatui/ratatui/blob/main/examples/apps/constraint-explorer/src/main.rs).
+[main.rs](https://github.com/ratatui/ratatui/blob/ratatui-v0.30.2/examples/apps/constraint-explorer/src/main.rs).
 
 ```shell title=run example
-git clone https://github.com/ratatui/ratatui.git --branch latest
+git clone https://github.com/ratatui/ratatui.git --branch ratatui-v0.30.2 --depth 1
 cd ratatui
 cargo run -p constraint-explorer
 ```
