@@ -187,8 +187,8 @@ Choose the implementation form based on ownership and state:
 - use `impl Widget for &MyWidget` for reusable widgets that do not mutate themselves during render
 - use `impl Widget for MyWidget` for cheap ephemeral widgets created fresh each frame
 - use `impl Widget for &mut MyWidget` when rendering updates state owned by the widget
-- use [`StatefulWidget`] when state should live outside the widget and persist independently, such as
-  selection, scroll offset, or cursor position
+- use [`StatefulWidget`] when state should live outside the widget and persist independently, such
+  as selection, scroll offset, or cursor position
 
 A useful state question is: if this widget value is recreated, should its state reset? If yes,
 widget-owned state can be fine. If no, keep the state outside the widget and pass it in.
