@@ -1,3 +1,4 @@
+import { unified } from "@astrojs/markdown-remark";
 import partytown from "@astrojs/partytown";
 import starlight from "@astrojs/starlight";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
@@ -19,6 +20,7 @@ const mermaidLaunchOptions = process.env.CI ? { channel: "chrome" } : undefined;
 // https://astro.build/config
 export default defineConfig({
   site: "https://ratatui.rs",
+  compressHTML: true,
   image: {
     service: {
       entrypoint: "astro/assets/services/sharp",
@@ -31,8 +33,10 @@ export default defineConfig({
     prefetchAll: true,
   },
   markdown: {
-    remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob, remarkHeadingId],
-    rehypePlugins: [[rehypeMermaid, { launchOptions: mermaidLaunchOptions }], rehypeExternalLink],
+    processor: unified({
+      remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob, remarkHeadingId],
+      rehypePlugins: [[rehypeMermaid, { launchOptions: mermaidLaunchOptions }], rehypeExternalLink],
+    }),
   },
   integrations: [
     starlight({
@@ -88,9 +92,7 @@ export default defineConfig({
         {
           label: "Getting Started",
           collapsed: true,
-          autogenerate: {
-            directory: "installation",
-          },
+          items: [{ autogenerate: { directory: "installation" } }],
         },
         {
           label: "Tutorials",
@@ -107,16 +109,12 @@ export default defineConfig({
             {
               label: "Counter App",
               collapsed: true,
-              autogenerate: {
-                directory: "tutorials/counter-app",
-              },
+              items: [{ autogenerate: { directory: "tutorials/counter-app" } }],
             },
             {
               label: "JSON Editor",
               collapsed: true,
-              autogenerate: {
-                directory: "tutorials/json-editor",
-              },
+              items: [{ autogenerate: { directory: "tutorials/json-editor" } }],
             },
             {
               label: "Videos",
@@ -134,9 +132,7 @@ export default defineConfig({
         {
           label: "Examples",
           collapsed: true,
-          autogenerate: {
-            directory: "examples",
-          },
+          items: [{ autogenerate: { directory: "examples" } }],
         },
         {
           label: "Concepts",
@@ -169,23 +165,17 @@ export default defineConfig({
             {
               label: "Rendering",
               collapsed: true,
-              autogenerate: {
-                directory: "concepts/rendering",
-              },
+              items: [{ autogenerate: { directory: "concepts/rendering" } }],
             },
             {
               label: "Application Patterns",
               collapsed: true,
-              autogenerate: {
-                directory: "concepts/application-patterns",
-              },
+              items: [{ autogenerate: { directory: "concepts/application-patterns" } }],
             },
             {
               label: "Backends",
               collapsed: true,
-              autogenerate: {
-                directory: "concepts/backends",
-              },
+              items: [{ autogenerate: { directory: "concepts/backends" } }],
             },
           ],
         },
@@ -200,46 +190,34 @@ export default defineConfig({
             {
               label: "Layout",
               collapsed: true,
-              autogenerate: {
-                directory: "recipes/layout",
-              },
+              items: [{ autogenerate: { directory: "recipes/layout" } }],
             },
             {
               label: "Rendering",
               collapsed: true,
-              autogenerate: {
-                directory: "recipes/render",
-              },
+              items: [{ autogenerate: { directory: "recipes/render" } }],
             },
             {
               label: "Widgets",
               collapsed: true,
-              autogenerate: {
-                directory: "recipes/widgets",
-              },
+              items: [{ autogenerate: { directory: "recipes/widgets" } }],
             },
             {
               label: "Testing",
               collapsed: true,
-              autogenerate: {
-                directory: "recipes/testing",
-              },
+              items: [{ autogenerate: { directory: "recipes/testing" } }],
             },
             {
               label: "Applications",
               collapsed: true,
-              autogenerate: {
-                directory: "recipes/apps",
-              },
+              items: [{ autogenerate: { directory: "recipes/apps" } }],
             },
           ],
         },
         {
           label: "Ecosystem",
           collapsed: true,
-          autogenerate: {
-            directory: "ecosystem",
-          },
+          items: [{ autogenerate: { directory: "ecosystem" } }],
         },
         {
           label: "FAQ",
@@ -248,16 +226,12 @@ export default defineConfig({
         {
           label: "Highlights",
           collapsed: true,
-          autogenerate: {
-            directory: "highlights",
-          },
+          items: [{ autogenerate: { directory: "highlights" } }],
         },
         {
           label: "Showcase",
           collapsed: true,
-          autogenerate: {
-            directory: "showcase",
-          },
+          items: [{ autogenerate: { directory: "showcase" } }],
         },
         {
           label: "Templates",
@@ -270,9 +244,7 @@ export default defineConfig({
             {
               label: "Component",
               collapsed: true,
-              autogenerate: {
-                directory: "templates/component",
-              },
+              items: [{ autogenerate: { directory: "templates/component" } }],
             },
           ],
         },
@@ -283,9 +255,7 @@ export default defineConfig({
         {
           label: "Developer Guide",
           collapsed: true,
-          autogenerate: {
-            directory: "developer-guide",
-          },
+          items: [{ autogenerate: { directory: "developer-guide" } }],
         },
       ],
       editLink: {
