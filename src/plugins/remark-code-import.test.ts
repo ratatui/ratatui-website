@@ -117,21 +117,32 @@ describe("remarkIncludeCode", () => {
     expect(result).toBe(expected);
   });
 
-  test("should include file content with function anchor", () => {
+  test("should select a Rust function using tree-sitter", () => {
+    // This exercises the native parser and query together. Keep it as a
+    // compatibility check when updating tree-sitter or tree-sitter-rust.
     const mockFileContent = dedent`
-      fn exampleFunction() {
-        println("foo");
-      }`;
+      fn ignored() {}
+
+      /// Prints a message.
+      #[inline]
+      fn example_function() {
+        println!("foo");
+      }
+
+      fn also_ignored() {}`;
     vi.spyOn(fs, "readFileSync").mockReturnValue(mockFileContent);
 
     markdownFile.value = dedent`
       ${start}
-      {{#include ./included-file.md:exampleFunction()}}
+      {{#include ./included-file.md:example_function()}}
       ${end}`;
     const expected = dedent`
       ${start}
-      fn exampleFunction() {
-        println("foo");
+
+      /// Prints a message.
+      #[inline]
+      fn example_function() {
+        println!("foo");
       }
       ${end}`;
 

@@ -9,6 +9,16 @@ import type { VFile } from "vfile";
 
 export default remarkIncludeCode;
 
+// Tree-sitter is only used at build time to find Rust functions referenced by
+// `{{#include path:function()}}`. tree-sitter-rust 0.24.0 exposes its internal
+// language handle as `unknown`, so it does not satisfy tree-sitter 0.22.4's
+// stricter `Parser.Language` declaration.
+//
+// This cast can conceal a future API or ABI mismatch. Remove it when the
+// grammar typings are fixed; meanwhile, updates to either package must verify
+// that parsing a Rust function and querying its name still work at runtime.
+const RustLanguage = Rust as unknown as Parser.Language;
+
 interface CodeNode extends Node {
   lang?: string;
   value: string;
@@ -122,10 +132,10 @@ function extractLines(content: string, start: string, end: string) {
 
 function extractFunction(content: string, name: string) {
   const parser = new Parser();
-  parser.setLanguage(Rust);
+  parser.setLanguage(RustLanguage);
   const tree = parser.parse(content);
   let query = new Query(
-    Rust,
+    RustLanguage,
     `
     (
       (line_comment (doc_comment))+?
