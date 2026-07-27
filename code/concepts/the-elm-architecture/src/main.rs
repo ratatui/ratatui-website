@@ -123,9 +123,9 @@ mod tui {
         },
         Terminal,
     };
-    use std::{io::stdout, panic};
+    use std::{io::{self, stdout}, panic};
 
-    pub fn init_terminal() -> color_eyre::Result<Terminal<impl Backend>> {
+    pub fn init_terminal() -> color_eyre::Result<Terminal<impl Backend<Error = io::Error>>> {
         enable_raw_mode()?;
         stdout().execute(EnterAlternateScreen)?;
         let terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
