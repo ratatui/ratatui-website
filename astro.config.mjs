@@ -60,6 +60,7 @@ export default defineConfig({
       components: {
         Head: "./src/components/Head.astro",
         Header: "./src/components/Header.astro",
+        ThemeSelect: "./src/components/ThemeSwitch.astro",
       },
       plugins: [
         starlightLinksValidator({
