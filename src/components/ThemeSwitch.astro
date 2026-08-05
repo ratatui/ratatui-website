@@ -79,12 +79,12 @@
 
   // Clicking cycles through every mode rather than flipping between two.
   const nextTheme = (theme: Theme): Theme =>
-    theme === "light" ? "dark" : theme === "dark" ? "auto" : "light";
+    theme === "dark" ? "light" : theme === "light" ? "auto" : "dark";
 
   const labels: Record<Theme, string> = {
-    light: "Light theme, switch to dark",
-    dark: "Dark theme, switch to system",
-    auto: "System theme, switch to light",
+    dark: "Dark theme, switch to light",
+    light: "Light theme, switch to system",
+    auto: "System theme, switch to dark",
   };
 
   // Every toggle on the page has to reflect a change made through any of them.
