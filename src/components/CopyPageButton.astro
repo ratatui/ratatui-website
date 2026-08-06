@@ -1,0 +1,335 @@
+---
+// A split button shown next to each page title:
+//   * the main half copies the page's Markdown source to the clipboard
+//   * the caret opens a menu to view the Markdown or open the page in an LLM
+//
+// The Markdown itself is served by `src/pages/[...slug].md.ts`.
+interface Props {
+  /** Path of the Markdown version of the current page, on the current origin. */
+  markdownPath: string;
+  /** Absolute URL of the same Markdown, used in the LLM prompts. */
+  markdownUrl: string;
+  /** Page title, used in the LLM prompts. */
+  title: string;
+}
+
+const { markdownPath, markdownUrl, title } = Astro.props;
+
+const prompt = `Read ${markdownUrl} (the Ratatui documentation page "${title}") so I can ask questions about it.`;
+const chatGptUrl = `https://chatgpt.com/?hint=search&q=${encodeURIComponent(prompt)}`;
+const claudeUrl = `https://claude.ai/new?q=${encodeURIComponent(prompt)}`;
+---
+
+<copy-page-button class="not-content relative inline-block" data-markdown-path={markdownPath}>
+  <div class="flex items-stretch overflow-hidden rounded-lg border border-(--sl-color-gray-5)">
+    <button
+      type="button"
+      data-copy
+      class="flex cursor-pointer items-center gap-2 bg-transparent px-3 py-2 text-sm text-(--sl-color-white) hover:bg-(--sl-color-gray-6)"
+    >
+      <svg
+        data-copy-icon
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+      </svg>
+      <svg
+        data-check-icon
+        class="hidden"
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span data-copy-label>Copy page</span>
+    </button>
+    <button
+      type="button"
+      data-toggle
+      aria-haspopup="menu"
+      aria-expanded="false"
+      aria-label="More page actions"
+      class="flex cursor-pointer items-center border-l border-(--sl-color-gray-5) bg-transparent px-2 text-(--sl-color-white) hover:bg-(--sl-color-gray-6)"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+  </div>
+  <div
+    data-menu
+    role="menu"
+    hidden
+    class="absolute end-0 z-50 mt-1 hidden w-64 rounded-lg border border-(--sl-color-gray-5) bg-(--sl-color-black) p-1 shadow-lg"
+  >
+    <button type="button" role="menuitem" tabindex="-1" data-copy class="copy-page-menu-item">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+      </svg>
+      <span>Copy Markdown page</span>
+    </button>
+    <a href={markdownPath} role="menuitem" tabindex="-1" class="copy-page-menu-item">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      <span>View as Markdown</span>
+    </a>
+    <a
+      href={chatGptUrl}
+      target="_blank"
+      rel="noopener"
+      role="menuitem"
+      tabindex="-1"
+      class="copy-page-menu-item"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>Open in ChatGPT</span>
+    </a>
+    <a
+      href={claudeUrl}
+      target="_blank"
+      rel="noopener"
+      role="menuitem"
+      tabindex="-1"
+      class="copy-page-menu-item"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>Open in Claude</span>
+    </a>
+  </div>
+  <span data-live-region class="sr-only" role="status" aria-live="polite"></span>
+</copy-page-button>
+
+<style>
+  copy-page-button :global(.copy-page-menu-item) {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.375rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.625rem;
+    font-size: var(--sl-text-sm);
+    text-align: start;
+    text-decoration: none;
+    color: var(--sl-color-white);
+  }
+
+  copy-page-button :global(.copy-page-menu-item:hover),
+  copy-page-button :global(.copy-page-menu-item:focus-visible) {
+    background: var(--sl-color-gray-6);
+  }
+
+  copy-page-button :global(.copy-page-menu-item svg) {
+    flex: none;
+    color: var(--sl-color-gray-3);
+  }
+</style>
+
+<script>
+  class CopyPageButton extends HTMLElement {
+    connectedCallback() {
+      const menu = this.querySelector<HTMLElement>("[data-menu]")!;
+      const toggle = this.querySelector<HTMLButtonElement>("[data-toggle]")!;
+      const copyIcon = this.querySelector<SVGElement>("[data-copy-icon]")!;
+      const checkIcon = this.querySelector<SVGElement>("[data-check-icon]")!;
+      const label = this.querySelector<HTMLElement>("[data-copy-label]")!;
+      const liveRegion = this.querySelector<HTMLElement>("[data-live-region]")!;
+      const markdownPath = this.dataset.markdownPath!;
+      let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+      const items = [...menu.querySelectorAll<HTMLElement>('[role="menuitem"]')];
+
+      const isMenuOpen = () => toggle.getAttribute("aria-expanded") === "true";
+
+      // Implements the WAI-ARIA menu button pattern: the menu takes focus while
+      // open, arrow/Home/End move between items, and Escape returns focus to
+      // the toggle. Menu items are `tabindex="-1"` so Tab leaves the menu.
+      const setMenuOpen = (open: boolean, focus: "first" | "last" | "none" = "none") => {
+        menu.hidden = !open;
+        menu.classList.toggle("hidden", !open);
+        toggle.setAttribute("aria-expanded", String(open));
+        if (!open) return;
+        if (focus === "first") focusItem(0);
+        else if (focus === "last") focusItem(items.length - 1);
+      };
+
+      const closeMenu = (restoreFocus: boolean) => {
+        const wasOpen = isMenuOpen();
+        setMenuOpen(false);
+        if (wasOpen && restoreFocus) toggle.focus();
+      };
+
+      const focusItem = (index: number) => {
+        if (items.length === 0) return;
+        // Wrap around at both ends.
+        items[(index + items.length) % items.length]!.focus();
+      };
+
+      const focusRelative = (offset: number) => {
+        const current = items.indexOf(document.activeElement as HTMLElement);
+        focusItem(current === -1 ? 0 : current + offset);
+      };
+
+      toggle.addEventListener("click", () => {
+        if (isMenuOpen()) closeMenu(false);
+        else setMenuOpen(true, "first");
+      });
+
+      toggle.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+        event.preventDefault();
+        setMenuOpen(true, event.key === "ArrowDown" ? "first" : "last");
+      });
+
+      menu.addEventListener("keydown", (event) => {
+        switch (event.key) {
+          case "ArrowDown":
+            focusRelative(1);
+            break;
+          case "ArrowUp":
+            focusRelative(-1);
+            break;
+          case "Home":
+            focusItem(0);
+            break;
+          case "End":
+            focusItem(items.length - 1);
+            break;
+          case "Tab":
+            // Let focus move on, but do not leave an orphaned open menu.
+            setMenuOpen(false);
+            return;
+          default:
+            return;
+        }
+        event.preventDefault();
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!this.contains(event.target as Node)) setMenuOpen(false);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape" || !isMenuOpen()) return;
+        event.preventDefault();
+        closeMenu(true);
+      });
+
+      const copy = async () => {
+        // If the copy was triggered from inside the menu, focus must not be
+        // lost when the menu closes.
+        closeMenu(menu.contains(document.activeElement));
+        try {
+          const response = await fetch(markdownPath);
+          if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+          await navigator.clipboard.writeText(await response.text());
+          showResult("Copied!", true);
+        } catch {
+          showResult("Copy failed", false);
+        }
+      };
+
+      const showResult = (message: string, success: boolean) => {
+        label.textContent = message;
+        liveRegion.textContent = message;
+        copyIcon.classList.toggle("hidden", success);
+        checkIcon.classList.toggle("hidden", !success);
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          label.textContent = "Copy page";
+          liveRegion.textContent = "";
+          copyIcon.classList.remove("hidden");
+          checkIcon.classList.add("hidden");
+        }, 2000);
+      };
+
+      for (const button of this.querySelectorAll<HTMLButtonElement>("[data-copy]")) {
+        button.addEventListener("click", copy);
+      }
+    }
+  }
+
+  customElements.define("copy-page-button", CopyPageButton);
+</script>

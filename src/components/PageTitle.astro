@@ -1,0 +1,40 @@
+---
+// Overrides Starlight's PageTitle to add a "Copy page" split button next to the
+// page heading. See CopyPageButton.astro and src/pages/[...slug].md.ts.
+import CopyPageButton from "@components/CopyPageButton.astro";
+
+const { entry } = Astro.locals.starlightRoute;
+// Path on the current origin, so the link and the clipboard fetch work in dev
+// and in preview deployments as well as in production.
+const markdownPath = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/${entry.id}.md`;
+// Absolute URL, needed by the links that hand the page to an LLM.
+const markdownUrl = new URL(markdownPath, Astro.site ?? Astro.url).href;
+---
+
+<div class="page-title">
+  <!-- `_top` is the id Starlight uses for the page title heading. -->
+  <h1 id="_top">{entry.data.title}</h1>
+  <CopyPageButton markdownPath={markdownPath} markdownUrl={markdownUrl} title={entry.data.title} />
+</div>
+
+<style>
+  .page-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  h1 {
+    margin-top: 1rem;
+    font-size: var(--sl-text-h1);
+    line-height: var(--sl-line-height-headings);
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .page-title :global(copy-page-button) {
+    margin-top: 1rem;
+  }
+</style>
