@@ -28,6 +28,7 @@ const { title, youtubeId, description } = Astro.props;
       src={`https://www.youtube-nocookie.com/embed/5Lu9MSgmTBc?autoplay=0&loop=1&playlist=${youtubeId}&mute=0&controls=0&modestbranding=0&rel=0&showinfo=0`}
       title="YouTube video player"
       frameborder="0"
-      allow="autoplay;"></iframe>
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"></iframe>
   </a>
 </div>
