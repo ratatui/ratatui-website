@@ -58,7 +58,8 @@ try {
             class="h-full w-full"
             src={media}
             title="YouTube video player"
-            allow="autoplay;"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
           />
         ) : (
           <img class="h-full w-full object-cover" src={media} alt={alt} />
