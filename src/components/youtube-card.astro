@@ -35,7 +35,7 @@ let description_markdown = marked.parse(description || "");
     const createBasicIframe = proto.createBasicIframe;
     proto.createBasicIframe = function () {
       const iframe = createBasicIframe.call(this);
-      iframe.allow = `${iframe.allow}; clipboard-write; web-share`;
+      iframe.allow = `${iframe.allow}; autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share`;
       return iframe;
     };
   });
