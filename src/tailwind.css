@@ -109,8 +109,8 @@ marker#arrowhead path {
   --sl-content-width: 60rem;
 }
 
-/* Hide the landing page's text heading because the logo renders the same title. */
-.landing-mono > div > h1:first-child {
+/* Hide the landing page's generated title because the logo renders the same title. */
+main:has(.landing-mono) > .content-panel > .sl-container > h1:first-child {
   display: none !important;
 }
 
