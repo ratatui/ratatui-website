@@ -21,6 +21,28 @@ let description_markdown = marked.parse(description || "");
   </div>
 </MediaCard>
 
+{
+  /*
+  lite-youtube-embed hardcodes the iframe's `allow` list and gives us no way to
+  configure it, which leaves out `clipboard-write` -- so the player's share button
+  fails with "Unable to copy link to clipboard" in Chromium.
+  Wrap createBasicIframe() to append the missing permissions; it returns the iframe
+  before it is inserted, which is the last point where `allow` still takes effect.
+*/
+}
+<script>
+  customElements.whenDefined("lite-youtube").then(() => {
+    const proto = customElements.get("lite-youtube")?.prototype as any;
+    if (!proto?.createBasicIframe) return;
+    const createBasicIframe = proto.createBasicIframe;
+    proto.createBasicIframe = function () {
+      const iframe = createBasicIframe.call(this);
+      iframe.allow = `${iframe.allow}; autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share`;
+      return iframe;
+    };
+  });
+</script>
+
 <style>
   .meta {
     padding: 1rem;
