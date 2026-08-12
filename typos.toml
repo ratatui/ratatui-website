@@ -5,6 +5,9 @@ ratatui = "ratatui"
 iterm2 = "iTerm2"
 iterm = "iTerm2"
 
+[default.extend-identifiers]
+btqNDDuZ3cI = "btqNDDuZ3cI"
+
 [type.md]
 extend-ignore-re = [
   "\\[[[:xdigit:]]{7}\\]\\(https://github.com/ratatui/ratatui/commit/[[:xdigit:]]{40}\\)",
