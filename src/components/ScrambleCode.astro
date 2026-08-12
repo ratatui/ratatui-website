@@ -28,7 +28,7 @@ const highlightedHtml = await codeToHtml(code, {
   <div class="highlighted-code" set:html={highlightedHtml} />
 </div>
 
-<script define:vars={{ code }}>
+<script define:vars={{ code }} is:inline>
   const initScramble = () => {
     const wrappers = document.querySelectorAll(".block-reveal-wrapper");
 
