@@ -247,6 +247,18 @@ main .content-panel:first-child:not(:has(*)) {
   list-style: square;
 }
 
+pre.mermaid {
+  border: 0;
+  background: transparent;
+  text-align: center;
+}
+
+pre.mermaid svg {
+  height: auto;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
 /* On hover bracket effect */
 .bracket-effect {
   position: relative;

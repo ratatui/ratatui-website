@@ -35,8 +35,8 @@ pnpm dev
 `corepack enable` makes the `pnpm` command available. The exact pnpm version is pinned in
 `package.json`, so you do not need to install pnpm globally.
 
-The website build renders Mermaid diagrams with Playwright. If your local build fails because no
-Playwright browser is installed, run `pnpm playwright:install`.
+Mermaid diagrams are rendered in the reader's browser. The site loads Mermaid only on pages that
+contain a diagram, so local and Cloudflare builds do not require Playwright or a browser binary.
 
 ## Commands
 
@@ -57,11 +57,13 @@ Playwright browser is installed, run `pnpm playwright:install`.
 
 - Markdown lint keeps lines to 100 chars; limited inline HTML is allowed for embeds.
 - Prefer root-anchored links with a trailing slash (e.g. `/concepts/backends/`).
+- Author diagrams as fenced `mermaid` code blocks. Their source remains visible if client-side
+  rendering fails, and diagrams rerender automatically when the site theme changes.
 
 ## Deployment
 
-Cloudflare Pages should build the site with `pnpm build` and publish the `dist` directory. If the
-Cloudflare project does not read `.node-version`, set its Node.js version to `24`.
+Cloudflare Workers Builds should build the site with `pnpm build`. If the Cloudflare project does
+not read `.node-version`, set its Node.js version to `24`.
 
 ## Assets
 
