@@ -10,7 +10,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "preview": "astro preview",
+    "preview": "wrangler dev",
+    "deploy": "pnpm build && wrangler deploy",
     "astro": "astro",
     "prepare": "husky",
     "_format": "prettier . --plugin=prettier-plugin-astro --plugin=prettier-plugin-organize-imports --plugin=prettier-plugin-tailwindcss",
@@ -67,7 +68,8 @@
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0",
     "vfile": "^6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "wrangler": "^4.122.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
