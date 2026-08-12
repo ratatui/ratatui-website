@@ -29,7 +29,6 @@ interface Props {
 <script>
   class TextScrambler {
     private element: HTMLElement;
-    private originalText: string;
     private isScrambling: boolean = false;
     private isUnscrambling: boolean = false;
     private scrambleInterval: number | null = null;
@@ -40,7 +39,6 @@ interface Props {
 
     constructor(element: HTMLElement) {
       this.element = element;
-      this.originalText = element.getAttribute("data-original") || element.textContent || "";
 
       // Read image paths from data attributes
       const ratImg = element.getAttribute("data-rat") || "";
