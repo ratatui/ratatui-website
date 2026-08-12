@@ -65,6 +65,17 @@ contain a diagram, so local and Cloudflare builds do not require Playwright or a
 Cloudflare Workers Builds should build the site with `pnpm build`. If the Cloudflare project does
 not read `.node-version`, set its Node.js version to `24`.
 
+Define `GITHUB_TOKEN` under the Workers Builds
+[build variables and secrets](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+as an encrypted secret. Use a dedicated
+[fine-grained GitHub personal access token](https://docs.github.com/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+with access limited to public repositories and read-only repository metadata. The build uses it only
+to fetch star and fork counts; authenticating avoids GitHub's lower unauthenticated API rate limit.
+
+This build secret is separate from both the Cloudflare API token that authorizes Workers Builds to
+upload and deploy the site and any secrets bound to the deployed Worker at runtime. Do not configure
+`GITHUB_TOKEN` as a runtime Worker secret.
+
 ## Assets
 
 `.png`, `.gif`, `.svg`, `.webp` and `.xcf` files are tracked by Git LFS. Add new images with LFS to
