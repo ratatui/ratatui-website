@@ -4,7 +4,6 @@ import starlight from "@astrojs/starlight";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
-import rehypeMermaid from "rehype-mermaid";
 import { remarkHeadingId } from "remark-custom-heading-id";
 import emoji from "remark-emoji";
 import remarkSvgBob from "remark-svgbob";
@@ -13,9 +12,8 @@ import starlightAutoSidebar from "starlight-auto-sidebar";
 import starlightLinksValidator from "starlight-links-validator";
 import { collapsibleFrames } from "/src/plugins/collapsible-frames";
 import rehypeExternalLink from "/src/plugins/rehype-external-link";
+import rehypeMermaidClient from "/src/plugins/rehype-mermaid-client";
 import remarkIncludeCode from "/src/plugins/remark-code-import";
-
-const mermaidLaunchOptions = process.env.CI ? { channel: "chrome" } : undefined;
 
 // https://astro.build/config
 export default defineConfig({
@@ -35,7 +33,7 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [remarkIncludeCode, emoji, remarkYoutube, remarkSvgBob, remarkHeadingId],
-      rehypePlugins: [[rehypeMermaid, { launchOptions: mermaidLaunchOptions }], rehypeExternalLink],
+      rehypePlugins: [rehypeMermaidClient, rehypeExternalLink],
     }),
   },
   integrations: [
