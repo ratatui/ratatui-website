@@ -7,5 +7,5 @@ edition = "2021"
 publish.workspace = true
 
 [dependencies]
-color-eyre = "0.6.3"
+anyhow = "1.0.104"
 ratatui = "0.30.2"

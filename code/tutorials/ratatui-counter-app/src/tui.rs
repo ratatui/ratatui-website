@@ -3,7 +3,7 @@
 // ANCHOR: tui_imports
 use std::{io, panic};
 
-use color_eyre::Result;
+use anyhow::Result;
 use ratatui::crossterm::{
     event::{DisableMouseCapture, EnableMouseCapture},
     execute,

@@ -6,7 +6,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-use color_eyre::Result;
+use anyhow::Result;
 use ratatui::crossterm::event::{self, Event as CrosstermEvent, KeyEvent, MouseEvent};
 // ANCHOR_END: event_import
 
