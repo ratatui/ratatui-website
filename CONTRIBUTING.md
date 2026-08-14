@@ -99,4 +99,4 @@ the showcase yet, consider sharing it on Awesome Ratatui, the forum, or Discord 
 
 ## License
 
-By contributing, you agree that your contributions are licensed under the [MIT license](LICENSE).
+By contributing, you agree that your contributions are licensed under the [MIT license](LICENSE.md).
