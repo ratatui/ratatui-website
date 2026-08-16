@@ -1,20 +1,21 @@
 ---
-// Overrides Starlight's PageTitle to add a "Copy page" split button next to the
-// page heading. See CopyPageButton.astro and src/pages/[...slug].md.ts.
-import CopyPageButton from "@components/CopyPageButton.astro";
+// Overrides Starlight's PageTitle to add "Copy page" and "Edit page" actions
+// next to the page heading. See PageActions.astro and src/pages/[...slug].md.ts.
+import PageActions from "@components/PageActions.astro";
 
-const { entry } = Astro.locals.starlightRoute;
-// Path on the current origin, so the link and the clipboard fetch work in dev
-// and in preview deployments as well as in production.
+const { entry, editUrl } = Astro.locals.starlightRoute;
+// Path on the current origin, so the clipboard fetch works in dev and in
+// preview deployments as well as in production.
 const markdownPath = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/${entry.id}.md`;
-// Absolute URL, needed by the links that hand the page to an LLM.
-const markdownUrl = new URL(markdownPath, Astro.site ?? Astro.url).href;
+// The landing page is a splash page built from components rather than prose:
+// there is no Markdown route for it, so it gets no page actions.
+const hasMarkdown = entry.id !== "" && entry.data.template !== "splash";
 ---
 
 <div class="page-title">
   <!-- `_top` is the id Starlight uses for the page title heading. -->
   <h1 id="_top">{entry.data.title}</h1>
-  <CopyPageButton markdownPath={markdownPath} markdownUrl={markdownUrl} title={entry.data.title} />
+  {hasMarkdown && <PageActions markdownPath={markdownPath} editUrl={editUrl?.href} />}
 </div>
 
 <style>
@@ -34,7 +35,7 @@ const markdownUrl = new URL(markdownPath, Astro.site ?? Astro.url).href;
     color: var(--sl-color-white);
   }
 
-  .page-title :global(copy-page-button) {
+  .page-title :global(.page-actions) {
     margin-top: 1rem;
   }
 </style>
