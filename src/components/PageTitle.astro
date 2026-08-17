@@ -1,0 +1,41 @@
+---
+// Overrides Starlight's PageTitle to add "Copy page" and "Edit page" actions
+// next to the page heading. See PageActions.astro and src/pages/[...slug].md.ts.
+import PageActions from "@components/PageActions.astro";
+
+const { entry, editUrl } = Astro.locals.starlightRoute;
+// Path on the current origin, so the clipboard fetch works in dev and in
+// preview deployments as well as in production.
+const markdownPath = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/${entry.id}.md`;
+// The landing page is a splash page built from components rather than prose:
+// there is no Markdown route for it, so it gets no page actions.
+const hasMarkdown = entry.id !== "" && entry.data.template !== "splash";
+---
+
+<div class="page-title">
+  <!-- `_top` is the id Starlight uses for the page title heading. -->
+  <h1 id="_top">{entry.data.title}</h1>
+  {hasMarkdown && <PageActions markdownPath={markdownPath} editUrl={editUrl?.href} />}
+</div>
+
+<style>
+  .page-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  h1 {
+    margin-top: 1rem;
+    font-size: var(--sl-text-h1);
+    line-height: var(--sl-line-height-headings);
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .page-title :global(.page-actions) {
+    margin-top: 1rem;
+  }
+</style>

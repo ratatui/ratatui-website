@@ -1,0 +1,110 @@
+---
+// Actions shown next to each page title: copy the page as Markdown, and edit it
+// on GitHub (the same link Starlight renders at the bottom of the page, moved up
+// here since the two are closely related).
+//
+// The Markdown itself is served by `src/pages/[...slug].md.ts`.
+import { Icon } from "@astrojs/starlight/components";
+
+interface Props {
+  /** Path of the Markdown version of the current page, on the current origin. */
+  markdownPath: string;
+  /** GitHub edit URL for the current page, if the page has one. */
+  editUrl?: string | undefined;
+}
+
+const { markdownPath, editUrl } = Astro.props;
+---
+
+<div class="page-actions not-content">
+  <copy-page-button data-markdown-path={markdownPath}>
+    <button type="button" class="page-action">
+      <span data-copy-icon><Icon name="document" size="1.2em" /></span>
+      <span data-check-icon hidden><Icon name="approve-check" size="1.2em" /></span>
+      <span data-copy-label>Copy page</span>
+    </button>
+    <span data-live-region class="sr-only" role="status" aria-live="polite"></span>
+  </copy-page-button>
+  {
+    editUrl && (
+      <a href={editUrl} class="page-action">
+        <Icon name="github" size="1.2em" />
+        Edit page
+      </a>
+    )
+  }
+</div>
+
+<style>
+  .page-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .page-actions :global(.page-action) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    background: transparent;
+    cursor: pointer;
+    font-size: var(--sl-text-sm);
+    line-height: 1.5;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--sl-color-gray-2);
+  }
+
+  .page-actions :global(.page-action:hover) {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-white);
+  }
+
+  .page-actions :global([hidden]) {
+    display: none;
+  }
+</style>
+
+<script>
+  class CopyPageButton extends HTMLElement {
+    connectedCallback() {
+      const button = this.querySelector("button")!;
+      const copyIcon = this.querySelector<HTMLElement>("[data-copy-icon]")!;
+      const checkIcon = this.querySelector<HTMLElement>("[data-check-icon]")!;
+      const label = this.querySelector<HTMLElement>("[data-copy-label]")!;
+      const liveRegion = this.querySelector<HTMLElement>("[data-live-region]")!;
+      const markdownPath = this.dataset.markdownPath!;
+      let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+      button.addEventListener("click", async () => {
+        try {
+          const response = await fetch(markdownPath);
+          if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+          await navigator.clipboard.writeText(await response.text());
+          showResult("Copied!", true);
+        } catch {
+          showResult("Copy failed", false);
+        }
+      });
+
+      const showResult = (message: string, success: boolean) => {
+        label.textContent = message;
+        liveRegion.textContent = message;
+        copyIcon.hidden = success;
+        checkIcon.hidden = !success;
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          label.textContent = "Copy page";
+          liveRegion.textContent = "";
+          copyIcon.hidden = false;
+          checkIcon.hidden = true;
+        }, 2000);
+      };
+    }
+  }
+
+  customElements.define("copy-page-button", CopyPageButton);
+</script>
