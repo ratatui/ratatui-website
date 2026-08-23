@@ -9,9 +9,12 @@ Code for this tutorial is available to view at
 
 :::
 
-This tutorial will lead you through creating a simple "Hello World" TUI app that displays some text
-in the top-left corner of the screen and waits for the user to press any key to exit. It
-demonstrates the tasks that any application developed with Ratatui needs to undertake.
+This tutorial walks through creating a small "Hello world" TUI from [Ratatui]'s `hello-world`
+template. The app displays some text in the top-left corner and waits for a key before returning to
+the terminal. The goal here is to get an app running and look at the pieces that every Ratatui app
+needs.
+
+[Ratatui]: /
 
 We assume you have a basic understanding of the terminal, and have a text editor or IDE. If you
 don't have a preference, [VSCode] with [rust-analyzer] makes a good default choice.
@@ -19,15 +22,14 @@ don't have a preference, [VSCode] with [rust-analyzer] makes a good default choi
 [VSCode]: https://code.visualstudio.com/
 [rust-analyzer]: https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
 
-## Pre-requisites
+## Prerequisites
 
 ### Install Rust
 
 First install Rust if it is not already installed. See the [Installation] section of the official
 Rust Book for more information. Most people use `rustup`, a command line tool for managing Rust
-versions and associated tools. Ratatui requires at least Rust 1.74, but it's generally a good idea
-to work with the latest stable version if you can. Once you've installed Rust, verify it's installed
-by running:
+versions and associated tools. Ratatui 0.30.2 requires Rust 1.88 or newer. Once you have installed
+Rust, verify the active compiler by running:
 
 [Installation]: https://doc.rust-lang.org/book/ch01-01-installation.html
 
@@ -38,31 +40,31 @@ rustc --version
 You should see output similar to the following (the exact version, date and commit hash will vary):
 
 ```text
-rustc 1.83.0 (90b35a623 2024-11-26)
+rustc 1.88.0 (6b00bc388 2025-06-23)
 ```
 
 ### Install Cargo generate
 
-Ratatui has a few templates that make it easy to get started with a new project. [Cargo generate] is
-a developer tool to help you get up and running quickly with a new Rust project by leveraging a
-pre-existing git repository as a template. We will use it to create a new Ratatui project.
+Ratatui has a few [templates] for starting a new project. [Cargo generate] creates a Rust project
+from one of those templates. We'll use the `hello-world` template.
 
+[templates]: /templates/
 [Cargo generate]: https://cargo-generate.github.io/cargo-generate/
 
-Install `cargo-generate` by running the following command (or see the [installation instructions]
-for other approaches to installing cargo-generate.)
+Install `cargo-generate` with the following command. The [installation instructions] cover other
+options.
 
 [installation instructions]: https://cargo-generate.github.io/cargo-generate/installation.html
 
 ```shell
-cargo install cargo-generate
+cargo install --locked cargo-generate
 ```
 
 ## Create a New Project
 
-Let's create a new Rust project. In the terminal, navigate to a folder where you will store your
-projects and run the following command to generate a new app using the simple ratatui template. (You
-can find more information about this template in the [Hello World Template README])
+Let's create the project. In a terminal, go to the directory where you keep your projects and run
+the following command. The second argument selects the `hello-world` template. The [Hello World
+Template README] describes its other options.
 
 [Hello World Template README]: https://github.com/ratatui/templates/blob/main/hello-world/README.md
 
@@ -76,26 +78,26 @@ The example code is licensed under the MIT license.
 
 :::
 
-You will be prompted for a project name to use. Enter `hello-ratatui`.
+When prompted for a project name, enter `hello-ratatui`. Cargo Generate also asks for a short
+description.
 
 ```shell title="create new rust project"
-$ cargo generate ratatui/templates
+$ cargo generate ratatui/templates hello-world
 ⚠️   Favorite `ratatui/templates` not found in config, using it as a git repository: https://github.com/ratatui/templates.git
-✔ 🤷   Which sub-template should be expanded? · hello-world
 🤷   Project Name: hello-ratatui
-🔧   Destination: /Users/joshka/local/ratatui-website/code/tutorials/hello-ratatui ...
+🔧   Destination: /path/to/projects/hello-ratatui ...
 🔧   project-name: hello-ratatui ...
 🔧   Generating template ...
 🤷   Short description of the project: A Ratatui Hello World app
-🔧   Moving generated files into: `/Users/joshka/local/ratatui-website/code/tutorials/hello-ratatui`...
+🔧   Moving generated files into: `/path/to/projects/hello-ratatui`...
 🔧   Initializing a fresh Git repository
-✨   Done! New project created /Users/joshka/local/ratatui-website/code/tutorials/hello-ratatui
+✨   Done! New project created /path/to/projects/hello-ratatui
 ```
 
 ### Examine the Project
 
-The `cargo generate` command creates a new folder called `hello-ratatui` with a basic binary
-application in it. If you examine the folders and files created this will look like:
+The command creates a new `hello-ratatui` directory containing a basic binary application. Its
+top-level files look like this:
 
 ```text
 hello-ratatui/
@@ -106,14 +108,18 @@ hello-ratatui/
 └── README.md
 ```
 
-The `Cargo.toml` file is filled with some default values and the necessary dependencies (Ratatui and
-Crossterm), and one useful dependency (Color-eyre) for nicer error handling.
+The generated [`Cargo.toml`] contains the dependencies used by the app. [Ratatui] draws the
+interface, [Crossterm] talks to the terminal, and [`color-eyre`] reports errors.
 
-```rust title="cargo.toml"
+[`Cargo.toml`]: https://doc.rust-lang.org/cargo/reference/manifest.html
+[Crossterm]: /concepts/backends/
+[`color-eyre`]: /recipes/apps/color-eyre/
+
+```toml title="Cargo.toml"
 {{#include @code/tutorials/hello-ratatui/Cargo.toml}}
 ```
 
-The generate command created a default `main.rs` that runs the app:
+The generate command creates this default `main.rs`:
 
 ```rust title="main.rs"
 {{#include @code/tutorials/hello-ratatui/src/main.rs}}
@@ -121,11 +127,12 @@ The generate command created a default `main.rs` that runs the app:
 
 :::tip
 
-In previous versions, the setup of an app was quite a bit more complex. Older Ratatui apps may have
-code that includes a lot of boilerplate code to set up the app. Ratatui 0.28.1 has simplified this
-process to just calling `ratatui::init()` and `ratatui::restore()`. Ratatui 0.30.0 made it even
-simpler by introducing the `ratatui::run()` method, which handles those calls and can be used for
-most applications.
+Older Ratatui apps often contain explicit raw-mode and alternate-screen setup. Ratatui 0.28.1 added
+`ratatui::init()` and `ratatui::restore()`. Ratatui 0.30.0 added [`ratatui::run()`], which performs
+that setup and restoration around an application closure. Manual setup remains useful for custom
+backends or output streams.
+
+[`ratatui::run()`]: https://docs.rs/ratatui/0.30.2/ratatui/fn.run.html
 
 :::
 
@@ -138,16 +145,13 @@ cd hello-ratatui
 cargo run
 ```
 
-You should see the build output and then a TUI app with a `Hello world` message.
+You should see the build output and then a TUI app with a `hello world` message.
 
 ![hello](hello-ratatui.gif)
 
 You can press any key to exit and go back to your terminal as it was before.
 
-## Summary
+## Next step
 
-Congratulations! :tada: You have written a "hello world" terminal user interface with Ratatui. The
-next sections will go into more detail about how Ratatui works.
-
-The next tutorial, [Counter App](/tutorials/counter-app/), introduces some more interactivity, and a
-more robust approach to arranging your application code.
+That's it. You have a working Ratatui application. The [Counter App](/tutorials/counter-app/) builds
+one without a template and adds application state, explicit key handling, and a render test.

@@ -5,9 +5,10 @@ description = "A Ratatui Hello World app"
 authors = ["Josh McKinney <joshka@users.noreply.github.com>"]
 license = "MIT"
 edition = "2024"
+rust-version = "1.88"
 
 [dependencies]
-color-eyre = "0.6.3"
+color-eyre = "0.6.5"
 crossterm = "0.29.0"
 ratatui = "0.30.2"
 
