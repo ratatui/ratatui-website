@@ -27,7 +27,7 @@ output processing), an [Alternate Screen](./alternate-screen/) which allows it t
 separate buffer than your shell commands use, and [Mouse Capture](./mouse-capture/), which allows
 your application to capture mouse events.
 
-### Crossterm version compatibility
+## Crossterm Version Compatibility
 
 Avoid pulling in multiple semver-incompatible [Crossterm] versions. Different major versions:
 
@@ -38,25 +38,35 @@ Avoid pulling in multiple semver-incompatible [Crossterm] versions. Different ma
 Also, specific versions may make it difficult to upgrade Ratatui/widgets unless everything is up to
 date.
 
-As a mitigation, Ratatui 0.30+ supports multiple [Crossterm] major versions via
-`crossterm_{version}` feature flags. You can select which version to use and avoid conflicts in your
-dependency graph.
+As a mitigation, the split `ratatui-crossterm` package supports multiple [Crossterm] major versions
+through `crossterm_{version}` feature flags. The main `ratatui` package uses Crossterm 0.29 by
+default.
 
-For example:
+Ratatui 0.30.2 uses Crossterm 0.29 by default:
 
 ```toml
-ratatui = { version = "0.30", features = ["crossterm_0_28"] }
-crossterm = "0.28"
-
-# or
-ratatui = { version = "0.30", features = ["crossterm_0_29"] }
+ratatui = "0.30"
 crossterm = "0.29"
+```
+
+To select Crossterm 0.28, use the split backend package directly. Disable its defaults so Crossterm
+0.29 is not also enabled:
+
+```toml
+crossterm = "0.28"
+ratatui = { version = "0.30", default-features = false }
+ratatui-crossterm = { version = "0.1", default-features = false, features = ["crossterm_0_28"] }
 ```
 
 :::note
 
 - If multiple flags are enabled, Ratatui selects the latest.
-- The `ratatui-crossterm` crate exposes the same flags.
+- This uses `ratatui_crossterm::CrosstermBackend`; the main `ratatui` package's Crossterm setup
+  helpers are not enabled.
+- Disabling Ratatui's default features also disables its other default features. Re-enable the ones
+  the application needs.
+- The main `ratatui` package forwards the version flags, but activating its backend also activates
+  `ratatui-crossterm`'s default version.
 - Use `cargo tree -p crossterm` to check your graph and disable default features on dependencies
   that drag in another Crossterm major.
 - Ratatui 0.30+ introduces `ratatui-core`, moving backends into separate crates so backend changes
