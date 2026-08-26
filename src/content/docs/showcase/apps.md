@@ -292,3 +292,13 @@ It is an alternative tool to AKHQ, Redpanda Console, or the Kafka plugin for Jet
 includes a search query language inspired by SQL, providing fine-grained filtering capabilities.
 
 ![yozefu demo](https://vhs.charm.sh/vhs-UpIJD2h92vKkj01XSS0r0.gif)
+
+## [`streamtop`](https://github.com/Jorji49/streamtop)
+
+Zero-payload live HLS, DASH, and IPTV stream diagnostic engine in the terminal, built with Rust and Ratatui.
+
+It uses a 2 KB HTTP Range probe to inspect segment headers (fMP4/TS sync, TTFB) on the wire, tracks live SCTE-35 ad countdowns, and classifies CDN edge/origin cache states in real time without downloading full media chunks.
+
+<img width="1099" height="592" alt="Animation" src="https://github.com/user-attachments/assets/86125e16-1865-470f-8583-8af01323f644" />
+
+---
