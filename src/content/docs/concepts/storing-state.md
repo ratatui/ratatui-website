@@ -6,7 +6,7 @@ This page covers several ways that a programmer can store the state of the appli
 
 ## Single Silo Method
 
-This is perhaps the easiest method to understand, and works best for small applications that do no
+This is perhaps the easiest method to understand, and works best for small applications that do not
 require a large amount of state to be remembered. The idea behind this method is simple: "One struct
 for all state", and whenever a component requires knowledge about the state of the application, it
 requests a reference to the `app` state.
