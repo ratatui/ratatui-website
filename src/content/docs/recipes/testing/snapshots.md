@@ -123,7 +123,67 @@ Check out the [cargo-insta documentation] for more details on managing snapshot 
 
 :::
 
+:::tip[Testing the whole application]
+
+`TestBackend` tests rendering in-process, but does not cover your event loop, key handling, terminal
+setup and teardown or exit codes. To cover those parts of an application, you can run the compiled
+binary in a pseudo-terminal (PTY), send it input and make assertions about the rendered screen.
+
+[termlens] is one crate that provides this kind of end-to-end test harness. It can complement
+`TestBackend` snapshots for a small number of important user flows, but does not replace fast,
+fine-grained widget tests.
+
+<details>
+<summary>Example PTY integration test</summary>
+
+Add `termlens` as a development dependency:
+
+```shell
+cargo add termlens --dev
+```
+
+Then place the test in `tests/e2e.rs`. Cargo makes the compiled application available to integration
+tests through `CARGO_BIN_EXE_<name>`.
+
+```rust title="tests/e2e.rs"
+use std::time::Duration;
+use termlens::{Key, Terminal};
+
+#[test]
+fn counts_up_and_quits() -> termlens::Result<()> {
+    let mut terminal = Terminal::builder()
+        .size(80, 24)
+        .env_clear()
+        .timeout(Duration::from_secs(5))
+        .spawn(env!("CARGO_BIN_EXE_counter-app"))?;
+
+    terminal.wait_until(|screen| screen.contains("Counter: 0"))?;
+
+    terminal.send(Key::Char('j'))?;
+    terminal.send(Key::Char('j'))?;
+    terminal.wait_until(|screen| screen.contains("Counter: 2"))?;
+
+    // PTY output is asynchronous. Let the complete render arrive before
+    // snapshotting the whole screen.
+    terminal.wait_idle(Duration::from_millis(50))?;
+    insta::assert_snapshot!(terminal.screen());
+
+    terminal.send(Key::Char('q'))?;
+    assert!(terminal.wait_exit()?.success());
+    Ok(())
+}
+```
+
+Replace `counter-app` with the name of your binary. Waiting for visible content instead of sleeping
+for a fixed duration keeps the interaction deterministic; `wait_idle` is useful immediately before a
+whole-screen snapshot, when the complete render needs to have arrived.
+
+</details>
+
+:::
+
 [`TestBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TestBackend.html
 [`insta`]: https://crates.io/crates/insta
 [`cargo-insta`]: https://github.com/mitsuhiko/insta
 [cargo-insta documentation]: https://insta.rs/docs/
+[termlens]: https://github.com/vyncint/termlens
