@@ -56,6 +56,18 @@ body:
     validations:
       required: true
   - type: textarea
+    id: maturity
+    attributes:
+      label: Maturity and real-world use
+      description: >-
+        When was the project first publicly usable? What evidence is there that people use it, and
+        what has changed in response to their feedback? Project age and GitHub stars are useful
+        context, but they are not hard requirements.
+      placeholder: >-
+        The first public release was... Since then, users have... Based on their feedback, we...
+    validations:
+      required: true
+  - type: textarea
     id: media
     attributes:
       label: Screenshot or GIF

@@ -5,6 +5,12 @@ sidebar:
   label: Apps
 ---
 
+<!--
+Before adding an app, read the showcase submission guidance and open a showcase submission issue:
+https://ratatui.rs/recipes/apps/submitting-to-the-showcase/
+https://github.com/ratatui/ratatui-website/issues/new?template=showcase-submission.yml
+-->
+
 ## [`atuin`](https://github.com/atuinsh/atuin)
 
 Atuin replaces your existing shell history with a SQLite database, and records additional context

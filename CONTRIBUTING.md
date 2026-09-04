@@ -86,7 +86,7 @@ avoid bloating the repo.
 Open an issue or start a discussion for non-trivial changes. Keep PRs focused with a short test
 note.
 
-## App showcase criteria
+## Showcase submission guidance
 
 Before adding an app or third-party widget to the showcase, read:
 
@@ -94,8 +94,10 @@ Before adding an app or third-party widget to the showcase, read:
 - <https://github.com/ratatui/ratatui-website/issues/new?template=showcase-submission.yml>
 - <https://github.com/ratatui/ratatui-website/issues/986>
 
-The website showcase is curated and intentionally selective. If your project is not a good fit for
-the showcase yet, consider sharing it on Awesome Ratatui, the forum, or Discord first.
+The website showcase is curated and intentionally selective. Reviews consider presentation, project
+maturity, real-world use, and overall fit rather than applying hard eligibility criteria. If your
+project is not a good fit for the showcase yet, consider sharing it on Awesome Ratatui, the forum,
+or Discord first.
 
 ## License
 

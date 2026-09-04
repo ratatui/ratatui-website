@@ -60,6 +60,28 @@ Most review comments are trying to improve one of these principles:
 These are the reasons behind feedback such as "use a smaller width", "increase dwell time", or
 "simplify the layout". Those are not arbitrary rules. They are proxies for clarity.
 
+## Maturity and real-world use
+
+We may also consider whether an app has had time to mature beyond its initial release. The showcase
+is more useful when it highlights apps that have been exercised by real users, refined around
+practical use cases, and improved with feedback from people other than the original author.
+
+Signals of maturity can include:
+
+- being publicly available long enough to receive real-world use and feedback
+- evidence that people are actively using the app
+- releases or improvements made in response to user feedback
+- attention to practical use cases, reliability, documentation, and usability
+
+For an open source app hosted on GitHub, being publicly available for around a month and having
+around 50 stars are useful reference points, but they are not hard requirements. Stars are only one
+imperfect indication of adoption. Maintainers may give greater weight to other evidence of use or to
+an especially distinctive submission.
+
+Very new projects with little evidence of use or iteration are less likely to be selected. Sharing
+them through Awesome Ratatui, the forum, or Discord first can help them attract users and develop
+further before being considered for the showcase.
+
 ## The bar for apps
 
 The apps page is intentionally selective. In practice, new submissions should look better than a
@@ -147,6 +169,7 @@ Please review your submission against this checklist:
 - Does the animation linger long enough to understand each important state?
 - Would this stand out positively next to the current showcase entries?
 - Is the project already documented and shared in a place like Awesome Ratatui?
+- Has the project had time to gain users and improve in response to their feedback?
 
 If the answer to several of those is "not yet", you will probably have a better experience by
 iterating on the presentation first.
