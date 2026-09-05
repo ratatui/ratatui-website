@@ -24,6 +24,7 @@ fn drain_then_draw(
         drained += 1;
     }
 
+    drained = 0;
     while drained < MAX_EVENTS_PER_TURN {
         let Ok(message) = ui_rx.try_recv() else {
             break;
