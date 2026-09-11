@@ -36,7 +36,7 @@
     "octokit": "^5.0.4",
     "remark-custom-heading-id": "^2.0.0",
     "remark-svgbob": "^2.0.0",
-    "sharp": "^0.35.0",
+    "sharp": "^0.35.4",
     "shiki": "^4.3.1",
     "starlight-auto-sidebar": "^0.4.0",
     "starlight-links-validator": "0.25.2",
