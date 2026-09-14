@@ -169,6 +169,15 @@ colour from the tint the daemon is applying, so it warms from gold by day to can
 
 ---
 
+## [`mtui`](https://github.com/inowattio/MTUI)
+
+A customizable, powerful and versatile Modbus client for the terminal, with live register reading,
+custom value interpretations, graphs and register writes.
+
+![mtui demo](https://raw.githubusercontent.com/inowattio/MTUI/main/.github/resources/demo.gif)
+
+---
+
 ## [`oatmeal`](https://github.com/dustinblackman/oatmeal/)
 
 Oatmeal is a terminal UI chat application that speaks with LLMs, complete with slash commands and
