@@ -23,3 +23,11 @@ in your terminal with `ssh ratcn.com`.
 - [Getting Started](https://ratcn.com/docs/getting-started)
 - [API Documentation](https://docs.rs/ratcn/)
 - [GitHub](https://github.com/kristoferlund/ratcn)
+
+:::note
+
+For an alternative starting point, check out the [Component Template](/templates/component/), which
+provides an opinionated Ratatui application structure with async event handling and example
+components.
+
+:::
