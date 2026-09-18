@@ -22,6 +22,13 @@ sidebar:
   [`Fps`](https://github.com/ratatui/templates/blob/main/component/template/src/components/fps.rs)
   components as examples
 
+:::note
+
+For an alternative starting point, check out [ratcn](/ecosystem/ratcn/), which provides themeable,
+customizable components for Ratatui.
+
+:::
+
 ## Usage
 
 You can start by using `cargo-generate`:
