@@ -20,16 +20,12 @@ const buttons = [
   </div>
   <div class="flex grow"></div>
   <div class="hidden space-x-2 md:flex">
-    {
-      buttons.map((button) => (
-        <a
-          href={button.url}
-          class="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white no-underline hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-hidden dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          {button.text}
-        </a>
-      ))
-    }
+    {buttons.map((button) => <a
+      href={button.url}
+      class="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white no-underline hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-hidden dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+    >
+      {button.text}
+    </a>)}
   </div>
   <div class="flex px-6">
     <Search />

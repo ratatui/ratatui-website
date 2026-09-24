@@ -33,6 +33,8 @@ describe("initializeMermaidDiagrams", () => {
     });
 
     expect(mermaid.initialize).toHaveBeenCalledWith({
+      layout: "dagre",
+      look: "classic",
       securityLevel: "strict",
       startOnLoad: false,
       theme: "dark",
