@@ -1,7 +1,7 @@
 min_version = "2024.9.5"
 
 [tools]
-node = "24"
+node = "26"
 
 [settings]
 # Enable Corepack shims after mise installs Node so the packageManager field in
