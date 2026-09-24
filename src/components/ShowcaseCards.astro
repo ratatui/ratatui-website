@@ -100,10 +100,8 @@ const tileData = [3, 2, 1, 1, 3, 2, 1, 1];
     fresh and full of cheese.
   </p>
   <div class="m-auto flex max-w-[1440px] flex-wrap gap-6">
-    {
-      projects.map((project: ShowcaseProject, index: number) => (
-        <ShowcaseCard colSpan={tileData[index]} project={project} />
-      ))
-    }
+    {projects.map((project: ShowcaseProject, index: number) => (
+      <ShowcaseCard colSpan={tileData[index]} project={project} />
+    ))}
   </div>
 </div>

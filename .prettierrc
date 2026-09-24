@@ -1,4 +1,5 @@
 {
+  "astroCompressHTML": "html",
   "useTabs": false,
   "quoteProps": "preserve",
   "singleQuote": false,

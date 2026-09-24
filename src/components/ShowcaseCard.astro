@@ -50,21 +50,19 @@ try {
   </div>
   <div class="overflow-hidden p-6">
     <a href={url} target="_blank" aria-label={alt}>
-      {
-        media.endsWith("webm") ? (
-          <video class="h-full w-full object-cover" src={media} autoplay muted loop playsinline />
-        ) : media.includes("youtube") ? (
-          <iframe
-            class="h-full w-full"
-            src={media}
-            title="YouTube video player"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-          />
-        ) : (
-          <img class="h-full w-full object-cover" src={media} alt={alt} />
-        )
-      }
+      {media.endsWith("webm") ? (
+        <video class="h-full w-full object-cover" src={media} autoplay muted loop playsinline />
+      ) : media.includes("youtube") ? (
+        <iframe
+          class="h-full w-full"
+          src={media}
+          title="YouTube video player"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      ) : (
+        <img class="h-full w-full object-cover" src={media} alt={alt} />
+      )}
     </a>
   </div>
 </div>

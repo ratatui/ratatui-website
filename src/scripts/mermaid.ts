@@ -70,6 +70,8 @@ async function renderDiagrams(
   reportError: (error: unknown) => void,
 ): Promise<void> {
   mermaid.initialize({
+    layout: "dagre",
+    look: "classic",
     securityLevel: "strict",
     startOnLoad: false,
     theme: page.documentElement.dataset.theme === "dark" ? "dark" : "default",

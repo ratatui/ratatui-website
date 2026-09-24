@@ -39,21 +39,19 @@ const data = [
 ---
 
 <div class="landing-mono flex flex-wrap gap-12 pt-10 text-base max-xl:justify-center max-xl:gap-5">
-  {
-    data.map((datum) => (
-      <a
-        class="bracket-effect flex items-center bg-slate-300 text-left no-underline dark:bg-slate-800"
-        href={datum.url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="bg-slate-100 p-2 text-xl text-black max-sm:text-sm dark:bg-slate-950 dark:text-white">
-          {datum.value}
-        </span>
-        <span class="max-xs:text-xs px-2 text-black max-sm:text-sm dark:text-white">
-          {datum.description}
-        </span>
-      </a>
-    ))
-  }
+  {data.map((datum) => <a
+    class="bracket-effect flex items-center bg-slate-300 text-left no-underline dark:bg-slate-800"
+    href={datum.url}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <span
+      class="bg-slate-100 p-2 text-xl text-black max-sm:text-sm dark:bg-slate-950 dark:text-white"
+    >
+      {datum.value}
+    </span>
+    <span class="max-xs:text-xs px-2 text-black max-sm:text-sm dark:text-white">
+      {datum.description}
+    </span>
+  </a>)}
 </div>

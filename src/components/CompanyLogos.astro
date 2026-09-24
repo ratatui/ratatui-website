@@ -71,23 +71,19 @@ const logos = [
   <div
     class="logo-grid m-0 grid w-full grid-cols-4 items-center gap-y-6 p-0 lg:flex lg:flex-nowrap lg:justify-between lg:gap-0"
   >
-    {
-      logos.map((logo) => (
-        <a
-          class="not-content flex h-[clamp(12px,3.4vw,22px)] min-w-0 shrink items-center justify-center leading-none no-underline lg:h-[22px] lg:justify-start xl:h-[26px] 2xl:h-7"
-          href={logo.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={logo.aria}
-        >
-          <img
-            src={logo.image.src}
-            alt={logo.aria}
-            class="company-logo block h-full w-auto max-w-none self-center object-contain object-center"
-          />
-        </a>
-      ))
-    }
+    {logos.map((logo) => <a
+      class="not-content flex h-[clamp(12px,3.4vw,22px)] min-w-0 shrink items-center justify-center leading-none no-underline lg:h-[22px] lg:justify-start xl:h-[26px] 2xl:h-7"
+      href={logo.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={logo.aria}
+    >
+      <img
+        src={logo.image.src}
+        alt={logo.aria}
+        class="company-logo block h-full w-auto max-w-none self-center object-contain object-center"
+      />
+    </a>)}
   </div>
 </div>
 
