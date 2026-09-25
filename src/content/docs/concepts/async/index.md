@@ -27,35 +27,44 @@ work, and terminal queries must coordinate with the input reader. These requirem
 
 ## Tasks and the UI loop
 
-The UI loop can own application state and the terminal while workers return results for it to apply.
-A background request then follows this sequence:
+Suppose pressing a key starts a network request. The UI must keep accepting input while the request
+waits, then display the result when it arrives. An **event loop** coordinates these events: it waits
+for input or completed work, updates application state, and draws changes.
+
+In this arrangement, the UI loop owns the state and terminal. It starts the request as a separate
+task, then returns to waiting for events:
 
 ```mermaid
-sequenceDiagram
-    participant Input as Keyboard input
-    participant UI as UI loop
-    participant Worker as Background task
-    Input->>UI: Request data
-    UI->>Worker: Start request
-    Note over UI: Continue handling input while work is pending
-    Worker-->>UI: Return result
-    UI->>UI: Update application state
-    UI->>UI: Request a frame
-    UI->>UI: Draw when due
+flowchart TD
+    Input[Keyboard input] --> Events
+    subgraph UI[UI loop]
+        Events[Handle input or completed work]
+        Events -->|Refresh requested| Start[Start request]
+        Events -->|Input or result changes state| Update[Update application state]
+        Update --> Dirty[Request a frame]
+        Dirty --> Draw[Draw when due]
+    end
+    Start --> Worker[Background task]
+    Worker -->|Result| Events
 ```
 
-A **future** represents an operation that can make progress when polled. A **task** is a future
-scheduled by a runtime such as Tokio. A **thread** executes code; several tasks can take turns on
-one thread. An **event loop** waits for input or other changes and dispatches them to handlers.
+Calling an async request function creates a **future**: a value representing work that progresses
+when polled. Spawning that future gives Tokio a **task** to schedule independently of the UI loop.
+The UI can then wait for keyboard input and the task's result together. Awaiting the request
+directly inside the key handler would keep that handler waiting until the request finishes,
+preventing the loop from handling another event.
 
-An `.await` is an opportunity to give control back to the runtime while waiting. A ready future can
-continue immediately, so adding `.await` does not guarantee that another task runs. See
+A task does not need its own **thread**. Tokio can run several tasks on one thread, switching
+between them when they return control. While the request awaits network data that is not yet
+available, its thread can run other tasks. An `.await` on an already-ready future can continue
+immediately, though, so it does not guarantee a switch. This is
 [cooperative scheduling](/concepts/async/scheduling/#cooperative-scheduling).
 
-Ratatui's [`Terminal::draw`] remains synchronous. Widget rendering, backend calls, and flushing
-occupy the calling thread until the operation returns. Awaitable input does not make drawing async,
-and a task reading events may share terminal input with a cursor-position query. The
-[terminal I/O page](/concepts/async/terminal-io/) explains those interactions.
+When the result arrives, the UI loop updates its state and requests a frame. Ratatui's
+[`Terminal::draw`] renders and writes that frame synchronously: the UI loop cannot handle another
+event until drawing returns. The placement of the UI loop therefore matters. A slow draw on a
+runtime thread can also delay other tasks scheduled on that thread; a separate UI thread keeps that
+blocking work off the runtime.
 
 ## Terminal ownership
 
