@@ -26,6 +26,16 @@ that task when a message arrives. A synchronous loop blocked in Crossterm's `pol
 to check its worker queue; see the
 [synchronous alternative](/concepts/async/event-loops/#synchronous-ui-with-async-workers).
 
+In the complete app, a fetch returns through `App.requests` rather than a message channel. The
+receiving branch applies the result and requests a frame:
+
+```rust title="A result reaches the complete app"
+{{ #include @code/concepts/async-applications/src/bin/background.rs:receive_result }}
+```
+
+With the message-based version above, receiving `UiMessage::ItemsLoaded` or `ItemsFailed` takes the
+place of `join_next`. The UI still owns the state update and redraw decision.
+
 ## Channel delivery and backpressure
 
 The result messages above need to reach the UI individually. Other worker updates, such as a
@@ -44,6 +54,13 @@ waits for space, applying backpressure to that producer. It does not bound tasks
 data prepared before sending, or another unbounded queue upstream. Choose what happens when the UI
 cannot keep up: wait, reject new work, combine replaceable updates, or persist data elsewhere.
 
+Dua-cli's [background traversal][dua traversal] applies backpressure to directory scanning. A
+dispatcher thread sends entries through a bounded Crossbeam channel; a full channel blocks that
+producer, and a send failure stops traversal when the receiver has gone away. In the [interactive
+event loop][dua event loop], traversal events are integrated into UI state. This has the same
+producer/consumer relationship as bounded Tokio `mpsc`, but its sender blocks a dedicated thread
+instead of awaiting capacity.
+
 A [`watch`][`tokio::sync::watch`] channel stores the newest value, so a slow receiver can skip
 intermediate values. This suits a progress percentage, but not a sequence of commands that must all
 execute. Copy the current value and release the watch borrow before awaiting another operation:
@@ -55,6 +72,22 @@ execute. Copy the current value and release the watch borrow before awaiting ano
 This helper forwards the initial value too. If its output queue is full, it waits there and later
 observes the newest available progress, skipping percentages replaced during the wait. Closing the
 UI receiver ends forwarding.
+
+In a download view, create the `watch` channel when starting the download, let the worker publish
+percentages, and run `forward_progress` as a tracked task. The UI receives those percentages through
+its normal message branch and marks the view dirty:
+
+```text
+download worker -> watch(percent) -> forward_progress -> UI message queue
+UI receives percent -> update download state -> request redraw
+UI closes its receiver -> forward_progress stops
+```
+
+Gitui's [background job implementation][gitui async job] uses a different mechanism for the same
+separation: it stores a progress snapshot behind a lock and sends notifications to consumers. Its
+`run_job` stores the finished job before sending the final notification, so a notified consumer can
+retrieve the result. Progress state, notification, and final completion have distinct roles even
+when they do not use `watch`.
 
 The same replacement behavior also suits a selection: store `Option<TaskId>` for the selected task
 in `watch`. A transient command such as `SelectTask(id)` followed by an unrelated update can
@@ -79,6 +112,13 @@ absent. `NotAccepted` means the queue rejected the command; `ReplyDropped` means
 accepted but no response arrived. Acceptance alone does not prove that the owner processed it. These
 distinctions let the UI display an unknown ID differently from a lost request. [Actors with Tokio]
 develops the ownership and shutdown implications of this pattern.
+
+Helix's [diff worker] demonstrates a long-lived resource-owning worker in an editor. It receives
+document and base revisions through a channel, retains diffing state between requests, then
+publishes hunks under a short write lock and notifies waiters after releasing the lock. It uses
+shared results and notifications rather than the per-request `oneshot` reply above. Both designs
+keep the worker's computation separate from the UI; the response route depends on whether callers
+need an individual answer or the latest shared result.
 
 A mutex is also a valid choice for small shared state. Keep synchronous lock guards out of awaits
 and keep critical sections short. An async mutex makes waiting for the lock asynchronous; it does
@@ -106,6 +146,19 @@ runtime context because it uses `tokio::spawn`:
 ```rust
 {{ #include @code/concepts/async-applications/src/stale.rs:discard_stale }}
 ```
+
+To add this to a search view, call `start_search` after changing `search_query`, retain its task
+handle, and pass received messages to `handle_message` before drawing:
+
+```text
+on query edit: update query; start_search(view, ui_sender); retain task handle
+on worker message: handle_message(view, message)
+on draw deadline: render view.search_results and view.search_error
+on clear or leave: advance generation; clear visible search state
+```
+
+The worker captures the generation at launch; the UI compares it at receipt. That comparison is
+needed on both the success and error paths.
 
 :::tip[Invalidate requests when clearing the view]
 
@@ -153,3 +206,11 @@ sending it again. The [lifecycle page](/concepts/async/lifecycle/) covers joinin
 [channels tutorial]: https://tokio.rs/tokio/tutorial/channels
 [completion tickets]:
   https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-actor/src/input/complete.rs
+[dua traversal]:
+  https://github.com/Byron/dua-cli/blob/e5b1e89afe554430789d228d8c32f5aa12930a7f/src/traverse.rs#L225-L295
+[dua event loop]:
+  https://github.com/Byron/dua-cli/blob/e5b1e89afe554430789d228d8c32f5aa12930a7f/src/interactive/app/eventloop.rs#L194-L249
+[gitui async job]:
+  https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/asyncgit/src/asyncjob/mod.rs#L111-L155
+[diff worker]:
+  https://github.com/helix-editor/helix/blob/a2c9f44a564592257334ce0cec2fc904412173b5/helix-vcs/src/diff/worker.rs

@@ -41,6 +41,17 @@ Other branches of the **same UI task** wait in every async case. The top-level d
 Tokio's [`main` macro][`tokio::main`] and [`Runtime::block_on`] contracts. More worker threads do
 not make a long UI handler responsive to input.
 
+The [complete event loop](/concepts/async/event-loops/#wait-for-input-results-or-a-frame) puts
+drawing in one `select!` branch. Its fetch runs in a separate task, but the input and completion
+branches still wait while this draw executes:
+
+```rust title="Drawing inside the UI task"
+{{ #include @code/concepts/async-applications/src/bin/background.rs:draw_deadline }}
+```
+
+The same branch also implements the frame deadline discussed below. Separating the fetch from the UI
+task allows input during the request; it does not allow input during a synchronous draw.
+
 ## Measuring and moving expensive work
 
 Measure release builds, including slow frames and bursts rather than just an average. Distinguish:
@@ -66,6 +77,32 @@ Call `start_sort(values, Arc::clone(&slots)).await?` with the same semaphore for
 waits for admission, then returns a handle; await that handle to obtain the sorted values or a
 worker failure. Closing the semaphore rejects waiting requests before dispatch. The owned vector can
 move to the worker without borrowing UI state.
+
+In an application that sorts a large result set, keep admission and completion outside the input
+handler. For example, this pseudocode extends the runnable app's request flow:
+
+```text
+on Sort:
+    snapshot = copy_values_from_UI_state()
+    spawn tracked_async_task:
+        job = await start_sort(snapshot, shared_slots)
+        sorted = await job
+        send_to_UI(SortFinished(sorted))
+on SortFinished(sorted):
+    replace_displayed_values(sorted)
+    request_redraw()
+```
+
+The outer task waits for admission and completion, so the UI can keep handling input. Retain that
+task too: if it is aborted after dispatch, the blocking job keeps running. An app that must join
+every blocking job at exit should retain those job handles in its shutdown owner.
+
+Yazi's [highlighter][Yazi highlighter] shows the worker boundary in a file manager: `oneshot` moves
+file opening and highlighting into `spawn_blocking` and returns prepared text. Its [preview
+controller][Yazi preview tasks] retains the async preview handle and invalidates highlighting when
+the selected file changes. The highlighter checks that invalidation during its work. This
+illustrates offloading and cooperative cancellation; the semaphore above is a separate admission
+policy, not a claim about Yazi's job limits.
 
 Keep the handle even if the user leaves the view. A started blocking closure finishes on its own;
 dropping the handle loses the opportunity to observe that completion. The
@@ -95,9 +132,10 @@ and worker messages are polled separately:
 {{ #include @code/concepts/async-applications/src/drain.rs:drain_then_draw }}
 ```
 
-This compile-tested helper uses placeholder application handlers. It assumes the caller is the sole
-Crossterm reader. The outer loop supplies waiting, quit handling, and any frame deadline; repeatedly
-calling it without waiting would busy-poll.
+This helper isolates the batching approach used in the synchronous example's `run_terminal` function
+and shares its `App` and worker-message types. It assumes the caller is the sole Crossterm reader.
+The outer loop supplies waiting, quit handling, and any frame deadline; repeatedly calling it
+without waiting would busy-poll.
 
 Give terminal input and worker results independent budgets. A shared budget consumed by keyboard
 traffic could prevent results from being read. A count cap bounds calls, not elapsed time; split
@@ -126,10 +164,12 @@ A draw deadline caps frequency; it does not cap how long rendering takes or guar
 will be handled. Tokio's default `select!` branch order also is not a real-time scheduling
 guarantee.
 
-When many components request frames, a shared scheduler can coalesce their requests. The [Codex
-frame scheduler][frame scheduler] and Helix's [request_redraw] show this separation: requesters
-notify; the terminal owner draws. A shared scheduler gives independently updating components one
-place to combine requests and enforce the frame deadline.
+When many components request frames, a shared scheduler can coalesce their requests. Helix's
+[request_redraw] implements this with a `Notify`: `request_redraw()` signals it, and
+`redraw_requested()` provides the future the editor can wait on. The [Codex frame
+scheduler][frame scheduler] provides another example of scheduling requests independently of
+drawing. A shared scheduler gives independently updating components one place to combine requests
+and enforce the frame deadline.
 
 ## Coalescing progress and resize updates
 
@@ -137,6 +177,25 @@ Combining redraw requests leaves application updates intact: the UI still applie
 draws fewer frames. Some updates can also be combined. A progress display needs only the latest
 percentage, and a resized view needs the latest dimensions. Commands, text edits, and log records
 usually need to retain their order and occurrence.
+
+For a progress display, the update handler can replace one value while leaving the draw deadline
+unchanged:
+
+```text
+on Progress(percent):
+    app.percent = percent
+    redraw_requested = true
+on frame_deadline, if redraw_requested:
+    draw(app.percent)   # Uses the newest percentage received so far.
+    redraw_requested = false
+    reset_frame_deadline()
+```
+
+This is the same state-update and deadline split as the
+[runnable event loop](/concepts/async/event-loops/#wait-for-input-results-or-a-frame), with a
+percentage in place of fetched items. The
+[progress channel example](/concepts/async/background-work/#channel-delivery-and-backpressure) also
+combines updates before they reach the UI.
 
 For resize updates, record the latest dimensions and avoid repeatedly rebuilding a large history for
 stale sizes. The [Codex resize reflow guardrails] show limits and timing checks for that specific
@@ -172,3 +231,7 @@ choose these policies independently.
 [`block_in_place`]: https://docs.rs/tokio/latest/tokio/task/fn.block_in_place.html
 [`spawn_blocking`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html
 [`tokio::main`]: https://docs.rs/tokio/latest/tokio/attr.main.html
+[Yazi highlighter]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/highlighter.rs#L28-L144
+[Yazi preview tasks]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/tab/preview.rs#L26-L85

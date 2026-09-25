@@ -18,6 +18,12 @@ this order:
 {{ #include @code/concepts/async-applications/src/bin/background.rs:startup }}
 ```
 
+The cleanup call reaches this method on the same `App` that started the requests:
+
+```rust title="Stop the complete app's pending requests"
+{{ #include @code/concepts/async-applications/src/bin/background.rs:shutdown }}
+```
+
 The example's simulated requests have no external side effects, so aborting unfinished requests on
 exit is acceptable. [`JoinSet::shutdown`] aborts tasks and waits for the collection to finish. A
 file save or transaction may require a different policy. Ratatui's initialization installs a panic
@@ -77,6 +83,12 @@ Borrowing the handle lets the caller retain it if this helper's future is droppe
 still join the job during shutdown. This is a policy for finite work: it deliberately has no timeout
 and can keep shutdown waiting for a slow sort. A long-lived UI can retain several handles in a task
 collection and select on completions while continuing to process input.
+
+Yazi's [preview controller][Yazi preview tasks] illustrates why cancelling the async waiter and
+stopping blocking work are separate operations. It aborts its preview task and calls
+`Highlighter::abort()`; the [highlighter][Yazi highlighter] observes the changed ticket at
+checkpoints. The sorting helper has no such checkpoints, so `finish_sort` instead waits for the sort
+to finish. Choose between these policies according to whether the work can stop partway.
 
 ## Terminal handoff to a child process
 
@@ -150,3 +162,7 @@ a real terminal; a widget buffer test cannot validate terminal ownership.
 [`spawn_blocking`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html
 [spawn Vim recipe]: /recipes/apps/spawn-vim/
 [`JoinSet::shutdown`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.shutdown
+[Yazi preview tasks]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/tab/preview.rs#L26-L85
+[Yazi highlighter]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/highlighter.rs#L28-L144

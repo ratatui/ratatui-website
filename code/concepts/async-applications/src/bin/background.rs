@@ -82,6 +82,7 @@ async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
                 None => break,
             },
             // An empty JoinSet returns None immediately. Disable it to avoid a busy loop.
+            // ANCHOR: receive_result
             Some(result) = app.requests.join_next(), if !app.requests.is_empty() => {
                 // A worker panic invokes the process-wide panic hook, which restores terminal
                 // modes. Exit through cleanup rather than drawing again in that altered session.
@@ -89,6 +90,8 @@ async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
                 app.finish_fetch(result?);
                 dirty = true;
             }
+            // ANCHOR_END: receive_result
+            // ANCHOR: draw_deadline
             _ = tokio::time::sleep_until(next_frame), if dirty => {
                 // draw is synchronous. Other branches of THIS task wait until it returns.
                 terminal.draw(|frame| app.render(frame))?;
@@ -96,6 +99,7 @@ async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
                 // No accumulated timer ticks to replay after an idle period or slow draw.
                 next_frame = Instant::now() + frame_spacing;
             }
+            // ANCHOR_END: draw_deadline
         }
     }
     Ok(())
@@ -132,10 +136,12 @@ impl App {
     ///
     /// These workers have no external side effects, so aborting is sufficient. JoinSet::shutdown
     /// does not report worker panics during exit. Call this after restoring the terminal.
+    // ANCHOR: shutdown
     async fn shutdown(&mut self) {
         self.requests.shutdown().await;
         self.loading = false;
     }
+    // ANCHOR_END: shutdown
 
     fn render(&self, frame: &mut Frame) {
         let status = if self.loading {
