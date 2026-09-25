@@ -5,6 +5,10 @@ sidebar:
   label: Apps
 ---
 
+To contribute to the showcase, read [Submitting to the Showcase].
+
+[Submitting to the Showcase]: /recipes/apps/submitting-to-the-showcase/
+
 <!--
 Before adding an app, read the showcase submission guidance and open a showcase submission issue:
 https://ratatui.rs/recipes/apps/submitting-to-the-showcase/
