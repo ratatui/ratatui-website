@@ -66,7 +66,7 @@ async fn run(terminal: &mut DefaultTerminal, requests: &mut JoinSet<FetchResult>
             event = events.next() => match event {
                 Some(Ok(Event::Key(key))) if key.kind == KeyEventKind::Press => {
                     match key.code {
-                        KeyCode::Esc | KeyCode::Char('q') => break,
+                        KeyCode::Char('q') | KeyCode::Esc => break,
                         KeyCode::Char('+') => app.counter = app.counter.saturating_add(1),
                         KeyCode::Char('-') => app.counter = app.counter.saturating_sub(1),
                         KeyCode::Char('r') => app.start_fetch(requests, FetchOutcome::Success),
