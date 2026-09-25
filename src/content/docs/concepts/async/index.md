@@ -72,18 +72,28 @@ blocking work off the runtime.
 
 ## Terminal ownership
 
-Keep terminal operations ordered and give worker results a way to reach the event loop. These are
-three arrangements with different waiting and lifecycle costs:
+The request flow above works with either an async or a synchronous UI loop. In both arrangements,
+the UI loop owns application state and drawing; background tasks return results for it to apply. The
+difference is how the loop waits:
 
-| Arrangement               | Main tradeoff                                       |
-| ------------------------- | --------------------------------------------------- |
-| One async UI task         | Wait on several sources; drawing blocks the task    |
-| Sync UI, async workers    | Isolate terminal calls; arrange result wakeups      |
-| Dedicated terminal thread | Isolate blocking work; design commands and shutdown |
+| UI loop                           | Waiting mechanism                                   |
+| --------------------------------- | --------------------------------------------------- |
+| Async UI task                     | Awaits input, results, and frame deadlines together |
+| Synchronous UI with async workers | Polls input and checks a result channel             |
 
-A plain synchronous loop is enough when handlers finish promptly. A separate input task is also
-possible, but it must participate in terminal queries and handoffs; simply putting input and output
-in different tasks does not make them independent.
+The [runnable example](/concepts/async/event-loops/) uses the async UI task. The
+[synchronous alternative](/concepts/async/event-loops/#synchronous-ui-with-async-workers) runs the
+UI on the main thread and async workers on a multi-thread Tokio runtime. That synchronous UI loop
+can also run on a dedicated thread, provided the application can signal it to stop and join it
+during shutdown. If the app has no background work and its input handlers finish promptly, it can
+use a synchronous loop without an async runtime.
+
+Input ownership is a further choice within either arrangement. A separate input task or thread can
+forward events to the UI loop, but it still reads from the same terminal that receives query replies
+and child-program input. It must coordinate with [terminal queries](/concepts/async/terminal-io/)
+and stop before a
+[child-program handoff](/concepts/async/lifecycle/#terminal-handoff-to-a-child-process). Moving
+input out of the UI loop therefore adds coordination beyond choosing how that loop waits.
 
 :::caution[Use one Crossterm input strategy]
 

@@ -18,7 +18,8 @@ before returning. Calling it inside an async function does not change that contr
 large view or writing to a slow terminal can delay the surrounding task. See
 [scheduling](/concepts/async/scheduling/) for choosing an execution context and measuring the delay.
 
-Not every terminal operation asks the terminal emulator for a reply:
+The coordination needed during those synchronous calls depends on how they obtain terminal state.
+Some read dimensions from the OS; others send a request to the terminal emulator and read its reply:
 
 | Operation                  | Behavior in the linked implementation            |
 | -------------------------- | ------------------------------------------------ |
@@ -54,10 +55,10 @@ If an unrelated reader consumes the reply, the query can time out or the reader 
 bytes as ordinary input. Holding a lock around the `Terminal` value does not coordinate an input
 helper that never acquires that lock.
 
-Crossterm's [event module] explicitly requires using `poll` and `read` on the same thread and
-forbids combining them with `EventStream`. Choose one input strategy. An `EventStream` presents an
-async interface, but its [implementation][`EventStream` source] uses a helper around the internal
-blocking reader. It is not an independent input stream for each consumer.
+To avoid competing event readers, Crossterm's [event module] requires using `poll` and `read` on the
+same thread and forbids combining them with `EventStream`. Choose one input strategy. An
+`EventStream` presents an async interface, but its [implementation][`EventStream` source] uses a
+helper around the internal blocking reader. It is not an independent input stream for each consumer.
 
 Some Crossterm queries also interact with the [internal event
 reader][`crossterm internal event reader source`]. The Unix [cursor-position
@@ -73,7 +74,8 @@ reader and handles when investigating a similar stall.
 
 ## Startup and runtime queries
 
-For a fullscreen app without runtime queries, a practical starting point is:
+If a fullscreen app needs queries only at startup, it can avoid overlapping those queries with
+normal input reading. Keep that ordering explicit:
 
 1. Initialize modes and perform necessary startup probes before starting normal input reading.
 1. Use one input strategy for the session.
@@ -95,20 +97,22 @@ broker needs.
 
 ## Redirected input and output
 
-Redirection changes assumptions. Stdin can be a pipe containing application data while a terminal
-library reads `/dev/tty`; stdout can be redirected while the UI uses stderr. A new descriptor for
-`/dev/tty` still refers to the same underlying terminal input, not a private copy of keystrokes.
-Likewise, `stdin().lock()` only coordinates users of that Rust stdin lock.
+Coordinating queries also requires knowing which handles actually reach the terminal. Stdin can be a
+pipe containing application data while a terminal library reads `/dev/tty`; stdout can be redirected
+while the UI uses stderr. A new descriptor for `/dev/tty` still refers to the same underlying
+terminal input, not a private copy of keystrokes. Likewise, `stdin().lock()` only coordinates users
+of that Rust stdin lock.
 
 Use [`std::io::IsTerminal`] when deciding whether a stream is a terminal, then choose an explicit
 policy: reject unsupported redirection, use a separate controlling-terminal handle where the
 platform permits it, or run a noninteractive mode. Being a terminal does not prove support for a
 particular escape protocol. The [stdout and stderr] FAQ explains Ratatui's output choices.
 
-Tokio's [`stdin`][`tokio::io::stdin`] uses blocking work internally and documents that the read
-cannot be cancelled. It is not a drop-in solution for interactive input ownership or prompt
-shutdown. Its [`Stdout`][`tokio::io::Stdout`] also has its own buffering and blocking implementation
-details; wrapping output in an async API does not make Ratatui's draw pipeline asynchronous.
+After choosing handles, check the I/O wrapper's behavior as well. Tokio's
+[`stdin`][`tokio::io::stdin`] uses blocking work internally and documents that the read cannot be
+cancelled. It is not a drop-in solution for interactive input ownership or prompt shutdown. Its
+[`Stdout`][`tokio::io::Stdout`] also has its own buffering and blocking implementation details;
+wrapping output in an async API does not make Ratatui's draw pipeline asynchronous.
 
 When diagnosing a failure, record the backend and versions, OS, terminal emulator, viewport mode,
 redirected handles, and active readers. They determine which input and output paths the application

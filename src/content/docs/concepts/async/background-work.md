@@ -28,6 +28,10 @@ to check its worker queue; see the
 
 ## Channel delivery and backpressure
 
+The result messages above need to reach the UI individually. Other worker updates, such as a
+progress percentage, can replace earlier values. Choose the communication mechanism according to
+what the receiver needs to retain:
+
 | Requirement                              | Starting point                   |
 | ---------------------------------------- | -------------------------------- |
 | Process each accepted command or result  | Bounded `mpsc`                   |
@@ -52,17 +56,18 @@ This helper forwards the initial value too. If its output queue is full, it wait
 observes the newest available progress, skipping percentages replaced during the wait. Closing the
 UI receiver ends forwarding.
 
-Store durable state in `watch`: for example, `Option<TaskId>` for the selected task. A transient
-command such as `SelectTask(id)` followed by an unrelated update can disappear before the receiver
-observes it. The [tokio-console detail watcher] is a useful example of maintaining a subscription
-for the selected task; when adapting such a design, inspect both what the channel retains and
-whether waiting to forward a result delays noticing a changed selection.
+The same replacement behavior also suits a selection: store `Option<TaskId>` for the selected task
+in `watch`. A transient command such as `SelectTask(id)` followed by an unrelated update can
+disappear before the receiver observes it. The [tokio-console detail watcher] is a useful example of
+maintaining a subscription for the selected task; when adapting such a design, inspect both what the
+channel retains and whether waiting to forward a result delays noticing a changed selection.
 
 ## Resource ownership with actors
 
-An actor is a task that owns a resource and processes commands. This can keep a connection's
-protocol state in one place without placing a mutex around the whole UI. A command can carry its own
-response channel:
+Channels can carry requests to a worker as well as results back to the UI. When one task owns a
+resource and processes commands for it, that task is called an actor. For example, an actor can keep
+a connection's protocol state in one place. Each command can carry a `oneshot` channel for its
+response, as in this name-lookup request:
 
 ```rust
 {{ #include @code/concepts/async-applications/src/coordination.rs:reply }}
@@ -82,9 +87,10 @@ redraw after a mutation.
 
 ## Stale search results
 
-Suppose the user searches for `cat`, then `catalog`. The first request may finish last. Applying
-results in arrival order would replace the newer result with the older one. Give each request an
-identity and check it when applying both successes and failures:
+Whether results arrive through channels or task handles, the UI needs to decide whether they still
+apply to the current view. Suppose the user searches for `cat`, then `catalog`. The first request
+may finish last. Applying results in arrival order would replace the newer result with the older
+one. Give each request an identity and check it when applying both successes and failures:
 
 ```text
 start "cat"      generation 1
@@ -118,18 +124,21 @@ tickets] provide another application example of associating results with a reque
 
 ## Cancellation and partial progress
 
-When a [`tokio::select!`] branch wins, the other branch futures are dropped. Check the cancellation
-contract of each operation, especially if it holds partially completed work. Tokio documents
-[`mpsc::Receiver::recv`] as cancellation safe; operations such as [`read_exact`] and [`write_all`]
-can make partial progress before cancellation. A retry must account for that progress.
+Cancelling obsolete work requires knowing which future is dropped. When a [`tokio::select!`] branch
+wins, the other branch futures are dropped. Check the cancellation contract of each operation,
+especially if it holds partially completed work. Tokio documents [`mpsc::Receiver::recv`] as
+cancellation safe; operations such as [`read_exact`] and [`write_all`] can make partial progress
+before cancellation. A retry must account for that progress.
 
-Dropping a spawned task's `JoinHandle` detaches the task rather than aborting it. Retain handles or
-use a task collection when the application needs to observe completion and failure. A cancellation
-signal asks cooperating work to stop; a generation check decides whether a result is still useful.
-For a request that changes remote state, cancellation can leave the outcome unknown: the server may
-have applied it before the response was lost. Inspect the operation's status or use its documented
-retry mechanism before sending it again. The [lifecycle page](/concepts/async/lifecycle/) covers
-joining work at exit.
+A spawned task has a separate lifetime from a future waiting for its result. Dropping the task's
+`JoinHandle` detaches the task rather than aborting it. Retain handles or use a task collection when
+the application needs to observe completion and failure. A cancellation signal asks cooperating work
+to stop; a generation check decides whether a result is still useful.
+
+Even when cancellation stops local work, it may not undo its effects. For a request that changes
+remote state, cancellation can leave the outcome unknown: the server may have applied it before the
+response was lost. Inspect the operation's status or use its documented retry mechanism before
+sending it again. The [lifecycle page](/concepts/async/lifecycle/) covers joining work at exit.
 
 [tokio-console detail watcher]:
   https://github.com/tokio-rs/console/blob/59e23edf17b0e42e87e315bfc9cbb8a6ba2f401f/tokio-console/src/main.rs#L206-L249

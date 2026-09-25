@@ -52,15 +52,17 @@ printing to the terminal:
 {{ #include @code/concepts/async-applications/src/bin/background.rs:state }}
 ```
 
-The example models an I/O wait with [`tokio::time::sleep`]. Replace it with an async client call for
-real network work. Replacing it with `std::thread::sleep` would block the task's thread instead.
+The fetch task produces that result after a simulated I/O wait using [`tokio::time::sleep`]. Replace
+it with an async client call for real network work. Replacing it with `std::thread::sleep` would
+block the task's thread instead.
 
 ```rust title="A reproducible request"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:fetch }}
 ```
 
-[`JoinSet`] retains the spawned task and provides a future for its next completion. Starting work
-returns immediately; the event loop awaits completion separately:
+To run the fetch while continuing to accept input, `start_fetch` spawns it into a [`JoinSet`]. The
+set retains the spawned task and provides a future for its next completion. Starting work returns
+immediately; the event loop awaits completion separately:
 
 ```rust title="Start work without waiting in the input handler"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:start_fetch }}
@@ -72,8 +74,9 @@ update the view. Search-as-you-type needs a different policy; see
 
 ## Wait for input, results, or a frame
 
-[`tokio::select!`] polls several futures in one task. When one branch is ready, its handler runs;
-the loop must return to `select!` before it can handle another source.
+The UI loop now has three sources to wait for: Crossterm input, a completion from the `JoinSet`, and
+the next frame deadline. [`tokio::select!`] polls these futures in one task. When one branch is
+ready, its handler runs; the loop must return to `select!` before handling another source.
 
 ```rust title="Three reasons to wake the UI"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:event_loop }}
@@ -103,13 +106,15 @@ wait. Drawing still blocks this task while it runs.
 
 ## Apply results and clean up
 
-Completion changes state on the UI owner. This app keeps old data visible after a failed refresh:
+The completion branch calls `finish_fetch` to apply the result to UI state. A successful refresh
+replaces the items; a failed refresh records the error while keeping the old items visible:
 
 ```rust title="Turn a result into UI state"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:finish_fetch }}
 ```
 
-Keep cleanup outside the fallible loop, so an input or draw error reaches it too:
+A failed fetch can be displayed inside the UI, but an input or draw error exits the loop. Keep
+terminal cleanup outside that fallible loop so it runs on both an error and a normal quit:
 
 ```rust title="Restore before returning an error"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:startup }}
@@ -121,9 +126,10 @@ file writes, child processes, or blocking jobs. Those need the policies describe
 
 ## Synchronous UI with async workers
 
-A synchronous main thread can own `poll`, `read`, and `draw` while a multi-thread Tokio runtime runs
-background work. Worker messages then need either a shared wakeup mechanism or a polling interval.
-Here is the arrangement using a short input timeout:
+The example above waits inside an async UI task. An alternative is to keep `poll`, `read`, and
+`draw` on a synchronous main thread while a multi-thread Tokio runtime runs the background tasks.
+This changes how results reach the UI: a channel send cannot wake Crossterm's `poll`, so the loop
+below uses a short input timeout before checking worker messages.
 
 <details>
 <summary>Synchronous owner with async workers (compile-tested structure)</summary>
@@ -136,9 +142,11 @@ Here is the arrangement using a short input timeout:
 
 `App`, `Item`, and `load_items` in that companion snippet are teaching stubs, not another runnable
 app. They live in the package's compile-only library, so `cargo run` always starts the complete
-example. Separate limits on input events and worker messages prevent either source from consuming
-the whole batch. The input wait is capped at 16 ms because a channel send cannot wake Crossterm's
-`poll`. Handlers and drawing add to that wait.
+example.
+
+The loop caps its input wait at 16 ms before checking the worker channel. Separate limits on input
+events and worker messages prevent either source from consuming the whole batch. Handlers and
+drawing add to the time before the next check.
 
 Use [`Runtime::spawn`] or a runtime [`Handle`] from this synchronous code. Merely creating a runtime
 does not enter its context for `tokio::spawn`. A current-thread runtime also needs `block_on` to

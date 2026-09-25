@@ -51,9 +51,10 @@ Move expensive application work to a worker that returns prepared data. Keep ren
 snapshotted consistently. Moving computation does not fix a blocked terminal writer, and moving
 terminal operations must preserve [reader and writer coordination](/concepts/async/terminal-io/).
 
-For finite blocking work, [`spawn_blocking`] provides a separate pool. CPU-heavy work should have
-bounded concurrency or use a CPU-oriented pool such as [Rayon]. Here the permit follows the actual
-work, even if its awaiting task is cancelled:
+For finite blocking application work, [`spawn_blocking`] provides a separate pool. CPU-heavy work
+should have bounded concurrency or use a CPU-oriented pool such as [Rayon]. This sorting example
+uses a semaphore to limit admitted jobs. Each job keeps its permit until the blocking closure
+finishes, even if the task waiting for it is cancelled:
 
 ```rust title="Bound admitted CPU jobs"
 {{ #include @code/concepts/async-applications/src/coordination.rs:blocking_work }}
@@ -73,14 +74,20 @@ Admission bounds dispatched jobs. Callers waiting for slots still retain their v
 completed jobs can retain output until it is received. Limit request production and payload sizes as
 well. Long operations need their own cancellation checkpoints when they can stop between chunks.
 
-Use a dedicated thread for a persistent blocking loop. [`block_in_place`] allows Tokio to hand work
-to another worker, but still suspends other futures within the same task and cannot run on a
-current-thread runtime. Neither function makes it safe to scatter terminal reads across threads.
+The sorting example is a finite job. For a persistent blocking loop, such as a terminal reader, use
+a dedicated thread with its own shutdown protocol. Tokio also offers [`block_in_place`] to allow
+blocking within a runtime worker while other work moves to another worker. It still suspends other
+futures within the same task and cannot run on a current-thread runtime. Neither `spawn_blocking`
+nor `block_in_place` coordinates terminal access; moving terminal operations still requires a single
+input strategy and ordered output.
 
 ## Batching updates before drawing
 
-Drawing after each queued update can show intermediate states that are already obsolete. Instead,
-process a bounded batch before drawing:
+Moving computation to workers can leave the UI with a queue of results to apply. Drawing after each
+result can show intermediate states that are already obsolete, so process a bounded batch before
+drawing. This helper uses the
+[synchronous UI loop](/concepts/async/event-loops/#synchronous-ui-with-async-workers), where input
+and worker messages are polled separately:
 
 ```rust title="One synchronous loop turn"
 {{ #include @code/concepts/async-applications/src/drain.rs:drain_then_draw }}
@@ -101,7 +108,9 @@ messages; use a batch limit when adapting this approach.
 
 ## Redraw requests and frame deadlines
 
-In the [runnable loop](/concepts/async/event-loops/), two values control drawing:
+Batching limits the work done in one loop turn. A frame deadline additionally prevents successive
+turns from drawing too frequently. In the [async runnable loop](/concepts/async/event-loops/), two
+values determine whether to draw:
 
 - `dirty`: an event or result may have changed the visible state.
 - `next_frame`: the earliest time another draw should begin.
@@ -122,13 +131,17 @@ place to combine requests and enforce the frame deadline.
 
 ## Coalescing progress and resize updates
 
-Keep the latest progress percentage or requested dimensions when intermediate values do not matter.
-Preserve commands, text edits, and log records whose order or occurrence matters. Debouncing a
-search request is not permission to discard the keystrokes that change the search text.
+Combining redraw requests leaves application updates intact: the UI still applies each update but
+draws fewer frames. Some updates can also be combined. A progress display needs only the latest
+percentage, and a resized view needs the latest dimensions. Commands, text edits, and log records
+usually need to retain their order and occurrence.
 
-For resize, record the latest dimensions and avoid repeatedly rebuilding a large history for stale
-sizes. The [Codex resize reflow guardrails] show limits and timing checks for that specific
+For resize updates, record the latest dimensions and avoid repeatedly rebuilding a large history for
+stale sizes. The [Codex resize reflow guardrails] show limits and timing checks for that specific
 workload. Their thresholds depend on the representation and are not universal TUI defaults.
+
+Debouncing reduces how often work starts. For example, a search can wait briefly after typing before
+sending a request, while still applying every keystroke to the search text.
 
 Bacon's [executor][bacon executor] delays command starts through a grace period but has an unbounded
 output channel at the pinned revision. Debouncing starts does not bound output from a running

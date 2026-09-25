@@ -27,9 +27,11 @@ waits for keyboard input, repair the event-loop wakeup. If receipt is prompt but
 inspect the dirty flag and frame deadline. If the frame itself is slow, measure rendering and
 backend output separately.
 
-The [simple-async template][`simple-async` template] is a small input-driven starting point. Adding
-background workers also requires a way for their completion to wake the loop. Conversely, adding an
-unconditional high-frequency tick can hide the missing wakeup while wasting work at idle.
+For example, the [simple-async template][`simple-async` template] waits for input between draws. If
+a worker changes shared state without waking that loop, the timing log will show a completed request
+followed by no frame until the next input. Adding workers requires adding a completion wakeup too.
+Conversely, adding an unconditional high-frequency tick can hide the missing wakeup while wasting
+work at idle.
 
 ## Overload and out-of-order results
 
@@ -38,10 +40,11 @@ order. Confirm that input, worker messages, and rendering each receive turns. A 
 bounds the number of handlers per turn, not their elapsed time; one expensive handler can still
 stall the loop. A bounded channel limits its queue, not every source of memory in the application.
 
-For search, test both a stale success and a stale failure. Clear the query while work is pending.
+For search, test both a stale success and a stale failure, including after clearing the query while
+work is pending. Neither result should change the cleared view.
+
 For shutdown, quit while a request is waiting, while the result queue is full, and while a blocking
-job is running. Check that shutdown completes and that late successes or failures do not change a
-cleared view.
+job is running. Check that each worker finishes or stops according to the app's shutdown policy.
 
 ## Isolating terminal reader conflicts
 
@@ -60,20 +63,21 @@ Useful source-backed investigations include:
   repair; inspect the affected operation rather than attributing every draw failure to async input.
 - The [Codex color-query patch] and [EventStream refactor][Codex EventStream refactor]: concrete
   examples of query coordination and input lifecycle changes.
-- The [Codex resize reflow guardrails]: an example of handling costly resize-related work.
 
 Compare the report's library version and terminal setup with your reproducer, then check whether the
 affected code has changed. A fix for one query or platform may leave another path unaffected.
 
 ## Unit, pseudo-terminal, and terminal tests
 
-Use ordinary unit tests for message application, request identities, and state transitions.
-Ratatui's `TestBackend` can check what a draw produces. A pseudo-terminal test can exercise input,
-output, resize, and process exit. Actual terminal testing is still needed for emulator-specific
-queries, job control, and platform mode handling. Use channels or barriers to place workers at known
-points when testing cancellation; sleeps alone do not establish that a worker has started. State
-which backend, dependency versions, and platform were exercised. A successful compile does not
-validate terminal behavior on another OS.
+Turn the reproducer into a test at the level where the failure occurs. Use ordinary unit tests for
+message application, request identities, and state transitions. Ratatui's `TestBackend` can check
+what a draw produces. A pseudo-terminal test can exercise input, output, resize, and process exit.
+Actual terminal testing is still needed for emulator-specific queries, job control, and platform
+mode handling.
+
+For cancellation tests, use channels or barriers to place workers at known points; sleeps alone do
+not establish that a worker has started. For terminal integration tests, record the backend,
+dependency versions, and platform exercised so failures on another setup can be compared.
 
 When reporting an issue, include a small reproducer, the expected ordering, the observed ordering,
 and where a stack trace or timing measurement shows the wait. Distinguish widget rendering time from
@@ -87,8 +91,6 @@ maintainer to infer the architecture of the whole application.
 [crossterm/crossterm#1039]: https://github.com/crossterm-rs/crossterm/issues/1039
 [`simple-async` template]:
   https://github.com/ratatui/templates/tree/cd2b97b11fd4dcc40607e8ab3f73bc09c12c6a4f/simple-async
-[Codex resize reflow guardrails]:
-  https://github.com/openai/codex/commit/3aa637c4750715cf23589ee3f4b1d0b6563c7d3e
 [crossterm/crossterm#919]: https://github.com/crossterm-rs/crossterm/issues/919
 [ratatui/ratatui#2483]: https://github.com/ratatui/ratatui/issues/2483
 [ratatui/ratatui#2485]: https://github.com/ratatui/ratatui/pull/2485

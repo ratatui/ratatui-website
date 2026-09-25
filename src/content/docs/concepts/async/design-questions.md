@@ -34,16 +34,19 @@ event ordering. [Crossterm #763][crossterm/crossterm#763] discusses the broader 
 
 ## Separate rendering and presentation APIs
 
-[`Terminal::draw`] combines rendering with backend operations. The [linked
-implementation][`Terminal::try_draw` source] already has lower-level buffer application methods, so
-applications can customize parts of this lifecycle. A higher-level separation could make it easier
-to prepare a frame on a worker and present it under the terminal owner.
+Input routing addresses who reads query replies. Drawing raises a separate ownership question: which
+work must run with the terminal owner? [`Terminal::draw`] combines rendering with backend
+operations. The [linked implementation][`Terminal::try_draw` source] already has lower-level buffer
+application methods, so applications can customize parts of this lifecycle. A higher-level
+separation could make it easier to prepare a frame on a worker and present it under the terminal
+owner.
 
-Rendering widgets into a [`Buffer`] is only part of that contract. A presenter also needs cursor
-state, viewport placement, and the dimensions for which the frame was prepared. It must decide what
-to do when a resize arrives before presentation. Diffs must be computed against the last
-successfully presented state; dropping an intermediate frame must not leave the terminal and the
-presenter's bookkeeping out of sync.
+In such a split, the presentation step would write a prepared frame to the terminal. The [`Buffer`]
+produced by widget rendering is only part of what it needs: presentation also needs cursor state,
+viewport placement, and the dimensions for which the frame was prepared. It must decide what to do
+when a resize arrives before presentation. Diffs must be computed against the last successfully
+presented state; dropping an intermediate frame must not leave the terminal and the presentation
+code's bookkeeping out of sync.
 
 Inline viewports add a cursor query to locate the UI ([inline size
 calculation][`compute_inline_size` source]). A proposed split needs to account for that query,
@@ -68,7 +71,8 @@ make expensive state updates cheap.
 
 ## Terminal release and reacquisition
 
-A terminal session could provide operations for temporarily releasing the terminal to a child and
+The input reader and drawing code must both pause when another program takes over the terminal. A
+terminal session could provide operations for temporarily releasing the terminal to a child and
 reacquiring it afterward. The [Codex EventStream refactor] and [gitui input thread] show why
 stopping input belongs in this operation. The [Codex suspend fix] adds another requirement: shell
 job control can change cursor and mode state while the application is suspended.
@@ -84,7 +88,8 @@ themselves.
 
 ## Input reader shutdown and portability
 
-Crossterm's `EventStream` uses a helper thread around a blocking reader. Tokio's
+A release operation can only promise that input has stopped if its reader provides a way to confirm
+that. Crossterm's `EventStream` uses a helper thread around a blocking reader. Tokio's
 [`stdin`][`tokio::io::stdin`] also uses blocking work, but its read cannot be cancelled and can
 delay runtime shutdown. These are different lifecycle contracts. A helper thread is not inherently a
 reason an async API cannot work; what matters is how that thread is stopped and who owns the input.
@@ -96,8 +101,8 @@ identical OS behavior.
 
 ## Protocol and lifecycle regression tests
 
-The [failure reports](/concepts/async/troubleshooting/) suggest regression scenarios for terminal
-libraries and applications:
+The routing, presentation, and handoff APIs above need tests that exercise their shared terminal
+access. The [failure reports](/concepts/async/troubleshooting/) suggest these regression scenarios:
 
 - Mix query replies with ordinary input and confirm that unrelated input survives.
 - Deliver a reply after its timeout, or split it across reads.

@@ -31,7 +31,8 @@ information to diagnose the failure after leaving the UI.
 
 ## Worker shutdown
 
-A useful shutdown sequence is:
+The example can abort its simulated requests, but an app with file saves, persistent workers, or
+child processes needs a shutdown policy for each kind of work. Once the UI decides to exit:
 
 1. Stop accepting new operations.
 1. Signal long-lived workers to finish or cancel, according to each operation's policy.
@@ -86,11 +87,11 @@ handoff design.
 
 :::caution[Stop the input reader before launching a child]
 
-Do not copy this helper unchanged into an async input design. There, the sequence also needs to stop
-the input owner and receive acknowledgement **before** the child starts. Crossterm 0.29's
-[`EventStream` source] signals its helper on drop but exposes no join acknowledgement. Dropping the
-stream is therefore not a documented, complete handoff protocol. Choose an input implementation with
-the lifecycle guarantees your application needs.
+An app with a separate input task or thread must stop that reader and receive acknowledgement
+**before** the child starts. The synchronous helper below assumes no such reader exists. Crossterm
+0.29's [`EventStream` source] signals its helper on drop but exposes no join acknowledgement.
+Dropping the stream is therefore not a documented, complete handoff protocol. Choose an input
+implementation with the lifecycle guarantees your application needs.
 
 :::
 
@@ -124,10 +125,12 @@ structure.
 
 ## Suspend and resume
 
-Shell job control can change modes, cursor state, and which process owns the terminal. After resume,
-Ratatui's saved buffer may no longer match the terminal display. Reacquire the required modes,
-synchronize input ownership, invalidate stale display state, and redraw as appropriate for the
-platform. The [Codex suspend fix] is an example of correcting cursor behavior in this path.
+Suspending the TUI through shell job control also releases the terminal, this time to the shell
+rather than to a child launched by the app. Job control can change modes, cursor state, and which
+process owns the terminal. After resume, Ratatui's saved buffer may no longer match the terminal
+display. Reacquire the required modes, synchronize input ownership, invalidate stale display state,
+and redraw as appropriate for the platform. The [Codex suspend fix] is an example of correcting
+cursor behavior in this path.
 
 Keep signal handling separate from ordinary Rust cleanup: many I/O and synchronization operations
 are unsuitable inside a low-level signal handler. Use a platform-appropriate notification mechanism
