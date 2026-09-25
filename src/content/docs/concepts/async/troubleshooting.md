@@ -51,10 +51,12 @@ replace one supported reader with two readers while experimenting: that changes 
 Useful source-backed investigations include:
 
 - [Crossterm #1039][crossterm/crossterm#1039]: interaction between readers and query replies.
-- [Crossterm #919][crossterm/crossterm#919]: terminal-query behavior worth checking against the
-  reported environment and version.
-- [Ratatui #2483][ratatui/ratatui#2483] and [the related change][ratatui/ratatui#2485]: historical
-  context for investigating terminal operations around async input.
+- [Crossterm #919][crossterm/crossterm#919]: `cursor::position()` times out when stdout is piped in
+  the reported macOS/WezTerm setup, while the size call works. Check query handles separately from
+  the writer selected for drawing.
+- [Ratatui #2483][ratatui/ratatui#2483] reports rendering failures when the app and terminal
+  operations compete for stdin. The [related change][ratatui/ratatui#2485] records the proposed
+  repair; inspect the affected operation rather than attributing every draw failure to async input.
 - The [Codex color-query patch] and [EventStream refactor][Codex EventStream refactor]: concrete
   examples of query coordination and input lifecycle changes.
 - The [Codex resize reflow guardrails]: an example of handling costly resize-related work.
@@ -68,7 +70,10 @@ related case.
 Use ordinary unit tests for message application, request identities, and state transitions.
 Ratatui's `TestBackend` can check what a draw produces. A pseudo-terminal test can exercise input,
 output, resize, and process exit. Actual terminal testing is still needed for emulator-specific
-queries, job control, and platform mode handling.
+queries, job control, and platform mode handling. Use channels or barriers to place workers at known
+points when testing cancellation; sleeps alone do not establish that a worker has started. State
+which backend, dependency versions, and platform were exercised. A successful compile does not
+validate terminal behavior on another OS.
 
 When reporting an issue, include a small reproducer, the expected ordering, the observed ordering,
 and where a stack trace or timing measurement shows the wait. Distinguish widget rendering time from

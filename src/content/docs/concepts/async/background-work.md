@@ -17,7 +17,7 @@ whether to keep old data, show an error, or retry. It should not print the error
 This compile-tested excerpt uses placeholder `Item`, `JobId`, and `load_items` application types:
 
 ```rust
-{{ #include @code/concepts/async-applications/src/main.rs:messages }}
+{{ #include @code/concepts/async-applications/src/sync_ui.rs:messages }}
 ```
 
 A message does not inherently wake every kind of event loop. Selecting on an async receiver wakes
@@ -68,9 +68,11 @@ response channel:
 ```
 
 The owner receives `GetName`, looks up the ID, and calls `command.reply.send(value)`. That send can
-fail normally if the caller has gone away. This excerpt intentionally merges a missing name and a
-lost response into `None`; an application that needs to distinguish them should return an error
-type. [Actors with Tokio] develops the ownership and shutdown implications of this pattern.
+fail normally if the caller has gone away. `Ok(None)` means the owner replied that the ID was
+absent. `NotAccepted` means the queue rejected the command; `ReplyDropped` means the command was
+accepted but no response arrived. Acceptance alone does not prove that the owner processed it. These
+distinctions let the UI display an unknown ID differently from a lost request. [Actors with Tokio]
+develops the ownership and shutdown implications of this pattern.
 
 A mutex is also a valid choice for small shared state. Keep synchronous lock guards out of awaits
 and keep critical sections short. An async mutex makes waiting for the lock asynchronous; it does
@@ -90,8 +92,9 @@ receive 2        apply
 receive 1        ignore
 ```
 
-This compile-tested excerpt uses a placeholder `search` function and the example application's
-search fields. It must be called inside a Tokio runtime context, as its comments explain:
+This compile-tested excerpt uses a placeholder `search` function and a separate `SearchState` owned
+by the UI. Its query, results, error, generation, and redraw flag belong to that search view. It
+must be called inside a Tokio runtime context, as its comments explain:
 
 ```rust
 {{ #include @code/concepts/async-applications/src/stale.rs:discard_stale }}
@@ -102,6 +105,7 @@ request starts. Otherwise a late result can repopulate a view the user cleared. 
 service lifetime, use a request identity whose reuse cannot collide with outstanding work rather
 than relying on this example's incrementing integer forever.
 
+Retain the handle returned by `start_search` so worker failures and shutdown remain observable.
 Generation checks protect visible state. They do not stop network traffic, CPU work, or side
 effects. Add a concurrency limit, cancellation, or debouncing where needed. Cancellation alone is
 not a replacement for checking identity: completion and cancellation can race. Yazi's [completion
@@ -117,8 +121,10 @@ can make partial progress before cancellation. A retry must account for that pro
 Dropping a spawned task's `JoinHandle` detaches the task rather than aborting it. Retain handles or
 use a task collection when the application needs to observe completion and failure. A cancellation
 signal asks cooperating work to stop; a generation check decides whether a result is still useful.
-These solve different problems. The [lifecycle page](/concepts/async/lifecycle/) covers joining work
-at exit.
+For a request that changes remote state, cancellation can leave the outcome unknown: the server may
+have applied it before the response was lost. Inspect the operation's status or use its documented
+retry mechanism before sending it again. The [lifecycle page](/concepts/async/lifecycle/) covers
+joining work at exit.
 
 [tokio-console detail watcher]:
   https://github.com/tokio-rs/console/blob/59e23edf17b0e42e87e315bfc9cbb8a6ba2f401f/tokio-console/src/main.rs#L206-L249

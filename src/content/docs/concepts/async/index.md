@@ -8,9 +8,9 @@ A TUI might fetch data, follow a process log, or search a large collection while
 Async Rust provides ways to wait for that work without occupying a thread for each wait. You still
 choose how results reach the UI, when to draw, and what happens when the user changes their mind.
 
-This section explains those choices with Tokio, Crossterm, and Ratatui. Start with a working
-example, look up a pattern, or follow a symptom into the underlying terminal behavior. You do not
-need a component framework to use these techniques. They also work with
+Tokio schedules background tasks, Crossterm supplies terminal input, and Ratatui draws application
+state. The pages below connect their APIs through a runnable example and focused explanations of
+scheduling, messages, and terminal ownership. These choices also apply to
 [Elm, components, and other application patterns](/concepts/application-patterns/).
 
 ## Find what you need
@@ -59,7 +59,7 @@ and a task reading events may share terminal input with a cursor-position query.
 ## Choose an owner
 
 Keep terminal operations ordered and give worker results a way to reach the event loop. These are
-three useful arrangements, not a progression from basic to advanced:
+three arrangements with different waiting and lifecycle costs:
 
 | Arrangement               | Main tradeoff                                       |
 | ------------------------- | --------------------------------------------------- |

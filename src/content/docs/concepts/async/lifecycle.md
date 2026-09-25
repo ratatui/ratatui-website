@@ -4,9 +4,9 @@ sidebar:
   order: 5
 ---
 
-A responsive application also needs to stop predictably. Workers, terminal modes, input readers, and
-child processes have different lifetimes. Decide which work may be abandoned and which must finish
-before the application exits or gives the terminal to another program.
+Leaving the UI loop does not necessarily stop its workers or release terminal input. Decide which
+operations may be abandoned, which must finish, and who restores terminal modes before exiting or
+launching another program.
 
 ## Restore the terminal on errors
 
@@ -52,6 +52,26 @@ Similarly, [`timeout`] only checks its deadline when it can poll the wrapped fut
 code that does not yield can run past that deadline. It is not a way to interrupt a blocked draw or
 terminal query.
 
+## Observe blocking work after cancellation
+
+The [sorting helper](/concepts/async/scheduling/#separate-the-costs) returns a `JoinHandle` so its
+caller retains completion ownership. Once a sort starts, cancelling interest in its result cannot
+interrupt it. This helper waits for completion and then discards unwanted values:
+
+```rust
+{{ #include @code/concepts/async-applications/src/coordination.rs:join_after_cancel }}
+```
+
+The caller obtains a handle with `start_sort`, creates a `oneshot` cancellation channel, and awaits
+`finish_sort(&mut job, cancel)`. Sending `()` or dropping the channel's sender withdraws interest.
+Worker errors are returned even after that withdrawal. If completion and cancellation are ready
+together, either branch can win; request identity checks remain necessary when applying results.
+
+Borrowing the handle lets the caller retain it if this helper's future is dropped. That caller must
+still join the job during shutdown. This is a policy for finite work: it deliberately has no timeout
+and can keep shutdown waiting for a slow sort. A long-lived UI can retain several handles in a task
+collection and select on completions while continuing to process input.
+
 ## Give a child exclusive access
 
 An editor, pager, or shell command that inherits the terminal needs the UI to release it. Restoring
@@ -71,8 +91,11 @@ thread, or other terminal reader to stop:
 The child runs synchronously while the UI is paused. Showing the cursor and restoring modes lets it
 inherit an ordinary terminal. Reinitialization happens even if starting the child fails, and
 replacing the terminal resets Ratatui's buffers so the next draw reconstructs the display. The
-caller must redraw afterward and route any returned error through its outer cleanup path. If
-reinitialization fails, exit the UI rather than continuing with uncertain terminal state.
+caller must redraw afterward and route any returned error through its outer cleanup path. An
+unsuccessful child exit is an `Ok(ExitStatus)` that the caller must inspect. If both the child
+operation and reinitialization fail, this helper returns the reinitialization error. An application
+that needs both errors should retain them together. Reinitialization failure requires exiting the
+UI; continuing to draw would use terminal modes and buffers whose setup did not complete.
 
 This helper uses `try_init` for clarity. Each call installs a panic-hook wrapper; an application
 with frequent handoffs should centralize panic-hook installation and explicit mode reacquisition

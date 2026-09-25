@@ -10,7 +10,7 @@ use color_eyre::Result;
 use ratatui::DefaultTerminal;
 use tokio::sync::mpsc;
 
-use crate::{App, UiMessage, MAX_EVENTS_PER_TURN};
+use crate::sync_ui::{App, UiMessage, MAX_EVENTS_PER_TURN};
 
 // ANCHOR: drain_then_draw
 /// Batch state changes before drawing so intermediate states do not each require a frame.

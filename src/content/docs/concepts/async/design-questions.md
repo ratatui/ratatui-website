@@ -5,8 +5,8 @@ sidebar:
 ---
 
 Async TUIs repeatedly need to coordinate terminal queries, redraw requests, and temporary handoffs
-to other programs. Libraries could provide more of that coordination. The useful design question is
-which operations a library can make reliable without taking over application policy.
+to other programs. A library could own input routing or frame scheduling while leaving choices such
+as request cancellation and which updates may be dropped to the application.
 
 These are proposals and constraints for discussion, not an announced Ratatui roadmap. The linked
 source and bug reports establish the problems. They do not establish that the designs below have
@@ -112,8 +112,8 @@ receive its input. The linked reports establish useful cases to test, not an abs
 regression tests in those projects.
 
 A public design proposal should identify which of these cases it covers, link its tests, and state
-which decisions remain with the application. That would give readers something more useful than a
-promise that a new abstraction will eliminate the need to reason about terminal behavior.
+which decisions remain with the application. For example, a query API should state how it preserves
+ordinary input and what happens to a reply received after cancellation.
 
 [`Buffer`]: https://docs.rs/ratatui/latest/ratatui/buffer/struct.Buffer.html
 [`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw

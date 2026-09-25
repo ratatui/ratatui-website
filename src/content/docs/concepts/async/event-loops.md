@@ -9,7 +9,8 @@ background request can finish without anything telling the UI to display its res
 
 This example uses one async UI task and at most one fetch task. The UI owns the terminal and state;
 the fetch returns data. It uses a fullscreen terminal, with no runtime terminal queries or external
-program handoff. Read [terminal I/O](/concepts/async/terminal-io/) before adding those features.
+program handoff. Queries and handoffs need additional coordination with the input reader, explained
+under [terminal I/O](/concepts/async/terminal-io/).
 
 ## Try the example
 
@@ -124,15 +125,16 @@ Here is the arrangement using a short input timeout:
 <summary>Synchronous owner with async workers (compile-tested structure)</summary>
 
 ```rust
-{{ #include @code/concepts/async-applications/src/main.rs:main_thread_owner }}
+{{ #include @code/concepts/async-applications/src/sync_ui.rs:main_thread_owner }}
 ```
 
 </details>
 
 `App`, `Item`, and `load_items` in that companion snippet are teaching stubs, not another runnable
-app. Its independent input and message budgets leave both sources a turn. The input wait is capped
-at 16 ms because a channel send cannot wake Crossterm's `poll`. Handlers and drawing add to that
-wait.
+app. They live in the package's compile-only library, so `cargo run` always starts the complete
+example. Its independent input and message budgets leave both sources a turn. The input wait is
+capped at 16 ms because a channel send cannot wake Crossterm's `poll`. Handlers and drawing add to
+that wait.
 
 Use [`Runtime::spawn`] or a runtime [`Handle`] from this synchronous code. Merely creating a runtime
 does not enter its context for `tokio::spawn`. A current-thread runtime also needs `block_on` to

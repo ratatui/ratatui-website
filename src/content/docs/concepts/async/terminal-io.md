@@ -89,7 +89,7 @@ with it.
 
 If runtime queries are required, verify how the query implementation coordinates with the active
 reader. Pausing calls to `EventStream::next` alone does not prove its helper has stopped reading. A
-robust query broker owns the reader and routes replies and ordinary events together; the
+query broker can own the reader and route replies and ordinary events together; the
 [design questions](/concepts/async/design-questions/) describe the additional contracts such a
 broker needs.
 

@@ -55,10 +55,19 @@ work, even if its awaiting task is cancelled:
 {{ #include @code/concepts/async-applications/src/coordination.rs:blocking_work }}
 ```
 
-Share the same semaphore between callers. This bounds admitted jobs, not the number or memory of
-callers waiting to acquire a permit. Limit request production too. A started blocking closure cannot
-be aborted by dropping its handle or cancelling its await. This sort operation finishes on its own;
-long jobs need cooperative cancellation checkpoints where possible.
+Call `start_sort(values, Arc::clone(&slots)).await?` with the same semaphore for every request. It
+waits for admission, then returns a handle; await that handle to obtain the sorted values or a
+worker failure. Closing the semaphore rejects waiting requests before dispatch. The owned vector can
+move to the worker without borrowing UI state.
+
+Keep the handle even if the user leaves the view. A started blocking closure finishes on its own;
+dropping the handle loses the opportunity to observe that completion. The
+[lifecycle example](/concepts/async/lifecycle/#observe-blocking-work-after-cancellation) shows how
+to discard an unwanted result while still joining the worker.
+
+Admission bounds dispatched jobs. Callers waiting for slots still retain their vectors, and
+completed jobs can retain output until it is received. Limit request production and payload sizes as
+well. Long operations need their own cancellation checkpoints when they can stop between chunks.
 
 Use a dedicated thread for a persistent blocking loop. [`block_in_place`] allows Tokio to hand work
 to another worker, but still suspends other futures within the same task and cannot run on a

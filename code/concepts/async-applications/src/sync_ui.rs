@@ -1,18 +1,8 @@
-//! Compile-tested examples for the Async Applications section.
+//! Synchronous terminal ownership with asynchronous workers.
 //!
-//! The UI owns the terminal and application state. Workers perform async work and send messages;
-//! the UI applies those messages and draws the resulting state. Keeping that boundary explicit
-//! lets the examples discuss concurrency without putting the terminal behind a shared lock.
-//!
-//! This file shows a synchronous UI with async workers. `bin/background.rs` is the runnable async
-//! UI; `drain` isolates batching; `stale` handles out-of-order replies; `coordination` shows channel
-//! and worker policies; `handoff` releases the terminal to a child. These examples are independent.
-//!
-//! The anchored regions are included verbatim in
-//! `src/content/docs/concepts/async/`. The stubs at the bottom
-//! of each file stand in for the application types the page treats as placeholders.
-// The page includes helpers that are type-checked here without being called by this skeleton.
-#![allow(dead_code)]
+//! One thread reads events, applies messages, and draws. The Tokio runtime only executes workers.
+//! Input polling has a finite timeout because worker messages cannot wake Crossterm's `poll`.
+//! `App` and `load_items` are placeholders; the loop teaches scheduling, not an application to run.
 
 // ANCHOR: main_thread_owner
 use std::time::{Duration, Instant};
@@ -23,7 +13,7 @@ use tokio::sync::mpsc;
 
 // Bound each input source's work so a continuous backlog still leaves a turn for drawing.
 // 64 is an illustrative batch size, not a measured optimum or a time limit on handlers.
-const MAX_EVENTS_PER_TURN: usize = 64;
+pub(super) const MAX_EVENTS_PER_TURN: usize = 64;
 
 /// Keep terminal operations on the main thread while Tokio drives background requests.
 fn main() -> Result<()> {
@@ -122,7 +112,7 @@ fn run_terminal(mut terminal: DefaultTerminal, mut ui_rx: mpsc::Receiver<UiMessa
 
 // ANCHOR: messages
 /// Workers describe what happened; the UI decides how it changes the visible application.
-enum UiMessage {
+pub(super) enum UiMessage {
     /// Transfer loaded data to the UI instead of mutating its state from a worker.
     ItemsLoaded(Vec<Item>),
     /// Let the UI display failure without a worker printing into the terminal.
@@ -145,35 +135,14 @@ async fn report_loaded_items(ui_tx: mpsc::Sender<UiMessage>) {
 }
 // ANCHOR_END: messages
 
-mod coordination;
-mod drain;
-mod handoff;
-mod stale;
-
-/// Shared scaffolding that lets the independent snippets compile.
+/// Application-specific placeholders for the synchronous loop and batching excerpt.
 ///
-/// The loop examples keep their dirty flag locally; the search example uses `App::dirty` so its
-/// handlers can request a redraw. An application combining them would use one redraw flag.
-/// The handlers below are empty, so running this skeleton does not provide a usable UI or quit key.
+/// Replace these handlers with your application's behavior. This module is compile-only;
+/// `cargo run -p async-applications` runs the complete background-fetch example instead.
 #[derive(Default)]
-struct App {
+pub(super) struct App {
     /// Set by a real input handler when the user asks to exit.
     quit: bool,
-
-    /// Marks search state changes that the owning loop should render.
-    dirty: bool,
-
-    /// Identifies the current request; replies for older generations are ignored.
-    search_generation: u64,
-
-    /// Current input, copied when a request starts so later edits cannot change that request.
-    search_query: String,
-
-    /// Last accepted results; this example keeps them visible while a new request is pending.
-    search_results: Vec<Item>,
-
-    /// Failure for the active search, cleared when another search starts or succeeds.
-    search_error: Option<String>,
 }
 
 impl App {
@@ -183,18 +152,18 @@ impl App {
     }
 
     /// Replace with input handling, including setting `quit` and starting background requests.
-    fn handle_terminal_event(&mut self, _event: crossterm::event::Event) {}
+    pub(super) fn handle_terminal_event(&mut self, _event: crossterm::event::Event) {}
 
-    /// Replace with state updates; `stale::handle_message` demonstrates generation checking.
-    fn handle_message(&mut self, _message: UiMessage) {}
+    /// Replace with updates for loaded data, failures, and progress.
+    pub(super) fn handle_message(&mut self, _message: UiMessage) {}
 
     /// Replace with widget rendering from state already updated by the UI loop.
-    fn render(&self, _frame: &mut ratatui::Frame) {}
+    pub(super) fn render(&self, _frame: &mut ratatui::Frame) {}
 }
 
 /// Placeholder for an application's loaded or searched data.
 #[derive(Clone)]
-struct Item;
+pub(super) struct Item;
 
 /// Associates a progress message with the operation that produced it.
 type JobId = u64;

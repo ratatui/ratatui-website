@@ -6,8 +6,18 @@ use std::process::{Command, ExitStatus};
 
 use ratatui::DefaultTerminal;
 
+/// Restore terminal modes, run a child to completion, and recreate the fullscreen terminal.
+///
+/// Call between loop turns after `event::read` returns. The caller must be the only terminal
+/// reader, disable any extra modes it enabled, and redraw after a successful return.
+///
+/// # Errors
+///
+/// Setup errors can leave modes partially restored; return through the outer cleanup path.
+/// Reinitialization is attempted even if spawning or waiting for the child fails. If both fail,
+/// this helper returns the reinitialization error; the terminal must not be used for another draw.
+/// A child's unsuccessful exit status is returned as `Ok(status)` for the caller to interpret.
 // ANCHOR: handoff
-/// Call between event-loop turns, after event::read has returned.
 fn run_child(terminal: &mut DefaultTerminal, command: &mut Command) -> std::io::Result<ExitStatus> {
     // Let the child inherit a normal terminal. Disable any extra modes your app enabled too.
     terminal.show_cursor()?;

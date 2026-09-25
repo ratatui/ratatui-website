@@ -24,7 +24,14 @@ struct App {
     error: Option<String>,
 }
 
-/// The task's output carries either data or an application error back to the UI.
+/// Choose a deterministic outcome without involving a server or transport error type.
+#[derive(Clone, Copy)]
+enum FetchOutcome {
+    Success,
+    Failure,
+}
+
+/// The task output carries data or a displayable error; this demo has no underlying I/O error.
 type FetchResult = std::result::Result<Vec<String>, String>;
 // ANCHOR_END: state
 
@@ -62,8 +69,8 @@ async fn run(terminal: &mut DefaultTerminal, requests: &mut JoinSet<FetchResult>
                         KeyCode::Esc | KeyCode::Char('q') => break,
                         KeyCode::Char('+') => app.counter = app.counter.saturating_add(1),
                         KeyCode::Char('-') => app.counter = app.counter.saturating_sub(1),
-                        KeyCode::Char('r') => app.start_fetch(requests, false),
-                        KeyCode::Char('e') => app.start_fetch(requests, true),
+                        KeyCode::Char('r') => app.start_fetch(requests, FetchOutcome::Success),
+                        KeyCode::Char('e') => app.start_fetch(requests, FetchOutcome::Failure),
                         _ => {}
                     }
                     dirty = true;
@@ -96,14 +103,14 @@ async fn run(terminal: &mut DefaultTerminal, requests: &mut JoinSet<FetchResult>
 
 impl App {
     // ANCHOR: start_fetch
-    fn start_fetch(&mut self, requests: &mut JoinSet<FetchResult>, fail: bool) {
+    fn start_fetch(&mut self, requests: &mut JoinSet<FetchResult>, outcome: FetchOutcome) {
         if self.loading {
             return; // Ignore another refresh until the current request finishes.
         }
         self.loading = true;
         self.error = None;
         // spawn returns immediately. join_next in the event loop observes completion later.
-        requests.spawn(fetch_items(fail));
+        requests.spawn(fetch_items(outcome));
     }
     // ANCHOR_END: start_fetch
 
@@ -141,9 +148,9 @@ impl App {
 
 // ANCHOR: fetch
 /// A reproducible stand-in for network I/O; no server, credentials, or network access is needed.
-async fn fetch_items(fail: bool) -> FetchResult {
+async fn fetch_items(outcome: FetchOutcome) -> FetchResult {
     tokio::time::sleep(Duration::from_secs(2)).await;
-    if fail {
+    if matches!(outcome, FetchOutcome::Failure) {
         Err("Simulated request failure. Press r to retry.".to_owned())
     } else {
         Ok(vec!["First result".to_owned(), "Second result".to_owned()])
@@ -161,15 +168,15 @@ mod tests {
     async fn repeated_refresh_does_not_spawn_more_work() {
         let mut app = App::default();
         let mut requests = JoinSet::new();
-        app.start_fetch(&mut requests, false);
-        app.start_fetch(&mut requests, true);
+        app.start_fetch(&mut requests, FetchOutcome::Success);
+        app.start_fetch(&mut requests, FetchOutcome::Failure);
         assert_eq!(requests.len(), 1);
         assert!(app.loading);
         requests.shutdown().await;
     }
 
     #[test]
-    fn failure_preserves_data_and_success_clears_error() {
+    fn failed_refresh_preserves_data_and_clears_loading() {
         let mut app = App {
             loading: true,
             items: vec!["previous data".into()],
@@ -179,7 +186,18 @@ mod tests {
         assert!(!app.loading);
         assert_eq!(app.items, ["previous data"]);
         assert_eq!(app.error.as_deref(), Some("request failed"));
+    }
+
+    #[test]
+    fn successful_refresh_replaces_data_and_clears_error() {
+        let mut app = App {
+            loading: true,
+            items: vec!["previous data".into()],
+            error: Some("earlier failure".into()),
+            ..App::default()
+        };
         app.finish_fetch(Ok(vec!["new data".into()]));
+        assert!(!app.loading);
         assert_eq!(app.items, ["new data"]);
         assert!(app.error.is_none());
     }
