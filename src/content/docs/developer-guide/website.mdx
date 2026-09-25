@@ -79,6 +79,22 @@ See [starlight] for more information on how to author content in markdown.
 
 [starlight]: https://starlight.astro.build/guides/authoring-content/
 
+## Link previews
+
+Every page has Open Graph and Twitter card metadata so that links shared on social platforms show a
+preview image. The image is the first image on the page (e.g. the animation at the top of a release
+highlights page), falling back to the site-wide preview image for pages without images.
+
+To choose a different image, set `ogImage` in the page frontmatter to a path relative to the page,
+or to the URL of a remote image:
+
+```yaml
+---
+title: v0.30.0
+ogImage: ../../../assets/ratatui-animation.gif
+---
+```
+
 ## Custom components
 
 The website uses custom components and features to make it easier to generate high quality
