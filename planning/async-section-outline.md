@@ -8,10 +8,10 @@ work, experienced readers evaluate tradeoffs, and contributors reason about term
 design. Readers should be able to learn, look something up, investigate a problem, or explore a
 subject in depth without having to follow a single course.
 
-The durable rationale is that these readers need a coherent place to understand how background
-work, application state, input, rendering, and terminal access fit together. Support practical
-choices with explanations of their mechanisms, limits, and alternatives. Avoid assuming everyone
-arrives to build their first app or to repair an async failure.
+The durable rationale is that these readers need a coherent place to understand how background work,
+application state, input, rendering, and terminal access fit together. Support practical choices
+with explanations of their mechanisms, limits, and alternatives. Avoid assuming everyone arrives to
+build their first app or to repair an async failure.
 
 A concrete application flow connects much of the material:
 
@@ -34,19 +34,17 @@ The landing page should offer several ways into the material. Experience levels 
 experienced Rust developer may be new to terminal protocols, and a new Ratatui user may already know
 Tokio well. Route by the reader's question rather than labeling entire pages beginner or expert.
 
-| Reader's need | Entry point | What the docs provide |
-| --- | --- | --- |
-| Understand what async means for a TUI | Overview and vocabulary | An accessible mental model |
-| Build or extend an application | Event loop and pattern pages | Annotated examples and choices |
-| Evaluate architecture or performance | Scheduling and coordination | Mechanisms and tradeoffs |
-| Look up a specific constraint | Topic headings and API links | Precise, scoped explanations |
-| Diagnose unexpected behavior | Troubleshooting | Symptoms, causes, and evidence |
-| Improve the libraries | Terminal I/O and design discussion | Contracts and open questions |
+- Understand what async means for a TUI: Overview and vocabulary; An accessible mental model
+- Build or extend an application: Event loop and pattern pages; Annotated examples and choices
+- Evaluate architecture or performance: Scheduling and coordination; Mechanisms and tradeoffs
+- Look up a specific constraint: Topic headings and API links; Precise, scoped explanations
+- Diagnose unexpected behavior: Troubleshooting; Symptoms, causes, and evidence
+- Improve the libraries: Terminal I/O and design discussion; Contracts and open questions
 
 Explain unfamiliar concepts where they first matter, including tasks versus threads, wakeups,
 backpressure, cancellation, and terminal queries. Put prerequisites on the relevant example, not on
-the section as a whole. Link to basic Rust, Ratatui, and Tokio material when needed without requiring
-readers to complete a general async textbook before understanding a local explanation.
+the section as a whole. Link to basic Rust, Ratatui, and Tokio material when needed without
+requiring readers to complete a general async textbook before understanding a local explanation.
 
 Across the section, readers should be able to:
 
@@ -67,19 +65,20 @@ experienced reader came to find.
 ## Evidence and earlier decisions
 
 The starting investigation is
-[Investigate async ratatui history](codex://threads/019f2d3a-e9a2-7631-a8c0-7c0372ad042e).
-It began with recurring confusion about the async counter tutorial: adding `#[tokio::main]` did not
-explain coordination, while the older component template was too large to explain a small counter.
-The investigation was also motivated by edge cases where synchronous draw/backend operations
-interact with async input. Preserve that history as context for the research, while using the
-broader reader needs above to decide the section's ongoing scope and organization.
+[Investigate async ratatui history](codex://threads/019f2d3a-e9a2-7631-a8c0-7c0372ad042e). It began
+with recurring confusion about the async counter tutorial: adding `#[tokio::main]` did not explain
+coordination, while the older component template was too large to explain a small counter. The
+investigation was also motivated by edge cases where synchronous draw/backend operations interact
+with async input. Preserve that history as context for the research, while using the broader reader
+needs above to decide the section's ongoing scope and organization.
 
 The investigation subsequently collected terminal failure reports, Tokio and Crossterm contracts,
 Ratatui call paths, and application patterns. Its explicit editorial requirements remain useful:
 
 - Explain blocking reads and writes, and how an async input adapter wakes its waiting task.
 - Separate terminal ownership from the choice of worker coordination mechanism.
-- Explain benefits and tradeoffs for every application shape; do not promote one as universally best.
+- Explain benefits and tradeoffs for every application shape; do not promote one as universally
+  best.
 - Preserve concrete failures, with their mechanisms and repair boundaries.
 - Present useful ideas from applications before explaining what needs adaptation.
 - Keep primary API and protocol citations separate from optional background reading.
@@ -87,8 +86,7 @@ Ratatui call paths, and application patterns. Its explicit editorial requirement
 - Link API names in prose to their contracts or relevant implementation.
 - Keep prototype ideas separate from publicly supported behavior and available APIs.
 
-The later
-[Rewrite async docs guidance](codex://threads/01a072f4-9a8b-74b0-a13c-45469e81f808)
+The later [Rewrite async docs guidance](codex://threads/01a072f4-9a8b-74b0-a13c-45469e81f808)
 reduced repetition and corrected source claims. Preserve those improvements rather than restoring
 older prose wholesale. Earlier task conclusions are research leads, not a substitute for checking
 the pinned code and the versions used by the examples.
@@ -121,9 +119,9 @@ involved. For each consequential claim or example:
 
 Use evidence appropriate to the claim. API documentation establishes supported contracts; pinned
 source explains a particular implementation; a focused test demonstrates the conditions it actually
-exercises; an issue report establishes an observed failure. Compilation establishes type correctness,
-not responsiveness, freedom from races, or reliable terminal handoff. Passing tests on one terminal
-or platform does not establish portability to others.
+exercises; an issue report establishes an observed failure. Compilation establishes type
+correctness, not responsiveness, freedom from races, or reliable terminal handoff. Passing tests on
+one terminal or platform does not establish portability to others.
 
 Each substantial pattern should answer: what does it accomplish, how is it coordinated, under what
 conditions does it work, and what can go wrong when those conditions change? Include a concrete
@@ -164,8 +162,9 @@ index needs to be reachable without reading either in full. Do not create a page
 application, or individual pitfall.
 
 The current main page has approximately 3,600 prose words and 269 included code lines. Its companion
-survey has about 1,275 words, and the design discussion about 1,000. The problem is uneven allocation:
-most teaching is concentrated on one page, while substantial source research sits apart from it.
+survey has about 1,275 words, and the design discussion about 1,000. The problem is uneven
+allocation: most teaching is concentrated on one page, while substantial source research sits apart
+from it.
 
 Use roughly 400–700 words for the overview and 800–1,400 for a substantial concept page as editorial
 checks, not quotas. A diagnostic index can be shorter. Assess expanded code, diagrams, mobile
@@ -191,7 +190,8 @@ changes; do not pad pages to meet a target or cut a necessary explanation to sat
 - Offer a short set of linked rules: keep handlers short, give results a wakeup path, coordinate
   terminal access, bound work, reject obsolete replies, and plan cleanup.
 - Offer routes to the worked event loop, topic explanations, troubleshooting, API references, and
-  design discussion. Make both the introductory path and the depth of the reference material visible.
+  design discussion. Make both the introductory path and the depth of the reference material
+  visible.
 
 **How it helps:** Readers can orient themselves, learn the basic model, and find the explanation or
 reference they need. State that a synchronous application remains appropriate when its work finishes
@@ -206,8 +206,8 @@ promptly.
 - Explain who mutates state and who draws; a worker does not print into the active terminal.
 - State the example's supported conditions and trace how blocking draw and non-blocking event waits
   cooperate. Identify which additions, such as runtime queries or child handoff, need more wiring.
-- Introduce `select!` as waiting for a ready source. Its handlers share a task; awaiting a long request
-  inside a selected handler prevents the loop from returning to its other sources.
+- Introduce `select!` as waiting for a ready source. Its handlers share a task; awaiting a long
+  request inside a selected handler prevents the loop from returning to its other sources.
 - Show input, result, and draw-deadline branches. Explain input failure, channel closure, initial
   rendering, and why worker completion must wake the UI independently of keyboard input.
 - Explain what merely adding `#[tokio::main]` or awaiting `EventStream` does and does not change.
@@ -225,7 +225,8 @@ Templates are supporting examples, not prerequisites or complete reference archi
 
 **Reader question:** Why does the application lag even though its requests are async?
 
-- Distinguish time waiting for I/O, executing handlers, preparing/rendering widgets, and writing output.
+- Distinguish time waiting for I/O, executing handlers, preparing/rendering widgets, and writing
+  output.
 - Explain where the top-level `#[tokio::main]` future runs versus spawned tasks and a current-thread
   runtime. Show which other work can still progress during a synchronous call.
 - Use finite blocking jobs, CPU pools, or a dedicated thread according to the work's lifetime.
@@ -249,25 +250,27 @@ Templates are supporting examples, not prerequisites or complete reference archi
   progressing elsewhere does not mean the UI task can process input during its own draw.
 - Measure release builds and separate computation from slow terminal output before choosing a fix.
   Include slow paths and latency variation, not just average frame time. Explain the tradeoff when
-  accepting synchronous work in the UI task, and preserve terminal ownership if moving that work.
-  Do not prescribe a separate `spawn_blocking` call for every terminal operation.
+  accepting synchronous work in the UI task, and preserve terminal ownership if moving that work. Do
+  not prescribe a separate `spawn_blocking` call for every terminal operation.
 
 **Example:** Extend the same app with bursty progress or costly result preparation. Show the event
 batch and next-frame calculation, with comments explaining policy constants and fairness limits.
 
 **Evidence:** Yazi batching, Codex redraw/reflow work, Helix redraw coordination, Tokio scheduling.
 
-**How it helps:** Readers can locate latency and choose the appropriate remedy instead of adding more
-spawned tasks or raising the frame rate indiscriminately.
+**How it helps:** Readers can locate latency and choose the appropriate remedy instead of adding
+more spawned tasks or raising the frame rate indiscriminately.
 
 ### Manage background operations
 
 **Reader question:** How do multiple requests stay correct when completion order and load vary?
 
-- Choose communication by semantics: ordered messages, latest state, one reply, or a shared snapshot.
-- Explain bounded versus unbounded queues, waiting senders, payload size, and channel-cycle deadlocks.
-- Distinguish queue capacity, concurrency limits, debouncing, and coalescing; each controls something
-  different. A bounded mailbox does not bound the number of waiting producer tasks.
+- Choose communication by semantics: ordered messages, latest state, one reply, or a shared
+  snapshot.
+- Explain bounded versus unbounded queues, waiting senders, payload size, and channel-cycle
+  deadlocks.
+- Distinguish queue capacity, concurrency limits, debouncing, and coalescing; each controls
+  something different. A bounded mailbox does not bound the number of waiting producer tasks.
 - Walk through two searches finishing in reverse order. Guard failures as well as successes, and
   invalidate results when the user clears the query or leaves the view.
 - Explain cancellation as a resource-saving mechanism and identity checks as protection against
@@ -276,7 +279,8 @@ spawned tasks or raising the frame rate indiscriminately.
   partially completed multi-step operation. Identify who retains progress.
 - Show when a resource-owning task is helpful and when a short lock is sufficient. Release locks
   before rendering or slow work.
-- Introduce retained task handles and ownership of task lifetime; link shutdown details to Lifecycle.
+- Introduce retained task handles and ownership of task lifetime; link shutdown details to
+  Lifecycle.
 
 **Example:** Add request generations and cancellation to the app. Include a small ordering timeline
 and focused tests for superseded success/failure and invalidation without a replacement request.
@@ -302,12 +306,13 @@ copied example code stops being sufficient as an app grows.
   keys and paste. Distinguish Unix resize signals from reply bytes.
 - Explain the difference between an API contract and a recommendation: Crossterm's event-reader
   restrictions versus the application's choice of one coordinating terminal owner.
-- Explain `EventStream`'s helper and why an async-shaped interface does not imply cancellable OS I/O.
-  Contrast its lifecycle with Tokio stdin without calling all helper-thread approaches defective.
+- Explain `EventStream`'s helper and why an async-shaped interface does not imply cancellable OS
+  I/O. Contrast its lifecycle with Tokio stdin without calling all helper-thread approaches
+  defective.
 - Trace version-specific query paths: inline viewport setup/resize, explicit clear, and historical
   fullscreen resize behavior. Name the dependency versions being discussed.
-- Explain stdin/stdout/stderr, redirected handles, and `/dev/tty` selection where relevant. A Ratatui
-  writer does not automatically control where another library writes a query.
+- Explain stdin/stdout/stderr, redirected handles, and `/dev/tty` selection where relevant. A
+  Ratatui writer does not automatically control where another library writes a query.
 - Explain query timeouts and fallback. An async timeout does not interrupt synchronous code, and
   abandoning a blocking query may leave its reader active.
 - Describe coordinated parsing and preservation of unrelated input; defer the handoff procedure to
@@ -319,14 +324,15 @@ query broker API that readers might mistake for an available Crossterm facility.
 **Evidence:** Crossterm contracts/source, Ratatui source, XTerm and Windows VT specifications, and
 specific query/redirection failures.
 
-**How it helps:** Readers understand why one task alone may not mean one active reader, and can trace
-which handle, parser, and query actually participate in a failure.
+**How it helps:** Readers understand why one task alone may not mean one active reader, and can
+trace which handle, parser, and query actually participate in a failure.
 
 ### Shut down and hand off the terminal
 
 **Reader question:** How do I exit or temporarily give another program the terminal correctly?
 
-- Separate worker cancellation, completion acknowledgement, terminal restoration, and runtime shutdown.
+- Separate worker cancellation, completion acknowledgement, terminal restoration, and runtime
+  shutdown.
 - Explain detached handles, child-process lifetime, blocking work, and shutdown timeout limits.
 - Trace the exit path from quit/error through stopping work and restoring modes. State what panic
   hooks cover and what they cannot promise; do not imply cleanup runs after every termination.
@@ -365,20 +371,21 @@ Cover:
 - Exit hangs or leaves unwanted work running.
 
 End with an audit path for apps based on older examples: trace wakeups, reader ownership, blocking
-calls, queue policy, result identity, and cleanup. Identify mechanisms rather than blaming templates.
+calls, queue policy, result identity, and cleanup. Identify mechanisms rather than blaming
+templates.
 
-**How it helps:** Readers can enter from a problem report without reading the section in order.
-This page indexes and applies the lessons; it should not duplicate all their explanations.
+**How it helps:** Readers can enter from a problem report without reading the section in order. This
+page indexes and applies the lessons; it should not duplicate all their explanations.
 
 ### Optional: Terminal library design questions
 
 Keep query routing, render/present separation, shared redraw scheduling, session ownership, and
 platform integration tests as a separate discussion for library authors.
 
-For each proposal, state the problem, existing mechanism, potential improvement, unresolved contract,
-and evidence needed. Explain the motivation for moving frame preparation independently of output.
-Do not imply an accepted roadmap, a universally non-blocking terminal, or publicly available support
-based on private prototypes.
+For each proposal, state the problem, existing mechanism, potential improvement, unresolved
+contract, and evidence needed. Explain the motivation for moving frame preparation independently of
+output. Do not imply an accepted roadmap, a universally non-blocking terminal, or publicly available
+support based on private prototypes.
 
 ## Examples and source comments
 
@@ -389,28 +396,28 @@ real network usage linked separately and the simulation clearly labelled.
 
 - Keep source comments rich enough to explain ownership, policy, ordering, and failure paths.
 - Include focused regions in pages; let the complete source provide the deeper reading path.
-- Give each snippet its context: owning task/thread, runtime requirements, caller cleanup, and omitted
-  application logic. Label conceptual pseudocode distinctly from runnable Rust.
+- Give each snippet its context: owning task/thread, runtime requirements, caller cleanup, and
+  omitted application logic. Label conceptual pseudocode distinctly from runnable Rust.
 - Use the same message vocabulary and request model across pages. Explain additions before showing
   them, rather than presenting the final large loop all at once.
-- Ensure a reader can follow each included region without reconstructing hidden, consequential state.
-- Prefer one meaningful diagram or timeline to another paragraph where concurrency is the difficulty.
+- Ensure a reader can follow each included region without reconstructing hidden, consequential
+  state.
+- Prefer one meaningful diagram or timeline to another paragraph where concurrency is the
+  difficulty.
 
 ## Research map
 
 Reuse the pinned links in the current three documents. This map assigns source material to lessons;
 it does not endorse every implementation as a complete architecture to copy.
 
-| Material | Lesson to carry forward |
-| --- | --- |
-| Templates, `async-github`, crates-tui | Work/result flow, wakeups, task placement, limitations |
-| Yazi | Batching, render flags, cancellation, completion identity |
-| Codex | Redraw requests, resize cost, probes, handoff, suspend/resume |
-| gitui | Acknowledged reader pause and replacement of pending jobs |
-| bottom | Blocking producers and input/collection thread tradeoffs |
-| bacon and dua-cli | Producer pressure, bounded queues, blocking selectors |
-| tokio-console | Subscription lifetime and state-versus-notification semantics |
-| Helix and Termina | Redraw coordination, diff work, filtered protocol input |
+- Templates, `async-github`, crates-tui: Work/result flow, wakeups, task placement, limitations
+- Yazi: Batching, render flags, cancellation, completion identity
+- Codex: Redraw requests, resize cost, probes, handoff, suspend/resume
+- gitui: Acknowledged reader pause and replacement of pending jobs
+- bottom: Blocking producers and input/collection thread tradeoffs
+- bacon and dua-cli: Producer pressure, bounded queues, blocking selectors
+- tokio-console: Subscription lifetime and state-versus-notification semantics
+- Helix and Termina: Redraw coordination, diff work, filtered protocol input
 
 The original investigation's failure inventory should survive the reorganization:
 
@@ -445,21 +452,19 @@ context. Public pages should link public evidence, not require access to Codex t
    commented out, but that does not prove their URLs have never been used.
 1. Check the complete reading path, individual deep-link entry points, and rendered page sizes.
 
-| Current material | Proposed home |
-| --- | --- |
-| Introduction and ownership/design table | Overview and Event loops |
-| Async and synchronous loop examples | Event loops |
-| Blocking, batching, frame scheduling | Scheduling |
-| Channels, stale results, cancellation | Background operations |
-| Query replies, backend paths, redirection | Terminal I/O |
-| Shutdown, editor handoff, suspend/resume | Lifecycle |
-| Failure-mode table and older-material audit | Troubleshooting |
-| Application survey | Relevant lesson pages, with a compact source index if needed |
-| Async gaps/design proposals | Optional developer discussion |
+- Introduction and ownership/design table: Overview and Event loops
+- Async and synchronous loop examples: Event loops
+- Blocking, batching, frame scheduling: Scheduling
+- Channels, stale results, cancellation: Background operations
+- Query replies, backend paths, redirection: Terminal I/O
+- Shutdown, editor handoff, suspend/resume: Lifecycle
+- Failure-mode table and older-material audit: Troubleshooting
+- Application survey: Relevant lesson pages, with a compact source index if needed
+- Async gaps/design proposals: Optional developer discussion
 
-The new PR pages were described as unpublished in the original task. Do not assume they need a
-large redirect framework, but check their current publication status and known links before moving
-them. Use stable source links that survive deletion of the PR branch.
+The new PR pages were described as unpublished in the original task. Do not assume they need a large
+redirect framework, but check their current publication status and known links before moving them.
+Use stable source links that survive deletion of the PR branch.
 
 Keep implementation changes, unrelated formatting, Elm example maintenance, and dependency updates
 out of this editorial work. The rebased async patch already isolates the async package registration.
@@ -469,7 +474,8 @@ This outline is a separate planning change and should not accidentally become a 
 
 - Newcomers can understand the basic ideas without already knowing Tokio or terminal terminology.
 - The landing page exposes learning, implementation, reference, troubleshooting, and design paths.
-- Experienced readers can find precise constraints and deeper reasoning without rereading a tutorial.
+- Experienced readers can find precise constraints and deeper reasoning without rereading a
+  tutorial.
 - Application developers can justify choices using their needs and the relevant constraints.
 - Contributors can distinguish current behavior, evidence, and unresolved design questions.
 - Readers distinguish blocking work from query/reply contention and know which their fix addresses.
@@ -480,11 +486,13 @@ This outline is a separate planning change and should not accidentally become a 
 - Examples make blocking/non-blocking coordination explicit, including failure and interruption.
 - Unsupported or unverified guarantees are identified rather than hidden behind simplified code.
 - Every original failure lesson has an assigned home, supported explanation, and source.
-- Timeouts, cancellation, reader acknowledgement, and shutdown do not promise unavailable guarantees.
+- Timeouts, cancellation, reader acknowledgement, and shutdown do not promise unavailable
+  guarantees.
 - The docs distinguish contracts, recommendations, observed implementations, and proposed designs.
 - Deep links are understandable locally without duplicating whole lessons across pages.
 - Examples compile and have focused behavioral checks for the claims they demonstrate.
-- Markdown, links, code includes, and the site build pass; desktop/mobile rendered pages are inspected.
+- Markdown, links, code includes, and the site build pass; desktop/mobile rendered pages are
+  inspected.
 - Reader/child handoff and platform behavior are reported as tested only when actually exercised.
 - Page length is judged after includes expand, retaining depth that helps the reader make decisions.
 
@@ -496,6 +504,5 @@ This outline is a separate planning change and should not accidentally become a 
 [handoff-fix]: https://github.com/openai/codex/commit/cf44511e7780bc30286ec356849970ff7aeabebb
 [suspend-fix]: https://github.com/openai/codex/commit/76135cbe7ec8dbcc165aa1f2bd21358f9f1c6571
 [resize-guardrails]: https://github.com/openai/codex/commit/3aa637c4750715cf23589ee3f4b1d0b6563c7d3e
-
 [blocking-guidance]: https://ryhl.io/blog/async-what-is-blocking/
 [cooperative]: https://tokio.rs/blog/2020-04-preemption
