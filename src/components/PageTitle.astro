@@ -9,7 +9,7 @@ const { entry, editUrl } = Astro.locals.starlightRoute;
 const markdownPath = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/${entry.id}.md`;
 // The landing page is a splash page built from components rather than prose:
 // there is no Markdown route for it, so it gets no page actions.
-const hasMarkdown = entry.id !== "" && entry.data.template !== "splash";
+const hasMarkdown = entry.id !== "";
 ---
 
 <div class="page-title">

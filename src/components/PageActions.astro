@@ -25,14 +25,10 @@ const { markdownPath, editUrl } = Astro.props;
     </button>
     <span data-live-region class="sr-only" role="status" aria-live="polite"></span>
   </copy-page-button>
-  {
-    editUrl && (
-      <a href={editUrl} class="page-action">
-        <Icon name="github" size="1.2em" />
-        Edit page
-      </a>
-    )
-  }
+  {editUrl && <a href={editUrl} class="page-action">
+    <Icon name="github" size="1.2em" />
+    Edit page
+  </a>}
 </div>
 
 <style>
@@ -84,25 +80,23 @@ const { markdownPath, editUrl } = Astro.props;
           const response = await fetch(markdownPath);
           if (!response.ok) throw new Error(`Request failed: ${response.status}`);
           await navigator.clipboard.writeText(await response.text());
-          showResult("Copied!", true);
+          showResult("copied");
         } catch {
-          showResult("Copy failed", false);
+          showResult("failed");
         }
       });
 
-      const showResult = (message: string, success: boolean) => {
-        label.textContent = message;
-        liveRegion.textContent = message;
-        copyIcon.hidden = success;
-        checkIcon.hidden = !success;
+      function showResult(state: "idle" | "copied" | "failed") {
+        const messages = { idle: "Copy page", copied: "Copied!", failed: "Copy failed" };
+        label.textContent = messages[state];
+        liveRegion.textContent = state === "idle" ? "" : messages[state];
+        copyIcon.hidden = state === "copied";
+        checkIcon.hidden = state !== "copied";
         clearTimeout(resetTimer);
-        resetTimer = setTimeout(() => {
-          label.textContent = "Copy page";
-          liveRegion.textContent = "";
-          copyIcon.hidden = false;
-          checkIcon.hidden = true;
-        }, 2000);
-      };
+        if (state !== "idle") {
+          resetTimer = setTimeout(() => showResult("idle"), 2000);
+        }
+      }
     }
   }
 
