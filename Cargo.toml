@@ -1,7 +1,7 @@
 # See https://doc.rust-lang.org/cargo/reference/workspaces.html
 [workspace]
 members = [
-  "code/concepts/*",
+  "code/concepts/async-applications",
   "code/examples/*",
   "code/recipes/*",
   "code/showcase/*",
