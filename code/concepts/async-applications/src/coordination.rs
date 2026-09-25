@@ -84,11 +84,14 @@ async fn finish_sort(
 // ANCHOR_END: join_after_cancel
 
 // ANCHOR: reply
+// ANCHOR: actor_command
 /// The command carries its own reply route; the resource owner need not know the UI's internals.
 struct GetName {
     id: u64,
     reply: oneshot::Sender<Option<String>>,
 }
+
+// ANCHOR_END: actor_command
 
 /// Distinguish a missing name from failure to obtain a response.
 #[derive(Debug, PartialEq)]
@@ -117,6 +120,21 @@ async fn get_name(
     response.await.map_err(|_| LookupError::ReplyDropped)
 }
 // ANCHOR_END: reply
+
+// ANCHOR: actor_owner
+/// Move the lookup data into one task; callers communicate through GetName commands.
+async fn serve_names(
+    names: std::collections::HashMap<u64, String>,
+    mut commands: mpsc::Receiver<GetName>,
+) {
+    while let Some(command) = commands.recv().await {
+        let value = names.get(&command.id).cloned();
+        // A caller may stop waiting after sending. Its absence should not stop other lookups.
+        let _ = command.reply.send(value);
+    }
+    // All senders have gone away and accepted commands have been drained.
+}
+// ANCHOR_END: actor_owner
 
 #[cfg(test)]
 mod tests {
@@ -168,6 +186,17 @@ mod tests {
         assert!(futures::poll!(&mut completion).is_pending());
         release.send(()).unwrap();
         assert_eq!(completion.await.unwrap(), None);
+    }
+
+    #[tokio::test]
+    async fn owner_serves_requests_and_exits_after_senders_close() {
+        let (commands, received) = mpsc::channel(2);
+        let names = std::collections::HashMap::from([(42, "Ada".to_owned())]);
+        let owner = tokio::spawn(serve_names(names, received));
+        assert_eq!(get_name(&commands, 42).await, Ok(Some("Ada".to_owned())));
+        assert_eq!(get_name(&commands, 99).await, Ok(None));
+        drop(commands);
+        owner.await.unwrap();
     }
 
     #[tokio::test]

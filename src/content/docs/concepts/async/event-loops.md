@@ -128,6 +128,69 @@ Aborting this simulated fetch drops a timer and owned data. It is not a general 
 file writes, child processes, or blocking jobs. Those need the policies described in
 [shutdown and handoff](/concepts/async/lifecycle/).
 
+## Replacing the simulated fetch with HTTP
+
+For a networked app, keep the same loop: start work on refresh, apply its result in the completion
+branch, and draw the updated state. The change is inside the request task. This adaptation uses
+reqwest to fetch a small text response and display one item per line.
+
+Add reqwest alongside the earlier dependencies. The `rustls-tls` feature enables HTTPS:
+
+```toml
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
+```
+
+### Client ownership
+
+Keep one [`reqwest::Client`][http client] in `App` and clone it into each task. Clones share its
+connection pool, so creating a new client for each refresh is unnecessary. Replace the derived
+`Default` with fallible initialization; create `App::new()?` **before** initializing the terminal,
+so a client setup error cannot skip terminal restoration.
+
+These are the request-related fields and initialization. Keep `counter` and `items` from the
+runnable app and initialize them to `0` and `Vec::new()` as before:
+
+```rust
+{{ #include @code/concepts/async-applications/src/http.rs:http_state }}
+```
+
+The [client timeout][http timeout] covers connecting and reading the response body. Ten seconds is
+an example request policy, not a frame deadline. It prevents an unresponsive server from leaving
+this app's single request pending indefinitely.
+
+### Request and response
+
+Replace the timer-based `fetch_items` with this function:
+
+```rust
+{{ #include @code/concepts/async-applications/src/http.rs:http_fetch }}
+```
+
+`send().await` obtains the response headers; it does not mean the body has finished downloading.
+[`error_for_status`][http status] turns HTTP 4xx and 5xx responses into errors before the app
+interprets their bodies as items. `text().await` then collects the body. This example expects a
+small text response; large downloads need streaming or a body-size limit, and JSON APIs need their
+own decoding step.
+
+### Starting the HTTP task
+
+Replace `start_fetch` with the following method. It keeps the same one-request policy and maps
+reqwest errors into the `String` error already displayed by `finish_fetch`:
+
+```rust
+{{ #include @code/concepts/async-applications/src/http.rs:http_start }}
+```
+
+Obtain a URL from your app's configuration or input and pass its owned copy from the refresh
+handler: `app.start_fetch(url.clone())`. Remove `FetchOutcome` and the demo's `e` key branch;
+transport and HTTP failures now supply the error path. The `JoinSet` output type, completion branch,
+`finish_fetch`, redraw policy, and shutdown method remain the same.
+
+For an HTTP GET without application-side writes, aborting the task at exit discards the local
+response. A request that changes server state needs a different cancellation/retry policy: stopping
+the client does not undo work the server has already performed. That distinction is covered in
+[cancellation and partial progress](/concepts/async/background-work/#cancellation-and-partial-progress).
+
 ## Synchronous UI with async workers
 
 The example above waits inside an async UI task. An alternative is to keep `poll`, `read`, and
@@ -151,9 +214,23 @@ The loop caps its input wait at 16 ms before checking the worker channel. Separa
 events and worker messages prevent either source from consuming the whole batch. Handlers and
 drawing add to the time before the next check.
 
-Use [`Runtime::spawn`] or a runtime [`Handle`] from this synchronous code. Merely creating a runtime
-does not enter its context for `tokio::spawn`. A current-thread runtime also needs `block_on` to
-make its tasks progress; see Tokio's [Bridging with sync code].
+The runtime's [`Handle`] and the result sender are passed into `run_terminal`. When the input
+handler sees `r`, it calls this method on the synchronous app. Here, `App.requests` is a
+`JoinSet<()>`: the tasks send `UiMessage` values through the channel instead of returning data
+through the task handle, so their return type is `()`:
+
+```rust
+{{ #include @code/concepts/async-applications/src/sync_ui.rs:sync_start_fetch }}
+```
+
+`JoinSet::spawn_on` uses the supplied runtime and retains the task for completion and shutdown. The
+loop checks `try_join_next` without waiting, while received messages update the UI state. For work
+outside a task collection, [`Runtime::spawn`] or `Handle::spawn` provides the same explicit choice
+of runtime, but the caller must retain its returned handle.
+
+Creating a runtime does not enter its context for `tokio::spawn`. The multi-thread runtime keeps
+worker tasks moving while the UI thread polls input; a current-thread runtime instead needs
+`block_on` to drive its tasks. See Tokio's [Bridging with sync code].
 
 The same owner loop can live on a dedicated OS thread. Initialize, use, and restore the terminal
 there, and provide a shutdown command, a way to wake it, and a join path. Avoid independently
@@ -189,3 +266,6 @@ output are on different threads, so additional terminal operations still require
   https://github.com/ClementTsang/bottom/blob/e61385b77c0790b2328456b64e66f9684f299c74/src/lib.rs#L282-L470
 [Bridging with sync code]: https://tokio.rs/tokio/topics/bridging
 [`tokio::select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html
+[http client]: https://docs.rs/reqwest/0.12.15/reqwest/struct.Client.html
+[http timeout]: https://docs.rs/reqwest/0.12.15/reqwest/struct.ClientBuilder.html#method.timeout
+[http status]: https://docs.rs/reqwest/0.12.15/reqwest/struct.Response.html#method.error_for_status

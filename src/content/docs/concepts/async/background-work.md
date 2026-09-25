@@ -69,9 +69,14 @@ execute. Copy the current value and release the watch borrow before awaiting ano
 {{ #include @code/concepts/async-applications/src/coordination.rs:progress }}
 ```
 
-This helper forwards the initial value too. If its output queue is full, it waits there and later
-observes the newest available progress, skipping percentages replaced during the wait. Closing the
-UI receiver ends forwarding.
+This adapter is useful when an existing UI already receives all updates through one message queue.
+It forwards the initial value too. If that queue is full, forwarding waits and later reads the
+newest watch value, skipping percentages replaced during the wait. Percentages already sent to the
+UI queue still occupy that queue; the adapter does not replace them. Closing the UI receiver ends
+forwarding.
+
+If the UI only needs the latest progress, it can instead select directly on `progress.changed()` and
+copy `borrow_and_update()` into its state. That avoids introducing a second queue just for progress.
 
 In a download view, create the `watch` channel when starting the download, let the worker publish
 percentages, and run `forward_progress` as a tracked task. The UI receives those percentages through
@@ -103,8 +108,25 @@ a connection's protocol state in one place. Each command can carry a `oneshot` c
 response, as in this name-lookup request:
 
 ```rust
+{{ #include @code/concepts/async-applications/src/coordination.rs:actor_command }}
+{{ #include @code/concepts/async-applications/src/coordination.rs:actor_owner }}
+```
+
+Create a bounded `mpsc` channel, move the lookup data and receiver into
+`tokio::spawn(serve_names(names, receiver))`, and retain the returned task handle. Callers keep
+sender clones. When every sender is dropped, the owner drains accepted commands and exits.
+
+The requesting side creates the per-command reply channel and distinguishes lookup results from
+communication failures:
+
+<details>
+<summary>Requesting a name and reporting channel errors</summary>
+
+```rust
 {{ #include @code/concepts/async-applications/src/coordination.rs:reply }}
 ```
+
+</details>
 
 The owner receives `GetName`, looks up the ID, and calls `command.reply.send(value)`. That send can
 fail normally if the caller has gone away. `Ok(None)` means the owner replied that the ID was
@@ -182,6 +204,10 @@ wins, the other branch futures are dropped. Check the cancellation contract of e
 especially if it holds partially completed work. Tokio documents [`mpsc::Receiver::recv`] as
 cancellation safe; operations such as [`read_exact`] and [`write_all`] can make partial progress
 before cancellation. A retry must account for that progress.
+
+In the runnable app, a keypress winning `select!` drops the temporary `join_next()` wait, **not**
+the fetch retained in `App.requests`. The next loop turn can wait for that same fetch. This is why
+typing while loading does not cancel the request.
 
 A spawned task has a separate lifetime from a future waiting for its result. Dropping the task's
 `JoinHandle` detaches the task rather than aborting it. Retain handles or use a task collection when

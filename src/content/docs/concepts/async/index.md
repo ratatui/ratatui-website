@@ -13,54 +13,6 @@ input and draws application state with Ratatui. The loop must wake for both inpu
 work, and terminal queries must coordinate with the input reader. These requirements also apply to
 [Elm, components, and other application patterns](/concepts/application-patterns/).
 
-## Async topics
-
-- [Async Applications](#tasks-and-the-ui-loop) introduces the request flow and UI arrangements.
-  - Tasks and the UI loop: how futures, tasks, and threads participate in a background request.
-  - Terminal ownership: compare async and synchronous loops, including a dedicated UI thread.
-- [Build a Responsive Event Loop][loops] walks through a runnable application.
-  - Run the example: controls, dependencies, and complete source.
-  - State and requests: keep display state and pending tasks in `App`.
-  - Event selection: wait for input, results, or a frame deadline.
-  - Results and cleanup: display failures, restore the terminal, and stop workers.
-  - Synchronous alternative: poll input and receive results from async workers.
-  - Existing applications: compare loops in Ratatui examples, templates, and bottom.
-- [Schedule Work and Redraws][schedule] explains what affects responsiveness.
-  - Cooperative scheduling: when tasks yield and which thread drawing blocks.
-  - Expensive work: measure application, rendering, and backend costs; limit blocking jobs.
-  - Batching: apply bounded amounts of input and worker results before drawing.
-  - Frame deadlines: combine redraw requests and avoid unnecessary idle frames.
-  - Coalescing and debouncing: decide which updates can be replaced and when to start work.
-- [Background Work and Messages][workers] covers communication and result handling.
-  - Worker messages: deliver results and errors to the UI and wake its loop.
-  - Channels: choose delivery guarantees and backpressure with `mpsc`, `watch`, or `oneshot`.
-  - Actors: send commands to a task that owns a resource and receive its replies.
-  - Stale results: prevent an older search from replacing a newer result.
-  - Cancellation: account for partial progress, task lifetimes, and external effects.
-- [Terminal I/O and Ownership][terminal] explains coordination at the terminal.
-  - Synchronous drawing: distinguish rendering, size checks, output, and queries.
-  - Protocol replies: understand how queries share input with keyboard and mouse events.
-  - Startup and runtime queries: order probes and coordinate with the active reader.
-  - Redirection: identify the actual terminal handles and the behavior of I/O wrappers.
-- [Shutdown and Terminal Handoffs][lifecycle] covers exit and temporary release of the terminal.
-  - Error cleanup: restore terminal modes when the event loop fails.
-  - Worker shutdown: stop accepting work, signal cancellation, and join tasks.
-  - Blocking jobs: wait for completion even when the result is no longer wanted.
-  - Child processes: release input and modes, run another program, and rebuild the display.
-  - Suspend and resume: recover terminal state after shell job control.
-- [Troubleshooting Async Applications][trouble] connects symptoms to investigations.
-  - Timing: distinguish slow requests, missing wakeups, and delayed frames.
-  - Load and ordering: reproduce queue backlogs, stale results, and shutdown during work.
-  - Reader conflicts: isolate queries and compare documented terminal failures.
-  - Tests: choose unit, pseudo-terminal, or real-terminal checks for the failing behavior.
-- [Async Terminal Design Questions][design] discusses possible library improvements.
-  - Query routing: match replies while preserving ordinary input.
-  - Rendering and presentation: separate preparing a frame from writing it to the terminal.
-  - Redraw scheduling: coordinate requests from multiple components.
-  - Release and reacquisition: define terminal handoff operations.
-  - Reader lifecycle: establish shutdown guarantees across platforms.
-  - Regression tests: exercise protocol handling, handoffs, resize, and resume.
-
 ## Tasks and the UI loop
 
 Suppose pressing a key starts a network request. The UI must keep accepting input while the request
@@ -105,6 +57,55 @@ runtime thread can also delay other tasks scheduled on that thread; a separate U
 blocking work off the runtime.
 
 :::
+
+## Async topics
+
+- [Async Applications](#tasks-and-the-ui-loop) introduces the request flow and UI arrangements.
+  - Tasks and the UI loop: how futures, tasks, and threads participate in a background request.
+  - Terminal ownership: compare async and synchronous loops, including a dedicated UI thread.
+- [Build a Responsive Event Loop][loops] walks through a runnable application.
+  - Run the example: controls, dependencies, and complete source.
+  - State and requests: keep display state and pending tasks in `App`.
+  - Event selection: wait for input, results, or a frame deadline.
+  - Results and cleanup: display failures, restore the terminal, and stop workers.
+  - HTTP requests: replace the simulated fetch with reqwest while keeping the UI loop.
+  - Synchronous alternative: poll input and receive results from async workers.
+  - Existing applications: compare loops in Ratatui examples, templates, and bottom.
+- [Schedule Work and Redraws][schedule] explains what affects responsiveness.
+  - Cooperative scheduling: when tasks yield and which thread drawing blocks.
+  - Frame deadlines: combine redraw requests and avoid unnecessary idle frames.
+  - Expensive work: measure application, rendering, and backend costs; limit blocking jobs.
+  - Batching: apply bounded amounts of input and worker results before drawing.
+  - Coalescing and debouncing: decide which updates can be replaced and when to start work.
+- [Background Work and Messages][workers] covers communication and result handling.
+  - Worker messages: deliver results and errors to the UI and wake its loop.
+  - Channels: choose delivery guarantees and backpressure with `mpsc`, `watch`, or `oneshot`.
+  - Actors: send commands to a task that owns a resource and receive its replies.
+  - Stale results: prevent an older search from replacing a newer result.
+  - Cancellation: account for partial progress, task lifetimes, and external effects.
+- [Terminal I/O and Ownership][terminal] explains coordination at the terminal.
+  - Synchronous drawing: distinguish rendering, size checks, output, and queries.
+  - Protocol replies: understand how queries share input with keyboard and mouse events.
+  - Startup and runtime queries: order probes and coordinate with the active reader.
+  - Redirection: identify the actual terminal handles and the behavior of I/O wrappers.
+- [Shutdown and Terminal Handoffs][lifecycle] covers exit and temporary release of the terminal.
+  - Error cleanup: restore terminal modes when the event loop fails.
+  - Worker shutdown: stop accepting work, signal cancellation, and join tasks.
+  - Blocking jobs: wait for completion even when the result is no longer wanted.
+  - Child processes: release input and modes, run another program, and rebuild the display.
+  - Suspend and resume: recover terminal state after shell job control.
+- [Troubleshooting Async Applications][trouble] connects symptoms to investigations.
+  - Timing: distinguish slow requests, missing wakeups, and delayed frames.
+  - Load and ordering: reproduce queue backlogs, stale results, and shutdown during work.
+  - Reader conflicts: isolate queries and compare documented terminal failures.
+  - Tests: choose unit, pseudo-terminal, or real-terminal checks for the failing behavior.
+- [Async Terminal Design Questions][design] is optional reading about possible library improvements.
+  - Query routing: match replies while preserving ordinary input.
+  - Rendering and presentation: separate preparing a frame from writing it to the terminal.
+  - Redraw scheduling: coordinate requests from multiple components.
+  - Release and reacquisition: define terminal handoff operations.
+  - Reader lifecycle: establish shutdown guarantees across platforms.
+  - Regression tests: exercise protocol handling, handoffs, resize, and resume.
 
 ## Terminal ownership
 

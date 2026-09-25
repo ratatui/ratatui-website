@@ -49,8 +49,33 @@ branches still wait while this draw executes:
 {{ #include @code/concepts/async-applications/src/bin/background.rs:draw_deadline }}
 ```
 
-The same branch also implements the frame deadline discussed below. Separating the fetch from the UI
-task allows input during the request; it does not allow input during a synchronous draw.
+The frame deadline controls when that branch becomes ready. Separating the fetch from the UI task
+allows input during the request; it does not allow input during a synchronous draw.
+
+## Redraw requests and frame deadlines
+
+The UI can receive several results or keypresses before it needs another frame. A frame deadline
+prevents each update from triggering an immediate draw. In the
+[async runnable loop](/concepts/async/event-loops/), two values determine whether to draw:
+
+- `dirty`: an event or result may have changed the visible state.
+- `next_frame`: the earliest time another draw should begin.
+
+After drawing, clear `dirty` and set a fresh deadline from completion. When clean, do not poll an
+already-expired timer repeatedly. This avoids idle work and replaying missed periodic ticks after a
+stall. An animation can deliberately mark state dirty on a separate timer; most static views do not
+need a continuous redraw timer.
+
+A draw deadline caps frequency; it does not cap how long rendering takes or guarantee when input
+will be handled. Tokio's default `select!` branch order also is not a real-time scheduling
+guarantee.
+
+When many components request frames, a shared scheduler can coalesce their requests. Helix's
+[request_redraw] implements this with a `Notify`: `request_redraw()` signals it, and
+`redraw_requested()` provides the future the editor can wait on. The [Codex frame
+scheduler][frame scheduler] provides another example of scheduling requests independently of
+drawing. A shared scheduler gives independently updating components one place to combine requests
+and enforce the frame deadline.
 
 ## Measuring and moving expensive work
 
@@ -145,31 +170,6 @@ Yazi's [application loop][Yazi app loop] drains queued events and uses [render f
 whether to draw. At the linked revision, the drain is unbounded and dispatch can render when a frame
 is due. An unbounded drain can delay returning to other loop work while producers keep adding
 messages; use a batch limit when adapting this approach.
-
-## Redraw requests and frame deadlines
-
-Batching limits the work done in one loop turn. A frame deadline additionally prevents successive
-turns from drawing too frequently. In the [async runnable loop](/concepts/async/event-loops/), two
-values determine whether to draw:
-
-- `dirty`: an event or result may have changed the visible state.
-- `next_frame`: the earliest time another draw should begin.
-
-After drawing, clear `dirty` and set a fresh deadline from completion. When clean, do not poll an
-already-expired timer repeatedly. This avoids idle work and replaying missed periodic ticks after a
-stall. An animation can deliberately mark state dirty on a separate timer; most static views do not
-need a continuous redraw timer.
-
-A draw deadline caps frequency; it does not cap how long rendering takes or guarantee when input
-will be handled. Tokio's default `select!` branch order also is not a real-time scheduling
-guarantee.
-
-When many components request frames, a shared scheduler can coalesce their requests. Helix's
-[request_redraw] implements this with a `Notify`: `request_redraw()` signals it, and
-`redraw_requested()` provides the future the editor can wait on. The [Codex frame
-scheduler][frame scheduler] provides another example of scheduling requests independently of
-drawing. A shared scheduler gives independently updating components one place to combine requests
-and enforce the frame deadline.
 
 ## Coalescing progress and resize updates
 

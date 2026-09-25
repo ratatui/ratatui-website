@@ -49,6 +49,12 @@ The exact order depends on whether workers still require terminal access. Tokio'
 Shutdown] guide explains cancellation notification and task tracking. Channel closure can also be a
 shutdown signal, provided all sender clones are dropped and the receiver handles closure.
 
+Decide what happens to pending UI messages before waiting for producers. If results may be
+discarded, drop the UI receiver (or close it) so sends blocked on a full channel return an error. If
+accepted results must be applied, keep draining the receiver while joining workers. Otherwise a
+worker can wait forever for queue space after the UI has stopped reading. Workers must also observe
+send failures or cancellation rather than retrying a closed channel indefinitely.
+
 :::caution[A timeout does not stop blocking work]
 
 A time limit bounds how long the caller waits; it does not necessarily stop the work. A started
@@ -80,9 +86,11 @@ Worker errors are returned even after that withdrawal. If completion and cancell
 together, either branch can win; request identity checks remain necessary when applying results.
 
 Borrowing the handle lets the caller retain it if this helper's future is dropped. That caller must
-still join the job during shutdown. This is a policy for finite work: it deliberately has no timeout
-and can keep shutdown waiting for a slow sort. A long-lived UI can retain several handles in a task
-collection and select on completions while continuing to process input.
+still join the job during shutdown. Once `finish_sort` returns, however, it has already awaited the
+handle; remove it from tracking rather than awaiting it again. This is a policy for finite work: it
+deliberately has no timeout and can keep shutdown waiting for a slow sort. A long-lived UI can
+retain several handles in a task collection and select on completions while continuing to process
+input.
 
 Yazi's [preview controller][Yazi preview tasks] illustrates why cancelling the async waiter and
 stopping blocking work are separate operations. It aborts its preview task and calls

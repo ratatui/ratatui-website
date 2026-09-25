@@ -9,7 +9,7 @@ use std::time::{Duration, Instant};
 
 use color_eyre::Result;
 use ratatui::DefaultTerminal;
-use tokio::sync::mpsc;
+use tokio::{runtime::Handle, sync::mpsc, task::JoinSet};
 
 // Bound each input source's work so a continuous backlog still leaves a turn for drawing.
 // 64 is an illustrative batch size, not a measured optimum or a time limit on handlers.
@@ -27,24 +27,16 @@ fn main() -> Result<()> {
     // the capacity is an example choice, independent of the number drained per turn.
     let (ui_tx, ui_rx) = mpsc::channel(128);
 
-    // Use the runtime explicitly: this synchronous function is outside Tokio's runtime context.
-    runtime.spawn({
-        let ui_tx = ui_tx.clone();
-        async move {
-            let message = match load_items().await {
-                Ok(items) => UiMessage::ItemsLoaded(items),
-                Err(error) => UiMessage::ItemsFailed(error.to_string()),
-            };
-            // Receiver closure means the UI has gone away; this example has no other consumer.
-            let _ = ui_tx.send(message).await;
-        }
-    });
+    let mut app = App::default();
 
     // Save the result rather than using `?`: an I/O error must still reach terminal restoration.
-    let result = run_terminal(terminal, ui_rx);
+    let result = run_terminal(terminal, &mut app, runtime.handle(), ui_tx, ui_rx);
     ratatui::restore();
-    // This bounds how long shutdown waits; it is not a graceful worker-completion protocol.
-    // Real applications should signal cancellation and join work that must finish before exit.
+    // The loop has dropped its receiver. Pending sends cannot stay blocked on a full UI queue.
+    // These placeholder requests have no external side effects, so aborting them is sufficient.
+    runtime.block_on(app.requests.shutdown());
+    // This timeout bounds only the final runtime shutdown, not the preceding JoinSet wait.
+    // It cannot stop blocking work that has already started.
     runtime.shutdown_timeout(Duration::from_secs(1));
     result
 }
@@ -53,8 +45,13 @@ fn main() -> Result<()> {
 ///
 /// This loop is the sole Crossterm reader. Adding another reader would invalidate the assumption
 /// that an event reported ready by `poll` is still available to the following `read`.
-fn run_terminal(mut terminal: DefaultTerminal, mut ui_rx: mpsc::Receiver<UiMessage>) -> Result<()> {
-    let mut app = App::default();
+fn run_terminal(
+    mut terminal: DefaultTerminal,
+    app: &mut App,
+    runtime: &Handle,
+    ui_tx: mpsc::Sender<UiMessage>,
+    mut ui_rx: mpsc::Receiver<UiMessage>,
+) -> Result<()> {
     // Frame spacing limits redraw frequency; max_poll bounds idle waits for worker messages.
     // They happen to use the same example value but control different sources of delay.
     let frame_interval = Duration::from_millis(16);
@@ -76,7 +73,20 @@ fn run_terminal(mut terminal: DefaultTerminal, mut ui_rx: mpsc::Receiver<UiMessa
         if crossterm::event::poll(timeout)? {
             for _ in 0..MAX_EVENTS_PER_TURN {
                 let event = crossterm::event::read()?;
-                app.handle_terminal_event(event);
+                // ANCHOR: sync_refresh
+                if matches!(
+                    event,
+                    crossterm::event::Event::Key(crossterm::event::KeyEvent {
+                        code: crossterm::event::KeyCode::Char('r'),
+                        kind: crossterm::event::KeyEventKind::Press,
+                        ..
+                    })
+                ) {
+                    app.start_fetch(runtime, &ui_tx);
+                } else {
+                    app.handle_terminal_event(event);
+                }
+                // ANCHOR_END: sync_refresh
                 dirty = true;
 
                 if !crossterm::event::poll(Duration::ZERO)? {
@@ -95,6 +105,11 @@ fn run_terminal(mut terminal: DefaultTerminal, mut ui_rx: mpsc::Receiver<UiMessa
             app.handle_message(message);
             dirty = true;
             drained += 1;
+        }
+
+        // Observe worker panics before drawing again: the panic hook may have restored modes.
+        while let Some(result) = app.requests.try_join_next() {
+            result?;
         }
 
         // Apply the batch before drawing so the frame represents the latest processed state.
@@ -123,7 +138,7 @@ pub(super) enum UiMessage {
     RenderRequested,
 }
 
-/// The worker side of the message boundary, extracted from `main` for the messaging section.
+/// The request task started by the synchronous UI when the user presses r.
 async fn report_loaded_items(ui_tx: mpsc::Sender<UiMessage>) {
     let message = match load_items().await {
         Ok(items) => UiMessage::ItemsLoaded(items),
@@ -143,16 +158,39 @@ async fn report_loaded_items(ui_tx: mpsc::Sender<UiMessage>) {
 pub(super) struct App {
     /// Set by a real input handler when the user asks to exit.
     quit: bool,
+    requests: JoinSet<()>,
 }
 
 impl App {
+    // ANCHOR: sync_start_fetch
+    fn start_fetch(&mut self, runtime: &Handle, ui_tx: &mpsc::Sender<UiMessage>) {
+        if !self.requests.is_empty() {
+            return; // One request at a time, as in the async UI example.
+        }
+        // spawn_on selects the runtime explicitly, even outside an async context.
+        self.requests
+            .spawn_on(report_loaded_items(ui_tx.clone()), runtime);
+    }
+    // ANCHOR_END: sync_start_fetch
+
     /// The loop checks this after processing input and messages on each turn.
     fn should_quit(&self) -> bool {
         self.quit
     }
 
     /// Replace with input handling, including setting `quit` and starting background requests.
-    pub(super) fn handle_terminal_event(&mut self, _event: crossterm::event::Event) {}
+    pub(super) fn handle_terminal_event(&mut self, event: crossterm::event::Event) {
+        if let crossterm::event::Event::Key(key) = event {
+            if key.kind == crossterm::event::KeyEventKind::Press
+                && matches!(
+                    key.code,
+                    crossterm::event::KeyCode::Char('q') | crossterm::event::KeyCode::Esc
+                )
+            {
+                self.quit = true;
+            }
+        }
+    }
 
     /// Replace with updates for loaded data, failures, and progress.
     pub(super) fn handle_message(&mut self, _message: UiMessage) {}
@@ -172,4 +210,30 @@ type JobId = u64;
 /// Keeping it separate shows where waiting belongs without introducing a particular client API.
 async fn load_items() -> Result<Vec<Item>> {
     Ok(vec![])
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn refresh_uses_explicit_runtime_outside_async_context() {
+        let runtime = tokio::runtime::Builder::new_multi_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        let (sender, mut receiver) = mpsc::channel(1);
+        let mut app = App::default();
+        app.start_fetch(runtime.handle(), &sender);
+        app.start_fetch(runtime.handle(), &sender);
+        assert_eq!(app.requests.len(), 1);
+        runtime.block_on(async {
+            assert!(matches!(
+                receiver.recv().await,
+                Some(UiMessage::ItemsLoaded(_))
+            ));
+            app.requests.join_next().await.unwrap().unwrap();
+        });
+        assert!(app.requests.is_empty());
+    }
 }

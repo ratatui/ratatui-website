@@ -44,7 +44,10 @@ For search, test both a stale success and a stale failure, including after clear
 work is pending. Neither result should change the cleared view.
 
 For shutdown, quit while a request is waiting, while the result queue is full, and while a blocking
-job is running. Check that each worker finishes or stops according to the app's shutdown policy.
+job is running. Check that each worker finishes or stops according to the app's shutdown policy. If
+a producer is stuck sending after the UI exits, check the
+[receiver shutdown policy](/concepts/async/lifecycle/#worker-shutdown): discard queued results by
+dropping the receiver, or keep draining them while waiting for workers.
 
 ## Isolating terminal reader conflicts
 
