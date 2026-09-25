@@ -8,7 +8,7 @@ An async request can wait without holding a runtime thread. Parsing its result, 
 model, rendering widgets, and writing a frame still take time. To improve responsiveness, first
 identify which operation delays input and which task or thread it occupies.
 
-## Give other work a chance
+## Cooperative scheduling
 
 Rust async runtimes use cooperative scheduling: code must return control before another task can use
 that thread. An `.await` offers a yield point, but a future that is already ready can continue
@@ -35,7 +35,7 @@ Other branches of the **same UI task** wait in every async case. The top-level d
 Tokio's [`main` macro][`tokio::main`] and [`Runtime::block_on`] contracts. More worker threads do
 not make a long UI handler responsive to input.
 
-## Separate the costs
+## Measuring and moving expensive work
 
 Measure release builds, including slow frames and bursts rather than just an average. Distinguish:
 
@@ -62,7 +62,7 @@ move to the worker without borrowing UI state.
 
 Keep the handle even if the user leaves the view. A started blocking closure finishes on its own;
 dropping the handle loses the opportunity to observe that completion. The
-[lifecycle example](/concepts/async/lifecycle/#observe-blocking-work-after-cancellation) shows how
+[lifecycle example](/concepts/async/lifecycle/#joining-blocking-work-after-cancellation) shows how
 to discard an unwanted result while still joining the worker.
 
 Admission bounds dispatched jobs. Callers waiting for slots still retain their vectors, and
@@ -73,7 +73,7 @@ Use a dedicated thread for a persistent blocking loop. [`block_in_place`] allows
 to another worker, but still suspends other futures within the same task and cannot run on a
 current-thread runtime. Neither function makes it safe to scatter terminal reads across threads.
 
-## Apply a batch, then draw
+## Batching updates before drawing
 
 Drawing after each queued update can show intermediate states that are already obsolete. Instead,
 process a bounded batch before drawing:
@@ -91,10 +91,11 @@ traffic could prevent results from being read. A count cap bounds calls, not ela
 expensive handlers or add a time budget when one batch still takes too long.
 
 Yazi's [application loop][Yazi app loop] drains queued events and uses [render flags] to decide
-whether to draw. Its pinned drain is unbounded and dispatch can render when a frame is due. Borrow
-the batching idea, not an assumption that every producer load is fair.
+whether to draw. At the linked revision, the drain is unbounded and dispatch can render when a frame
+is due. An unbounded drain can delay returning to other loop work while producers keep adding
+messages; use a batch limit when adapting this approach.
 
-## Request a frame without forcing one
+## Redraw requests and frame deadlines
 
 In the [runnable loop](/concepts/async/event-loops/), two values control drawing:
 
@@ -112,10 +113,10 @@ guarantee.
 
 When many components request frames, a shared scheduler can coalesce their requests. The [Codex
 frame scheduler][frame scheduler] and Helix's [request_redraw] show this separation: requesters
-notify; the terminal owner draws. Introduce it when coordination needs it, not merely because the
-app is async.
+notify; the terminal owner draws. A shared scheduler gives independently updating components one
+place to combine requests and enforce the frame deadline.
 
-## Coalesce only replaceable updates
+## Coalescing progress and resize updates
 
 Keep the latest progress percentage or requested dimensions when intermediate values do not matter.
 Preserve commands, text edits, and log records whose order or occurrence matters. Debouncing a

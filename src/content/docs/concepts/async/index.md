@@ -8,12 +8,12 @@ A TUI might fetch data, follow a process log, or search a large collection while
 Async Rust provides ways to wait for that work without occupying a thread for each wait. You still
 choose how results reach the UI, when to draw, and what happens when the user changes their mind.
 
-Tokio schedules background tasks, Crossterm supplies terminal input, and Ratatui draws application
-state. The pages below connect their APIs through a runnable example and focused explanations of
-scheduling, messages, and terminal ownership. These choices also apply to
+In a Tokio-based app, background tasks return results to the UI loop, which processes Crossterm
+input and draws application state with Ratatui. The loop must wake for both input and completed
+work, and terminal queries must coordinate with the input reader. These requirements also apply to
 [Elm, components, and other application patterns](/concepts/application-patterns/).
 
-## Find what you need
+## Async topics
 
 | Need                              | Page                       |
 | --------------------------------- | -------------------------- |
@@ -25,10 +25,10 @@ scheduling, messages, and terminal ownership. These choices also apply to
 | Investigate a failure             | [Troubleshooting][trouble] |
 | Improve library coordination      | [Design questions][design] |
 
-## Follow the work
+## Tasks and the UI loop
 
-A useful starting arrangement is one owner of application state and the terminal. Workers return
-results to that owner. For example:
+The UI loop can own application state and the terminal while workers return results for it to apply.
+A background request then follows this sequence:
 
 ```text
 keyboard input ──► UI loop ──► start a request
@@ -49,14 +49,14 @@ one thread. An **event loop** waits for input or other changes and dispatches th
 
 An `.await` is an opportunity to give control back to the runtime while waiting. A ready future can
 continue immediately, so adding `.await` does not guarantee that another task runs. See
-[cooperative scheduling](/concepts/async/scheduling/#give-other-work-a-chance).
+[cooperative scheduling](/concepts/async/scheduling/#cooperative-scheduling).
 
 Ratatui's [`Terminal::draw`] remains synchronous. Widget rendering, backend calls, and flushing
 occupy the calling thread until the operation returns. Awaitable input does not make drawing async,
 and a task reading events may share terminal input with a cursor-position query. The
 [terminal I/O page](/concepts/async/terminal-io/) explains those interactions.
 
-## Choose an owner
+## Terminal ownership
 
 Keep terminal operations ordered and give worker results a way to reach the event loop. These are
 three arrangements with different waiting and lifecycle costs:
@@ -71,9 +71,9 @@ A plain synchronous loop is enough when handlers finish promptly. A separate inp
 possible, but it must participate in terminal queries and handoffs; simply putting input and output
 in different tasks does not make them independent.
 
-The precise Crossterm [event API rule][event module] is to use `poll` and `read` on the same thread,
-or use `EventStream`. Do not mix those approaches. A single coordinating owner is an application
-recommendation that makes such rules easier to maintain.
+Crossterm's [event API][event module] requires using `poll` and `read` on the same thread, or using
+`EventStream`, without mixing the two approaches. Keeping terminal access in one part of the
+application helps enforce this restriction during startup, queries, and shutdown.
 
 ## Examples and sources
 
@@ -81,13 +81,12 @@ recommendation that makes such rules easier to maintain.
 and exit without a server or credentials. Its simulated fetch makes the waiting behavior repeatable.
 Other snippets isolate particular mechanisms and state their assumptions beside the code.
 
-Application source is useful for seeing the tradeoffs in context. These pages draw on Yazi, Codex,
-Helix, gitui, bottom, bacon, dua-cli, tokio-console, and Ratatui's examples and templates. Each
-source link identifies the revision examined. A useful technique in one app is not a guarantee that
-its whole architecture fits another.
+Source links refer to specific application revisions so you can inspect the surrounding code. For
+example, the scheduling discussion compares how Yazi batches events, Codex combines redraw requests,
+and dua-cli limits queued traversal results.
 
-Use [Tokio's tutorial](https://tokio.rs/tokio/tutorial) for a broader introduction to async Rust.
-Here, the emphasis is on connecting those ideas to a TUI and understanding their limits.
+[Tokio's tutorial](https://tokio.rs/tokio/tutorial) introduces futures, tasks, and channels in more
+detail.
 
 [`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
 [event module]: https://docs.rs/crossterm/latest/crossterm/event/index.html

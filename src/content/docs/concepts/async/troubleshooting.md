@@ -4,8 +4,8 @@ sidebar:
   order: 6
 ---
 
-Start with the symptom and identify which part of the system is waiting. Adding a task, a mutex, or
-a faster tick often moves the problem without explaining it.
+A delayed update can come from a request that has not finished, a result the UI has not received, or
+a frame it has not drawn. Check which operation is waiting before changing the loop.
 
 | Symptom                              | First check                                |
 | ------------------------------------ | ------------------------------------------ |
@@ -19,7 +19,7 @@ a faster tick often moves the problem without explaining it.
 | Quit leaves the process running      | Uncancellable reads or blocking work       |
 | Display is stale after an editor     | Mode and buffer reinitialization           |
 
-## Separate completion from redraw
+## Tracing request and redraw delays
 
 Log timestamps for starting a request, completing it, receiving its result in the UI, applying the
 result, and completing a frame. Write these logs to a file. If completion is prompt but receipt
@@ -31,7 +31,7 @@ The [simple-async template][`simple-async` template] is a small input-driven sta
 background workers also requires a way for their completion to wake the loop. Conversely, adding an
 unconditional high-frequency tick can hide the missing wakeup while wasting work at idle.
 
-## Reproduce overload, not just a single success
+## Overload and out-of-order results
 
 Try a continuously busy producer, slow handlers, repeated refreshes, and results delivered out of
 order. Confirm that input, worker messages, and rendering each receive turns. A maximum batch size
@@ -40,9 +40,10 @@ stall the loop. A bounded channel limits its queue, not every source of memory i
 
 For search, test both a stale success and a stale failure. Clear the query while work is pending.
 For shutdown, quit while a request is waiting, while the result queue is full, and while a blocking
-job is running. These cases exercise policies that an idle screenshot cannot show.
+job is running. Check that shutdown completes and that late successes or failures do not change a
+cleared view.
 
-## Reduce terminal conflicts carefully
+## Isolating terminal reader conflicts
 
 Record the exact library versions, backend, viewport, operating system, terminal emulator, and
 redirection. Then isolate optional queries, custom readers, and child-program handoffs. Do not
@@ -61,11 +62,10 @@ Useful source-backed investigations include:
   examples of query coordination and input lifecycle changes.
 - The [Codex resize reflow guardrails]: an example of handling costly resize-related work.
 
-A report demonstrates a particular failure and its conditions. Check the linked version and current
-implementation before treating it as a current universal bug or assuming a later release fixes every
-related case.
+Compare the report's library version and terminal setup with your reproducer, then check whether the
+affected code has changed. A fix for one query or platform may leave another path unaffected.
 
-## Test at the right boundary
+## Unit, pseudo-terminal, and terminal tests
 
 Use ordinary unit tests for message application, request identities, and state transitions.
 Ratatui's `TestBackend` can check what a draw produces. A pseudo-terminal test can exercise input,

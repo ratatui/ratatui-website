@@ -4,8 +4,8 @@ sidebar:
   order: 1
 ---
 
-An event loop must hear about both user input and completed work. If it only awaits the next key, a
-background request can finish without anything telling the UI to display its result.
+An event loop needs to wake for both user input and completed work. If it only awaits the next key,
+a background request can finish while the UI continues displaying its loading state.
 
 This example uses one async UI task and at most one fetch task. The UI owns the terminal and state;
 the fetch returns data. It uses a fullscreen terminal, with no runtime terminal queries or external
@@ -43,7 +43,7 @@ compiles them with Ratatui 0.30.2 and Crossterm 0.29.0.
 
 </details>
 
-## Separate work from state updates
+## UI state and background requests
 
 The UI owns the state it renders. A worker produces a value rather than borrowing that state or
 printing to the terminal:
@@ -68,7 +68,7 @@ returns immediately; the event loop awaits completion separately:
 
 The `loading` guard is this app's concurrency policy. There cannot be two fetch results competing to
 update the view. Search-as-you-type needs a different policy; see
-[rejecting stale results](/concepts/async/background-work/#ignore-obsolete-replies).
+[rejecting stale results](/concepts/async/background-work/#stale-search-results).
 
 ## Wait for input, results, or a frame
 
@@ -115,7 +115,7 @@ Aborting this simulated fetch drops a timer and owned data. It is not a general 
 file writes, child processes, or blocking jobs. Those need the policies described in
 [shutdown and handoff](/concepts/async/lifecycle/).
 
-## Use a synchronous owner when appropriate
+## Synchronous UI with async workers
 
 A synchronous main thread can own `poll`, `read`, and `draw` while a multi-thread Tokio runtime runs
 background work. Worker messages then need either a shared wakeup mechanism or a polling interval.
@@ -132,9 +132,9 @@ Here is the arrangement using a short input timeout:
 
 `App`, `Item`, and `load_items` in that companion snippet are teaching stubs, not another runnable
 app. They live in the package's compile-only library, so `cargo run` always starts the complete
-example. Its independent input and message budgets leave both sources a turn. The input wait is
-capped at 16 ms because a channel send cannot wake Crossterm's `poll`. Handlers and drawing add to
-that wait.
+example. Separate limits on input events and worker messages prevent either source from consuming
+the whole batch. The input wait is capped at 16 ms because a channel send cannot wake Crossterm's
+`poll`. Handlers and drawing add to that wait.
 
 Use [`Runtime::spawn`] or a runtime [`Handle`] from this synchronous code. Merely creating a runtime
 does not enter its context for `tokio::spawn`. A current-thread runtime also needs `block_on` to
@@ -145,15 +145,15 @@ there, and provide a shutdown command, a way to wake it, and a join path. Avoid 
 spawning blocking reads and draws: their ordering becomes harder to enforce, and `poll`/`read` may
 run on different threads.
 
-## Learn from existing loops
+## Application examples and templates
 
 Ratatui's [`async-github` example] uses a background fetch and shared state. It is useful for a
 small network example; lock duration and overlapping requests still need policies when extending it.
 
 The [`simple-async` template] draws and then waits for input. That demonstrates an awaitable event
 source, but it has no worker-result wakeup. A changed shared value alone will not wake that loop.
-The [`event-driven-async` template] uses a channel to forward events. Both provide useful starting
-shapes; trace input, completion, and redraw separately when adapting either.
+The [`event-driven-async` template] uses a channel to forward events. When adding workers to either
+template, connect their results to the loop and request a redraw after applying them.
 
 Bottom's [main loop][bottom startup loop] uses input and collection threads without an async UI. It
 demonstrates that background work does not require the UI itself to be an async task. Its input and

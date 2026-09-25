@@ -10,11 +10,12 @@ the same update logic. The [runnable example](/concepts/async/event-loops/) uses
 outstanding request. Channels become useful when workers produce multiple updates or live longer
 than a single request.
 
-## Describe what happened
+## Worker messages
 
-Use messages that express application meaning. A worker reports a failed request; the UI decides
-whether to keep old data, show an error, or retry. It should not print the error over the frame.
-This compile-tested excerpt uses placeholder `Item`, `JobId`, and `load_items` application types:
+Send the request result to the UI, including an identifier when several requests can be pending. The
+UI can then decide whether to keep old data, show an error, or retry. Printing errors directly from
+a worker would overwrite the terminal display. This compile-tested excerpt uses placeholder `Item`,
+`JobId`, and `load_items` application types:
 
 ```rust
 {{ #include @code/concepts/async-applications/src/sync_ui.rs:messages }}
@@ -23,9 +24,9 @@ This compile-tested excerpt uses placeholder `Item`, `JobId`, and `load_items` a
 A message does not inherently wake every kind of event loop. Selecting on an async receiver wakes
 that task when a message arrives. A synchronous loop blocked in Crossterm's `poll` must also arrange
 to check its worker queue; see the
-[synchronous alternative](/concepts/async/event-loops/#use-a-synchronous-owner-when-appropriate).
+[synchronous alternative](/concepts/async/event-loops/#synchronous-ui-with-async-workers).
 
-## Choose what the channel preserves
+## Channel delivery and backpressure
 
 | Requirement                              | Starting point                   |
 | ---------------------------------------- | -------------------------------- |
@@ -48,8 +49,8 @@ execute. Copy the current value and release the watch borrow before awaiting ano
 ```
 
 This helper forwards the initial value too. If its output queue is full, it waits there and later
-observes the newest available progress. That is intentional coalescing, not delivery of every
-percentage. Closing the UI receiver ends forwarding.
+observes the newest available progress, skipping percentages replaced during the wait. Closing the
+UI receiver ends forwarding.
 
 Store durable state in `watch`: for example, `Option<TaskId>` for the selected task. A transient
 command such as `SelectTask(id)` followed by an unrelated update can disappear before the receiver
@@ -57,7 +58,7 @@ observes it. The [tokio-console detail watcher] is a useful example of maintaini
 for the selected task; when adapting such a design, inspect both what the channel retains and
 whether waiting to forward a result delays noticing a changed selection.
 
-## Give a resource one owner
+## Resource ownership with actors
 
 An actor is a task that owns a resource and processes commands. This can keep a connection's
 protocol state in one place without placing a mutex around the whole UI. A command can carry its own
@@ -79,7 +80,7 @@ and keep critical sections short. An async mutex makes waiting for the lock asyn
 not make the code executed while holding it nonblocking. Neither kind automatically tells the UI to
 redraw after a mutation.
 
-## Ignore obsolete replies
+## Stale search results
 
 Suppose the user searches for `cat`, then `catalog`. The first request may finish last. Applying
 results in arrival order would replace the newer result with the older one. Give each request an
@@ -92,9 +93,9 @@ receive 2        apply
 receive 1        ignore
 ```
 
-This compile-tested excerpt uses a placeholder `search` function and a separate `SearchState` owned
-by the UI. Its query, results, error, generation, and redraw flag belong to that search view. It
-must be called inside a Tokio runtime context, as its comments explain:
+The following excerpt uses a placeholder `search` function. The UI owns `SearchState`, which tracks
+the query, results, error, request generation, and redraw flag. Call `start_search` inside a Tokio
+runtime context because it uses `tokio::spawn`:
 
 ```rust
 {{ #include @code/concepts/async-applications/src/stale.rs:discard_stale }}
@@ -111,7 +112,7 @@ effects. Add a concurrency limit, cancellation, or debouncing where needed. Canc
 not a replacement for checking identity: completion and cancellation can race. Yazi's [completion
 tickets] provide another application example of associating results with a request.
 
-## Know what cancellation drops
+## Cancellation and partial progress
 
 When a [`tokio::select!`] branch wins, the other branch futures are dropped. Check the cancellation
 contract of each operation, especially if it holds partially completed work. Tokio documents

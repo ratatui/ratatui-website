@@ -8,12 +8,11 @@ Async TUIs repeatedly need to coordinate terminal queries, redraw requests, and 
 to other programs. A library could own input routing or frame scheduling while leaving choices such
 as request cancellation and which updates may be dropped to the application.
 
-These are proposals and constraints for discussion, not an announced Ratatui roadmap. The linked
-source and bug reports establish the problems. They do not establish that the designs below have
-been implemented, accepted, or validated across terminals. Applications can use the
+The API designs below are proposals for discussion, not an announced Ratatui roadmap. Each needs
+validation against the terminal behaviors described here. Applications can use the
 [event-loop patterns](/concepts/async/event-loops/) without waiting for new APIs.
 
-## Route queries through the input reader
+## Query routing through a shared reader
 
 Cursor-position and color queries receive replies through terminal input. A second reader can
 consume bytes needed by the first, as reported in [Crossterm #1039][crossterm/crossterm#1039]. The
@@ -33,7 +32,7 @@ Termina's [filtered event reader] buffers rejected events for later reads. That 
 implementation to study, but filtered reading alone does not settle concurrent request matching or
 event ordering. [Crossterm #763][crossterm/crossterm#763] discusses the broader query API problem.
 
-## Separate rendering from terminal output
+## Separate rendering and presentation APIs
 
 [`Terminal::draw`] combines rendering with backend operations. The [linked
 implementation][`Terminal::try_draw` source] already has lower-level buffer application methods, so
@@ -52,7 +51,7 @@ backend compatibility, failed writes, and who owns mutable widget state during r
 buffers across a channel does not by itself solve those problems or make terminal output
 non-blocking.
 
-## Share redraw scheduling where it helps
+## Shared redraw scheduling
 
 Codex's [frame scheduler], Yazi's [render flags], and Helix's [request_redraw] demonstrate ways to
 combine many update notifications into fewer frames. A reusable redraw handle could let components
@@ -67,7 +66,7 @@ The application still decides which changes matter. A library cannot infer that 
 progress values may be dropped while every log line must be retained. Nor can a frame-rate limit
 make expensive state updates cheap.
 
-## Make release and reacquisition explicit
+## Terminal release and reacquisition
 
 A terminal session could provide operations for temporarily releasing the terminal to a child and
 reacquiring it afterward. The [Codex EventStream refactor] and [gitui input thread] show why
@@ -79,10 +78,11 @@ reacquire them even when starting the child fails. It would also need a policy f
 optional capability probes, and failure during reacquisition. Signal handling and panic cleanup need
 separate consideration; not every cleanup operation can run safely in every context.
 
-Owning a session type could make the intended sequence easier to follow. It cannot prevent another
-library or process from independently opening the terminal. The API must document that limit.
+A session type could enforce this sequence for callers using its API. Other libraries or processes
+could still open the terminal independently, so callers would need to coordinate that access
+themselves.
 
-## Evaluate event sources by their lifecycle
+## Input reader shutdown and portability
 
 Crossterm's `EventStream` uses a helper thread around a blocking reader. Tokio's
 [`stdin`][`tokio::io::stdin`] also uses blocking work, but its read cannot be cancelled and can
@@ -94,7 +94,7 @@ across partial reads and cancellation, coordinate terminal modes, and define han
 console handling needs its own implementation and tests. A uniform async interface should not imply
 identical OS behavior.
 
-## Test the protocol and the lifecycle
+## Protocol and lifecycle regression tests
 
 The [failure reports](/concepts/async/troubleshooting/) suggest regression scenarios for terminal
 libraries and applications:
@@ -107,9 +107,8 @@ libraries and applications:
 - Resize while redraw requests arrive faster than frames can be presented.
 
 Byte fixtures can test parsing and routing deterministically. Handoffs, job control, and console
-modes also need platform integration tests; passing a parser test does not prove that a child will
-receive its input. The linked reports establish useful cases to test, not an absence of existing
-regression tests in those projects.
+modes also need platform integration tests that check whether a child receives its input and the UI
+restores its terminal state afterward.
 
 A public design proposal should identify which of these cases it covers, link its tests, and state
 which decisions remain with the application. For example, a query API should state how it preserves

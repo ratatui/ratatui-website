@@ -29,7 +29,7 @@ mode an application could enable. Track mouse capture, focus reporting, brackete
 protocol settings, and cursor visibility when using them. If cleanup fails, preserve enough error
 information to diagnose the failure after leaving the UI.
 
-## Stop work deliberately
+## Worker shutdown
 
 A useful shutdown sequence is:
 
@@ -52,11 +52,12 @@ Similarly, [`timeout`] only checks its deadline when it can poll the wrapped fut
 code that does not yield can run past that deadline. It is not a way to interrupt a blocked draw or
 terminal query.
 
-## Observe blocking work after cancellation
+## Joining blocking work after cancellation
 
-The [sorting helper](/concepts/async/scheduling/#separate-the-costs) returns a `JoinHandle` so its
-caller retains completion ownership. Once a sort starts, cancelling interest in its result cannot
-interrupt it. This helper waits for completion and then discards unwanted values:
+The [sorting helper](/concepts/async/scheduling/#measuring-and-moving-expensive-work) returns a
+`JoinHandle` so its caller can wait for the worker and receive any error. Once a sort starts,
+cancelling interest in its result cannot interrupt it. This helper waits for completion and then
+discards unwanted values:
 
 ```rust
 {{ #include @code/concepts/async-applications/src/coordination.rs:join_after_cancel }}
@@ -72,7 +73,7 @@ still join the job during shutdown. This is a policy for finite work: it deliber
 and can keep shutdown waiting for a slow sort. A long-lived UI can retain several handles in a task
 collection and select on completions while continuing to process input.
 
-## Give a child exclusive access
+## Terminal handoff to a child process
 
 An editor, pager, or shell command that inherits the terminal needs the UI to release it. Restoring
 screen modes while another input reader remains active can let that reader steal the child's input.
@@ -80,9 +81,9 @@ The [Codex EventStream refactor] and [gitui input thread] illustrate why reader 
 handoff design.
 
 This small helper applies to the **synchronous sole-reader loop** from
-[event loops](/concepts/async/event-loops/#use-a-synchronous-owner-when-appropriate). Call it
-between loop turns after `event::read` returns. There must be no `EventStream`, background input
-thread, or other terminal reader to stop:
+[event loops](/concepts/async/event-loops/#synchronous-ui-with-async-workers). Call it between loop
+turns after `event::read` returns. There must be no `EventStream`, background input thread, or other
+terminal reader to stop:
 
 ```rust
 {{ #include @code/concepts/async-applications/src/handoff.rs:handoff }}
@@ -113,12 +114,12 @@ process later buffered input as though the application still owned the terminal.
 input should be retained or discarded; do not leave this as an accidental consequence of the loop
 structure.
 
-## Suspend and resume are also transitions
+## Suspend and resume
 
-Shell job control can change modes, cursor state, and which process owns the terminal. Resuming a
-process is not sufficient evidence that the old screen model remains valid. Reacquire the required
-modes, synchronize input ownership, invalidate stale display state, and redraw as appropriate for
-the platform. The [Codex suspend fix] is an example of correcting cursor behavior in this path.
+Shell job control can change modes, cursor state, and which process owns the terminal. After resume,
+Ratatui's saved buffer may no longer match the terminal display. Reacquire the required modes,
+synchronize input ownership, invalidate stale display state, and redraw as appropriate for the
+platform. The [Codex suspend fix] is an example of correcting cursor behavior in this path.
 
 Keep signal handling separate from ordinary Rust cleanup: many I/O and synchronization operations
 are unsuitable inside a low-level signal handler. Use a platform-appropriate notification mechanism

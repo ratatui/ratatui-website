@@ -4,9 +4,9 @@ sidebar:
   order: 4
 ---
 
-Async background work can coexist with a synchronous terminal. The important boundary is who reads
-input, writes frames, changes modes, and performs terminal queries. These operations may share a
-terminal even when they use different Rust objects or file descriptors.
+Reading input, drawing frames, changing terminal modes, and querying the terminal can interfere with
+one another. Separate Rust objects or file descriptors may still access the same terminal: an input
+reader can consume a query's reply, and a worker's printed output can corrupt the UI.
 
 The details below describe Ratatui 0.30.2 and Crossterm 0.29, with source links for the relevant
 implementation. Other backends and platforms can have different behavior.
@@ -29,9 +29,9 @@ Not every terminal operation asks the terminal emulator for a reply:
 | Cursor or color query      | May write a request and await an input reply     |
 
 The [draw implementation][`Terminal::try_draw` source], [inline
-sizing][`compute_inline_size` source], and [`Terminal::clear` source] show these paths. Avoid
-generalizing an inline-viewport issue into a claim that every fullscreen frame sends a
-cursor-position query.
+sizing][`compute_inline_size` source], and [`Terminal::clear` source] show these paths. Fullscreen
+autoresize normally checks dimensions without sending a cursor-position query; inline placement
+needs the cursor position as well.
 
 On Unix, Crossterm's [size implementation][Unix size implementation] attempts an OS terminal-size
 operation, using `/dev/tty` with a stdout fallback when opening it fails. Its broader size path also
@@ -68,10 +68,10 @@ not a universal two-second bound on the entire operation.
 
 These details explain why a loop can appear correctly asynchronous yet stall during a synchronous
 query. [Crossterm's reader-conflict report][crossterm/crossterm#1039] and the [Codex color-query
-patch] are concrete cases to study. They do not establish that every version, terminal, or query has
-the same failure.
+patch] describe reader conflicts in specific query paths. Check whether your query uses the same
+reader and handles when investigating a similar stall.
 
-## Establish a terminal policy
+## Startup and runtime queries
 
 For a fullscreen app without runtime queries, a practical starting point is:
 
@@ -93,7 +93,7 @@ query broker can own the reader and route replies and ordinary events together; 
 [design questions](/concepts/async/design-questions/) describe the additional contracts such a
 broker needs.
 
-## Check the actual handles
+## Redirected input and output
 
 Redirection changes assumptions. Stdin can be a pipe containing application data while a terminal
 library reads `/dev/tty`; stdout can be redirected while the UI uses stderr. A new descriptor for
@@ -111,8 +111,8 @@ shutdown. Its [`Stdout`][`tokio::io::Stdout`] also has its own buffering and blo
 details; wrapping output in an async API does not make Ratatui's draw pipeline asynchronous.
 
 When diagnosing a failure, record the backend and versions, OS, terminal emulator, viewport mode,
-redirected handles, and active readers. Those facts are usually more useful than whether the entry
-point has `#[tokio::main]`.
+redirected handles, and active readers. They determine which input and output paths the application
+uses.
 
 [`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
 [`Terminal::try_draw` source]:
