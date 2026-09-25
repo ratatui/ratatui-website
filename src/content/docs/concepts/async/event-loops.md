@@ -136,17 +136,16 @@ This changes how results reach the UI: a channel send cannot wake Crossterm's `p
 below uses a short input timeout before checking worker messages.
 
 <details>
-<summary>Synchronous owner with async workers (compile-tested structure)</summary>
+<summary>Synchronous UI loop with async workers</summary>
+
+This excerpt shows the loop and worker setup. Supply your own application state and event handlers
+(`App`), result type (`Item`), and async data-loading function (`load_items`).
 
 ```rust
 {{ #include @code/concepts/async-applications/src/sync_ui.rs:main_thread_owner }}
 ```
 
 </details>
-
-`App`, `Item`, and `load_items` in that companion snippet are teaching stubs, not another runnable
-app. They live in the package's compile-only library, so `cargo run` always starts the complete
-example.
 
 The loop caps its input wait at 16 ms before checking the worker channel. Separate limits on input
 events and worker messages prevent either source from consuming the whole batch. Handlers and
