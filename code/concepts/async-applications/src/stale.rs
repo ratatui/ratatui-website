@@ -1,5 +1,9 @@
 //! The "discard stale search results" example.
 //!
+//! Requests can finish in a different order from the user's input. Each reply carries the
+//! generation captured when its request started; only the active generation may update the UI.
+//! This prevents old replies from replacing newer state without relying on cancellation timing.
+//!
 //! This module has its own `UiMessage` so the search variants stay local to the example; a real
 //! application would add them to its single message enum.
 
@@ -8,6 +12,7 @@ use tokio::sync::mpsc;
 
 use crate::{App, Item};
 
+/// Return the request identity with both success and failure so either kind can be discarded.
 enum UiMessage {
     SearchFinished { generation: u64, results: Vec<Item> },
     SearchFailed { generation: u64, error: String },
@@ -19,14 +24,25 @@ async fn search(_query: String) -> Result<Vec<Item>> {
 }
 
 // ANCHOR: discard_stale
+/// Start a request from the async UI loop, where a Tokio runtime context is already entered.
+///
+/// For the synchronous loop in `main.rs`, pass a `tokio::runtime::Handle` into this helper and
+/// replace `tokio::spawn` with `handle.spawn`. Creating a runtime alone does not enter its context;
+/// calling this version directly from that synchronous loop would panic.
 fn start_search(app: &mut App, ui_tx: &mpsc::Sender<UiMessage>) {
+    // Invalidate earlier replies before launching work. Mark dirty now to clear the old error
+    // on screen while the new request is pending; existing results remain until success.
     app.search_generation += 1;
     app.search_error = None;
     app.dirty = true;
+    // Own a snapshot of the request. The worker must not read a query the user later edits or
+    // borrow mutable UI state across the task boundary.
     let generation = app.search_generation;
     let query = app.search_query.clone();
     let ui_tx = ui_tx.clone();
 
+    // Generation checks protect displayed state, but do not stop old work or bound task count.
+    // Add cancellation, debouncing, or a concurrency limit when requests are expensive.
     tokio::spawn(async move {
         let message = match search(query).await {
             Ok(results) => UiMessage::SearchFinished {
@@ -39,10 +55,14 @@ fn start_search(app: &mut App, ui_tx: &mpsc::Sender<UiMessage>) {
             },
         };
 
+        // Receiver closure means the UI is gone; there is no state left here to update.
         let _ = ui_tx.send(message).await;
     });
 }
 
+/// Apply replies on the UI owner, comparing against the generation active at receipt time.
+/// Also advance that generation when clearing the query or leaving the search view, even if no
+/// replacement request starts. Otherwise an outstanding reply could repopulate the cleared view.
 fn handle_message(app: &mut App, message: UiMessage) {
     match message {
         UiMessage::SearchFinished {
@@ -57,6 +77,7 @@ fn handle_message(app: &mut App, message: UiMessage) {
             app.search_error = Some(error);
             app.dirty = true;
         }
+        // Ignore stale failures as well as successes: an old error must not replace current UI.
         _ => {}
     }
 }
