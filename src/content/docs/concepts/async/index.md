@@ -30,17 +30,18 @@ work, and terminal queries must coordinate with the input reader. These requirem
 The UI loop can own application state and the terminal while workers return results for it to apply.
 A background request then follows this sequence:
 
-```text
-keyboard input ──► UI loop ──► start a request
-                     ▲                │
-                     │                ▼
-                 result ◄──── background task
-                     │
-                     ▼
-              update application state
-                     │
-                     ▼
-               request a frame ──► draw when due
+```mermaid
+sequenceDiagram
+    participant Input as Keyboard input
+    participant UI as UI loop
+    participant Worker as Background task
+    Input->>UI: Request data
+    UI->>Worker: Start request
+    Note over UI: Continue handling input while work is pending
+    Worker-->>UI: Return result
+    UI->>UI: Update application state
+    UI->>UI: Request a frame
+    UI->>UI: Draw when due
 ```
 
 A **future** represents an operation that can make progress when polled. A **task** is a future
