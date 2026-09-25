@@ -45,8 +45,9 @@ compiles them with Ratatui 0.30.2 and Crossterm 0.29.0.
 
 ## UI state and background requests
 
-The UI owns the state it renders. A worker produces a value rather than borrowing that state or
-printing to the terminal:
+The UI task owns `App`, which keeps the display state and the `JoinSet` of pending requests
+together. A worker returns a value for `App` to apply; it neither borrows `App` nor prints to the
+terminal:
 
 ```rust title="UI state and task output"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:state }}
@@ -60,9 +61,9 @@ block the task's thread instead.
 {{ #include @code/concepts/async-applications/src/bin/background.rs:fetch }}
 ```
 
-To run the fetch while continuing to accept input, `start_fetch` spawns it into a [`JoinSet`]. The
-set retains the spawned task and provides a future for its next completion. Starting work returns
-immediately; the event loop awaits completion separately:
+To run the fetch while continuing to accept input, `start_fetch` spawns it into `App`'s [`JoinSet`].
+The set retains the spawned task and provides a future for its next completion. Starting work
+returns immediately; the event loop awaits completion separately:
 
 ```rust title="Start work without waiting in the input handler"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:start_fetch }}
@@ -119,6 +120,9 @@ terminal cleanup outside that fallible loop so it runs on both an error and a no
 ```rust title="Restore before returning an error"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:startup }}
 ```
+
+`App` remains alive after `run` returns, so `main` can restore the terminal before calling
+`app.shutdown().await`. That method aborts and joins the tasks in `App`'s `JoinSet`.
 
 Aborting this simulated fetch drops a timer and owned data. It is not a general cleanup protocol for
 file writes, child processes, or blocking jobs. Those need the policies described in

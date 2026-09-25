@@ -1,8 +1,9 @@
 //! A runnable async UI: edit a counter while a simulated request is pending.
 //!
 //! Run with `cargo run -p async-applications --bin background`.
-//! The UI owns the terminal and App. One worker at a time returns data through its JoinSet;
-//! it never borrows UI state or writes to the terminal. There are no runtime terminal queries.
+//! The UI task owns the terminal and App. App retains its request tasks in a JoinSet.
+//! Workers return data without borrowing UI state or writing to the terminal.
+//! There are no runtime terminal queries.
 
 // ANCHOR: complete
 use std::time::Duration;
@@ -22,6 +23,8 @@ struct App {
     // This example allows one request at a time. Repeated refreshes do not queue more work.
     loading: bool,
     error: Option<String>,
+    // Retain task handles alongside the state their results will update.
+    requests: JoinSet<FetchResult>,
 }
 
 /// Choose a deterministic outcome without involving a server or transport error type.
@@ -40,23 +43,21 @@ type FetchResult = std::result::Result<Vec<String>, String>;
 async fn main() -> Result<()> {
     color_eyre::install()?;
     let mut terminal = ratatui::init();
-    let mut requests = JoinSet::new();
+    let mut app = App::default();
 
     // Save the error so a failed draw or input read cannot skip restoration.
-    let result = run(&mut terminal, &mut requests).await;
+    let result = run(&mut terminal, &mut app).await;
     ratatui::restore();
 
-    // Workers only wait for a timer and return owned data, so aborting them is sufficient here.
-    // shutdown aborts and waits for tasks to finish; it does not report their panics during exit.
-    requests.shutdown().await;
+    // Restore the terminal before waiting for the app's workers to stop.
+    app.shutdown().await;
     result
 }
 // ANCHOR_END: startup
 
 // ANCHOR: event_loop
-async fn run(terminal: &mut DefaultTerminal, requests: &mut JoinSet<FetchResult>) -> Result<()> {
+async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
     let mut events = EventStream::new();
-    let mut app = App::default();
     let frame_spacing = Duration::from_millis(16);
     let mut next_frame = Instant::now();
     let mut dirty = true; // Draw the initial instructions without waiting for a keypress.
@@ -69,8 +70,8 @@ async fn run(terminal: &mut DefaultTerminal, requests: &mut JoinSet<FetchResult>
                         KeyCode::Char('q') | KeyCode::Esc => break,
                         KeyCode::Char('+') => app.counter = app.counter.saturating_add(1),
                         KeyCode::Char('-') => app.counter = app.counter.saturating_sub(1),
-                        KeyCode::Char('r') => app.start_fetch(requests, FetchOutcome::Success),
-                        KeyCode::Char('e') => app.start_fetch(requests, FetchOutcome::Failure),
+                        KeyCode::Char('r') => app.start_fetch(FetchOutcome::Success),
+                        KeyCode::Char('e') => app.start_fetch(FetchOutcome::Failure),
                         _ => {}
                     }
                     dirty = true;
@@ -81,7 +82,7 @@ async fn run(terminal: &mut DefaultTerminal, requests: &mut JoinSet<FetchResult>
                 None => break,
             },
             // An empty JoinSet returns None immediately. Disable it to avoid a busy loop.
-            Some(result) = requests.join_next(), if !requests.is_empty() => {
+            Some(result) = app.requests.join_next(), if !app.requests.is_empty() => {
                 // A worker panic invokes the process-wide panic hook, which restores terminal
                 // modes. Exit through cleanup rather than drawing again in that altered session.
                 // An ordinary fetch error remains a value that the UI can display and retry.
@@ -103,14 +104,14 @@ async fn run(terminal: &mut DefaultTerminal, requests: &mut JoinSet<FetchResult>
 
 impl App {
     // ANCHOR: start_fetch
-    fn start_fetch(&mut self, requests: &mut JoinSet<FetchResult>, outcome: FetchOutcome) {
+    fn start_fetch(&mut self, outcome: FetchOutcome) {
         if self.loading {
             return; // Ignore another refresh until the current request finishes.
         }
         self.loading = true;
         self.error = None;
         // spawn returns immediately. join_next in the event loop observes completion later.
-        requests.spawn(fetch_items(outcome));
+        self.requests.spawn(fetch_items(outcome));
     }
     // ANCHOR_END: start_fetch
 
@@ -126,6 +127,15 @@ impl App {
         }
     }
     // ANCHOR_END: finish_fetch
+
+    /// Stop this example's timer-only requests and wait for their tasks to finish.
+    ///
+    /// These workers have no external side effects, so aborting is sufficient. JoinSet::shutdown
+    /// does not report worker panics during exit. Call this after restoring the terminal.
+    async fn shutdown(&mut self) {
+        self.requests.shutdown().await;
+        self.loading = false;
+    }
 
     fn render(&self, frame: &mut Frame) {
         let status = if self.loading {
@@ -167,12 +177,13 @@ mod tests {
     #[tokio::test]
     async fn repeated_refresh_does_not_spawn_more_work() {
         let mut app = App::default();
-        let mut requests = JoinSet::new();
-        app.start_fetch(&mut requests, FetchOutcome::Success);
-        app.start_fetch(&mut requests, FetchOutcome::Failure);
-        assert_eq!(requests.len(), 1);
+        app.start_fetch(FetchOutcome::Success);
+        app.start_fetch(FetchOutcome::Failure);
+        assert_eq!(app.requests.len(), 1);
         assert!(app.loading);
-        requests.shutdown().await;
+        app.shutdown().await;
+        assert!(app.requests.is_empty());
+        assert!(!app.loading);
     }
 
     #[test]
