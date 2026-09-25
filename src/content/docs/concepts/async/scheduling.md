@@ -6,7 +6,9 @@ sidebar:
 
 An async request can wait without holding a runtime thread. Parsing its result, updating a large
 model, rendering widgets, and writing a frame still take time. To improve responsiveness, first
-identify which operation delays input and which task or thread it occupies.
+identify which operation delays input and which task or thread it occupies. The
+[UI loop sketches](/concepts/async/#terminal-ownership) show where waiting, fetching, and drawing
+happen in an async UI task, a synchronous UI, and a dedicated UI thread.
 
 ## Cooperative scheduling
 
