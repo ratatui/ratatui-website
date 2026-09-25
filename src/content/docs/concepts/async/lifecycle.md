@@ -42,6 +42,8 @@ The exact order depends on whether workers still require terminal access. Tokio'
 Shutdown] guide explains cancellation notification and task tracking. Channel closure can also be a
 shutdown signal, provided all sender clones are dropped and the receiver handles closure.
 
+:::caution[A timeout does not stop blocking work]
+
 A time limit bounds how long the caller waits; it does not necessarily stop the work. A started
 [`spawn_blocking`] job cannot be aborted. Dropping its handle, aborting an awaiting async task, or
 using runtime shutdown timeouts does not kill the underlying blocking operation. Design blocking
@@ -51,6 +53,8 @@ A subprocess requires its own termination and reaping policy.
 Similarly, [`timeout`] only checks its deadline when it can poll the wrapped future. Synchronous
 code that does not yield can run past that deadline. It is not a way to interrupt a blocked draw or
 terminal query.
+
+:::
 
 ## Joining blocking work after cancellation
 
@@ -80,6 +84,16 @@ screen modes while another input reader remains active can let that reader steal
 The [Codex EventStream refactor] and [gitui input thread] illustrate why reader lifecycle belongs in
 handoff design.
 
+:::caution[Stop the input reader before launching a child]
+
+Do not copy this helper unchanged into an async input design. There, the sequence also needs to stop
+the input owner and receive acknowledgement **before** the child starts. Crossterm 0.29's
+[`EventStream` source] signals its helper on drop but exposes no join acknowledgement. Dropping the
+stream is therefore not a documented, complete handoff protocol. Choose an input implementation with
+the lifecycle guarantees your application needs.
+
+:::
+
 This small helper applies to the **synchronous sole-reader loop** from
 [event loops](/concepts/async/event-loops/#synchronous-ui-with-async-workers). Call it between loop
 turns after `event::read` returns. There must be no `EventStream`, background input thread, or other
@@ -102,12 +116,6 @@ This helper uses `try_init` for clarity. Each call installs a panic-hook wrapper
 with frequent handoffs should centralize panic-hook installation and explicit mode reacquisition
 rather than repeatedly installing wrappers. Also restore and re-enable any extra modes your app
 uses. The [spawn Vim recipe] provides related application context.
-
-Do not copy this helper unchanged into an async input design. There, the sequence also needs to stop
-the input owner and receive acknowledgement **before** the child starts. Crossterm 0.29's
-[`EventStream` source] signals its helper on drop but exposes no join acknowledgement. Dropping the
-stream is therefore not a documented, complete handoff protocol. Choose an input implementation with
-the lifecycle guarantees your application needs.
 
 An input batch needs a handoff boundary too: once an event requests the editor, avoid continuing to
 process later buffered input as though the application still owned the terminal. Decide whether such

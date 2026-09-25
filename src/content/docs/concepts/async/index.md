@@ -60,11 +60,15 @@ available, its thread can run other tasks. An `.await` on an already-ready futur
 immediately, though, so it does not guarantee a switch. This is
 [cooperative scheduling](/concepts/async/scheduling/#cooperative-scheduling).
 
+:::note[Drawing still blocks the UI loop]
+
 When the result arrives, the UI loop updates its state and requests a frame. Ratatui's
 [`Terminal::draw`] renders and writes that frame synchronously: the UI loop cannot handle another
 event until drawing returns. The placement of the UI loop therefore matters. A slow draw on a
 runtime thread can also delay other tasks scheduled on that thread; a separate UI thread keeps that
 blocking work off the runtime.
+
+:::
 
 ## Terminal ownership
 
@@ -81,9 +85,13 @@ A plain synchronous loop is enough when handlers finish promptly. A separate inp
 possible, but it must participate in terminal queries and handoffs; simply putting input and output
 in different tasks does not make them independent.
 
+:::caution[Use one Crossterm input strategy]
+
 Crossterm's [event API][event module] requires using `poll` and `read` on the same thread, or using
 `EventStream`, without mixing the two approaches. Keeping terminal access in one part of the
 application helps enforce this restriction during startup, queries, and shutdown.
+
+:::
 
 ## Examples and sources
 

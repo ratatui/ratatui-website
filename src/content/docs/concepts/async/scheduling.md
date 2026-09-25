@@ -16,10 +16,14 @@ immediately. Tokio's [cooperative scheduling explanation][cooperative] describes
 operations can otherwise monopolize execution; cooperative budgets do not interrupt synchronous
 code.
 
+:::note[The scheduling budget is a rule of thumb]
+
 Alice Ryhl's [Async: What is blocking?] suggests **10–100 microseconds between awaits** as an
 application-dependent rule of thumb. Treat that as a sense of scale, not a Tokio-enforced deadline.
 A 16 ms frame interval is not permission to block a runtime worker for 16 ms. Conversely, a
 synchronous size check is not necessarily expensive just because it is synchronous: measure it.
+
+:::
 
 A slow draw occupies its caller until it returns. Adding `yield_now().await` afterward does not undo
 that delay. Where the draw runs determines what else can progress:

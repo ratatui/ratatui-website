@@ -101,10 +101,14 @@ runtime context because it uses `tokio::spawn`:
 {{ #include @code/concepts/async-applications/src/stale.rs:discard_stale }}
 ```
 
+:::tip[Invalidate requests when clearing the view]
+
 Advance the generation when clearing the search or leaving the view too, even if no replacement
 request starts. Otherwise a late result can repopulate a view the user cleared. For an unbounded
 service lifetime, use a request identity whose reuse cannot collide with outstanding work rather
 than relying on this example's incrementing integer forever.
+
+:::
 
 Retain the handle returned by `start_search` so worker failures and shutdown remain observable.
 Generation checks protect visible state. They do not stop network traffic, CPU work, or side

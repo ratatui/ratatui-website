@@ -93,9 +93,13 @@ spaces draws by at least 16 ms after the previous draw completes; that is an exa
 Ratatui requirement or an input-latency guarantee. See
 [redraw scheduling](/concepts/async/scheduling/).
 
+:::caution[Keep the input handler available]
+
 Do not move `fetch_items(...).await` into the input branch. While that handler waits, the task
 cannot return to this selection loop. Spawning the request is what lets input continue during the
 wait. Drawing still blocks this task while it runs.
+
+:::
 
 ## Apply results and clean up
 
