@@ -16,3 +16,4 @@ This section covers recipes for developing applications:
 - [Spawn Vim](./spawn-vim/)
 - [Releasing Your App](./release-your-app/)
 - [Submitting to the Showcase](./submitting-to-the-showcase/)
+- [Configurable Keybindings](./keybind/)
