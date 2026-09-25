@@ -1,15 +1,15 @@
-//! Compile-tested examples for the Async Applications page.
+//! Compile-tested examples for the Async Applications section.
 //!
 //! The UI owns the terminal and application state. Workers perform async work and send messages;
 //! the UI applies those messages and draws the resulting state. Keeping that boundary explicit
 //! lets the examples discuss concurrency without putting the terminal behind a shared lock.
 //!
-//! This file shows a synchronous UI with async workers. `single_task` shows an alternative async
-//! UI loop; `drain` isolates batching before drawing; `stale` handles out-of-order search replies.
-//! These are separate teaching examples, not four pieces to call in sequence.
+//! This file shows a synchronous UI with async workers. `bin/background.rs` is the runnable async
+//! UI; `drain` isolates batching; `stale` handles out-of-order replies; `coordination` shows channel
+//! and worker policies; `handoff` releases the terminal to a child. These examples are independent.
 //!
 //! The anchored regions are included verbatim in
-//! `src/content/docs/concepts/application-patterns/async-applications.md`. The stubs at the bottom
+//! `src/content/docs/concepts/async/`. The stubs at the bottom
 //! of each file stand in for the application types the page treats as placeholders.
 // The page includes helpers that are type-checked here without being called by this skeleton.
 #![allow(dead_code)]
@@ -145,8 +145,9 @@ async fn report_loaded_items(ui_tx: mpsc::Sender<UiMessage>) {
 }
 // ANCHOR_END: messages
 
+mod coordination;
 mod drain;
-mod single_task;
+mod handoff;
 mod stale;
 
 /// Shared scaffolding that lets the independent snippets compile.

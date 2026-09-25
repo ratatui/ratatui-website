@@ -1,4 +1,5 @@
 [package]
+default-run = "background"
 name = "async-applications"
 version.workspace = true
 authors.workspace = true

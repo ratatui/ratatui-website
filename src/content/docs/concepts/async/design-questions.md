@@ -1,7 +1,7 @@
 ---
 title: Async Terminal Design Questions
 sidebar:
-  order: 6
+  order: 7
 ---
 
 Async TUIs repeatedly need to coordinate terminal queries, redraw requests, and temporary handoffs
@@ -11,8 +11,7 @@ which operations a library can make reliable without taking over application pol
 These are proposals and constraints for discussion, not an announced Ratatui roadmap. The linked
 source and bug reports establish the problems. They do not establish that the designs below have
 been implemented, accepted, or validated across terminals. Applications can use the
-[event-loop patterns](/concepts/application-patterns/async-applications/) without waiting for new
-APIs.
+[event-loop patterns](/concepts/async/event-loops/) without waiting for new APIs.
 
 ## Route queries through the input reader
 
@@ -97,8 +96,8 @@ identical OS behavior.
 
 ## Test the protocol and the lifecycle
 
-The [failure reports](/concepts/application-patterns/async-applications/#failure-modes) suggest
-regression scenarios for terminal libraries and applications:
+The [failure reports](/concepts/async/troubleshooting/) suggest regression scenarios for terminal
+libraries and applications:
 
 - Mix query replies with ordinary input and confirm that unrelated input survives.
 - Deliver a reply after its timeout, or split it across reads.

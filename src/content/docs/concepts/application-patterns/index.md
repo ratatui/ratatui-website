@@ -10,6 +10,6 @@ event loop. These patterns can be combined.
 - [The Elm Architecture](./the-elm-architecture/)
 - [Component Architecture](./component-architecture/)
 - [Flux Architecture](./flux-architecture/)
-- [Async Applications](./async-applications/)
-- [Async Application Examples](./async-application-examples/)
-- [Async Terminal Design Questions](./async-gaps/)
+
+For background work, event loops, and terminal coordination, see
+[Async Applications](/concepts/async/).

@@ -1,0 +1,117 @@
+---
+title: Shutdown and Terminal Handoffs
+sidebar:
+  order: 5
+---
+
+A responsive application also needs to stop predictably. Workers, terminal modes, input readers, and
+child processes have different lifetimes. Decide which work may be abandoned and which must finish
+before the application exits or gives the terminal to another program.
+
+## Restore the terminal on errors
+
+Save the event-loop result, restore the terminal, then return the result. Using `?` directly on the
+loop can skip cleanup on an I/O error. The [runnable example](/concepts/async/event-loops/) follows
+this order:
+
+```rust
+{{ #include @code/concepts/async-applications/src/bin/background.rs:startup }}
+```
+
+The example's simulated requests have no external side effects, so aborting unfinished requests on
+exit is acceptable. [`JoinSet::shutdown`] aborts tasks and waits for the collection to finish. A
+file save or transaction may require a different policy. Ratatui's initialization installs a panic
+hook to restore terminal modes on panic, but that does not replace ordinary error cleanup or a
+worker shutdown policy.
+
+Ratatui's [`try_restore`] disables raw mode and leaves the alternate screen. It does not undo every
+mode an application could enable. Track mouse capture, focus reporting, bracketed paste, keyboard
+protocol settings, and cursor visibility when using them. If cleanup fails, preserve enough error
+information to diagnose the failure after leaving the UI.
+
+## Stop work deliberately
+
+A useful shutdown sequence is:
+
+1. Stop accepting new operations.
+1. Signal long-lived workers to finish or cancel, according to each operation's policy.
+1. Restore the terminal promptly when it is no longer needed.
+1. Join the workers whose completion matters and report failures.
+
+The exact order depends on whether workers still require terminal access. Tokio's [Graceful
+Shutdown] guide explains cancellation notification and task tracking. Channel closure can also be a
+shutdown signal, provided all sender clones are dropped and the receiver handles closure.
+
+A time limit bounds how long the caller waits; it does not necessarily stop the work. A started
+[`spawn_blocking`] job cannot be aborted. Dropping its handle, aborting an awaiting async task, or
+using runtime shutdown timeouts does not kill the underlying blocking operation. Design blocking
+jobs to check a cooperative stop flag between bounded chunks, or accept that they run to completion.
+A subprocess requires its own termination and reaping policy.
+
+Similarly, [`timeout`] only checks its deadline when it can poll the wrapped future. Synchronous
+code that does not yield can run past that deadline. It is not a way to interrupt a blocked draw or
+terminal query.
+
+## Give a child exclusive access
+
+An editor, pager, or shell command that inherits the terminal needs the UI to release it. Restoring
+screen modes while another input reader remains active can let that reader steal the child's input.
+The [Codex EventStream refactor] and [gitui input thread] illustrate why reader lifecycle belongs in
+handoff design.
+
+This small helper applies to the **synchronous sole-reader loop** from
+[event loops](/concepts/async/event-loops/#use-a-synchronous-owner-when-appropriate). Call it
+between loop turns after `event::read` returns. There must be no `EventStream`, background input
+thread, or other terminal reader to stop:
+
+```rust
+{{ #include @code/concepts/async-applications/src/handoff.rs:handoff }}
+```
+
+The child runs synchronously while the UI is paused. Showing the cursor and restoring modes lets it
+inherit an ordinary terminal. Reinitialization happens even if starting the child fails, and
+replacing the terminal resets Ratatui's buffers so the next draw reconstructs the display. The
+caller must redraw afterward and route any returned error through its outer cleanup path. If
+reinitialization fails, exit the UI rather than continuing with uncertain terminal state.
+
+This helper uses `try_init` for clarity. Each call installs a panic-hook wrapper; an application
+with frequent handoffs should centralize panic-hook installation and explicit mode reacquisition
+rather than repeatedly installing wrappers. Also restore and re-enable any extra modes your app
+uses. The [spawn Vim recipe] provides related application context.
+
+Do not copy this helper unchanged into an async input design. There, the sequence also needs to stop
+the input owner and receive acknowledgement **before** the child starts. Crossterm 0.29's
+[`EventStream` source] signals its helper on drop but exposes no join acknowledgement. Dropping the
+stream is therefore not a documented, complete handoff protocol. Choose an input implementation with
+the lifecycle guarantees your application needs.
+
+An input batch needs a handoff boundary too: once an event requests the editor, avoid continuing to
+process later buffered input as though the application still owned the terminal. Decide whether such
+input should be retained or discarded; do not leave this as an accidental consequence of the loop
+structure.
+
+## Suspend and resume are also transitions
+
+Shell job control can change modes, cursor state, and which process owns the terminal. Resuming a
+process is not sufficient evidence that the old screen model remains valid. Reacquire the required
+modes, synchronize input ownership, invalidate stale display state, and redraw as appropriate for
+the platform. The [Codex suspend fix] is an example of correcting cursor behavior in this path.
+
+Keep signal handling separate from ordinary Rust cleanup: many I/O and synchronization operations
+are unsuitable inside a low-level signal handler. Use a platform-appropriate notification mechanism
+to perform work in normal application context. Test suspension, child startup failure, and resume in
+a real terminal; a widget buffer test cannot validate terminal ownership.
+
+[`try_restore`]: https://docs.rs/ratatui/0.30.2/ratatui/fn.try_restore.html
+[`timeout`]: https://docs.rs/tokio/latest/tokio/time/fn.timeout.html
+[Codex EventStream refactor]:
+  https://github.com/openai/codex/commit/cf44511e7780bc30286ec356849970ff7aeabebb
+[Codex suspend fix]: https://github.com/openai/codex/commit/76135cbe7ec8dbcc165aa1f2bd21358f9f1c6571
+[gitui input thread]:
+  https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/src/input.rs#L40-L145
+[Graceful Shutdown]: https://tokio.rs/tokio/topics/shutdown
+[`EventStream` source]:
+  https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/event/stream.rs#L42-L148
+[`spawn_blocking`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html
+[spawn Vim recipe]: /recipes/apps/spawn-vim/
+[`JoinSet::shutdown`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.shutdown

@@ -169,6 +169,11 @@ export default defineConfig({
               items: [{ autogenerate: { directory: "concepts/rendering" } }],
             },
             {
+              label: "Async Applications",
+              collapsed: true,
+              items: [{ autogenerate: { directory: "concepts/async" } }],
+            },
+            {
               label: "Application Patterns",
               collapsed: true,
               items: [{ autogenerate: { directory: "concepts/application-patterns" } }],
@@ -266,6 +271,9 @@ export default defineConfig({
     partytown(),
   ],
   redirects: {
+    "/concepts/application-patterns/async-applications/": "/concepts/async/",
+    "/concepts/application-patterns/async-application-examples/": "/concepts/async/",
+    "/concepts/application-patterns/async-gaps/": "/concepts/async/design-questions/",
     // lots of manual redirects because dynamic redirects don't work with starlight / cloudflare
     // See https://discord.com/channels/830184174198718474/1242301878994468916/1242301878994468916
     "/how-to": "/recipes",
