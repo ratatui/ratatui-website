@@ -107,7 +107,9 @@ fn run_terminal(
             drained += 1;
         }
 
-        // Observe worker panics before drawing again: the panic hook may have restored modes.
+        // ratatui::init() installed a process-wide panic hook. A worker panic can restore
+        // terminal modes from its thread before this join result is ready. Do not draw after an
+        // observed failure; this check cannot prevent a draw racing with the hook itself.
         while let Some(result) = app.requests.try_join_next() {
             result?;
         }
@@ -204,7 +206,7 @@ impl App {
 pub(super) struct Item;
 
 /// Associates a progress message with the operation that produced it.
-type JobId = u64;
+pub(super) type JobId = u64;
 
 /// Replace with network or other async I/O; this stand-in completes immediately.
 /// Keeping it separate shows where waiting belongs without introducing a particular client API.

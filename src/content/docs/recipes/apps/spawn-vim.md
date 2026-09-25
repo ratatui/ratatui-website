@@ -1,117 +1,68 @@
 ---
-title: Spawn External Editor (Vim)
-sidebar:
-  order: 9
-  label: Spawn External Editor (Vim)
+title: External Editor
 ---
 
-In this recipe, we will explore how to spawn an external editor (Vim) from within the TUI app. This
-example demonstrates how to temporarily exit the TUI, run an external command, and then return back
-to our TUI app.
+An editor that inherits the terminal needs the TUI to release input and restore terminal modes. This
+recipe applies to a synchronous fullscreen UI whose calling thread is the sole input reader. There
+must be no `EventStream`, background input thread, or other terminal reader.
 
-Full code:
+For the ownership requirements, including separate-reader limitations, see
+[Terminal Handoffs](/concepts/async/handoffs/).
 
-```rust collapsed title="main.rs (click to expand)"
-{{ #include @code/recipes/how-to-spawn-vim/src/main.rs }}
-```
+## Running an editor between loop turns
 
-## Setup
-
-First, let's look at the main function and the event handling logic:
-
-```rust title="main.rs"
-{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:action_enum }}
-
-{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:main }}
-
-{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:run }}
-
-{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:handle-events }}
-```
-
-After initializing the terminal in `main` function, we enter a loop in `run` function where we draw
-the UI and handle events. The `handle_events` function listens for key events and returns an
-`Action` based on the key pressed. Here, we are calling `run_editor` function on `Action::EditFile`
-which we will define in next section.
-
-## Spawning Vim
-
-Now, let's define the function `run_editor` function attached to `Action::EditFile` action.
-
-```rust title="main.rs"
-{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:run_editor }}
-```
-
-To spawn Vim from our TUI app, we first need to relinquish control of input and output, allowing Vim
-to have full control over the terminal.
-
-The `run_editor` function handles the logic for spawning vim. First, we leave the alternate screen
-and disable raw mode to restore terminal to it's original state. This part is similar to what
-[`ratatui::restore`](https://docs.rs/ratatui/latest/ratatui/fn.restore.html) function does in the
-`main` function. Next, we spawn a child process with
-`Command::new("vim").arg("/tmp/a.txt").status()` which launches `vim` to edit the given file. At
-this point, we have given up control of our TUI app to vim. Our TUI app will now wait for the exit
-status of the child process. Once the user exits Vim, our TUI app regains control over the terminal
-by re-entering alternate screen and enabling raw mode. Lastly, we clear the terminal to ensure the
-TUI is displayed correctly.
-
-:::note
-
-Before running another application from your app, you must relinquish control of input and output,
-allowing the other app to function correctly.
-
-In the example above, we use a simple event-handling setup. However, if you are using advanced
-setups like [component template](https://github.com/ratatui/templates), you will need to pause input
-events before spawning an external process like Vim. Otherwise, Vim won't have full control over
-keybindings and it won't work properly.
-
-Using the
-[`tui` module](https://github.com/ratatui/templates/blob/5e823efc871107345d59e5deff9284235c1f0bbc/component/template/src/tui.rs)
-of the component template, you can do something like this to pause and resume event handlers:
+After reading the edit key and before polling for more input, call `run_child` with a
+`std::process::Command` configured for your editor and file. For example, the command can be built
+with `Command::new("vim").arg(path)`. Inspect its returned exit status, then request a full redraw.
+Return errors through the application's outer terminal-cleanup path.
 
 ```rust
-Action::EditFile => {
-  tui.exit()?;
-  let cmd = String::from("vim");
-  let cmd_args = vec!["/tmp/a.txt".into()];
-  let status = std::process::Command::new(&command).args(&args).status()?;
-  if !status.success() {
-    eprintln!("\nCommand failed with status: {}", status);
-  }
-  tui.enter()?;
-  tui.terminal.clear();
-}
+{{ #include @code/concepts/async-applications/src/handoff.rs:handoff }}
 ```
 
-One more thing to note is that when attempting to start an external process without using the
-pattern in the component template, issues can arise such as ANSI RGB values being printed into the
-TUI upon returning from the external process. This happens because Vim requests the terminal
-background color, and when the terminal responds over stdin, those responses are read by Crossterm
-instead. If you encounter such issues, please refer to
-[orhun/rattler-build@84ea16a](https://github.com/orhun/rattler-build/commit/84ea16a4f5af33e2703b6330fcb977065263cef6)
-and [kdheepak/taskwarrior-tui#46](https://github.com/kdheepak/taskwarrior-tui/issues/46). Using
-`select!` + `cancellation_token` + `tokio` as in the component template avoids this problem.
+The child runs synchronously while the UI is paused. Showing the cursor and restoring modes lets it
+inherit an ordinary terminal. Reinitialization happens even if starting the child fails, and
+replacing the terminal resets Ratatui's buffers so the next draw reconstructs the display. The
+caller must redraw afterward and route any returned error through its outer cleanup path. An
+unsuccessful child exit is an `Ok(ExitStatus)` that the caller must inspect. If both the child
+operation and reinitialization fail, this helper returns the reinitialization error. An application
+that needs both errors should retain them together. Reinitialization failure requires exiting the
+UI; continuing to draw would use terminal modes and buffers whose setup did not complete.
 
-:::
+This helper uses `try_init` for clarity. Each call installs a panic-hook wrapper; an application
+with frequent handoffs should centralize panic-hook installation and explicit mode reacquisition
+rather than repeatedly installing wrappers. Also restore and re-enable any extra modes your app
+uses.
 
-## Running code
+## Input and failure handling
 
-Running this program will display "Hello ratatui! (press 'q' to quit, 'e' to edit a file)" in the
-terminal. Pressing 'e' will spawn a child process to spawn Vim for editing a temporary file and then
-return to the ratatui application after Vim is closed.
+Stop the current input batch when it requests the editor. Do not keep interpreting buffered keys as
+TUI commands while transferring ownership. Decide whether earlier buffered application events remain
+relevant after the editor returns.
 
-Feel free to adapt this example to use other editors like `nvim`, `nano`, etc., by changing the
-command in the `Action::EditFile` arm.
+The helper is an excerpt from a compile-checked module, not a complete editor application. Its
+calling arrangement is the
+[synchronous UI loop](/concepts/async/bridging/#synchronous-ui-with-async-workers). Do not add a
+second reader to that loop while using this recipe. A cancellation token alone is not proof that a
+separate reader has stopped consuming terminal input.
 
-:::tip
+## Complete example
 
-If you prefer to launch the user-specified `$EDITOR` and retrieve the buffer (edited content) back
-into your application, you can use the [`edit`](https://crates.io/crates/edit) crate. This can be
-particularly useful if you need to capture the changes made by the user in the editor. There's also
-[`editor-command`](https://docs.rs/editor-command/latest/editor_command) crate if you want more
-control over launching / overriding editors based on `VISUAL` or `EDITOR` environment variables.
+The repository includes a sole-reader application that opens Vim on a temporary file:
 
-Alternatively, you may use the [`edtui`](https://github.com/preiter93/edtui) crate from ratatui's
-ecosystem, which provides text editor widget inspired by vim.
+```sh
+cargo run -p how-to-spawn-vim
+```
 
-:::
+Press `e` to open the editor and `q` to quit the TUI. Save and exit Vim to return to the
+application. This example requires Vim to be installed and uses `/tmp/a.txt`; choose a path
+appropriate to your platform and application before adapting it.
+
+<details>
+<summary>Complete editor application</summary>
+
+```rust
+{{ #include @code/recipes/how-to-spawn-vim/src/main.rs:all }}
+```
+
+</details>

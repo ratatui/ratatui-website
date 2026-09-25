@@ -1,26 +1,21 @@
-//! The "drain then draw" example.
+//! The bounded queue-draining example.
 //!
-//! This is one bounded pass through input and worker queues, followed by at most one draw.
-//! An outer loop must arrange waiting and frame pacing; repeatedly calling it without waiting
-//! would busy-poll. Like the synchronous example, it assumes exclusive Crossterm reader ownership.
+//! This is one bounded pass through input and worker queues. An outer loop retains the redraw
+//! request, arranges waiting and frame pacing, and draws when due. Repeatedly calling this helper
+//! without waiting would busy-poll. Like the synchronous example, it assumes exclusive Crossterm
+//! reader ownership.
 
 use std::time::Duration;
 
 use color_eyre::Result;
-use ratatui::DefaultTerminal;
 use tokio::sync::mpsc;
 
 use crate::sync_ui::{App, UiMessage, MAX_EVENTS_PER_TURN};
 
-// ANCHOR: drain_then_draw
-/// Batch state changes before drawing so intermediate states do not each require a frame.
-/// This illustrates batching alone; the caller supplies waiting, pacing, and terminal cleanup.
-fn drain_then_draw(
-    app: &mut App,
-    ui_rx: &mut mpsc::Receiver<UiMessage>,
-    terminal: &mut DefaultTerminal,
-) -> Result<()> {
-    // This local flag records only changes from this pass, not pending redraws in an outer loop.
+// ANCHOR: drain_batch
+/// Return whether any input or message was handled, conservatively requesting a later frame.
+/// The caller retains dirty state across turns and owns waiting, pacing, and terminal cleanup.
+fn drain_batch(app: &mut App, ui_rx: &mut mpsc::Receiver<UiMessage>) -> Result<bool> {
     let mut dirty = false;
     let mut drained = 0;
 
@@ -46,11 +41,6 @@ fn drain_then_draw(
         drained += 1;
     }
 
-    // One draw covers every update processed above; remaining queued work gets another turn.
-    if dirty {
-        terminal.draw(|frame| app.render(frame))?;
-    }
-
-    Ok(())
+    Ok(dirty)
 }
-// ANCHOR_END: drain_then_draw
+// ANCHOR_END: drain_batch

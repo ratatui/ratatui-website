@@ -1,12 +1,16 @@
 ---
-title: Terminal I/O and Ownership
+title: Terminal I/O
 sidebar:
-  order: 4
+  order: 11
 ---
 
-Reading input, drawing frames, changing terminal modes, and querying the terminal can interfere with
-one another. Separate Rust objects or file descriptors may still access the same terminal: an input
-reader can consume a query's reply, and a worker's printed output can corrupt the UI.
+Suppose an app starts reading keyboard events, then asks the terminal for its cursor position. The
+terminal sends that reply through input too. If the event reader consumes bytes intended for the
+query, the query may wait while the reader treats the reply as ordinary input.
+
+Drawing, input, mode changes, and queries share the terminal even when they use separate Rust
+objects or file descriptors. A background worker that prints an error can likewise overwrite the UI.
+Async task boundaries do not establish separate terminal sessions.
 
 The details below describe Ratatui 0.30.2 and Crossterm 0.29, with source links for the relevant
 implementation. Other backends and platforms can have different behavior.
@@ -16,10 +20,12 @@ implementation. Other backends and platforms can have different behavior.
 [`Terminal::draw`] checks for a resize, renders widgets, applies the buffer, and flushes output
 before returning. Calling it inside an async function does not change that contract. Rendering a
 large view or writing to a slow terminal can delay the surrounding task. See
-[scheduling](/concepts/async/scheduling/) for choosing an execution context and measuring the delay.
+[Bridging Sync and Async](/concepts/async/bridging/) for execution placement and
+[Blocking and CPU-bound Work](/concepts/async/blocking-work/) for measurement.
 
 The coordination needed during those synchronous calls depends on how they obtain terminal state.
-Some read dimensions from the OS; others send a request to the terminal emulator and read its reply:
+Some read dimensions from the OS; others send a request to the terminal emulator and read its reply.
+An inline viewport draws within the current screen rather than taking over the full screen:
 
 | Operation                  | Behavior in the linked implementation            |
 | -------------------------- | ------------------------------------------------ |
@@ -64,8 +70,9 @@ Some Crossterm queries also interact with the [internal event
 reader][`crossterm internal event reader source`]. The Unix [cursor-position
 implementation][`crossterm cursor position source`] writes its query to stdout and waits for a
 matching response. A backend configured with a different writer does not redirect that query
-automatically. The code uses a two-second polling timeout on this path; retry behavior means this is
-not a universal two-second bound on the entire operation.
+automatically. The code uses a two-second polling timeout on this path. A timeout returns an error,
+but a polling error or unmatched read can start another attempt, so two seconds is not a bound on
+the entire operation.
 
 These details explain why a loop can appear correctly asynchronous yet stall during a synchronous
 query. [Crossterm's reader-conflict report][crossterm/crossterm#1039] and the [Codex color-query
@@ -82,7 +89,8 @@ normal input reading. Keep that ordering explicit:
 1. Keep drawing and state updates with one UI owner.
 1. Route worker output through messages; send logs to a file or another destination that does not
    corrupt the display.
-1. Treat child-program handoff as a separate lifecycle transition.
+1. Treat child-program handoff as a separate lifecycle transition: stop the UI reader, restore the
+   terminal, run the child, then reacquire the terminal.
 
 This ordering reduces overlap; it does not make arbitrary third-party probes safe after the input
 reader starts. Optional detection should have a fallback when a terminal does not answer. A timeout
@@ -91,9 +99,9 @@ with it.
 
 If runtime queries are required, verify how the query implementation coordinates with the active
 reader. Pausing calls to `EventStream::next` alone does not prove its helper has stopped reading. A
-query broker can own the reader and route replies and ordinary events together; the
-[design questions](/concepts/async/design-questions/) describe the additional contracts such a
-broker needs.
+query broker can own the reader and route replies and ordinary events together; such a design must
+preserve unrelated input, match replies, and define how late responses and cancellation affect
+pending queries. It is not a guarantee supplied by an arbitrary async wrapper.
 
 ## Redirected input and output
 
@@ -118,17 +126,18 @@ When diagnosing a failure, record the backend and versions, OS, terminal emulato
 redirected handles, and active readers. They determine which input and output paths the application
 uses.
 
+[`EventStream` source]:
+  https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/event/stream.rs#L42-L148
+[Codex color-query patch]:
+  https://github.com/openai/codex/commit/07b8bdfbf1497cf7c478872bd082a13c5bd82c63
+[crossterm/crossterm#1039]: https://github.com/crossterm-rs/crossterm/issues/1039
 [`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
+[event module]: https://docs.rs/crossterm/latest/crossterm/event/index.html
 [`Terminal::try_draw` source]:
   https://github.com/ratatui/ratatui/blob/d301c75f40854718374838ea3d6d704136b62e06/ratatui-core/src/terminal/render.rs#L189-L205
 [`compute_inline_size` source]:
   https://github.com/ratatui/ratatui/blob/d301c75f40854718374838ea3d6d704136b62e06/ratatui-core/src/terminal/inline.rs#L390-L406
 [`tokio::io::stdin`]: https://docs.rs/tokio/latest/tokio/io/fn.stdin.html
-[Codex color-query patch]:
-  https://github.com/openai/codex/commit/07b8bdfbf1497cf7c478872bd082a13c5bd82c63
-[crossterm/crossterm#1039]: https://github.com/crossterm-rs/crossterm/issues/1039
-[`EventStream` source]:
-  https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/event/stream.rs#L42-L148
 [`Terminal::clear` source]:
   https://github.com/ratatui/ratatui/blob/d301c75f40854718374838ea3d6d704136b62e06/ratatui-core/src/terminal/buffers.rs#L147-L151
 [`crossterm cursor position source`]:
@@ -137,7 +146,6 @@ uses.
   https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/event/internal.rs#L9-L53
 [`std::io::IsTerminal`]: https://doc.rust-lang.org/std/io/trait.IsTerminal.html
 [`tokio::io::Stdout`]: https://docs.rs/tokio/latest/tokio/io/struct.Stdout.html
-[event module]: https://docs.rs/crossterm/latest/crossterm/event/index.html
 [stdout and stderr]: /faq/#should-i-use-stdout-or-stderr
 [Unix size implementation]:
   https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/terminal/sys/unix.rs#L61-L105

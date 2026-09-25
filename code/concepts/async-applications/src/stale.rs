@@ -39,6 +39,32 @@ async fn search(_query: String) -> Result<Vec<String>> {
     Ok(vec![])
 }
 
+// ANCHOR: edit_search
+/// Invalidate outstanding replies as soon as the query changes, including during debounce.
+fn edit_query(app: &mut SearchState, query: String) {
+    advance_generation(app);
+    app.search_query = query;
+    app.search_error = None;
+    app.dirty = true;
+}
+
+/// Invalidate outstanding replies even if clearing the view starts no replacement request.
+fn clear_search(app: &mut SearchState) {
+    advance_generation(app);
+    app.search_query.clear();
+    app.search_results.clear();
+    app.search_error = None;
+    app.dirty = true;
+}
+
+fn advance_generation(app: &mut SearchState) {
+    app.search_generation = app
+        .search_generation
+        .checked_add(1)
+        .expect("search generation exhausted");
+}
+// ANCHOR_END: edit_search
+
 // ANCHOR: discard_stale
 /// Start a request from the async UI loop, where a Tokio runtime context is already entered.
 ///
@@ -49,19 +75,9 @@ async fn search(_query: String) -> Result<Vec<String>> {
 ///
 /// # Panics
 ///
-/// Panics outside a Tokio runtime or if this example exhausts its request counter.
-fn start_search(
-    app: &mut SearchState,
-    ui_tx: &mpsc::Sender<UiMessage>,
-) -> tokio::task::JoinHandle<()> {
-    // Invalidate earlier replies before launching work. Mark dirty now to clear the old error
-    // on screen while the new request is pending; existing results remain until success.
-    app.search_generation = app
-        .search_generation
-        .checked_add(1)
-        .expect("search generation exhausted");
-    app.search_error = None;
-    app.dirty = true;
+/// Panics outside a Tokio runtime.
+fn start_search(app: &SearchState, ui_tx: &mpsc::Sender<UiMessage>) -> tokio::task::JoinHandle<()> {
+    // The edit already invalidated old replies, even if work waited for a debounce deadline.
     // Own a snapshot of the request. The worker must not read a query the user later edits or
     // borrow mutable UI state across the task boundary.
     let generation = app.search_generation;
@@ -162,5 +178,47 @@ mod tests {
         assert_eq!(app.search_results.len(), 1);
         assert!(app.search_error.is_none());
         assert!(app.dirty);
+    }
+
+    #[test]
+    fn edit_invalidates_running_request_before_debounced_start() {
+        let mut app = SearchState {
+            search_generation: 1,
+            search_query: "cat".into(),
+            search_results: vec!["old result".into()],
+            ..SearchState::default()
+        };
+        edit_query(&mut app, "catalog".into());
+        handle_message(
+            &mut app,
+            UiMessage::SearchFinished {
+                generation: 1,
+                results: vec!["stale result".into()],
+            },
+        );
+        assert_eq!(app.search_generation, 2);
+        assert_eq!(app.search_query, "catalog");
+        assert_eq!(app.search_results, ["old result"]);
+    }
+
+    #[test]
+    fn clearing_search_invalidates_running_request() {
+        let mut app = SearchState {
+            search_generation: 1,
+            search_query: "cat".into(),
+            search_results: vec!["old result".into()],
+            ..SearchState::default()
+        };
+        clear_search(&mut app);
+        handle_message(
+            &mut app,
+            UiMessage::SearchFinished {
+                generation: 1,
+                results: vec!["stale result".into()],
+            },
+        );
+        assert_eq!(app.search_generation, 2);
+        assert!(app.search_query.is_empty());
+        assert!(app.search_results.is_empty());
     }
 }

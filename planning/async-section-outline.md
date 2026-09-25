@@ -1,5 +1,14 @@
 # Async documentation section outline
 
+## Conceptual restructure
+
+The current implementation uses a flat async section: overview, event loops, bridging, cooperative
+scheduling, redraws, blocking work, tasks, messages, backpressure, overlapping work, cancellation,
+terminal I/O, shutdown, and handoffs. Each page explains its mechanism locally and links to Tokio
+for depth. Recipes own runnable setup, HTTP adaptation, editor handoff, and troubleshooting. The
+earlier outline below records the investigation and previous grouping, not the current sidebar.
+Speculative APIs are preserved in [async-terminal-design.md](async-terminal-design.md).
+
 ## Purpose
 
 Provide a useful, trustworthy body of information about async and concurrency for people reading

@@ -1,8 +1,4 @@
----
-title: Async Terminal Design Questions
-sidebar:
-  order: 7
----
+# Async terminal design questions
 
 Async TUIs repeatedly need to coordinate terminal queries, redraw requests, and temporary handoffs
 to other programs. A library could own input routing or frame scheduling while leaving choices such
@@ -10,7 +6,7 @@ as request cancellation and which updates may be dropped to the application.
 
 The API designs below are proposals for discussion, not an announced Ratatui roadmap. Each needs
 validation against the terminal behaviors described here. Applications can use the
-[event-loop patterns](/concepts/async/event-loops/) without waiting for new APIs.
+[event-loop patterns](https://ratatui.rs/concepts/async/event-loops/) without waiting for new APIs.
 
 ## Query routing through a shared reader
 
@@ -102,7 +98,8 @@ identical OS behavior.
 ## Protocol and lifecycle regression tests
 
 The routing, presentation, and handoff APIs above need tests that exercise their shared terminal
-access. The [failure reports](/concepts/async/troubleshooting/) suggest these regression scenarios:
+access. The [failure reports](https://ratatui.rs/concepts/async/troubleshooting/) suggest these
+regression scenarios:
 
 - Mix query replies with ordinary input and confirm that unrelated input survives.
 - Deliver a reply after its timeout, or split it across reads.

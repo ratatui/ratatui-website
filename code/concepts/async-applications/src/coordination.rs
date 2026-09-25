@@ -6,18 +6,28 @@ use std::sync::Arc;
 use tokio::sync::{mpsc, oneshot, watch, AcquireError, Semaphore};
 use tokio::task::{JoinError, JoinHandle};
 
+use crate::sync_ui::{JobId, UiMessage};
+
 /// Forward progress snapshots, waiting for space in the UI queue.
 ///
 /// Intermediate watch values may be skipped. Stop when the UI closes, or after forwarding the
 /// last snapshot when all progress senders close. The copied value releases the watch borrow
 /// before any wait for queue space.
 // ANCHOR: progress
-async fn forward_progress(mut progress: watch::Receiver<u8>, ui: mpsc::Sender<u8>) {
+async fn forward_progress(
+    job: JobId,
+    mut progress: watch::Receiver<u8>,
+    ui: mpsc::Sender<UiMessage>,
+) {
     // Read the initial value too: changed() alone waits for a value not yet seen by this receiver.
     loop {
         let percent = *progress.borrow_and_update();
         // The watch borrow has ended; holding it across await could obstruct the producer.
-        if ui.send(percent).await.is_err() {
+        if ui
+            .send(UiMessage::ProgressChanged { job, percent })
+            .await
+            .is_err()
+        {
             break; // The UI no longer wants progress.
         }
         tokio::select! {
@@ -144,8 +154,14 @@ mod tests {
     async fn progress_forwarder_stops_when_ui_closes_with_producer_idle() {
         let (_producer, progress) = watch::channel(0);
         let (ui, mut received) = mpsc::channel(1);
-        let forwarder = tokio::spawn(forward_progress(progress, ui));
-        assert_eq!(received.recv().await, Some(0));
+        let forwarder = tokio::spawn(forward_progress(42, progress, ui));
+        assert!(matches!(
+            received.recv().await,
+            Some(UiMessage::ProgressChanged {
+                job: 42,
+                percent: 0
+            })
+        ));
         drop(received);
         tokio::time::timeout(std::time::Duration::from_secs(1), forwarder)
             .await

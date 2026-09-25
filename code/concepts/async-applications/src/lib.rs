@@ -8,6 +8,7 @@
 //!
 //! These private modules are independent teaching excerpts. Run the complete application with
 //! `cargo run -p async-applications`; it lives in `src/bin/background.rs`.
+//! `cargo run -p async-applications --bin in_loop` instead retains a future in the UI loop.
 
 // Excerpts are compiled and tested here but are not wired into the runnable application's UI.
 #![allow(dead_code)]

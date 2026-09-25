@@ -1,7 +1,5 @@
 ---
 title: Troubleshooting Async Applications
-sidebar:
-  order: 6
 ---
 
 A delayed update can come from a request that has not finished, a result the UI has not received, or
@@ -46,7 +44,7 @@ work is pending. Neither result should change the cleared view.
 For shutdown, quit while a request is waiting, while the result queue is full, and while a blocking
 job is running. Check that each worker finishes or stops according to the app's shutdown policy. If
 a producer is stuck sending after the UI exits, check the
-[receiver shutdown policy](/concepts/async/lifecycle/#worker-shutdown): discard queued results by
+[receiver shutdown policy](/concepts/async/shutdown/#worker-shutdown): discard queued results by
 dropping the receiver, or keep draining them while waiting for workers.
 
 ## Isolating terminal reader conflicts
@@ -89,11 +87,11 @@ maintainer to infer the architecture of the whole application.
 
 [Codex EventStream refactor]:
   https://github.com/openai/codex/commit/cf44511e7780bc30286ec356849970ff7aeabebb
+[`simple-async` template]:
+  https://github.com/ratatui/templates/tree/cd2b97b11fd4dcc40607e8ab3f73bc09c12c6a4f/simple-async
 [Codex color-query patch]:
   https://github.com/openai/codex/commit/07b8bdfbf1497cf7c478872bd082a13c5bd82c63
 [crossterm/crossterm#1039]: https://github.com/crossterm-rs/crossterm/issues/1039
-[`simple-async` template]:
-  https://github.com/ratatui/templates/tree/cd2b97b11fd4dcc40607e8ab3f73bc09c12c6a4f/simple-async
 [crossterm/crossterm#919]: https://github.com/crossterm-rs/crossterm/issues/919
 [ratatui/ratatui#2483]: https://github.com/ratatui/ratatui/issues/2483
 [ratatui/ratatui#2485]: https://github.com/ratatui/ratatui/pull/2485

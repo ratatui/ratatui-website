@@ -49,7 +49,7 @@ async fn main() -> Result<()> {
     let result = run(&mut terminal, &mut app).await;
     ratatui::restore();
 
-    // Restore the terminal before waiting for the app's workers to stop.
+    // These timer-only workers do not use the terminal; restore it before waiting for them.
     app.shutdown().await;
     result
 }
@@ -84,8 +84,9 @@ async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
             // An empty JoinSet returns None immediately. Disable it to avoid a busy loop.
             // ANCHOR: receive_result
             Some(result) = app.requests.join_next(), if !app.requests.is_empty() => {
-                // A worker panic invokes the process-wide panic hook, which restores terminal
-                // modes. Exit through cleanup rather than drawing again in that altered session.
+                // ratatui::init() installed a process-wide panic hook. A worker panic can
+                // restore terminal modes before this join result is ready. Exit after an
+                // observed failure; selection cannot prevent a draw racing with the hook.
                 // An ordinary fetch error remains a value that the UI can display and retry.
                 app.finish_fetch(result?);
                 dirty = true;
