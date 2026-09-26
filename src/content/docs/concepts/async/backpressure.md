@@ -89,7 +89,7 @@ messages; use a batch limit when adapting this approach.
 
 Combining redraw requests reduces frames, not queued messages. A latest-value channel can reduce
 retained updates, but forwarding each observed value into another queue introduces another backlog.
-[Messages and Shared State](/concepts/async/messages/) explains that distinction with progress.
+[Worker Updates](/concepts/async/messages/) explains that distinction with progress.
 
 [render flags]:
   https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-macro/src/render.rs

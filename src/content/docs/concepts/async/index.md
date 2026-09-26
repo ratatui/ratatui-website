@@ -22,12 +22,14 @@ depth.
   responsiveness, work and results, terminal ownership, and shutdown.
 - [Event Loops](/concepts/async/event-loops/): input, completed work, state changes, and drawing.
   - A refresh loop, wakeups, and UI ownership.
-- [Tasks and Results](/concepts/async/tasks/): independently scheduled work and its owner.
+- [Background Work](/concepts/async/tasks/): independently scheduled work and its owner.
   - Owned inputs, task handles, failures, and operations retained by the UI loop.
-  - [Waiting for one or several operations](/concepts/async/tasks/#waiting-for-one-or-several-operations):
-    awaiting one result, selecting the next event, joining a group, and collecting completed jobs.
-- [Messages and Shared State](/concepts/async/messages/): communication between workers and the UI.
-  - Results, latest-value state, notifications, and resource-owning workers.
+- [Waiting for Multiple Operations](/concepts/async/waiting/): choosing what wakes a loop.
+  - Awaiting one result, selecting the next event, joining a group, and collecting completed jobs.
+- [Worker Updates](/concepts/async/messages/): communication between workers and the UI.
+  - Results, progress, latest-value state, notifications, and shared state.
+- [Resource-owning Workers](/concepts/async/actors/): commands sent to a persistent owner.
+  - Actor handles, replies, backpressure, stale results, and shutdown.
 - [Bridging Sync and Async](/concepts/async/bridging/): where each part of the application executes.
   - Runtime ownership, synchronous UI integration, and dedicated UI threads.
 - [Cooperative Scheduling](/concepts/async/scheduling/): when other work gets an opportunity to run.
@@ -65,5 +67,4 @@ as delayed frames, stale results, and input conflicts.
 
 For networking in a synchronous application, see
 [Bridging Sync and Async](/concepts/async/bridging/). For continuous updates, start with
-[Messages and Shared State](/concepts/async/messages/) and
-[Backpressure](/concepts/async/backpressure/).
+[Worker Updates](/concepts/async/messages/) and [Backpressure](/concepts/async/backpressure/).

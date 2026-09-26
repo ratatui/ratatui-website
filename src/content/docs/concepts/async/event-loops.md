@@ -111,14 +111,30 @@ those strategies. A separate input task still shares the terminal with queries a
 :::
 
 The refresh task returns data; the UI decides how to apply it.
-[Tasks and Results](/concepts/async/tasks/) explains that ownership and the completion path. A
+[Background Work](/concepts/async/tasks/) explains that ownership and the completion path. A
 separate task is one arrangement: a loop can also
 [retain a pending operation directly](/concepts/async/tasks/#concurrent-operations-in-one-task).
+
+Other views may need more than one kind of worker interaction. A profile fetch can wait for account
+details and activity together; a download view needs progress before each job finishes; a service
+browser may keep one connection and cache behind a long-lived command loop. These relationships
+compose with the same input and drawing loop:
+
+| UI needs                                  | Read next                         |
+| ----------------------------------------- | --------------------------------- |
+| One request result                        | [Background Work]                 |
+| Several results or the next completed job | [Waiting for Multiple Operations] |
+| Progress or other updates while work runs | [Worker Updates]                  |
+| Commands served by a persistent resource  | [Resource-owning Workers]         |
 
 An existing synchronous UI can keep its input loop and use async workers. The comparison and
 [synchronous loop sketch](/concepts/async/bridging/#synchronous-ui-with-async-workers) are in
 Bridging Sync and Async.
 
+[Background Work]: /concepts/async/tasks/
+[Waiting for Multiple Operations]: /concepts/async/waiting/
+[Worker Updates]: /concepts/async/messages/
+[Resource-owning Workers]: /concepts/async/actors/
 [`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
 [`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
 [`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html

@@ -1,5 +1,5 @@
 ---
-title: Messages and Shared State
+title: Worker Updates
 sidebar:
   order: 3
 ---
@@ -108,51 +108,7 @@ disappear before the receiver observes it. The [tokio-console detail watcher] is
 maintaining a subscription for the selected task; when adapting such a design, inspect both what the
 channel retains and whether waiting to forward a result delays noticing a changed selection.
 
-## Resource ownership with actors
-
-Suppose a view displays records containing user IDs and needs their display names. A lookup worker
-can own a directory mapping IDs to names. Callers send `GetName` commands; each command includes a
-`oneshot` sender for its reply. The view receives a name, an absent entry, or a communication error
-without borrowing the directory.
-
-A task that owns a resource and processes commands for it is called an actor. This small lookup
-worker owns a `HashMap` and serves commands in order:
-
-```rust
-{{ #include @code/concepts/async-applications/src/coordination.rs:actor_command }}
-{{ #include @code/concepts/async-applications/src/coordination.rs:actor_owner }}
-```
-
-Create a bounded `mpsc` channel, move the lookup data and receiver into
-[`tokio::spawn(serve_names(names, receiver))`][`tokio::spawn`], and retain the returned task handle.
-Callers keep sender clones. When every sender is dropped, the owner drains accepted commands and
-exits.
-
-The requesting side creates the per-command reply channel and distinguishes lookup results from
-communication failures:
-
-<details>
-<summary>Requesting a name and reporting channel errors</summary>
-
-```rust
-{{ #include @code/concepts/async-applications/src/coordination.rs:reply }}
-```
-
-</details>
-
-The owner receives `GetName`, looks up the ID, and calls `command.reply.send(value)`. That send can
-fail normally if the caller has gone away. `Ok(None)` means the owner replied that the ID was
-absent. `NotAccepted` means the receiver closed before accepting the command; `ReplyDropped` means
-the command was accepted but no response arrived. Acceptance alone does not prove that the owner
-processed it. These distinctions let the UI display an unknown ID differently from a lost request.
-[Actors with Tokio] develops the ownership and shutdown implications of this pattern.
-
-Helix's [diff worker] demonstrates a long-lived resource-owning worker in an editor. It receives
-document and base revisions through a channel, retains diffing state between requests, then
-publishes hunks under a short write lock and notifies waiters after releasing the lock. It uses
-shared results and notifications rather than the per-request `oneshot` reply above. Both designs
-keep the worker's computation separate from the UI; the response route depends on whether callers
-need an individual answer or the latest shared result.
+## Shared state and redraws
 
 A mutex is also a valid choice for small shared state. Keep synchronous lock guards out of awaits
 and keep critical sections short. An async mutex makes waiting for the lock asynchronous; it does
@@ -160,13 +116,12 @@ not make the code executed while holding it nonblocking. Neither kind automatica
 redraw after a mutation.
 
 Tokio's [Shared state](https://tokio.rs/tokio/tutorial/shared-state) explains when a short
-synchronous lock is appropriate. Its [Channels](https://tokio.rs/tokio/tutorial/channels) chapter
-develops the resource-owning task and per-command response pattern. In either arrangement, the
-application must also arrange for the UI to observe the changed data and request a frame.
+synchronous lock is appropriate. In either arrangement, the application must arrange for the UI to
+observe changed data and request a frame. For a worker that owns a resource across views, see
+[Resource-owning Workers](/concepts/async/actors/).
 
 [tokio-console detail watcher]:
   https://github.com/tokio-rs/console/blob/59e23edf17b0e42e87e315bfc9cbb8a6ba2f401f/tokio-console/src/main.rs#L206-L249
-[Actors with Tokio]: https://ryhl.io/blog/actors-with-tokio/
 [`tokio::sync::watch`]: https://docs.rs/tokio/latest/tokio/sync/watch/index.html
 [`mpsc`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html
 [`oneshot`]: https://docs.rs/tokio/latest/tokio/sync/oneshot/index.html
@@ -174,8 +129,5 @@ application must also arrange for the UI to observe the changed data and request
   https://docs.rs/tokio/latest/tokio/sync/watch/struct.Receiver.html#method.changed
 [`borrow_and_update()`]:
   https://docs.rs/tokio/latest/tokio/sync/watch/struct.Receiver.html#method.borrow_and_update
-[`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html
 [gitui async job]:
   https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/asyncgit/src/asyncjob/mod.rs#L111-L155
-[diff worker]:
-  https://github.com/helix-editor/helix/blob/a2c9f44a564592257334ce0cec2fc904412173b5/helix-vcs/src/diff/worker.rs
