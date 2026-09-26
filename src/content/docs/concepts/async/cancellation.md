@@ -115,10 +115,11 @@ The highlighting loop [calls this check while processing lines][Yazi check call]
 ticket does not interrupt a file read or highlighting step already executing: the worker stops when
 it next reaches a check. The preview's `abort` method also does not await either worker's exit.
 
-Closing a view can end its interest in a result before the underlying operation ends. Keep enough
-ownership to observe that operation, account for any partial effects, and reject results that no
-longer apply. When the whole application exits, [Shutdown](/concepts/async/shutdown/) brings those
-per-operation decisions together with queue cleanup and terminal restoration.
+Closing a view does not stop a blocking job already running or undo a request received by a server.
+For the sort above, keep its handle until it finishes and discard the result if the view has closed.
+For a request that changes server state, check whether it took effect before retrying. Application
+[shutdown](/concepts/async/shutdown/) also needs to deal with queued messages and restore the
+terminal.
 
 ## Further reading
 

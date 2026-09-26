@@ -54,13 +54,13 @@ is empty, and keep listening for input that may add work.
 Ownership also determines what happens when waiting stops. Dropping a `JoinSet` aborts its tasks;
 dropping a collection of request futures drops those futures. A collection of `JoinHandle`s instead
 detaches their tasks when dropped. Likewise, an early return from `try_join!` drops its remaining
-owned futures, which does not stop spawned tasks if those futures are handles. Retain the ownership
-needed for [cancellation and cleanup](/concepts/async/cancellation/).
+owned futures, which does not stop spawned tasks if those futures are handles. Keep task handles
+available to [cancel tasks or wait for them to finish](/concepts/async/cancellation/).
 
 For the UI, waiting for the next event keeps input available while work is pending. Within a
 background operation, waiting for a whole group can produce one combined result. A growing
-collection instead lets the UI apply each completion as it arrives. In each case, keep ownership of
-unfinished work so another event winning the selection does not lose track of it.
+collection instead lets the UI apply each completion as it arrives. Store pending futures, handles,
+or collections outside the selection so they survive when another event wins.
 
 A worker can also send [progress updates](/concepts/async/messages/) before completing. A
 [persistent resource owner](/concepts/async/actors/) can serve repeated commands without ending its

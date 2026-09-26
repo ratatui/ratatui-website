@@ -50,8 +50,7 @@ that chooses this branch.
 
 An animation needs time to change its state as well as time to draw it. A timer can update an
 animation and request a frame. The example instead has a static loading message, so it needs no
-periodic update while its fetch waits. Timer policies should follow the view's behavior rather than
-run simply because the application is async.
+periodic update while its fetch waits.
 
 ## Redraw requests from multiple components
 

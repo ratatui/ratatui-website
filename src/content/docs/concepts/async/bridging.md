@@ -8,12 +8,10 @@ Suppose a terminal app already reads keys and draws a list in a synchronous loop
 refresh that list using an async network client. Pressing `r` should start the request without
 preventing the user from navigating the app while the response is pending.
 
-The UI can stay synchronous while a Tokio runtime runs the request. The boundary has two directions:
-the UI submits work, then receives data or an error to apply to its state. A runtime must keep the
-request progressing while the UI waits for input. An alternative is an
-[async UI loop](/concepts/async/event-loops/), which still calls Ratatui's synchronous drawing API.
-In either arrangement, runtime ownership determines where the network work can progress, and the UI
-loop determines when its result becomes visible.
+The UI can stay synchronous while a Tokio runtime runs the request. The UI submits work, then
+receives data or an error to apply to its state. A runtime must keep the request progressing while
+the UI waits for input. An alternative is an [async UI loop](/concepts/async/event-loops/), which
+still calls Ratatui's synchronous drawing API.
 
 ## Runtime ownership and progress
 
@@ -126,9 +124,9 @@ worker results, so a stop command must not depend on another keypress. A draw al
 still has to return before the loop can process that command. Worker shutdown follows the
 [operation's cleanup policy](/concepts/async/shutdown/#worker-shutdown).
 
-A dedicated UI thread adds a command and join boundary to the synchronous arrangement. It is useful
-when another part of the application needs the main thread, not a requirement for using async
-workers.
+A dedicated UI thread frees the main thread for other application work. The application must send
+the UI a stop command and wait for its thread to exit. Async workers can also run alongside a UI on
+the main thread, as in the preceding example.
 
 ## Synchronous work inside an async loop
 
@@ -136,10 +134,10 @@ A synchronous draw or library call runs on whichever thread polls the UI task. I
 another input event until that call returns. Adding an async wrapper changes the function's
 interface, not the behavior of the synchronous operation inside it.
 
-Keep the boundary around a meaningful operation: a worker receives owned input, performs the
-operation, and returns a result. [Blocking and CPU-bound Work](/concepts/async/blocking-work/)
-explains execution choices for those workers. Moving each terminal read and draw to an independent
-blocking job would lose the stable ownership required by the terminal APIs.
+For a sort or parse job, give the worker owned input and return the sorted or parsed data to the UI.
+[Blocking and CPU-bound Work](/concepts/async/blocking-work/) explains execution choices for those
+workers. Moving each terminal read and draw to an independent blocking job would lose the stable
+ownership required by the terminal APIs.
 
 The synchronous UI can therefore keep ownership of the terminal while async workers handle network
 waits. The runtime must continue running, and the UI must check results even when no key is pressed.

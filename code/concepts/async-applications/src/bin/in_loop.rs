@@ -107,7 +107,8 @@ async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
             }
         }
     }
-    // Dropping the pending fetch cancels its timer. Real operations need their own effect policy.
+    // Dropping this pending fetch cancels its timer. For a network request, dropping the future
+    // would not undo changes already made by the server.
     Ok(())
 }
 // ANCHOR_END: selection

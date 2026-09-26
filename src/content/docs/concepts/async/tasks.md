@@ -47,8 +47,8 @@ present and stores the new one without an `.await`, while `&mut self` gives it e
 inputs rather than borrowing `App`. Even if the request finishes immediately, its handle remains
 present until the UI applies the result. This check needs no additional lock.
 
-The handle-presence guard is this app's concurrency policy. There cannot be two fetch results
-competing to update the view. Search-as-you-type needs a different policy; see
+Ignoring refresh while a handle is present prevents two fetch results from competing to update the
+view. Search-as-you-type may start another request before the previous one finishes; see
 [rejecting stale results](/concepts/async/overlapping-work/#stale-search-results).
 
 ## Owned inputs and task boundaries

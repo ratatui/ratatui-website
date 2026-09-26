@@ -113,8 +113,8 @@ nor `block_in_place` coordinates terminal access; moving terminal operations sti
 input strategy and ordered output.
 
 Offloading the sort keeps input responsive only if the UI can also submit it and receive its result
-without a long wait. Limit admission, retain ownership of admitted jobs, and decide what happens
-when their results are no longer wanted. [Backpressure](/concepts/async/backpressure/) covers the
+without a long wait. Limit the number of sorts submitted, keep their handles until they finish, and
+discard results for views that have closed. [Backpressure](/concepts/async/backpressure/) covers the
 queues around the worker; [Cancellation](/concepts/async/cancellation/) covers stopping work or
 waiting for an unwanted job to finish.
 

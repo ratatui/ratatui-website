@@ -137,9 +137,6 @@ notification. Keep synchronous lock guards out of awaits and keep critical secti
 mutex makes waiting for the lock asynchronous; it does not make the code executed while holding it
 nonblocking. Neither kind automatically tells the UI to redraw after a mutation.
 
-In either arrangement, the application must arrange for the UI to observe changed data and request a
-frame.
-
 ## Examples from terminal applications
 
 Gitui's [background job implementation][gitui async job] stores progress behind a lock and sends

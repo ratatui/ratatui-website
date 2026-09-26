@@ -74,8 +74,10 @@ A queue capacity does not limit pending jobs or retained UI history. The
 - Search requests can be limited, debounced, or replaced before starting. Tag each request and
   ignore a result whose tag is no longer current.
 
-Waiting for queue capacity inside a UI handler also makes the UI wait. If the queue can fill, choose
-an explicit submission policy rather than assuming an awaited send is always prompt. Similarly,
+Waiting for queue capacity inside a UI handler also makes the UI wait. When the queue is full, the
+UI can reject a new request and report that it is busy, replace an obsolete request it has not yet
+sent, or retain a pending send while continuing to process input. A retained send still counts as
+pending work; starting another task for every send can create an unbounded backlog. Similarly,
 [shutdown](/concepts/async/shutdown/#worker-shutdown) must account for producers waiting to send
 after the UI stops receiving.
 

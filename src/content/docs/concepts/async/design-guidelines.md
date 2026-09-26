@@ -35,9 +35,9 @@ shutdown path for workers waiting to send.
 - **Measure what occupies the thread.** Separate computation, widget rendering, and terminal output
   costs before moving work. An async wrapper does not make a synchronous operation nonblocking.
   [Blocking work](/concepts/async/blocking-work/#measuring-and-moving-expensive-work)
-- **Draw when a frame is useful.** Combine redraw requests and avoid idle frames unless the view
-  needs animation. A frame interval limits frequency, not draw duration or input latency.
-  [Frame deadlines](/concepts/async/redraws/#redraw-requests-and-frame-deadlines)
+- **Combine redraw requests.** Let one frame show several state changes, and avoid idle frames
+  unless the view needs animation. A frame interval limits frequency, not draw duration or input
+  latency. [Frame deadlines](/concepts/async/redraws/#redraw-requests-and-frame-deadlines)
 
 ## Work and results
 
@@ -68,22 +68,19 @@ shutdown path for workers waiting to send.
 
 ## Cancellation and shutdown
 
-- **Own pending work deliberately.** Retain futures that must survive loop iterations and task
-  handles needed to observe completion. Dropping a Tokio [`JoinHandle`] detaches its task without
-  cancelling it. [Future lifetime](/concepts/async/cancellation/#futures-owned-by-the-ui-loop) ·
+- **Retain pending futures and task handles.** Store them outside individual loop iterations so
+  another event winning selection does not drop them. Dropping a Tokio [`JoinHandle`] detaches its
+  task without cancelling it.
+  [Future lifetime](/concepts/async/cancellation/#futures-owned-by-the-ui-loop) ·
   [Task ownership](/concepts/async/tasks/#task-ownership)
 - **Check what cancellation actually stops.** Dropping a future waiting for a result, aborting a
   task, stopping a blocking job, and undoing a remote effect are different operations.
   [Partial progress](/concepts/async/cancellation/#cancellation-and-partial-progress)
-- **Design the exit path alongside the work.** Stop admitting operations, account for queued output,
-  signal workers, and observe required completion. Restore terminal state on errors as well as quit.
+- **Stop workers and restore the terminal on exit.** Stop accepting new work, drain or discard
+  queued output, and signal workers to stop. Wait for workers that must finish before the app exits.
+  Restore terminal state on errors as well as quit.
   [Worker shutdown](/concepts/async/shutdown/#worker-shutdown) ·
   [Error cleanup](/concepts/async/shutdown/#restore-the-terminal-on-errors)
-
-For a list refresh, the UI starts a request with owned inputs, keeps accepting events, then applies
-its result and requests a frame. If the view changes or the app exits first, the request still needs
-an owner and a completion or cancellation policy. Keeping that lifetime explicit makes the same
-structure usable for downloads, searches, and persistent workers.
 
 [`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
 [`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html
