@@ -23,14 +23,6 @@ terminal display.
 A channel connects a **sender**, used by workers, to a **receiver**, owned by the UI. The sender
 queues messages for the receiver to apply.
 
-The message type below also includes progress for identified jobs and a redraw notification. Those
-variants serve download progress and animation; the single-refresh worker only sends `ItemsLoaded`
-or `ItemsFailed`. `Item`, `JobId`, and `load_items` are application placeholders:
-
-```rust
-{{ #include @code/concepts/async-applications/src/sync_ui.rs:messages }}
-```
-
 The [synchronous UI example](/concepts/async/bridging/#synchronous-ui-with-async-workers) creates a
 bounded channel before entering its loop:
 
@@ -42,6 +34,14 @@ Here `ui_tx` sends `UiMessage` values and `ui_rx` receives them. The queue can h
 `send().await` waits when it is full. This capacity is an example choice, not a recommended default.
 When starting a fetch, the UI gives the worker a clone of `ui_tx`. Sender clones feed the same
 queue, so workers can report independently while the UI keeps the receiver.
+
+The message type below also includes progress for identified jobs and a redraw notification. Those
+variants serve download progress and animation; the single-refresh worker only sends `ItemsLoaded`
+or `ItemsFailed`. `Item`, `JobId`, and `load_items` are application placeholders:
+
+```rust
+{{ #include @code/concepts/async-applications/src/sync_ui.rs:messages }}
+```
 
 On each loop turn, the synchronous UI checks for queued messages, applies them, and marks the
 display dirty. `MAX_EVENTS_PER_TURN` limits the batch to 64 messages in this example:
@@ -73,24 +73,24 @@ that value directly through a task handle instead of a channel.
 
 ## Messages and latest-value state
 
-The result messages above need to reach the UI individually. Other worker updates, such as a
-progress percentage, can replace earlier values. Choose the communication mechanism according to
-what the receiver needs to retain:
+The result messages above need to reach the UI individually. A log view similarly needs each
+accepted record: a bounded [`mpsc`] queue keeps records until the UI receives them. When producers
+outpace the UI, the app needs an [overload policy](/concepts/async/backpressure/) for waiting,
+discarding, or retaining records elsewhere.
 
-| Requirement                              | Starting point                   |
-| ---------------------------------------- | -------------------------------- |
-| Process each accepted command or result  | Bounded [`mpsc`]                 |
-| Display the latest progress or selection | [`watch`][`tokio::sync::watch`]  |
-| Return one response to one caller        | [`oneshot`]                      |
-| Protect shared data                      | Mutex plus a redraw notification |
-
-A bounded queue and a latest-value channel retain different information. A log view usually needs
-each accepted record; a progress indicator usually needs only the newest value. Queue overload and
-producer limits are explained in [Backpressure](/concepts/async/backpressure/).
+A progress indicator has a different requirement. If a download advances from 40% to 60% before the
+next frame, displaying 60% is enough; the UI does not need to process every intermediate percentage.
 
 A [`watch`][`tokio::sync::watch`] channel stores the newest value, so a slow receiver can skip
 intermediate values. This suits a progress percentage, but not a sequence of commands that must all
 execute.
+
+The UI can select on [`progress.changed()`] and copy [`borrow_and_update()`] into its state, then
+request a redraw. This lets it observe progress alongside input without adding each percentage to a
+message queue.
+
+<details>
+<summary>Forwarding progress into an existing UI message queue</summary>
 
 Consider a download view whose UI already receives worker messages through one queue. At download
 startup, it creates a `watch` channel and gives its sender to the download worker. A tracked
@@ -116,16 +116,26 @@ newest watch value, skipping percentages replaced during the wait. Percentages a
 UI queue still occupy that queue; the adapter does not replace them. Closing the UI receiver ends
 forwarding.
 
-If the UI only needs the latest progress, it can instead select directly on [`progress.changed()`]
-and copy [`borrow_and_update()`] into its state. That avoids introducing a second queue just for
-progress.
+</details>
+
+## One reply per request
+
+A worker that serves several UI requests can use a separate [`oneshot`] channel for each reply. For
+example, each lookup command can carry a reply sender so the worker returns the answer to the task
+that requested it. The UI can distinguish overlapping lookups without sorting their replies out of
+one shared queue. [Resource-owning Workers](/concepts/async/actors/#actor-replies-in-the-ui-loop)
+shows the command and reply code.
+
+For a task that performs one fetch and then exits, its task handle already provides the final
+result; a separate reply channel adds no benefit in that example.
 
 ## Shared state and redraws
 
-A mutex is also a valid choice for small shared state. Keep synchronous lock guards out of awaits
-and keep critical sections short. An async mutex makes waiting for the lock asynchronous; it does
-not make the code executed while holding it nonblocking. Neither kind automatically tells the UI to
-redraw after a mutation.
+A worker and the UI can also share a small snapshot, such as download statistics, behind a mutex.
+The worker updates the snapshot and notifies the UI; the UI reads it when handling that
+notification. Keep synchronous lock guards out of awaits and keep critical sections short. An async
+mutex makes waiting for the lock asynchronous; it does not make the code executed while holding it
+nonblocking. Neither kind automatically tells the UI to redraw after a mutation.
 
 In either arrangement, the application must arrange for the UI to observe changed data and request a
 frame.

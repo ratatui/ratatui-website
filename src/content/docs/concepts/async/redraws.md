@@ -33,6 +33,28 @@ A draw deadline caps frequency; it does not cap how long rendering takes or guar
 will be handled. Tokio's default [`select!`] branch order also is not a real-time scheduling
 guarantee.
 
+## Drawing changed state
+
+The complete [background fetch example](/recipes/apps/background-fetch/) uses this branch after
+input and result handlers mark the UI dirty:
+
+```rust
+{{ #include @code/concepts/async-applications/src/bin/background.rs:draw_deadline }}
+```
+
+Several updates before the deadline still produce one frame, showing the latest application state.
+The absolute deadline survives other events. Recreating a relative sleep after every keypress would
+postpone the frame repeatedly during continuous input. While clean, the branch is disabled; a redraw
+request makes it eligible again. If the deadline has passed, drawing can begin on the next selection
+that chooses this branch.
+
+An animation needs time to change its state as well as time to draw it. A timer can update an
+animation and request a frame. The example instead has a static loading message, so it needs no
+periodic update while its fetch waits. Timer policies should follow the view's behavior rather than
+run simply because the application is async.
+
+## Redraw requests from multiple components
+
 When many components request frames, a shared notification can coalesce their requests. Helix's
 [redraw functions][request_redraw] use a [`Notify`] to connect the components requesting a frame to
 the editor waiting to draw one. These are two excerpts from that revision, with the intervening
@@ -82,25 +104,6 @@ tokio::select! {
 
 This combines requests for frames without requiring the requesting components to own the terminal.
 The scheduler notifies the UI; it does not render the frame itself.
-
-## Drawing changed state
-
-The complete [background fetch example](/recipes/apps/background-fetch/) uses this branch after
-input and result handlers mark the UI dirty:
-
-```rust
-{{ #include @code/concepts/async-applications/src/bin/background.rs:draw_deadline }}
-```
-
-The absolute deadline survives other events. Recreating a relative sleep after every keypress would
-postpone the frame repeatedly during continuous input. While clean, the branch is disabled; a redraw
-request makes it eligible again. If the deadline has passed, drawing can begin on the next selection
-that chooses this branch.
-
-An animation needs time to change its state as well as time to draw it. A timer can update an
-animation and request a frame. The example instead has a static loading message, so it needs no
-periodic update while its fetch waits. Timer policies should follow the view's behavior rather than
-run simply because the application is async.
 
 ## Coalescing progress and resize updates
 
