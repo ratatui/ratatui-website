@@ -24,6 +24,8 @@ depth.
   - A refresh loop, wakeups, and UI ownership.
 - [Tasks and Results](/concepts/async/tasks/): independently scheduled work and its owner.
   - Owned inputs, task handles, failures, and operations retained by the UI loop.
+  - [Waiting for one or several operations](/concepts/async/tasks/#waiting-for-one-or-several-operations):
+    awaiting one result, selecting the next event, joining a group, and collecting completed jobs.
 - [Messages and Shared State](/concepts/async/messages/): communication between workers and the UI.
   - Results, latest-value state, notifications, and resource-owning workers.
 - [Bridging Sync and Async](/concepts/async/bridging/): where each part of the application executes.
