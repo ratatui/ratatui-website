@@ -40,6 +40,12 @@ returns immediately; the event loop awaits completion separately:
 {{ #include @code/concepts/async-applications/src/bin/background.rs:start_fetch }}
 ```
 
+`start_fetch` is synchronous code that starts an async task. It checks and sets `loading` without an
+`.await`, while `&mut self` gives it exclusive access to `App`. Another call cannot interleave with
+that check and update, and the spawned task owns its inputs rather than borrowing `App`. Even if the
+request finishes immediately, it cannot change `loading`: the UI applies its result later through
+`finish_fetch`. This check needs no additional lock.
+
 The `loading` guard is this app's concurrency policy. There cannot be two fetch results competing to
 update the view. Search-as-you-type needs a different policy; see
 [rejecting stale results](/concepts/async/overlapping-work/#stale-search-results).
