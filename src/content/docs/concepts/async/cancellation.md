@@ -43,9 +43,8 @@ future across calls to `select!`. A losing branch drops only the temporary borro
 drops the owned future, ending its timer-only operation. Constructing it inside each selection would
 instead abandon and recreate it whenever another event wins.
 
-This is different from detaching a spawned task. Tokio's
-[Select chapter](https://tokio.rs/tokio/tutorial/select#cancellation) explains future cancellation;
-the operation's own API determines what state or external work remains after that future is dropped.
+This is different from detaching a spawned task. The operation's own API determines what state or
+external work remains after its future is dropped.
 
 ## Cooperative stopping
 
@@ -113,6 +112,12 @@ fn ensure_not_cancelled(&self) -> Result<(), PeekError> {
 The highlighting loop [calls this check while processing lines][Yazi check call]. Advancing the
 ticket does not interrupt a file read or highlighting step already executing: the worker stops when
 it next reaches a check. The preview's `abort` method also does not await either worker's exit.
+
+## Further reading
+
+Tokio's [Select chapter](https://tokio.rs/tokio/tutorial/select#cancellation) explains future
+cancellation through the polling behavior of `select!`, with examples of retaining an operation
+across selections.
 
 [Yazi preview tasks]:
   https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/tab/preview.rs#L26-L85

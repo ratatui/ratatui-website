@@ -58,8 +58,7 @@ it means its borrowed data cannot expire while the task still needs it.
 
 In the example, `FetchOutcome` is copied into the future. A real request could own a URL and a
 cloned client handle. The UI retains its items while the task works, then applies the returned
-value. Tokio's [Spawning](https://tokio.rs/tokio/tutorial/spawning) explains the lifetime and `Send`
-requirements in more detail, including values retained across awaits.
+value.
 
 ## Completion and failure
 
@@ -175,9 +174,7 @@ storage so the finished future cannot be polled again:
 ```
 
 When input wins, selection drops the temporary borrow, leaving the stored request available for the
-next iteration. Tokio's
-[resuming an async operation](https://tokio.rs/tokio/tutorial/select#resuming-an-async-operation)
-explains the Rust lifetime and pinning mechanics in more depth.
+next iteration.
 
 </details>
 
@@ -190,6 +187,14 @@ For the next input, timer, or task completion, see
 [Worker Updates](/concepts/async/messages/) covers values sent before a worker finishes;
 [Resource-owning Workers](/concepts/async/actors/) covers a worker that serves commands across
 views.
+
+## Further reading
+
+- Tokio's [Spawning](https://tokio.rs/tokio/tutorial/spawning) develops the `Send` and `'static`
+  requirements, including how values retained across awaits affect a task.
+- Tokio's
+  [resuming an async operation](https://tokio.rs/tokio/tutorial/select#resuming-an-async-operation)
+  works through retaining and pinning a future across selections.
 
 [`tokio::time::sleep`]: https://docs.rs/tokio/latest/tokio/time/fn.sleep.html
 [`JoinSet`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html

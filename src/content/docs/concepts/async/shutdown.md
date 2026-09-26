@@ -49,8 +49,7 @@ child processes needs a shutdown policy for each kind of work. Once the UI decid
 1. Restore the terminal promptly when it is no longer needed.
 1. Join the workers whose completion matters and report failures.
 
-The exact order depends on whether workers still require terminal access. Tokio's [Graceful
-Shutdown] guide explains cancellation notification and task tracking. Channel closure can also be a
+The exact order depends on whether workers still require terminal access. Channel closure can be a
 shutdown signal, provided all sender clones are dropped and the receiver handles closure.
 
 Decide what happens to pending UI messages before waiting for producers. If results may be
@@ -77,10 +76,10 @@ terminal query.
 
 ## Exit signals and terminal input
 
-Tokio's [Graceful Shutdown](https://tokio.rs/tokio/topics/shutdown) separates deciding to stop,
-notifying tasks, and waiting for them. A cancellation token can notify several cooperating workers;
-a task tracker can wait for tracked work to finish. The example here retains one [`JoinHandle`]
-because it accepts only one request at a time and consumes its result during normal operation.
+Deciding to stop, notifying workers, and waiting for them are separate steps. A
+[`CancellationToken`] can notify several cooperating workers; a [`TaskTracker`] can wait for tracked
+work to finish. The example here retains one [`JoinHandle`] because it accepts only one request at a
+time and consumes its result during normal operation.
 
 In a raw-mode terminal, pressing Ctrl-C is not automatically processed by the terminal driver as an
 interrupt signal. The UI can interpret that key as an exit request, alongside errors or external
@@ -91,6 +90,12 @@ keyboard behavior of a raw-mode TUI. Crossterm documents this difference under
 A temporary [terminal handoff](/concepts/async/handoffs/) adds reacquisition after release. Ordinary
 shutdown has no such return path, so it can discard display state once terminal users have stopped.
 
+## Further reading
+
+Tokio's [Graceful Shutdown] guide develops cancellation notification and task tracking in a server.
+Its worker lifecycle applies here too; raw-mode keyboard input still needs the TUI-specific handling
+above.
+
 [`try_restore`]: https://docs.rs/ratatui/latest/ratatui/fn.try_restore.html
 [`timeout`]: https://docs.rs/tokio/latest/tokio/time/fn.timeout.html
 [Graceful Shutdown]: https://tokio.rs/tokio/topics/shutdown
@@ -98,3 +103,7 @@ shutdown has no such return path, so it can discard display state once terminal 
 [`JoinHandle::abort`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html#method.abort
 [`close()`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/struct.Receiver.html#method.close
 [`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
+[`CancellationToken`]:
+  https://docs.rs/tokio-util/latest/tokio_util/sync/struct.CancellationToken.html
+[`TaskTracker`]:
+  https://docs.rs/tokio-util/latest/tokio_util/task/task_tracker/struct.TaskTracker.html

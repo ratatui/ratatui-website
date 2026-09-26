@@ -96,6 +96,18 @@ If the UI only needs the latest progress, it can instead select directly on [`pr
 and copy [`borrow_and_update()`] into its state. That avoids introducing a second queue just for
 progress.
 
+## Shared state and redraws
+
+A mutex is also a valid choice for small shared state. Keep synchronous lock guards out of awaits
+and keep critical sections short. An async mutex makes waiting for the lock asynchronous; it does
+not make the code executed while holding it nonblocking. Neither kind automatically tells the UI to
+redraw after a mutation.
+
+In either arrangement, the application must arrange for the UI to observe changed data and request a
+frame.
+
+## Examples from terminal applications
+
 Gitui's [background job implementation][gitui async job] stores progress behind a lock and sends
 notifications to consumers. This excerpt from `run_job` shows the order at completion; the
 surrounding job scheduling and pending-job lock are omitted:
@@ -118,7 +130,7 @@ worker stores the finished job in `last`, releases that lock, and sends the fina
 consumer can then retrieve the job. Progress state, notification, and final completion have distinct
 roles even without `watch`.
 
-The same latest-value behavior also suits a selection: store `Option<TaskId>` in `watch` so the
+A selection is another use for a latest-value channel: store `Option<TaskId>` in `watch` so the
 receiver can inspect the current selection. The [tokio-console detail watcher] illustrates a related
 design: a task forwards details for the selected task until it sees a view change. Its
 `watch_rx.changed()` branch is copied below; the surrounding `select!` and stream branch are
@@ -158,17 +170,12 @@ If the destination queue is full, this send waits inside the branch handler. The
 notice a changed selection until that handler returns. These two fragments show separate design
 questions: what state must the channel retain, and can forwarding an update delay a view change?
 
-## Shared state and redraws
+## Further reading
 
-A mutex is also a valid choice for small shared state. Keep synchronous lock guards out of awaits
-and keep critical sections short. An async mutex makes waiting for the lock asynchronous; it does
-not make the code executed while holding it nonblocking. Neither kind automatically tells the UI to
-redraw after a mutation.
-
-Tokio's [Shared state](https://tokio.rs/tokio/tutorial/shared-state) explains when a short
-synchronous lock is appropriate. In either arrangement, the application must arrange for the UI to
-observe changed data and request a frame. For a worker that owns a resource across views, see
-[Resource-owning Workers](/concepts/async/actors/).
+- Tokio's [Shared state](https://tokio.rs/tokio/tutorial/shared-state) compares shared mutexes and
+  message passing, including the consequences of holding a guard across an await.
+- [Resource-owning Workers](/concepts/async/actors/) explains command-and-reply communication for a
+  worker that keeps a resource across views.
 
 [tokio-console detail watcher]:
   https://github.com/tokio-rs/console/blob/59e23edf17b0e42e87e315bfc9cbb8a6ba2f401f/tokio-console/src/main.rs#L206-L249

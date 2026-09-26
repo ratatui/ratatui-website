@@ -16,9 +16,8 @@ task allows input during the wait; it does not ensure that every other part of t
 
 Rust async runtimes use cooperative scheduling: code must return control before another task can use
 that thread. An `.await` offers a yield point, but a future that is already ready can continue
-immediately. Tokio's [cooperative scheduling explanation][cooperative] describes how busy async
-operations can otherwise monopolize execution; cooperative budgets do not interrupt synchronous
-code.
+immediately. Tokio's [cooperative budgets][cooperative] help participating async operations yield,
+but do not interrupt synchronous code.
 
 :::note[The scheduling budget is a rule of thumb]
 
@@ -67,9 +66,8 @@ may be unavailable to its other events. A handler that awaits a long operation y
 while waiting, but its UI loop still has not returned to select another event. Represent that
 operation as its own `select!` branch, or give it a separately owned task.
 
-Tokio's [Async in depth](https://tokio.rs/tokio/tutorial/async) explains polling and wakeups. For UI
-code, the important consequence is that waiting resources arrange another opportunity to run; they
-do not interrupt the currently executing handler.
+A waiting resource arranges another opportunity to run when it becomes ready. That wakeup does not
+interrupt the currently executing handler.
 
 ## Fairness and frame timing
 
@@ -80,6 +78,15 @@ An explicit priority order also requires care when an earlier branch is continuo
 [Backpressure](/concepts/async/backpressure/) covers bounded batches of queued work.
 [Drawing and Redraws](/concepts/async/redraws/) covers when to request and present a frame. These
 policies operate inside the scheduling constraints above; a frame deadline is not a runtime budget.
+
+## Further reading
+
+- Tokio's [Async in depth](https://tokio.rs/tokio/tutorial/async) explains polling and wakeups by
+  building a small executor.
+- Tokio's [cooperative scheduling article][cooperative] describes the motivation and mechanism
+  behind operation budgets.
+- Alice Ryhl's [Async: What is blocking?] explores blocking work and execution alternatives in more
+  depth.
 
 [cooperative]: https://tokio.rs/blog/2020-04-preemption
 [Async: What is blocking?]: https://ryhl.io/blog/async-what-is-blocking/

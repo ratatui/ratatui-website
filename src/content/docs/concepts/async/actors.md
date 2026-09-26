@@ -9,11 +9,9 @@ same session. A persistent worker can own that session and its cache, accepting 
 view. The UI owns selection, loading indicators, and drawing; the worker owns the service state.
 Changing views need not recreate the session or give each view mutable access to it.
 
-This resource-owning task is an actor. Alice Ryhl's [Actors with Tokio] explains the pattern through
-two parts: a task that owns the state, and a handle through which callers send commands. That actor
-handle is typically a small wrapper around a channel sender, not the Tokio [`JoinHandle`] used to
-observe the task's completion. Her article covers construction, request/reply messages, bounded
-queues, and shutdown without requiring an actor framework.
+This resource-owning task is an actor. It has two parts: a task that owns the state, and a handle
+through which callers send commands. That actor handle is typically a small wrapper around a channel
+sender, not the Tokio [`JoinHandle`] used to observe the task's completion.
 
 For a small example, suppose records contain user IDs and both the list and detail pane need display
 names. A lookup actor owns a directory mapping IDs to names. Each `GetName` command carries a
@@ -84,9 +82,10 @@ moves the backlog into those tasks. [Backpressure](/concepts/async/backpressure/
 limits.
 
 Keep the actor alive for as long as its resource is useful, which may span several views. At app
-exit, account for outstanding callers and sender clones, then observe the actor's completion. Alice
-Ryhl's [discussion of handle cycles][actor cycles] explains why actors retaining each other's
-senders can prevent channel-based shutdown.
+exit, account for outstanding callers and sender clones, then observe the actor's completion. Actors
+retaining each other's senders can form [cycles][actor cycles] that prevent channel-based shutdown.
+
+## Example: Helix's diff worker
 
 Helix's diff worker receives document and base revisions through a channel and retains diffing state
 between requests. Its [`apply_hunks` method][diff worker] publishes the computed changes for the
@@ -110,9 +109,14 @@ reply, this notification tells readers to inspect the latest shared diff. The wo
 computation; the response route depends on whether callers need an individual answer or the latest
 shared result.
 
-Tokio's [Channels](https://tokio.rs/tokio/tutorial/channels) chapter also develops the
-resource-owning task and per-command response pattern. For progress updates or shared state that
-does not need a single long-lived owner, see [Worker Updates](/concepts/async/messages/).
+## Further reading
+
+- Alice Ryhl's [Actors with Tokio] develops this task-and-handle model, including construction,
+  request/reply messages, bounded queues, and shutdown without an actor framework.
+- Tokio's [Channels](https://tokio.rs/tokio/tutorial/channels) chapter builds a resource-owning task
+  with per-command responses.
+- [Worker Updates](/concepts/async/messages/) discusses progress and shared state when a long-lived
+  resource owner is unnecessary.
 
 [Actors with Tokio]: https://ryhl.io/blog/actors-with-tokio/
 [`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html

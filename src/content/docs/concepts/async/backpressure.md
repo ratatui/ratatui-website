@@ -51,8 +51,7 @@ which returns from the dispatcher thread instead of continuing to scan for an ab
 Consider a worker that prepares a large result before awaiting a bounded send. While waiting, it
 still owns that result. If the UI starts another such worker on every keypress, a small result queue
 can coexist with many tasks holding large values. Bound admission and payload size where needed, as
-well as the channel itself. Tokio's [channels tutorial] covers how channel capacity and concurrency
-limits interact.
+well as the channel itself.
 
 ```text
 input -> admitted jobs -> computation -> completed results -> UI queue -> UI state
@@ -131,6 +130,11 @@ of the batch.
 Combining redraw requests reduces frames, not queued messages. A latest-value channel can reduce
 retained updates, but forwarding each observed value into another queue introduces another backlog.
 [Worker Updates](/concepts/async/messages/) explains that distinction with progress.
+
+## Further reading
+
+Tokio's [channels tutorial] develops bounded message passing and explains why channel capacity and
+the number of concurrent requests need separate limits.
 
 [render flags]:
   https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-macro/src/render.rs

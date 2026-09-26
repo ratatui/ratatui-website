@@ -27,8 +27,7 @@ although both can delay the UI's next event.
 
 A runtime handle identifies where to spawn work; it does not make the calling code asynchronous. A
 call to `block_on` waits for its result, so using it for a request inside a key handler still keeps
-that handler occupied. Tokio's [Bridging with sync code](https://tokio.rs/tokio/topics/bridging)
-develops these arrangements with complete runtime examples.
+that handler occupied.
 
 ## Synchronous UI with async workers
 
@@ -75,6 +74,12 @@ drawing add to the time before the next check.
 
 The runtime's [`Handle`] and the result sender are passed into `run_terminal`. When the input
 handler sees `r`, it calls this method on the synchronous app. Here, `App.requests` is a
+
+## Further reading
+
+Tokio's [Bridging with sync code] provides additional runtime arrangements and complete examples for
+embedding async work in synchronous applications.
+
 [`JoinSet<()>`][`JoinSet`]: the tasks send `UiMessage` values through the channel instead of
 returning data through the task handle, so their return type is `()`. `report_loaded_items` sends
 `ItemsLoaded` with the fetched items or `ItemsFailed` with the error; a real UI would apply either
@@ -94,7 +99,7 @@ choice of runtime, but the caller must retain its returned handle.
 
 Creating a runtime does not enter its context for [`tokio::spawn`]. The multi-thread runtime keeps
 worker tasks moving while the UI thread polls input; a current-thread runtime instead needs
-`block_on` to drive its tasks. See Tokio's [Bridging with sync code].
+`block_on` to drive its tasks.
 
 ## Dedicated UI thread
 
