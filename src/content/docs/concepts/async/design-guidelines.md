@@ -1,7 +1,7 @@
 ---
 title: Design Guidelines
 sidebar:
-  order: 0.5
+  order: 1.5
 ---
 
 A networked TUI has work that outlives the keypress that started it. While requests run, the user

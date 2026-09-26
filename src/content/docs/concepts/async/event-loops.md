@@ -13,7 +13,9 @@ The [background fetch example](/recipes/apps/background-fetch/) implements that 
 two-second simulated fetch, so it needs no server. Its counter, changed with `+` and `-`, makes it
 easy to see whether input still works while loading. It allows one fetch at a time and ignores
 repeated refreshes until that fetch finishes. The loop below coordinates this refresh operation with
-counter input and drawing.
+counter input and drawing. The request can wait asynchronously, while
+[Ratatui drawing and terminal input](/concepts/async/terminal-io/) keep their own execution and
+ownership requirements.
 
 ## Events and application state
 
@@ -39,23 +41,11 @@ flowchart TD
     Worker -->|Result| Events
 ```
 
-Calling an async request function creates a **future**: a value representing work that progresses
-when polled. Spawning that future gives Tokio a **task** to schedule independently of the UI loop.
-The UI loop can then wait for keyboard input and the task's result together. Awaiting the request
-directly inside the key handler would keep that handler waiting until the request finishes,
-preventing the loop from handling another event.
-
-A task does not need its own thread. Tokio can run several tasks on one thread, giving other work an
-opportunity to run while a request waits for network data. The request and the UI can therefore make
-progress during the same period without executing at the same instant.
-
-:::note[Drawing still blocks the UI loop]
-
-When the result arrives, the UI loop updates its state and requests a frame. Ratatui's
-[`Terminal::draw`] renders and writes that frame synchronously: the UI loop cannot handle another
-event until drawing returns.
-
-:::
+The example uses an
+[independently scheduled task](/concepts/async/basics/#runtimes-tasks-and-threads) for its fetch and
+retains the task's handle until completion. The UI remains responsible for input, applying the
+result, and [synchronous drawing](/concepts/async/terminal-io/#drawing-is-synchronous). Awaiting the
+fetch inside the key handler would prevent that loop from handling another event.
 
 ## Input, results, and drawing
 
@@ -75,10 +65,13 @@ while running:
     select:
         input = await next_input():
             if input is Refresh:
-                if no request is pending: spawn fetch and retain its handle
+                if no request is pending:
+                    spawn fetch and retain its handle  # A pending handle means loading.
+                    request_redraw()
                 else: ignore repeated refresh
             else: apply_input(input)
         result = await pending_request_handle(), if a request exists:
+            clear_pending_request()
             apply_result(result)
         await frame_deadline(), if redraw_requested:
             draw()                 # Synchronous: this UI task waits.
@@ -86,8 +79,9 @@ while running:
             reset_frame_deadline()
 ```
 
-Applying input or a result requests a redraw when visible state changes. Spawning the fetch lets the
-UI task return to selection while the request waits. The
+Starting a refresh changes the displayed status to loading, so it requests a redraw immediately.
+Applying other input or a result also requests a redraw when visible state changes. Spawning the
+fetch lets the UI task return to selection while the request waits. The
 [async event-loop example](/recipes/apps/background-fetch/) implements this arrangement with
 [`EventStream`], [`JoinHandle`], and [`select!`].
 
@@ -139,7 +133,6 @@ needs the same result delivery and redraw decisions, even though it waits differ
 [Waiting for Multiple Operations]: /concepts/async/waiting/
 [Worker Updates]: /concepts/async/messages/
 [Resource-owning Workers]: /concepts/async/actors/
-[`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
 [`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
 [`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
 [`select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html

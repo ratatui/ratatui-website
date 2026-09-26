@@ -1,18 +1,40 @@
 ---
 title: Terminal I/O
 sidebar:
-  order: 11
+  order: 0.5
 ---
 
-Suppose an app starts reading keyboard events, then asks the terminal for its cursor position. The
-terminal sends that reply through input too. If the event reader consumes bytes intended for the
-query, the query may wait while the reader treats the reply as ordinary input.
+A network request can wait while the user moves through a list or resizes the window. Keeping that
+interaction responsive involves two kinds of I/O: communication with the server and communication
+with the terminal. Tokio can drive the network request asynchronously, but Ratatui still draws
+synchronously, and the terminal has one shared input stream and display.
 
-Drawing, input, mode changes, and queries share the terminal even when they use separate Rust
-objects or file descriptors. A background worker that prints an error can likewise overwrite the UI.
-Async task boundaries do not establish separate terminal sessions. The choice of
-[event loop](/concepts/async/event-loops/) determines where terminal calls execute; safe terminal
-I/O also depends on which reader consumes replies and who may change the terminal's modes.
+## Ratatui and the terminal backend
+
+Ratatui turns application state into a screen of cells. The app calls [`Terminal::draw`] with a
+closure that renders its widgets, and Ratatui sends the changed cells to its backend. With the
+Crossterm backend, Crossterm performs the terminal operations needed to display those cells. The app
+also uses Crossterm to read keyboard and mouse events; Ratatui does not run an input loop for it.
+
+Terminal modes affect how those events and drawings work. Raw mode lets the app receive input
+without waiting for Enter and disables the terminal's usual input processing. The alternate screen
+gives a fullscreen app a separate screen buffer, so leaving it can restore the previous shell
+display. [`ratatui::init`] sets up these modes for the usual fullscreen configuration, and
+[`ratatui::restore`] undoes them on exit. These are terminal settings, so they also affect other
+code using that terminal.
+
+For an app that refreshes a list from a server, a typical division of work is:
+
+```text
+keyboard event -> update selection -> draw the list
+network result -> replace list data -> draw the list
+window resize -> draw at the new size
+```
+
+The network operation produces data; the UI decides how to display it. A background worker that
+prints its result instead can overwrite the widgets. Keeping drawing and state updates in one UI
+loop makes that division explicit. Input reading, output, mode changes, and queries still need to
+cooperate even if some of them run in other tasks or threads.
 
 The details below describe Ratatui 0.30.2 and Crossterm 0.29, with source links for the relevant
 implementation. Other backends and platforms can have different behavior.
@@ -25,8 +47,17 @@ large view or writing to a slow terminal can delay the surrounding task. See
 [Bridging Sync and Async](/concepts/async/bridging/) for execution placement and
 [Blocking and CPU-bound Work](/concepts/async/blocking-work/) for measurement.
 
+## Terminal state queries
+
+Drawing sometimes needs information from the terminal, such as its dimensions or cursor position.
 The coordination needed during those synchronous calls depends on how they obtain terminal state.
 Some read dimensions from the OS; others send a request to the terminal emulator and read its reply.
+Fullscreen resize normally obtains dimensions without consuming terminal input. Inline placement and
+explicit clearing can also request the cursor position, whose reply arrives through input.
+
+<details>
+<summary>Viewport and platform differences</summary>
+
 An inline viewport draws within the current screen rather than taking over the full screen:
 
 | Operation                    | Behavior in the linked implementation            |
@@ -48,6 +79,8 @@ has a `tput` fallback. This is synchronous work, but differs from sending a curs
 its response from input. Measure the actual path on supported systems rather than assigning all
 terminal operations the same latency or coordination requirements.
 
+</details>
+
 ## Input includes protocol replies
 
 A terminal's input can contain more than keys and mouse events. For example, a cursor-position query
@@ -67,6 +100,9 @@ To avoid competing event readers, Crossterm's [event module] requires using [`po
 the same thread and forbids combining them with [`EventStream`]. Choose one input strategy. An
 `EventStream` presents an async interface, but its [implementation][`EventStream` source] uses a
 helper around the internal blocking reader. It is not an independent input stream for each consumer.
+
+<details>
+<summary>Query implementation details in Crossterm and Codex</summary>
 
 Some Crossterm queries also interact with the [internal event
 reader][`crossterm internal event reader source`]. The Unix [cursor-position
@@ -96,6 +132,8 @@ fn query_default_colors() -> std::io::Result<Option<DefaultColors>> {
 The useful change is which reader handles the replies, not whether the function is async. These
 query functions were provided by Codex's patched dependency at this revision; this excerpt is not a
 claim that they are available in Crossterm 0.29.
+
+</details>
 
 ## Startup and runtime queries
 
@@ -146,12 +184,16 @@ uses.
 
 Terminal ownership includes the reader, query handling, output, and mode changes, even when a
 library hides some of them behind a helper thread. Keep those operations coordinated throughout the
-session. [Shutdown](/concepts/async/shutdown/) releases the terminal on exit; a
+session. An [event loop](/concepts/async/event-loops/) brings input, network results, and drawing
+together without waiting for a request to finish before responding to a key. Its arrangement must
+also respect the terminal's shared input and synchronous drawing.
+
+[Shutdown](/concepts/async/shutdown/) releases the terminal on exit; a
 [terminal handoff](/concepts/async/handoffs/) also requires stopping input before another program
 uses the terminal and rebuilding the UI afterward.
 
 [`EventStream` source]:
-  https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/event/stream.rs#L42-L148
+  https://github.com/crossterm-rs/crossterm/blob/36d95b26a26e64b0f8c12edfe11f410a6d56a812/src/event/stream.rs#L40-L146
 [Codex color-query patch]:
   https://github.com/openai/codex/commit/07b8bdfbf1497cf7c478872bd082a13c5bd82c63
 [crossterm/crossterm#1039]: https://github.com/crossterm-rs/crossterm/issues/1039
@@ -165,17 +207,19 @@ uses the terminal and rebuilding the UI afterward.
 [`Terminal::clear` source]:
   https://github.com/ratatui/ratatui/blob/d301c75f40854718374838ea3d6d704136b62e06/ratatui-core/src/terminal/buffers.rs#L147-L151
 [`crossterm cursor position source`]:
-  https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/cursor/sys/unix.rs#L20-L65
+  https://github.com/crossterm-rs/crossterm/blob/36d95b26a26e64b0f8c12edfe11f410a6d56a812/src/cursor/sys/unix.rs#L15-L56
 [`crossterm internal event reader source`]:
-  https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/event/internal.rs#L9-L53
+  https://github.com/crossterm-rs/crossterm/blob/36d95b26a26e64b0f8c12edfe11f410a6d56a812/src/event.rs#L257-L282
 [`std::io::IsTerminal`]: https://doc.rust-lang.org/std/io/trait.IsTerminal.html
 [`tokio::io::Stdout`]: https://docs.rs/tokio/latest/tokio/io/struct.Stdout.html
 [stdout and stderr]: /faq/#should-i-use-stdout-or-stderr
 [Unix size implementation]:
-  https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/terminal/sys/unix.rs#L61-L105
+  https://github.com/crossterm-rs/crossterm/blob/36d95b26a26e64b0f8c12edfe11f410a6d56a812/src/terminal/sys/unix.rs#L59-L105
 [`Terminal::clear`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.clear
 [`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
 [`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html
 [`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
 [Codex color-query function]:
   https://github.com/openai/codex/blob/07b8bdfbf1497cf7c478872bd082a13c5bd82c63/codex-rs/tui/src/terminal_palette.rs#L110-L114
+[`ratatui::init`]: https://docs.rs/ratatui/latest/ratatui/fn.init.html
+[`ratatui::restore`]: https://docs.rs/ratatui/latest/ratatui/fn.restore.html

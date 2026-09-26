@@ -39,6 +39,11 @@ early on an error instead of waiting for every branch. With task handles, that m
 error, not an inner request error; the two result layers in
 [Background Work](/concepts/async/tasks/#completion-and-failure) still apply.
 
+A stream produces a sequence of asynchronous values. [`StreamExt::next`] returns a future whose
+output is `Some(value)` for the next item, or `None` when the stream ends. With `FuturesUnordered`,
+those items are the results of completed futures. This collection can receive more futures after
+becoming empty.
+
 A `JoinSet` keeps spawned tasks running independently of the UI's next selection. A
 `FuturesUnordered` of request futures advances those futures when its stream is polled; pushing a
 future into it does not start a Tokio task. Both suit collecting results as they become ready.

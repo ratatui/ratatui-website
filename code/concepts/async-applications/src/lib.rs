@@ -13,6 +13,7 @@
 // Excerpts are compiled and tested here but are not wired into the runnable application's UI.
 #![allow(dead_code)]
 
+mod basics;
 mod coordination;
 mod drain;
 mod handoff;

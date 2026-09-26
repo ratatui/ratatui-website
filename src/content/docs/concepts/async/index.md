@@ -18,10 +18,14 @@ service that runs for the lifetime of the app.
 
 ## Async topics
 
-- [Design Guidelines](/concepts/async/design-guidelines/): advice on application structure,
-  responsiveness, work and results, terminal ownership, and shutdown.
+- [Async Basics](/concepts/async/basics/): how async work makes progress.
+  - Futures, awaits, tasks, runtimes, and waiting without occupying a thread.
+- [Terminal I/O](/concepts/async/terminal-io/): the terminal shared by drawing, input, and queries.
+  - Synchronous operations, protocol replies, reader coordination, and redirected handles.
 - [Event Loops](/concepts/async/event-loops/): input, completed work, state changes, and drawing.
   - A refresh loop, wakeups, and UI ownership.
+- [Design Guidelines](/concepts/async/design-guidelines/): advice on application structure,
+  responsiveness, work and results, terminal ownership, and shutdown.
 - [Background Work](/concepts/async/tasks/): independently scheduled work and its owner.
   - Owned inputs, task handles, failures, and operations retained by the UI loop.
 - [Waiting for Multiple Operations](/concepts/async/waiting/): choosing what wakes a loop.
@@ -46,8 +50,6 @@ service that runs for the lifetime of the app.
 - [Cancellation](/concepts/async/cancellation/): stopping observation, execution, and further
   effects.
   - Future lifetime, selection, partial progress, and blocking jobs that continue running.
-- [Terminal I/O](/concepts/async/terminal-io/): the terminal shared by drawing, input, and queries.
-  - Synchronous operations, protocol replies, reader coordination, and redirected handles.
 - [Shutdown](/concepts/async/shutdown/): ending the application and its work.
   - Closing queues, signalling workers, observing completion, and restoring terminal modes.
 - [Terminal Handoffs](/concepts/async/handoffs/): temporarily releasing the terminal.

@@ -20,6 +20,9 @@ For a list refresh, the worker sends either loaded items or a failure. The UI ca
 display the error, and allow another refresh. Printing the error from the worker would overwrite the
 terminal display.
 
+A channel connects a **sender**, used by workers, to a **receiver**, owned by the UI. The sender
+queues messages for the receiver to apply.
+
 The message type below also includes progress for identified jobs and a redraw notification. Those
 variants serve download progress and animation; the single-refresh worker only sends `ItemsLoaded`
 or `ItemsFailed`. `Item`, `JobId`, and `load_items` are application placeholders:
@@ -28,26 +31,45 @@ or `ItemsFailed`. `Item`, `JobId`, and `load_items` are application placeholders
 {{ #include @code/concepts/async-applications/src/sync_ui.rs:messages }}
 ```
 
-A message does not inherently wake every kind of event loop. Selecting on an async receiver wakes
-that task when a message arrives. A synchronous loop blocked in Crossterm's `poll` must also arrange
-to check its worker queue; see the
-[synchronous alternative](/concepts/async/bridging/#synchronous-ui-with-async-workers).
+The [synchronous UI example](/concepts/async/bridging/#synchronous-ui-with-async-workers) creates a
+bounded channel before entering its loop:
 
-The [background fetch example](/recipes/apps/background-fetch/) implements the same refresh behavior
-with a different return path: `App.request` retains the fetch handle rather than receiving a message
-through a channel. The completion branch applies the result and requests a frame:
-
-```rust title="A result reaches the complete app"
-{{ #include @code/concepts/async-applications/src/bin/background.rs:receive_result }}
+```rust
+{{ #include @code/concepts/async-applications/src/sync_ui.rs:channel_setup }}
 ```
 
-In this snippet, `result` is `Result<FetchResult, JoinError>`. The `?` unwraps only the outer
-task-join result: a panic or cancellation exits the loop for terminal cleanup. The inner
-`FetchResult` can still contain a fetch error, which `finish_fetch` displays without exiting. See
-[Completion and failure](/concepts/async/tasks/#completion-and-failure) for the three possible
-outcomes. With the message-based version above, receiving `UiMessage::ItemsLoaded` or `ItemsFailed`
-takes the place of awaiting the stored handle. The UI still owns the state update and redraw
-decision.
+Here `ui_tx` sends `UiMessage` values and `ui_rx` receives them. The queue can hold 128 messages;
+`send().await` waits when it is full. This capacity is an example choice, not a recommended default.
+When starting a fetch, the UI gives the worker a clone of `ui_tx`. Sender clones feed the same
+queue, so workers can report independently while the UI keeps the receiver.
+
+On each loop turn, the synchronous UI checks for queued messages, applies them, and marks the
+display dirty. `MAX_EVENTS_PER_TURN` limits the batch to 64 messages in this example:
+
+```rust title="The UI receives worker messages"
+{{ #include @code/concepts/async-applications/src/sync_ui.rs:receive_messages }}
+```
+
+[`try_recv()`] returns immediately: an empty or closed queue ends this batch. `handle_message`
+updates application state; `dirty` requests drawing at the next frame deadline. The loop uses a
+finite terminal-input polling timeout so it checks the queue even without a keypress. Channel sends
+cannot wake Crossterm's blocking `poll`.
+
+An async UI can instead wait on [`recv()`] alongside terminal input and its frame deadline:
+
+```text
+select:
+    message = await ui_rx.recv():
+        if message exists: apply it; request redraw
+        else: disable this receive branch  # All senders have closed and the queue is empty.
+    input = await next_input(): apply input
+    await frame_deadline(), if redraw_requested: draw changed state
+```
+
+Receiving a message observes that update, not the worker's completion or panic. The app still owns
+its task handles for [completion and cleanup](/concepts/async/tasks/#completion-and-failure). The
+[background fetch app](/recipes/apps/background-fetch/) needs only one final value, so it receives
+that value directly through a task handle instead of a channel.
 
 ## Messages and latest-value state
 
@@ -195,3 +217,5 @@ room for input, while [redraw timing](/concepts/async/redraws/) lets one frame s
   https://docs.rs/tokio/latest/tokio/sync/watch/struct.Receiver.html#method.borrow_and_update
 [gitui async job]:
   https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/asyncgit/src/asyncjob/mod.rs#L148-L157
+[`try_recv()`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/struct.Receiver.html#method.try_recv
+[`recv()`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/struct.Receiver.html#method.recv

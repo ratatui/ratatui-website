@@ -25,7 +25,9 @@ fn main() -> Result<()> {
     let terminal = ratatui::init();
     // Only the UI receives messages. The bounded queue makes senders wait if it falls behind;
     // the capacity is an example choice, independent of the number drained per turn.
+    // ANCHOR: channel_setup
     let (ui_tx, ui_rx) = mpsc::channel(128);
+    // ANCHOR_END: channel_setup
 
     let mut app = App::default();
 
@@ -97,6 +99,7 @@ fn run_terminal(
 
         // Give worker messages their own budget so a busy terminal cannot consume their turn.
         // try_recv never waits: an empty or closed queue leaves us free to draw.
+        // ANCHOR: receive_messages
         let mut drained = 0;
         while drained < MAX_EVENTS_PER_TURN {
             let Ok(message) = ui_rx.try_recv() else {
@@ -106,6 +109,7 @@ fn run_terminal(
             dirty = true;
             drained += 1;
         }
+        // ANCHOR_END: receive_messages
 
         // ratatui::init() installed a process-wide panic hook. A worker panic can restore
         // terminal modes from its thread before this join result is ready. Do not draw after an
