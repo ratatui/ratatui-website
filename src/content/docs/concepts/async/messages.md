@@ -39,10 +39,12 @@ channel. The receiving branch applies the result and requests a frame:
 {{ #include @code/concepts/async-applications/src/bin/background.rs:receive_result }}
 ```
 
-In this snippet, `result?` unwraps the task-join result; a task panic exits the loop for terminal
-cleanup, while an ordinary fetch error reaches `finish_fetch`. With the message-based version above,
-receiving `UiMessage::ItemsLoaded` or `ItemsFailed` takes the place of [`join_next`]. The UI still
-owns the state update and redraw decision.
+In this snippet, `result` is `Result<FetchResult, JoinError>`. The `?` unwraps only the outer
+task-join result: a panic or cancellation exits the loop for terminal cleanup. The inner
+`FetchResult` can still contain a fetch error, which `finish_fetch` displays without exiting. See
+[Completion and failure](/concepts/async/tasks/#completion-and-failure) for the three possible
+outcomes. With the message-based version above, receiving `UiMessage::ItemsLoaded` or `ItemsFailed`
+takes the place of [`join_next`]. The UI still owns the state update and redraw decision.
 
 ## Messages and latest-value state
 

@@ -87,8 +87,11 @@ async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
                 // ratatui::init() installed a process-wide panic hook. A worker panic can
                 // restore terminal modes before this join result is ready. Exit after an
                 // observed failure; selection cannot prevent a draw racing with the hook.
-                // An ordinary fetch error remains a value that the UI can display and retry.
-                app.finish_fetch(result?);
+                // result is Result<FetchResult, JoinError>: ? exits run on panic/cancellation.
+                let fetch_result = result?;
+                // FetchResult is Result<Vec<String>, String>. A fetch error is displayed,
+                // not propagated: the app keeps its previous items and allows another refresh.
+                app.finish_fetch(fetch_result);
                 dirty = true;
             }
             // ANCHOR_END: receive_result

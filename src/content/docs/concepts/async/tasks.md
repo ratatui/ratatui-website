@@ -68,10 +68,30 @@ The task output and the task's execution status are separate. A request can retu
 error normally; a task can also panic or be cancelled before producing an output. The example's
 completion branch sits inside [`tokio::select!`] in the UI loop. [`join_next()`] returns `Some` for
 a completed task and `None` when the `JoinSet` is empty, so the branch matches `Some(result)` and is
-disabled while no request exists. Receiving a completion removes it from the set. The branch handles
-the outer task-join result before applying the inner fetch result. The `?` propagates a task failure
-out of the loop for terminal cleanup; a normal fetch error stays in the inner `FetchResult` for
-`finish_fetch` to display:
+disabled while no request exists. Receiving a completion removes it from the set.
+
+After matching `Some(result)`, `result` has two layers of [`Result`]:
+
+```rust
+// Did the task finish?   Did the fetch succeed?
+Result<FetchResult, JoinError>
+// where FetchResult = Result<Vec<String>, String>
+```
+
+The outer error is Tokio's [`JoinError`]: the task panicked or was cancelled before returning its
+output. The inner error is the fetch function's ordinary failure, represented by a `String` in this
+example. A failed request can still be a successfully completed task:
+
+| Value of `result`  | Meaning                        | UI behavior                          |
+| ------------------ | ------------------------------ | ------------------------------------ |
+| `Ok(Ok(items))`    | Task finished; fetch succeeded | Replace the displayed items          |
+| `Ok(Err(message))` | Task finished; fetch failed    | Keep old items and display the error |
+| `Err(join_error)`  | Task panicked or was cancelled | Exit the event loop through cleanup  |
+
+`let fetch_result = result?` unwraps only the outer layer. On `Err(join_error)`, it returns early
+from `run`, so `finish_fetch` is not called. On either `Ok` case, it passes the inner `FetchResult`
+to `finish_fetch`, which decides what to display. This example exits on a task failure; treating an
+ordinary fetch failure as recoverable is a separate application policy.
 
 ```rust
 {{ #include @code/concepts/async-applications/src/bin/background.rs:receive_result }}
@@ -171,3 +191,5 @@ application no longer wants a task's result.
 [`join_next()`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.join_next
 [`ratatui::init()`]: https://docs.rs/ratatui/latest/ratatui/fn.init.html
 [`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html
+[`Result`]: https://doc.rust-lang.org/std/result/enum.Result.html
+[`JoinError`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinError.html
