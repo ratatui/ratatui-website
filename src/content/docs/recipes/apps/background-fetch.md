@@ -43,7 +43,7 @@ The app accepts one refresh at a time, so repeated refresh keys do not queue mor
 refresh leaves the previous data visible. Frames are spaced by at least 16 ms after the previous
 draw finishes to limit redraw frequency. These are application policies, not Ratatui requirements.
 
-`App` retains tasks and stops them after terminal restoration on exit. See
+`App` retains the request handle and stops the task after terminal restoration on exit. See
 [Tasks and Results](/concepts/async/tasks/) for the ownership and error paths.
 
 ## An operation owned by the UI loop

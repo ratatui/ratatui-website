@@ -4,7 +4,7 @@
 //! App fields, initialization, and request method; rendering and counter state stay in that app.
 use std::time::Duration;
 
-use tokio::task::JoinSet;
+use tokio::task::JoinHandle;
 
 type FetchResult = Result<Vec<String>, String>;
 
@@ -13,8 +13,7 @@ use reqwest::Client;
 
 struct App {
     client: Client,
-    requests: JoinSet<FetchResult>,
-    loading: bool,
+    request: Option<JoinHandle<FetchResult>>,
     error: Option<String>,
     // Keep the counter, items, and rendering methods from the runnable example.
 }
@@ -25,8 +24,7 @@ impl App {
         let client = Client::builder().timeout(Duration::from_secs(10)).build()?;
         Ok(Self {
             client,
-            requests: JoinSet::new(),
-            loading: false,
+            request: None,
             error: None,
         })
     }
@@ -36,18 +34,17 @@ impl App {
 impl App {
     // ANCHOR: http_start
     fn start_fetch(&mut self, url: String) {
-        if self.loading {
+        if self.request.is_some() {
             return;
         }
-        self.loading = true;
         self.error = None;
         // The task owns its URL and client clone; neither borrows App across the request.
         let client = self.client.clone();
-        self.requests.spawn(async move {
+        self.request = Some(tokio::spawn(async move {
             fetch_items(&client, &url)
                 .await
                 .map_err(|error| error.to_string())
-        });
+        }));
     }
     // ANCHOR_END: http_start
 }
@@ -94,7 +91,7 @@ mod tests {
         );
         let mut app = App::new().unwrap();
         app.start_fetch(url);
-        let items = app.requests.join_next().await.unwrap().unwrap().unwrap();
+        let items = app.request.take().unwrap().await.unwrap().unwrap();
         assert_eq!(items, ["one", "two"]);
         server.join().unwrap();
     }

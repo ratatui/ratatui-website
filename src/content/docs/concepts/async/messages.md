@@ -32,8 +32,8 @@ to check its worker queue; see the
 [synchronous alternative](/concepts/async/bridging/#synchronous-ui-with-async-workers).
 
 The [background fetch example](/recipes/apps/background-fetch/) implements the same refresh behavior
-with a different return path: its fetch returns through `App.requests` rather than a message
-channel. The receiving branch applies the result and requests a frame:
+with a different return path: `App.request` retains the fetch handle rather than receiving a message
+through a channel. The completion branch applies the result and requests a frame:
 
 ```rust title="A result reaches the complete app"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:receive_result }}
@@ -44,7 +44,8 @@ task-join result: a panic or cancellation exits the loop for terminal cleanup. T
 `FetchResult` can still contain a fetch error, which `finish_fetch` displays without exiting. See
 [Completion and failure](/concepts/async/tasks/#completion-and-failure) for the three possible
 outcomes. With the message-based version above, receiving `UiMessage::ItemsLoaded` or `ItemsFailed`
-takes the place of [`join_next`]. The UI still owns the state update and redraw decision.
+takes the place of awaiting the stored handle. The UI still owns the state update and redraw
+decision.
 
 ## Messages and latest-value state
 
@@ -169,7 +170,6 @@ application must also arrange for the UI to observe the changed data and request
 [`tokio::sync::watch`]: https://docs.rs/tokio/latest/tokio/sync/watch/index.html
 [`mpsc`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html
 [`oneshot`]: https://docs.rs/tokio/latest/tokio/sync/oneshot/index.html
-[`join_next`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.join_next
 [`progress.changed()`]:
   https://docs.rs/tokio/latest/tokio/sync/watch/struct.Receiver.html#method.changed
 [`borrow_and_update()`]:

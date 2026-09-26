@@ -1,7 +1,7 @@
 //! A runnable async UI: edit a counter while a simulated request is pending.
 //!
 //! Run with `cargo run -p async-applications --bin background`.
-//! The UI task owns the terminal and App. App retains its request tasks in a JoinSet.
+//! The UI task owns the terminal and App. App retains its one request handle.
 //! Workers return data without borrowing UI state or writing to the terminal.
 //! There are no runtime terminal queries.
 
@@ -12,7 +12,7 @@ use color_eyre::Result;
 use crossterm::event::{Event, EventStream, KeyCode, KeyEventKind};
 use futures::StreamExt;
 use ratatui::{widgets::Paragraph, DefaultTerminal, Frame};
-use tokio::{task::JoinSet, time::Instant};
+use tokio::{task::JoinHandle, time::Instant};
 
 // ANCHOR: state
 /// Application state belongs to the UI task. Workers return values for it to apply.
@@ -20,11 +20,9 @@ use tokio::{task::JoinSet, time::Instant};
 struct App {
     counter: i32,
     items: Vec<String>,
-    // This example allows one request at a time. Repeated refreshes do not queue more work.
-    loading: bool,
     error: Option<String>,
-    // Retain task handles alongside the state their results will update.
-    requests: JoinSet<FetchResult>,
+    // None means idle; a handle means a request is loading and still belongs to this app.
+    request: Option<JoinHandle<FetchResult>>,
 }
 
 /// Choose a deterministic outcome without involving a server or transport error type.
@@ -81,9 +79,13 @@ async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
                 Some(Err(error)) => return Err(error.into()),
                 None => break,
             },
-            // An empty JoinSet returns None immediately. Disable it to avoid a busy loop.
+            // The branch is disabled while idle. Constructing the async block is safe then:
+            // its expect runs only if the branch is polled.
             // ANCHOR: receive_result
-            Some(result) = app.requests.join_next(), if !app.requests.is_empty() => {
+            result = async { app.request.as_mut().expect("guarded by request.is_some()").await },
+                if app.request.is_some() => {
+                // A selected handle is complete. Clear it before a JoinError can exit run.
+                app.request.take();
                 // ratatui::init() installed a process-wide panic hook. A worker panic can
                 // restore terminal modes before this join result is ready. Exit after an
                 // observed failure; selection cannot prevent a draw racing with the hook.
@@ -113,19 +115,17 @@ async fn run(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
 impl App {
     // ANCHOR: start_fetch
     fn start_fetch(&mut self, outcome: FetchOutcome) {
-        if self.loading {
+        if self.request.is_some() {
             return; // Ignore another refresh until the current request finishes.
         }
-        self.loading = true;
         self.error = None;
-        // spawn returns immediately. join_next in the event loop observes completion later.
-        self.requests.spawn(fetch_items(outcome));
+        // Spawn returns immediately; the event loop borrows this handle until completion.
+        self.request = Some(tokio::spawn(fetch_items(outcome)));
     }
     // ANCHOR_END: start_fetch
 
     // ANCHOR: finish_fetch
     fn finish_fetch(&mut self, result: FetchResult) {
-        self.loading = false;
         match result {
             Ok(items) => {
                 self.items = items;
@@ -136,19 +136,21 @@ impl App {
     }
     // ANCHOR_END: finish_fetch
 
-    /// Stop this example's timer-only requests and wait for their tasks to finish.
+    /// Stop this example's timer-only request and wait for it to finish.
     ///
-    /// These workers have no external side effects, so aborting is sufficient. JoinSet::shutdown
-    /// does not report worker panics during exit. Call this after restoring the terminal.
+    /// It has no external side effects, so aborting is sufficient. Shutdown intentionally ignores
+    /// the task's result and any join failure. Call after restoring the terminal.
     // ANCHOR: shutdown
     async fn shutdown(&mut self) {
-        self.requests.shutdown().await;
-        self.loading = false;
+        if let Some(request) = self.request.take() {
+            request.abort();
+            let _ = request.await;
+        }
     }
     // ANCHOR_END: shutdown
 
     fn render(&self, frame: &mut Frame) {
-        let status = if self.loading {
+        let status = if self.request.is_some() {
             "Loading… (+ and - still work)".to_owned()
         } else if let Some(error) = &self.error {
             format!("Error: {error}")
@@ -188,23 +190,35 @@ mod tests {
     async fn repeated_refresh_does_not_spawn_more_work() {
         let mut app = App::default();
         app.start_fetch(FetchOutcome::Success);
+        let first_id = app.request.as_ref().unwrap().id();
         app.start_fetch(FetchOutcome::Failure);
-        assert_eq!(app.requests.len(), 1);
-        assert!(app.loading);
+        assert_eq!(app.request.as_ref().unwrap().id(), first_id);
         app.shutdown().await;
-        assert!(app.requests.is_empty());
-        assert!(!app.loading);
+        assert!(app.request.is_none());
+    }
+
+    #[tokio::test]
+    async fn input_winning_selection_keeps_the_request() {
+        let mut app = App {
+            request: Some(tokio::spawn(std::future::pending::<FetchResult>())),
+            ..App::default()
+        };
+        let first_id = app.request.as_ref().unwrap().id();
+        tokio::select! {
+            _ = std::future::ready(()) => {}
+            _ = async { app.request.as_mut().unwrap().await } => panic!("fetch completed first"),
+        }
+        assert_eq!(app.request.as_ref().unwrap().id(), first_id);
+        app.shutdown().await;
     }
 
     #[test]
-    fn failed_refresh_preserves_data_and_clears_loading() {
+    fn failed_refresh_preserves_data_and_displays_error() {
         let mut app = App {
-            loading: true,
             items: vec!["previous data".into()],
             ..App::default()
         };
         app.finish_fetch(Err("request failed".into()));
-        assert!(!app.loading);
         assert_eq!(app.items, ["previous data"]);
         assert_eq!(app.error.as_deref(), Some("request failed"));
     }
@@ -212,13 +226,11 @@ mod tests {
     #[test]
     fn successful_refresh_replaces_data_and_clears_error() {
         let mut app = App {
-            loading: true,
             items: vec!["previous data".into()],
             error: Some("earlier failure".into()),
             ..App::default()
         };
         app.finish_fetch(Ok(vec!["new data".into()]));
-        assert!(!app.loading);
         assert_eq!(app.items, ["new data"]);
         assert!(app.error.is_none());
     }

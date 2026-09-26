@@ -22,8 +22,9 @@ it. Operations such as [`read_exact`] and [`write_all`] can make partial progres
 cancellation. A retry must account for that progress.
 
 In the [background fetch example](/recipes/apps/background-fetch/), a keypress winning `select!`
-drops the temporary `join_next()` wait, **not** the fetch retained in `App.requests`. The next loop
-turn can wait for that same fetch. This is why typing while loading does not cancel the request.
+drops the temporary wait on a borrowed handle, **not** the fetch retained in `App.request`. The next
+loop turn can wait for that same fetch. This is why typing while loading does not cancel the
+request.
 
 A spawned task has a separate lifetime from a future waiting for its result. Dropping the task's
 [`JoinHandle`] detaches the task rather than aborting it. Retain handles or use a task collection

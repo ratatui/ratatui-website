@@ -62,8 +62,9 @@ reqwest errors into the `String` error already displayed by `finish_fetch`:
 
 Obtain a URL from your app's configuration or input and pass its owned copy from the refresh
 handler: `app.start_fetch(url.clone())`. Remove `FetchOutcome` and the demo's `e` key branch;
-transport and HTTP failures now supply the error path. The [`JoinSet`] output type, completion
-branch, `finish_fetch`, redraw policy, and shutdown method remain the same.
+transport and HTTP failures now supply the error path. The stored [`JoinHandle`] still yields
+`FetchResult` through the same completion branch. `finish_fetch`, the redraw policy, and the
+shutdown method remain the same.
 
 For an HTTP GET without application-side writes, aborting the task at exit discards the local
 response. A request that changes server state needs a different cancellation/retry policy: stopping
@@ -73,4 +74,4 @@ the client does not undo work the server has already performed. That distinction
 [http client]: https://docs.rs/reqwest/0.12.15/reqwest/struct.Client.html
 [http timeout]: https://docs.rs/reqwest/0.12.15/reqwest/struct.ClientBuilder.html#method.timeout
 [http status]: https://docs.rs/reqwest/0.12.15/reqwest/struct.Response.html#method.error_for_status
-[`JoinSet`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html
+[`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html

@@ -22,17 +22,17 @@ follows this order because its timer-only workers never use the terminal:
 {{ #include @code/concepts/async-applications/src/bin/background.rs:startup }}
 ```
 
-The cleanup call reaches this method on the same `App` that started the requests:
+The cleanup call reaches this method on the same `App` that started the request:
 
-```rust title="Stop the complete app's pending requests"
+```rust title="Stop the complete app's pending request"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:shutdown }}
 ```
 
-The example's simulated requests have no external side effects, so aborting unfinished requests on
-exit is acceptable. [`JoinSet::shutdown`] aborts tasks and waits for the collection to finish. A
-file save or transaction may require a different policy. Ratatui's initialization installs a panic
-hook to restore terminal modes on panic, but that does not replace ordinary error cleanup or a
-worker shutdown policy.
+The example's simulated request has no external side effects, so aborting it on exit is acceptable.
+`shutdown` takes its handle from `App`, calls [`JoinHandle::abort`], and awaits it. It intentionally
+ignores the result of this timer-only task during shutdown. A file save or transaction may require a
+different policy. Ratatui's initialization installs a panic hook to restore terminal modes on panic,
+but that does not replace ordinary error cleanup or a worker shutdown policy.
 
 Ratatui's [`try_restore`] disables raw mode and leaves the alternate screen. It does not undo every
 mode an application could enable. Track mouse capture, focus reporting, bracketed paste, keyboard
@@ -41,7 +41,7 @@ information to diagnose the failure after leaving the UI.
 
 ## Worker shutdown
 
-The example can abort its simulated requests, but an app with file saves, persistent workers, or
+The example can abort its simulated request, but an app with file saves, persistent workers, or
 child processes needs a shutdown policy for each kind of work. Once the UI decides to exit:
 
 1. Stop accepting new operations.
@@ -79,8 +79,8 @@ terminal query.
 
 Tokio's [Graceful Shutdown](https://tokio.rs/tokio/topics/shutdown) separates deciding to stop,
 notifying tasks, and waiting for them. A cancellation token can notify several cooperating workers;
-a task tracker can wait for tracked work to finish. The example here uses a [`JoinSet`] because it
-also consumes request results during normal operation.
+a task tracker can wait for tracked work to finish. The example here retains one [`JoinHandle`]
+because it accepts only one request at a time and consumes its result during normal operation.
 
 In a raw-mode terminal, pressing Ctrl-C is not automatically processed by the terminal driver as an
 interrupt signal. The UI can interpret that key as an exit request, alongside errors or external
@@ -95,6 +95,6 @@ shutdown has no such return path, so it can discard display state once terminal 
 [`timeout`]: https://docs.rs/tokio/latest/tokio/time/fn.timeout.html
 [Graceful Shutdown]: https://tokio.rs/tokio/topics/shutdown
 [`spawn_blocking`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html
-[`JoinSet::shutdown`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.shutdown
+[`JoinHandle::abort`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html#method.abort
 [`close()`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/struct.Receiver.html#method.close
-[`JoinSet`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html
+[`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html

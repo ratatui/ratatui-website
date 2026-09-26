@@ -18,8 +18,9 @@ counter input and drawing.
 ## Events and application state
 
 An **event loop** coordinates the refresh and the other input: it waits for an event, updates
-application state, and draws changes. The loading flag, fetched items, error, and counter all belong
-to the UI state. A refresh starts work; its completion later supplies another event for the loop.
+application state, and draws changes. The pending request handle, fetched items, error, and counter
+all belong to the UI state. A refresh starts work; its completion later supplies another event for
+the loop.
 
 One arrangement gives the request its own task. The UI loop starts that task, then returns to
 waiting for input or the result:
@@ -74,10 +75,10 @@ while running:
     select:
         input = await next_input():
             if input is Refresh:
-                if not loading: spawn fetch()
+                if no request is pending: spawn fetch and retain its handle
                 else: ignore repeated refresh
             else: apply_input(input)
-        result = await next_worker_result(), if a worker exists:
+        result = await pending_request_handle(), if a request exists:
             apply_result(result)
         await frame_deadline(), if redraw_requested:
             draw()                 # Synchronous: this UI task waits.
@@ -88,7 +89,7 @@ while running:
 Applying input or a result requests a redraw when visible state changes. Spawning the fetch lets the
 UI task return to selection while the request waits. The
 [async event-loop example](/recipes/apps/background-fetch/) implements this arrangement with
-[`EventStream`], [`JoinSet`], and [`select!`].
+[`EventStream`], [`JoinHandle`], and [`select!`].
 
 ## Wakeups and UI ownership
 
@@ -120,7 +121,7 @@ Bridging Sync and Async.
 
 [`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
 [`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
-[`JoinSet`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html
+[`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
 [`select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html
 [`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
 [`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html

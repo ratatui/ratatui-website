@@ -23,7 +23,7 @@ depth.
 - [Event Loops](/concepts/async/event-loops/): input, completed work, state changes, and drawing.
   - A refresh loop, wakeups, and UI ownership.
 - [Tasks and Results](/concepts/async/tasks/): independently scheduled work and its owner.
-  - Owned inputs, task collections, failures, and operations retained by the UI loop.
+  - Owned inputs, task handles, failures, and operations retained by the UI loop.
 - [Messages and Shared State](/concepts/async/messages/): communication between workers and the UI.
   - Results, latest-value state, notifications, and resource-owning workers.
 - [Bridging Sync and Async](/concepts/async/bridging/): where each part of the application executes.

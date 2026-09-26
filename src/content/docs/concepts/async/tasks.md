@@ -9,16 +9,16 @@ returns to input handling. Eventually the request produces new items or an error
 observe that outcome, clear its loading status, and update the display. If the user quits first, the
 app must also account for the pending request.
 
-A spawned task gives the request an independently scheduled lifetime. `App` retains it in a task
-collection, so both the event loop and shutdown code can find it. For a single operation, a retained
-task handle can also provide that ownership.
+A spawned task gives the request an independently scheduled lifetime. `App` retains its task handle,
+so both the event loop and shutdown code can find it.
 
 ## UI state and background requests
 
 In the [background fetch example](/recipes/apps/background-fetch/), the UI task runs the event loop,
-handles input, and draws. It owns `App`, which keeps display state and a Tokio [`JoinSet`] of
-pending fetch tasks together. The set owns those tasks and lets the UI collect their results. A
-fetch task returns a value for `App` to apply; it neither borrows `App` nor prints to the terminal:
+handles input, and draws. It owns `App`, which keeps display state and an optional Tokio
+[`JoinHandle`] for the one pending fetch. `None` means idle; a handle means a request is pending and
+gives the UI a way to observe its result. The fetch task returns a value for `App` to apply; it
+neither borrows `App` nor prints to the terminal:
 
 ```rust title="UI state and task output"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:state }}
@@ -32,22 +32,21 @@ block the task's thread instead.
 {{ #include @code/concepts/async-applications/src/bin/background.rs:fetch }}
 ```
 
-To run the fetch while continuing to accept input, `start_fetch` spawns it into `App`'s [`JoinSet`].
-The set retains the spawned task and provides a future for its next completion. Starting work
-returns immediately; the event loop awaits completion separately:
+To run the fetch while continuing to accept input, `start_fetch` spawns it and stores its handle in
+`App.request`. Starting work returns immediately; the event loop awaits completion separately:
 
 ```rust title="Start work without waiting in the input handler"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:start_fetch }}
 ```
 
-`start_fetch` is synchronous code that starts an async task. It checks and sets `loading` without an
-`.await`, while `&mut self` gives it exclusive access to `App`. Another call cannot interleave with
-that check and update, and the spawned task owns its inputs rather than borrowing `App`. Even if the
-request finishes immediately, it cannot change `loading`: the UI applies its result later through
-`finish_fetch`. This check needs no additional lock.
+`start_fetch` is synchronous code that starts an async task. It checks whether a handle is already
+present and stores the new one without an `.await`, while `&mut self` gives it exclusive access to
+`App`. Another call cannot interleave with that check and update, and the spawned task owns its
+inputs rather than borrowing `App`. Even if the request finishes immediately, its handle remains
+present until the UI applies the result. This check needs no additional lock.
 
-The `loading` guard is this app's concurrency policy. There cannot be two fetch results competing to
-update the view. Search-as-you-type needs a different policy; see
+The handle-presence guard is this app's concurrency policy. There cannot be two fetch results
+competing to update the view. Search-as-you-type needs a different policy; see
 [rejecting stale results](/concepts/async/overlapping-work/#stale-search-results).
 
 ## Owned inputs and task boundaries
@@ -66,11 +65,12 @@ requirements in more detail, including values retained across awaits.
 
 The task output and the task's execution status are separate. A request can return an application
 error normally; a task can also panic or be cancelled before producing an output. The example's
-completion branch sits inside [`tokio::select!`] in the UI loop. [`join_next()`] returns `Some` for
-a completed task and `None` when the `JoinSet` is empty, so the branch matches `Some(result)` and is
-disabled while no request exists. Receiving a completion removes it from the set.
+completion branch sits inside [`tokio::select!`] in the UI loop. The branch is enabled only while
+`App.request` contains a handle. It awaits a mutable borrow of that handle, so input winning a
+selection leaves the task owned by `App`. Once selected, it clears the handle before processing the
+result; a completed handle must not be awaited again.
 
-After matching `Some(result)`, `result` has two layers of [`Result`]:
+The completed handle yields `result` with two layers of [`Result`]:
 
 ```rust
 // Did the task finish?   Did the fetch succeed?
@@ -97,6 +97,12 @@ ordinary fetch failure as recoverable is a separate application policy.
 {{ #include @code/concepts/async-applications/src/bin/background.rs:receive_result }}
 ```
 
+Here, `as_mut()` borrows the handle without removing it. The `async` block delays the `expect` until
+the branch is polled; the `if app.request.is_some()` guard ensures a handle exists then. After
+completion, `take()` leaves `None` in `App.request`, making the app idle again. Taking the handle
+before waiting would instead move ownership out of `App` and risk detaching the task if another
+branch won.
+
 A fetch failure preserves the previous data and supplies a visible error:
 
 ```rust
@@ -110,9 +116,10 @@ that race. [Shutdown](/concepts/async/shutdown/) explains the outer cleanup path
 
 ## Task ownership
 
-Dropping a [`JoinHandle`] detaches its task; it does not request cancellation. A `JoinSet` owns a
-collection and aborts remaining tasks when dropped. Explicit shutdown also allows the application to
-wait for them. These lifetime differences matter even if both APIs can provide a result.
+Dropping a [`JoinHandle`] detaches its task; it does not request cancellation. The app therefore
+keeps its handle until completion or shutdown. On shutdown, it takes the handle, aborts the
+timer-only task, and awaits it. A [`JoinSet`] can own a collection of tasks when an app has several
+jobs to track; dropping the set aborts them.
 
 Keeping task ownership alongside the associated UI state makes it clear which operations must be
 accounted for when that state closes.
@@ -188,7 +195,6 @@ application no longer wants a task's result.
 [`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
 [`std::thread::sleep`]: https://doc.rust-lang.org/std/thread/fn.sleep.html
 [`tokio::select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html
-[`join_next()`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.join_next
 [`ratatui::init()`]: https://docs.rs/ratatui/latest/ratatui/fn.init.html
 [`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html
 [`Result`]: https://doc.rust-lang.org/std/result/enum.Result.html
