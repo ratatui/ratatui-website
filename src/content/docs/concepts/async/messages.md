@@ -10,7 +10,9 @@ value from a task handles the first case; the others need communication before t
 
 Workers can send those values to the UI without borrowing its mutable state. The UI applies them and
 requests a frame. What the communication mechanism retains matters: losing an intermediate progress
-percentage may be fine, while losing a log record changes the history the user sees.
+percentage may be fine, while losing a log record changes the history the user sees. Unlike a
+[task's final result](/concepts/async/tasks/#completion-and-failure), an update does not necessarily
+mean the worker has finished.
 
 ## Worker messages
 
@@ -169,6 +171,11 @@ if details_tx.send(details).await.is_err() {
 If the destination queue is full, this send waits inside the branch handler. The `select!` cannot
 notice a changed selection until that handler returns. These two fragments show separate design
 questions: what state must the channel retain, and can forwarding an update delay a view change?
+
+A worker update needs both data the UI can read and a way for the event loop to notice it. Queues
+preserve individual messages, `watch` preserves the newest value, and shared state needs its own
+notification. [Bounds on queued data and per-turn processing](/concepts/async/backpressure/) leave
+room for input, while [redraw timing](/concepts/async/redraws/) lets one frame show several updates.
 
 ## Further reading
 

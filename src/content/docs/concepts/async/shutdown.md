@@ -11,6 +11,8 @@ waiting for the UI to make room in a full message queue.
 
 Leaving the event loop does not settle those operations. Shutdown must account for them and restore
 the terminal, including when an input or draw error ends the loop instead of a quit key.
+[Cancellation](/concepts/async/cancellation/) determines how each operation can stop; shutdown
+orders those decisions so workers cannot be left waiting for a UI that has already exited.
 
 ## Restore the terminal on errors
 
@@ -86,6 +88,11 @@ interrupt signal. The UI can interpret that key as an exit request, alongside er
 shutdown notifications. Do not rely only on a server example's `signal::ctrl_c()` branch for the
 keyboard behavior of a raw-mode TUI. Crossterm documents this difference under
 [raw mode](https://docs.rs/crossterm/0.29.0/crossterm/terminal/index.html#raw-mode).
+
+Once exit begins, stop accepting work and give each existing operation a way to finish or stop.
+Release queue waiters as well as terminal users; then join the work whose completion matters.
+Restoring terminal modes and finishing background work are separate obligations, and an error in the
+event loop must not skip either.
 
 A temporary [terminal handoff](/concepts/async/handoffs/) adds reacquisition after release. Ordinary
 shutdown has no such return path, so it can discard display state once terminal users have stopped.

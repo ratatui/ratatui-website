@@ -10,6 +10,8 @@ later `cat` result would then display matches for text that is no longer in the 
 
 The UI needs to associate each response with its query and decide whether it still applies. This
 also matters for errors and for results arriving after the user clears or leaves the search view.
+[Task handles](/concepts/async/tasks/) and [messages](/concepts/async/messages/) deliver results;
+request identity determines whether those results still belong in the UI.
 
 ## Stale search results
 
@@ -124,6 +126,12 @@ let mut cmd = command_builder.build();
 This sleep runs on its executor thread. Unlike the search deadline above, this excerpt is a fixed
 wait before startup, not a timer reset on every edit. Its [output channel][bacon output channel] is
 unbounded at this revision; delaying starts does not also limit queued command output.
+
+For search, advance the request identity as soon as the query changes and check it before applying
+either a result or an error. Debouncing can avoid unnecessary requests, and
+[cancellation](/concepts/async/cancellation/) can reduce work already started. Neither establishes
+that a response still matches the visible query. For independent downloads, keep an identity per
+operation so finishing one does not invalidate another.
 
 [completion tickets]:
   https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-actor/src/input/complete.rs#L20-L24

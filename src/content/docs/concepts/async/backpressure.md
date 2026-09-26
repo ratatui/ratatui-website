@@ -11,7 +11,9 @@ unresponsive.
 
 Backpressure makes the consumer's limited capacity affect the producer. The app must also decide
 what to retain, what can be discarded, and how much queued work to process before returning to input
-and drawing.
+and drawing. These decisions apply whether updates arrive through an async channel or a
+[thread feeding a synchronous UI](/concepts/async/bridging/). A redraw limit alone cannot control
+how much data workers produce.
 
 ## Queue capacity and retained work
 
@@ -127,9 +129,14 @@ async fn drain(&mut self, rx: &mut mpsc::UnboundedReceiver<Event>) -> Result<boo
 drawing decision happens inside `dispatch`, so draining does not mean drawing only once at the end
 of the batch.
 
-Combining redraw requests reduces frames, not queued messages. A latest-value channel can reduce
-retained updates, but forwarding each observed value into another queue introduces another backlog.
-[Worker Updates](/concepts/async/messages/) explains that distinction with progress.
+A responsive log viewer needs limits on retained data and on the work done in each loop turn. A
+bounded channel limits one queue; admission limits and bounded history account for data on either
+side of it. Batching leaves time for input and drawing without requiring every record to produce its
+own frame.
+
+For replaceable values such as progress, [Worker Updates](/concepts/async/messages/) explains how a
+latest-value channel avoids retaining every update. Forwarding each observed value into another
+queue can still introduce a backlog.
 
 ## Further reading
 

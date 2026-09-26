@@ -7,7 +7,9 @@ sidebar:
 A TUI that browses a remote service may have a list, a detail pane, and a search view all using the
 same session. A persistent worker can own that session and its cache, accepting commands from each
 view. The UI owns selection, loading indicators, and drawing; the worker owns the service state.
-Changing views need not recreate the session or give each view mutable access to it.
+Changing views need not recreate the session or give each view mutable access to it. Unlike a
+[background request](/concepts/async/tasks/) that ends with one result, this worker stays alive to
+serve subsequent commands.
 
 This resource-owning task is an actor. It has two parts: a task that owns the state, and a handle
 through which callers send commands. That actor handle is typically a small wrapper around a channel
@@ -108,6 +110,13 @@ notifying waiters, so a woken reader can acquire it. Unlike the lookup actor's p
 reply, this notification tells readers to inspect the latest shared diff. The worker still owns the
 computation; the response route depends on whether callers need an individual answer or the latest
 shared result.
+
+A resource-owning worker gives views a shared service with one owner and a lifetime independent of
+any one request. The UI still has to wait for replies without blocking input, reject replies for
+obsolete selections, and account for the owner at [shutdown](/concepts/async/shutdown/). When work
+only needs to return a value or report progress, a [background task](/concepts/async/tasks/) or
+[worker updates](/concepts/async/messages/) can provide that communication without a persistent
+command loop.
 
 ## Further reading
 

@@ -9,8 +9,10 @@ returns to input handling. Eventually the request produces new items or an error
 observe that outcome, clear its loading status, and update the display. If the user quits first, the
 app must also account for the pending request.
 
-A spawned task gives the request an independently scheduled lifetime. `App` retains its task handle,
-so both the event loop and shutdown code can find it.
+The [event loop](/concepts/async/event-loops/) waits for input and request completion. A spawned
+task gives the request an independently scheduled lifetime; alternatively, the UI loop can keep the
+request future and advance it itself. Both arrangements need somewhere to retain the pending work, a
+way to apply its result, and a policy for leaving before it finishes.
 
 ## UI state and background requests
 
@@ -182,11 +184,12 @@ Leaving the loop drops its pending future. The simulated fetch then stops waitin
 Other operations can have effects that outlive their futures; see
 [Cancellation](/concepts/async/cancellation/#futures-owned-by-the-ui-loop).
 
-For the next input, timer, or task completion, see
-[Waiting for Multiple Operations](/concepts/async/waiting/).
-[Worker Updates](/concepts/async/messages/) covers values sent before a worker finishes;
-[Resource-owning Workers](/concepts/async/actors/) covers a worker that serves commands across
-views.
+In both arrangements, the input handler starts the fetch and returns, the pending work survives
+other events, and the UI applies its eventual result. Ownership makes the difference at exit: a
+stored future is dropped with the loop, while a spawned task needs an explicit cleanup policy.
+[Waiting for Multiple Operations](/concepts/async/waiting/) extends this to groups of requests and
+other event sources. A worker that produces progress before its final result also needs
+[Worker Updates](/concepts/async/messages/).
 
 ## Further reading
 

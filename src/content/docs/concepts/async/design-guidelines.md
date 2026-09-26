@@ -4,9 +4,14 @@ sidebar:
   order: 0.5
 ---
 
-For each request, background job, or terminal query, know who owns it, what makes it progress, how
-its result becomes visible, and how it ends. The details depend on the application's work and
-terminal arrangement.
+A networked TUI has work that outlives the keypress that started it. While requests run, the user
+can change views, start more work, or quit. The UI needs a way to receive results, decide whether
+they still apply, and account for work left running at exit.
+
+These decisions apply to both an [async event loop](/concepts/async/event-loops/) and a
+[synchronous UI with async workers](/concepts/async/bridging/). Their effects on responsiveness,
+result delivery, and terminal access are connected: limiting a queue, for example, also requires a
+shutdown path for workers waiting to send.
 
 ## Application structure
 
@@ -74,6 +79,11 @@ terminal arrangement.
   signal workers, and observe required completion. Restore terminal state on errors as well as quit.
   [Worker shutdown](/concepts/async/shutdown/#worker-shutdown) ·
   [Error cleanup](/concepts/async/shutdown/#restore-the-terminal-on-errors)
+
+For a list refresh, the UI starts a request with owned inputs, keeps accepting events, then applies
+its result and requests a frame. If the view changes or the app exits first, the request still needs
+an owner and a completion or cancellation policy. Keeping that lifetime explicit makes the same
+structure usable for downloads, searches, and persistent workers.
 
 [`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
 [`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html

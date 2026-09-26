@@ -11,7 +11,9 @@ succession.
 
 The loop instead records that the display has changed and draws when a frame is due. One frame can
 then show the latest counter and request status together. Input and results still need to be
-processed promptly even when drawing is deferred.
+processed promptly even when drawing is deferred. This separation works with either an async event
+loop or a [synchronous UI with async workers](/concepts/async/bridging/): the UI owns the display
+state and decides when to render it.
 
 ## Redraw requests and frame deadlines
 
@@ -150,8 +152,11 @@ reflow. Checking both deadlines prevents an early frame from leaving that work w
 for another input event. The surrounding implementation also limits rendered rows and disables slow
 reflow; those policies depend on its transcript representation and are not universal TUI defaults.
 
-Combining frames does not remove the cost of applying each queued message. If that work dominates,
-consider the delivery and processing policies in [Backpressure](/concepts/async/backpressure/).
+The UI can stay current without drawing every intermediate state: apply updates promptly, retain a
+redraw request, and draw the latest state when the deadline permits. Keep that deadline independent
+of incoming traffic so continuous updates cannot postpone a frame forever. Combining frames does not
+remove the cost of applying each queued message; [Backpressure](/concepts/async/backpressure/)
+covers limits on that work.
 
 [frame scheduler]:
   https://github.com/openai/codex/blob/58e1e570faf0a2cb888acdb18df720f149b5006a/codex-rs/tui/src/tui/frame_requester.rs#L94-L113

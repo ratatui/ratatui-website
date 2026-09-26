@@ -13,8 +13,8 @@ when work is no longer wanted.
 A synchronous UI can use async workers; an async UI still performs synchronous drawing. In either
 arrangement, worker results must reach the UI. Terminal queries that read replies share input with
 keys, so they must coordinate with the input reader. Examples use Tokio and Crossterm with Ratatui.
-[Tokio's tutorial](https://tokio.rs/tokio/tutorial) develops the underlying async mechanisms in more
-depth.
+The same ownership and communication decisions apply whether the work is a single request or a
+service that runs for the lifetime of the app.
 
 ## Async topics
 
@@ -65,6 +65,13 @@ the same UI with a future owned by the loop instead of a spawned task.
 [Troubleshooting Async Applications](/recipes/apps/async-troubleshooting/) starts from symptoms such
 as delayed frames, stale results, and input conflicts.
 
-For networking in a synchronous application, see
-[Bridging Sync and Async](/concepts/async/bridging/). For continuous updates, start with
-[Worker Updates](/concepts/async/messages/) and [Backpressure](/concepts/async/backpressure/).
+An async terminal app combines work that waits with a UI that applies results and draws
+synchronously. The [event loop](/concepts/async/event-loops/) connects those parts; its ownership,
+queue limits, and cleanup determine what happens as work accumulates or the user leaves a view. An
+existing synchronous loop can make that connection through
+[async workers](/concepts/async/bridging/) without moving terminal I/O into async tasks.
+
+## Further reading
+
+[Tokio's tutorial](https://tokio.rs/tokio/tutorial) develops the underlying async mechanisms,
+including tasks, channels, and selection, in more depth.

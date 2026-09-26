@@ -4,10 +4,10 @@ sidebar:
   order: 1
 ---
 
-Consider a terminal app that displays a list of items fetched from a server. Pressing `r` refreshes
-the list. While the request waits, the app should display a loading status and keep accepting input.
-When data arrives, the list should update without another keypress. If the request fails, the old
-list should remain visible beside an error.
+A terminal app displays a list of items fetched from a server. Pressing `r` refreshes the list.
+While the request waits, the app should display a loading status and keep accepting input. When data
+arrives, the list should update without another keypress. If the request fails, the old list should
+remain visible beside an error.
 
 The [background fetch example](/recipes/apps/background-fetch/) implements that behavior with a
 two-second simulated fetch, so it needs no server. Its counter, changed with `+` and `-`, makes it
@@ -110,6 +110,8 @@ those strategies. A separate input task still shares the terminal with queries a
 
 :::
 
+## Background work in the event loop
+
 The refresh task returns data; the UI decides how to apply it.
 [Background Work](/concepts/async/tasks/) explains that ownership and the completion path. A
 separate task is one arrangement: a loop can also
@@ -127,9 +129,11 @@ compose with the same input and drawing loop:
 | Progress or other updates while work runs | [Worker Updates]                  |
 | Commands served by a persistent resource  | [Resource-owning Workers]         |
 
-An existing synchronous UI can keep its input loop and use async workers. The comparison and
-[synchronous loop sketch](/concepts/async/bridging/#synchronous-ui-with-async-workers) are in
-Bridging Sync and Async.
+Input and completed work both lead back to the UI owner, which changes state and draws when a frame
+is due. Returning to that wait promptly keeps input responsive; including completion in the wait
+makes results visible without another keypress. A
+[synchronous UI with async workers](/concepts/async/bridging/#synchronous-ui-with-async-workers)
+needs the same result delivery and redraw decisions, even though it waits differently.
 
 [Background Work]: /concepts/async/tasks/
 [Waiting for Multiple Operations]: /concepts/async/waiting/

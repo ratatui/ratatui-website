@@ -11,7 +11,9 @@ network request has already finished.
 
 A worker can receive an owned collection, sort it, and return prepared data for the UI to apply.
 That keeps the computation out of the UI handler, but introduces questions about how many sorts may
-run and who observes their completion.
+run and who observes their completion. Unlike the yielding network wait in
+[Background Work](/concepts/async/tasks/), blocking code needs somewhere to execute without
+occupying the UI or an async runtime worker.
 
 ## Measuring and moving expensive work
 
@@ -109,6 +111,12 @@ blocking within a runtime worker while other work moves to another worker. It st
 futures within the same task and cannot run on a current-thread runtime. Neither `spawn_blocking`
 nor `block_in_place` coordinates terminal access; moving terminal operations still requires a single
 input strategy and ordered output.
+
+Offloading the sort keeps input responsive only if the UI can also submit it and receive its result
+without a long wait. Limit admission, retain ownership of admitted jobs, and decide what happens
+when their results are no longer wanted. [Backpressure](/concepts/async/backpressure/) covers the
+queues around the worker; [Cancellation](/concepts/async/cancellation/) covers stopping work or
+waiting for an unwanted job to finish.
 
 [`spawn_blocking`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html
 [Yazi preview tasks]:

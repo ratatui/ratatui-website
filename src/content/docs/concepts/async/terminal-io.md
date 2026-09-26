@@ -10,7 +10,9 @@ query, the query may wait while the reader treats the reply as ordinary input.
 
 Drawing, input, mode changes, and queries share the terminal even when they use separate Rust
 objects or file descriptors. A background worker that prints an error can likewise overwrite the UI.
-Async task boundaries do not establish separate terminal sessions.
+Async task boundaries do not establish separate terminal sessions. The choice of
+[event loop](/concepts/async/event-loops/) determines where terminal calls execute; safe terminal
+I/O also depends on which reader consumes replies and who may change the terminal's modes.
 
 The details below describe Ratatui 0.30.2 and Crossterm 0.29, with source links for the relevant
 implementation. Other backends and platforms can have different behavior.
@@ -141,6 +143,12 @@ wrapping output in an async API does not make Ratatui's draw pipeline asynchrono
 When diagnosing a failure, record the backend and versions, OS, terminal emulator, viewport mode,
 redirected handles, and active readers. They determine which input and output paths the application
 uses.
+
+Terminal ownership includes the reader, query handling, output, and mode changes, even when a
+library hides some of them behind a helper thread. Keep those operations coordinated throughout the
+session. [Shutdown](/concepts/async/shutdown/) releases the terminal on exit; a
+[terminal handoff](/concepts/async/handoffs/) also requires stopping input before another program
+uses the terminal and rebuilding the UI afterward.
 
 [`EventStream` source]:
   https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/event/stream.rs#L42-L148

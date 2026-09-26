@@ -11,6 +11,9 @@ keypress will appear to do nothing until the UI returns to its event loop.
 
 Responsiveness depends on both the UI's handlers and the runtime's scheduling. A separate request
 task allows input during the wait; it does not ensure that every other part of the refresh is short.
+Whether the app uses an [async event loop](/concepts/async/event-loops/) or
+[a synchronous UI with async workers](/concepts/async/bridging/), the time spent handling each event
+and drawing determines how soon the UI can respond again.
 
 ## Cooperative scheduling
 
@@ -75,9 +78,14 @@ By default, `select!` randomizes branch polling order across selections, reducin
 when several branches are ready. It does not preempt a selected handler or promise a latency bound.
 An explicit priority order also requires care when an earlier branch is continuously ready.
 
-[Backpressure](/concepts/async/backpressure/) covers bounded batches of queued work.
-[Drawing and Redraws](/concepts/async/redraws/) covers when to request and present a frame. These
-policies operate inside the scheduling constraints above; a frame deadline is not a runtime budget.
+Responsiveness requires the UI to return to input handling as well as giving other tasks time to
+run. Keep individual handlers short, move long operations out of those handlers, and bound batches
+of ready work. Extra runtime threads cannot make a UI loop process another event while its current
+handler is occupied.
+
+[Backpressure](/concepts/async/backpressure/) explains those batch and admission limits.
+[Drawing and Redraws](/concepts/async/redraws/) separates changes to UI state from the timing of a
+frame. A frame deadline controls when drawing is due; it does not interrupt an occupied task.
 
 ## Further reading
 

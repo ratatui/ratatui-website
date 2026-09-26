@@ -4,9 +4,11 @@ sidebar:
   order: 2.5
 ---
 
-The refresh app has one pending request, but its UI waits for several things: that request, input,
-and a redraw deadline. How many jobs the app owns and what should wake its event loop are separate
-choices. An optional handle holds the request; `select!` lets its completion compete with input.
+A terminal app refreshing a list has one pending request, but its UI waits for several things: that
+request, input, and a redraw deadline. In the
+[background fetch app](/recipes/apps/background-fetch/), an optional task handle holds the request,
+and [`tokio::select!`] lets its completion compete with input. How many jobs the app owns and what
+should wake its event loop are separate choices.
 
 Other views need different combinations. A profile view may need both account details and activity
 before updating. A download list may need to display each completion as it arrives, while the user
@@ -50,11 +52,14 @@ detaches their tasks when dropped. Likewise, an early return from `try_join!` dr
 owned futures, which does not stop spawned tasks if those futures are handles. Retain the ownership
 needed for [cancellation and cleanup](/concepts/async/cancellation/).
 
-Channels are useful when a worker produces several updates before finishing, or a long-lived
-resource serves many requests. [Worker Updates](/concepts/async/messages/) covers progress and
-notifications; [Resource-owning Workers](/concepts/async/actors/) covers persistent command loops.
-[Cancellation](/concepts/async/cancellation/) explains what happens when the application no longer
-wants a task's result.
+For the UI, waiting for the next event keeps input available while work is pending. Within a
+background operation, waiting for a whole group can produce one combined result. A growing
+collection instead lets the UI apply each completion as it arrives. In each case, keep ownership of
+unfinished work so another event winning the selection does not lose track of it.
+
+A worker can also send [progress updates](/concepts/async/messages/) before completing. A
+[persistent resource owner](/concepts/async/actors/) can serve repeated commands without ending its
+task after each reply.
 
 [`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
 [`tokio::select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html

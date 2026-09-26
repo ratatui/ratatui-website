@@ -10,8 +10,10 @@ preventing the user from navigating the app while the response is pending.
 
 The UI can stay synchronous while a Tokio runtime runs the request. The boundary has two directions:
 the UI submits work, then receives data or an error to apply to its state. A runtime must keep the
-request progressing while the UI waits for input. An alternative is an async UI loop, which still
-calls Ratatui's synchronous drawing API.
+request progressing while the UI waits for input. An alternative is an
+[async UI loop](/concepts/async/event-loops/), which still calls Ratatui's synchronous drawing API.
+In either arrangement, runtime ownership determines where the network work can progress, and the UI
+loop determines when its result becomes visible.
 
 ## Runtime ownership and progress
 
@@ -74,12 +76,6 @@ drawing add to the time before the next check.
 
 The runtime's [`Handle`] and the result sender are passed into `run_terminal`. When the input
 handler sees `r`, it calls this method on the synchronous app. Here, `App.requests` is a
-
-## Further reading
-
-Tokio's [Bridging with sync code] provides additional runtime arrangements and complete examples for
-embedding async work in synchronous applications.
-
 [`JoinSet<()>`][`JoinSet`]: the tasks send `UiMessage` values through the channel instead of
 returning data through the task handle, so their return type is `()`. `report_loaded_items` sends
 `ItemsLoaded` with the fetched items or `ItemsFailed` with the error; a real UI would apply either
@@ -145,9 +141,16 @@ operation, and returns a result. [Blocking and CPU-bound Work](/concepts/async/b
 explains execution choices for those workers. Moving each terminal read and draw to an independent
 blocking job would lose the stable ownership required by the terminal APIs.
 
-A separate UI thread isolates its synchronous work from runtime workers; it does not make the UI
-itself responsive during a slow draw. [Cooperative Scheduling](/concepts/async/scheduling/) explains
-which other work can progress while a task or thread is occupied.
+The synchronous UI can therefore keep ownership of the terminal while async workers handle network
+waits. The runtime must continue running, and the UI must check results even when no key is pressed.
+A separate UI thread isolates its synchronous work from runtime workers, but the UI itself still
+waits during a slow draw. [Cooperative Scheduling](/concepts/async/scheduling/) explains which other
+work can progress while a task or thread is occupied.
+
+## Further reading
+
+Tokio's [Bridging with sync code] provides additional runtime arrangements and complete examples for
+embedding async work in synchronous applications.
 
 [`Runtime::spawn`]: https://docs.rs/tokio/latest/tokio/runtime/struct.Runtime.html#method.spawn
 [`Handle`]: https://docs.rs/tokio/latest/tokio/runtime/struct.Handle.html

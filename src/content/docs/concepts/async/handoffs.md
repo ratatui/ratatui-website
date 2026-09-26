@@ -11,7 +11,9 @@ consume keys intended for the editor even while the app is no longer drawing.
 
 The app must release terminal ownership before launching the editor and reacquire it afterward.
 Background work that does not use the terminal may continue. Returning also requires rebuilding the
-display because the editor may have changed what is on screen.
+display because the editor may have changed what is on screen. Unlike
+[shutdown](/concepts/async/shutdown/), this is a temporary release: the app must preserve its own
+state while treating the terminal's state as something another program can change.
 
 ## Terminal handoff to a child process
 
@@ -111,6 +113,12 @@ Keep signal handling separate from ordinary Rust cleanup: many I/O and synchroni
 are unsuitable inside a low-level signal handler. Have the handler notify the application, then
 perform terminal cleanup or resume work in its ordinary event loop. Test suspension, child startup
 failure, and resume in a real terminal; a widget buffer test cannot validate terminal ownership.
+
+A handoff is complete only when the old reader has stopped reading and the next terminal user can
+read and write without competition. On return, reacquire modes and input before drawing, and rebuild
+the display from application state rather than trusting the previous screen. These are the same
+[terminal I/O ownership](/concepts/async/terminal-io/) requirements as during normal operation,
+applied at each transfer, including failed child startup and shell suspension.
 
 [Codex EventStream refactor]:
   https://github.com/openai/codex/blob/cf44511e7780bc30286ec356849970ff7aeabebb/codex-rs/tui/src/tui/event_stream.rs#L90-L97

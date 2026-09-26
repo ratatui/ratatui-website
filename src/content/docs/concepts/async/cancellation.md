@@ -11,6 +11,8 @@ one or the user quits while a file is being saved.
 Ignoring a result protects the display; stopping work may save resources. Neither necessarily undoes
 what has already happened. The cancellation policy depends on who owns the operation and whether it
 has effects beyond producing a value for the UI.
+[Stale-result checks](/concepts/async/overlapping-work/) decide whether to display a result;
+cancellation concerns the lifetime and partial progress of the work producing it.
 
 ## Cancellation and partial progress
 
@@ -112,6 +114,11 @@ fn ensure_not_cancelled(&self) -> Result<(), PeekError> {
 The highlighting loop [calls this check while processing lines][Yazi check call]. Advancing the
 ticket does not interrupt a file read or highlighting step already executing: the worker stops when
 it next reaches a check. The preview's `abort` method also does not await either worker's exit.
+
+Closing a view can end its interest in a result before the underlying operation ends. Keep enough
+ownership to observe that operation, account for any partial effects, and reject results that no
+longer apply. When the whole application exits, [Shutdown](/concepts/async/shutdown/) brings those
+per-operation decisions together with queue cleanup and terminal restoration.
 
 ## Further reading
 
