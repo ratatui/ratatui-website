@@ -27,13 +27,13 @@ The coordination needed during those synchronous calls depends on how they obtai
 Some read dimensions from the OS; others send a request to the terminal emulator and read its reply.
 An inline viewport draws within the current screen rather than taking over the full screen:
 
-| Operation                  | Behavior in the linked implementation            |
-| -------------------------- | ------------------------------------------------ |
-| Fullscreen autoresize      | Gets dimensions, normally without a cursor query |
-| Fixed viewport drawing     | Does not autoresize                              |
-| Inline creation or resize  | Uses cursor position for placement               |
-| Explicit `Terminal::clear` | Reads cursor position                            |
-| Cursor or color query      | May write a request and await an input reply     |
+| Operation                    | Behavior in the linked implementation            |
+| ---------------------------- | ------------------------------------------------ |
+| Fullscreen autoresize        | Gets dimensions, normally without a cursor query |
+| Fixed viewport drawing       | Does not autoresize                              |
+| Inline creation or resize    | Uses cursor position for placement               |
+| Explicit [`Terminal::clear`] | Reads cursor position                            |
+| Cursor or color query        | May write a request and await an input reply     |
 
 The [draw implementation][`Terminal::try_draw` source], [inline
 sizing][`compute_inline_size` source], and [`Terminal::clear` source] show these paths. Fullscreen
@@ -61,8 +61,8 @@ If an unrelated reader consumes the reply, the query can time out or the reader 
 bytes as ordinary input. Holding a lock around the `Terminal` value does not coordinate an input
 helper that never acquires that lock.
 
-To avoid competing event readers, Crossterm's [event module] requires using `poll` and `read` on the
-same thread and forbids combining them with `EventStream`. Choose one input strategy. An
+To avoid competing event readers, Crossterm's [event module] requires using [`poll`] and [`read`] on
+the same thread and forbids combining them with [`EventStream`]. Choose one input strategy. An
 `EventStream` presents an async interface, but its [implementation][`EventStream` source] uses a
 helper around the internal blocking reader. It is not an independent input stream for each consumer.
 
@@ -149,3 +149,7 @@ uses.
 [stdout and stderr]: /faq/#should-i-use-stdout-or-stderr
 [Unix size implementation]:
   https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/terminal/sys/unix.rs#L61-L105
+[`Terminal::clear`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.clear
+[`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
+[`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html
+[`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html

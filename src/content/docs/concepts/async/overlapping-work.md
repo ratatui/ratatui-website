@@ -37,7 +37,7 @@ outstanding results too:
 ```
 
 `start_search` captures the current query and generation. Call it inside a Tokio runtime context
-because it uses `tokio::spawn`. The UI accepts only a response tagged with its current generation:
+because it uses [`tokio::spawn`]. The UI accepts only a response tagged with its current generation:
 
 ```rust title="Start and apply search results"
 {{ #include @code/concepts/async-applications/src/stale.rs:discard_stale }}
@@ -103,3 +103,4 @@ at the linked revision. Limiting starts and limiting output are separate policie
   https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-actor/src/input/complete.rs
 [executor]:
   https://github.com/Canop/bacon/blob/70d8951293501f4aaa1a8adc51f0de4bb70c1501/src/exec/executor.rs#L112-L190
+[`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html

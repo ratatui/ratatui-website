@@ -4,7 +4,7 @@ title: External Editor
 
 An editor that inherits the terminal needs the TUI to release input and restore terminal modes. This
 recipe applies to a synchronous fullscreen UI whose calling thread is the sole input reader. There
-must be no `EventStream`, background input thread, or other terminal reader.
+must be no [`EventStream`], background input thread, or other terminal reader.
 
 For the ownership requirements, including separate-reader limitations, see
 [Terminal Handoffs](/concepts/async/handoffs/).
@@ -12,7 +12,7 @@ For the ownership requirements, including separate-reader limitations, see
 ## Running an editor between loop turns
 
 After reading the edit key and before polling for more input, call `run_child` with a
-`std::process::Command` configured for your editor and file. For example, the command can be built
+[`std::process::Command`] configured for your editor and file. For example, the command can be built
 with `Command::new("vim").arg(path)`. Inspect its returned exit status, then request a full redraw.
 Return errors through the application's outer terminal-cleanup path.
 
@@ -24,12 +24,13 @@ The child runs synchronously while the UI is paused. Showing the cursor and rest
 inherit an ordinary terminal. Reinitialization happens even if starting the child fails, and
 replacing the terminal resets Ratatui's buffers so the next draw reconstructs the display. The
 caller must redraw afterward and route any returned error through its outer cleanup path. An
-unsuccessful child exit is an `Ok(ExitStatus)` that the caller must inspect. If both the child
-operation and reinitialization fail, this helper returns the reinitialization error. An application
-that needs both errors should retain them together. Reinitialization failure requires exiting the
-UI; continuing to draw would use terminal modes and buffers whose setup did not complete.
+unsuccessful child exit is an [`Ok(ExitStatus)`][`ExitStatus`] that the caller must inspect. If both
+the child operation and reinitialization fail, this helper returns the reinitialization error. An
+application that needs both errors should retain them together. Reinitialization failure requires
+exiting the UI; continuing to draw would use terminal modes and buffers whose setup did not
+complete.
 
-This helper uses `try_init` for clarity. Each call installs a panic-hook wrapper; an application
+This helper uses [`try_init`] for clarity. Each call installs a panic-hook wrapper; an application
 with frequent handoffs should centralize panic-hook installation and explicit mode reacquisition
 rather than repeatedly installing wrappers. Also restore and re-enable any extra modes your app
 uses.
@@ -66,3 +67,8 @@ appropriate to your platform and application before adapting it.
 ```
 
 </details>
+
+[`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
+[`std::process::Command`]: https://doc.rust-lang.org/std/process/struct.Command.html
+[`ExitStatus`]: https://doc.rust-lang.org/std/process/struct.ExitStatus.html
+[`try_init`]: https://docs.rs/ratatui/latest/ratatui/fn.try_init.html

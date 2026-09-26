@@ -51,9 +51,9 @@ terminal arrangement.
 ## Terminal ownership
 
 - **Coordinate input, drawing, and queries.** Terminal replies share input with keys. Separate tasks
-  or separate handles do not make their terminal operations independent. Use `poll` and `read` on
-  one thread, or use the async `EventStream` reader; do not run both on the same terminal input.
-  [Input and protocol replies](/concepts/async/terminal-io/#input-includes-protocol-replies)
+  or separate handles do not make their terminal operations independent. Use [`poll`] and [`read`]
+  on one thread, or use the async [`EventStream`] reader; do not run both on the same terminal
+  input. [Input and protocol replies](/concepts/async/terminal-io/#input-includes-protocol-replies)
 - **Keep worker output out of the display.** Return errors and status to the UI; send diagnostics to
   a file or another destination that cannot overwrite it.
   [Worker messages](/concepts/async/messages/#worker-messages)
@@ -64,7 +64,7 @@ terminal arrangement.
 ## Cancellation and shutdown
 
 - **Own pending work deliberately.** Retain futures that must survive loop iterations and task
-  handles needed to observe completion. Dropping a Tokio `JoinHandle` detaches its task without
+  handles needed to observe completion. Dropping a Tokio [`JoinHandle`] detaches its task without
   cancelling it. [Future lifetime](/concepts/async/cancellation/#futures-owned-by-the-ui-loop) ·
   [Task ownership](/concepts/async/tasks/#task-ownership)
 - **Check what cancellation actually stops.** Dropping a future waiting for a result, aborting a
@@ -74,3 +74,8 @@ terminal arrangement.
   signal workers, and observe required completion. Restore terminal state on errors as well as quit.
   [Worker shutdown](/concepts/async/shutdown/#worker-shutdown) ·
   [Error cleanup](/concepts/async/shutdown/#restore-the-terminal-on-errors)
+
+[`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
+[`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html
+[`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
+[`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html

@@ -39,8 +39,8 @@ input -> admitted jobs -> computation -> completed results -> UI queue -> UI sta
 ```
 
 A queue capacity does not limit pending jobs or retained UI history. The
-[blocking-work example](/concepts/async/blocking-work/) limits dispatched sorts with a semaphore,
-while its callers still need a policy for requests waiting for admission.
+[blocking-work example](/concepts/async/blocking-work/) limits dispatched sorts with a
+[`Semaphore`], while its callers still need a policy for requests waiting for admission.
 
 ## Overload policies
 
@@ -101,3 +101,4 @@ retained updates, but forwarding each observed value into another queue introduc
 [channels tutorial]: https://tokio.rs/tokio/tutorial/channels
 [dua event loop]:
   https://github.com/Byron/dua-cli/blob/e5b1e89afe554430789d228d8c32f5aa12930a7f/src/interactive/app/eventloop.rs#L194-L249
+[`Semaphore`]: https://docs.rs/tokio/latest/tokio/sync/struct.Semaphore.html

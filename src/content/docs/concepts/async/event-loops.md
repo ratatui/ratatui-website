@@ -88,7 +88,7 @@ while running:
 Applying input or a result requests a redraw when visible state changes. Spawning the fetch lets the
 UI task return to selection while the request waits. The
 [async event-loop example](/recipes/apps/background-fetch/) implements this arrangement with
-`EventStream`, `JoinSet`, and `select!`.
+[`EventStream`], [`JoinSet`], and [`select!`].
 
 ## Wakeups and UI ownership
 
@@ -103,8 +103,8 @@ whether an old result still belongs to the current view.
 
 :::caution[Terminal input has one owner]
 
-Crossterm requires `poll` and `read` on the same thread, or an `EventStream`, without mixing those
-strategies. A separate input task still shares the terminal with queries and child programs.
+Crossterm requires [`poll`] and [`read`] on the same thread, or an `EventStream`, without mixing
+those strategies. A separate input task still shares the terminal with queries and child programs.
 [Terminal I/O](/concepts/async/terminal-io/) explains the coordination this requires.
 
 :::
@@ -119,3 +119,8 @@ An existing synchronous UI can keep its input loop and use async workers. The co
 Bridging Sync and Async.
 
 [`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
+[`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
+[`JoinSet`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html
+[`select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html
+[`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
+[`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html

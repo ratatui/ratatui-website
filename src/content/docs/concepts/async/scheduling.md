@@ -29,8 +29,8 @@ synchronous size check is not necessarily expensive just because it is synchrono
 
 :::
 
-A slow draw occupies its caller until it returns. Adding `yield_now().await` afterward does not undo
-that delay. Where the draw runs determines what else can progress:
+A slow draw occupies its caller until it returns. Adding [`yield_now().await`] afterward does not
+undo that delay. Where the draw runs determines what else can progress:
 
 | Draw context                       | What waits                                  |
 | ---------------------------------- | ------------------------------------------- |
@@ -44,8 +44,8 @@ macro][`tokio::main`] runs its body through [`Runtime::block_on`] on the caller 
 multi-thread runtime's workers can run spawned tasks. More worker threads do not make a long UI
 handler responsive to input.
 
-The [complete event loop](/recipes/apps/background-fetch/) puts drawing in one `select!` branch. Its
-fetch runs in a separate task, but the input and completion branches still wait while this draw
+The [complete event loop](/recipes/apps/background-fetch/) puts drawing in one [`select!`] branch.
+Its fetch runs in a separate task, but the input and completion branches still wait while this draw
 executes:
 
 ```rust title="Drawing inside the UI task"
@@ -86,3 +86,5 @@ policies operate inside the scheduling constraints above; a frame deadline is no
 [`Runtime::block_on`]:
   https://docs.rs/tokio/latest/tokio/runtime/struct.Runtime.html#method.block_on
 [`tokio::main`]: https://docs.rs/tokio/latest/tokio/attr.main.html
+[`yield_now().await`]: https://docs.rs/tokio/latest/tokio/task/fn.yield_now.html
+[`select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html

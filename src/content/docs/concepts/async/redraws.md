@@ -28,11 +28,11 @@ stall. An animation can deliberately mark state dirty on a separate timer; most 
 need a continuous redraw timer.
 
 A draw deadline caps frequency; it does not cap how long rendering takes or guarantee when input
-will be handled. Tokio's default `select!` branch order also is not a real-time scheduling
+will be handled. Tokio's default [`select!`] branch order also is not a real-time scheduling
 guarantee.
 
 When many components request frames, a shared scheduler can coalesce their requests. Helix's
-[request_redraw] implements this with a `Notify`: `request_redraw()` signals it, and
+[request_redraw] implements this with a [`Notify`]: `request_redraw()` signals it, and
 `redraw_requested()` provides the future the editor can wait on. The [Codex frame
 scheduler][frame scheduler] provides another example of scheduling requests independently of
 drawing. A shared scheduler gives independently updating components one place to combine requests
@@ -95,3 +95,5 @@ consider the delivery and processing policies in [Backpressure](/concepts/async/
   https://github.com/helix-editor/helix/blob/a2c9f44a564592257334ce0cec2fc904412173b5/helix-event/src/redraw.rs
 [Codex resize reflow guardrails]:
   https://github.com/openai/codex/commit/3aa637c4750715cf23589ee3f4b1d0b6563c7d3e
+[`select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html
+[`Notify`]: https://docs.rs/tokio/latest/tokio/sync/struct.Notify.html

@@ -56,9 +56,9 @@ replace one supported reader with two readers while experimenting: that changes 
 Useful source-backed investigations include:
 
 - [Crossterm #1039][crossterm/crossterm#1039]: interaction between readers and query replies.
-- [Crossterm #919][crossterm/crossterm#919]: `cursor::position()` times out when stdout is piped in
-  the reported macOS/WezTerm setup, while the size call works. Check query handles separately from
-  the writer selected for drawing.
+- [Crossterm #919][crossterm/crossterm#919]: [`cursor::position()`] times out when stdout is piped
+  in the reported macOS/WezTerm setup, while the size call works. Check query handles separately
+  from the writer selected for drawing.
 - [Ratatui #2483][ratatui/ratatui#2483] reports rendering failures when the app and terminal
   operations compete for stdin. The [related change][ratatui/ratatui#2485] records the proposed
   repair; inspect the affected operation rather than attributing every draw failure to async input.
@@ -71,7 +71,7 @@ affected code has changed. A fix for one query or platform may leave another pat
 ## Unit, pseudo-terminal, and terminal tests
 
 Turn the reproducer into a test at the level where the failure occurs. Use ordinary unit tests for
-message application, request identities, and state transitions. Ratatui's `TestBackend` can check
+message application, request identities, and state transitions. Ratatui's [`TestBackend`] can check
 what a draw produces. A pseudo-terminal test can exercise input, output, resize, and process exit.
 Actual terminal testing is still needed for emulator-specific queries, job control, and platform
 mode handling.
@@ -95,3 +95,5 @@ maintainer to infer the architecture of the whole application.
 [crossterm/crossterm#919]: https://github.com/crossterm-rs/crossterm/issues/919
 [ratatui/ratatui#2483]: https://github.com/ratatui/ratatui/issues/2483
 [ratatui/ratatui#2485]: https://github.com/ratatui/ratatui/pull/2485
+[`cursor::position()`]: https://docs.rs/crossterm/latest/crossterm/cursor/fn.position.html
+[`TestBackend`]: https://docs.rs/ratatui/latest/ratatui/backend/struct.TestBackend.html

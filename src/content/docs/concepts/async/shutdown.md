@@ -55,7 +55,7 @@ shutdown signal, provided all sender clones are dropped and the receiver handles
 
 Decide what happens to pending UI messages before waiting for producers. If results may be
 discarded, drop the UI receiver; this discards buffered messages and makes blocked sends fail. If
-accepted results must be applied, call `close()` to reject new sends, then keep draining while
+accepted results must be applied, call [`close()`] to reject new sends, then keep draining while
 joining workers. A reserved channel permit can still send after `close()`, so draining to `None`
 also waits for outstanding permits to be released. Without dropping or draining the receiver, a
 worker can wait forever for queue space after the UI has stopped reading. Workers must observe send
@@ -79,7 +79,7 @@ terminal query.
 
 Tokio's [Graceful Shutdown](https://tokio.rs/tokio/topics/shutdown) separates deciding to stop,
 notifying tasks, and waiting for them. A cancellation token can notify several cooperating workers;
-a task tracker can wait for tracked work to finish. The example here uses a `JoinSet` because it
+a task tracker can wait for tracked work to finish. The example here uses a [`JoinSet`] because it
 also consumes request results during normal operation.
 
 In a raw-mode terminal, pressing Ctrl-C is not automatically processed by the terminal driver as an
@@ -91,8 +91,10 @@ keyboard behavior of a raw-mode TUI. Crossterm documents this difference under
 A temporary [terminal handoff](/concepts/async/handoffs/) adds reacquisition after release. Ordinary
 shutdown has no such return path, so it can discard display state once terminal users have stopped.
 
-[`try_restore`]: https://docs.rs/ratatui/0.30.2/ratatui/fn.try_restore.html
+[`try_restore`]: https://docs.rs/ratatui/latest/ratatui/fn.try_restore.html
 [`timeout`]: https://docs.rs/tokio/latest/tokio/time/fn.timeout.html
 [Graceful Shutdown]: https://tokio.rs/tokio/topics/shutdown
 [`spawn_blocking`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html
 [`JoinSet::shutdown`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.shutdown
+[`close()`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/struct.Receiver.html#method.close
+[`JoinSet`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html

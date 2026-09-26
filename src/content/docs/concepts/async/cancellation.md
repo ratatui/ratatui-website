@@ -26,9 +26,9 @@ drops the temporary `join_next()` wait, **not** the fetch retained in `App.reque
 turn can wait for that same fetch. This is why typing while loading does not cancel the request.
 
 A spawned task has a separate lifetime from a future waiting for its result. Dropping the task's
-`JoinHandle` detaches the task rather than aborting it. Retain handles or use a task collection when
-the application needs to observe completion and failure. A cancellation signal asks cooperating work
-to stop; a generation check applies a result only if its request number is still current.
+[`JoinHandle`] detaches the task rather than aborting it. Retain handles or use a task collection
+when the application needs to observe completion and failure. A cancellation signal asks cooperating
+work to stop; a generation check applies a result only if its request number is still current.
 
 Even when cancellation stops local work, it may not undo its effects. For a request that changes
 remote state, cancellation can leave the outcome unknown: the server may have applied it before the
@@ -61,8 +61,8 @@ waiting for completion.
 
 The [sorting helper](/concepts/async/blocking-work/#measuring-and-moving-expensive-work) returns a
 `JoinHandle` so its caller can wait for the worker and receive any error. Once a sort starts,
-cancelling interest in its result cannot interrupt it. The caller creates a Tokio `oneshot` channel,
-keeps its sender, and passes the receiver as `cancel` to this helper. The helper waits for
+cancelling interest in its result cannot interrupt it. The caller creates a Tokio [`oneshot`]
+channel, keeps its sender, and passes the receiver as `cancel` to this helper. The helper waits for
 completion and then discards unwanted values:
 
 ```rust
@@ -97,3 +97,5 @@ can stop partway.
 [`read_exact`]: https://docs.rs/tokio/latest/tokio/io/trait.AsyncReadExt.html#method.read_exact
 [`tokio::select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html
 [`write_all`]: https://docs.rs/tokio/latest/tokio/io/trait.AsyncWriteExt.html#method.write_all
+[`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
+[`oneshot`]: https://docs.rs/tokio/latest/tokio/sync/oneshot/index.html

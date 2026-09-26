@@ -27,7 +27,7 @@ terminal operations must preserve [reader and writer coordination](/concepts/asy
 
 For finite blocking application work, [`spawn_blocking`] provides a separate pool. CPU-heavy work
 should have bounded concurrency or use a CPU-oriented pool such as [Rayon]. This sorting example
-uses a semaphore to limit admitted jobs. Each job keeps its permit until the blocking closure
+uses a [`Semaphore`] to limit admitted jobs. Each job keeps its permit until the blocking closure
 finishes, even if the task waiting for it is cancelled:
 
 ```rust title="Bound admitted CPU jobs"
@@ -36,7 +36,7 @@ finishes, even if the task waiting for it is cancelled:
 
 Call `start_sort(values, Arc::clone(&slots)).await?` with the same semaphore for every request. It
 waits for admission, then returns a handle; await that handle to obtain the sorted values or a
-worker failure. During shutdown, the semaphore owner can call `slots.close()`. Calls still waiting
+worker failure. During shutdown, the semaphore owner can call [`slots.close()`]. Calls still waiting
 for admission then return `AcquireError` without starting a job; the caller can report that sort as
 rejected. The owned vector can move to the worker without borrowing UI state.
 
@@ -101,3 +101,5 @@ input strategy and ordered output.
   https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/highlighter.rs#L28-L144
 [Rayon]: https://docs.rs/rayon/latest/rayon/
 [`block_in_place`]: https://docs.rs/tokio/latest/tokio/task/fn.block_in_place.html
+[`Semaphore`]: https://docs.rs/tokio/latest/tokio/sync/struct.Semaphore.html
+[`slots.close()`]: https://docs.rs/tokio/latest/tokio/sync/struct.Semaphore.html#method.close

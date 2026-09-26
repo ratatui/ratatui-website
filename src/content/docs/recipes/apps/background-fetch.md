@@ -81,7 +81,7 @@ Bottom's [main loop][bottom startup loop] uses input and collection threads with
 demonstrates that background work does not require the UI itself to be an async task. Its input and
 output are on different threads, so additional terminal operations still require coordination.
 
-[`EventStream`]: https://docs.rs/crossterm/0.29.0/crossterm/event/struct.EventStream.html
+[`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
 [`async-github` example]:
   https://github.com/ratatui/ratatui/tree/d301c75f40854718374838ea3d6d704136b62e06/examples/apps/async-github
 [`event-driven-async` template]:

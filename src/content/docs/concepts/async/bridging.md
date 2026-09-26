@@ -18,12 +18,12 @@ calls Ratatui's synchronous drawing API.
 A runtime schedules tasks and drives services such as network readiness and timers. Creating it
 makes those services available; the runtime must also have somewhere to execute. A multi-thread
 runtime has worker threads. A current-thread runtime makes progress while it is being driven by
-`Runtime::block_on`; spawned work does not keep running between those calls on its own.
+[`Runtime::block_on`]; spawned work does not keep running between those calls on its own.
 
-The `#[tokio::main]` macro constructs a runtime and calls `block_on` for its async body. That body
-runs on the calling thread, while a multi-thread runtime's spawned tasks can run on its workers.
-This is why blocking the main UI and blocking a runtime worker have different effects, although both
-can delay the UI's next event.
+Tokio's [`main` macro][`tokio::main`] constructs a runtime and calls `block_on` for its async body.
+That body runs on the calling thread, while a multi-thread runtime's spawned tasks can run on its
+workers. This is why blocking the main UI and blocking a runtime worker have different effects,
+although both can delay the UI's next event.
 
 A runtime handle identifies where to spawn work; it does not make the calling code asynchronous. A
 call to `block_on` waits for its result, so using it for a request inside a key handler still keeps
@@ -32,10 +32,10 @@ develops these arrangements with complete runtime examples.
 
 ## Synchronous UI with async workers
 
-A synchronous UI can keep `poll`, `read`, and `draw` on a synchronous main thread while a
-multi-thread Tokio runtime runs the background tasks. In this arrangement, a channel send cannot
-wake Crossterm's `poll`, so the loop below uses a short input timeout before checking worker
-messages.
+A synchronous UI can keep Crossterm's [`poll`] and [`read`] and Ratatui's [`Terminal::draw`] on a
+synchronous main thread while a multi-thread Tokio runtime runs the background tasks. In this
+arrangement, a channel send cannot wake Crossterm's `poll`, so the loop below uses a short input
+timeout before checking worker messages.
 
 ```text
 start multi_thread_runtime
@@ -75,24 +75,24 @@ drawing add to the time before the next check.
 
 The runtime's [`Handle`] and the result sender are passed into `run_terminal`. When the input
 handler sees `r`, it calls this method on the synchronous app. Here, `App.requests` is a
-`JoinSet<()>`: the tasks send `UiMessage` values through the channel instead of returning data
-through the task handle, so their return type is `()`. `report_loaded_items` sends `ItemsLoaded`
-with the fetched items or `ItemsFailed` with the error; a real UI would apply either outcome in
-`handle_message`:
+[`JoinSet<()>`][`JoinSet`]: the tasks send `UiMessage` values through the channel instead of
+returning data through the task handle, so their return type is `()`. `report_loaded_items` sends
+`ItemsLoaded` with the fetched items or `ItemsFailed` with the error; a real UI would apply either
+outcome in `handle_message`:
 
 ```rust
 {{ #include @code/concepts/async-applications/src/sync_ui.rs:sync_start_fetch }}
 ```
 
-`JoinSet::spawn_on` uses the supplied runtime and retains the task for completion and shutdown. The
-loop checks `try_join_next` without waiting, while received messages update the UI state. The
-`ratatui::init()` call in this example installs a process-wide panic hook. A worker panic can
+[`JoinSet::spawn_on`] uses the supplied runtime and retains the task for completion and shutdown.
+The loop checks [`try_join_next`] without waiting, while received messages update the UI state. The
+[`ratatui::init()`] call in this example installs a process-wide panic hook. A worker panic can
 restore terminal modes while the UI thread is drawing; checking completed tasks before the next draw
 cannot prevent that race. The hook is emergency cleanup, outside ordinary terminal ownership. For
-work outside a task collection, [`Runtime::spawn`] or `Handle::spawn` provides the same explicit
+work outside a task collection, [`Runtime::spawn`] or [`Handle::spawn`] provides the same explicit
 choice of runtime, but the caller must retain its returned handle.
 
-Creating a runtime does not enter its context for `tokio::spawn`. The multi-thread runtime keeps
+Creating a runtime does not enter its context for [`tokio::spawn`]. The multi-thread runtime keeps
 worker tasks moving while the UI thread polls input; a current-thread runtime instead needs
 `block_on` to drive its tasks. See Tokio's [Bridging with sync code].
 
@@ -147,3 +147,15 @@ which other work can progress while a task or thread is occupied.
 [`Runtime::spawn`]: https://docs.rs/tokio/latest/tokio/runtime/struct.Runtime.html#method.spawn
 [`Handle`]: https://docs.rs/tokio/latest/tokio/runtime/struct.Handle.html
 [Bridging with sync code]: https://tokio.rs/tokio/topics/bridging
+[`Runtime::block_on`]:
+  https://docs.rs/tokio/latest/tokio/runtime/struct.Runtime.html#method.block_on
+[`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
+[`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html
+[`Terminal::draw`]: https://docs.rs/ratatui/latest/ratatui/struct.Terminal.html#method.draw
+[`JoinSet`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html
+[`JoinSet::spawn_on`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.spawn_on
+[`ratatui::init()`]: https://docs.rs/ratatui/latest/ratatui/fn.init.html
+[`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html
+[`tokio::main`]: https://docs.rs/tokio/latest/tokio/attr.main.html
+[`try_join_next`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.try_join_next
+[`Handle::spawn`]: https://docs.rs/tokio/latest/tokio/runtime/struct.Handle.html#method.spawn

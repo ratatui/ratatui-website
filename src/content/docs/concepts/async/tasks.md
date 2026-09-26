@@ -16,16 +16,16 @@ task handle can also provide that ownership.
 ## UI state and background requests
 
 In the [background fetch example](/recipes/apps/background-fetch/), the UI task runs the event loop,
-handles input, and draws. It owns `App`, which keeps display state and a Tokio `JoinSet` of pending
-fetch tasks together. The set owns those tasks and lets the UI collect their results. A fetch task
-returns a value for `App` to apply; it neither borrows `App` nor prints to the terminal:
+handles input, and draws. It owns `App`, which keeps display state and a Tokio [`JoinSet`] of
+pending fetch tasks together. The set owns those tasks and lets the UI collect their results. A
+fetch task returns a value for `App` to apply; it neither borrows `App` nor prints to the terminal:
 
 ```rust title="UI state and task output"
 {{ #include @code/concepts/async-applications/src/bin/background.rs:state }}
 ```
 
 The fetch task produces that result after a simulated I/O wait using [`tokio::time::sleep`]. Replace
-it with an async client call for real network work. Replacing it with `std::thread::sleep` would
+it with an async client call for real network work. Replacing it with [`std::thread::sleep`] would
 block the task's thread instead.
 
 ```rust title="A reproducible request"
@@ -46,7 +46,7 @@ update the view. Search-as-you-type needs a different policy; see
 
 ## Owned inputs and task boundaries
 
-A task created with `tokio::spawn` may outlive the function that starts it and may move between
+A task created with [`tokio::spawn`] may outlive the function that starts it and may move between
 runtime workers. Its future must satisfy `Send` and `'static`. In practice, give it owned request
 inputs instead of borrowing the UI's mutable state. `'static` does not mean the task runs forever;
 it means its borrowed data cannot expire while the task still needs it.
@@ -60,8 +60,8 @@ requirements in more detail, including values retained across awaits.
 
 The task output and the task's execution status are separate. A request can return an application
 error normally; a task can also panic or be cancelled before producing an output. The example's
-completion branch sits inside `tokio::select!` in the UI loop. `join_next()` returns `Some` for a
-completed task and `None` when the `JoinSet` is empty, so the branch matches `Some(result)` and is
+completion branch sits inside [`tokio::select!`] in the UI loop. [`join_next()`] returns `Some` for
+a completed task and `None` when the `JoinSet` is empty, so the branch matches `Some(result)` and is
 disabled while no request exists. Receiving a completion removes it from the set. The branch handles
 the outer task-join result before applying the inner fetch result. The `?` propagates a task failure
 out of the loop for terminal cleanup; a normal fetch error stays in the inner `FetchResult` for
@@ -77,14 +77,14 @@ A fetch failure preserves the previous data and supplies a visible error:
 {{ #include @code/concepts/async-applications/src/bin/background.rs:finish_fetch }}
 ```
 
-A worker panic instead exits the loop through cleanup. The example's `ratatui::init()` installs a
+A worker panic instead exits the loop through cleanup. The example's [`ratatui::init()`] installs a
 process-wide panic hook that may already have restored terminal modes when the join reports a
 failure. A panic can also race with a draw in progress; observing the join result cannot prevent
 that race. [Shutdown](/concepts/async/shutdown/) explains the outer cleanup path.
 
 ## Task ownership
 
-Dropping a `JoinHandle` detaches its task; it does not request cancellation. A `JoinSet` owns a
+Dropping a [`JoinHandle`] detaches its task; it does not request cancellation. A `JoinSet` owns a
 collection and aborts remaining tasks when dropped. Explicit shutdown also allows the application to
 wait for them. These lifetime differences matter even if both APIs can provide a result.
 
@@ -159,3 +159,9 @@ application no longer wants a task's result.
 
 [`tokio::time::sleep`]: https://docs.rs/tokio/latest/tokio/time/fn.sleep.html
 [`JoinSet`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html
+[`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
+[`std::thread::sleep`]: https://doc.rust-lang.org/std/thread/fn.sleep.html
+[`tokio::select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html
+[`join_next()`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.join_next
+[`ratatui::init()`]: https://docs.rs/ratatui/latest/ratatui/fn.init.html
+[`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html

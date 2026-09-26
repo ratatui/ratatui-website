@@ -41,7 +41,7 @@ channel. The receiving branch applies the result and requests a frame:
 
 In this snippet, `result?` unwraps the task-join result; a task panic exits the loop for terminal
 cleanup, while an ordinary fetch error reaches `finish_fetch`. With the message-based version above,
-receiving `UiMessage::ItemsLoaded` or `ItemsFailed` takes the place of `join_next`. The UI still
+receiving `UiMessage::ItemsLoaded` or `ItemsFailed` takes the place of [`join_next`]. The UI still
 owns the state update and redraw decision.
 
 ## Messages and latest-value state
@@ -52,9 +52,9 @@ what the receiver needs to retain:
 
 | Requirement                              | Starting point                   |
 | ---------------------------------------- | -------------------------------- |
-| Process each accepted command or result  | Bounded `mpsc`                   |
-| Display the latest progress or selection | `watch`                          |
-| Return one response to one caller        | `oneshot`                        |
+| Process each accepted command or result  | Bounded [`mpsc`]                 |
+| Display the latest progress or selection | [`watch`][`tokio::sync::watch`]  |
+| Return one response to one caller        | [`oneshot`]                      |
 | Protect shared data                      | Mutex plus a redraw notification |
 
 A bounded queue and a latest-value channel retain different information. A log view usually needs
@@ -89,8 +89,9 @@ newest watch value, skipping percentages replaced during the wait. Percentages a
 UI queue still occupy that queue; the adapter does not replace them. Closing the UI receiver ends
 forwarding.
 
-If the UI only needs the latest progress, it can instead select directly on `progress.changed()` and
-copy `borrow_and_update()` into its state. That avoids introducing a second queue just for progress.
+If the UI only needs the latest progress, it can instead select directly on [`progress.changed()`]
+and copy [`borrow_and_update()`] into its state. That avoids introducing a second queue just for
+progress.
 
 Gitui's [background job implementation][gitui async job] uses a different mechanism for the same
 separation: it stores a progress snapshot behind a lock and sends notifications to consumers. Its
@@ -120,8 +121,9 @@ worker owns a `HashMap` and serves commands in order:
 ```
 
 Create a bounded `mpsc` channel, move the lookup data and receiver into
-`tokio::spawn(serve_names(names, receiver))`, and retain the returned task handle. Callers keep
-sender clones. When every sender is dropped, the owner drains accepted commands and exits.
+[`tokio::spawn(serve_names(names, receiver))`][`tokio::spawn`], and retain the returned task handle.
+Callers keep sender clones. When every sender is dropped, the owner drains accepted commands and
+exits.
 
 The requesting side creates the per-command reply channel and distinguishes lookup results from
 communication failures:
@@ -163,6 +165,14 @@ application must also arrange for the UI to observe the changed data and request
   https://github.com/tokio-rs/console/blob/59e23edf17b0e42e87e315bfc9cbb8a6ba2f401f/tokio-console/src/main.rs#L206-L249
 [Actors with Tokio]: https://ryhl.io/blog/actors-with-tokio/
 [`tokio::sync::watch`]: https://docs.rs/tokio/latest/tokio/sync/watch/index.html
+[`mpsc`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html
+[`oneshot`]: https://docs.rs/tokio/latest/tokio/sync/oneshot/index.html
+[`join_next`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html#method.join_next
+[`progress.changed()`]:
+  https://docs.rs/tokio/latest/tokio/sync/watch/struct.Receiver.html#method.changed
+[`borrow_and_update()`]:
+  https://docs.rs/tokio/latest/tokio/sync/watch/struct.Receiver.html#method.borrow_and_update
+[`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html
 [gitui async job]:
   https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/asyncgit/src/asyncjob/mod.rs#L111-L155
 [diff worker]:
