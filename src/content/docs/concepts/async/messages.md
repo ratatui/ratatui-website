@@ -96,17 +96,67 @@ If the UI only needs the latest progress, it can instead select directly on [`pr
 and copy [`borrow_and_update()`] into its state. That avoids introducing a second queue just for
 progress.
 
-Gitui's [background job implementation][gitui async job] uses a different mechanism for the same
-separation: it stores a progress snapshot behind a lock and sends notifications to consumers. Its
-`run_job` stores the finished job before sending the final notification, so a notified consumer can
-retrieve the result. Progress state, notification, and final completion have distinct roles even
-when they do not use `watch`.
+Gitui's [background job implementation][gitui async job] stores progress behind a lock and sends
+notifications to consumers. This excerpt from `run_job` shows the order at completion; the
+surrounding job scheduling and pending-job lock are omitted:
 
-The same replacement behavior also suits a selection: store `Option<TaskId>` for the selected task
-in `watch`. A transient command such as `SelectTask(id)` followed by an unrelated update can
-disappear before the receiver observes it. The [tokio-console detail watcher] is a useful example of
-maintaining a subscription for the selected task; when adapting such a design, inspect both what the
-channel retains and whether waiting to forward a result delays noticing a changed selection.
+```rust title="Gitui: storing a result before notifying the UI"
+let notification = task.run(RunParams {
+    progress: self.progress.clone(),
+    sender: self.sender.clone(),
+})?;
+
+if let Ok(mut last) = self.last.lock() {
+    *last = Some(task);
+}
+
+self.sender.send(notification)?;
+```
+
+`task.run` receives access to the progress state and notification sender. Once it returns, the
+worker stores the finished job in `last`, releases that lock, and sends the final notification. The
+consumer can then retrieve the job. Progress state, notification, and final completion have distinct
+roles even without `watch`.
+
+The same latest-value behavior also suits a selection: store `Option<TaskId>` in `watch` so the
+receiver can inspect the current selection. The [tokio-console detail watcher] illustrates a related
+design: a task forwards details for the selected task until it sees a view change. Its
+`watch_rx.changed()` branch is copied below; the surrounding `select!` and stream branch are
+omitted:
+
+```rust title="tokio-console: ending a subscription when the view changes"
+update = watch_rx.changed() => {
+    if update.is_ok() {
+        match *watch_rx.borrow() {
+            UpdateKind::ExitTaskView => {
+                break;
+            },
+            UpdateKind::SelectTask(new_id) if new_id != task_id => {
+                break;
+            },
+            _ => {}
+        }
+    } else {
+        break;
+    }
+},
+```
+
+This version sends `UpdateKind` events through `watch`. Because only the latest value is retained, a
+transient `SelectTask` or `ExitTaskView` event can be replaced before the watcher observes it.
+Storing the current selection instead makes that state available even after intermediate changes.
+
+The other branch forwards each received detail update with this code:
+
+```rust title="tokio-console: forwarding a detail update"
+if details_tx.send(details).await.is_err() {
+    break;
+}
+```
+
+If the destination queue is full, this send waits inside the branch handler. The `select!` cannot
+notice a changed selection until that handler returns. These two fragments show separate design
+questions: what state must the channel retain, and can forwarding an update delay a view change?
 
 ## Shared state and redraws
 
@@ -130,4 +180,4 @@ observe changed data and request a frame. For a worker that owns a resource acro
 [`borrow_and_update()`]:
   https://docs.rs/tokio/latest/tokio/sync/watch/struct.Receiver.html#method.borrow_and_update
 [gitui async job]:
-  https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/asyncgit/src/asyncjob/mod.rs#L111-L155
+  https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/asyncgit/src/asyncjob/mod.rs#L148-L157

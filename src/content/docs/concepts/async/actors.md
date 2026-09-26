@@ -88,12 +88,27 @@ exit, account for outstanding callers and sender clones, then observe the actor'
 Ryhl's [discussion of handle cycles][actor cycles] explains why actors retaining each other's
 senders can prevent channel-based shutdown.
 
-Helix's [diff worker] demonstrates a long-lived resource-owning worker in an editor. It receives
-document and base revisions through a channel, retains diffing state between requests, then
-publishes hunks under a short write lock and notifies waiters after releasing the lock. It uses
-shared results and notifications rather than the per-request `oneshot` reply above. Both designs
-keep the worker's computation separate from the UI; the response route depends on whether callers
-need an individual answer or the latest shared result.
+Helix's diff worker receives document and base revisions through a channel and retains diffing state
+between requests. Its [`apply_hunks` method][diff worker] publishes the computed changes for the
+editor's gutter:
+
+```rust title="Helix: publishing a diff"
+fn apply_hunks(&mut self, diff_base: Rope, doc: Rope) {
+    let mut diff = self.diff.write();
+    diff.diff_base = diff_base;
+    diff.doc = doc;
+    diff.hunks.clear();
+    diff.hunks.extend(self.diff_alloc.hunks());
+    drop(diff);
+    self.diff_finished_notify.notify_waiters();
+}
+```
+
+The write lock protects replacement of the shared result. `drop(diff)` releases that lock before
+notifying waiters, so a woken reader can acquire it. Unlike the lookup actor's per-request `oneshot`
+reply, this notification tells readers to inspect the latest shared diff. The worker still owns the
+computation; the response route depends on whether callers need an individual answer or the latest
+shared result.
 
 Tokio's [Channels](https://tokio.rs/tokio/tutorial/channels) chapter also develops the
 resource-owning task and per-command response pattern. For progress updates or shared state that
@@ -106,4 +121,4 @@ does not need a single long-lived owner, see [Worker Updates](/concepts/async/me
 [`mpsc`]: https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html
 [`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html
 [diff worker]:
-  https://github.com/helix-editor/helix/blob/a2c9f44a564592257334ce0cec2fc904412173b5/helix-vcs/src/diff/worker.rs
+  https://github.com/helix-editor/helix/blob/a2c9f44a564592257334ce0cec2fc904412173b5/helix-vcs/src/diff/worker.rs#L72-L80

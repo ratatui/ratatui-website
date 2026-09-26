@@ -62,7 +62,19 @@ outstanding work rather than relying on this example's incrementing integer fore
 Generation checks protect visible state. They do not stop network traffic, CPU work, or side
 effects. Add a concurrency limit, cancellation, or debouncing where needed. Cancellation alone is
 not a replacement for checking identity: completion and cancellation can race. Yazi's [completion
-tickets] provide another application example of associating results with a request.
+tickets] reject a completion before applying it when its ticket no longer matches the input:
+
+```rust title="Yazi: reject an obsolete completion"
+if guard.ticket.current() != form.ticket {
+    succ!();
+}
+
+act!(complete, guard, form)
+```
+
+Here `guard` is the locked input state and `form` carries the incoming completion. `succ!()` returns
+without applying it. The comparison prevents an old completion from changing the input even if the
+work that produced it could not be stopped.
 
 ## Concurrency policies
 
@@ -96,11 +108,27 @@ the UI accepts. Already-started work can still finish after a later edit. Its ta
 tracked and cleaned up. [Cancellation](/concepts/async/cancellation/) can reduce obsolete work, but
 a cancellation request can race with completion and cannot replace the acceptance check.
 
-Bacon's [executor] uses a grace period before starting commands, but its output channel is unbounded
-at the linked revision. Limiting starts and limiting output are separate policies.
+Bacon's [executor] delays command startup after a file change so a burst of changes can settle:
+
+```rust title="Bacon: delay command startup"
+// before starting the command, we wait some time, so that a bunch
+// of quasi-simultaneous file events can be finished before the command
+// starts (during this time, no other command is started by bacon in app.rs)
+if !grace_period.is_zero() {
+    thread::sleep(grace_period.duration);
+}
+
+let mut cmd = command_builder.build();
+```
+
+This sleep runs on its executor thread. Unlike the search deadline above, this excerpt is a fixed
+wait before startup, not a timer reset on every edit. Its [output channel][bacon output channel] is
+unbounded at this revision; delaying starts does not also limit queued command output.
 
 [completion tickets]:
-  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-actor/src/input/complete.rs
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-actor/src/input/complete.rs#L20-L24
 [executor]:
-  https://github.com/Canop/bacon/blob/70d8951293501f4aaa1a8adc51f0de4bb70c1501/src/exec/executor.rs#L112-L190
+  https://github.com/Canop/bacon/blob/70d8951293501f4aaa1a8adc51f0de4bb70c1501/src/exec/executor.rs#L118-L125
 [`tokio::spawn`]: https://docs.rs/tokio/latest/tokio/task/fn.spawn.html
+[bacon output channel]:
+  https://github.com/Canop/bacon/blob/70d8951293501f4aaa1a8adc51f0de4bb70c1501/src/exec/executor.rs#L81

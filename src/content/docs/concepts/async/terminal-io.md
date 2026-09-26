@@ -79,6 +79,22 @@ query. [Crossterm's reader-conflict report][crossterm/crossterm#1039] and the [C
 patch] describe reader conflicts in specific query paths. Check whether your query uses the same
 reader and handles when investigating a similar stall.
 
+In that patch, Codex replaced its own `/dev/tty` color-response reader with queries handled through
+its patched Crossterm dependency. The [replacement function][Codex color-query function] is small
+because the event library takes over reading and identifying the responses:
+
+```rust title="Codex: querying colors through the event library"
+fn query_default_colors() -> std::io::Result<Option<DefaultColors>> {
+    let fg = query_foreground_color()?.and_then(color_to_tuple);
+    let bg = query_background_color()?.and_then(color_to_tuple);
+    Ok(fg.zip(bg).map(|(fg, bg)| DefaultColors { fg, bg }))
+}
+```
+
+The useful change is which reader handles the replies, not whether the function is async. These
+query functions were provided by Codex's patched dependency at this revision; this excerpt is not a
+claim that they are available in Crossterm 0.29.
+
 ## Startup and runtime queries
 
 If a fullscreen app needs queries only at startup, it can avoid overlapping those queries with
@@ -153,3 +169,5 @@ uses.
 [`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
 [`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html
 [`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
+[Codex color-query function]:
+  https://github.com/openai/codex/blob/07b8bdfbf1497cf7c478872bd082a13c5bd82c63/codex-rs/tui/src/terminal_palette.rs#L110-L114

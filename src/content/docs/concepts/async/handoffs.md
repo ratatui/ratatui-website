@@ -16,8 +16,41 @@ display because the editor may have changed what is on screen.
 ## Terminal handoff to a child process
 
 Restoring screen modes does not stop a separate reader. The child needs both the expected modes and
-exclusive access to input. The [Codex EventStream refactor] and [gitui input thread] illustrate why
-reader lifecycle belongs in handoff design.
+exclusive access to input. Gitui's [input thread][gitui input thread] reports when it reaches the
+paused branch, then waits until polling is enabled again. This excerpt is the body of that branch:
+
+```rust title="Gitui: acknowledging an input pause"
+if arc_current.load(Ordering::Relaxed) {
+    log::info!("input polling suspended");
+    tx.send(InputEvent::State(InputState::Paused))?;
+}
+
+arc_current.store(false, Ordering::Relaxed);
+
+arc_desired.wait(true);
+```
+
+The distinction is between requesting a pause and the reader actually reaching it. Once it sends
+`Paused`, this branch makes no further input reads before waiting for resume. The handoff caller
+must account for that acknowledgement before giving input to the child. The [Codex EventStream
+refactor] also makes reader lifecycle part of handoff design.
+
+Codex's [event broker][Codex EventStream refactor] makes pausing an ownership change: replacing its
+state drops the stored event source. Consumers keep the broker and can resume through a fresh source
+later:
+
+```rust title="Codex: dropping the active event source"
+pub fn pause_events(&self) {
+    let mut state = self
+        .state
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    *state = EventBrokerState::Paused;
+}
+```
+
+This makes the lifecycle explicit, but dropping the source alone is not proof that its underlying
+reader has finished stopping.
 
 :::caution[Stop the input reader before launching a child]
 
@@ -55,15 +88,35 @@ the terminal display. Reacquire the required modes, synchronize input ownership,
 display state, and redraw as appropriate for the platform. The [Codex suspend fix] is an example of
 correcting cursor behavior in this path.
 
+The [Codex resume path][Codex suspend fix] queries the cursor again because the shell may have moved
+it while displaying job-control messages. It updates its saved row when the query succeeds and logs
+an unavailable reply or error:
+
+```rust title="Codex: updating cursor position after resume"
+match crate::terminal_probe::cursor_position(crate::terminal_probe::DEFAULT_TIMEOUT) {
+    Ok(Some(position)) => self.set_cursor_y(position.y),
+    Ok(None) => tracing::debug!("terminal cursor position unavailable after resume"),
+    Err(err) => tracing::debug!(
+        error = %err,
+        "failed to read terminal cursor position after resume"
+    ),
+}
+```
+
+That query belongs in the input-ownership transition: resuming drawing with an old cursor position
+can put the inline UI in the wrong place, while querying alongside an active reader can lose the
+reply.
+
 Keep signal handling separate from ordinary Rust cleanup: many I/O and synchronization operations
 are unsuitable inside a low-level signal handler. Have the handler notify the application, then
 perform terminal cleanup or resume work in its ordinary event loop. Test suspension, child startup
 failure, and resume in a real terminal; a widget buffer test cannot validate terminal ownership.
 
 [Codex EventStream refactor]:
-  https://github.com/openai/codex/commit/cf44511e7780bc30286ec356849970ff7aeabebb
-[Codex suspend fix]: https://github.com/openai/codex/commit/76135cbe7ec8dbcc165aa1f2bd21358f9f1c6571
+  https://github.com/openai/codex/blob/cf44511e7780bc30286ec356849970ff7aeabebb/codex-rs/tui/src/tui/event_stream.rs#L90-L97
+[Codex suspend fix]:
+  https://github.com/openai/codex/blob/76135cbe7ec8dbcc165aa1f2bd21358f9f1c6571/codex-rs/tui/src/tui/job_control.rs#L72-L90
 [gitui input thread]:
-  https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/src/input.rs#L40-L145
+  https://github.com/extrawurst/gitui/blob/ee1bcd1eb344ba69bbc301f5b71db8030470e18b/src/input.rs#L128-L135
 [`EventStream` source]:
   https://github.com/crossterm-rs/crossterm/blob/3cea5b2d1d0c1cd4f285d18791b32e4b15e9bc0e/src/event/stream.rs#L42-L148

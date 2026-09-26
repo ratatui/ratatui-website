@@ -87,7 +87,32 @@ stopping blocking work are separate operations. It aborts its preview task and c
 `Highlighter::abort()`; the [highlighter][Yazi highlighter] compares its request ticket at
 checkpoints to detect obsolete work. The sorting helper has no such checkpoints, so `finish_sort`
 instead waits for the sort to finish. Choose between these policies according to whether the work
-can stop partway.
+can stop partway. The [preview abort method][Yazi abort] requests both kinds of cancellation:
+
+```rust title="Yazi: cancel the preview and invalidate highlighting"
+pub fn abort(&mut self) {
+    self.handle.take().map(|ct| ct.abort());
+    Highlighter::abort();
+}
+```
+
+The [highlighter's abort method][Yazi invalidate] advances its shared ticket. Each running
+highlighter has captured a ticket; its [checkpoint][Yazi checkpoint] compares that value with the
+latest one (intervening methods omitted):
+
+```rust title="Yazi: cooperative cancellation of blocking work"
+pub fn abort() { INCR.next(); }
+
+// ... highlighting methods omitted ...
+
+fn ensure_not_cancelled(&self) -> Result<(), PeekError> {
+    if self.ticket != INCR.current() { Err(anyhow!("Highlighting cancelled"))? } else { Ok(()) }
+}
+```
+
+The highlighting loop [calls this check while processing lines][Yazi check call]. Advancing the
+ticket does not interrupt a file read or highlighting step already executing: the worker stops when
+it next reaches a check. The preview's `abort` method also does not await either worker's exit.
 
 [Yazi preview tasks]:
   https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/tab/preview.rs#L26-L85
@@ -100,3 +125,11 @@ can stop partway.
 [`write_all`]: https://docs.rs/tokio/latest/tokio/io/trait.AsyncWriteExt.html#method.write_all
 [`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
 [`oneshot`]: https://docs.rs/tokio/latest/tokio/sync/oneshot/index.html
+[Yazi abort]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/tab/preview.rs#L82-L85
+[Yazi invalidate]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/highlighter.rs#L60
+[Yazi checkpoint]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/highlighter.rs#L142-L144
+[Yazi check call]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/highlighter.rs#L70-L86

@@ -25,7 +25,28 @@ dispatcher thread sends entries through a bounded Crossbeam channel; a full chan
 producer, and a send failure stops traversal when the receiver has gone away. In the [interactive
 event loop][dua event loop], traversal events are integrated into UI state. This has the same
 producer/consumer relationship as bounded Tokio `mpsc`, but its sender blocks a dedicated thread
-instead of awaiting capacity.
+instead of awaiting capacity. The [channel creation][dua capacity] and [send inside the traversal
+loop][dua send] show both the limit and what happens when the UI exits (intervening setup omitted):
+
+```rust title="Dua: bounded traversal results"
+let (entry_tx, entry_rx) = crossbeam::channel::bounded(100);
+// ... dispatcher thread and traversal setup omitted ...
+if entry_tx
+    .send(TraversalEvent::Entry(
+        entry,
+        Arc::clone(&root_path),
+        device_id,
+    ))
+    .is_err()
+{
+    // The channel is closed, this means the user has
+    // requested to quit the app. Abort the walking.
+    return;
+}
+```
+
+The send waits when all 100 slots are occupied. Dropping the receiver makes it return an error,
+which returns from the dispatcher thread instead of continuing to scan for an absent UI.
 
 Consider a worker that prepares a large result before awaiting a bounded send. While waiting, it
 still owns that result. If the UI starts another such worker on every keypress, a small result queue
@@ -85,7 +106,27 @@ expensive handlers or add a time budget when one batch still takes too long.
 Yazi's [application loop][Yazi app loop] drains queued events and uses [render flags] to decide
 whether to draw. At the linked revision, the drain is unbounded and dispatch can render when a frame
 is due. An unbounded drain can delay returning to other loop work while producers keep adding
-messages; use a batch limit when adapting this approach.
+messages; use a batch limit when adapting this approach. Its [drain method][Yazi drain] waits for
+one event, then dispatches every event it can immediately receive:
+
+```rust title="Yazi: drain queued events"
+async fn drain(&mut self, rx: &mut mpsc::UnboundedReceiver<Event>) -> Result<bool> {
+    let Some(event) = rx.recv().await else {
+        return Ok(false);
+    };
+
+    self.dispatch(event)?;
+    while let Ok(e) = rx.try_recv() {
+        self.dispatch(e)?;
+    }
+
+    Ok(true)
+}
+```
+
+`recv().await` provides the initial wait; `try_recv()` adds no wait and no per-turn count limit. The
+drawing decision happens inside `dispatch`, so draining does not mean drawing only once at the end
+of the batch.
 
 Combining redraw requests reduces frames, not queued messages. A latest-value channel can reduce
 retained updates, but forwarding each observed value into another queue introduces another backlog.
@@ -102,3 +143,9 @@ retained updates, but forwarding each observed value into another queue introduc
 [dua event loop]:
   https://github.com/Byron/dua-cli/blob/e5b1e89afe554430789d228d8c32f5aa12930a7f/src/interactive/app/eventloop.rs#L194-L249
 [`Semaphore`]: https://docs.rs/tokio/latest/tokio/sync/struct.Semaphore.html
+[dua capacity]:
+  https://github.com/Byron/dua-cli/blob/e5b1e89afe554430789d228d8c32f5aa12930a7f/src/traverse.rs#L235
+[dua send]:
+  https://github.com/Byron/dua-cli/blob/e5b1e89afe554430789d228d8c32f5aa12930a7f/src/traverse.rs#L257-L268
+[Yazi drain]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-fm/src/app/app.rs#L66-L77

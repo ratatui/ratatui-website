@@ -76,7 +76,23 @@ file opening and highlighting into `spawn_blocking` and returns prepared text. I
 controller][Yazi preview tasks] retains the async preview handle and invalidates highlighting when
 the selected file changes. The highlighter checks that invalidation during its work. This
 illustrates offloading and cooperative cancellation; the semaphore above is a separate admission
-policy, not a claim about Yazi's job limits.
+policy, not a claim about Yazi's job limits. The [worker entry point][Yazi worker entry] is small:
+
+```rust title="Yazi: prepare highlighted text on a blocking worker"
+pub async fn oneshot<P>(path: P, skip: usize, size: Size) -> Result<Text<'static>, PeekError>
+where
+    P: Into<PathBuf>,
+{
+    let path = path.into();
+    tokio::task::spawn_blocking(move || Self::make(path, skip, size)?.highlight()).await?
+}
+```
+
+Here `oneshot` is Yazi's method name, not a channel. `make` opens the file and `highlight` prepares
+owned text inside the blocking closure; the async caller awaits the result. The closure can outlive
+that wait.
+[Yazi's cancellation checks](/concepts/async/cancellation/#joining-blocking-work-after-cancellation)
+let it notice that the selected file has changed.
 
 Keep the handle even if the user leaves the view. A started blocking closure finishes on its own;
 dropping the handle loses the opportunity to observe that completion. The
@@ -103,3 +119,5 @@ input strategy and ordered output.
 [`block_in_place`]: https://docs.rs/tokio/latest/tokio/task/fn.block_in_place.html
 [`Semaphore`]: https://docs.rs/tokio/latest/tokio/sync/struct.Semaphore.html
 [`slots.close()`]: https://docs.rs/tokio/latest/tokio/sync/struct.Semaphore.html#method.close
+[Yazi worker entry]:
+  https://github.com/sxyazi/yazi/blob/6e0aaee8229afadfbcdc05fb6607b023da928b18/yazi-core/src/highlighter.rs#L28-L34
