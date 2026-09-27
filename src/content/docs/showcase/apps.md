@@ -196,6 +196,16 @@ documentations in your terminal.
 
 ---
 
+## [`patent`](https://github.com/r14dd/patent)
+
+Prior-art search for dev-tool ideas. Describe the tool in plain English and `patent` searches
+package registries, GitHub and Hacker News, ranks the matches by semantic similarity, and tells
+you whether the space is open, crowded or saturated.
+
+![patent demo](https://vhs.charm.sh/vhs-2nc9g3XRuTkvUhFxuk3EJh.gif)
+
+---
+
 ## [`rainfrog`](https://github.com/achristmascarl/rainfrog)
 
 A lightweight and terminal-based tool for interacting with databases.
