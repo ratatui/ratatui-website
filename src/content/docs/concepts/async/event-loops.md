@@ -1,0 +1,140 @@
+---
+title: Event Loops
+sidebar:
+  order: 1
+---
+
+A terminal app displays a list of items fetched from a server. Pressing `r` refreshes the list.
+While the request waits, the app should display a loading status and keep accepting input. When data
+arrives, the list should update without another keypress. If the request fails, the old list should
+remain visible beside an error.
+
+The [background fetch example](/recipes/apps/background-fetch/) implements that behavior with a
+two-second simulated fetch, so it needs no server. Its counter, changed with `+` and `-`, makes it
+easy to see whether input still works while loading. It allows one fetch at a time and ignores
+repeated refreshes until that fetch finishes. The loop below coordinates this refresh operation with
+counter input and drawing. The request can wait asynchronously, while
+[Ratatui drawing and terminal input](/concepts/async/terminal-io/) keep their own execution and
+ownership requirements.
+
+## Events and application state
+
+An **event loop** coordinates the refresh and the other input: it waits for an event, updates
+application state, and draws changes. The pending request handle, fetched items, error, and counter
+all belong to the UI state. A refresh starts work; its completion later supplies another event for
+the loop.
+
+One arrangement gives the request its own task. The UI loop starts that task, then returns to
+waiting for input or the result:
+
+```mermaid
+flowchart TD
+    Input[Keyboard input] --> Events
+    subgraph UI[UI loop]
+        Events[Handle input or completed work]
+        Events -->|Refresh requested| Start[Start request]
+        Events -->|Input or result changes state| Update[Update application state]
+        Update --> Dirty[Request a frame]
+        Dirty --> Draw[Draw when due]
+    end
+    Start --> Worker[Background task]
+    Worker -->|Result| Events
+```
+
+The example uses an
+[independently scheduled task](/concepts/async/basics/#runtimes-tasks-and-threads) for its fetch and
+retains the task's handle until completion. The UI remains responsible for input, applying the
+result, and [synchronous drawing](/concepts/async/terminal-io/#drawing-is-synchronous). Awaiting the
+fetch inside the key handler would prevent that loop from handling another event.
+
+## Input, results, and drawing
+
+The UI task waits for input, the pending request's result, or a frame deadline. A frame deadline is
+the earliest time it should draw again; spacing frames lets several changes appear together. Input
+and request completion can each wake the task before that deadline.
+
+Each selection waits for input, a request result, and a frame deadline together. It runs one ready
+branch, then starts the next loop turn. A keypress does not make the request task disappear; the
+loop can wait for its result again.
+
+This pseudocode keeps the refresh, counter input, and drawing in one loop. The
+[complete example](/recipes/apps/background-fetch/) also covers startup, errors, and cleanup.
+
+```text
+while running:
+    select:
+        input = await next_input():
+            if input is Refresh:
+                if no request is pending:
+                    spawn fetch and retain its handle  # A pending handle means loading.
+                    request_redraw()
+                else: ignore repeated refresh
+            else: apply_input(input)
+        result = await pending_request_handle(), if a request exists:
+            clear_pending_request()
+            apply_result(result)
+        await frame_deadline(), if redraw_requested:
+            draw()                 # Synchronous: this UI task waits.
+            clear_redraw_request()
+            reset_frame_deadline()
+```
+
+Starting a refresh changes the displayed status to loading, so it requests a redraw immediately.
+Applying other input or a result also requests a redraw when visible state changes. Spawning the
+fetch lets the UI task return to selection while the request waits. The
+[async event-loop example](/recipes/apps/background-fetch/) implements this arrangement with
+[`EventStream`], [`JoinHandle`], and [`select!`].
+
+## Wakeups and UI ownership
+
+In this loop, input, request completion, and the frame timer each provide a reason to wake. If the
+loop waited only for a key, a finished refresh could remain invisible until the user pressed one.
+Likewise, changing data shared with the UI is not enough on its own: the loop needs notification
+that there is something to apply and draw.
+
+The UI loop applies results and input to the same state before rendering. A worker can own its
+request data without acquiring a lock on the whole application. This also gives one place to decide
+whether an old result still belongs to the current view.
+
+:::caution[Terminal input has one owner]
+
+Crossterm requires [`poll`] and [`read`] on the same thread, or an `EventStream`, without mixing
+those strategies. A separate input task still shares the terminal with queries and child programs.
+[Terminal I/O](/concepts/async/terminal-io/) explains the coordination this requires.
+
+:::
+
+## Background work in the event loop
+
+The refresh task returns data; the UI decides how to apply it.
+[Background Work](/concepts/async/tasks/) explains that ownership and the completion path. A
+separate task is one arrangement: a loop can also
+[retain a pending operation directly](/concepts/async/tasks/#concurrent-operations-in-one-task).
+
+Other views may need more than one kind of worker interaction. A profile fetch can wait for account
+details and activity together; a download view needs progress before each job finishes; a service
+browser may keep one connection and cache behind a long-lived command loop. These relationships
+compose with the same input and drawing loop:
+
+| UI needs                                  | Read next                         |
+| ----------------------------------------- | --------------------------------- |
+| One request result                        | [Background Work]                 |
+| Several results or the next completed job | [Waiting for Multiple Operations] |
+| Progress or other updates while work runs | [Worker Updates]                  |
+| Commands served by a persistent resource  | [Resource-owning Workers]         |
+
+Input and completed work both lead back to the UI owner, which changes state and draws when a frame
+is due. Returning to that wait promptly keeps input responsive; including completion in the wait
+makes results visible without another keypress. A
+[synchronous UI with async workers](/concepts/async/bridging/#synchronous-ui-with-async-workers)
+needs the same result delivery and redraw decisions, even though it waits differently.
+
+[Background Work]: /concepts/async/tasks/
+[Waiting for Multiple Operations]: /concepts/async/waiting/
+[Worker Updates]: /concepts/async/messages/
+[Resource-owning Workers]: /concepts/async/actors/
+[`EventStream`]: https://docs.rs/crossterm/latest/crossterm/event/struct.EventStream.html
+[`JoinHandle`]: https://docs.rs/tokio/latest/tokio/task/struct.JoinHandle.html
+[`select!`]: https://docs.rs/tokio/latest/tokio/macro.select.html
+[`poll`]: https://docs.rs/crossterm/latest/crossterm/event/fn.poll.html
+[`read`]: https://docs.rs/crossterm/latest/crossterm/event/fn.read.html

@@ -5,6 +5,16 @@ sidebar:
   label: Terminal and Event Handler
 ---
 
+:::caution[Separate input readers need a shutdown protocol]
+
+The input task below is separate from drawing. Cancelling that task does not prove Crossterm's
+internal input helper has stopped. Before adding terminal queries or an external-program handoff,
+check the [terminal ownership requirements](/concepts/async/terminal-io/) and
+[handoff lifecycle](/concepts/async/handoffs/). This example's `stop` method is not an acknowledged
+terminal-reader handoff protocol.
+
+:::
+
 :::tip
 
 See [`tui.rs`](https://github.com/ratatui/crates-tui/blob/main/src/tui.rs) and
