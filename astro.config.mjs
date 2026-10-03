@@ -46,15 +46,8 @@ export default defineConfig({
         replacesTitle: true,
       },
       favicon: "/favicon-32.png",
-      head: [
-        {
-          tag: "meta",
-          attrs: {
-            property: "og:image",
-            content: "/ratatui-og.png",
-          },
-        },
-      ],
+      // Note: `og:image` and the other link preview tags are set per page in
+      // `src/components/Head.astro` so that pages can preview their own featured media.
       components: {
         Head: "./src/components/Head.astro",
         Header: "./src/components/Header.astro",
