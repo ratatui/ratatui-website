@@ -3029,6 +3029,14 @@ packages:
     engines: { node: ">=0.4.0" }
     hasBin: true
 
+  acorn@8.19.0:
+    resolution:
+      {
+        integrity: sha512-oJlA3XiRm7Cyk6qFD2Jn8ak9B7jSy0qy00ADO3+8dpT0LSjFihQYv4C02LFCSYJV3Q37xYwwRy5m+IpIiUzqWw==,
+      }
+    engines: { node: ">=0.4.0" }
+    hasBin: true
+
   ajv-draft-04@1.0.0:
     resolution:
       {
@@ -8288,9 +8296,9 @@ snapshots:
 
   "@speed-highlight/core@1.2.24": {}
 
-  "@sveltejs/acorn-typescript@1.0.13(acorn@8.18.0)":
+  "@sveltejs/acorn-typescript@1.0.13(acorn@8.19.0)":
     dependencies:
-      acorn: 8.18.0
+      acorn: 8.19.0
 
   "@tailwindcss/node@4.3.3":
     dependencies:
@@ -8614,6 +8622,8 @@ snapshots:
       acorn: 8.18.0
 
   acorn@8.18.0: {}
+
+  acorn@8.19.0: {}
 
   ajv-draft-04@1.0.0(ajv@8.20.0):
     optionalDependencies:
@@ -11046,9 +11056,9 @@ snapshots:
     dependencies:
       "@jridgewell/remapping": 2.3.5
       "@jridgewell/sourcemap-codec": 1.6.0
-      "@sveltejs/acorn-typescript": 1.0.13(acorn@8.18.0)
+      "@sveltejs/acorn-typescript": 1.0.13(acorn@8.19.0)
       "@types/estree": 1.0.9
-      acorn: 8.18.0
+      acorn: 8.19.0
       aria-query: 5.3.2
       axobject-query: 4.1.0
       clsx: 2.1.1
