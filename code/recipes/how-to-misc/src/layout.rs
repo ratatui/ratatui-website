@@ -30,6 +30,7 @@ fn center_vertical(area: Rect, height: u16) -> Rect {
 ///
 /// ```rust
 /// use ratatui::layout::{Constraint, Rect};
+/// use recipes::layout::center;
 ///
 /// let area = Rect::new(0, 0, 100, 100);
 /// let horizontal = Constraint::Percentage(20);
@@ -37,7 +38,7 @@ fn center_vertical(area: Rect, height: u16) -> Rect {
 ///
 /// let centered = center(area, horizontal, vertical);
 /// ```
-fn center(area: Rect, horizontal: Constraint, vertical: Constraint) -> Rect {
+pub fn center(area: Rect, horizontal: Constraint, vertical: Constraint) -> Rect {
     area.centered(horizontal, vertical)
 }
 // ANCHOR_END: center

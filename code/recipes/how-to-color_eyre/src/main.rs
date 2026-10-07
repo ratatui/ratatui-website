@@ -47,7 +47,9 @@ fn run(mut terminal: DefaultTerminal) -> color_eyre::Result<()> {
             Event::Key(KeyEvent {
                 code: KeyCode::Char('e'),
                 ..
-            }) => bail!("user triggered error"),
+            }) => {
+                bail!("user triggered error");
+            }
             _ => {}
         }
     }
