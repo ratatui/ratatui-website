@@ -160,6 +160,15 @@ A mine sweeping game written in Rust
 
 ---
 
+## [`nightlightd`](https://github.com/umutdinceryananer/nightlightd)
+
+A terminal dashboard for an X11 screen colour-temperature daemon. The interface takes its accent
+colour from the tint the daemon is applying, so it warms from gold by day to candle-orange at night.
+
+![nightlightd demo](https://github.com/umutdinceryananer/nightlightd/blob/main/docs/screenshots/nightlight-tui.gif?raw=true)
+
+---
+
 ## [`oatmeal`](https://github.com/dustinblackman/oatmeal/)
 
 Oatmeal is a terminal UI chat application that speaks with LLMs, complete with slash commands and
