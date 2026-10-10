@@ -4,9 +4,12 @@ sidebar:
   order: 0
 ---
 
-This page covers several patterns one can use for their application and acts as a top-level page for
-the following articles where these patterns are explored more in-depth.
+Choose a structure for application state and updates, then decide how background work reaches the
+event loop. These patterns can be combined.
 
 - [The Elm Architecture](./the-elm-architecture/)
 - [Component Architecture](./component-architecture/)
 - [Flux Architecture](./flux-architecture/)
+
+For background work, event loops, and terminal coordination, see
+[Async Applications](/concepts/async/).

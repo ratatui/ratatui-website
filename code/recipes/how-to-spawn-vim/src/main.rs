@@ -1,19 +1,13 @@
 // ANCHOR: all
 // ANCHOR: imports
 use ratatui::{
-    backend::CrosstermBackend,
-    crossterm::{
-        event::{self, Event, KeyCode, KeyEventKind},
-        terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-        ExecutableCommand,
-    },
+    crossterm::event::{self, Event, KeyCode, KeyEventKind},
     widgets::Paragraph,
     DefaultTerminal, Frame,
 };
-use std::io::{stdout, Result};
+use std::io::Result;
 use std::process::Command;
 
-type Terminal = ratatui::Terminal<CrosstermBackend<std::io::Stdout>>;
 // ANCHOR_END: imports
 
 // ANCHOR: action_enum
@@ -64,13 +58,21 @@ fn handle_events() -> Result<Action> {
 // ANCHOR_END: handle-events
 
 // ANCHOR: run_editor
-fn run_editor(terminal: &mut Terminal) -> Result<()> {
-    stdout().execute(LeaveAlternateScreen)?;
-    disable_raw_mode()?;
-    Command::new("vim").arg("/tmp/a.txt").status()?;
-    stdout().execute(EnterAlternateScreen)?;
-    enable_raw_mode()?;
-    terminal.clear()?;
+fn run_editor(terminal: &mut DefaultTerminal) -> Result<()> {
+    // This loop owns the only input reader and has returned from read before handing off.
+    terminal.show_cursor()?;
+    ratatui::try_restore()?;
+    let child_result = Command::new("vim").arg("/tmp/a.txt").status();
+
+    // Reacquire even when launching the editor failed; reset the saved display buffers too.
+    // If reacquisition fails, main still runs restoration and reports the error.
+    *terminal = ratatui::try_init()?;
+    let status = child_result?;
+    if !status.success() {
+        return Err(std::io::Error::other(format!(
+            "editor exited with {status}"
+        )));
+    }
     Ok(())
 }
 // ANCHOR_END: run_editor
