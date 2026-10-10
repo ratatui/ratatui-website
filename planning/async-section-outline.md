@@ -2,12 +2,14 @@
 
 ## Conceptual restructure
 
-The current implementation uses a flat async section: overview, event loops, bridging, cooperative
-scheduling, redraws, blocking work, tasks, messages, backpressure, overlapping work, cancellation,
-terminal I/O, shutdown, and handoffs. Each page explains its mechanism locally and links to Tokio
-for depth. Recipes own runnable setup, HTTP adaptation, editor handoff, and troubleshooting. The
-earlier outline below records the investigation and previous grouping, not the current sidebar.
-Speculative APIs are preserved in [async-terminal-design.md](async-terminal-design.md).
+The current implementation uses a flat async section: overview, async basics, terminal I/O, event
+loops, design guidelines, background work, waiting for multiple operations, worker updates,
+resource-owning workers, bridging, cooperative scheduling, redraws, blocking work, backpressure,
+overlapping work, cancellation, shutdown, and handoffs. Each page explains its mechanism locally and
+links to Tokio for depth. Recipes own runnable setup, HTTP adaptation, editor handoff, and
+troubleshooting. The earlier outline below records the investigation and previous grouping, not the
+current sidebar. Speculative APIs are preserved in
+[async-terminal-design.md](async-terminal-design.md).
 
 ## Purpose
 
