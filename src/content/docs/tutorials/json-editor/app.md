@@ -24,8 +24,7 @@ listen for.
 We will be using the application's state to track two things:
 
 1. what screen the user is seeing,
-2. which box should be highlighted, the "key" or "value" (this only applies when the user is editing
-   a key-value pair).
+1. the key-value pair currently being edited, including which box should be highlighted.
 
 ### Current Screen Enum
 
@@ -42,7 +41,7 @@ We represent these possible modes with a simple enum:
 {{#include @code/tutorials/json-editor/src/app.rs:screen_modes}}
 ```
 
-### Currently Editing Enum
+### Edit Focus Enum
 
 As you may already know, `ratatui` does not automatically redraw the screen[^note]. `ratatui` also
 does not remember anything about what it drew last frame.
@@ -51,12 +50,25 @@ This means that the programmer is responsible for handling all state and updatin
 changes. In this case, we will allow the user to input two strings in the `Editing` mode - a key and
 a value. The programmer is responsible for knowing which the user is trying to edit.
 
-For this purpose, we will create another enum for our application state called `CurrentlyEditing` to
-keep track of which field the user is currently entering:
+For this purpose, we will create another enum for our application state called `EditFocus` to keep
+track of which field the user is currently entering:
 
 ```rust
-{{#include @code/tutorials/json-editor/src/app.rs:currently_editing}}
+{{#include @code/tutorials/json-editor/src/app.rs:edit_focus}}
 ```
+
+### Editing Pair Struct
+
+The key and value fields are only useful while the user is editing a new pair. Instead of storing
+those temporary strings directly on `App`, we group them in an `EditingPair` with the field that is
+currently active.
+
+```rust
+{{#include @code/tutorials/json-editor/src/app.rs:editing_pair}}
+```
+
+This keeps the draft input together: when no pair is being edited, the application does not need to
+hold empty key and value strings.
 
 ## The full application state
 
@@ -84,11 +96,22 @@ change universal defaults for the state.
     // --snip--
 ```
 
+### `start_editing()`
+
+When the user chooses to create a new pair, we create a fresh `EditingPair`. The key and value start
+empty, and the cursor starts in the key field.
+
+```rust
+    // --snip--
+{{#include @code/tutorials/json-editor/src/app.rs:start_editing}}
+    // --snip--
+```
+
 ### `save_key_value()`
 
-This function will be called when the user saves a key-value pair in the editor. It adds the two
-stored variables to the key-value pairs `HashMap`, and resets the status of all of the editing
-variables.
+This function will be called when the user saves a key-value pair in the editor. The `take()` call
+moves the current `EditingPair` out of `App` and leaves `None` behind. We can then move the owned
+key and value strings into the key-value pairs `HashMap` without cloning them.
 
 ```rust
     // --snip--
@@ -100,8 +123,8 @@ variables.
 
 Sometimes it is easier to put simple logic into a convenience function so we don't have to worry
 about it in the main code block. `toggle_editing` is one of those cases. All we are doing, is
-checking if something is currently being edited, and if it is, swapping between editing the Key and
-Value fields.
+checking if a pair is currently being edited, and if it is, swapping between editing the Key and
+Value fields. If editing has not started yet, the helper creates a fresh `EditingPair`.
 
 ```rust
     // --snip--
