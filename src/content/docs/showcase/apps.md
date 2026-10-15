@@ -174,7 +174,7 @@ colour from the tint the daemon is applying, so it warms from gold by day to can
 A customizable, powerful and versatile Modbus client for the terminal, with live register reading,
 custom value interpretations, graphs and register writes.
 
-![mtui demo](https://raw.githubusercontent.com/inowattio/MTUI/main/.github/resources/demo.gif)
+![mtui demo](https://github.com/inowattio/MTUI/releases/latest/download/presentation.gif)
 
 ---
 
