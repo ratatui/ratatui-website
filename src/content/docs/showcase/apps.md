@@ -294,6 +294,15 @@ assist with the analysis of networking issues.
 
 ---
 
+## [`tuiba`](https://github.com/Huseynteymurzade28/tuiba)
+
+A Game Boy Advance emulator written from scratch in Rust that plays games at full speed, with sound,
+inside your terminal. Browse a ROM library, then play with save states, rewind and fast-forward.
+
+![tuiba demo](https://github.com/user-attachments/assets/42c8d0cf-83d3-4ac6-b41d-03fda64ec1e0)
+
+---
+
 ## [`twozero48`](https://github.com/de-sh/twozero48)
 
 Play 2048 in your terminal
