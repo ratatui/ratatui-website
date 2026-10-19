@@ -7,6 +7,7 @@ members = [
   "code/tutorials/*",
 ]
 exclude = [
+  "code/showcase/atuin", # only contains demo recording sources
   "code/showcase/widget-showcase-third-party", # only contains VHS tape files
 ]
 resolver = "2"

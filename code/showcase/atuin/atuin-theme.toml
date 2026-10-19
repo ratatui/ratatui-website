@@ -1,0 +1,20 @@
+# Palette adapted from https://atuin.sh/.
+[theme]
+name = "atuin-site"
+
+[colors]
+Base = "#e8f0e9"
+Title = "#a8ecba"
+Important = "#38c85a"
+Guidance = "#8fa1a8"
+Annotation = "#4ec2f8"
+Muted = "#8fa1a8"
+AlertInfo = "#4ec2f8"
+AlertWarn = "#d8bc78"
+AlertError = "#e78383"
+SyntaxCommand = "#a8ecba"
+SyntaxFlag = "#4ec2f8"
+SyntaxString = "#f0d9a0"
+SyntaxVariable = "#d2b9f2"
+SyntaxOperator = "#8edce0"
+SyntaxComment = "#8fa1a8"

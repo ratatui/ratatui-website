@@ -20,7 +20,9 @@ https://github.com/ratatui/ratatui-website/issues/new?template=showcase-submissi
 Atuin replaces your existing shell history with a SQLite database, and records additional context
 for your commands.
 
-![atui demo](https://github.com/atuinsh/atuin/blob/main/demo.gif?raw=true)
+Search your history with Ctrl+R, recall a command with Tab, and run it from your shell.
+
+![Atuin searches for cargo --version, recalls it to the shell, and runs it](./apps/atuin.gif)
 
 ---
 
