@@ -22,7 +22,7 @@ for your commands.
 
 Search your history with Ctrl+R, recall a command with Tab, and run it from your shell.
 
-![Atuin searches for cargo --version, recalls it to the shell, and runs it](./apps/atuin.gif)
+![Atuin searches for cargo --version, recalls it to the shell, and runs it](./apps/atuin.webp)
 
 ---
 
