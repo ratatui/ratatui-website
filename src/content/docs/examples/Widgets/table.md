@@ -1,5 +1,6 @@
 ---
 title: Table
+description: Tabular data with the Table widget.
 ---
 
 Demonstrates the [`Table`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Table.html) widget.

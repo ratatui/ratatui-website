@@ -1,5 +1,6 @@
 ---
 title: ui.rs
+description: Rendering the counter app's styled UI from ui.rs.
 ---
 
 Previously we were rendering a `Paragraph` with no styling.

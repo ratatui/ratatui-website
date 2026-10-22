@@ -1,5 +1,6 @@
 ---
 title: Block
+description: Borders and titles with the Block widget.
 ---
 
 Demonstrates the [`Block`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Block.html) widget.

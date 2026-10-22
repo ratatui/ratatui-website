@@ -1,5 +1,6 @@
 ---
 title: Highlights
+description: What changed in each Ratatui release.
 sidebar:
   order: 1
 ---

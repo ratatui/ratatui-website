@@ -1,5 +1,6 @@
 ---
 title: Custom Widget
+description: Implementing a custom widget.
 ---
 
 Demonstrates how to implement the

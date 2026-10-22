@@ -1,5 +1,6 @@
 ---
 title: Demo
+description: The original Ratatui demo, showing many built-in widgets.
 ---
 
 This is the original demo example from the main README. It is available for each of the backends.

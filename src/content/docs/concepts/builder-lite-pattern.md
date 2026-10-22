@@ -1,5 +1,6 @@
 ---
 title: Builder Lite Pattern
+description: The method-chaining pattern Ratatui uses to configure widgets.
 ---
 
 In Ratatui, most widgets (and some other objects) use the [Builder Lite] pattern to set fields. This

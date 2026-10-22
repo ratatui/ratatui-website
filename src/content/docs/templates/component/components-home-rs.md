@@ -1,5 +1,6 @@
 ---
 title: Components/home.rs
+description: The component template's Home component.
 sidebar:
   order: 6
 ---

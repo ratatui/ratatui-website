@@ -1,5 +1,6 @@
 ---
 title: Block
+description: Drawing borders and titles with the Block widget.
 sidebar:
   order: 1
 ---

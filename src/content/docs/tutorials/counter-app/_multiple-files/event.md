@@ -1,5 +1,6 @@
 ---
 title: event.rs
+description: Moving the counter app's event handling into event.rs.
 ---
 
 Most applications will have a main run loop like this:

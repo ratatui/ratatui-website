@@ -1,5 +1,6 @@
 ---
 title: Colors
+description: Rendering the available named and indexed colors.
 ---
 
 Demonstrates the available [`Color`](https://docs.rs/ratatui/0.30.2/ratatui/style/enum.Color.html)

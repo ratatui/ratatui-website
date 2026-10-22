@@ -1,5 +1,6 @@
 ---
 title: Develop Applications
+description: Recipes for building and shipping Ratatui apps.
 sidebar:
   order: 0
 ---

@@ -1,5 +1,6 @@
 ---
 title: Minimal Hello World
+description: The smallest possible Ratatui program.
 ---
 
 Demonstrates a minimal hello world. Source

@@ -1,5 +1,6 @@
 ---
 title: Debugging Widget State
+description: Viewing widget state on screen while debugging.
 sidebar:
   order: 2
 ---

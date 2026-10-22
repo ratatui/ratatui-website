@@ -1,5 +1,6 @@
 ---
 title: Migrate from tui-rs
+description: Migrating from tui-rs to Ratatui.
 sidebar:
   order: 8
 ---

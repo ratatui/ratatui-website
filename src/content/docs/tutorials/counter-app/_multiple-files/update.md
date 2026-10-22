@@ -1,5 +1,6 @@
 ---
 title: update.rs
+description: Updating the counter app's state from key events in update.rs.
 ---
 
 Finally we have the `update.rs` file. Here, the `update()` function takes in two arguments:

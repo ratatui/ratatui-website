@@ -1,5 +1,6 @@
 ---
 title: Render UIs
+description: Recipes for rendering and styling text.
 sidebar:
   order: 0
 ---

@@ -1,5 +1,6 @@
 ---
 title: Submitting to the Showcase
+description: What the showcase accepts and how to submit.
 sidebar:
   order: 11
   label: Submitting to the Showcase

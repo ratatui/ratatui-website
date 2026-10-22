@@ -1,5 +1,6 @@
 ---
 title: UI - Exit Popup
+description: Drawing the JSON editor's exit confirmation screen.
 sidebar:
   order: 6
 ---

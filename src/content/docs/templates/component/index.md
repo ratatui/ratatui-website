@@ -1,5 +1,6 @@
 ---
 title: Component Template
+description: An async Ratatui app template built around components.
 sidebar:
   order: 0
 ---

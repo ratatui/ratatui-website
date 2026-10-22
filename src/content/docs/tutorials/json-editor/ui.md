@@ -1,5 +1,6 @@
 ---
 title: UI.rs
+description: Setting up the JSON editor's UI layout.
 sidebar:
   order: 3
 ---

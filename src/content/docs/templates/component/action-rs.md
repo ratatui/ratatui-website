@@ -1,5 +1,6 @@
 ---
 title: Action.rs
+description: The component template's Action enum.
 sidebar:
   order: 4
 ---

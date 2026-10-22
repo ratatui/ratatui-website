@@ -1,5 +1,6 @@
 ---
 title: Components.rs
+description: The Component trait at the heart of the component template.
 sidebar:
   order: 5
 ---

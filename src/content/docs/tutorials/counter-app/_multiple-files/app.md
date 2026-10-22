@@ -1,5 +1,6 @@
 ---
 title: app.rs
+description: The counter app's state in its own app.rs module.
 ---
 
 Let's start with the same `struct` as we had before:

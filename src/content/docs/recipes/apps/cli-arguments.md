@@ -1,5 +1,6 @@
 ---
 title: Handle CLI arguments
+description: Handling command line arguments with clap.
 sidebar:
   order: 1
   label: CLI Arguments

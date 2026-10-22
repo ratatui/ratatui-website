@@ -1,5 +1,6 @@
 ---
 title: Cli.rs
+description: Command line parsing in the component template.
 sidebar:
   order: 10
 ---

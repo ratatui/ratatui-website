@@ -1,5 +1,6 @@
 ---
 title: Rendering under the hood
+description: What happens inside Ratatui when a frame is drawn.
 sidebar:
   order: 1
   label: Under the hood

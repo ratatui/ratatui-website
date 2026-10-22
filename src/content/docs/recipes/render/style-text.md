@@ -1,5 +1,6 @@
 ---
 title: "Styling Text"
+description: Styling text with colors and modifiers.
 sidebar:
   order: 2
   label: Styling Text

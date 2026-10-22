@@ -1,5 +1,6 @@
 ---
 title: Project Structure
+description: How the component template's files are laid out.
 sidebar:
   order: 1
 ---

@@ -1,5 +1,6 @@
 ---
 title: Create custom widgets
+description: Writing your own widgets.
 sidebar:
   order: 3
 ---

@@ -1,5 +1,6 @@
 ---
 title: Component libraries
+description: A themeable component library for Ratatui.
 sidebar:
   order: 5
 ---

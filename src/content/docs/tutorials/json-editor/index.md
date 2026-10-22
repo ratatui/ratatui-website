@@ -1,5 +1,6 @@
 ---
 title: JSON Editor
+description: Building a JSON key-value editor with Ratatui.
 sidebar:
   order: 0
 ---

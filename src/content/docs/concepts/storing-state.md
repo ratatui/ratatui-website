@@ -1,5 +1,6 @@
 ---
 title: Storing Application State
+description: Keeping application state in a single app struct.
 ---
 
 This page covers several ways that a programmer can store the state of the application.

@@ -1,5 +1,6 @@
 ---
 title: Inline Viewport
+description: Rendering below the shell prompt with an inline viewport.
 ---
 
 Demonstrates the

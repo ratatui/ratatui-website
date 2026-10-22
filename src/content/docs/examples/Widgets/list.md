@@ -1,5 +1,6 @@
 ---
 title: List
+description: Selectable lists with the List widget.
 ---
 
 Demonstrates the [`List`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.List.html) widget.

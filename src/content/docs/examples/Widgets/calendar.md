@@ -1,5 +1,6 @@
 ---
 title: Calendar
+description: Rendering a month view with the Calendar widget.
 ---
 
 Demonstrates the [`Calendar`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/calendar/) widget.

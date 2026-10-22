@@ -1,5 +1,6 @@
 ---
 title: Main.rs
+description: The component template's main.rs entry point.
 sidebar:
   order: 2
 ---

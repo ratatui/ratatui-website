@@ -1,5 +1,6 @@
 ---
 title: Table Demo
+description: An interactive Table with row selection.
 ---
 
 Demonstrates an interactive table with row selection and detailed data. Source

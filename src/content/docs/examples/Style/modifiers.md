@@ -1,5 +1,6 @@
 ---
 title: Modifiers
+description: Rendering text with each style modifier.
 ---
 
 Demonstrates the style

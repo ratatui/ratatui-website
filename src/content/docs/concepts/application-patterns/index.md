@@ -1,5 +1,6 @@
 ---
 title: Application Patterns
+description: Common architectures for structuring Ratatui apps.
 sidebar:
   order: 0
 ---

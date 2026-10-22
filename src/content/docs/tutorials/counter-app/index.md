@@ -1,5 +1,6 @@
 ---
 title: Counter App
+description: Building a counter app with Ratatui.
 sidebar:
   order: 0
 ---

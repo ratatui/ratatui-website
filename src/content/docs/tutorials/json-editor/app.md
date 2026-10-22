@@ -1,5 +1,6 @@
 ---
 title: App.rs
+description: The JSON editor's application state.
 sidebar:
   order: 1
 ---

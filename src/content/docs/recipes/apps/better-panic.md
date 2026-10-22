@@ -1,5 +1,6 @@
 ---
 title: Better Panic Hooks
+description: Readable panic reports with better-panic and human-panic.
 sidebar:
   order: 7
 ---

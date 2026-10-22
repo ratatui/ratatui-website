@@ -1,5 +1,6 @@
 ---
 title: Embedded
+description: Running Ratatui on embedded displays with Mousefood.
 sidebar:
   order: 2
 ---

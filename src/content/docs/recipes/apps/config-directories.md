@@ -1,5 +1,6 @@
 ---
 title: Handle XDG Directories
+description: Finding config and data directories for your app.
 sidebar:
   order: 2
   label: Configuration Directories

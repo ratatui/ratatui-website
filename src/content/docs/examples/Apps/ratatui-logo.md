@@ -1,5 +1,6 @@
 ---
 title: Ratatui Logo
+description: Rendering the Ratatui logo.
 ---
 
 A fun example of using half blocks to render graphics. Source

@@ -1,5 +1,6 @@
 ---
 title: Counter App Error Handling
+description: Restoring the terminal on errors and panics in the counter app.
 sidebar:
   order: 2
   label: Error Handling

@@ -1,5 +1,6 @@
 ---
 title: Flex
+description: How Flex options distribute extra space in a layout.
 ---
 
 Demonstrates the [`flex`](https://docs.rs/ratatui/0.30.2/ratatui/layout/enum.Flex.html) layout

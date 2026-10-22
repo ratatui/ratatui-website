@@ -1,5 +1,6 @@
 ---
 title: Build websites
+description: Building terminal-themed web apps with Ratatui and WebAssembly.
 sidebar:
   order: 3
 ---

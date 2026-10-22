@@ -1,5 +1,6 @@
 ---
 title: Git guide
+description: Git conventions for contributing to Ratatui projects.
 sidebar:
   order: 3
 ---

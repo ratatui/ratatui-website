@@ -1,5 +1,6 @@
 ---
 title: Demo 2
+description: The Ratatui demo app from the README and crate page.
 ---
 
 This is the demo example from the main README and crate page. Source

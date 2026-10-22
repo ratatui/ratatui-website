@@ -1,5 +1,6 @@
 ---
 title: Canvas Demo
+description: Drawing a world map and shapes on the Canvas widget.
 ---
 
 Demonstrates rendering shapes and a map on a canvas. Source

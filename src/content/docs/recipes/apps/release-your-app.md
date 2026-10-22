@@ -1,5 +1,6 @@
 ---
 title: Releasing Your App
+description: A checklist for releasing a Ratatui app.
 sidebar:
   order: 10
   label: Releasing Your App

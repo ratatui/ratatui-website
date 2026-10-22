@@ -1,5 +1,6 @@
 ---
 title: Grid Layout
+description: Building a grid of cells with nested layouts.
 sidebar:
   order: 1
 ---

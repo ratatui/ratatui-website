@@ -1,5 +1,6 @@
 ---
 title: Full Async Events
+description: Redrawing on render events in the async counter app.
 sidebar:
   order: 2
   label: Async Render

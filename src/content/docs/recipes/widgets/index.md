@@ -1,5 +1,6 @@
 ---
 title: Use Widgets
+description: Recipes for using and writing widgets.
 sidebar:
   order: 0
 ---

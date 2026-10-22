@@ -1,5 +1,6 @@
 ---
 title: Flux Architecture
+description: Using Flux-style one-way data flow in a Ratatui app.
 sidebar:
   order: 3
 ---

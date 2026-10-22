@@ -1,5 +1,6 @@
 ---
 title: "Recipes: UI Layout"
+description: Recipes for arranging widgets on screen.
 sidebar:
   order: 0
   label: UI Layout

@@ -1,5 +1,6 @@
 ---
 title: Paragraph
+description: Styled, wrapped, and scrolling text with the Paragraph widget.
 ---
 
 Demonstrates the [`Paragraph`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Paragraph.html)

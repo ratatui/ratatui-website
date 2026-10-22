@@ -1,5 +1,6 @@
 ---
 title: Event Handling
+description: Approaches to handling input events in a Ratatui app.
 ---
 
 There are many ways to handle events with the `ratatui` library. Mostly because `ratatui` does not

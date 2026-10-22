@@ -1,5 +1,6 @@
 ---
 title: Paragraph
+description: Displaying text with the Paragraph widget.
 sidebar:
   order: 2
 ---

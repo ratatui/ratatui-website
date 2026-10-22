@@ -1,5 +1,6 @@
 ---
 title: Scrollbar
+description: Vertical and horizontal scrollbars with the Scrollbar widget.
 ---
 
 Demonstrates the [`Scrollbar`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Scrollbar.html)
