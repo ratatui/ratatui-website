@@ -1,5 +1,6 @@
 ---
 title: Sparkline
+description: Compact data series with the Sparkline widget.
 ---
 
 Demonstrates the [`Sparkline`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Sparkline.html)

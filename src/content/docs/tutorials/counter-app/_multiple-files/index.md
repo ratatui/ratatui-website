@@ -1,5 +1,6 @@
 ---
 title: Introduction
+description: Splitting the counter app into multiple files.
 ---
 
 At the moment, we have everything in just one file. However, this can be impractical if we want to

@@ -1,5 +1,6 @@
 ---
 title: Constraint Explorer
+description: An interactive tool for experimenting with layout constraints.
 ---
 
 The constraint explorer is a utility that can be used to work out the interaction between your

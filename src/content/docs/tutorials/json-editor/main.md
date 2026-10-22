@@ -1,5 +1,6 @@
 ---
 title: Main.rs
+description: The JSON editor's main loop and key handling.
 sidebar:
   order: 1
 ---

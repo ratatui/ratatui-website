@@ -1,5 +1,6 @@
 ---
 title: Tabs
+description: Switching between views with the Tabs widget.
 ---
 
 Demonstrates the [`Tabs`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Tabs.html) widget.

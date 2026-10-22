@@ -1,5 +1,6 @@
 ---
 title: Panic Hooks
+description: Restoring the terminal when the app panics.
 ---
 
 Demonstrates the setting up panic hooks. Source

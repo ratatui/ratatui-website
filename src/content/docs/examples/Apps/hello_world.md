@@ -1,5 +1,6 @@
 ---
 title: Hello World
+description: A basic Ratatui app that renders a greeting.
 ---
 
 Demonstrates a basic hello world app. Source

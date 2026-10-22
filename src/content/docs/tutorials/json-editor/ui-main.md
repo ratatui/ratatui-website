@@ -1,5 +1,6 @@
 ---
 title: UI - Main screen
+description: Drawing the JSON editor's main screen.
 sidebar:
   order: 4
 ---

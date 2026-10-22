@@ -1,5 +1,6 @@
 ---
 title: "Displaying Text"
+description: Rendering text with Span, Line, and Text.
 sidebar:
   order: 1
   label: Displaying Text

@@ -1,5 +1,6 @@
 ---
 title: Tui with Terminal and EventHandler
+description: A reusable terminal wrapper with an async event handler.
 sidebar:
   order: 4
   label: Terminal and Event Handler

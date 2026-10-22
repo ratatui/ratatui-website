@@ -1,5 +1,6 @@
 ---
 title: Closing Thoughts
+description: Wrap-up of the JSON editor tutorial.
 sidebar:
   order: 7
 ---

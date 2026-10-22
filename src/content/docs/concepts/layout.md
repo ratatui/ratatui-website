@@ -1,5 +1,6 @@
 ---
 title: Layout
+description: How Ratatui divides the screen into areas with Layout and constraints.
 ---
 
 The coordinate system in Ratatui runs left to right, top to bottom, with the origin `(0, 0)` in the

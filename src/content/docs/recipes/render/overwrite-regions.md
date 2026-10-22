@@ -1,5 +1,6 @@
 ---
 title: "Popups (overwrite regions)"
+description: Clearing an area before drawing a popup.
 sidebar:
   order: 3
   label: Popups (overwrite regions)

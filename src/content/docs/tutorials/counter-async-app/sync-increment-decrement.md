@@ -1,5 +1,6 @@
 ---
 title: Sync Increment & Decrement
+description: Sending actions from the event handler task.
 sidebar:
   order: 5
 ---

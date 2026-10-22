@@ -1,5 +1,6 @@
 ---
 title: Canvas
+description: Drawing shapes and maps with the Canvas widget.
 ---
 
 Demonstrates the [`Canvas`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/canvas/index.html) widget

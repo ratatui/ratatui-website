@@ -1,5 +1,6 @@
 ---
 title: Recipes
+description: Task-focused recipes for Ratatui.
 ---
 
 - [Layout](./layout/): Articles regarding how to layout your application's User Interface including

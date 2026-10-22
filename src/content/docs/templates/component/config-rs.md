@@ -1,5 +1,6 @@
 ---
 title: Config.rs
+description: Configurable key bindings and styles in the component template.
 sidebar:
   order: 7
 ---

@@ -1,5 +1,6 @@
 ---
 title: Setup Panic Hooks
+description: Restoring the terminal before a panic message prints.
 sidebar:
   order: 5
 ---

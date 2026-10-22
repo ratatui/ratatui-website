@@ -1,5 +1,6 @@
 ---
 title: Setup Logging with tracing
+description: Logging to a file with tracing.
 sidebar:
   order: 3
   label: Logging with Tracing

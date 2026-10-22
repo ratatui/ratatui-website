@@ -1,5 +1,6 @@
 ---
 title: Chart
+description: Drawing line and area charts with the Chart widget.
 ---
 
 Demonstrates the [`Chart`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Chart.html) widget.

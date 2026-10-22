@@ -1,5 +1,6 @@
 ---
 title: Spawn External Editor (Vim)
+description: Suspending the TUI to run an external editor.
 sidebar:
   order: 9
   label: Spawn External Editor (Vim)

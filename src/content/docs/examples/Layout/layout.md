@@ -1,5 +1,6 @@
 ---
 title: Layout
+description: Pointer to the constraint explorer, which replaced this example.
 ---
 
 Demonstrates the [`Layout`](https://docs.rs/ratatui/0.30.2/ratatui/layout/struct.Layout.html). The

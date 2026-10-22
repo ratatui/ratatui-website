@@ -1,5 +1,6 @@
 ---
 title: Tracing
+description: Logging to a file with tracing from a Ratatui app.
 ---
 
 Demonstrates recording terminal events to a log file with the `tracing` crate. Source

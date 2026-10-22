@@ -1,5 +1,6 @@
 ---
 title: Advanced Widget Implementation
+description: Different ways to implement Widget and WidgetRef.
 ---
 
 Demonstrates the different ways to implement and render Ratatui's `Widget` trait. Source

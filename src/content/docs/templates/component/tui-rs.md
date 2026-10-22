@@ -1,5 +1,6 @@
 ---
 title: Tui.rs
+description: The component template's terminal and event stream wrapper.
 sidebar:
   order: 3
 ---

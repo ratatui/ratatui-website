@@ -1,5 +1,6 @@
 ---
 title: Mouse Capture
+description: Receiving mouse events in a Ratatui app.
 sidebar:
   order: 4
 ---

@@ -1,5 +1,6 @@
 ---
 title: User Input
+description: Accepting text input in a Ratatui app.
 ---
 
 Demonstrates one approach to accepting user input. Source

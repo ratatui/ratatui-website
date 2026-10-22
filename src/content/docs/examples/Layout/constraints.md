@@ -1,5 +1,6 @@
 ---
 title: Constraints
+description: How layout constraints compete for space.
 ---
 
 Demonstrates how various

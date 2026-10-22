@@ -1,5 +1,6 @@
 ---
 title: Components/fps.rs
+description: The component template's FPS counter component.
 sidebar:
   order: 12
 ---

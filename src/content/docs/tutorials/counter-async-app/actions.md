@@ -1,5 +1,6 @@
 ---
 title: Counter App with Actions
+description: Mapping key events to actions in the async counter app.
 sidebar:
   order: 3
   label: Introducing Actions

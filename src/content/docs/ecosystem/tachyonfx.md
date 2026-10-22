@@ -1,5 +1,6 @@
 ---
 title: Effects and animations
+description: Adding animations and effects to Ratatui apps with tachyonfx.
 sidebar:
   order: 1
 ---

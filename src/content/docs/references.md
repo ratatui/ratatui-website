@@ -1,5 +1,6 @@
 ---
 title: References
+description: Links to API docs, templates, and other Ratatui resources.
 ---
 
 - [Crate Docs](https://docs.rs/ratatui/latest/ratatui/)

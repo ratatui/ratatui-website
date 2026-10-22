@@ -1,5 +1,6 @@
 ---
 title: Collapsed Borders
+description: Merging adjacent Block borders.
 ---
 
 Demonstrates how to collapse adjacent

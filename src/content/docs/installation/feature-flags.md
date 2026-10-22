@@ -1,5 +1,6 @@
 ---
 title: Feature Flags
+description: Ratatui's Cargo features and how to choose a backend.
 sidebar:
   order: 1
 ---

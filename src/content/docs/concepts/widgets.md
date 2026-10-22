@@ -1,5 +1,6 @@
 ---
 title: Introduction to Widgets
+description: How widgets work in Ratatui.
 ---
 
 Widgets are the building blocks of user interfaces in Ratatui. They are used to create and manage

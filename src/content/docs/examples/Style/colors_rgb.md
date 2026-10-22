@@ -1,5 +1,6 @@
 ---
 title: Colors (RGB)
+description: Rendering a full RGB color gradient.
 ---
 
 Demonstrates the available RGB

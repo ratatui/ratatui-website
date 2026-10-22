@@ -1,5 +1,6 @@
 ---
 title: Ratatui Templates
+description: Starting a new Ratatui app from a template.
 ---
 
 Ratatui provides [templates] for building apps using [Cargo Generate].

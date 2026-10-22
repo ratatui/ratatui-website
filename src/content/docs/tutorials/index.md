@@ -1,5 +1,6 @@
 ---
 title: Tutorials
+description: Step-by-step tutorials for building Ratatui apps.
 ---
 
 - [Hello Ratatui](./hello-ratatui/): This tutorial takes you through the basics of creating a simple

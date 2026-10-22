@@ -1,5 +1,6 @@
 ---
 title: Contributing to Ratatui
+description: Contribution guidelines for the ratatui crate.
 sidebar:
   order: 1
 ---

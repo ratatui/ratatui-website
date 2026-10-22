@@ -1,5 +1,6 @@
 ---
 title: Conclusion
+description: Recap of the async counter app.
 sidebar:
   order: 7
 ---

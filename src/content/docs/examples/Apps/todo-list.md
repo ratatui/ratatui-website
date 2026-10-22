@@ -1,5 +1,6 @@
 ---
 title: Todo List
+description: A simple todo list app built with the List widget.
 ---
 
 Demonstrates a simple interactive todo-list application. Source

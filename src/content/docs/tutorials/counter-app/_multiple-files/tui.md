@@ -1,5 +1,6 @@
 ---
 title: tui.rs
+description: Wrapping the counter app's terminal setup in a Tui struct.
 ---
 
 Next, we can further abstract the terminal functionality from earlier into a `Tui` struct.

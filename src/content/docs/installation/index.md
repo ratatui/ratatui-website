@@ -1,5 +1,6 @@
 ---
 title: Installation
+description: Adding Ratatui to a Rust project.
 sidebar:
   order: 0
 ---

@@ -1,5 +1,6 @@
 ---
 title: "Collapse borders in a layout"
+description: Merging adjacent borders into shared lines.
 sidebar:
   order: 3
   label: Collapse Borders

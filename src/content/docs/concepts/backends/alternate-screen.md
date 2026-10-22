@@ -1,5 +1,6 @@
 ---
 title: Alternate Screen
+description: What the alternate screen is and why TUIs use it.
 sidebar:
   order: 3
 ---

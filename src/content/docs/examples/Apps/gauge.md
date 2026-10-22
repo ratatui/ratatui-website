@@ -1,5 +1,6 @@
 ---
 title: Gauge Demo
+description: Animated progress bars with the Gauge widget.
 ---
 
 Demonstrates rendering several types of gauges. Source

@@ -1,5 +1,6 @@
 ---
 title: main.rs
+description: Bringing the counter app's modules together in main.rs.
 ---
 
 Putting it all together, we have the `main.rs` function:

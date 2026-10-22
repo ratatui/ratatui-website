@@ -1,5 +1,6 @@
 ---
 title: Async Increment & Decrement
+description: Running slow updates in background tasks without blocking the UI.
 sidebar:
   order: 6
 ---

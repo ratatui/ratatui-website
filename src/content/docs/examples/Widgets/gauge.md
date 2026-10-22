@@ -1,5 +1,6 @@
 ---
 title: Gauge
+description: Showing progress with the Gauge and LineGauge widgets.
 ---
 
 Demonstrates the [`Gauge`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Gauge.html) widget.

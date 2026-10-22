@@ -1,5 +1,6 @@
 ---
 title: App.rs
+description: The component template's App struct and event loop.
 sidebar:
   order: 9
 ---

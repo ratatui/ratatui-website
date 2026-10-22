@@ -1,5 +1,6 @@
 ---
 title: Backends
+description: How Ratatui uses backends to talk to the terminal.
 sidebar:
   order: 0
 ---

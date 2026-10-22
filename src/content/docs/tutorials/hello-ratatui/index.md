@@ -1,5 +1,6 @@
 ---
 title: Hello Ratatui
+description: Your first Ratatui app.
 ---
 
 :::note

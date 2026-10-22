@@ -1,5 +1,6 @@
 ---
 title: The Elm Architecture (TEA)
+description: Structuring a Ratatui app with The Elm Architecture.
 sidebar:
   order: 1
   label: The Elm Architecture

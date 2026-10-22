@@ -1,5 +1,6 @@
 ---
 title: Scrollbar Demo
+description: Scrolling content with the Scrollbar widget.
 ---
 
 Demonstrates rendering different types of scrollbars. Source

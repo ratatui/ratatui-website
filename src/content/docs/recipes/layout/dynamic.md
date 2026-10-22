@@ -1,5 +1,6 @@
 ---
 title: "Create Dynamic layouts"
+description: Building layouts that adapt to content at runtime.
 sidebar:
   order: 4
   label: Dynamic Layouts

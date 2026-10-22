@@ -1,5 +1,6 @@
 ---
 title: FAQ
+description: Answers to common questions about Ratatui.
 ---
 
 ## Why am I getting duplicate key events on Windows?

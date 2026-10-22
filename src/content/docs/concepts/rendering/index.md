@@ -1,5 +1,6 @@
 ---
 title: Rendering
+description: How Ratatui's immediate mode rendering works.
 sidebar:
   order: 0
 ---

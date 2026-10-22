@@ -1,5 +1,6 @@
 ---
 title: Hyperlink
+description: Rendering clickable terminal hyperlinks.
 ---
 
 Demonstrates rendering clickable terminal hyperlinks with OSC 8 escape sequences. Source

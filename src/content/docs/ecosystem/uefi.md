@@ -1,5 +1,6 @@
 ---
 title: UEFI
+description: Running Ratatui apps as UEFI applications.
 sidebar:
   order: 4
 ---

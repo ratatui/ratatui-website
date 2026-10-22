@@ -1,5 +1,6 @@
 ---
 title: Chart Demo
+description: Animated datasets with the Chart widget.
 ---
 
 Demonstrates rendering line, bar, and scatter charts. Source

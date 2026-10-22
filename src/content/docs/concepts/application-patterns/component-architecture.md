@@ -1,5 +1,6 @@
 ---
 title: Component Architecture
+description: Organizing a Ratatui app into self-contained components.
 sidebar:
   order: 2
 ---

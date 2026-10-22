@@ -1,5 +1,6 @@
 ---
 title: Shadow
+description: Drawing shadows behind widgets with the Shadow widget.
 ---
 
 Demonstrates the [`Shadow`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.Shadow.html)

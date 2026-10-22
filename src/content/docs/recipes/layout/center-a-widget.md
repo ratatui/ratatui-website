@@ -1,5 +1,6 @@
 ---
 title: How to Center Widgets
+description: Centering a widget or popup.
 sidebar:
   order: 2
   label: Center a Widget

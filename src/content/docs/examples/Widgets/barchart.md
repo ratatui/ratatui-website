@@ -1,5 +1,6 @@
 ---
 title: Barchart
+description: Drawing bar charts with the BarChart widget.
 ---
 
 Demonstrates the [`BarChart`](https://docs.rs/ratatui/0.30.2/ratatui/widgets/struct.BarChart.html)

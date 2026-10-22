@@ -1,5 +1,6 @@
 ---
 title: Raw Mode
+description: What raw mode is and why TUIs enable it.
 sidebar:
   order: 2
 ---

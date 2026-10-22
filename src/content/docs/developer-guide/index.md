@@ -1,5 +1,6 @@
 ---
 title: Developer Guide
+description: Guides for contributing to Ratatui and its website.
 sidebar:
   order: 0
 ---

@@ -1,5 +1,6 @@
 ---
 title: Use `color_eyre` with Ratatui
+description: Error and panic reporting with color-eyre.
 sidebar:
   order: 6
   label: color_eyre Error Hooks

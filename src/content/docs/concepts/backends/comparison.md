@@ -1,5 +1,6 @@
 ---
 title: Comparison of Backends
+description: Choosing between Ratatui's terminal backends.
 sidebar:
   order: 1
   label: Comparison

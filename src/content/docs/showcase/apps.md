@@ -1,5 +1,6 @@
 ---
 title: App Showcase
+description: Terminal apps built with Ratatui.
 sidebar:
   order: 0
   label: Apps

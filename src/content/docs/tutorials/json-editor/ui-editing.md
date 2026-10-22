@@ -1,5 +1,6 @@
 ---
 title: UI - Editing Popup
+description: Drawing the JSON editor's editing popup.
 sidebar:
   order: 5
 ---

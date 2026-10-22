@@ -1,5 +1,6 @@
 ---
 title: Full Async Actions
+description: Sending actions over a channel from anywhere in the app.
 sidebar:
   order: 4
   label: Async Actions

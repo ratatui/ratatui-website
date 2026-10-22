@@ -1,5 +1,6 @@
 ---
 title: Calendar Explorer
+description: Exploring the Calendar widget's styles and layouts.
 ---
 
 Demonstrates rendering a calendar with different styles. Source

@@ -1,5 +1,6 @@
 ---
 title: Async GitHub
+description: Fetching GitHub data asynchronously in a responsive Ratatui app.
 ---
 
 Demonstrates fetching and displaying GitHub API data asynchronously. Source

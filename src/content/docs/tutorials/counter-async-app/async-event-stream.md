@@ -1,5 +1,6 @@
 ---
 title: Async Event Stream
+description: Reading terminal events asynchronously with tokio.
 sidebar:
   order: 1
   label: Async Key Events

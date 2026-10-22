@@ -1,5 +1,6 @@
 ---
 title: Testing with insta snapshots
+description: Snapshot testing a Ratatui UI with insta.
 sidebar:
   order: 1
 ---

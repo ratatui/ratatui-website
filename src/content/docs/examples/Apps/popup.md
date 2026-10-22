@@ -1,5 +1,6 @@
 ---
 title: Popup
+description: Drawing a popup over existing content.
 ---
 
 Demonstrates how to render a widget over the top of previously rendered widgets using the

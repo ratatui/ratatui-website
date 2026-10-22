@@ -1,5 +1,6 @@
 ---
 title: Async Counter App
+description: Building an async counter app with tokio.
 sidebar:
   order: 0
 ---
