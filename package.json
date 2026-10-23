@@ -41,7 +41,7 @@
     "starlight-auto-sidebar": "^0.4.1",
     "starlight-links-validator": "0.27.0",
     "tailwindcss": "^4.3.3",
-    "toml": "^5.0.0",
+    "toml": "^5.0.1",
     "tree-sitter": "0.25.1",
     "tree-sitter-rust": "^0.24.0",
     "typescript": "^6.0.3",
