@@ -72,8 +72,8 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3
       toml:
-        specifier: ^5.0.0
-        version: 5.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       tree-sitter:
         specifier: 0.25.1
         version: 0.25.1
@@ -3593,8 +3593,8 @@ packages:
     resolution: {integrity: sha512-/m8M+2BJUpoJdgAHoG+baCwBT+tf2VraSfkBgl0Y00qIWt41DJ8R5B8nsEw0I58YwF5IZH6z24/2TobDKnqSWw==}
     engines: {node: '>=12'}
 
-  toml@5.0.0:
-    resolution: {integrity: sha512-bsqEd+g7fzlrw7LEynQ6W6aOK/lTOlepz5x1sJyIV9fTZVJS2Q76nuju6FK+gZhW5bUpvB7mCEqdR0u4WziMFw==}
+  toml@5.0.1:
+    resolution: {integrity: sha512-EqYNA/YvUNndrA2B3O2ojzLQoTQrBxeZ9UIjQwk8t10oe6n7dwclBwd9IdZQTOKwe6vWX+AXtl6IntXRbepdxQ==}
     engines: {node: '>=20'}
 
   tough-cookie@6.0.2:
@@ -8056,7 +8056,7 @@ snapshots:
 
   toad-cache@3.7.0: {}
 
-  toml@5.0.0: {}
+  toml@5.0.1: {}
 
   tough-cookie@6.0.2:
     dependencies:
