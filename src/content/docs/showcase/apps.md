@@ -27,6 +27,14 @@ Search your history with Ctrl+R, recall a command with Tab, and run it from your
 
 ---
 
+## [`aven`](https://github.com/raine/aven)
+
+Aven is a local-first task manager built with both humans and agents in mind.
+
+![Aven's queue view with tasks grouped into Needs action, Available, Focus, Soon and Triage](./apps/aven.webp)
+
+---
+
 ## [`bandwhich`](https://github.com/imsnif/bandwhich)
 
 This is a CLI utility for displaying current network utilization by process, connection and remote
