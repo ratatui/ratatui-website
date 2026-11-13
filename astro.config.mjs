@@ -71,6 +71,7 @@ export default defineConfig({
         { icon: "x.com", label: "X.com", href: "https://twitter.com/ratatui_rs" },
         { icon: "blueSky", label: "Bluesky", href: "https://bsky.app/profile/ratatui.rs" },
         { icon: "mastodon", label: "Mastodon", href: "https://fosstodon.org/@ratatui_rs" },
+        { icon: "reddit", label: "Reddit", href: "https://www.reddit.com/r/RatatuiRust/" },
         {
           icon: "linkedin",
           label: "LinkedIn",
