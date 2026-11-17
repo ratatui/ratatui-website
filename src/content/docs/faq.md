@@ -408,6 +408,44 @@ special, separate font to render box drawing characters correctly.
   https://github.com/alacritty/alacritty/blob/master/extra/man/alacritty.5.scd#font
 [ITerm2]: https://iterm2.com/documentation-fonts.html
 
+## Why does text with ANSI color codes show up as `[31m` garbage?
+
+Output from tools like `ls --color`, `git diff`, compilers, or syntax highlighters often contains
+ANSI escape sequences such as `\x1b[31mred\x1b[0m`. If you put that string straight into a `Span`,
+`Paragraph`, or other widget, you see something like `[31mred[0m` instead of red text.
+
+This happens because Ratatui does not write your strings to the terminal as-is. Widgets render into
+a `Buffer`, a grid of cells where each cell holds one grapheme plus a separate `Style`. When the
+frame is flushed, Ratatui compares the new buffer to the previous one and writes only the cells that
+changed, emitting its own escape sequences for each cell's style. That design has a few consequences
+for raw ANSI text:
+
+- **Control characters are dropped.** The escape byte (`\x1b`) is a control character, so it is
+  filtered out when text is written to the buffer. What remains (`[31m`, `[0m`) is ordinary
+  printable text, so it is displayed literally.
+- **Layout would be wrong anyway.** Width, wrapping, truncation, and alignment are computed from the
+  characters in the string. The bytes of an escape sequence take up no columns on screen, but they
+  would be counted as if they did, and wrapping could split a sequence in half.
+- **Style lives in the cell, not the text.** Even if the sequence reached the terminal, Ratatui sets
+  each cell's style itself, and because only changed cells are redrawn, a color "left on" by one
+  sequence would bleed into or be reset by unrelated cells unpredictably.
+
+To display ANSI-styled text, parse it into Ratatui's own types first. The
+[`ansi-to-tui`](https://crates.io/crates/ansi-to-tui) crate converts a string or bytes containing
+ANSI sequences into a `Text` value, turning each sequence into a `Style` on the right `Span`:
+
+```rust
+use ansi_to_tui::IntoText;
+
+let bytes = std::process::Command::new("ls").arg("--color=always").output()?.stdout;
+let text = bytes.into_text()?;
+frame.render_widget(Paragraph::new(text), area);
+```
+
+If you only need the plain text, strip the sequences instead (for example with the
+[`strip-ansi-escapes`](https://crates.io/crates/strip-ansi-escapes) crate), or ask the tool not to
+emit color (many accept `--color=never` or respect the `NO_COLOR` environment variable).
+
 ## Can you use multiple `terminal.draw()` calls consequently?
 
 You _cannot_ use `terminal.draw()` multiple times in the same `main` loop.
