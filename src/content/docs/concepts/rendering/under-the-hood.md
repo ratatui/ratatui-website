@@ -151,11 +151,12 @@ text to terminal can occur immediately.
 
 :::note
 
-ANSI Escape sequences for color and style that are stored in the cell's string content are not
-rendered, as the style information is stored separately in the cell. If your text has ANSI styling
-info, consider using the [`ansi-to-tui`](https://crates.io/crates/ansi-to-tui) crate to convert it
-to a `Text` value before rendering. You can learn more about the text related Ratatui features and
-displaying text [here](/recipes/render/display-text/).
+ANSI escape sequences in your text are not interpreted, because style information is stored
+separately in each cell and the escape character itself is dropped as a control character. If your
+text has ANSI styling info, use the [`ansi-to-tui`](https://crates.io/crates/ansi-to-tui) crate to
+convert it to a `Text` value before rendering. See the
+[FAQ](/faq/#why-does-text-with-ansi-color-codes-show-up-as-31m-garbage) for why. You can learn more
+about the text related Ratatui features and displaying text [here](/recipes/render/display-text/).
 
 :::
 
