@@ -131,6 +131,16 @@ gpg-tui is a Terminal User Interface for GnuPG.
 
 ---
 
+## [`hotpath-rs`](https://hotpath.rs/#tui)
+
+Performance profiling for developers and coding agents. Find CPU, memory, async, SQL, I/O, and
+contention bottlenecks with a single Rust profiler. Explore live performance metrics in an
+interactive TUI, or export them to Prometheus and Grafana for production monitoring.
+
+![hotpath-rs demo](https://github.com/user-attachments/assets/016b0e58-f0c2-4479-b094-05365592f72d)
+
+---
+
 ## [`joshuto`](https://github.com/kamiyaa/joshuto)
 
 Ranger-like terminal file manager written in Rust
