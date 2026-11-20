@@ -7,7 +7,7 @@ use ratatui::{
     Frame,
 };
 
-use crate::app::{App, CurrentScreen, CurrentlyEditing};
+use crate::app::{App, CurrentScreen, EditFocus};
 
 // ANCHOR: method_sig
 pub fn ui(frame: &mut Frame, app: &App) {
@@ -66,12 +66,12 @@ pub fn ui(frame: &mut Frame, app: &App) {
         Span::styled(" | ", Style::default().fg(Color::White)),
         // The final section of the text, with hints on what the user is editing
         {
-            if let Some(editing) = &app.currently_editing {
-                match editing {
-                    CurrentlyEditing::Key => {
+            if let Some(editing_pair) = &app.editing_pair {
+                match editing_pair.focus {
+                    EditFocus::Key => {
                         Span::styled("Editing Json Key", Style::default().fg(Color::Green))
                     }
-                    CurrentlyEditing::Value => {
+                    EditFocus::Value => {
                         Span::styled("Editing Json Value", Style::default().fg(Color::LightGreen))
                     }
                 }
@@ -120,7 +120,7 @@ pub fn ui(frame: &mut Frame, app: &App) {
     // ANCHOR_END: lower_navigation_rendering
 
     // ANCHOR: editing_popup
-    if let Some(editing) = &app.currently_editing {
+    if let Some(editing_pair) = &app.editing_pair {
         let popup_block = Block::default()
             .title("Enter a new key-value pair")
             .borders(Borders::NONE)
@@ -144,15 +144,15 @@ pub fn ui(frame: &mut Frame, app: &App) {
 
         let active_style = Style::default().bg(Color::LightYellow).fg(Color::Black);
 
-        match editing {
-            CurrentlyEditing::Key => key_block = key_block.style(active_style),
-            CurrentlyEditing::Value => value_block = value_block.style(active_style),
+        match editing_pair.focus {
+            EditFocus::Key => key_block = key_block.style(active_style),
+            EditFocus::Value => value_block = value_block.style(active_style),
         };
 
-        let key_text = Paragraph::new(app.key_input.clone()).block(key_block);
+        let key_text = Paragraph::new(editing_pair.key.as_str()).block(key_block);
         frame.render_widget(key_text, popup_chunks[0]);
 
-        let value_text = Paragraph::new(app.value_input.clone()).block(value_block);
+        let value_text = Paragraph::new(editing_pair.value.as_str()).block(value_block);
         frame.render_widget(value_text, popup_chunks[1]);
     }
     // ANCHOR_END: key_value_blocks
