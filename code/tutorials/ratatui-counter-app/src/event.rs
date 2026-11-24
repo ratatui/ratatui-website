@@ -68,7 +68,8 @@ impl EventHandler {
                             }
                             CrosstermEvent::Mouse(e) => sender.send(Event::Mouse(e)),
                             CrosstermEvent::Resize(w, h) => sender.send(Event::Resize(w, h)),
-                            _ => unimplemented!(),
+                            CrosstermEvent::FocusGained | CrosstermEvent::FocusLost => Ok(()), // ignore focus change events
+                            _e => unimplemented!("{_e:#?}"),
                         }
                         .expect("failed to send terminal event")
                     }
