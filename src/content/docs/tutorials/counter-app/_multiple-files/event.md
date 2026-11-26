@@ -156,6 +156,14 @@ use `mpsc` to set us up for the future.
 Finally, here's the code that starts a thread that polls for events from `crossterm` and maps it to
 our `Event` enum.
 
+:::note
+
+Crossterm produces more event types than just `Key`, `Mouse` and `Resize`.
+`FocusGained` and `FocusLost` fire when the terminal window gains or loses focus.
+We explicitly ignore focus events and keep a debug catch-all to reveal other unknown events.
+
+:::
+
 ```rust
 {{#include @code/tutorials/ratatui-counter-app/src/event.rs:event_import}}
 
