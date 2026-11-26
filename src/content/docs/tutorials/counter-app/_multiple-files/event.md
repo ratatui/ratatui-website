@@ -160,7 +160,6 @@ our `Event` enum.
 
 Crossterm produces more event types than just `Key`, `Mouse` and `Resize`.
 `FocusGained` and `FocusLost` fire when the terminal window gains or loses focus.
-The original `_ => unimplemented!()` panics on these events, which resets the alternate screen and raw mode unexpectedly.
 We explicitly ignore focus events and keep a debug catch-all to reveal other unknown events.
 
 :::
